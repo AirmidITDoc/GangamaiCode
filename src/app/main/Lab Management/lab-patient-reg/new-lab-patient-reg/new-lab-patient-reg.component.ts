@@ -68,7 +68,7 @@ export class NewLabPatientRegComponent {
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeConcession: string = "Concession";
   autocompleteModeLabPatientType: string = "LabPatientType";
-  
+
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
   filteredOptions: any[] = [];
@@ -107,6 +107,7 @@ export class NewLabPatientRegComponent {
   IsRadiology: any;
   vIsPackage: any;
   isCompanySelected: boolean = false;
+  isTariffSelect: boolean = false;
   patienttype = 0
   mode: any;
 
@@ -125,6 +126,7 @@ export class NewLabPatientRegComponent {
     'DoctorName',
     'Urgent',
     'Price',
+    'DiscountPer',
     'DiscountAmount',
     'NetAmount',
     'buttons'
@@ -138,7 +140,8 @@ export class NewLabPatientRegComponent {
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
   @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-  
+  @ViewChild('ddlcompanyExec') ddlcompanyExec: AirmidDropDownComponent;
+
   @ViewChild('serviceInput') serviceInput!: ElementRef<HTMLInputElement>;
 
   constructor(public _labPatientRegService: LabPatientRegService,
@@ -169,6 +172,12 @@ export class NewLabPatientRegComponent {
 
     this.mode = this.data?.mode || 'add';
 
+    // this.myForm.get('patientType').setValue(this.data?.row?.patientTypeId);
+    this.myForm.get('Comments').setValue(this.data?.row?.comments);
+    this.myForm.get('ReferByName').setValue(this.data?.row?.referByName);
+    this.myForm.get('tariffId').setValue(this.data?.row?.tariffId);
+    // this.myForm.get('patientTypeId').setValue(2);
+
     if (this.data?.row?.labPatientId) {
       this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
         this.registerObj = response;
@@ -183,11 +192,21 @@ export class NewLabPatientRegComponent {
         });
       });
     }
+
     this.getServiceList();
     console.log(this.hospitalconfigservice.HospitalconfigParams)
     console.log(this._ConfigService.configParams)
 
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+  }
+
+  ngAfterViewInit() {
+
+    this._labPatientRegService.getexecByCompany(0).subscribe((data: any) => {
+      console.log(data);
+      this.ddlcompanyExec.options = data;
+      this.ddlcompanyExec.bindGridAutoComplete();
+    });
   }
 
   createFinalFormView() {
@@ -203,7 +222,6 @@ export class NewLabPatientRegComponent {
   CreateMyForm() {
     const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
     return this._formbuilder.group({
-      labPatientId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       regDate: [new Date()],
       regTime: [],
       unitId: this.accountService.currentUserValue.user.unitId,
@@ -212,6 +230,7 @@ export class NewLabPatientRegComponent {
       middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
       genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       ageYear: ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
       ageMonth: ['', [Validators.pattern("^[0-9]*$")]],
@@ -220,26 +239,30 @@ export class NewLabPatientRegComponent {
       cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      patientTypeId: [1],
-      tariffId: [1],//this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId], // need to ask sir what value to pass
+      patientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      tariffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],//this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId], // need to ask sir what value to pass
       classId: [1],// [this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId],
       departmentId: [0],
       doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDocId: [0],
-      companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      subCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      campId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      createdBy: this.accountService.currentUserValue.userId,
+      labPatientId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      LabPatRegId: 0,
       adharCardNo: [0, [
         Validators.minLength(12),  //     Validators.minLength(12),
         Validators.maxLength(12), //     Validators.maxLength(12),
         Validators.pattern("^[0-9]*$"),
         this._FormvalidationserviceService.onlyNumberValidator()
       ]],
-      patientTypValId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      subCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      campId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      patientType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Comments: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       ReferByName: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      companyExecutiveId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
       // extra fields
-      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       IsPathRad: ['1'],
       ServiceId: [''],
@@ -249,8 +272,6 @@ export class NewLabPatientRegComponent {
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       paymentType: ['CashPay'],
       patientName: [''],
-      createdBy: this.accountService.currentUserValue.userId,
-      LabPatRegId: 0,
       servicedoctorId: [0],
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
     })
@@ -406,7 +427,7 @@ export class NewLabPatientRegComponent {
       qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      concessionPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionPercentage: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionAmount: [Number(item?.DiscAmt) ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       doctorId: [item?.DoctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -470,19 +491,23 @@ export class NewLabPatientRegComponent {
       this.isCompanySelected = true;
       this.patienttype = 2;
       this.OPFooterForm.get('paymentType').setValue('CreditPay')
+
     } else if (value.text == "Self") {
       this.isCompanySelected = false;
       this.myForm.get('companyId').clearValidators();
-      this.myForm.get('subCompanyId').clearValidators();
       this.myForm.get('companyId').updateValueAndValidity();
-      this.myForm.get('subCompanyId').updateValueAndValidity();
       this.patienttype = 1;
       this.OPFooterForm.get('paymentType').setValue('CashPay')
+      this.myForm.get('companyId').setValue(0);
+      this.myForm.get('companyExecutiveId').setValue(0);
+      this.myForm.get('tariffId').setValue(0);
+      this.isTariffSelect = false //tariff not readonly
+
+      this._labPatientRegService.getexecByCompany(0).subscribe((data: any) => {
+        this.ddlcompanyExec.options = data;
+        this.ddlcompanyExec.bindGridAutoComplete();
+      });
     }
-    // else {
-    //   if (this.patienttype != 2)
-    //     this.OPFooterForm.get('paymentType').setValue('CashPay')
-    // }
   }
 
   private destroy$ = new Subject<void>();
@@ -520,17 +545,54 @@ export class NewLabPatientRegComponent {
   ////////////////////////// dd new method end ////////////////////
   onChangeCompany(value) {
     this.companyId = value.value
+    if (this.companyId) {
+      this.isTariffSelect = true
+    }
     this._labPatientRegService.getCompanyById(value.value).subscribe((response) => {
       this.companyDet = response;
       this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
+      this.vTariffId = this.companyDet.traiffId
+
+      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
     });
+
+    if (value.value) {
+      this._labPatientRegService.getexecByCompany(value.value).subscribe((data: any) => {
+        // console.log(data)
+        this.ddlcompanyExec.options = data;
+        this.ddlcompanyExec.bindGridAutoComplete();
+      });
+    }
+    else {
+      this._labPatientRegService.getexecByCompany(value.companyId).subscribe((data: any) => {
+        // 
+        this.ddlcompanyExec.options = data;
+        const incomingId = value.companyExecutiveId;
+        console.log("Id:", incomingId)
+        setTimeout(() => {
+          this.ddlcompanyExec.bindGridAutoComplete();
+          if (incomingId) {
+            const matchedId = data.find(exec => exec.executiveId === incomingId);
+            if (matchedId) {
+              this.ddlcompanyExec.SetSelection(matchedId.executiveId);
+              // this.doctorname = matchedId.text
+            }
+          }
+        }, 100);
+      });
+    }
+  }
+
+  onChangeTariff(value) {
+    this.vTariffId = value.value
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
   }
   urgentStatus: boolean = false;
   onUrgentToggleChange(event: any, contact: any) {
-   this.urgentStatus = event.checked;
-  // optionally do recalculation or other logic
-  console.log(contact);
-}
+    this.urgentStatus = event.checked;
+    // optionally do recalculation or other logic
+    console.log(contact);
+  }
 
   regflag = false
   VlabPatRegId: any;
@@ -622,6 +684,31 @@ export class NewLabPatientRegComponent {
     }
   }
   Consessionres: boolean = false;
+
+  onDiscountPerChange(row: ChargesList): void {
+    if (!row) return;
+    let discountPer = +row.DiscPer || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountPer < 0 || discountPer > 100) {
+      discountPer = 0; // Reset if out of range
+      row.DiscPer = 0;
+      this.toastrService.error("Enter discount % between 0-100");
+    }
+
+    this.Consessionres = true
+    if (discountPer == 0) {
+      this.Consessionres = false
+      this.OPFooterForm.get("concessionReasonId").setValue(0)
+    }
+
+    row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - row.DiscAmt;
+
+    this.calculateTotalAmount();
+  }
+
   onDiscountAmtChange(row: ChargesList): void {
     if (!row) return;
     let discountAmt = +row.DiscAmt || 0;
@@ -649,20 +736,25 @@ export class NewLabPatientRegComponent {
   calculateTotalAmount(): void {
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    let totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
     let totalNet = totalSum - totalDiscount;
 
-    this.OPFooterForm.patchValue({
+    this.myForm.patchValue({
       totalAmt: totalSum,
-      concessionAmt: Math.round(totalDiscount),
+      discountAmt:Math.round(totalDiscount),
       netPayableAmt: Math.round(totalNet)
     }, { emitEvent: false });
-
-    // const Exclusionlist = this.chargeList.filter(i => i.isInclusionExclusion === true)
-    // const Inclusionlist = this.chargeList.filter(i => i.isInclusionExclusion !== true)
-    // this.ExclusionAmt = Exclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    // this.InclusionAmt = Inclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-
+    if (!this.isDiscountApplied && totalDiscount > 0) {
+      this.isDiscountApplied = true;
+      this.Consessionres = true
+    }
+    
+    this.Consessionres = this.chargeList.some(
+      charge => (+charge.DiscAmt || 0) > 0
+    );
+    this.isDiscountApplied = this.Consessionres;
   }
+
   getServiceList() {
     let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
     let IsPathRad = 3
@@ -731,7 +823,7 @@ export class NewLabPatientRegComponent {
       this.serviceInput?.nativeElement.focus();
     });
   }
- 
+
   onChangeReg(event) {
     if (event.value == 'onlinepay') {
       this.onlineflag = true;
@@ -769,6 +861,8 @@ export class NewLabPatientRegComponent {
 
     const total = this.chargeList.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
     const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
+    if (discPer)
+      this.Consessionres = true
     // this.myForm.get('discountAmt').value
     const discountAmt = (total * discPer) / 100;
     const netAmt = Math.round(total - discountAmt);
@@ -803,6 +897,8 @@ export class NewLabPatientRegComponent {
     return row && row.creditedtoDoctor === true;
   }
 
+  public isDiscountApplied = false;
+  isRowDiscountApplied = false;
   onAddCharges(row): void {
 
     if (this.myForm.get("IsPathRad").value == '1')
@@ -815,7 +911,7 @@ export class NewLabPatientRegComponent {
     const totalAmount = row.price * 1;
     const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
     const netAmount = totalAmount - discountAmount;
-
+    // debugger
     const newRow = {
       ServiceId: row.serviceId,
       ServiceName: row.serviceName,
@@ -836,6 +932,10 @@ export class NewLabPatientRegComponent {
       serviceCode: 0,//formValue.serviceName.companyCode, 
       isInclusionExclusion: 1,//formValue.serviceName.isInclusionOrExclusion
     };
+    if (!this.isDiscountApplied && discountAmount > 0) {
+      this.isDiscountApplied = true;
+      this.Consessionres = true
+    }
 
     const newCharge = new ChargesList(newRow);
     newCharge.DiscAmt = newCharge.DiscAmt || 0;
@@ -861,6 +961,7 @@ export class NewLabPatientRegComponent {
           discountAmt: 0,
           netPayableAmt: 0
         });
+        this.isDiscountApplied = false;
       } else {
         this.updateCalculation();
       }
@@ -1048,10 +1149,15 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regTime').setValue(formattedTime);
     this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId ?? 0);
     this.myForm.get('adharCardNo').setValue(Number(this.myForm.get('adharCardNo').value) ?? 0);
-    // this.PatientName = this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value
 
-    if (this.myForm.get('discountAmt').value > 0) {
-      if (!this.myForm.get('concessionReasonId').value) {
+    const overallDiscAmt = +this.myForm.get('discountAmt')?.value || 0; //bottom discount
+
+    const rowDiscApplied = this.dstable1?.data?.some( //row discount
+      (row: any) => (+row.DiscAmt || 0) > 0
+    ) || false;
+
+    if (overallDiscAmt > 0 || rowDiscApplied) {
+      if (!this.myForm.get('concessionReasonId')?.value) {
         this.toastrService.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -1532,7 +1638,7 @@ export class NewLabPatientRegComponent {
         { name: "required", Message: "SubCompany Name is required" }
       ],
       patientTypeValue: [
-         { name: "required", Message: "PatientType is required" }
+        { name: "required", Message: "PatientType is required" }
       ],
       Comments: [
         { name: "pattern", Message: "only char allowed." }

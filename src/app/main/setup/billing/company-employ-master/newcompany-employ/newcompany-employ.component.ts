@@ -64,7 +64,7 @@ export class NewcompanyEmployComponent {
   onSubmit() {
     if (!this.personalFormGroup.invalid) {
       this.personalFormGroup.removeControl('isActive')
-      this.personalFormGroup.get('executiveId').setValue(this.data.executiveId ?? 0)
+      this.personalFormGroup.get('executiveId').setValue(this.data?.executiveId ?? 0)
       console.log(this.personalFormGroup.value)
       this._companyEmpService.companyEmpSave(this.personalFormGroup.value).subscribe((response) => {
         this.onClose();

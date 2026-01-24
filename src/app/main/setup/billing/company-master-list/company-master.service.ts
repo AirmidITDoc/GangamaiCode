@@ -149,7 +149,7 @@ export class CompanyMasterService {
     public companyMasterSave(Param: any) {
         if (Param.companyId) {
             return this._httpClient.PutData("CompanyMaster/Edit/" + Param.companyId, Param);
-        } else return this._httpClient.PostData("CompanyMaster/InsertEDMX", Param);
+        } else return this._httpClient.PostData("CompanyMaster/Insert", Param);
     }
 
     public deactivateTheStatus(m_data) {
@@ -158,9 +158,6 @@ export class CompanyMasterService {
 
     getCompanyById(companyId: any) {
         return this._httpClient.GetData("CompanyMaster/" + companyId);
-    }
-    getCompanyExecuById(companyId: any) {
-        return this._httpClient.GetData("CompanyExecutiveInfo/" + companyId);
     }
     public getstateId(Id) {
         return this._httpClient.GetData("StateMaster/" + Id);
