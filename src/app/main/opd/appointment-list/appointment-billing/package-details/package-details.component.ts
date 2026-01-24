@@ -177,6 +177,7 @@ export class PackageDetailsComponent {
   }
   //IPD package list 
   getIPDpackagedetList(obj) {
+    debugger
     this.PacakgeList = [];
     var vdata =
     {
@@ -253,6 +254,7 @@ export class PackageDetailsComponent {
   }
   // Service Add 
   onSaveAddCharges() { 
+    debugger
     const formValue = this.PackageForm.value
     if ((formValue?.SrvcName?.serviceId == 0 || formValue?.SrvcName?.serviceId == null || formValue?.SrvcName?.serviceId == undefined)) {
       this.toastr.warning('Please select Service', 'Warning !', {

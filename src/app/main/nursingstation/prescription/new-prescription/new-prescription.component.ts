@@ -71,6 +71,7 @@ export class NewPrescriptionComponent implements OnInit {
   vdoseId: any;
   doseName: any;
   day: any;
+  SaveFlag:boolean=true
   dsPresList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
 
@@ -340,6 +341,7 @@ debugger
       return;
     }
     this.ItemForm.get('TemplateId').reset('');
+     this.SaveFlag = false;
   }
 
   // onEdit(row) {
@@ -410,6 +412,7 @@ debugger
         }
       }
     }, 100);
+     this.SaveFlag = false;
   }
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -489,6 +492,7 @@ debugger
         });
         this.ItemForm.get('ItemId').reset();
         this.ItemForm.get('ItemId').updateValueAndValidity();
+         this.SaveFlag = false;
         return;
       }
       if (this.vRegNo == 0) {
@@ -501,15 +505,17 @@ debugger
       this.prescriptionArray.clear();
       if (this.dsItemList.data.length === 0) {
         this.toastr.warning('No data in the item list!', 'Warning');
+         this.SaveFlag = false;
         return;
       }
 
+      this.SaveFlag = true;
       this.dsItemList.data.forEach(item => {
         this.prescriptionArray.push(this.createPrescriptionFormInsert(item));
       });
       this.prescForm.get("admissionId").setValue(this.vAdmissionID)
       console.log(this.prescForm.value)
-
+      
       this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {
         console.log(response)
         this.viewgetIpprescriptionReportPdf(response)
@@ -534,6 +540,8 @@ debugger
         });
       }
     }
+
+     
   }
 
   viewgetIpprescriptionReportPdf(response) {
