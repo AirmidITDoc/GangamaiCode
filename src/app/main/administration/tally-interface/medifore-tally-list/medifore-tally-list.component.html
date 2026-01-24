@@ -1,0 +1,232 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+
+        <mat-tab label="OP Tally">
+            <div fxLayout="column" class="gap-4 h-10-p">
+                <div class="modal-card-container" style="padding: 10px;">
+                    <mat-card>
+                        <form [formGroup]="myFilteropBillform">
+                            <div class="patient-search">
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+                                        <!-- (dateChange)="onChangeOPBill()" -->
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Enter a date range</mat-label>
+                                            <mat-date-range-input [rangePicker]="Picker">
+                                                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                                <input matEndDate formControlName="enddate" placeholder="End date">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="Picker"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #Picker></mat-date-range-picker>
+                                        </mat-form-field>
+
+
+                                        <div class="action-buttons" style="padding: 10px;">
+
+                                            <button mat-raised-button class="search-button" (click)="onChangeOPBill()"
+                                                matTooltip="search">
+                                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                            </button>
+                                        </div>
+                                        <div class="info-badge-top p-12 border-bottom" style="float:inline-end">
+                                            <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
+                                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                                    <div style="color: orange" fxLayout="row"
+                                                        fxLayoutAlign="start center" class="gap-4">
+                                                        <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                        <span class="orange-600-fg">Intrim Bills</span>
+                                                    </div>
+                                                    <div style="color: green" fxLayout="row"
+                                                        fxLayoutAlign="start center" class="gap-4">
+                                                        <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                        <span class="green-600-fg">Final Bills</span>
+                                                    </div>
+                                                    <div style="color: red" fxLayout="row" fxLayoutAlign="start center"
+                                                        class="gap-4">
+                                                        <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                                        <span class="red-600-fg">Cancelled Bills</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </mat-card>
+                </div>
+            </div>
+            <div fusePerfectScrollbar>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                OP Bill Wise
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+                    <ng-template #OPBillstatus let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
+                                class="pill green-600 s-16">circle</mat-icon>
+
+                            <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfigOPBill" #OPBillGrid :ShowFilter="false" :ShowButtons="true">
+
+
+                    </airmid-table>
+                </div>
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    OP Bill Detail Wise
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+
+                        <airmid-table [gridConfig]="gridConfigOpbilldetail" :ShowButtons="true" :ShowFilter="false"
+                            #OPBildetailsGrid>
+
+                        </airmid-table>
+                    </div>
+                </div>
+
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="IP Tally ">
+            <div fusePerfectScrollbar>
+
+                <div fxLayout="column" class="gap-4 h-10-p">
+                    <div class="modal-card-container" style="padding: 10px;">
+                        <mat-card>
+                            <form [formGroup]="myFilterIpBillform">
+                                <div class="patient-search">
+                                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                        <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                            <mat-form-field appearance="outline" fxFlex="20%">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="Picker1">
+                                                    <input matStartDate formControlName="fromDate"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="Picker1"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #Picker1></mat-date-range-picker>
+                                            </mat-form-field>
+
+
+                                            <div class="action-buttons" style="padding: 10px;">
+
+                                                <button mat-raised-button class="search-button"
+                                                    (click)="onChangeIPBill()" matTooltip="search">
+                                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                                </button>
+                                            </div>
+                                            <div class="info-badge-top p-12 border-bottom" style="float:inline-end">
+                                                <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
+                                                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                                        <div style="color: orange" fxLayout="row"
+                                                            fxLayoutAlign="start center" class="gap-4">
+                                                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                                            <span class="orange-600-fg">Intrim Bills</span>
+                                                        </div>
+                                                        <div style="color: green" fxLayout="row"
+                                                            fxLayoutAlign="start center" class="gap-4">
+                                                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                                            <span class="green-600-fg">Final Bills</span>
+                                                        </div>
+                                                        <div style="color: red" fxLayout="row"
+                                                            fxLayoutAlign="start center" class="gap-4">
+                                                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                                            <span class="red-600-fg">Cancelled Bills</span>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-card>
+                    </div>
+                </div>
+
+
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Patient Wise
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+
+                        <ng-template #IPBillstatus let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
+                                    class="pill green-600 s-16">circle</mat-icon>
+
+                                <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Intrim Bill"
+                                    class="pill orange-600 s-16">circle</mat-icon>
+                            </div>
+                        </ng-template>
+                        <airmid-table [gridConfig]="gridConfigIPBill" ShowButtons="true" :ShowFilter="false"
+                            #IPBillGrid>
+
+                        </airmid-table>
+                    </div>
+                </div>
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Detail Wise
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-table [gridConfig]="gridConfigIPBilldetail" ShowButtons="true" :ShowFilter="false"
+                            #IPBilldetailGrid>
+
+                        </airmid-table>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

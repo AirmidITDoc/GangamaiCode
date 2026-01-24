@@ -98,11 +98,7 @@ export class TallyInterfaceComponent implements OnInit {
     rl_name: any = ""
     rPBillNo: any = "%"
 
-    // rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    // rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
-    // pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    // ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+   
 
     constructor(public _OPListService: TallyInterfaceService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe,

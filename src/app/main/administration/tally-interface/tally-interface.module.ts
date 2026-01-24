@@ -37,16 +37,17 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseConfirmDialogModule } from '@fuse/components';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MediforeTallyListComponent } from './medifore-tally-list/medifore-tally-list.component';
 
 
 const routes: Routes = [
     {
         path: "**",
-        component: TallyInterfaceComponent,
+        component: MediforeTallyListComponent,
     },
 ];
 @NgModule({
-  declarations: [ TallyInterfaceComponent, NewTallyComponent ],
+  declarations: [ TallyInterfaceComponent, NewTallyComponent, MediforeTallyListComponent ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
