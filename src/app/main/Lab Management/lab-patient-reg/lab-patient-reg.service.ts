@@ -37,6 +37,9 @@ export class LabPatientRegService {
   public getDoctorsByDepartment(deptId) {
     return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
   }
+   public getexecByCompany(compId) {
+    return this._httpClient.GetData("CompanyMaster/CompanyRepresentativeList?CompanyId=" + compId)
+  }
   public getstateId(Id) {
     return this._httpClient.GetData("StateMaster/" + Id);
   }
@@ -57,13 +60,7 @@ export class LabPatientRegService {
     if (Param.LabPatRegId) {
       return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.LabPatRegId, Param);
     }
-    // else return this._httpClient.PostData("LabPatientRegistration/Insert", Param);
   }
-
-  public LabRequestSave(employee) {
-    return this._httpClient.PostData("IPPrescription/LabRequestInsert", employee);
-  }
-
 
   public InsertIPBillingCredit(employee, loader = true) {
 

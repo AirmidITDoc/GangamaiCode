@@ -312,7 +312,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSavePrescription()">
+                <button class="btn btn-primary" (click)="OnSavePrescription()" [disabled]="SaveFlag">
                     Save
                 </button>
             </div>

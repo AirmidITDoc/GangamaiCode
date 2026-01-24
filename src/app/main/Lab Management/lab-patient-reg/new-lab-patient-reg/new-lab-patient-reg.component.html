@@ -28,7 +28,7 @@
         <div class="modal-body-container">
             <mat-drawer-container class="main-container h-100-p">
                 <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
-                    <div>
+                    <div *ngIf="mode !== 'edit'" style="margin-top: 5px;">
                         <form [formGroup]="myForm">
                             <div fxLayout="row" fxLayoutGap="4px">
                                 <div fxFlex="100%">
@@ -38,18 +38,12 @@
                                         [mode]="autocompleteModeunit"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%">
-                                    <!-- <airmid-dropdown label="PatientType" formControlName="patientTypeValue" [formGroup]="myForm"
-                                        [validations]="getValidationMessages().patientTypeValue"
-                                        [mode]="autocompleteModeLabPatientType">
-                                    </airmid-dropdown> -->
-                                     <airmid-dropdown label="PatientType" formControlName="patientTypValId"
-                                        [formGroup]="myForm"
-                                        [mode]="autocompleteModeLabPatientType"></airmid-dropdown>
+                                    <airmid-dropdown label="PatientType" formControlName="patientType"
+                                        [formGroup]="myForm" [mode]="autocompleteModeLabPatientType"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%">
                                     <airmid-dropdown label=" Self / Payer / Corp." formControlName="patientTypeId"
-                                        [value]="data?.patientTypeId" [formGroup]="myForm"
-                                        [validations]="getValidationMessages().patientTypeId"
+                                        [formGroup]="myForm" [validations]="getValidationMessages().patientTypeId"
                                         [mode]="autocompleteModepatienttype"
                                         (selectionChange)="onChangePatient($event)"></airmid-dropdown>
                                 </div>
@@ -59,6 +53,24 @@
                                         [validations]="getValidationMessages().companyId"
                                         [mode]="autocompleteModecompany"
                                         (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Company Executive" formControlName="companyExecutiveId"
+                                        [formGroup]="myForm" #ddlcompanyExec ValueField="executiveId"
+                                        TextField="executiveName">
+                                    </airmid-dropdown>
+                                </div>
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="!isTariffSelect">
+                                    <airmid-dropdown label="Tariff Name" formControlName="tariffId" [formGroup]="myForm"
+                                        [value]="data?.tariffId" [mode]="autocompleteModetariff"
+                                        (selectionChange)="onChangeTariff($event)"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isTariffSelect">
+                                    <airmid-dropdown label="Company Tariff" formControlName="tariffId"
+                                        [formGroup]="myForm" [value]="data?.tariffId" [readonly]="true"
+                                        [mode]="autocompleteModetariff"
+                                        (selectionChange)="onChangeTariff($event)"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%">
                                     <airmid-dropdown label="Doctor Name" formControlName="doctorId" [formGroup]="myForm"
@@ -197,12 +209,15 @@
                                                     </div>
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="50">
-                                                            <airmid-textbox label="Comments" formControlName="Comments" [validations]="getValidationMessages().Comments"
+                                                            <airmid-textbox label="Comments" formControlName="Comments"
+                                                                [validations]="getValidationMessages().Comments"
                                                                 [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
                                                         <div fxFlex="50">
-                                                            <airmid-textbox label="ReferByName" formControlName="ReferByName" [validations]="getValidationMessages().ReferByName"
+                                                            <airmid-textbox label="ReferByName"
+                                                                formControlName="ReferByName"
+                                                                [validations]="getValidationMessages().ReferByName"
                                                                 [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
@@ -661,10 +676,24 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
+                                                            <ng-container matColumnDef="DiscountPer">
+                                                                <mat-header-cell *matHeaderCellDef class="w-100">Disc
+                                                                    %</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-100">
+                                                                    <mat-form-field floatLabel="never"
+                                                                        appearance="fill">
+                                                                        <input matInput placeholder="Disc Per"
+                                                                            [(ngModel)]="contact.DiscPer" type="text"
+                                                                            [min]="0" [max]="100"
+                                                                            (ngModelChange)="onDiscountPerChange(contact)">
+                                                                    </mat-form-field>
+                                                                </mat-cell>
+                                                            </ng-container>
+
                                                             <ng-container matColumnDef="DiscountAmount">
-                                                                <mat-header-cell *matHeaderCellDef>Disc
+                                                                <mat-header-cell *matHeaderCellDef class="w-100">Disc
                                                                     Amt</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact">
+                                                                <mat-cell *matCellDef="let contact" class="w-100">
                                                                     <mat-form-field floatLabel="never"
                                                                         appearance="fill">
                                                                         <input matInput placeholder="Disc Amt"
@@ -717,17 +746,18 @@
                                                                     [type]="'number'" [readonly]="true">
                                                                 </airmid-textbox>
                                                             </div>
-                                                            <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                            <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="!isDiscountApplied">
                                                                 <airmid-textbox label="Discount %"
                                                                     formControlName="totalDiscountPer"
                                                                     [formGroup]="myForm" [min]="0" [max]="100"
-                                                                    [type]="'text'" (valueChange)="updateCalculation()">
+                                                                    [readonly]="isDiscountApplied" [type]="'number'"
+                                                                    (valueChange)="updateCalculation()">
                                                                 </airmid-textbox>
                                                             </div>
-                                                            <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                            <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="!isDiscountApplied">
                                                                 <airmid-textbox label="Discount Amount"
                                                                     formControlName="discountAmt" [formGroup]="myForm"
-                                                                    [type]="'number'" [readonly]="true">
+                                                                    [type]="'number'" [readonly]="isDiscountApplied">
                                                                 </airmid-textbox>
                                                             </div>
                                                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
@@ -736,8 +766,10 @@
                                                                     [type]="'number'" [readonly]="true">
                                                                 </airmid-textbox>
                                                             </div>
+
+                                                            <!--     *ngIf="myForm.get('totalDiscountPer')?.value > 0" -->
                                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
-                                                                *ngIf="myForm.get('totalDiscountPer')?.value > 0">
+                                                                *ngIf="Consessionres">
                                                                 <airmid-dropdown label="Concession Reason"
                                                                     formControlName="concessionReasonId"
                                                                     [formGroup]="myForm"
