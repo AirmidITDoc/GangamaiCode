@@ -71,4 +71,8 @@ public PaymentDateTimeChange(m_data) {
 public ChangeBillPaymentdate(m_data) {
   return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesPaymentDate",m_data);
 }
+
+  public TPaymentPharmacyDateTimeChange(m_data) {
+    return this._httpClient.PutData("Administration/TPaymentPharmacydatetime"+ m_data.paymentId,m_data);
+}
 }
