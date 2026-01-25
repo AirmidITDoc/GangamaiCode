@@ -547,8 +547,8 @@ viewgetReportdispatch(element) {
     console.log(element)
     const dialogRef = this._matDialog.open(ReportDispatchComponent,
       {
-        maxWidth: "80vw",
-        maxHeight: '90%',
+        maxWidth: "90vw",
+        maxHeight: '95%',
         width: '100%',
         data: element
 
@@ -562,8 +562,9 @@ viewgetReportdispatch(element) {
     console.log(element)
     const dialogRef = this._matDialog.open(EmailorSMSHistoryComponent,
       {
-        maxWidth: "80vw",
-        maxHeight: '90%',
+        maxWidth: "90vw",
+        maxHeight: '115%',
+                 
         width: '100%',
         data: element
 
@@ -898,6 +899,7 @@ export class LabPatientList {
   balanceAmt: any=0;
   regTime:any;
   dispatchModeId:any
+  emailId:any
 
   constructor(LabPatientList) {
     {
@@ -975,6 +977,7 @@ export class LabPatientList {
       this.balanceAmt = LabPatientList.balanceAmt || 0
       this.regTime = LabPatientList.regTime
       this.dispatchModeId = LabPatientList.dispatchModeId || 0
+ this.emailId = LabPatientList.emailId || ''
 
       
     }

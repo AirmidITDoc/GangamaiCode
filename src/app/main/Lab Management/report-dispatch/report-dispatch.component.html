@@ -7,10 +7,10 @@
       </div>
       <div class="modal-header-right">
         <div class="comman-date-container">
-          <div class="comman-date">
+          <!-- <div class="comman-date">
             <app-common-date [screenFrom]="screenFromString"
               (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-          </div>
+          </div> -->
           <div class="close-icon">
             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
               matTooltip="Close">
@@ -85,115 +85,115 @@
           </mat-card>
         </div>
         <div class="modal-card-container">
-          <mat-card style="padding: 10px;">
+          <mat-card style="padding: 5px;">
             <div fxLayout="column" class="gap-8">
               <div class="form-title mb-2 border-bottom pb-2">
-                <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Dispatch At-- </span>
-                <div fxFlex="45" fxFlex.xs="100" fxFlex.sm="33">
-                  <span style="font-size: large;color: rgb(9, 78, 109);margin-left: 30px;">Dispatch Branch :- {{UnitId}}</span>
+                <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
+                  <span style="font-size: large;color: rgb(17, 65, 118);;margin-left: 30px;font-weight: bold;">Login ID
+                    :-
+                    {{LabId}}</span>
 
                 </div>
-                <div fxFlex="45" fxFlex.xs="100" fxFlex.sm="33">
-                  <span style="font-size: large;color: rgb(9, 78, 109);">Due Amount :- {{DueAmt}}</span>
+                <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
+                  <span style="font-size: large;color:rgb(17, 65, 118);;margin-left: 30px;font-weight: bold;">Dispatch
+                    Branch :-
+                    {{UnitId}}</span>
+
+                </div>
+                <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
+                  <span style="font-size: large;color: rgb(17, 65, 118);font-weight: bold;">Due Amount :-
+                    {{DueAmt}}</span>
                 </div>
               </div>
               <form [formGroup]="myReportform" style="border: blue">
-                <div class="modal-card-container">
-                  <mat-card style="padding: 10px;">
+                <div class="modal-body" fusePerfectScrollbar>
 
-                    <div class="form-body">
-                      <!-- <div fxLayout="row wrap" fxLayoutGap="5px 0px grid" style="padding: 10px;">
+                  <input type="hidden" name="dispatchId" formControlName="dispatchId">
 
-                        <div fxFlex="45" fxFlex.xs="100" fxFlex.sm="33">
-                          <span style="font-size: large;color: rgb(9, 78, 109);">Dispatch Branch :- {{UnitId}}</span>
+                  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px" class="h-100-p gap-5">
+                    <div fxFlex.gt-xs="80" fxFlex="100" class="table-left">
+                      <mat-card fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card-content>
+                          <div fxLayout="column" fxFlex>
+                            <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
 
-                        </div>
-                        <div fxFlex="45" fxFlex.xs="100" fxFlex.sm="33">
-                          <span style="font-size: large;color: rgb(9, 78, 109);">Due Amount :- {{DueAmt}}</span>
-                        </div>
-                      </div> -->
-                      <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
-
-                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-
-                          <airmid-dropdown label="Branch " formControlName="unitId" [formGroup]="myReportform"
-                            [validations]="getValidationMessages().UnitId" [mode]="autocompleteModehospital"
-                            (selectionChange)="getSelectedObjunit($event)">
-                          </airmid-dropdown>
-                        </div>
-                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-
-                          <airmid-textbox label="Lab ID" formControlName="labPatientId" [formGroup]="myReportform"
-                            [validations]="getValidationMessages().LabId"></airmid-textbox>
-                        </div>
-
-                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-
-                          <airmid-dropdown label="Mode " formControlName="dispatchModeId" [formGroup]="myReportform"
-                            [validations]="getValidationMessages().Mode" [mode]="autocompleteModedispatch"
-                            (selectionChange)="getSelectedObjMode($event)">
-                          </airmid-dropdown>
-                        </div>
-                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                          <mat-checkbox aria-label=" # Service Name" formControlName="Service">
-                            Service Name
-                          </mat-checkbox>
-                          <!-- <mat-checkbox aria-label="1 SGPT" formControlName="SGPT" style="margin-left:30px;">
-                            1SGPT
-                          </mat-checkbox> -->
-
-                        </div>
-                      </div>
-                      <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
-
-                        <!--  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-
-                          <airmid-dropdown label="DispatchBranch " formControlName="DispatchBranch"
-                            [formGroup]="myReportform" [validations]="getValidationMessages().DispatchBranch"
-                            [mode]="autocompleteModehospital"> </airmid-dropdown>
-                        </div>
-                        <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                          <airmid-textbox label="DueAmt" formControlName="DueAmt" [formGroup]="myReportform"
-                            [validations]="getValidationMessages().DueAmt" [value]="DueAmt" readonly
-                            [maxLength]="50"></airmid-textbox>
-
-                        </div> -->
-
-                        <div fxFlex="45" fxFlex.xs="100" fxFlex.sm="33">
-
-                          <airmid-textbox label="Remark" formControlName="comments" [formGroup]="myReportform"
-                            [validations]="getValidationMessages().Remark" [maxLength]="500"></airmid-textbox>
-                        </div>
+                              <div fxFlex="49%" fxFlex.sm="100%">
+                                <airmid-dropdown label="Branch" formControlName="unitId" [formGroup]="myReportform"
+                                  [validations]="getValidationMessages().UnitId" [mode]="autocompleteModehospital"
+                                  (selectionChange)="getSelectedObjunit($event)">
+                                </airmid-dropdown>
+                              </div>
 
 
-                      </div>
+                              <div fxFlex="49%" fxFlex.sm="100%">
+                                <airmid-dropdown label="Mode" formControlName="dispatchModeId"
+                                  [formGroup]="myReportform" [validations]="getValidationMessages().Mode"
+                                  [mode]="autocompleteModedispatch" (selectionChange)="getSelectedObjMode($event)">
+                                </airmid-dropdown>
+                              </div>
+                            </div>
 
-
+                            <div fxLayout="row wrap" fxLayoutGap="5px grid">
+                              <div fxFlex="98" fxFlex.xs="100" fxFlex.sm="33">
+                                <airmid-textbox label="Remark" formControlName="comments" [formGroup]="myReportform"
+                                  [validations]="getValidationMessages().Remark" [maxLength]="500">
+                                </airmid-textbox>
+                              </div>
+                            </div>
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
                     </div>
+                    <div fxFlex.gt-xs="20" fxFlex="100" class="table-left">
 
-                  </mat-card>
-                  <div fxLayoutAlign="end">
-                    <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
-                      style="margin: 10px 10px 0px 10px; ">
-                      <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                      <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                      <mat-card fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card-content>
+                          <div fxLayout="column" fxFlex>
+                            <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
+                              <div fxLayout="column" fxFlex>
+                                <mat-checkbox aria-label="Service Name" formControlName="Service">
+                                  Service Name
+                                </mat-checkbox>
+
+                                <!-- Uncomment if needed -->
+                                <!--
+                    <mat-checkbox 
+                      aria-label="1 SGPT" 
+                      formControlName="SGPT" 
+                      style="margin-left:30px;">
+                      1SGPT
+                    </mat-checkbox>
+                    -->
+                              </div>
+                            </div>
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
                     </div>
                   </div>
                 </div>
               </form>
+              <div fxLayoutAlign="end">
+                <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 10px 5px 0px 5px; ">
+                  <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                  <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                </div>
+              </div>
             </div>
           </mat-card>
-
         </div>
       </div>
     </div>
+
   </div>
 
-  <div fusePerfectScrollbar>
+  <div>
+    <div class="form-title mb-2 border-bottom pb-2">
+      <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>
+    </div>
+    <div style="height: 220px; overflow:auto;">
+      <airmid-table [gridConfig]="gridConfigReportdispatch" #ReportGrid [ShowFilter]="false" [ShowButtons]="false">
 
-    <div style="height: 250px; overflow:auto;">
-      <airmid-table [gridConfig]="gridConfigReportdispatch" #Grid [ShowFilter]="false" [ShowButtons]="false">
-      
       </airmid-table>
     </div>
   </div>

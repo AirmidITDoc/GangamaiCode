@@ -12,6 +12,8 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+
 
 @Component({
   selector: 'app-report-dispatch',
@@ -36,8 +38,9 @@ export class ReportDispatchComponent {
   ModeId = "0"
   screenFromString = 'Common-form';
 
-    @ViewChild('Grid', { static: false }) grid: AirmidTableComponent;
-    
+
+  @ViewChild('ReportGrid', { static: false }) repogrid: AirmidTableComponent;
+
   Personaldata = new LabPatientList({})
   constructor(public _LabmanagementService: LabmanagementService, public _matDialog: MatDialog,
     public toastr: ToastrService, public datePipe: DatePipe,
@@ -51,15 +54,15 @@ export class ReportDispatchComponent {
   ngOnInit(): void {
     if (this.data) {
       this.Personaldata = this.data;
-       console.log(this.Personaldata)
+      console.log(this.Personaldata)
       this.LabId = this.Personaldata.labPatientId
       this.DueAmt = this.Personaldata.balanceAmt
-     this.ModeId=this.Personaldata.dispatchModeId
-     
+      this.ModeId = this.Personaldata.dispatchModeId
+
     }
     this.myReportform = this.CreateReportDiscpathform()
-    if( this.LabId)
-     this.getfilterReporthistory()
+    if (this.LabId)
+      this.getfilterReporthistory()
   }
 
 
@@ -81,27 +84,40 @@ export class ReportDispatchComponent {
   }
 
   allReportfilters = [
-   { fieldName: "LabPatientId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
+    { fieldName: "DispatchId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
 
   ];
-  
+
   allReportcolumns = [
-    { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-    { heading: "Dispatch Mode", key: "dispatchModeId", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150  },
     { heading: "Dispatch By", key: "dispatchBy", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA',type:6 },
-
-    { heading: "Created By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',type:6  },
+    { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+   { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+   { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
-
-
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        {
+          action: gridActions.edit, callback: (data: any) => {
+            this.OnEdit(data)
+          }
+        }, {
+          action: gridActions.delete, callback: (data: any) => {
+            this._LabmanagementService.deactivateTheStatus(data.id).subscribe((response: any) => {
+              // this.getfilterdata();
+            });
+          }
+        }]
+    }
   ];
 
 
   gridConfigReportdispatch: gridModel = {
 
-    apiUrl: "PathDispatchReportHistory/List",
+    apiUrl: "PathDispatchReportHistory/PathDispatchReportHistoryList",
     columnsList: this.allReportcolumns,
     sortField: "DispatchId",
     sortOrder: 0,
@@ -109,40 +125,37 @@ export class ReportDispatchComponent {
   }
 
 
-  
-    getfilterReporthistory() {
 
-        this.gridConfigReportdispatch = {
-            apiUrl: "PathDispatchReportHistory/List",
-            columnsList: this.allReportcolumns,
-            sortField: "DispatchId",
-            sortOrder: 0,
-            filters: [ { fieldName: "LabPatientId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
+  getfilterReporthistory() {
 
-            ]
-        }
-        debugger
-        this.grid.gridConfig = this.gridConfigReportdispatch;
-        this.grid.bindGridData();
+    this.gridConfigReportdispatch = {
+      apiUrl: "PathDispatchReportHistory/PathDispatchReportHistoryList",
+      columnsList: this.allReportcolumns,
+      sortField: "DispatchId",
+      sortOrder: 0,
+      filters: [{ fieldName: "DispatchId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
+
+      ]
     }
+    debugger
+    this.repogrid.gridConfig = this.gridConfigReportdispatch;
+    this.repogrid.bindGridData();
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
   getSelectedObjMode(obj) {
-    {
+    console.log("Mode data:", obj)
 
-      // this.ModeId=obj
-      console.log("Mode data:", obj)
-    }
+  }
+  OnEdit(row: any) {
+    this.myReportform.patchValue(row);
   }
 
   getSelectedObjunit(obj) {
-    {
+    this.UnitId = obj
 
-      this.UnitId = obj
-      console.log("Unit data:", obj)
-    }
   }
 
   getValidationMessages() {

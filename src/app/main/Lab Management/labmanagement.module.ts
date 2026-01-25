@@ -75,14 +75,19 @@ const appRoutes: Routes = [
     loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
   },
   {
+    path: "TestApprovalList",
+    loadChildren: () => import("./test-approval-list/test-approval.module").then((m) => m.TestApprovalModule),
+  },
+{
     path: "browse-lab-bills",
     loadChildren: () => import("./browse-lab-bills/browse-lab-bills.module").then((m) => m.BrowseLabBillsModule),
   },
+ 
 ];
 
 @NgModule({
   declarations: [
-    TestApprovalListComponent,
+    
     BranchWiseSummaryComponent,
     ReportDispatchComponent,
     EmailorSMSHistoryComponent

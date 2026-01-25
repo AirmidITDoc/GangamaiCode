@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from '../shared/services/formvalidationservice.service';
 
@@ -16,31 +16,36 @@ export class LabmanagementService {
 
     CreateSMSform(): FormGroup {
       return this._formBuilder.group({
-        CustMobile:0,
+        CustMobile: ['', [
+                        Validators.minLength(10),
+                        Validators.maxLength(10),
+                        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    ]],
         DoctorId:0,
       
         Remark:'',
-        Status:true
-       
+        Status:true,
+       patientValues:''
       });
     }
     CreateEmailform(): FormGroup {
       return this._formBuilder.group({
-        EmailId:0,
+        EmailId: ['', [Validators.email]],
          DoctorId:0,
-      
         Remark:'',
-        Status:true
-      
+        Status:true,
+       patientValues:''
       });
     }
 
-    
-
       public ReportDispatchInsert(Param: any) {
         if (Param.dispatchId) {
-            return this._httpClient.PutData("PathDispatchReportHistory/", Param);
+          return this._httpClient.PutData("PathDispatchReportHistory/" + Param.dispatchId, Param);
         } else return this._httpClient.PostData("PathDispatchReportHistory", Param)
+    }
+
+      public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("CompanyTPAApproval?Id=" + m_data.toString());
     }
 }
 
