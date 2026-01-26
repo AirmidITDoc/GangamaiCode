@@ -262,7 +262,7 @@ currency:any='';
   getRefundofAdvanceListRegIdwise() {
     var m_data = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "AdvanceId",
       "sortOrder": 0,
       "filters": [

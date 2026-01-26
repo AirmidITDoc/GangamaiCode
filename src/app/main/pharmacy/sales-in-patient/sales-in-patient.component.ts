@@ -88,6 +88,8 @@ export class SalesInPatientComponent implements OnInit {
      ItemObj: IndentList;
      v_marginamt: any = 0;
      TotalCreditAmt: any = 0;
+     DayLimit:any=0;
+     DayBalance:any=0;
      TotalAdvanceAmt: any = 0;
      TotalBalanceAmt: any = 0;
      PatientHeaderObj: any;
@@ -867,6 +869,8 @@ export class SalesInPatientComponent implements OnInit {
          this.TotalBalanceAmt = 0;
          this.TotalCreditAmt = 0;
          this.PatientTypeId = 0;
+         this.DayLimit=0;
+         this.DayBalance=0;
          this.saveflag = true
      }
      deleteTableRow(event, element) {
@@ -1003,8 +1007,33 @@ export class SalesInPatientComponent implements OnInit {
          })
  
      }
-     onSave(event) {
+     onSave(event) { 
           const formValue = this.ItemSubform.value 
+         if ((this.DayLimit || 0) > 0) {
+             if (this.DayBalance <= 0) {
+                 Swal.fire({
+      icon: 'warning',
+      title: 'Daily Limit Exhausted',
+      text: 'The daily limit for medicine sales has been fully utilized. No further medicines can be billed today.',
+      confirmButtonText: 'OK'
+                 });
+                 return;
+             }
+             // 2️⃣ Entered amount is more than remaining balance
+             if (Number(formValue?.netAmount || 0) > this.DayBalance) {
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Amount Exceeds Daily Limit',
+                     html: `
+        <p>The entered medicine amount exceeds the remaining daily balance.</p>
+        <p><b>Remaining Balance:</b> ₹${this.DayBalance}</p>
+        <p>Please enter an amount within the available limit.</p>`,
+                     confirmButtonText: 'OK'
+                 });
+                 return;
+             }
+         }  
+
              if ((this.RegNo || 0) == 0) {
                  this.toastr.warning('Please select Patient', 'Warning !', {
                      toastClass: 'tostr-tost custom-toast-warning',
@@ -1678,7 +1707,7 @@ export class SalesInPatientComponent implements OnInit {
                  });
              });
           
-     }
+     } 
      getBillSummary(admissionID) {
          //Total Credit Amount
          var vdata = {
@@ -1693,6 +1722,13 @@ export class SalesInPatientComponent implements OnInit {
          this._salesService.getBillSummaryQuery(vdata).subscribe((response) => {
              console.log(response.data);
              this.TotalCreditAmt = response?.data[0]?.creditAmount || 0;
+             this.DayLimit = response?.data[0]?.compnayCreditAmount || 0;
+             this.DayBalance = Math.max(response?.data[0]?.dayWiseBalCredit || 0, 0);  
+//              {
+//     "compnayCreditAmount": 551,
+//     "chargesAmount": 1500,
+//     "dayWiseBalCredit": -949
+// }
          });
          //Total advance and advance bal Amount
          var m_data = {

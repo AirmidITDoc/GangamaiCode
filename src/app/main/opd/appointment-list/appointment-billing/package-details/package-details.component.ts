@@ -143,7 +143,7 @@ export class PackageDetailsComponent {
     var vdata =
     {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj?.ServiceId ?? 0), "opType": "Equals" }],
@@ -182,7 +182,7 @@ export class PackageDetailsComponent {
     var vdata =
     {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "ChargesId",
       "sortOrder": 0,
       "filters": [{ "fieldName": "ChargesId", "fieldValue": String(obj.chargesId), "opType": "Equals" }],

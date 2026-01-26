@@ -748,11 +748,37 @@ export class IPBillingComponent implements OnInit {
     }
     // Service Add 
     onSaveAddCharges() {
+        debugger
+        const formValue = this.Serviceform.value
+        if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0) {
+            if (this.DayLimitbal <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Daily Limit Exhausted',
+                    text: 'You have already used the full daily limit. No more charges can be added today.',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            } 
+            // 2️⃣ Entered amount is more than remaining balance
+            if (Number(formValue?.price || 0) > this.DayLimitbal) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Amount Exceeds Daily Limit',
+                    html: `
+        <p>The entered charge exceeds the remaining daily balance.</p>
+        <p><b>Remaining Balance:</b> ₹${this.DayLimitbal}</p>
+        <p>Please enter an amount within the available limit.</p>`,
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+        } 
         const formattedDate = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "yyyy-MM-dd");
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.Serviceform.get('chargesDate').setValue(formattedDate);
         this.Serviceform.get('chargesTime').setValue(formattedDate + ' ' + formattedTime);
-        const formValue = this.Serviceform.value
+        
         let doctorid = 0;
         if (this.isDoctor) {
             if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
@@ -955,30 +981,29 @@ export class IPBillingComponent implements OnInit {
                 this.BillBalAmount = 0;
             }
         }
-        if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0 && this.dataSource?.data.length) {
-            debugger
-            const today = new Date();
-            const todayDate =
-                String(today.getDate()).padStart(2, '0') + '/' +
-                String(today.getMonth() + 1).padStart(2, '0') + '/' +
-                today.getFullYear();
+        if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0) {
+            this.DayLimitbal = this.selectedAdvanceObj.dayWiseCredit;
+            let todayNetAmt = 0;
+            if (this.dataSource?.data?.length) {
+                debugger
+                const today = new Date();
+                const todayDate =
+                    String(today.getDate()).padStart(2, '0') + '/' +
+                    String(today.getMonth() + 1).padStart(2, '0') + '/' +
+                    today.getFullYear();
 
-            const todayNetAmt = Math.round(
-                this.dataSource.data
-                    .filter(item => item?.chargesDate === todayDate)
-                    .reduce((total, item) => total + (Number(item?.netAmount) || 0), 0)
-            );
+                todayNetAmt = Math.round(
+                    this.dataSource.data
+                        .filter(item => item?.chargesDate === todayDate)
+                        .reduce((total, item) => total + (Number(item?.netAmount) || 0), 0)
+                );
 
-            if (this.selectedAdvanceObj?.dayWiseCredit > todayNetAmt) {
-                const daybalamt = this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt
-                this.DayLimitbal = daybalamt
-            } 
-            // else {
-            //     const daybalamt = this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt
-            //     this.DayLimitbal = daybalamt
-            // }
+                // Remaining balance (never go below 0)
+                this.DayLimitbal = Math.max(this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt, 0);
 
-            console.log('Today Net Amount:', todayNetAmt);
+                console.log('Today Net Amount:', todayNetAmt);
+                console.log('Remaining Balance:', this.DayLimitbal);
+            }
         }
     }
     //Charge list 

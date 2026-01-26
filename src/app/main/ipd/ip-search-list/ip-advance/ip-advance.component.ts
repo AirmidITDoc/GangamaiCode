@@ -111,7 +111,7 @@ currency:any='';
       if (this.AdmissionId > 0) {
         var vdata = {
           "first": 0,
-          "rows": 10,
+          "rows": 999,
           "sortField": "AdmissionID",
           "sortOrder": 0,
           "filters": [

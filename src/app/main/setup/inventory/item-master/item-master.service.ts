@@ -125,7 +125,7 @@ export class ItemMasterService {
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
-            hsNcode: ["",
+            hsNcode: ["0",
                 [
                     // Validators.required,
                     Validators.maxLength(50),

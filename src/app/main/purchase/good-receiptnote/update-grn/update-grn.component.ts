@@ -210,7 +210,7 @@ export class UpdateGRNComponent implements OnInit {
            this.isExpanded = true;
            this.userFormGroup.patchValue({
                UOMId: item.umoId,
-               HSNCode: item.hsNcode,
+               HSNCode: item.hsNcode || '0',
                ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
            });
            if (((item?.taxPer ?? 0) || 0) > 0) { 
@@ -917,7 +917,7 @@ export class UpdateGRNComponent implements OnInit {
        createGrnItemInsert(item: any = {}): FormGroup {
            return this.formBuilder.group({
                itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-               hsncode: [item?.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+               hsncode: [String(item?.HSNCode), [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                cgst: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                sgst: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                igst: [item?.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1109,7 +1109,7 @@ export class UpdateGRNComponent implements OnInit {
                            ItemName: element.itemName,
                            ConversionFactor: element.conversionFactor,
                            UOMId: element.uomId,
-                           HSNCode: element.hsncode,
+                           HSNCode: element.hsncode || '0',
                            BatchNo: element.batchNo,
                            ExpDate: element.batchExpDate,
                            Qty: element.receiveQty,
@@ -1415,20 +1415,20 @@ debugger
            // Check if rate matches any of last three
            const isRateSame = lastRates.includes(enteredRate);
            
-           if (!isRateSame && (Number(enteredRate) > 0)) { 
-               Swal.fire({
-                   icon: 'warning',
-                   title: 'Price Verification Required',
-                   html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
-                   <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
-                   <hr>  `,
-                   confirmButtonText: 'OK',
-                   confirmButtonColor: '#f39c12',
-                   background: '#fff',
-                   timer: 4000,
-                   timerProgressBar: true
-               });
-           }
+        //    if (!isRateSame && (Number(enteredRate) > 0)) { 
+        //        Swal.fire({
+        //            icon: 'warning',
+        //            title: 'Price Verification Required',
+        //            html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
+        //            <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
+        //            <hr>  `,
+        //            confirmButtonText: 'OK',
+        //            confirmButtonColor: '#f39c12',
+        //            background: '#fff',
+        //            timer: 4000,
+        //            timerProgressBar: true
+        //        });
+        //    }
    
        }
        onBatchChange(event) {
@@ -1651,7 +1651,7 @@ debugger
        createGrnPOItemInsert(item: any = {}): FormGroup {
            return this.formBuilder.group({
                itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-               hsncode: [item?.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+               hsncode: [String(item?.HSNCode), [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                cgst: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                sgst: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                igst: [item?.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
