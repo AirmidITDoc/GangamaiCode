@@ -1,1 +1,182 @@
-<p>test-approval-list works!</p>
+<div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" fusePerfectScrollbar>
+    <!-- HEADER -->
+    <div class="top-header">
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
+
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Test Approval List </span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layout-body p-12">
+        <mat-card>
+            <!-- class="info-badge-top overflow-auto mb-3" -->
+            <div class="layout-body-container center">
+                <div class="info-badge-top" fxLayout="row" fxLayoutAlign="space-between" flex>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8">
+
+                        <div class="dashboard-card registrations">
+                            <div class="card-label">TotalTest Result :{{Vtotalcount}} <mat-icon class="card-icon"
+                                    matTooltip="Total Test Results">assignment</mat-icon></div>
+                        </div>
+
+                        <div class="dashboard-card appointments">
+                            <div class="card-label">Completed :{{VCompletedcount}} <mat-icon class="card-icon"
+                                    matTooltip="Completed Tests">check_circle</mat-icon></div>
+                        </div>
+
+                        <div class="dashboard-card appointments-split">
+                            <div class="card-label">Pending:{{Vpendingcount}} <mat-icon class="card-icon"
+                                    matTooltip="Pending Tests">schedule</mat-icon></div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <form [formGroup]="myformSearch" class="mat-error-fix">
+                    <div fxLayout="column" style="padding-top:5px ;">
+                        <div class="layout-card-container" style="height: 60px;">
+
+                            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
+                                <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+
+                                    <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                        [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
+                                        [(ngModel)]="gridConfig.filters[6].fieldValue" [formGroup]="myformSearch"
+                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+
+                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                            formStartControlName="start" formEndControlName="end"
+                                            [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                                        </airmid-datepicker>
+                                    </div>
+
+                                    <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>UHID</mat-label>
+                                            <input matInput placeholder="Search UHID" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="RegNoSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('RegNoSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>FirstName</mat-label>
+                                            <input matInput placeholder="Search FirstName" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="FirstNameSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('FirstNameSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>LastName</mat-label>
+                                            <input matInput placeholder="Search LastName" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="LastNameSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('LastNameSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="14%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                        <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                                            [formGroup]="myformSearch" [mode]="autocompleteModeCategoryId"
+                                            (selectionChange)="selectChangeCategoryId($event)"></airmid-dropdown>
+                                    </div>
+                                    <div fxFlex="15%" fxLayout="row">
+                                        <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                            (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
+                                            [(ngModel)]="vStatusSearch">
+                                            <mat-label><b>Status:</b></mat-label>
+                                            <div fxLayout="row">
+                                                <mat-radio-button value='0'>Pending</mat-radio-button>
+                                                <mat-radio-button value='1'>Completed</mat-radio-button>
+                                            </div>
+                                        </mat-radio-group>
+                                    </div>
+                                    <!-- (click)="searchRecords($event)" -->
+                                    <div class="action-button-container">
+                                        <div class="button-row-group">
+                                            <button class="btn btn-danger-outline btn-xs"
+                                                (click)="onClear()">clear</button>
+                                            <button class="btn btn-primary btn-with-icon btn-xs"
+                                                (click)="onChangeFirst()">
+                                                <span>Search</span>
+                                                <span class="btn-icon">
+                                                    <mat-icon>search</mat-icon>
+                                                </span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                            dynamicTableHeight>
+
+                            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                <mat-card>
+                                    <div id="contacts"
+                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                      
+                                        <ng-template #isCompletedstatus let-element>
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+                                                <mat-icon *ngIf="element.isCompleted==true" matTooltip="Report Completed"
+                                                    class="s-20 mr-4" style="color: #4caf50;">
+                                                    check_circle
+                                                </mat-icon>
+                                                <mat-icon *ngIf="!element.isCompleted==true" matTooltip="Report Not Completed"
+                                                    class="s-20 mr-4" style="color: #f44336;">
+                                                    hourglass_empty
+                                                </mat-icon>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template #isVerifiedstatus let-element>
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+                                                <mat-icon *ngIf="element.isVerifyid=='1'" matTooltip="Verified"
+                                                    style="color: green;">verified_user</mat-icon>
+
+                                                <mat-icon *ngIf="element.isVerified=='0'" matTooltip="NotVerified"
+                                                    color="warn">check_circle</mat-icon>
+                                            </div>
+                                        </ng-template>
+
+                                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"
+                                            :ShowButtons="false">
+                                        </airmid-table>
+
+                                    </div>
+                                </mat-card>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </mat-card>
+    </div>
+
+</div>

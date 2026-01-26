@@ -45,23 +45,26 @@ export class EmailorSMSHistoryComponent {
   selectedItems1: any[] = [];
   ChargeList: any = [];
   ChargeList1: any = [];
-  patientValues: any
-  patientValues1: any
+  patientValues: any = ''
+  patientValues1: any = ''
   @ViewChild('SMSGrid', { static: false }) smslistgrid: AirmidTableComponent;
   @ViewChild('EmailGrid', { static: false }) emaillistgrid: AirmidTableComponent;
 
-
-
-  constructor(public _LabmanagementService: LabmanagementService, public _matDialog: MatDialog,
+constructor(public _LabmanagementService: LabmanagementService, public _matDialog: MatDialog,
     public toastr: ToastrService, public datePipe: DatePipe,
     private commonService: PrintserviceService, @Inject(MAT_DIALOG_DATA) public data: any,
     public _ConfigService: ConfigService,
     public _accountService: AuthenticationService,
     public _whatsppService: WhatsAppEmailService,
     private overlay: Overlay
-  ) { }
+  ) {
+    this.SMSform = this._LabmanagementService.CreateSMSform()
+    this.Emailform = this._LabmanagementService.CreateEmailform()
+  }
 
   ngOnInit(): void {
+    this.selectedItems = [];
+      this.selectedItems1 = [];
     if (this.data) {
       this.Personaldata = this.data;
       this.LabId = this.Personaldata.labPatientId
@@ -69,21 +72,25 @@ export class EmailorSMSHistoryComponent {
       this.billno = this.Personaldata.billNo
       this.patientName = this.Personaldata.patientName
       this.mobileNo = this.Personaldata.mobileNo
-       this.emailId = this.Personaldata.emailId
-      
+      this.emailId = this.Personaldata.emailId
+
 
       console.log(this.Personaldata)
     }
-    this.SMSform = this._LabmanagementService.CreateSMSform()
-    this.Emailform = this._LabmanagementService.CreateEmailform()
+    // this.SMSform = this._LabmanagementService.CreateSMSform()
+    // this.Emailform = this._LabmanagementService.CreateEmailform()
 
     if (this.LabId > 0) {
       this.onAddrow()
-      if( this.emailId!='')
-       this.onAddEmailrow()
+      if (this.emailId != '')
+        this.onAddEmailrow()
+
       this.getfilterSMShistory()
-      this.getfilterEmailhistory()
+
     }
+    if (this.LabId > 0)
+      debugger
+    this.getfilterEmailhistory()
   }
 
 
@@ -154,7 +161,7 @@ export class EmailorSMSHistoryComponent {
 
 
   getfilterSMShistory() {
-
+debugger
     this.gridConfigSms = {
       apiUrl: "LabPatientRegistration/LabPatientWhatsappSendoutList",
       columnsList: this.allColumns1,
@@ -172,7 +179,7 @@ export class EmailorSMSHistoryComponent {
 
   getfilterEmailhistory() {
     debugger
-    this.LabId = 200247
+    // this.LabId = 200247
     this.gridConfigEmail = {
       apiUrl: "LabPatientRegistration/LabPatientEmailOutgoingList",
       columnsList: this.allColumnsemail,
@@ -219,7 +226,7 @@ export class EmailorSMSHistoryComponent {
 
 
   onAddrow() {
-    
+
     if (this.SMSform.get('CustMobile').value)
       this.mobileNo = this.SMSform.get('CustMobile').value || this.mobileNo
     else
@@ -244,7 +251,7 @@ export class EmailorSMSHistoryComponent {
   }
 
   onAddEmailrow() {
-    
+
     if (this.Emailform.get('EmailId').value)
       this.emailId = this.Emailform.get('EmailId').value || this.emailId
     else
@@ -270,9 +277,15 @@ export class EmailorSMSHistoryComponent {
 
   onItemToggle(item) {
     console.log('Toggled:', item);
-    // or collect selected: this.items.filter(i => i.selected)
+  }
+
+  onItemToggle1(item) {
+    console.log('Toggled:', item);
   }
   removeItem(index: number) {
+    this.selectedItems.splice(index, 1);
+  }
+ removeItem1(index: number) {
     this.selectedItems.splice(index, 1);
   }
 
@@ -317,8 +330,8 @@ export class EmailorSMSHistoryComponent {
 
 
     })
-        this._matDialog.closeAll()
-         this.getfilterSMShistory()
+    this._matDialog.closeAll()
+    this.getfilterSMShistory()
   }
 
   Personaldata1 = new LabPatientList({})
@@ -345,7 +358,7 @@ export class EmailorSMSHistoryComponent {
 
   OnReceiptemail() {
     debugger
-     this.Personaldata1.emailId = this.Emailform.get('EmailId').value || 'Airmid@gmail.com'
+    this.Personaldata1.emailId = this.Emailform.get('EmailId').value || 'Airmid@gmail.com'
     this.Personaldata1.billNo = this.billno
     this.Personaldata1.regNo = this.LabId
     const dialogRef = this._matDialog.open(EmailSendComponent,

@@ -32,7 +32,7 @@ export class ReportDispatchComponent {
 
   Remark: any = ''
   dateTimeObj: any
-  LabId = 0
+  LabId:any=0
   UnitId = this._accountService.currentUserValue.user.unitId
   DueAmt = 0
   ModeId = "0"
@@ -192,7 +192,7 @@ export class ReportDispatchComponent {
       this.myReportform.get('dispatchModeId').setValue(parseInt(this.myReportform.get('dispatchModeId').value))
 
       console.log(this.myReportform.value)
-
+      debugger
       this._LabmanagementService.ReportDispatchInsert(this.myReportform.value).subscribe((response) => {
         console.log(response)
         this._matDialog.closeAll();

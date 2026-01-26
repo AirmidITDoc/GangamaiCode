@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { TestApprovalListComponent } from './test-approval-list/test-approval-list.component';
-import { BranchWiseSummaryComponent } from './branch-wise-summary/branch-wise-summary.component';
 import { ReportDispatchComponent } from './report-dispatch/report-dispatch.component';
 import { EmailorSMSHistoryComponent } from './emailor-smshistory/emailor-smshistory.component';
 
@@ -66,10 +65,10 @@ const appRoutes: Routes = [
   //   path: "report-dispatch",
   //   loadChildren: () => import("./report-dispatch/report-dispatch.module").then((m) => m.ReportDispatchModule),
   // },
-  // {
-  //   path: "report-dispatch",
-  //   loadChildren: () => import("./report-dispatch/report-dispatch.module").then((m) => m.ReportDispatchModule),
-  // },
+  {
+    path: "BranchWiseSummary",
+    loadChildren: () => import("./branch-wise-summary/branchwise-summary.module").then((m) => m.BranchwiseSummaryModule),
+  },
   {
     path: "settlement",
     loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
@@ -86,9 +85,8 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
+  declarations: [   
     
-    BranchWiseSummaryComponent,
     ReportDispatchComponent,
     EmailorSMSHistoryComponent
   ],

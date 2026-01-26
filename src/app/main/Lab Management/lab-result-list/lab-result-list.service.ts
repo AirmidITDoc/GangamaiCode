@@ -39,7 +39,8 @@ export class LabResultListService {
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       TestStatusSearch: ['1'],
-      UnitId: [this.accountService.currentUserValue.user.unitId]
+      UnitId: [this.accountService.currentUserValue.user.unitId],
+      // CategoryId:0
     });
   }
 
@@ -189,5 +190,9 @@ export class LabResultListService {
 
   public gettemplatebyService(ServiceId) {
     return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
+  }
+
+     public getarrovallist(employee) {
+    return this._httpClient1.PostData("LabPatientRegistration/LabApprovaltList", employee)
   }
 }

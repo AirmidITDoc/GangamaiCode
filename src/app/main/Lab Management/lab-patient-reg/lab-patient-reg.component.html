@@ -100,10 +100,12 @@
             </button>
 
               <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatch(element)">
-                <mat-icon>edit</mat-icon>
+                     <img width="40" height="40" src="assets/images/logos/DispatchReport.png">
+              
             </button>
-            <button mat-icon-button matTooltip="SMS " (click)="viewgetSms(element)">
-                <mat-icon>edit</mat-icon>
+            <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
+                 <img width="40" height="40" src="assets/images/logos/SMS.png">
+              
             </button>
             <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
                 (click)="$event.stopPropagation();">

@@ -136,6 +136,7 @@
                                                                 [ShowButtons]="false">
 
                                                             </airmid-table> -->
+                                                            <!-- [ngValue]="patientValues" -->
                                                             <mat-list formControlName="patientValues">
                                                                 <div mat-subheader class="accent p-4 mx-0">
                                                                     Patient Information
@@ -143,8 +144,7 @@
                                                                 <div class="list-container h-160"
                                                                     style="overflow: auto;">
                                                                     <mat-list-item placeholder="" #txt
-                                                                        *ngFor="let item of selectedItems; let i = index"
-                                                                        [ngValue]="patientValues">
+                                                                        *ngFor="let item of selectedItems; let i = index">
                                                                         <div class="list-item-content" fxLayout="row"
                                                                             fxLayoutAlign="space-between center">
                                                                             <!-- <div class="list-item-title"><span
@@ -260,13 +260,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <!-- <div style="height:220px; overflow:auto;">
-                                                            <airmid-table [gridConfig]="gridConfigSms" class="content"
-                                                                [ShowFilter]="false" [ShowButtons]="false">
-
-                                                            </airmid-table>
-
-                                                        </div> -->
+                                                      
 
                                                         <div style="height: 200px; overflow:auto;">
                                                             <!-- <airmid-table [gridConfig]="gridConfigSms"
@@ -274,28 +268,20 @@
                                                                 [ShowButtons]="false">
 
                                                             </airmid-table> -->
-                                                            <mat-list formControlName="patientValues">
+                                                            <mat-list formControlName="patientValues1">
                                                                 <div mat-subheader class="accent p-4 mx-0">
                                                                     Patient Information
                                                                 </div>
                                                                 <div class="list-container h-160"
                                                                     style="overflow: auto;">
+
                                                                     <mat-list-item placeholder="" #txt
-                                                                        *ngFor="let item of selectedItems1; let i = index"
-                                                                        [ngValue]="patientValues1">
+                                                                        *ngFor="let item of selectedItems1; let i = index">
                                                                         <div class="list-item-content" fxLayout="row"
                                                                             fxLayoutAlign="space-between center">
-                                                                            <!-- <div class="list-item-title"><span
-                                                                                    style="font-size: large;color: rgb(18, 67, 105);margin-left: 40px;margin-right: 40px;">{{
-                                                                                    item.patienName }} |</span> <span
-                                                                                    style="font-size: large;color: rgb(18, 67, 105);margin-left: 40px;margin-right: 40px;">{{
-                                                                                    item.type }} | </span><span
-                                                                                    style="font-size: large;color: rgb(18, 67, 105);margin-left: 40px;margin-right: 40px;">{{
-                                                                                    item.mobile }}</span>
-                                                                            </div> -->
 
                                                                             <mat-checkbox [(ngModel)]="item.selected"
-                                                                                (change)="onItemToggle(item)">
+                                                                                (change)="onItemToggle1(item)">
                                                                                 <span
                                                                                     style="font-size: medium;color: rgb(18, 67, 105);margin-left: 60px;margin-right: 60px;">{{
                                                                                     item.patienName }} </span> <span
@@ -305,7 +291,7 @@
                                                                                     item.emailId }}</span>
                                                                             </mat-checkbox>
                                                                             <button mat-icon-button color="warn"
-                                                                                (click)="removeItem(i)">
+                                                                                (click)="removeItem1(i)">
                                                                                 <mat-icon>delete</mat-icon>
                                                                             </button>
                                                                         </div>
@@ -315,8 +301,8 @@
                                                         </div>
 
                                                     </div>
-                                                  
-                                                      <div fxLayout="row wrap" style="padding-left: 10px;">
+
+                                                    <div fxLayout="row wrap" style="padding-left: 10px;">
 
                                                         <div fxFlex="80" fxFlex.xs="100" fxFlex.sm="33">
 
@@ -353,7 +339,7 @@
                                     <div>
                                         <airmid-table [gridConfig]="gridConfigEmail" class="content"
                                             [ShowFilter]="false" [ShowButtons]="false" #EmailGrid>
-                                           
+
                                         </airmid-table>
                                     </div>
                                 </div>
