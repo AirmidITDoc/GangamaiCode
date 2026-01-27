@@ -1002,3 +1002,117 @@ export class LabRequest {
     this.creditedtoDoctor = LabRequest.creditedtoDoctor || 0;
   }
 }
+
+export class ChargesList {
+    ChargesId: number;
+    ConcessionAmt: any;
+    ServiceId: number;
+    serviceId: number;
+    ServiceName: String;
+    Price: any;
+    Qty: any;
+    isInclusionExclusion: any;
+    serviceCode: any;
+    TotalAmt: number;
+    DiscPer: number;
+    DiscAmt: number;
+    NetAmount: number;
+    DoctorId: number;
+    ChargeDoctorName: String;
+    ChargesDate: Date;
+    IsPathology: any;
+    IsRadiology: any;
+    ClassId: number;
+    ClassName: string;
+    ChargesAddedName: string;
+    PackageId: any;
+    PackageServiceId: any;
+    IsPackage: any;
+    PacakgeServiceName: any;
+    BillwiseTotalAmt: any;
+    DoctorName: any;
+    OpdIpdId: any;
+    serviceName: any;
+
+    RegNo: any;
+    PatientName: any;
+    BillNo: any;
+    TotalBillAmount: any;
+    ConcessionAmount: any;
+    NetPayableAmt: any;
+    ConsultantDocName: any;
+    AddedByName: any;
+    BillTime: any;
+    DiscComments: any;
+    PaymentMode: any;
+    TokenNo: any;
+    RefundAmt: any;
+    PaidAmount: any;
+    doctorName: any;
+    doctorId: any;
+    isPathology: any;
+    isRadiology: any;
+    pacakgeServiceName: any;
+    packageServiceId: any;
+    price: any;
+    packageId: any;
+    ConcessionPercentage: any = 0;
+    userName: any;
+    BalanceAmt: any;
+    creditedtoDoctor:any;
+    constructor(ChargesList) {
+        this.ChargesId = ChargesList.ChargesId || '';
+        this.ServiceId = ChargesList.ServiceId || '';
+        this.serviceId = ChargesList.serviceId || '';
+        this.ServiceName = ChargesList.ServiceName || '';
+        this.Price = ChargesList.Price || '';
+        this.Qty = ChargesList.Qty || '';
+        this.TotalAmt = ChargesList.TotalAmt || '';
+        this.DiscPer = ChargesList.DiscPer || '';
+        this.DiscAmt = ChargesList.DiscAmt || '';
+        this.NetAmount = ChargesList.NetAmount || '';
+        this.DoctorId = ChargesList.DoctorId || 0;
+        this.DoctorName = ChargesList.DoctorName || '';
+        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+        this.ChargesDate = ChargesList.ChargesDate || '';
+        this.IsPathology = ChargesList.IsPathology || '';
+        this.IsRadiology = ChargesList.IsRadiology || '';
+        this.ClassId = ChargesList.ClassId || 0;
+        this.ClassName = ChargesList.ClassName || '';
+        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+        this.PackageId = ChargesList.PackageId || 0;
+        this.PackageServiceId = ChargesList.PackageServiceId || 0;
+        this.IsPackage = ChargesList.IsPackage || 0;
+        this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
+        this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+        this.OpdIpdId = ChargesList.OpdIpdId || '';
+        this.serviceName = ChargesList.serviceName || ''
+        this.ConcessionPercentage = ChargesList.ConcessionPercentage || 0;
+        this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
+        this.packageServiceId = ChargesList.packageServiceId || 0;
+        this.price = ChargesList.price || 0;
+        this.packageId = ChargesList.packageId || '';
+        this.doctorName = ChargesList.doctorName || 0;
+        this.BalanceAmt = ChargesList.BalanceAmt || 0;
+        this.doctorId = ChargesList.doctorId || 0;
+        this.serviceCode = ChargesList.serviceCode || 0;
+        this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
+        this.isPathology = ChargesList.isPathology || 0;
+        this.isRadiology = ChargesList.isRadiology || 0;
+        this.userName = ChargesList.userName || '';
+
+        this.RegNo = ChargesList.RegNo || 0;
+        this.BillNo = ChargesList.BillNo || 0;
+        this.PatientName = ChargesList.PatientName || '';
+        this.TotalBillAmount = ChargesList.TotalBillAmount || 0;
+        this.ConcessionAmount = ChargesList.ConcessionAmount || 0;
+        this.NetPayableAmt = ChargesList.NetPayableAmt || 0;
+        this.ConsultantDocName = ChargesList.ConsultantDocName || '';
+        this.AddedByName = ChargesList.AddedByName || '';
+        this.DiscComments = ChargesList.DiscComments || '';
+        this.PaymentMode = ChargesList.PaymentMode || 0;
+        this.TokenNo = ChargesList.TokenNo || 0;
+        this.RefundAmt = ChargesList.RefundAmt || 0;
+       this.creditedtoDoctor = ChargesList.creditedtoDoctor || ''
+    }
+}
