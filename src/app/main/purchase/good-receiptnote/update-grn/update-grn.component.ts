@@ -908,9 +908,9 @@ export class UpdateGRNComponent implements OnInit {
                stkId: [item?.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                discPerc2: [item?.DiscPer2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                discAmt2: [item?.DiscAmt2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-               isVerified: [false],
-               isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
-               isVerifiedUserId: [0],
+               isVerified: [item?.IsVerified || false], 
+               isVerifiedDatetime: [item?.IsVerifiedDatetime > 0 ? this.datePipe.transform(item?.IsVerifiedDatetime, "yyyy-MM-dd") : this.datePipe.transform(new Date(), "yyyy-MM-dd")],
+               isVerifiedUserId: [item?.IsVerifiedUserId || 0],
            });
        }
        //Insert current stk form
@@ -1642,9 +1642,9 @@ debugger
                stkId: [item?.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                discPerc2: [item?.DiscPer2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                discAmt2: [item?.DiscAmt2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-               isVerified: [false],
-               isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
-               isVerifiedUserId: [0],
+               isVerified: [item?.IsVerified || false], 
+               isVerifiedDatetime: [item?.IsVerifiedDatetime > 0 ? this.datePipe.transform(item?.IsVerifiedDatetime, "yyyy-MM-dd") : this.datePipe.transform(new Date(), "yyyy-MM-dd")],
+               isVerifiedUserId: [item?.IsVerifiedUserId || 0],
            });
        }
        //Insert Po to grn current stk form

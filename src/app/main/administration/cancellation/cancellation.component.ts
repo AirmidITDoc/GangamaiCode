@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatSort } from '@angular/material/sort';
@@ -35,7 +35,7 @@ export class CancellationComponent implements OnInit {
   sIsLoading: string = '';
   isLoading = true;
   gridConfig: any;
-
+VReason:any='';
   f_name: any = ""
   regNo: any = "0"
   l_name: any = ""
@@ -81,7 +81,7 @@ export class CancellationComponent implements OnInit {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
-    public _IpBillBrowseListService: IPBrowseBillService,
+    public _IpBillBrowseListService: IPBrowseBillService, 
   ) { }
 
   ngOnInit(): void {
@@ -600,11 +600,14 @@ console.log(row)
 
       if (result.isConfirmed) {
         let SubmitDate = {
-          "billNo": contact.billNo || 0
+          "billNo": contact.billNo || 0,
+          "discComments":this.VReason || ''
         }
         console.log("Json:", SubmitDate)
         this._CancellationService.OpCancelBill(SubmitDate).subscribe(response => {
           this.grid.bindGridData();
+              this.lable= ''
+              this.billcancelList='';
         });
       }
     })
@@ -626,15 +629,43 @@ console.log(row)
 
       if (result.isConfirmed) {
         let SubmitDate = {
-          "billNo": contact.billNo || 0
+          "billNo": contact.billNo || 0,
+          "discComments":this.VReason || ''
         }
         console.log("Json:", SubmitDate)
         this._CancellationService.IpCancelBill(SubmitDate).subscribe(response => {
            this.grid.bindGridData();
+               this.lable= ''
+              this.billcancelList='';
         });
       }
-    })
+    }) 
+  }
+  lable:any='';
+  billcancelList:any
+  @ViewChild('CancelReasone') CancelReasone!: TemplateRef<any>;
+  OnSaveCancelBill() {
+    if(this.VReason == '' || this.VReason == null || this.VReason == undefined){
+        this.toastr.warning('Please Enter a Reason', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.lable == 'OP') {
+      this.BillCancelOP(this.billcancelList);
+    } else {
+      this.BillCancelIP(this.billcancelList);
+    }
+  }
 
+  openCancelBill(element,Lable) {
+    debugger
+    this.lable=Lable;
+    this.billcancelList=element;
+    this._matDialog.open(this.CancelReasone, {
+      width: '50%',
+      height: '45%' 
+    })
   }
 
   CancelAdvance(contact) {
