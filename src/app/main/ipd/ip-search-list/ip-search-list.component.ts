@@ -861,6 +861,7 @@ export class ChargesList {
     unitId: any
     classId: any
     tariffId: any
+    IsPackage:any;
 
 
     constructor(ChargesList) {
@@ -905,6 +906,7 @@ export class ChargesList {
         this.unitId = ChargesList.unitId;
         this.classId = ChargesList.classId;
         this.tariffId = ChargesList.tariffId;
+        this.IsPackage = ChargesList.IsPackage;
 
     }
 }
