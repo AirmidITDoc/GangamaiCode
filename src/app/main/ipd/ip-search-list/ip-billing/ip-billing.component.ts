@@ -195,7 +195,7 @@ export class IPBillingComponent implements OnInit {
     autocompleteModeService: string = "Service";
     autocompleteModeConcession: string = "Concession";
     autocompleteModeClass: string = "Class";
-
+classId=0
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
 
@@ -246,6 +246,7 @@ export class IPBillingComponent implements OnInit {
             this.TariffId = this.selectedAdvanceObj.tariffId
             this.WardId = this.selectedAdvanceObj.wardId;
             this.BedId = this.selectedAdvanceObj.bedId;
+            this.classId=this.selectedAdvanceObj.classId
         }
         this.getChargesList();
         this.getLabRequestChargelist();
@@ -467,13 +468,17 @@ export class IPBillingComponent implements OnInit {
             isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageId: [item?.PackageServiceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceCode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            // companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             isInclusionExclusion: [false],
             packageMainChargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             wardId: [this.WardId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             bedId: [this.BedId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'HH:mm:ss.SSS') || '00:00:00.000',
             createdBy: this.accountService.currentUserValue.userId,
+              unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          
         });
     }
     // Getters 
@@ -745,6 +750,7 @@ export class IPBillingComponent implements OnInit {
     //Class selected 
     getSelectedClassObj(event) {
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&SrvcName="
+        this.classId=event.value
     }
     // Service Add 
     onSaveAddCharges() {
@@ -791,6 +797,7 @@ export class IPBillingComponent implements OnInit {
                     this.PackageDetArray.push(this.createPacakgeForm(item));
                 });
             }
+            debugger
             console.log('valida service form', this.Serviceform.value)
             this._IpSearchListService.InsertIPAddCharges(this.Serviceform.value).subscribe(response => {
                 this.getChargesList();
@@ -1685,7 +1692,10 @@ export class IPBillingComponent implements OnInit {
                         PackageServiceId: element.serviceId,
                         pacakgeServiceName: element.pacakgeServiceName,
                         doctorName: element.doctorName,
-                        doctorId: element.doctorId
+                        doctorId: element.doctorId,
+                        uniId:element.unitId || this.accountService.currentUserValue.user.unitId,
+                        classId:element.classId || this.classId,
+                        tariffId:element.tariffId || this.TariffId,
                     })
             })
             this.PackageDatasource.data = this.PacakgeList
@@ -1721,7 +1731,10 @@ export class IPBillingComponent implements OnInit {
                         PackageServiceId: element.serviceId,
                         pacakgeServiceName: element.pacakgeServiceName,
                         doctorName: element.doctorName,
-                        doctorId: element.doctorId
+                        doctorId: element.doctorId,
+                        uniId:this.accountService.currentUserValue.user.unitId,
+                        classId:this.classId,
+                        tariffId:this.TariffId
                     })
             })
             this.PackageDatasource.data = this.PacakgeList

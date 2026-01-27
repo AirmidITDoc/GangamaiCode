@@ -92,7 +92,7 @@ export class IPSearchListComponent implements OnInit {
 
 
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.Admission,
+        permissionCode: permissionCodes.Admission,
         apiUrl: "Admission/AdmissionList",
         columnsList: this.allcolumns,
         sortField: "AdmissionId",
@@ -124,7 +124,7 @@ export class IPSearchListComponent implements OnInit {
         private _configue: ConfigService,
         public toastr: ToastrService,
         private route: ActivatedRoute,
-        private router: Router, 
+        private router: Router,
         private advanceDataStored: AdvanceDataStored) {
     }
     IsShowGrid: boolean = false;
@@ -857,7 +857,11 @@ export class ChargesList {
     netAmount: any;
     CreditedtoDoctor: any;
     creditedtoDoctor: boolean;
-    chargesDate:any;
+    chargesDate: any;
+    unitId: any
+    classId: any
+    tariffId: any
+
 
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
@@ -898,6 +902,10 @@ export class ChargesList {
         this.CreditedtoDoctor = ChargesList.CreditedtoDoctor;
         this.creditedtoDoctor = ChargesList.creditedtoDoctor;
         this.chargesDate = ChargesList.chargesDate;
+        this.unitId = ChargesList.unitId;
+        this.classId = ChargesList.classId;
+        this.tariffId = ChargesList.tariffId;
+
     }
 }
 export class AdvanceHeader {
@@ -971,8 +979,8 @@ export class Payment {
     PayTMAmount: number;
     PayTMTranNo: string;
     PayTMDate: Date;
-PaymentDateTime:any
-Iscancelled:any
+    PaymentDateTime: any
+    Iscancelled: any
     /**
     * Constructor
     *
@@ -1013,8 +1021,8 @@ Iscancelled:any
             this.PayTMAmount = Payment.PayTMAmount || '';
             this.PayTMTranNo = Payment.PaymentId || '';
             this.PayTMDate = Payment.PayTMDate || '';
-            this.PaymentDateTime= Payment.PaymentDateTime || '';
-            this.Iscancelled= Payment.Iscancelled || '';
+            this.PaymentDateTime = Payment.PaymentDateTime || '';
+            this.Iscancelled = Payment.Iscancelled || '';
         }
     }
 
