@@ -590,7 +590,8 @@ export class LabResultListComponent {
               RIdData: data,
               patientdata: this.reportPrintObj,
               verifyCheck: true,
-              type: 'Lab'
+              type: 'Lab',
+              sampleNo: contact.sampleNo
             }
           });
         dialogRef.afterClosed().subscribe(result => {
