@@ -197,9 +197,8 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
 
-                  <button mat-icon-button matTooltip="Appoinment Update"
-                    style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
-                    (click)="onEdit(element)">
+                <button mat-icon-button matTooltip="Appoinment Update" *ngIf="IsEdit"
+                    style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" (click)="onEdit(element)">
                     <mat-icon> edit</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Print Case papaer"
@@ -208,7 +207,8 @@
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
+                <button *ngIf="IsOpdEmr" mat-icon-button
+                    [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">
                         list_alt

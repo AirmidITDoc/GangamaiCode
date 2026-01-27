@@ -104,6 +104,7 @@ export enum permissionCodes {
     Refund = 'Refund',
     Advance = 'Advance',
     Bill = 'Bill',
+    MedicalRecords='MedicalRecords',
 
     // IPD?
     Admission = 'Admission',

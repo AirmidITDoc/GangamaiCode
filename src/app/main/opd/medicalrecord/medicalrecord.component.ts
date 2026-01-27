@@ -21,787 +21,789 @@ import Swal from 'sweetalert2';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfigService } from 'app/core/services/config.service';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { GastrologyEmrComponent } from '../gastrology-emr/gastrology-emr.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 // const moment = _rollupMoment || _moment;
 
 @Component({
-  selector: 'app-medicalrecord',
-  templateUrl: './medicalrecord.component.html',
-  styleUrls: ['./medicalrecord.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-medicalrecord',
+    templateUrl: './medicalrecord.component.html',
+    styleUrls: ['./medicalrecord.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 
 })
 export class MedicalrecordComponent implements OnInit {
-  confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-  myformSearch: FormGroup;
-  searchFormGroup: FormGroup;
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  menuActions: Array<string> = [];
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    IsOpdEmr: boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords, permissionType.Edit);
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    myformSearch: FormGroup;
+    searchFormGroup: FormGroup;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    menuActions: Array<string> = [];
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-  DoctorId = "0";
-  autocompleteModedeptdoc: string = "ConDoctor";
-  doctorID = "0";
+    DoctorId = "0";
+    autocompleteModedeptdoc: string = "ConDoctor";
+    doctorID = "0";
 
-  Vtotalcount = 0;
-  VNewcount = 0;
-  VFollowupcount = 0;
-  VBillcount = 0;
-  VCrossConscount = 0;
-  VEMRcount = 0;
-  VCheckoutCount = 0;
-  VWaitingCount = 0;
-  vEMRReady = 0;
-  screenFromString = 'OP-billing';
-  patientDetail = new RegInsert({});
-  patientDetail1 = new VisitMaster1({});
-  RegId = 0
-  dateTimeObj: any;
-  vOPIPId = 0;
-  f_name: any = "%"
-  regNo: any = "0"
-  l_name: any = "%"
-  page: PageNames = PageNames.PATIENT;
+    Vtotalcount = 0;
+    VNewcount = 0;
+    VFollowupcount = 0;
+    VBillcount = 0;
+    VCrossConscount = 0;
+    VEMRcount = 0;
+    VCheckoutCount = 0;
+    VWaitingCount = 0;
+    vEMRReady = 0;
+    screenFromString = 'OP-billing';
+    patientDetail = new RegInsert({});
+    patientDetail1 = new VisitMaster1({});
+    RegId = 0
+    dateTimeObj: any;
+    vOPIPId = 0;
+    f_name: any = "%"
+    regNo: any = "0"
+    l_name: any = "%"
+    page: PageNames = PageNames.PATIENT;
 
-  constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
-    private commonService: PrintserviceService,
-    private advanceDataStored: AdvanceDataStored,
-    private formBuilder: FormBuilder,
-    public _ConfigService: ConfigService,
-    public toastr: ToastrService, public datePipe: DatePipe,
-  ) { }
+    constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
+        private commonService: PrintserviceService,
+        private advanceDataStored: AdvanceDataStored,
+        private formBuilder: FormBuilder,
+        public _ConfigService: ConfigService, public permissionService: PagePermissionService,
+        public toastr: ToastrService, public datePipe: DatePipe,
+    ) { }
 
-  ngOnInit(): void {
-    this.myformSearch = this._AppointmentlistService.filterForm();
-    this.searchFormGroup = this.createSearchForm();
-    // menu Button List
-    this.menuActions.push("Update Consultant Doctor");
-    this.menuActions.push("Update Referred Doctor");
-    this.menuActions.push("Medical Record");
-    this.Appointdetail(this.gridConfig)
-    this.GetAppointdetail()
-  }
-
-  ngAfterViewInit() {
-    // Assign the template to the column dynamically
-    this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate1;
-    this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
-    this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
-  }
-  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-  @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
-  @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
-
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
-  allfilters = [
-    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
-
-  ];
-
-  allcolumns = [
-    { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-    { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-    { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    {
-      heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+    ngOnInit(): void {
+        this.myformSearch = this._AppointmentlistService.filterForm();
+        this.searchFormGroup = this.createSearchForm();
+        // menu Button List
+        this.menuActions.push("Update Consultant Doctor");
+        this.menuActions.push("Update Referred Doctor");
+        this.menuActions.push("Medical Record");
+        this.Appointdetail(this.gridConfig)
+        this.GetAppointdetail()
     }
-  ]
 
-  gridConfig: gridModel = {
-    permissionCode: permissionCodes.Appointment,
-    apiUrl: "VisitDetail/AppVisitList",
-    columnsList: this.allcolumns,
-    sortField: "VisitId",
-    sortOrder: 0,
-    filters: this.allfilters
-  }
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'patientOldNew')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'mPbillNo')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
+        this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  onChangeStartDate(value) {
-    this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
-  onChangeEndDate(value) {
-    this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-  }
+    }
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
 
-  onChangeFirst() {
-    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-    this.f_name = this.myformSearch.get('FirstName').value + "%"
-    this.l_name = this.myformSearch.get('LastName').value + "%"
-    this.regNo = this.myformSearch.get('RegNo').value
-    this.getfilterdata();
-  }
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-  getfilterdata() {
-
-    this.gridConfig = {
-      apiUrl: "VisitDetail/AppVisitList",
-      columnsList: this.allcolumns,
-      sortField: "VisitId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+    allfilters = [
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
 
-      ]
-    }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-    this.GetAppointdetail()
-  }
+    ];
 
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'FirstName')
-      this.myformSearch.get('FirstName').setValue("")
-    else
-      if (event == 'LastName')
-        this.myformSearch.get('LastName').setValue("")
-    if (event == 'RegNo')
-      this.myformSearch.get('RegNo').setValue("")
+    allcolumns = [
+        { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        {
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+    ]
 
-    this.onChangeFirst();
-  }
-
-  ListView(value) {
-
-    console.log(value)
-    if (value.value !== 0)
-      this.DoctorId = value.value
-    else
-      this.DoctorId = "0"
-
-    this.onChangeFirst();
-  }
-
-  onSave(row: any = null) {
-
-  }
-  createSearchForm() {
-    return this.formBuilder.group({
-      regRadio: ['registration'],
-      regRadio1: ['registration1'],
-      RegId: [''],
-      PhoneRegId: ['']
-    });
-  }
-
-  getOpCasePaper(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    const dialogRef = this._matDialog.open(NewCasepaperComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: '95vh',
-        height: '95%',
-        width: '90%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-        this.GetAppointdetail();
-      }
-    });
-  }
-
-  getgastrologyCasePaper(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    const dialogRef = this._matDialog.open(GastrologyEmrComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: '95vh',
-        height: '95%',
-        width: '90%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-        this.GetAppointdetail();
-      }
-    });
-  }
-
-  OpenCertificate(row) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    const dialogRef = this._matDialog.open(PatientcertificateComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: '90%',
-        width: '90%',
-        // maxWidth: "90vw",
-        // height: "890px",
-        // width: "100%",
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
-    });
-  }
-
-  OnEditRegistration(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    const dialogRef = this._matDialog.open(NewRegistrationComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: '90%',
-        width: '90%',
-        data: row
-
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
-    });
-  }
-
-  getPrint(element) {
-    Swal.fire({
-      title: 'Select Report Format',
-      text: "Choose how you want to view the report:",
-      icon: "warning",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      denyButtonColor: "#6c757d",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "With Header",
-      denyButtonText: "Without Header",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Step 3A: Call function with "With Header"
-        this.OnViewReportPdf(element, true);
-      } else if (result.isDenied) {
-        // Step 3B: Call function with "Without Header"
-        this.OnViewReportPdf(element, false);
-        // this.OnViewReportPdf1(element, false);
-      }
-    });
-  }
-
-  getGastroPrint(element) {
-    Swal.fire({
-      title: 'Select Report Format',
-      text: "Choose how you want to view the report:",
-      icon: "warning",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      denyButtonColor: "#6c757d",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "With Header",
-      denyButtonText: "Without Header",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.OnViewReportGastrologywithHeaderPdf(element);
-      } else if (result.isDenied) {
-        this.OnViewReportGastrologywithoutHeaderPdf(element);
-      }
-    });
-  }
-
-  OnViewReportPdf(element: any, withHeader: boolean) {
-    debugger
-    const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
-    if (PrescriptionA5_Print != 1) {
-      const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeader";
-      this.commonService.Onprint("VisitId", element.visitId, reportName);
-    }
-    else {
-      const reportName = withHeader ? "OPPrescriptionA5" : "OPPrescriptionwithoutHeaderA5";
-      this.commonService.Onprint("VisitId", element.visitId, reportName);
-    }
-  }
-
-  OnViewReportGastrologywithHeaderPdf(element: any) {
-    this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescription");
-  }
-  OnViewReportGastrologywithoutHeaderPdf(element: any) {
-    this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescriptionWithoutHeader");
-  }
-
-  // OnViewReportPdf(element: any, withHeader: boolean) {
-  //   const reportName = withHeader ? "OPPrescription" : "OPPrescriptionA5";
-  //   this.commonService.Onprint("VisitId", element.visitId, reportName);
-  // }
-
-  // OnViewReportPdf1(element: any, withHeader: boolean) {
-  //   const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeaderA5";
-  //   this.commonService.Onprint("VisitId", element.visitId, reportName);
-  // }
-
-
-  OnNewCrossConsultation(element) {
-    console.log('Third action clicked for:', element);
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    console.log(element)
-    const dialogRef = this._matDialog.open(CrossConsultationComponent,
-      {
-        maxWidth: '75vw',
-        height: '400px', width: '100%',
-        data: element
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
-    });
-  }
-
-  Appointdetail(data) {
-    this.Vtotalcount = 0;
-    this.VNewcount = 0;
-    this.VFollowupcount = 0;
-    this.VBillcount = 0;
-    this.VCrossConscount = 0;
-    this.VEMRcount = 0;
-    this.VCheckoutCount = 0;
-    this.VWaitingCount = 0;
-    console.log(data)
-    this.Vtotalcount;
-    console.log(data)
-    for (var i = 0; i < data.length; i++) {
-      if (data[i].patientOldNew == 1) {
-        this.VNewcount = this.VNewcount + 1;
-      }
-      else if (data[i].patientOldNew == 2) {
-        this.VFollowupcount = this.VFollowupcount + 1;
-      }
-      if (data[i].mPbillNo == 1 || data[i].mPbillNo == 2) {
-        this.VBillcount = this.VBillcount + 1;
-      }
-      if (data[i].crossConsulFlag == 1) {
-        this.VCrossConscount = this.VCrossConscount + 1;
-      }
-
-      this.Vtotalcount = this.Vtotalcount + 1;
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.Appointment,
+        apiUrl: "VisitDetail/AppVisitList",
+        columnsList: this.allcolumns,
+        sortField: "VisitId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
 
-  }
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+    onChangeStartDate(value) {
+        this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
 
-  getSelectedObj(obj) {
-    if ((obj.regId ?? 0) > 0) {
-      console.log(obj)
-      this.vOPIPId = obj.visitId
+    onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstName').value + "%"
+        this.l_name = this.myformSearch.get('LastName').value + "%"
+        this.regNo = this.myformSearch.get('RegNo').value
+        this.getfilterdata();
+    }
 
-      setTimeout(() => {
-        this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
-          this.patientDetail = response;
-          console.log(this.patientDetail)
+    getfilterdata() {
+
+        this.gridConfig = {
+            apiUrl: "VisitDetail/AppVisitList",
+            columnsList: this.allcolumns,
+            sortField: "VisitId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+        this.GetAppointdetail()
+    }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myformSearch.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myformSearch.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myformSearch.get('RegNo').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    ListView(value) {
+
+        console.log(value)
+        if (value.value !== 0)
+            this.DoctorId = value.value
+        else
+            this.DoctorId = "0"
+
+        this.onChangeFirst();
+    }
+
+    onSave(row: any = null) {
+
+    }
+    createSearchForm() {
+        return this.formBuilder.group({
+            regRadio: ['registration'],
+            regRadio1: ['registration1'],
+            RegId: [''],
+            PhoneRegId: ['']
+        });
+    }
+
+    getOpCasePaper(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewCasepaperComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+                this.GetAppointdetail();
+            }
+        });
+    }
+
+    getgastrologyCasePaper(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(GastrologyEmrComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+                this.GetAppointdetail();
+            }
+        });
+    }
+
+    OpenCertificate(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(PatientcertificateComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '90%',
+                width: '90%',
+                // maxWidth: "90vw",
+                // height: "890px",
+                // width: "100%",
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    OnEditRegistration(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewRegistrationComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '90%',
+                width: '90%',
+                data: row
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    getPrint(element) {
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Step 3A: Call function with "With Header"
+                this.OnViewReportPdf(element, true);
+            } else if (result.isDenied) {
+                // Step 3B: Call function with "Without Header"
+                this.OnViewReportPdf(element, false);
+                // this.OnViewReportPdf1(element, false);
+            }
+        });
+    }
+
+    getGastroPrint(element) {
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.OnViewReportGastrologywithHeaderPdf(element);
+            } else if (result.isDenied) {
+                this.OnViewReportGastrologywithoutHeaderPdf(element);
+            }
+        });
+    }
+
+    OnViewReportPdf(element: any, withHeader: boolean) {
+        debugger
+        const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
+        if (PrescriptionA5_Print != 1) {
+            const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeader";
+            this.commonService.Onprint("VisitId", element.visitId, reportName);
+        }
+        else {
+            const reportName = withHeader ? "OPPrescriptionA5" : "OPPrescriptionwithoutHeaderA5";
+            this.commonService.Onprint("VisitId", element.visitId, reportName);
+        }
+    }
+
+    OnViewReportGastrologywithHeaderPdf(element: any) {
+        this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescription");
+    }
+    OnViewReportGastrologywithoutHeaderPdf(element: any) {
+        this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescriptionWithoutHeader");
+    }
+
+    // OnViewReportPdf(element: any, withHeader: boolean) {
+    //   const reportName = withHeader ? "OPPrescription" : "OPPrescriptionA5";
+    //   this.commonService.Onprint("VisitId", element.visitId, reportName);
+    // }
+
+    // OnViewReportPdf1(element: any, withHeader: boolean) {
+    //   const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeaderA5";
+    //   this.commonService.Onprint("VisitId", element.visitId, reportName);
+    // }
+
+
+    OnNewCrossConsultation(element) {
+        console.log('Third action clicked for:', element);
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        console.log(element)
+        const dialogRef = this._matDialog.open(CrossConsultationComponent,
+            {
+                maxWidth: '75vw',
+                height: '400px', width: '100%',
+                data: element
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
+
+    Appointdetail(data) {
+        this.Vtotalcount = 0;
+        this.VNewcount = 0;
+        this.VFollowupcount = 0;
+        this.VBillcount = 0;
+        this.VCrossConscount = 0;
+        this.VEMRcount = 0;
+        this.VCheckoutCount = 0;
+        this.VWaitingCount = 0;
+        console.log(data)
+        this.Vtotalcount;
+        console.log(data)
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].patientOldNew == 1) {
+                this.VNewcount = this.VNewcount + 1;
+            }
+            else if (data[i].patientOldNew == 2) {
+                this.VFollowupcount = this.VFollowupcount + 1;
+            }
+            if (data[i].mPbillNo == 1 || data[i].mPbillNo == 2) {
+                this.VBillcount = this.VBillcount + 1;
+            }
+            if (data[i].crossConsulFlag == 1) {
+                this.VCrossConscount = this.VCrossConscount + 1;
+            }
+
+            this.Vtotalcount = this.Vtotalcount + 1;
+        }
+
+    }
+
+    getSelectedObj(obj) {
+        if ((obj.regId ?? 0) > 0) {
+            console.log(obj)
+            this.vOPIPId = obj.visitId
+
+            setTimeout(() => {
+                this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
+                    this.patientDetail = response;
+                    console.log(this.patientDetail)
+                });
+
+            }, 500);
+
+            // setTimeout(() => {
+            //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
+            //         this.patientDetail1 = data;
+            //         console.log(data)
+            //         console.log(this.patientDetail1)
+            //     });
+            // }, 1000);
+        }
+        this.updateRegisteredPatientInfo(obj);
+    }
+
+    getSelectedRow(row: any): void {
+        console.log("Selected row : ", row);
+    }
+
+    updateRegisteredPatientInfo(obj) {
+        const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
+            {
+                maxWidth: "100%",
+                height: '95%',
+                width: '95%',
+                data: obj
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.searchFormGroup.get('RegId').setValue('');
+            this.grid.bindGridData();
+            this.GetAppointdetail()
         });
 
-      }, 500);
-
-      // setTimeout(() => {
-      //     this._AppointmentlistService.getVisitById(this.vOPIPId).subscribe(data => {
-      //         this.patientDetail1 = data;
-      //         console.log(data)
-      //         console.log(this.patientDetail1)
-      //     });
-      // }, 1000);
     }
-    this.updateRegisteredPatientInfo(obj);
-  }
 
-  getSelectedRow(row: any): void {
-    console.log("Selected row : ", row);
-  }
+    dataSource = new MatTableDataSource<VisitMaster1>();
+    GetAppointdetail() {
 
-  updateRegisteredPatientInfo(obj) {
-    const dialogRef = this._matDialog.open(UpdateRegPatientInfoComponent,
-      {
-        maxWidth: "100%",
-        height: '95%',
-        width: '95%',
-        data: obj
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.searchFormGroup.get('RegId').setValue('');
-      this.grid.bindGridData();
-      this.GetAppointdetail()
-    });
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.Vtotalcount = 0;
+        this.VNewcount = 0;
+        this.VFollowupcount = 0;
+        this.VBillcount = 0;
+        this.VCrossConscount = 0;
 
-  }
-
-  dataSource = new MatTableDataSource<VisitMaster1>();
-  GetAppointdetail() {
-
-    this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
-    this.Vtotalcount = 0;
-    this.VNewcount = 0;
-    this.VFollowupcount = 0;
-    this.VBillcount = 0;
-    this.VCrossConscount = 0;
-
-    let data =
-    {
-      "first": 0,
-      "rows": 150,
-      "sortField": "VisitId",
-      "sortOrder": 0,
-      "filters": [
+        let data =
         {
-          "fieldName": "F_Name",
-          "fieldValue": String(this.f_name),
-          "opType": "Contains"
-        },
-        {
-          "fieldName": "L_Name",
-          "fieldValue": String(this.l_name),
-          "opType": "Contains"
-        },
-        {
-          "fieldName": "Reg_No",
-          "fieldValue": String(this.regNo),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Doctor_Id",
-          "fieldValue": String(this.DoctorId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "From_Dt",
-          "fieldValue": this.fromDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "To_Dt",
-          "fieldValue": this.toDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "IsMark",
-          "fieldValue": "2",
-          "opType": "Equals"
+            "first": 0,
+            "rows": 150,
+            "sortField": "VisitId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": String(this.f_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": String(this.l_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": String(this.regNo),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "Doctor_Id",
+                    "fieldValue": String(this.DoctorId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": this.fromDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": this.toDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsMark",
+                    "fieldValue": "2",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "string",
+                    "name": "string"
+                }
+            ]
         }
-      ],
-      "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
-    }
-    console.log(data)
-    this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
-      this.dataSource.data = response.data;
-      console.log(response)
-      //  debugger
-      if (this.dataSource.data.length > 0) {
-        this.Vtotalcount = this.dataSource.data.length
-        this.vEMRReady = 0;
-        this.dataSource.data.forEach(element => {
-          if (element.patientOldNew == 1) {
-            this.VNewcount = this.VNewcount + 1;
-          }
-          else if (element.patientOldNew == 2) {
-            this.VFollowupcount = this.VFollowupcount + 1;
-          }
-          if (element.mPbillNo == 1 || element.mPbillNo == 2) {
-            this.VBillcount = this.VBillcount + 1;
-          }
-          if (element.crossConsulFlag == 1) {
-            this.VCrossConscount = this.VCrossConscount + 1;
-          }
-          if (element.emrReady == 1) {
-            this.vEMRReady++;
-          }
+        console.log(data)
+        this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(response)
+            //  debugger
+            if (this.dataSource.data.length > 0) {
+                this.Vtotalcount = this.dataSource.data.length
+                this.vEMRReady = 0;
+                this.dataSource.data.forEach(element => {
+                    if (element.patientOldNew == 1) {
+                        this.VNewcount = this.VNewcount + 1;
+                    }
+                    else if (element.patientOldNew == 2) {
+                        this.VFollowupcount = this.VFollowupcount + 1;
+                    }
+                    if (element.mPbillNo == 1 || element.mPbillNo == 2) {
+                        this.VBillcount = this.VBillcount + 1;
+                    }
+                    if (element.crossConsulFlag == 1) {
+                        this.VCrossConscount = this.VCrossConscount + 1;
+                    }
+                    if (element.emrReady == 1) {
+                        this.vEMRReady++;
+                    }
+                });
+                console.log(this.dataSource.data)
+            }
         });
-        console.log(this.dataSource.data)
-      }
-    });
-  }
+    }
 
-  selectChangedeptdoc(obj: any) {
-    this.gridConfig.filters[3].fieldValue = obj.value
-  }
-  getValidationdoctorMessages() {
-    return {
-      DoctorId: [
-        { name: "required", Message: "Doctor Name is required" }
-      ]
-    };
-  }
+    selectChangedeptdoc(obj: any) {
+        this.gridConfig.filters[3].fieldValue = obj.value
+    }
+    getValidationdoctorMessages() {
+        return {
+            DoctorId: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+    }
 }
 
 
 export class VisitMaster1 {
-  visitId: Number;
-  regId: number;
-  RegID: number;
-  visitDate: any;
-  visitTime: any;
-  unitId: number;
-  patientTypeId: number;
-  companyId: number;
-  OPDNo: string;
-  tariffId: number;
-  consultantDocId: number;
-  refDocId: number;
-  doctorId: number;
-  departmentId: number;
-  appPurposeId: number;
-  patientOldNew: any;
-  phoneAppId: any;
-  IsCancelled: any;
-  classId: any;
-  firstFollowupVisit: any;
-  addedBy: any;
-  updatedBy: any;
-  doctorID: any;
-  mPbillNo: any;
-  crossConsulFlag: any;
-  IsMark: any;
-  emrReady: any;
-  /**
-   * Constructor
-   *
-   * @param VisitMaster1
-   */
-  constructor(VisitMaster1) {
-    {
-      this.visitId = VisitMaster1.visitId || 0;
-      this.regId = VisitMaster1.regId || 0;
-      this.RegID = VisitMaster1.RegID || 0;
-      this.visitDate = VisitMaster1.visitDate || "";
-      this.visitTime = VisitMaster1.visitTime || "";
-      this.unitId = VisitMaster1.unitId || 1;
-      this.patientTypeId = VisitMaster1.patientTypeId || 1;
-      this.companyId = VisitMaster1.companyId || 1;
-      this.tariffId = VisitMaster1.tariffId || 1;
-      this.consultantDocId = VisitMaster1.consultantDocId || '';
-      this.refDocId = VisitMaster1.refDocId || 1;
-      this.doctorId = VisitMaster1.doctorId || 1;
-      this.departmentId = VisitMaster1.departmentId || 1;
-      this.patientOldNew = VisitMaster1.patientOldNew || 0;
-      this.phoneAppId = VisitMaster1.phoneAppId || 0
-      this.IsCancelled = VisitMaster1.IsCancelled || 0
-      this.classId = VisitMaster1.classId || 1;
-      this.firstFollowupVisit = VisitMaster1.firstFollowupVisit || "";
-      this.addedBy = VisitMaster1.addedBy || 0
-      this.updatedBy = VisitMaster1.updatedBy || 0;
-      this.doctorID = VisitMaster1.doctorID || 0;
-      this.mPbillNo = VisitMaster1.doctorID || 0;
-      this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0;
-      this.IsMark = VisitMaster1.IsMark || 0;
-      this.emrReady = VisitMaster1.emrReady || 0
+    visitId: Number;
+    regId: number;
+    RegID: number;
+    visitDate: any;
+    visitTime: any;
+    unitId: number;
+    patientTypeId: number;
+    companyId: number;
+    OPDNo: string;
+    tariffId: number;
+    consultantDocId: number;
+    refDocId: number;
+    doctorId: number;
+    departmentId: number;
+    appPurposeId: number;
+    patientOldNew: any;
+    phoneAppId: any;
+    IsCancelled: any;
+    classId: any;
+    firstFollowupVisit: any;
+    addedBy: any;
+    updatedBy: any;
+    doctorID: any;
+    mPbillNo: any;
+    crossConsulFlag: any;
+    IsMark: any;
+    emrReady: any;
+    /**
+     * Constructor
+     *
+     * @param VisitMaster1
+     */
+    constructor(VisitMaster1) {
+        {
+            this.visitId = VisitMaster1.visitId || 0;
+            this.regId = VisitMaster1.regId || 0;
+            this.RegID = VisitMaster1.RegID || 0;
+            this.visitDate = VisitMaster1.visitDate || "";
+            this.visitTime = VisitMaster1.visitTime || "";
+            this.unitId = VisitMaster1.unitId || 1;
+            this.patientTypeId = VisitMaster1.patientTypeId || 1;
+            this.companyId = VisitMaster1.companyId || 1;
+            this.tariffId = VisitMaster1.tariffId || 1;
+            this.consultantDocId = VisitMaster1.consultantDocId || '';
+            this.refDocId = VisitMaster1.refDocId || 1;
+            this.doctorId = VisitMaster1.doctorId || 1;
+            this.departmentId = VisitMaster1.departmentId || 1;
+            this.patientOldNew = VisitMaster1.patientOldNew || 0;
+            this.phoneAppId = VisitMaster1.phoneAppId || 0
+            this.IsCancelled = VisitMaster1.IsCancelled || 0
+            this.classId = VisitMaster1.classId || 1;
+            this.firstFollowupVisit = VisitMaster1.firstFollowupVisit || "";
+            this.addedBy = VisitMaster1.addedBy || 0
+            this.updatedBy = VisitMaster1.updatedBy || 0;
+            this.doctorID = VisitMaster1.doctorID || 0;
+            this.mPbillNo = VisitMaster1.doctorID || 0;
+            this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0;
+            this.IsMark = VisitMaster1.IsMark || 0;
+            this.emrReady = VisitMaster1.emrReady || 0
+        }
     }
-  }
 }
 
 
 export class Regdetail {
-  RegId: Number;
-  regId: Number;
-  RegDate: Date;
-  RegTime: Date;
-  PrefixId: number;
-  PrefixID: number;
-  FirstName: string;
-  MiddleName: string;
-  LastName: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
+    RegId: Number;
+    regId: Number;
+    RegDate: Date;
+    RegTime: Date;
+    PrefixId: number;
+    PrefixID: number;
+    FirstName: string;
+    MiddleName: string;
+    LastName: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
 
-  Address: string;
-  City: string;
-  PinNo: string;
-  RegNo: string;
-  DateofBirth: Date;
-  Age: any;
-  GenderId: Number;
-  PhoneNo: string;
-  MobileNo: string;
-  AddedBy: number;
-  AgeYear: any;
-  AgeMonth: any;
-  AgeDay: any;
-  CountryId: number;
-  StateId: number;
-  CityId: number;
-  MaritalStatusId: number;
-  IsCharity: Boolean;
-  ReligionId: number;
-  AreaId: number;
-  VillageId: number;
-  TalukaId: number;
-  PatientWeight: number;
-  AreaName: string;
-  AadharCardNo: string;
-  PanCardNo: string;
-  currentDate = new Date();
-  AdmissionID: any;
-  VisitId: any;
-  WardId: any;
-  BedId: any;
-  companyId: any;
-  tarrifId: any;
-  departmentId: any;
-  /**
-   * Constructor
-   *
-   * @param RegInsert
-   */
+    Address: string;
+    City: string;
+    PinNo: string;
+    RegNo: string;
+    DateofBirth: Date;
+    Age: any;
+    GenderId: Number;
+    PhoneNo: string;
+    MobileNo: string;
+    AddedBy: number;
+    AgeYear: any;
+    AgeMonth: any;
+    AgeDay: any;
+    CountryId: number;
+    StateId: number;
+    CityId: number;
+    MaritalStatusId: number;
+    IsCharity: Boolean;
+    ReligionId: number;
+    AreaId: number;
+    VillageId: number;
+    TalukaId: number;
+    PatientWeight: number;
+    AreaName: string;
+    AadharCardNo: string;
+    PanCardNo: string;
+    currentDate = new Date();
+    AdmissionID: any;
+    VisitId: any;
+    WardId: any;
+    BedId: any;
+    companyId: any;
+    tarrifId: any;
+    departmentId: any;
+    /**
+     * Constructor
+     *
+     * @param RegInsert
+     */
 
-  constructor(RegInsert) {
-    {
-      this.RegId = RegInsert.RegId || 0;
-      this.regId = RegInsert.regId || 0;
-      this.RegDate = RegInsert.RegDate || "";
-      this.RegTime = RegInsert.RegTime || "";
-      this.PrefixId = RegInsert.PrefixId || "";
-      this.PrefixID = RegInsert.PrefixID || "";
-      this.FirstName = RegInsert.FirstName || "";
-      this.MiddleName = RegInsert.MiddleName || "";
-      this.LastName = RegInsert.LastName || "";
-      this.firstName = RegInsert.firstName || "";
-      this.middleName = RegInsert.middleName || "";
-      this.lastName = RegInsert.lastName || "";
-      this.Address = RegInsert.Address || "";
-      this.City = RegInsert.City || "";
-      this.PinNo = RegInsert.PinNo || "";
-      this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
-      this.Age = RegInsert.Age || "";
-      this.GenderId = RegInsert.GenderId || "";
-      this.PhoneNo = RegInsert.PhoneNo || "";
-      this.MobileNo = RegInsert.MobileNo || "";
-      this.AddedBy = RegInsert.AddedBy || "";
-      this.AgeYear = RegInsert.AgeYear || "";
-      this.AgeMonth = RegInsert.AgeMonth || "";
-      this.AgeDay = RegInsert.AgeDay || "";
-      this.CountryId = RegInsert.CountryId || 1;
-      this.StateId = RegInsert.StateId || "";
-      this.CityId = RegInsert.CityId || "";
-      this.MaritalStatusId = RegInsert.MaritalStatusId || "";
-      this.IsCharity = RegInsert.IsCharity || "";
-      this.ReligionId = RegInsert.ReligionId || "";
-      this.AreaId = RegInsert.AreaId || "";
-      this.VillageId = RegInsert.VillageId || "";
-      this.TalukaId = RegInsert.TalukaId || "";
-      this.PatientWeight = RegInsert.PatientWeight || "";
-      this.AreaName = RegInsert.AreaName || "";
-      this.AadharCardNo = RegInsert.AadharCardNo || "";
-      this.PanCardNo = RegInsert.PanCardNo || '';
-      this.AdmissionID = RegInsert.AdmissionID || 0;
-      this.VisitId = RegInsert.VisitId || 0;
-      this.WardId = RegInsert.WardId || 0;
-      this.BedId = RegInsert.BedId || 0;
-      this.companyId = RegInsert.companyId || 0;
-      this.tarrifId = RegInsert.tarrifId || 0;
-      this.departmentId = RegInsert.departmentId || 0;
+    constructor(RegInsert) {
+        {
+            this.RegId = RegInsert.RegId || 0;
+            this.regId = RegInsert.regId || 0;
+            this.RegDate = RegInsert.RegDate || "";
+            this.RegTime = RegInsert.RegTime || "";
+            this.PrefixId = RegInsert.PrefixId || "";
+            this.PrefixID = RegInsert.PrefixID || "";
+            this.FirstName = RegInsert.FirstName || "";
+            this.MiddleName = RegInsert.MiddleName || "";
+            this.LastName = RegInsert.LastName || "";
+            this.firstName = RegInsert.firstName || "";
+            this.middleName = RegInsert.middleName || "";
+            this.lastName = RegInsert.lastName || "";
+            this.Address = RegInsert.Address || "";
+            this.City = RegInsert.City || "";
+            this.PinNo = RegInsert.PinNo || "";
+            this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
+            this.Age = RegInsert.Age || "";
+            this.GenderId = RegInsert.GenderId || "";
+            this.PhoneNo = RegInsert.PhoneNo || "";
+            this.MobileNo = RegInsert.MobileNo || "";
+            this.AddedBy = RegInsert.AddedBy || "";
+            this.AgeYear = RegInsert.AgeYear || "";
+            this.AgeMonth = RegInsert.AgeMonth || "";
+            this.AgeDay = RegInsert.AgeDay || "";
+            this.CountryId = RegInsert.CountryId || 1;
+            this.StateId = RegInsert.StateId || "";
+            this.CityId = RegInsert.CityId || "";
+            this.MaritalStatusId = RegInsert.MaritalStatusId || "";
+            this.IsCharity = RegInsert.IsCharity || "";
+            this.ReligionId = RegInsert.ReligionId || "";
+            this.AreaId = RegInsert.AreaId || "";
+            this.VillageId = RegInsert.VillageId || "";
+            this.TalukaId = RegInsert.TalukaId || "";
+            this.PatientWeight = RegInsert.PatientWeight || "";
+            this.AreaName = RegInsert.AreaName || "";
+            this.AadharCardNo = RegInsert.AadharCardNo || "";
+            this.PanCardNo = RegInsert.PanCardNo || '';
+            this.AdmissionID = RegInsert.AdmissionID || 0;
+            this.VisitId = RegInsert.VisitId || 0;
+            this.WardId = RegInsert.WardId || 0;
+            this.BedId = RegInsert.BedId || 0;
+            this.companyId = RegInsert.companyId || 0;
+            this.tarrifId = RegInsert.tarrifId || 0;
+            this.departmentId = RegInsert.departmentId || 0;
+        }
     }
-  }
 }
 
 
 export class ChargesList {
-  ChargesId: number;
-  ServiceId: number;
-  serviceId: number;
-  ServiceName: String;
-  Price: any;
-  Qty: any;
-  TotalAmt: number;
-  DiscPer: number;
-  DiscAmt: number;
-  NetAmount: number;
-  DoctorId: number;
-  ChargeDoctorName: String;
-  ChargesDate: Date;
-  IsPathology: boolean;
-  IsRadiology: boolean;
-  ClassId: number;
-  ClassName: string;
-  ChargesAddedName: string;
-  PackageId: any;
-  PackageServiceId: any;
-  IsPackage: any;
-  PacakgeServiceName: any;
-  BillwiseTotalAmt: any;
-  DoctorName: any;
-  OpdIpdId: any;
+    ChargesId: number;
+    ServiceId: number;
+    serviceId: number;
+    ServiceName: String;
+    Price: any;
+    Qty: any;
+    TotalAmt: number;
+    DiscPer: number;
+    DiscAmt: number;
+    NetAmount: number;
+    DoctorId: number;
+    ChargeDoctorName: String;
+    ChargesDate: Date;
+    IsPathology: boolean;
+    IsRadiology: boolean;
+    ClassId: number;
+    ClassName: string;
+    ChargesAddedName: string;
+    PackageId: any;
+    PackageServiceId: any;
+    IsPackage: any;
+    PacakgeServiceName: any;
+    BillwiseTotalAmt: any;
+    DoctorName: any;
+    OpdIpdId: any;
 
-  constructor(ChargesList) {
-    this.ChargesId = ChargesList.ChargesId || '';
-    this.ServiceId = ChargesList.ServiceId || '';
-    this.serviceId = ChargesList.serviceId || '';
-    this.ServiceName = ChargesList.ServiceName || '';
-    this.Price = ChargesList.Price || '';
-    this.Qty = ChargesList.Qty || '';
-    this.TotalAmt = ChargesList.TotalAmt || '';
-    this.DiscPer = ChargesList.DiscPer || '';
-    this.DiscAmt = ChargesList.DiscAmt || '';
-    this.NetAmount = ChargesList.NetAmount || '';
-    this.DoctorId = ChargesList.DoctorId || 0;
-    this.DoctorName = ChargesList.DoctorName || '';
-    this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
-    this.ChargesDate = ChargesList.ChargesDate || '';
-    this.IsPathology = ChargesList.IsPathology || '';
-    this.IsRadiology = ChargesList.IsRadiology || '';
-    this.ClassId = ChargesList.ClassId || 0;
-    this.ClassName = ChargesList.ClassName || '';
-    this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-    this.PackageId = ChargesList.PackageId || 0;
-    this.PackageServiceId = ChargesList.PackageServiceId || 0;
-    this.IsPackage = ChargesList.IsPackage || 0;
-    this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
-    this.OpdIpdId = ChargesList.OpdIpdId || '';
-  }
+    constructor(ChargesList) {
+        this.ChargesId = ChargesList.ChargesId || '';
+        this.ServiceId = ChargesList.ServiceId || '';
+        this.serviceId = ChargesList.serviceId || '';
+        this.ServiceName = ChargesList.ServiceName || '';
+        this.Price = ChargesList.Price || '';
+        this.Qty = ChargesList.Qty || '';
+        this.TotalAmt = ChargesList.TotalAmt || '';
+        this.DiscPer = ChargesList.DiscPer || '';
+        this.DiscAmt = ChargesList.DiscAmt || '';
+        this.NetAmount = ChargesList.NetAmount || '';
+        this.DoctorId = ChargesList.DoctorId || 0;
+        this.DoctorName = ChargesList.DoctorName || '';
+        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+        this.ChargesDate = ChargesList.ChargesDate || '';
+        this.IsPathology = ChargesList.IsPathology || '';
+        this.IsRadiology = ChargesList.IsRadiology || '';
+        this.ClassId = ChargesList.ClassId || 0;
+        this.ClassName = ChargesList.ClassName || '';
+        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+        this.PackageId = ChargesList.PackageId || 0;
+        this.PackageServiceId = ChargesList.PackageServiceId || 0;
+        this.IsPackage = ChargesList.IsPackage || 0;
+        this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+        this.OpdIpdId = ChargesList.OpdIpdId || '';
+    }
 } 
