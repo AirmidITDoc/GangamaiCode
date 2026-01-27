@@ -753,33 +753,36 @@ classId=0
         this.classId=event.value
     }
     // Service Add 
+     IsSupplimentryBill:boolean=false;
     onSaveAddCharges() {
         debugger
-        const formValue = this.Serviceform.value
-        if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0) {
-            if (this.DayLimitbal <= 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Daily Limit Exhausted',
-                    text: 'You have already used the full daily limit. No more charges can be added today.',
-                    confirmButtonText: 'OK'
-                });
-                return;
-            } 
-            // 2️⃣ Entered amount is more than remaining balance
-            if (Number(formValue?.price || 0) > this.DayLimitbal) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Amount Exceeds Daily Limit',
-                    html: `
+        const formValue = this.Serviceform.value 
+        if (!this.IsSupplimentryBill) {
+            if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0) {
+                if (this.DayLimitbal <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Daily Limit Exhausted',
+                        text: 'You have already used the full daily limit. No more charges can be added today.',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                // 2️⃣ Entered amount is more than remaining balance
+                if (Number(formValue?.price || 0) > this.DayLimitbal) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Amount Exceeds Daily Limit',
+                        html: `
         <p>The entered charge exceeds the remaining daily balance.</p>
         <p><b>Remaining Balance:</b> ₹${this.DayLimitbal}</p>
         <p>Please enter an amount within the available limit.</p>`,
-                    confirmButtonText: 'OK'
-                });
-                return;
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
             }
-        } 
+        }
         const formattedDate = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "yyyy-MM-dd");
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.Serviceform.get('chargesDate').setValue(formattedDate);
@@ -1006,7 +1009,8 @@ classId=0
                 );
 
                 // Remaining balance (never go below 0)
-                this.DayLimitbal = Math.max(this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt, 0);
+                // this.DayLimitbal = Math.max(this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt, 0);
+                 this.DayLimitbal = (this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt);
 
                 console.log('Today Net Amount:', todayNetAmt);
                 console.log('Remaining Balance:', this.DayLimitbal);
