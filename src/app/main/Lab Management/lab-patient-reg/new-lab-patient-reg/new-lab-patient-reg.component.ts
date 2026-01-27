@@ -6,14 +6,14 @@ import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDetailObj, ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+// import { AdvanceDetailObj, ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
-import { LabPatientList, LabRequest } from '../lab-patient-reg.component';
+import { ChargesList, LabPatientList, LabRequest } from '../lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -26,6 +26,7 @@ import { debounce } from 'lodash';
 import { PreviousDeptListComponent } from 'app/main/opd/appointment-list/update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { MatSelectChange } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -70,7 +71,7 @@ export class NewLabPatientRegComponent {
   autocompleteModeLabPatientType: string = "LabPatientType";
 
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
-  // dstable1 = new MatTableDataSource<LabRequest>();
+  public dsPackageList = new MatTableDataSource<ChargesList>();
   filteredOptions: any[] = [];
   prevResults: any[] = [];
   public dstable1 = new MatTableDataSource<ChargesList>();
@@ -84,7 +85,6 @@ export class NewLabPatientRegComponent {
   selectedPatient: any;
   selectedMobile: any;
 
-  vOPIPId = 0
   regNo = 0;
   PatientName: any;
   opdNo = "0";
@@ -122,6 +122,7 @@ export class NewLabPatientRegComponent {
   ]
 
   displayedServiceselected: string[] = [
+    'Status',
     'ServiceName',
     'DoctorName',
     'Urgent',
@@ -131,6 +132,8 @@ export class NewLabPatientRegComponent {
     'NetAmount',
     'buttons'
   ]
+  public displayedColumnspackage: string[] =
+    ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'DoctorName'];
 
   doctorOptions: any[] = [];
   onlineflag: boolean = false;
@@ -175,7 +178,7 @@ export class NewLabPatientRegComponent {
     // this.myForm.get('patientType').setValue(this.data?.row?.patientTypeId);
     this.myForm.get('Comments').setValue(this.data?.row?.comments);
     this.myForm.get('ReferByName').setValue(this.data?.row?.referByName);
-    this.myForm.get('tariffId').setValue(this.data?.row?.tariffId);
+    this.myForm.get('tariffId').setValue(this.data?.row?.tariffId ?? 1);
     // this.myForm.get('patientTypeId').setValue(2);
 
     if (this.data?.row?.labPatientId) {
@@ -240,11 +243,11 @@ export class NewLabPatientRegComponent {
       stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       patientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      tariffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],//this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId], // need to ask sir what value to pass
+      tariffId: [this.vTariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],//this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId], // need to ask sir what value to pass
       classId: [1],// [this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId],
       departmentId: [0],
-      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      refDocId: [0],
+      doctorId: [0],
+      refDocId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       createdBy: this.accountService.currentUserValue.userId,
       labPatientId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       LabPatRegId: 0,
@@ -260,7 +263,7 @@ export class NewLabPatientRegComponent {
       patientType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Comments: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       ReferByName: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      companyExecutiveId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      companyExecutiveId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
       // extra fields
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -324,7 +327,7 @@ export class NewLabPatientRegComponent {
     return this._formbuilder.group({
       //bill header  
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdipdid: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdid: [this.VlabPatRegId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       regNo: ["0", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       patientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       ipdno: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -421,7 +424,7 @@ export class NewLabPatientRegComponent {
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdId: [this.VlabPatRegId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -466,8 +469,60 @@ export class NewLabPatientRegComponent {
   createBillDetails(item: any): FormGroup {
     return this._formbuilder.group({
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      chargesId: [parseInt(item?.ServiceId), [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      chargesId: [parseInt(item?.ServiceId), [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
+  }
+  Createpacakgechargeform(item: any): FormGroup {
+    // debugger
+    return this._formbuilder.group({
+      chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdId: [this.VlabPatRegId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionPercentage: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      doctorId: [item?.doctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorName: [item?.doctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isComServ: [false],
+      isPrintCompSer: [false],
+      salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isGenerated: [false],
+      addedBy: [this.accountService.currentUserValue.userId],
+      isCancelled: [false],
+      isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelledDate: ['1999-01-01'],
+      isPathology: [item?.isPathology ? true : false],
+      isRadiology: [item?.isRadiology ? true : false],
+      isPackage: [true],
+      wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      serviceCode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      serviceName: [item?.serviceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      isInclusionExclusion: [false],
+      isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrCompanyService: [false],
+      packageId: [item?.PackageServiceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
+      classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+  get packcagechargesArray(): FormArray {
+    return this.OpBillForm.get('packcagecharges') as FormArray;
   }
   get ChargeddetailsArray(): FormArray {
     return this.OpBillForm.get('addCharges') as FormArray;
@@ -487,7 +542,7 @@ export class NewLabPatientRegComponent {
     var mode = "Company"
     if (value.text != "Self") {
       this._labPatientRegService.getMaster(mode, 1);
-      this.myForm.get('companyId').setValidators([Validators.required]);
+      this.myForm.get('companyId').setValidators([Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
       this.isCompanySelected = true;
       this.patienttype = 2;
       this.OPFooterForm.get('paymentType').setValue('CreditPay')
@@ -499,8 +554,7 @@ export class NewLabPatientRegComponent {
       this.patienttype = 1;
       this.OPFooterForm.get('paymentType').setValue('CashPay')
       this.myForm.get('companyId').setValue(0);
-      this.myForm.get('companyExecutiveId').setValue(0);
-      this.myForm.get('tariffId').setValue(0);
+      this.myForm.get('tariffId').setValue(1);
       this.isTariffSelect = false //tariff not readonly
 
       this._labPatientRegService.getexecByCompany(0).subscribe((data: any) => {
@@ -559,26 +613,20 @@ export class NewLabPatientRegComponent {
     if (value.value) {
       this._labPatientRegService.getexecByCompany(value.value).subscribe((data: any) => {
         // console.log(data)
-        this.ddlcompanyExec.options = data;
-        this.ddlcompanyExec.bindGridAutoComplete();
-      });
-    }
-    else {
-      this._labPatientRegService.getexecByCompany(value.companyId).subscribe((data: any) => {
-        // 
-        this.ddlcompanyExec.options = data;
-        const incomingId = value.companyExecutiveId;
+        debugger
+        // this.ddlcompanyExec.options = data;
+        const incomingId = data[0].executiveId;
         console.log("Id:", incomingId)
-        setTimeout(() => {
-          this.ddlcompanyExec.bindGridAutoComplete();
+        // setTimeout(() => {
+          // this.ddlcompanyExec.bindGridAutoComplete();
           if (incomingId) {
             const matchedId = data.find(exec => exec.executiveId === incomingId);
             if (matchedId) {
-              this.ddlcompanyExec.SetSelection(matchedId.executiveId);
-              // this.doctorname = matchedId.text
+              // this.ddlcompanyExec.SetSelection(matchedId.executiveId);
+              this.myForm.get('companyExecutiveId').setValue(matchedId.executiveId)
             }
           }
-        }, 100);
+        // }, 100);
       });
     }
   }
@@ -741,14 +789,15 @@ export class NewLabPatientRegComponent {
 
     this.myForm.patchValue({
       totalAmt: totalSum,
-      discountAmt:Math.round(totalDiscount),
+      totalDiscountPer: Math.round(totalDiscountPer),
+      discountAmt: Math.round(totalDiscount),
       netPayableAmt: Math.round(totalNet)
     }, { emitEvent: false });
     if (!this.isDiscountApplied && totalDiscount > 0) {
       this.isDiscountApplied = true;
       this.Consessionres = true
     }
-    
+
     this.Consessionres = this.chargeList.some(
       charge => (+charge.DiscAmt || 0) > 0
     );
@@ -861,9 +910,9 @@ export class NewLabPatientRegComponent {
 
     const total = this.chargeList.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
     const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
-    if (discPer)
-      this.Consessionres = true
-    // this.myForm.get('discountAmt').value
+
+    this.Consessionres = discPer > 0;
+
     const discountAmt = (total * discPer) / 100;
     const netAmt = Math.round(total - discountAmt);
 
@@ -871,8 +920,29 @@ export class NewLabPatientRegComponent {
       totalAmt: total,
       discountAmt: discountAmt,
       netPayableAmt: netAmt
-    });
+    }, { emitEvent: false });
   }
+
+  updateFromDiscountAmt() {
+    const total = this.chargeList.reduce(
+      (sum, item) => sum + (parseFloat(item.Price.toString()) || 0),
+      0
+    );
+
+    const discountAmt = Number(this.myForm.get('discountAmt')?.value) || 0;
+
+    this.Consessionres = discountAmt > 0;
+
+    const discPer = total > 0 ? (discountAmt * 100) / total : 0;
+    const netAmt = Math.round(total - discountAmt);
+
+    this.myForm.patchValue({
+      totalAmt: total,
+      totalDiscountPer: discPer,
+      netPayableAmt: netAmt
+    }, { emitEvent: false });
+  }
+
   total = 0
   getCellCalculation(element) {
 
@@ -928,9 +998,9 @@ export class NewLabPatientRegComponent {
       ChargesAddedName: this.accountService.currentUserValue.userName,
       IsPathology: row.isPathology,
       IsRadiology: row.isRadiology,
-      IsPackage: 0,
+      IsPackage: row.isPackage,
       serviceCode: 0,//formValue.serviceName.companyCode, 
-      isInclusionExclusion: 1,//formValue.serviceName.isInclusionOrExclusion
+      isInclusionExclusion: true,//formValue.serviceName.isInclusionOrExclusion
     };
     if (!this.isDiscountApplied && discountAmount > 0) {
       this.isDiscountApplied = true;
@@ -943,7 +1013,148 @@ export class NewLabPatientRegComponent {
     this.chargeList.push(newCharge);
     this.dstable1.data = this.chargeList;
     this.updateCalculation();
+    this.getRtevPackageDetList(row)
+  }
 
+  public packageList: ChargesList[] = [];
+  PacakgeList: any = [];
+  EditedPackageService: any = [];
+  OriginalPackageService: any = [];
+  TotalPrice: any = 0;
+  getRtevPackageDetList(obj) {
+    var vdata =
+    {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
+      "exportType": "JSON",
+      "columns": []
+    }
+    //console.log(vdata)
+    this._labPatientRegService.getRtevPackageDetList(vdata).subscribe(data => {
+      debugger
+      this.dsPackageList.data = data.data as ChargesList[];
+      this.dsPackageList.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            serviceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            Qty: 1,
+            TotalAmt: (element.price * 1) || 0,
+            ConcessionPercentage: 0,
+            DiscAmt: 0,
+            NetAmount: (element.price * 1) || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            pacakgeServiceName: element.pacakgeServiceName,
+            doctorName: element.doctorName,
+            doctorId: element.doctorId
+          })
+      })
+      this.dsPackageList.data = this.PacakgeList
+    });
+  }
+  getPacakgeDetail(contact) {
+    const dialogRef = this._matDialog.open(PackageDetailsComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '70%',
+        data: {
+          Obj: contact,
+          PatientDet: this.registerObj,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      if (result) {
+        this.dsPackageList.data = result
+        console.log(this.dsPackageList.data)
+        this.dsPackageList.data.forEach(element => {
+          this.PacakgeList = [];
+          if (element.BillwiseTotalAmt > 0) {
+            this.TotalPrice = element.BillwiseTotalAmt;
+            console.log(this.TotalPrice)
+          } else {
+            this.TotalPrice = parseInt(this.TotalPrice) + parseInt(element.Price);
+            console.log(this.TotalPrice)
+          }
+          this.OriginalPackageService = this.dstable1.data.filter(item => item.ServiceId !== element.PackageServiceId)
+          this.EditedPackageService = this.dstable1.data.filter(item => item.ServiceId === element.PackageServiceId)
+          console.log(this.OriginalPackageService)
+          console.log(this.EditedPackageService)
+        });
+        let price = 0;
+        let TotalAmt = 0;
+        let NetAmount = 0;
+        this.dsPackageList.data.forEach(element => {
+          if (element.BillwiseTotalAmt > 0) {
+            price = 0;
+            TotalAmt = 0;
+            NetAmount = 0;
+          } else {
+            price = element.Price
+            TotalAmt = element.TotalAmt
+            NetAmount = element.NetAmount
+          }
+          this.PacakgeList.push(
+            {
+              serviceId: element.ServiceId,
+              serviceName: element.ServiceName,
+              price: price || 0,
+              Qty: element.Qty || 1,
+              TotalAmt: TotalAmt || 0,
+              ConcessionPercentage: element.ConcessionPercentage || 0,
+              DiscAmt: element.DiscAmt || 0,
+              NetAmount: NetAmount || 0,
+              isPathology: element.IsPathology || 0,
+              isRadiology: element.IsRadiology || 0,
+              packageId: element.PackageId || 0,
+              PackageServiceId: element.PackageServiceId || 0,
+              pacakgeServiceName: element.PacakgeServiceName || '',
+              doctorName: element.DoctorName || '',
+              doctorId: element.DoctorId || 0
+            });
+          this.dsPackageList.data = this.PacakgeList;
+        });
+        if (this.EditedPackageService.length) {
+          this.EditedPackageService.forEach(element => {
+            this.OriginalPackageService.push(
+              {
+                ChargesId: 0,// this.serviceId,
+                ServiceId: element.ServiceId,
+                ServiceName: element.ServiceName,
+                Price: this.TotalPrice || 0,
+                Qty: element.Qty || 0,
+                TotalAmt: (parseFloat(element.Qty) * parseFloat(this.TotalPrice)) || 0,
+                DiscPer: element.DiscPer || 0,
+                DiscAmt: element.DiscAmt || 0,
+                NetAmount: (parseFloat(element.Qty) * parseFloat(this.TotalPrice)) || 0,
+                ClassId: 1,
+                DoctorId: element.DoctornewId,
+                DoctorName: element.DoctorName,
+                ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+                IsPathology: element.IsPathology,
+                IsRadiology: element.IsRadiology,
+                IsPackage: element.IsPackage,
+                ClassName: element.ClassName,
+                ChargesAddedName: this.accountService.currentUserValue.user.id || 1,
+              });
+            this.dstable1.data = this.OriginalPackageService;
+            this.chargeList = this.dstable1.data
+          });
+        }
+        this.TotalPrice = 0;
+        // this.getRtevPackageDetList(result);
+        // this.onAddCharges(result)
+      }
+      this.calculateTotalAmount();
+    });
   }
 
   deleteTableRow(element) {
@@ -1259,6 +1470,13 @@ export class NewLabPatientRegComponent {
       this.dstable1.data.forEach(item => {
         this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+
+        if (item.IsPackage == 1) {
+          this.packcagechargesArray.clear();
+          this.dsPackageList.data.forEach(item => {
+            this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
+          });
+        }
       });
 
       console.log("form values", this.OpBillForm.value)
@@ -1272,7 +1490,7 @@ export class NewLabPatientRegComponent {
         PatientHeaderObj['DoctorName'] = this.doctorname;
         PatientHeaderObj['CompanyName'] = this.companyName;
         PatientHeaderObj['DepartmentName'] = this.departmentname;
-        PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
+        PatientHeaderObj['OPD_IPD_Id'] = this.VlabPatRegId;
         PatientHeaderObj['CompanyId'] = this.companyId || 0;
         PatientHeaderObj['CashCounterId'] = this.OpBillForm.get('cashCounterId')?.value || 0;
         PatientHeaderObj['Age'] = this.ageYear;

@@ -60,6 +60,9 @@ import { EditAppointmentComponent } from './edit-appointment/edit-appointment.co
 })
 export class AppointmentListComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    IsOpdEmr:boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
 
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
