@@ -133,7 +133,7 @@
                     <airmid-textbox fxFlex="5%" label="UOM" formControlName="UOMId" [formGroup]="userFormGroup"
                       placeholder="UOM" [readonly]="true"></airmid-textbox>
 
-                    <airmid-textbox fxFlex="4%" label="Packing" formControlName="ConversionFactor" type="number"
+                    <airmid-textbox fxFlex="4%" label="Packing" formControlName="ConversionFactor" type="text"
                       [formGroup]="userFormGroup" (keyup)="calculateTotalamt()" [min]="1"></airmid-textbox>
 
                     <!-- <airmid-textbox fxFlex="5%" label="Batch No" formControlName="BatchNo" [formGroup]="userFormGroup"
@@ -153,17 +153,17 @@
                     </mat-form-field> 
 
                     <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
-                      placeholder="Qty" (valueChange)="calculateTotalamt()" type="number"></airmid-textbox>
+                      placeholder="Qty" (valueChange)="calculateTotalamt()" type="text"></airmid-textbox>
 
                     <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
-                      placeholder="FreeQty" type="number" [min]="0"  (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      placeholder="FreeQty" type="text" [min]="0"  (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
-                      placeholder="MRP" type="number" [validations]="getValidationMessages().mrp"
+                      placeholder="MRP" type="text" [validations]="getValidationMessages().mrp"
                       (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
-                      placeholder="Rate" type="number" [min]="0" (valueChange)="calculateTotalamt()"
+                      placeholder="Rate" type="text" [min]="0" (valueChange)="calculateTotalamt()"
                       [validations]="getValidationMessages().rate"
                        (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
 
@@ -171,7 +171,7 @@
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
-                      type="number" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      type="text" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                     <div *ngIf="IsDiscPer2" fxFlex="5%">
                       <airmid-textbox label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup" type="text"

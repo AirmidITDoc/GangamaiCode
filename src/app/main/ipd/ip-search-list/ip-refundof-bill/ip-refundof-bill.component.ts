@@ -246,7 +246,7 @@ currency:any='';
 
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "ChargesId",
       "sortOrder": 0,
       "filters": [

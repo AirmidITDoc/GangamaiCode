@@ -699,10 +699,10 @@ export class InterimBillComponent implements OnInit {
     //424929  this.vOPIPId
     let Data = {
       "first": 0,
-      "rows": 100,
+      "rows": 999,
       "sortField": "Id",
       "sortOrder": 0,
-      "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
+      "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(this.selectedAdvanceObj?.admissionId || 0), "opType": "Equals" },
       { "fieldName": "PhoneNumber", "fieldValue": String(this.IPInterimBillForm.get('mpesaMobile')?.value || 0), "opType": "Equals" }],
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]

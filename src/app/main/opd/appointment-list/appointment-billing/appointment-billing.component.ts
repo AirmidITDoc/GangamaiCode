@@ -226,10 +226,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         //424929  this.vOPIPId
         let Data = {
             "first": 0,
-            "rows": 100,
+            "rows": 999,
             "sortField": "Id",
             "sortOrder": 0,
-            "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
+            "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(this.vOPIPId), "opType": "Equals" },
             { "fieldName": "PhoneNumber", "fieldValue": String(this.OPFooterForm.get('mpesaMobile')?.value || 0), "opType": "Equals" }],
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
@@ -792,7 +792,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         var vdata =
         {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ServiceId",
             "sortOrder": 0,
             "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],

@@ -436,7 +436,7 @@ export class IPSettlementComponent implements OnInit {
             toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
             var vdata = {
                 "first": 0,
-                "rows": 100,
+                "rows": 999,
                 "sortField": "RegNo",
                 "sortOrder": 0,
                 "filters": [

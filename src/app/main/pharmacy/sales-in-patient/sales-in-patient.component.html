@@ -240,6 +240,17 @@
                                 (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
                                 ValueField="itemId"></airmid-autocomplete>
                             </div>
+
+                            <div class="net-amt-box">
+                              <span class="net-amt-label">Day Limit: </span>
+                              <span class="net-amt-value">{{ (DayLimit || 0) | currency: currency:'symbol'
+                                }}</span>
+                            </div>
+                            
+                            <div class="net-amt-box">
+                              <span class="net-amt-label">Day Balance: </span>
+                              <span class="net-amt-value">{{ (DayBalance || 0) | currency: currency:'symbol'}}</span>
+                            </div>
  
                           </div>
                         </div>
