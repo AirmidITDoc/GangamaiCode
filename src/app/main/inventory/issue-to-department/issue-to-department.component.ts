@@ -14,6 +14,9 @@ import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
 import { IssueToDepartmentService } from './issue-to-department.service';
 import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
 import { Router } from '@angular/router';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+
 
 @Component({
     selector: 'app-issue-to-department',
@@ -23,6 +26,8 @@ import { Router } from '@angular/router';
     animations: fuseAnimations,
 })
 export class IssueToDepartmentComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.IssueToDepartment, permissionType.Add);
+      
     hasSelectedContacts: boolean;
     IssueSearchGroup: FormGroup;
 
@@ -41,7 +46,7 @@ export class IssueToDepartmentComponent implements OnInit {
         public _IssueToDep: IssueToDepartmentService,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public _matDialog: MatDialog, private accountService: AuthenticationService,
-        public datePipe: DatePipe, private _ActRoute: Router,
+        public datePipe: DatePipe, private _ActRoute: Router,public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void {
@@ -96,6 +101,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.IssueToDepartment,
         apiUrl: "IssueToDepartment/IssueToDeptList",
         columnsList: this.allcolumns,
         sortField: "IssueId",

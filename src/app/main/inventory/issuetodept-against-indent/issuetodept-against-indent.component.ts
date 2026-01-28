@@ -90,12 +90,12 @@ export class IssuetodeptAgainstIndentComponent {
       "filters": [
         {
           "fieldName": "FromStoreId",
-          "fieldValue": String(this.vstoreId),
+          "fieldValue": String(this.tostoreId),
           "opType": "Equals"
         },
         {
           "fieldName": "ToStoreId",
-          "fieldValue": String(this.tostoreId),
+          "fieldValue": String(this.vstoreId),
           "opType": "Equals"
         },
         {
