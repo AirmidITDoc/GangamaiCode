@@ -79,7 +79,8 @@ export class PackageDetailsComponent {
         this.getOPDpackagedetList(this.registerObj);
       }
       console.log(this.registerObj)
-      this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.data?.PatientDet?.tariffId + "&ClassId=" + this.data?.PatientDet?.classId + "&ServiceName="
+      //GetServiceListwithTraiff
+      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.data?.PatientDet?.tariffId + "&ClassId=" + this.data?.PatientDet?.classId + "&ServiceName="
     }
     this.createForm();
     this.CreatePacakgeUpdateForm();
@@ -116,7 +117,7 @@ export class PackageDetailsComponent {
         text: "Selected Service already available in the list",
         icon: "warning"
       });
-      this.PackageForm.get('SrvcName').setValue('a%')
+      this.PackageForm.get('SrvcName').setValue('')
       const serviceNameElement = document.querySelector(`[name='SrvcName']`) as HTMLElement;
       if (serviceNameElement) {
         serviceNameElement.focus();
@@ -307,7 +308,7 @@ export class PackageDetailsComponent {
     }
     this.isDoctor = false;
     this.ChargesDoctorname = ''
-    this.PackageForm.get('SrvcName').setValue('a%');
+    this.PackageForm.get('SrvcName').setValue('');
     this.PackageForm.get('DoctorID').reset('%');
     this.PackageForm.get('MainServiceName').setValue(this.vMainServiceName);
   }

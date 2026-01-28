@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -158,6 +158,7 @@ export class IPBillingComponent implements OnInit {
     draftSaveform: FormGroup;
     IPBillMyForm: FormGroup
     Serviceform: FormGroup;
+        BillReviwe:FormGroup
     sIsLoading: string = '';
     chargeslist: any = [];
     chargeslist1: any = [];
@@ -189,6 +190,7 @@ export class IPBillingComponent implements OnInit {
     TariffId: any;
     WardId: any;
     BedId: any;
+   
     Is9_Digit_National_Id:boolean=false;
     autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModedeptdoc: string = "ConDoctor";
@@ -229,6 +231,7 @@ classId=0
         this.createserviceForm();
         this.createBillForm();
         this.Serviceform.markAllAsTouched();
+        this.BillReviwe = this.createbillReviwe();
         this.IPBillMyForm = this.CreateIPBillForm();
         this.draftSaveform = this.createDraftSaveForm();
         this.IpbillFooterform.markAllAsTouched();
@@ -747,18 +750,33 @@ classId=0
             discPerElement.focus();
         }
     }
+ 
+    
+    createbillReviwe(){
+          return this.formBuilder.group({
+            IsSupplimentryBill:false
+          })
+    }
     //Class selected 
     getSelectedClassObj(event) {
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&SrvcName="
         this.classId=event.value
     }
-    // Service Add 
-     IsSupplimentryBill:boolean=false;
+        AllowToaddcharges(event) {
+        if (event.checked == true) {
+            this.BillReviwe.get('IsSupplimentryBill').setValue(true);
+        } else { 
+              this.BillReviwe.get('IsSupplimentryBill').setValue(false); 
+        }
+    }
+     // Service Add 
+ 
     onSaveAddCharges() {
         debugger
         const formValue = this.Serviceform.value 
-        if (!this.IsSupplimentryBill) {
-            if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0) {
+      
+        if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0) {
+            if (!this.BillReviwe.get('IsSupplimentryBill').value) {
                 if (this.DayLimitbal <= 0) {
                     Swal.fire({
                         icon: 'warning',
@@ -849,6 +867,7 @@ classId=0
         }
         this.interimArray = [];
         this.isDoctor = false;
+        this.BillReviwe.reset({ IsSupplimentryBill: false });
         this.onClearServiceAddList();
         this.PackageDetArray.clear();
         const serviceIdElement = document.querySelector(`[name='serviceName']`) as HTMLElement;

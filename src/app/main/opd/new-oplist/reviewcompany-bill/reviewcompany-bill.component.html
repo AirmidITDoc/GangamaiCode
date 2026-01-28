@@ -535,16 +535,16 @@
                                                                     <mat-header-cell
                                                                         *matHeaderCellDef>Price</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact">
-                                                                        <!-- <mat-form-field floatLabel="never"
-                                                                            class="compact-field" *ngIf="Lable != 'Pharmacy'">
+                                                                        <mat-form-field floatLabel="never"
+                                                                            class="compact-field" *ngIf="Lable != 'Pharmacy' && IsBillreview">
                                                                             <input matInput placeholder="Price"
                                                                                 type="text" [(ngModel)]="contact.price"
                                                                                 required
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
 
-                                                                        </mat-form-field> -->
-                                                                        <span >{{
-                                                                            contact.price | number:'1.2-2'}}</span>
+                                                                        </mat-form-field>
+                                                                        <!-- <span >{{
+                                                                            contact.price | number:'1.2-2'}}</span> -->
                                                                     </mat-cell>
                                                                 </ng-container>
 
@@ -559,15 +559,15 @@
                                                                     <mat-header-cell
                                                                         *matHeaderCellDef>Qty</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact">
-                                                                        <!-- <mat-form-field floatLabel="never"
-                                                                            class="compact-field" *ngIf="Lable != 'Pharmacy'">
+                                                                        <mat-form-field floatLabel="never"
+                                                                            class="compact-field" *ngIf="Lable != 'Pharmacy' && IsBillreview">
                                                                             <input matInput placeholder="Qty"
                                                                                 type="text" [(ngModel)]="contact.qty"
                                                                                 required
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
-                                                                        </mat-form-field> -->
-                                                                          <span>{{
-                                                                            contact.qty}}</span>
+                                                                        </mat-form-field>
+                                                                          <!-- <span>{{
+                                                                            contact.qty}}</span> -->
                                                                     </mat-cell>
                                                                 </ng-container>
 
@@ -587,7 +587,7 @@
                                                                     <mat-cell *matCellDef="let contact">
                                                                         <mat-form-field floatLabel="never"
                                                                             class="compact-field"
-                                                                            *ngIf="Lable != 'Pharmacy'">
+                                                                            *ngIf="Lable != 'Pharmacy' && IsBillreview">
                                                                             <input matInput placeholder="Disc %"
                                                                                 [(ngModel)]="contact.concessionPercentage"
                                                                                 type="text" [min]="0" [max]="100"
@@ -604,7 +604,7 @@
                                                                     <mat-cell *matCellDef="let contact">
                                                                         <mat-form-field floatLabel="never"
                                                                             class="compact-field"
-                                                                            *ngIf="Lable != 'Pharmacy'">
+                                                                            *ngIf="Lable != 'Pharmacy' && IsBillreview">
                                                                             <input matInput placeholder="Disc Amt"
                                                                                 [(ngModel)]="contact.concessionAmount"
                                                                                 type="text" [min]="0"

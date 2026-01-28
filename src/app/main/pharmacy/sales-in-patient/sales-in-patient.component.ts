@@ -214,7 +214,8 @@ export class SalesInPatientComponent implements OnInit {
              ExternalPatID: [''],
              IsPurchaseWsie:[false],
              CredirReasonId:[0],
-             CredirReasonName:[0]
+             CredirReasonName:[0],
+             IsSupplimentryBill:false
          });
      }
      //sales save form
@@ -1007,32 +1008,44 @@ export class SalesInPatientComponent implements OnInit {
          })
  
      }
+        AllowToaddcharges(event) {
+        if (event.checked == true) {
+            this.ItemSubform.get('IsSupplimentryBill').setValue(true);
+        } else { 
+              this.ItemSubform.get('IsSupplimentryBill').setValue(false); 
+        }
+    }
+ 
      onSave(event) { 
+        debugger
           const formValue = this.ItemSubform.value 
-         if ((this.DayLimit || 0) > 0) {
-             if (this.DayBalance <= 0) {
-                 Swal.fire({
-      icon: 'warning',
-      title: 'Daily Limit Exhausted',
-      text: 'The daily limit for medicine sales has been fully utilized. No further medicines can be billed today.',
-      confirmButtonText: 'OK'
-                 });
-                 return;
-             }
-             // 2️⃣ Entered amount is more than remaining balance
-             if (Number(formValue?.netAmount || 0) > this.DayBalance) {
-                 Swal.fire({
-                     icon: 'error',
-                     title: 'Amount Exceeds Daily Limit',
-                     html: `
+        
+             if ((this.DayLimit || 0) > 0) {
+                 if (!this.ItemSubform.get('IsSupplimentryBill')?.value) {
+                 if (this.DayBalance <= 0) {
+                     Swal.fire({
+                         icon: 'warning',
+                         title: 'Daily Limit Exhausted',
+                         text: 'The daily limit for medicine sales has been fully utilized. No further medicines can be billed today.',
+                         confirmButtonText: 'OK'
+                     });
+                     return;
+                 }
+                 // 2️⃣ Entered amount is more than remaining balance
+                 if (Number(formValue?.netAmount || 0) > this.DayBalance) {
+                     Swal.fire({
+                         icon: 'error',
+                         title: 'Amount Exceeds Daily Limit',
+                         html: `
         <p>The entered medicine amount exceeds the remaining daily balance.</p>
         <p><b>Remaining Balance:</b> ₹${this.DayBalance}</p>
         <p>Please enter an amount within the available limit.</p>`,
-                     confirmButtonText: 'OK'
-                 });
-                 return;
+                         confirmButtonText: 'OK'
+                     });
+                     return;
+                 }
              }
-         }  
+         }
 
              if ((this.RegNo || 0) == 0) {
                  this.toastr.warning('Please select Patient', 'Warning !', {
@@ -1051,7 +1064,8 @@ export class SalesInPatientComponent implements OnInit {
              cancelButtonText: 'No, cancel'
          }).then((result) => {
              if (result.isConfirmed) {  
-                 this.BillSave(event); // Call your save function
+                 this.BillSave(event); // Call your save function 
+                  this.ItemSubform.reset({ IsSupplimentryBill: false });
              }
          });
      }
@@ -1723,7 +1737,8 @@ export class SalesInPatientComponent implements OnInit {
              console.log(response.data);
              this.TotalCreditAmt = response?.data[0]?.creditAmount || 0;
              this.DayLimit = response?.data[0]?.compnayCreditAmount || 0;
-             this.DayBalance = Math.max(response?.data[0]?.dayWiseBalCredit || 0, 0);  
+             //this.DayBalance = Math.max(response?.data[0]?.dayWiseBalCredit || 0, 0);  
+             this.DayBalance = (response?.data[0]?.dayWiseBalCredit || 0);  
 //              {
 //     "compnayCreditAmount": 551,
 //     "chargesAmount": 1500,

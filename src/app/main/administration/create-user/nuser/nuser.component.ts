@@ -344,7 +344,7 @@ export class NUserComponent implements OnInit {
       pharIpopt: 0,
       isDiscApply: 0,
       discApplyPer: [0],
-      IsBillReview: true,
+      IsBillReview: false,
       IsAdminMultiview: false,
       isActive: [true, [Validators.required]],
       tLoginAccessDetails: this._formBuilder.array([]),

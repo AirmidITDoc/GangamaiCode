@@ -251,6 +251,13 @@
                               <span class="net-amt-label">Day Balance: </span>
                               <span class="net-amt-value">{{ (DayBalance || 0) | currency: currency:'symbol'}}</span>
                             </div>
+
+                            
+                            <mat-checkbox  formControlName="IsSupplimentryBill" 
+                            name="IsSupplimentryBill"  (change)="AllowToaddcharges($event)">
+                                   Check
+                            </mat-checkbox>
+                            
  
                           </div>
                         </div>

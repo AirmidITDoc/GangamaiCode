@@ -106,7 +106,7 @@
 
 
                             <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                                (click)="$event.stopPropagation();">
+                                (click)="$event.stopPropagation();" *ngIf="element.interimOrFinal=='0'">
                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                             </button>
                             <mat-menu #moreMenu="matMenu">
