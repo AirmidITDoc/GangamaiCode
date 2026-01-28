@@ -105,4 +105,9 @@ export class LabPatientRegService {
   public getRefundofBillServiceList(employee) {
     return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList", employee);
   }
+
+  public InsertEstimate(employee) {
+    return this._httpClient.PostData("Estimate/Insert", employee);
+  }
+  
 }

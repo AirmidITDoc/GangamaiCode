@@ -88,9 +88,9 @@ constructor(public _LabmanagementService: LabmanagementService, public _matDialo
       this.getfilterSMShistory()
 
     }
-    if (this.LabId > 0)
-      debugger
-    this.getfilterEmailhistory()
+    // if (this.LabId > 0)
+    //   debugger
+    // this.getfilterEmailhistory()
   }
 
 
@@ -280,6 +280,8 @@ debugger
   }
 
   onItemToggle1(item) {
+    if(this.LabId)
+      this.getfilterEmailhistory()
     console.log('Toggled:', item);
   }
   removeItem(index: number) {

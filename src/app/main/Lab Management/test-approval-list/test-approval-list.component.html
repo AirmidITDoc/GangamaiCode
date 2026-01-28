@@ -160,6 +160,17 @@
 
                                                 <mat-icon *ngIf="element.isVerified=='0'" matTooltip="NotVerified"
                                                     color="warn">check_circle</mat-icon>
+
+                                                     <!-- <span class="status-box" [ngClass]="{
+                                                                    'status-completed': element.isVerifyid,
+                                                                    'status-pending': !element.isVerifyid
+                                                                }" [matTooltip]="getVerifyTooltip(contact)"
+                                                                    matTooltipClass="verify-tooltip"
+                                                                    (click)=" chkresultentryVerify(contact, true)"
+                                                                    [style.cursor]="element.isCompleted && !element.isVerifyid ? 'pointer' : 'default'"
+                                                                    [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
+                                                                    {{ element.isVerifyid ? 'Verified' : 'UnVerified' }}
+                                                                </span> -->
                                             </div>
                                         </ng-template>
 
