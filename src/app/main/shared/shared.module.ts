@@ -85,10 +85,13 @@ import { WhatsappDetPopUpOverComponent } from './componets/email-send/whatsapp-d
 import { MatRadioModule } from '@angular/material/radio'; 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StoreUnitComponent } from './componets/store-unit/store-unit.component';
+import { AirmidAuditComponent } from './componets/airmid-audit/airmid-audit.component';
+import { AirmidAuditIconComponent } from './componets/airmid-audit-icon/airmid-audit-icon.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 @NgModule({
     declarations: [
-        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent,StoreUnitComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent,StoreUnitComponent, PaymentModeComponent,AirmidAuditComponent, AirmidAuditIconComponent,ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
         AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, 
         AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
         AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent, SMSDetailsPopupOverComponent, WhatsappDetPopUpOverComponent
@@ -127,7 +130,8 @@ import { StoreUnitComponent } from './componets/store-unit/store-unit.component'
         MatTooltipModule,
         MatDialogModule,
         MatRadioModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        NgxJsonViewerModule
     ],
     providers: [
         ExcelDownloadService,
@@ -142,6 +146,8 @@ import { StoreUnitComponent } from './componets/store-unit/store-unit.component'
         HeaderComponent,
         StoreUnitComponent,
         PaymentModeComponent,
+        AirmidAuditComponent,
+        AirmidAuditIconComponent,
         DyanmicTableHeightDirective,
         AirmidTableComponent,
         AirmidTextboxComponent,

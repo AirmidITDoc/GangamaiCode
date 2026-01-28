@@ -23,10 +23,10 @@ export class PrefixMasterComponent implements OnInit {
     PrefixMasterList: any;
     msg: any;
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
-    
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    
+
     constructor(
         public _PrefixMasterService: PrefixMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog,
@@ -49,11 +49,11 @@ export class PrefixMasterComponent implements OnInit {
                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
-                    },  {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
-                            this.grid.bindGridData();
-                        });
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
+                                this.grid.bindGridData();
+                            });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete
