@@ -109,5 +109,8 @@ export class LabPatientRegService {
   public InsertEstimate(employee) {
     return this._httpClient.PostData("Estimate/Insert", employee);
   }
-  
+
+  public getRtevPackageDetList(employee) { 
+  return this._httpClient.PostData("Estimate/Insert", employee);
+  }
 }
