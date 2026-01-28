@@ -83,7 +83,8 @@ export class NewResultTemplateComponent {
 
     if (this.data) {
       this.verifyCheck = data.verifyCheck
-      this.selectedAdvanceObj1 = this.data.data;
+      this.selectedAdvanceObj1 = this.data;
+      console.log(this.selectedAdvanceObj1);
       this.serviceId = this.selectedAdvanceObj1.serviceId
       console.log(this.selectedAdvanceObj1)
       this.OP_IPType = this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
