@@ -37,6 +37,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
 import { PaymentmodechangesforPharmacyComponent } from './paymentmodechangesfor-pharmacy.component';
 import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
+import { NewTPaymenModeUpdateComponent } from './new-tpaymen-mode-update/new-tpaymen-mode-update.component';
  
 
 const routes: Routes = [
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PaymentmodechangesforPharmacyComponent, EditPaymentmodeComponent],
+    declarations: [PaymentmodechangesforPharmacyComponent, EditPaymentmodeComponent, NewTPaymenModeUpdateComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

@@ -18,6 +18,7 @@ import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/
 import { IssueToDeparmentAgainstIndentComponent } from '../issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-new-issue-todept',
@@ -145,11 +146,17 @@ ItemstoreId:any=0;
     private accountService: AuthenticationService,
     private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,   public _configue:ConfigService,
   ) { }
 
+  IsMaterialAcceptVerify: boolean = false;
   ngOnInit(): void {
     this.vstoreId = this.accountService.currentUserValue.user.storeId;
+     const rawValue = this?._configue?.configParams?.IsMaterialAccept || "";
+
+     const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+  this.IsMaterialAcceptVerify = id === "1";
+       
     this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
 
     this.NewIssueGroup = this._IssueToDep.getNewIssueForm();
@@ -714,6 +721,11 @@ ItemstoreId:any=0;
 
 
   }
+Accept=0
+    onAcceptChange(event: any) {
+    this.Accept=event.value
+  }
+
   OnSave() {
     console.log(this.vIndentId)
     if ((!this.dsNewIssueItemList.data.length)) {
@@ -733,8 +745,12 @@ ItemstoreId:any=0;
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();
       } else {
+        if(this.Accept)
         this.OnNewSave();
+      else
+         this.OnNewAcceptSave();
       }
+     
     } else {
       let invalidFields = [];
 
@@ -755,7 +771,7 @@ ItemstoreId:any=0;
     }
   }
 
-  OnNewSave() {
+  OnNewAcceptSave() {
 
     this.deptArray.clear();
     this.dsNewIssueItemList.data.forEach(item => {
@@ -782,10 +798,46 @@ ItemstoreId:any=0;
     console.log(this.FinalIssueForm.value)
     this._IssueToDep.IssuetodepSave(this.FinalIssueForm.value).subscribe(response => {
       this.viewgetIssuetodeptReportPdf(response)
+       if (this.IsMaterialAcceptVerify){
+         this.OnNewMaterialAcceptSave();
+      }
       this._matDialog.closeAll();
     });
   }
 
+   OnNewSave() {
+
+    this.deptArray.clear();
+    this.dsNewIssueItemList.data.forEach(item => {
+      this.deptArray.push(this.IssueItemdetailform(item));
+    });
+
+    this.stockArray.clear();
+    this.dsNewIssueItemList.data.forEach(item => {
+      this.stockArray.push(this.currentstockform(item));
+    });
+
+    this.FinalIssueForm.get("issue.issueId").setValue(0)
+    this.FinalIssueForm.get("issue.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+    this.FinalIssueForm.get("issue.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
+    this.FinalIssueForm.get("issue.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+    this.FinalIssueForm.get("issue.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+    this.FinalIssueForm.get("issue.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+    this.FinalIssueForm.get("issue.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+    this.FinalIssueForm.get("issue.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+    this.FinalIssueForm.get("issue.isVerified").setValue(true)
+    this.FinalIssueForm.get("issue.isClosed").setValue(false)
+    this.FinalIssueForm.get("issue.indentId").setValue(0)
+
+    console.log(this.FinalIssueForm.value)
+    this._IssueToDep.IssuetodepSave(this.FinalIssueForm.value).subscribe(response => {
+      this.viewgetIssuetodeptReportPdf(response)
+       if (this.IsMaterialAcceptVerify){
+         this.OnNewMaterialAcceptSave();
+      }
+      this._matDialog.closeAll();
+    });
+  }
   OnSaveAgaintIndent() {
 
     this.deptArray1.clear();
@@ -844,7 +896,50 @@ ItemstoreId:any=0;
     });
   }
 
+ OnNewMaterialAcceptSave() {
+    debugger
+   
+    // if ((!this.tempItemlist.length)) {
+    //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (this.dsSelectedIndentItemList.data.length) {
+    //   // if (this.dsSelectedIndentItemList.data.length == this.tempItemlist.length) {
+    //   //   this.Acceptedchk = true;
+    //   // } else {
+    //   //   this.Acceptedchk = false;
+    //   // }
 
+    //   this.MaterialForm.get('materialAcceptIssueHeader.issueId').setValue(this.registerObj.issueId)
+    //   this.MaterialForm.get('materialAcceptIssueHeader.acceptedBy').setValue(this._loggedService.currentUserValue.userId)
+    //   this.MaterialForm.get('materialAcceptIssueHeader.IsAccepted').setValue(this.Acceptedchk)
+
+    //   this.itemdetailarray.clear();
+    //   this.tempItemlist.forEach(element => {
+    //     let selectedchk = "0";
+    //     if (element.selected == 1) {
+    //       selectedchk = "1";
+    //     } else if (element.selected != 1) {
+    //       selectedchk = "0";
+    //     }
+
+    //     element.status = selectedchk
+    //     this.itemdetailarray.push(this.itemdetailform(element));
+    //   });
+
+    //   this.MaterialForm.get('materialAcceptStockUpdate.issueId').setValue(this.registerObj.issueId)
+
+    //   console.log(this.MaterialForm.value);
+    //   this._materialAcceptanceService.AcceptmaterialSave(this.MaterialForm.value).subscribe(response => {
+    //     this.dialogRef.close();
+    //     this.viewgetIssuetodeptReportPdf(this.registerObj.issueId)
+    //   });
+    // }
+
+    
+  }
   resetForm(): void {
     this.NewIssueGroup.reset({
       ItemName: "a",

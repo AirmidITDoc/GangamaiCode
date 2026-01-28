@@ -940,7 +940,7 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
-            smsType: "IPBill",
+            smsType: "IPFinalBillClassWise",
             patientId: el.regNo
         })
     }
@@ -952,7 +952,7 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
-            smsType: "IPReceipt",
+            smsType: "IpPaymentReceipt",
             patientId: el.regNo
         })
     }
@@ -1056,7 +1056,7 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.refundId,
-            smsType: "IPRefundReceipt",
+            smsType: "IpBillRefundReceipt",
             patientId: el.regNo
         })
     }

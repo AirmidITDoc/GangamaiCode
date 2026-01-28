@@ -75,6 +75,8 @@ export class NewIndentComponent implements OnInit {
 
   ngOnInit(): void {
     debugger
+
+    console.log(this._loggedService.currentUserValue.user.storeId)
     this.vstoreId = this._loggedService.currentUserValue.user.storeId;
       this.storeId = this._loggedService.currentUserValue.user.storeId;
 
@@ -167,10 +169,11 @@ export class NewIndentComponent implements OnInit {
 
     if (!iscekDuplicate && this.IndentForm.get("ItemName").value.itemId !== 0) {
       this.dsIndentNameList.data = [];
+      debugger
       this.chargeslist.push(
         {
           ItemID: this.IndentForm.get("ItemName").value.itemId || 0,
-          ItemName: this.IndentForm.get("ItemName").value.formattedText || '',
+          ItemName: this.IndentForm.get("ItemName").value.itemName || '',
           Qty: this.IndentForm.get('Qty').value || this.vQty,
           VerifyQuantity: this.IndentForm.get('Qty').value || this.vQty,
 
@@ -319,7 +322,7 @@ export class NewIndentComponent implements OnInit {
   }
 
   getSelectedItem(item: GRNItemResponseType): void {
-
+    debugger
     this.ItemID = item.itemId
 
     this.IndentForm.patchValue({

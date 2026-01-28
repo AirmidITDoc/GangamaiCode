@@ -61,7 +61,9 @@ export class NewedipamodeComponent {
   vCardNo: any;
   vchequeNo: any;
   vNeftno: any;
-
+ public bankList: BankNames[] = [];
+  filteredbankList: BankNames[] = [];
+  selectedPaymnet1: string = '';
 
 
   public displayedColumn: string[] =
@@ -366,7 +368,7 @@ export class NewedipamodeComponent {
       });
 
     } else {
-      this.toastr.error('Please check Payment Data', 'Check !', {
+      this.toastr.warning('Please check Payment Data', 'Check !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
     }
@@ -377,14 +379,12 @@ export class NewedipamodeComponent {
     // }
   }
 
-  selectedPaymnet1: string = '';
   getselectObjPayMode(obj) {
     console.log(obj)
     this.selectedPaymnet1 = obj.text
     //  this.onChangePaymentType();
   }
-  public bankList: BankNames[] = [];
-  filteredbankList: BankNames[] = [];
+ 
   getBanklist() {
     // this.selectedRow = contact;
     this.bankList = [];

@@ -2339,6 +2339,32 @@ export class GastrologyEmrComponent {
     });
   }
 
+  onDelete(row) {
+    Swal.fire({
+      title: 'Confirm Delete',
+      text: 'Are you sure you want to delete this record?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#41ea76',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel'
+    }).then((flag) => {
+      // debugger
+      if (flag.isConfirmed) {
+
+        let submitData = {
+          "OPIPID": this.vOPIPId,
+          "ClinicalQuesHeaderId": row.clinicalQuesHeaderId,
+        };
+        console.log(submitData);
+        this._CasepaperService.clinicalQue(submitData).subscribe(response => {
+            this._matDialog.closeAll();
+        });
+      }
+    });
+  }
+
   @ViewChild('quesPaginator') quesPaginator!: MatPaginator;
   @ViewChild('quesSort') quesSort!: MatSort;
   getQuesResultList(data) {

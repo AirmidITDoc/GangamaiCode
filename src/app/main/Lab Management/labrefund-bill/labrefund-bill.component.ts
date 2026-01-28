@@ -240,6 +240,7 @@ export class LabrefundBillComponent {
   getSelectedObj(obj) {
     console.log(obj)
     this.RegId = obj.labPatientId;
+    // this.RegId = obj.visitId;
     if (this.RegId) {
       setTimeout(() => {
         this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
