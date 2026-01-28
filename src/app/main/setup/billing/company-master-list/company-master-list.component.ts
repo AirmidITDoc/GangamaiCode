@@ -12,6 +12,7 @@ import { UpdateServCodePrintComponent } from './update-serv-code-print/update-se
 import { FormGroup } from '@angular/forms';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { CompanyExecutiveComponent } from './company-executive/company-executive.component';
 
 @Component({
     selector: 'app-company-master-list',
@@ -21,8 +22,8 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class CompanyMasterListComponent {
-IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Add);
-  
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Add);
+
     searchform: FormGroup
     Companyname: any;
     type = 0
@@ -82,7 +83,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMas
 
 
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.CompanyMaster,
+        permissionCode: permissionCodes.CompanyMaster,
         apiUrl: "CompanyMaster/CompanyMasterList",
         columnsList: this.allColumns,
         sortField: "CompanyId",
@@ -94,7 +95,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMas
         console.log(event)
         if (event == 'CompanyNameSearch')
             this.searchform.get('CompanyNameSearch').setValue("")
-         if (event == 'phoneNo')
+        if (event == 'phoneNo')
             this.searchform.get('phoneNo').setValue("")
 
         this.onChangeFirst();
@@ -148,7 +149,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMas
         let that = this;
         const dialogRef = this._matDialog.open(ServeToCompanyComponent,
             {
-              
+
                 maxWidth: "95vw",
                 maxHeight: '90vh',
                 height: '90%',
@@ -206,6 +207,25 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMas
             this.grid.bindGridData();
         });
     }
+
+    onOpenForm(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(CompanyExecutiveComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '30%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
+    }
 }
 
 
@@ -247,8 +267,8 @@ export class CompanyMaster {
     TypeName: any;
     CompanyName: string;
     isSubCompany: any;
-    dayWiseCredit:any;
-    mCompanyExecutiveInfos:any;
+    dayWiseCredit: any;
+    mCompanyExecutiveInfos: any;
     /**
    * Constructor
    *

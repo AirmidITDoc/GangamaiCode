@@ -1955,7 +1955,8 @@ debugger
     getDatewiseChargesList(param) {
         this.chargeslist = [];
         this.dataSource.data = [];
-        this.chargeDate = this.datePipe.transform(this.IpbillFooterform.get('ChargeDate').value, "MM/dd/yyyy")
+        this.chargeDate = this.datePipe.transform(param, "MM/dd/yyyy")
+        // this.chargeDate = this.datePipe.transform(this.IpbillFooterform.get('ChargeDate').value, "MM/dd/yyyy")
         this.getChargesList()
     }
     OnDateChange() {

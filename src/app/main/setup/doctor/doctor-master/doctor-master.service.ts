@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
     providedIn: 'root'
@@ -10,8 +12,9 @@ export class DoctorMasterService {
     myformSearch: FormGroup;
 
     constructor(
-        private _httpClient: ApiCaller,    private formBuilder: FormBuilder,
-        private _formBuilder: UntypedFormBuilder
+        private _httpClient: ApiCaller, private formBuilder: FormBuilder,
+        private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         // this.myform = this.createdDoctormasterForm();
         this.myformSearch = this.createSearchForm();
@@ -19,12 +22,22 @@ export class DoctorMasterService {
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            DoctorNameSearch: ["",   Validators.pattern("^[A-Za-z/() ]*$")],
-            lastName:["",   Validators.pattern("^[A-Za-z/() ]*$")],
+            DoctorNameSearch: ["", Validators.pattern("^[A-Za-z/() ]*$")],
+            lastName: ["", Validators.pattern("^[A-Za-z/() ]*$")],
             // IsDeletedSearch: ["2"],
-            FlagActive:["1"],
+            FlagActive: ["1"],
             IsConsultant: [true],
-            IsRef:[false]
+            IsRef: [false]
+        });
+    }
+
+    createExectiveForm(): FormGroup {
+        return this._formBuilder.group({
+            id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            employeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            createdBy: this.accountService.currentUserValue.userId,
+            modifiedBy: this.accountService.currentUserValue.userId
         });
     }
 
@@ -39,7 +52,7 @@ export class DoctorMasterService {
         return this._httpClient.GetData("Doctor/" + Id);
     }
 
-  
+
 
     public getSignature(Param) {
         return this._httpClient.GetData("Doctor/get-file?FileName=" + Param);
@@ -85,8 +98,8 @@ export class DoctorMasterService {
         debugger
         if (Param.DoctorId) {
             return this._httpClient.PutData("Doctor/Edit/" + Param.DoctorId, Param);
-        } else 
-        return this._httpClient.PostData("Doctor/InsertEDMX", Param);
+        } else
+            return this._httpClient.PostData("Doctor/InsertEDMX", Param);
     }
 
     public doctortMasterUpdate(param) {
@@ -114,27 +127,27 @@ export class DoctorMasterService {
 
 
     public getSchduleList(employee) {
-       return this._httpClient.PostData("Doctor/DoctorScheduleDetailList",employee);
+        return this._httpClient.PostData("Doctor/DoctorScheduleDetailList", employee);
     }
 
     public getexperienceList(employee) {
-       return this._httpClient.PostData("Doctor/DoctorExperienceDetailList",employee);
+        return this._httpClient.PostData("Doctor/DoctorExperienceDetailList", employee);
     }
 
     public getEducationList(employee) {
-       return this._httpClient.PostData("Doctor/DoctorQualificationDetailList",employee);
+        return this._httpClient.PostData("Doctor/DoctorQualificationDetailList", employee);
     }
 
     public getChargesList(employee) {
-       return this._httpClient.PostData("Doctor/DoctorChargesDetailList",employee);
+        return this._httpClient.PostData("Doctor/DoctorChargesDetailList", employee);
     }
 
-      public getleaveList(employee) {
-       return this._httpClient.PostData("Doctor/DoctorLeaveDetailList",employee);
+    public getleaveList(employee) {
+        return this._httpClient.PostData("Doctor/DoctorLeaveDetailList", employee);
     }
 
 
-       public getsignpageById(data) {
+    public getsignpageById(data) {
         return this._httpClient.PostData("Doctor/DoctorSignpagelist", data);
     }
     public EducationSave(Param: any) {
@@ -142,25 +155,30 @@ export class DoctorMasterService {
             return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);
         } else return this._httpClient.PostData("OutPatient/RegistrationInsert", Param);
     }
-     public ExperienceSave(Param: any) {
+    public ExperienceSave(Param: any) {
         if (Param.RegId) {
             return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);
         } else return this._httpClient.PostData("OutPatient/RegistrationInsert", Param);
     }
 
-  public schduleSave(Param: any) {
-        if (Param.RegId) {
-            return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);
-        } else return this._httpClient.PostData("OutPatient/RegistrationInsert", Param);
-    }
-    
-     public DrchargesSave(Param: any) {
+    public schduleSave(Param: any) {
         if (Param.RegId) {
             return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);
         } else return this._httpClient.PostData("OutPatient/RegistrationInsert", Param);
     }
 
-     public getSignData(refId,refType){
-    return this._httpClient.GetData("Files/get-signature?RefId=" + refId + "&RefType=" + refType);
-  }
+    public DrchargesSave(Param: any) {
+        if (Param.RegId) {
+            return this._httpClient.PostData("OutPatient/RegistrationUpdate", Param);
+        } else return this._httpClient.PostData("OutPatient/RegistrationInsert", Param);
+    }
+
+    public getSignData(refId, refType) {
+        return this._httpClient.GetData("Files/get-signature?RefId=" + refId + "&RefType=" + refType);
+    }
+    public doctorExecSave(Param: any) {
+        if (Param.id) {
+            return this._httpClient.PutData("Doctor/DoctorExecutiveLinkInfo/" + Param.id, Param);
+        } else return this._httpClient.PostData("Doctor/DoctorExecutiveLinkInfo", Param);
+    }
 }

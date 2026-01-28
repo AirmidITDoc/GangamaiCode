@@ -30,24 +30,24 @@
                 <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
                     <div *ngIf="mode !== 'edit'" style="margin-top: 5px;">
                         <form [formGroup]="myForm">
-                            <div fxLayout="row" fxLayoutGap="4px">
-                                <div fxFlex="100%">
+                            <div fxLayout="row wrap" fxLayoutGap="4px">
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Unit / Branch Name" formControlName="unitId"
                                         [value]="data?.unitId" [readonly]="true"
                                         [validations]="getValidationMessages().UnitId" [formGroup]="myForm"
                                         [mode]="autocompleteModeunit"></airmid-dropdown>
                                 </div>
-                                <div fxFlex="100%">
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="PatientType" formControlName="patientType"
                                         [formGroup]="myForm" [mode]="autocompleteModeLabPatientType"></airmid-dropdown>
                                 </div>
-                                <div fxFlex="100%">
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label=" Self / Payer / Corp." formControlName="patientTypeId"
                                         [formGroup]="myForm" [validations]="getValidationMessages().patientTypeId"
                                         [mode]="autocompleteModepatienttype"
                                         (selectionChange)="onChangePatient($event)"></airmid-dropdown>
                                 </div>
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                                <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
                                         [formGroup]="myForm" [value]="data?.companyId"
                                         [validations]="getValidationMessages().companyId"
@@ -72,13 +72,13 @@
                                         [mode]="autocompleteModetariff"
                                         (selectionChange)="onChangeTariff($event)"></airmid-dropdown>
                                 </div> -->
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
                                         [validations]="getValidationMessages().refDocId" [formGroup]="myForm"
                                         [mode]="autocompleteModerefdoc">
                                     </airmid-dropdown>
                                 </div>
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Doctor Name" formControlName="doctorId" [formGroup]="myForm"
                                         [mode]="autocompleteModedoctor">
                                     </airmid-dropdown>
@@ -232,6 +232,15 @@
                         </div>
                         <div fxFlex="60">
                             <div class="detail-container" *ngIf="mode !== 'edit'">
+
+                                <div *ngIf="showPrevBtn" fxLayoutAlign="end"
+                                    style="margin-bottom: 5px;margin-right: 10px;">
+                                    <button class="btn btn-primary" style=" height: 36px;display: flex; align-items: center;
+                                        justify-content: center; gap: 6px; " (click)="getPrevList()">
+                                        <mat-icon>first_page</mat-icon>
+                                        <span>Load Previous</span>
+                                    </button>
+                                </div>
 
                                 <mat-card-content>
                                     <div class="detail-header">

@@ -46,6 +46,7 @@ import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-
 import { EstimateForPatientComponent } from './estimate-for-patient/estimate-for-patient.component';
 import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbill/discount-after-final-labbill.component';
 import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
+import { PrevlabHistoryComponent } from './prevlab-history/prevlab-history.component';
 
 const routes: Routes = [
   {
@@ -56,7 +57,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent, EstimateForPatientComponent, DiscountAfterFinalLabbillComponent, 
-    EditLabregComponent],
+    EditLabregComponent, PrevlabHistoryComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

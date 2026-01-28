@@ -44,6 +44,8 @@ import { DoctorChargesComponent } from './doctor-charges/doctor-charges.componen
 import { DoctorSchduleComponent } from './doctor-schdule/doctor-schdule.component';
 import { MatTimepickerModule } from "mat-timepicker";
 import { DoctorLeaveComponent } from "./doctor-leave/doctor-leave.component";
+import { DoctorExecutiveComponent } from './doctor-executive/doctor-executive.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
     {
@@ -54,7 +56,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [DoctorMasterComponent, NewDoctorComponent, SignatureViewComponent, ExcelPreviewDialogComponent, DoctorschdulerComponent, DoctorEducationComponent, DoctorExperienceComponent, DoctorChargesComponent,
-         DoctorSchduleComponent,DoctorLeaveComponent],
+        DoctorSchduleComponent, DoctorLeaveComponent, DoctorExecutiveComponent],
     imports: [
         RouterModule.forChild(routes),
         MatChipsModule,
@@ -88,11 +90,10 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatDialogModule,
-           MatTabsModule,
+        MatTooltipModule,
+        MatTabsModule,
         //    SignaturePadModule 
-                MatTimepickerModule,
-                
-                
+        MatTimepickerModule,
     ],
     providers: [DoctorMasterService, DatePipe]
 })

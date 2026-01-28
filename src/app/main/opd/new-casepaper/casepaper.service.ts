@@ -156,4 +156,7 @@ export class CasepaperService {
   public geteditList(param) {
     return this._httpClient1.PostData("Common", param)
   }
+  public clinicalQue(employee) {
+    return this._httpClient1.PostData("GastrologyEMR/Cancel", employee);
+  }
 }

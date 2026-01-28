@@ -149,24 +149,6 @@
                     </div>
 
                   </div>
-                  <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-
-                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
-                      <airmid-dropdown label="Company Representative" formControlName="mCompanyExecutiveInfos"
-                        [formGroup]="companyFormDemo" [IsMultiPle]="true"
-                        #ddlCompanyExec ValueField="executiveId" TextField="fullName"
-                        ApiUrl="CompanyEmployeInfo/get-employe" [ReqFullObj]="true">
-                      </airmid-dropdown>
-                    </div>
-
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
-                      <mat-chip-listbox #chipList>
-                        <mat-chip *ngFor="let item of companyFormDemo.value.mCompanyExecutiveInfos">
-                          {{ item.fullName }} <mat-icon (click)="removeCompanyEmp(item)">close</mat-icon>
-                        </mat-chip>
-                      </mat-chip-listbox>
-                    </div>
-                  </div>
 
                 </mat-card-content>
               </mat-card>
