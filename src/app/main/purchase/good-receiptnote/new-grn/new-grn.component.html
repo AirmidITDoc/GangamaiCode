@@ -65,6 +65,7 @@
 
                     <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="userFormGroup"
                       [validations]="getValidationMessages().StoreId" [value]="data?.StoreId" fxFlex="11%"
+                       [readonly]="true"
                       [mode]="autocompletestore"  (selectionChange)="selectChangeStore($event)">
                     </airmid-dropdown>
 

@@ -111,7 +111,7 @@ ThermalPrint:any;
 InterimBillA5Print:any;
 OPEmrPrescriptionA5:any;
 IsIndentVerify:any
-
+IsMaterialAccept:any
  /**
      * Constructor
      *
@@ -231,6 +231,7 @@ this.OPDDefaultDepartment=ConfigSettingParams.OPDDefaultDepartment;
 this.OPEmrPrescriptionA5=ConfigSettingParams.OPEmrPrescriptionA5;
 this.IsDischargeSummaryTemplate=ConfigSettingParams.IsDischargeSummaryTemplate;
 this.IsIndentVerify=ConfigSettingParams.IsIndentVerify;
+this.IsMaterialAccept=ConfigSettingParams.IsMaterialAccept;
 
     }
 

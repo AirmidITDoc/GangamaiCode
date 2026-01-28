@@ -940,7 +940,7 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
-            smsType: "IPBill",
+            smsType: "IPFinalBillClassWise",
             patientId: el.regNo
         })
     }
@@ -952,7 +952,7 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
-            smsType: "IPReceipt",
+            smsType: "IpPaymentReceipt",
             patientId: el.regNo
         })
     }
@@ -1056,7 +1056,7 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.refundId,
-            smsType: "IPRefundReceipt",
+            smsType: "IpBillRefundReceipt",
             patientId: el.regNo
         })
     }
@@ -1181,7 +1181,39 @@ export class IPBillBrowseListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType: 'OPBill'
+                    emailType: 'IPFinalBillClassWise'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    Onemailpayment(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'IpPaymentReceipt'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+       OnemailBillRefund(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'IpBillRefundReceipt'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

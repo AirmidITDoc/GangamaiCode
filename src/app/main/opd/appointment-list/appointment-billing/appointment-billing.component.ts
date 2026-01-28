@@ -574,6 +574,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
     }
     Createpacakgechargeform(item: any): FormGroup {
+debugger
+console.log(item)
         return this.formBuilder.group({
             chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -601,8 +603,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             isCancelled: [false],
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isCancelledDate: ['1999-01-01'],
-            isPathology: [item?.IsPathology ? true : false],
-            isRadiology: [item?.IsRadiology ? true : false],
+            isPathology: [item?.isPathology ? true : false],
+            isRadiology: [item?.isRadiology ? true : false],
             isPackage: [true],
             wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -789,6 +791,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
     }
     getRtevPackageDetList(obj) {
+        debugger
         var vdata =
         {
             "first": 0,
@@ -803,6 +806,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this._AppointmentlistService.getRtevPackageDetList(vdata).subscribe(data => {
             this.dsPackageList.data = data.data as ChargesList[];
             this.dsPackageList.data.forEach(element => {
+                console.log(element)
+                
                 this.PacakgeList.push(
                     {
                         serviceId: element.packageServiceId,
