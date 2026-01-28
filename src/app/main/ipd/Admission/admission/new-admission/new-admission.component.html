@@ -827,10 +827,9 @@
 
                                             <ng-container *ngIf="isCompanySelected">
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                                    <airmid-textbox label="Policy Number" formControlName="policyNo"
-                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                    <airmid-textbox label="Membership No" formControlName="policyNo" 
                                                         [validations]="getValidationMessages().policyNumber"
-                                                        [formGroup]="policyFormGroup" [maxLength]="15">
+                                                        [formGroup]="policyFormGroup">
                                                     </airmid-textbox>
                                                 </div>
 

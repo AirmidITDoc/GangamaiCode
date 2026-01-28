@@ -111,7 +111,8 @@
                         list_alt
                     </mat-icon>
                 </button> -->
-                <button mat-icon-button
+                <!-- *nfIf="IsOpdEmr" -->
+                <button mat-icon-button 
                     [matTooltip]="element.emrReady ? 'General CasePaper Ready' : 'General CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">

@@ -973,9 +973,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             stkId: [item?.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discPerc2: [item?.DiscPer2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             discAmt2: [item?.DiscAmt2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            isVerified: [false],
+            isVerified: [item?.IsVerified || false],
             isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
-            isVerifiedUserId: [0],
+            isVerifiedUserId: [item?.IsVerifiedUserId || 0],
         });
     }
     //Insert current stk form
@@ -1713,7 +1713,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             stkId: [item?.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discPerc2: [item?.DiscPer2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             discAmt2: [item?.DiscAmt2 || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            isVerified: [false],
+            isVerified: [item?.IsVerified || false],
             isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
             isVerifiedUserId: [0],
         });

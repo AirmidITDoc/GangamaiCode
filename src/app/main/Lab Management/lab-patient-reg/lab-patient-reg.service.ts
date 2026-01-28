@@ -37,7 +37,7 @@ export class LabPatientRegService {
   public getDoctorsByDepartment(deptId) {
     return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
   }
-   public getexecByCompany(compId) {
+  public getexecByCompany(compId) {
     return this._httpClient.GetData("CompanyMaster/CompanyRepresentativeList?CompanyId=" + compId)
   }
   public getstateId(Id) {

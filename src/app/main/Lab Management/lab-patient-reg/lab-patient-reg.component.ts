@@ -189,16 +189,18 @@ export class LabPatientRegComponent {
     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 240, type: gridColumnTypes.template },
-    { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
-    { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Type", key: "patientType1", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "B2B/Crop Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Executive Name", key: "executiveName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 170, type: gridColumnTypes.template },
+    { heading: "Ref Doctor", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
     { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
+    { heading: "Bal Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
     { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 210, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
@@ -999,4 +1001,118 @@ export class LabRequest {
     this.CreditedtoDoctor = LabRequest.CreditedtoDoctor || 0;
     this.creditedtoDoctor = LabRequest.creditedtoDoctor || 0;
   }
+}
+
+export class ChargesList {
+    ChargesId: number;
+    ConcessionAmt: any;
+    ServiceId: number;
+    serviceId: number;
+    ServiceName: String;
+    Price: any;
+    Qty: any;
+    isInclusionExclusion: any;
+    serviceCode: any;
+    TotalAmt: number;
+    DiscPer: number;
+    DiscAmt: number;
+    NetAmount: number;
+    DoctorId: number;
+    ChargeDoctorName: String;
+    ChargesDate: Date;
+    IsPathology: any;
+    IsRadiology: any;
+    ClassId: number;
+    ClassName: string;
+    ChargesAddedName: string;
+    PackageId: any;
+    PackageServiceId: any;
+    IsPackage: any;
+    PacakgeServiceName: any;
+    BillwiseTotalAmt: any;
+    DoctorName: any;
+    OpdIpdId: any;
+    serviceName: any;
+
+    RegNo: any;
+    PatientName: any;
+    BillNo: any;
+    TotalBillAmount: any;
+    ConcessionAmount: any;
+    NetPayableAmt: any;
+    ConsultantDocName: any;
+    AddedByName: any;
+    BillTime: any;
+    DiscComments: any;
+    PaymentMode: any;
+    TokenNo: any;
+    RefundAmt: any;
+    PaidAmount: any;
+    doctorName: any;
+    doctorId: any;
+    isPathology: any;
+    isRadiology: any;
+    pacakgeServiceName: any;
+    packageServiceId: any;
+    price: any;
+    packageId: any;
+    ConcessionPercentage: any = 0;
+    userName: any;
+    BalanceAmt: any;
+    creditedtoDoctor:any;
+    constructor(ChargesList) {
+        this.ChargesId = ChargesList.ChargesId || '';
+        this.ServiceId = ChargesList.ServiceId || '';
+        this.serviceId = ChargesList.serviceId || '';
+        this.ServiceName = ChargesList.ServiceName || '';
+        this.Price = ChargesList.Price || '';
+        this.Qty = ChargesList.Qty || '';
+        this.TotalAmt = ChargesList.TotalAmt || '';
+        this.DiscPer = ChargesList.DiscPer || '';
+        this.DiscAmt = ChargesList.DiscAmt || '';
+        this.NetAmount = ChargesList.NetAmount || '';
+        this.DoctorId = ChargesList.DoctorId || 0;
+        this.DoctorName = ChargesList.DoctorName || '';
+        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+        this.ChargesDate = ChargesList.ChargesDate || '';
+        this.IsPathology = ChargesList.IsPathology || '';
+        this.IsRadiology = ChargesList.IsRadiology || '';
+        this.ClassId = ChargesList.ClassId || 0;
+        this.ClassName = ChargesList.ClassName || '';
+        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+        this.PackageId = ChargesList.PackageId || 0;
+        this.PackageServiceId = ChargesList.PackageServiceId || 0;
+        this.IsPackage = ChargesList.IsPackage || 0;
+        this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
+        this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+        this.OpdIpdId = ChargesList.OpdIpdId || '';
+        this.serviceName = ChargesList.serviceName || ''
+        this.ConcessionPercentage = ChargesList.ConcessionPercentage || 0;
+        this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
+        this.packageServiceId = ChargesList.packageServiceId || 0;
+        this.price = ChargesList.price || 0;
+        this.packageId = ChargesList.packageId || '';
+        this.doctorName = ChargesList.doctorName || 0;
+        this.BalanceAmt = ChargesList.BalanceAmt || 0;
+        this.doctorId = ChargesList.doctorId || 0;
+        this.serviceCode = ChargesList.serviceCode || 0;
+        this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
+        this.isPathology = ChargesList.isPathology || 0;
+        this.isRadiology = ChargesList.isRadiology || 0;
+        this.userName = ChargesList.userName || '';
+
+        this.RegNo = ChargesList.RegNo || 0;
+        this.BillNo = ChargesList.BillNo || 0;
+        this.PatientName = ChargesList.PatientName || '';
+        this.TotalBillAmount = ChargesList.TotalBillAmount || 0;
+        this.ConcessionAmount = ChargesList.ConcessionAmount || 0;
+        this.NetPayableAmt = ChargesList.NetPayableAmt || 0;
+        this.ConsultantDocName = ChargesList.ConsultantDocName || '';
+        this.AddedByName = ChargesList.AddedByName || '';
+        this.DiscComments = ChargesList.DiscComments || '';
+        this.PaymentMode = ChargesList.PaymentMode || 0;
+        this.TokenNo = ChargesList.TokenNo || 0;
+        this.RefundAmt = ChargesList.RefundAmt || 0;
+       this.creditedtoDoctor = ChargesList.creditedtoDoctor || ''
+    }
 }

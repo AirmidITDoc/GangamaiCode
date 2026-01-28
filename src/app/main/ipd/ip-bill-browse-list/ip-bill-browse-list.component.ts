@@ -1188,36 +1188,4 @@ export class IPBillBrowseListComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
-
-    Onemailpayment(contact) {
-        const dialogRef = this._matDialog.open(EmailSendComponent,
-            {
-                maxWidth: "100%",
-                height: '75%',
-                width: '55%',
-                data: {
-                    Obj: contact,
-                    emailType: 'IpPaymentReceipt'
-                }
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
-        });
-    }
-
-       OnemailBillRefund(contact) {
-        const dialogRef = this._matDialog.open(EmailSendComponent,
-            {
-                maxWidth: "100%",
-                height: '75%',
-                width: '55%',
-                data: {
-                    Obj: contact,
-                    emailType: 'IpBillRefundReceipt'
-                }
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
-        });
-    }
 }
