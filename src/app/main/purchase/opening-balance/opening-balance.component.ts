@@ -16,6 +16,8 @@ import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-opening-balance',
@@ -26,6 +28,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 
 export class OpeningBalanceComponent {
+   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.OpeningBalance, permissionType.Add);
+    
+   
   mysearchform: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
@@ -62,6 +67,7 @@ export class OpeningBalanceComponent {
   ];
 
   gridConfig: gridModel = {
+         permissionCode: permissionCodes.OpeningBalance,
     apiUrl: "OpeningBalance/OpeningBalanceList",
     columnsList: this.allcolumns,
     sortField: "OpeningHId",
@@ -110,7 +116,7 @@ export class OpeningBalanceComponent {
 
   constructor(public _OpeningBalanceService: OpeningBalanceService, public _matDialog: MatDialog,
     public toastr: ToastrService, private commonService: PrintserviceService, private accountService: AuthenticationService,
-    public datePipe: DatePipe,) { }
+    public datePipe: DatePipe,public permissionService: PagePermissionService,) { }
 
   ngOnInit(): void {
     this.mysearchform = this._OpeningBalanceService.createsearchFormGroup();

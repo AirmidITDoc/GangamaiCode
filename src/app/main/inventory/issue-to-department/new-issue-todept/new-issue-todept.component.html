@@ -48,7 +48,10 @@
                                 [(ngModel)]="fromstoreId" fxFlex="30%" [mode]="autocompletestore1"
                                 (selectionChange)="selectChangeStore1($event)">
                             </airmid-dropdown>
-                          
+
+                               <mat-checkbox aria-label="Remember Me" formControlName="ISMaterialAccept" (change)="onAcceptChange($event)">
+                            ISMaterialAccept
+                        </mat-checkbox>
                         </form>
 
                     </mat-card>

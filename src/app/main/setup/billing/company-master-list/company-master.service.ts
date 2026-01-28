@@ -80,12 +80,7 @@ export class CompanyMasterService {
 
             loginWebsiteUser: "",
             loginWebsitePassword: "",
-            dayWiseCredit: 0,
-            mCompanyExecutiveInfos: [{
-                id: 0,
-                companyId: 0,
-                employeId: 0
-            }, [Validators.required]],
+            dayWiseCredit: 0
         });
     }
     createSearchForm(): FormGroup {
@@ -105,19 +100,13 @@ export class CompanyMasterService {
         });
     }
 
-    // creategroupSearchForm(): FormGroup {
-    //     return this._formBuilder.group({
-    //         ServiceName: [""],
-    //         ClassId2: [""],
-    //     });
-    // }
-
-    // createsubgroupSearchForm(): FormGroup {
-    //     return this._formBuilder.group({
-    //         ServiceName: [""],
-    //         ClassId2: [""],
-    //     });
-    // }
+    createExectiveForm(): FormGroup {
+        return this._formBuilder.group({
+            Id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            companyId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            employeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
+        });
+    }
 
     createcompwiseservForm(): FormGroup {
         return this._formBuilder.group({
@@ -148,7 +137,7 @@ export class CompanyMasterService {
 
     public companyMasterSave(Param: any) {
         if (Param.companyId) {
-            return this._httpClient.PutData("CompanyMaster/Edit/" + Param.companyId, Param);
+            return this._httpClient.PutData("CompanyMaster/" + Param.companyId, Param);
         } else return this._httpClient.PostData("CompanyMaster/Insert", Param);
     }
 
@@ -199,7 +188,11 @@ export class CompanyMasterService {
     public getempList(employee) {
         return this._httpClient.PostData("CompanyMaster/CompanyExecutiveInfoList", employee);
     }
-
+    public companyExecSave(Param) {
+        if (Param.Id) {
+            return this._httpClient.PutData("CompanyMaster/CompanyExecutiveInfo/" + Param.Id, Param);
+        } else return this._httpClient.PostData("CompanyMaster/CompanyExecutiveInfo", Param);
+    }
 
 }
 function notEmptyOrZeroValidator(): any {

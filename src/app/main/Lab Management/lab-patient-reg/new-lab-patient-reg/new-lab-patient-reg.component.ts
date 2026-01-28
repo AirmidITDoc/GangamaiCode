@@ -27,6 +27,7 @@ import { PreviousDeptListComponent } from 'app/main/opd/appointment-list/update-
 import { MatSelectChange } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
+import { PrevlabHistoryComponent } from '../prevlab-history/prevlab-history.component';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -179,7 +180,7 @@ export class NewLabPatientRegComponent {
     this.myForm.get('Comments').setValue(this.data?.row?.comments);
     this.myForm.get('ReferByName').setValue(this.data?.row?.referByName);
     this.myForm.get('tariffId').setValue(this.data?.row?.tariffId ?? 1);
-    // this.myForm.get('patientTypeId').setValue(2);
+    this.myForm.get('companyId').disable() // disable for 1st time when form will open after comp select enable
 
     if (this.data?.row?.labPatientId) {
       this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
@@ -263,7 +264,7 @@ export class NewLabPatientRegComponent {
       patientType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Comments: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       ReferByName: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      companyExecutiveId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      companyExecutiveId: [0],
 
       // extra fields
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -542,13 +543,15 @@ export class NewLabPatientRegComponent {
     var mode = "Company"
     if (value.text != "Self") {
       this._labPatientRegService.getMaster(mode, 1);
-      this.myForm.get('companyId').setValidators([Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
-      this.isCompanySelected = true;
+      this.myForm.get('companyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+      // this.isCompanySelected = true;
+      this.myForm.get('companyId').enable()
       this.patienttype = 2;
       this.OPFooterForm.get('paymentType').setValue('CreditPay')
 
     } else if (value.text == "Self") {
-      this.isCompanySelected = false;
+      // this.isCompanySelected = false;      
+      this.myForm.get('companyId').disable()
       this.myForm.get('companyId').clearValidators();
       this.myForm.get('companyId').updateValueAndValidity();
       this.patienttype = 1;
@@ -618,14 +621,14 @@ export class NewLabPatientRegComponent {
         const incomingId = data[0].executiveId;
         console.log("Id:", incomingId)
         // setTimeout(() => {
-          // this.ddlcompanyExec.bindGridAutoComplete();
-          if (incomingId) {
-            const matchedId = data.find(exec => exec.executiveId === incomingId);
-            if (matchedId) {
-              // this.ddlcompanyExec.SetSelection(matchedId.executiveId);
-              this.myForm.get('companyExecutiveId').setValue(matchedId.executiveId)
-            }
+        // this.ddlcompanyExec.bindGridAutoComplete();
+        if (incomingId) {
+          const matchedId = data.find(exec => exec.executiveId === incomingId);
+          if (matchedId) {
+            // this.ddlcompanyExec.SetSelection(matchedId.executiveId);
+            this.myForm.get('companyExecutiveId').setValue(matchedId.executiveId)
           }
+        }
         // }, 100);
       });
     }
@@ -644,6 +647,7 @@ export class NewLabPatientRegComponent {
 
   regflag = false
   VlabPatRegId: any;
+  showPrevBtn:boolean=false
   getSelectedObj(obj) {
     console.log(obj)
     // this.PatientName = obj.patientName;
@@ -657,7 +661,6 @@ export class NewLabPatientRegComponent {
           this.value = response.dateofBirth
           this.regNo = response.labRequestNo
           this.onChangeDateofBirth(response.dateofBirth)
-          // this.getLastDepartmetnNameList(this.registerObj)
           this.regflag = true
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim(),
@@ -667,28 +670,30 @@ export class NewLabPatientRegComponent {
             address: this.registerObj.address.trim(),
             // DateOfBirth:this.registerObj.dateofBirth,
           });
-          // this.selectChangedepartment(this.registerObj)
+          
         });
       }, 100);
+    }
+
+    if(this.VlabPatRegId){
+      this.showPrevBtn=true
+      this.getPrevList(obj);
     }
   }
 
   PrevregisterObj: any;
-  getLastDepartmetnNameList(row) {
-    const dialogRef = this._matDialog.open(PreviousDeptListComponent,
+  getPrevList(row:any=null) {
+    const dialogRef = this._matDialog.open(PrevlabHistoryComponent,
       {
-        maxWidth: "45vw",
+        maxWidth: "60vw",
         height: '45%',
         width: '100%',
-        data: {
-          Obj: row, Label: 'Lab'
-        }
+        data: row
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.PrevregisterObj = result
       this.myForm.get("departmentId").setValue(this.PrevregisterObj.departmentId)
-      // this.selectChangedepartment(this.PrevregisterObj)
       console.log(this.PrevregisterObj)
     });
   }

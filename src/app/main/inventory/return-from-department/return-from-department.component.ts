@@ -17,6 +17,8 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
 
@@ -28,6 +30,8 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 
 })
 export class ReturnFromDepartmentComponent implements OnInit {
+  // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PurchaseOrder, permissionType.Add);
+    
   ReturnSearchGroup:FormGroup;
   SpinLoading: boolean = false;
   ToStoreList: any = [];
@@ -88,6 +92,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
   GetDetails1(data) {
     
     this.gridConfig1 = {
+      //  permissionCode: permissionCodes.WorkOrder,
       apiUrl: "IssueToDepartment/IssueToDepttList",
       columnsList: [
         { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA' },
@@ -121,7 +126,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
-    private accountService: AuthenticationService,
+    private accountService: AuthenticationService,public permissionService: PagePermissionService,
 
   ) { }
 

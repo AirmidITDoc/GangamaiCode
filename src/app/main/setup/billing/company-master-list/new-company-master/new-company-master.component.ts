@@ -63,48 +63,7 @@ export class NewCompanyMasterComponent {
                     });
                 }, 500);
             }
-            this.companyExeclist(this.data)
         }
-    }
-
-    RtrvDescriptionList: any = [];
-    addlist: any[] = [];
-    companyExeclist(obj) {
-        var m_data =
-        {
-            "first": 0,
-            "rows": 9999,
-            "sortField": "CompanyId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "CompanyId",
-                    "fieldValue": String(obj.companyId),
-                    "opType": "Contains"
-                }
-            ],
-            "Columns": [],
-            "exportType": "JSON"
-        }
-        setTimeout(() => {
-            this._CompanyMasterService.getempList(m_data).subscribe(response => {
-
-                debugger
-                const rowData = response?.data || []
-                console.log(rowData)
-                this.RtrvDescriptionList = rowData.map(item => ({
-                    executiveId: item.executiveId,
-                    fullName: item.fullName,
-                }))
-                const assignedStore = this.RtrvDescriptionList.filter(ex => {
-                    const originalItem = rowData.find(r => r.executiveId == ex.executiveId);
-                    return true;
-                });
-                this.companyFormDemo.patchValue({
-                    mCompanyExecutiveInfos: assignedStore
-                });
-            });
-        }, 1000);
     }
 
     onChangecity(e) {
@@ -129,14 +88,6 @@ export class NewCompanyMasterComponent {
             if ((this.data?.companyId ?? 0) > 0)
                 this.companyFormDemo.get("companyId").setValue(this.registerObj.companyId)
             const formData = { ...this.companyFormDemo.value };
-
-            const transformedStores = (formData.mCompanyExecutiveInfos || []).map((id: any) => ({
-                id: 0,
-                companyId: 0,
-                employeId: id.executiveId
-            }));
-
-            formData.mCompanyExecutiveInfos = transformedStores;
 
             console.log(formData)
             this._CompanyMasterService.companyMasterSave(formData).subscribe((response) => {
@@ -236,12 +187,5 @@ export class NewCompanyMasterComponent {
             event.preventDefault();
             return false;
         }
-    }
-
-    @ViewChild('ddlCompanyExec') ddlCompanyExec: AirmidDropDownComponent;
-    removeCompanyEmp(item) {
-        let removedIndex = this.companyFormDemo.value.mCompanyExecutiveInfos.findIndex(x => x.executiveId == item.executiveId);
-        this.companyFormDemo.value.mCompanyExecutiveInfos.splice(removedIndex, 1);
-        this.ddlCompanyExec.SetSelection(this.companyFormDemo.value.mCompanyExecutiveInfos.map(x => x.executiveId));
     }
 }

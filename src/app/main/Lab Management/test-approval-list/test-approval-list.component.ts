@@ -191,7 +191,7 @@ export class TestApprovalListComponent {
 
     { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "DOA", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100},
-    { heading: "OPDIPDNo", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "No", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -1053,7 +1053,13 @@ export class TestApprovalListComponent {
     }
   }
 
+ chkresultentryVerify(contact, flag) {
+    // debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
 
+  }
   GetResultdetail() {
 
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")

@@ -1,134 +1,307 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Payment Mode Change For Pharmacy
-                </span>
-            </div>
-        </div>
-    </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <!-- <div class="info-badge-top p-12 border-bottom" fxLayout="row" fxLayoutAlign="space-between" flex>
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green s-16">circle</mat-icon>
-                    <span>: Sales</span>
-                </div>
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange s-16">circle</mat-icon>
-                    <span>: IP Pharmacy Advance</span>
-                </div>
-            </div>
-        </div> -->
 
-        <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
-                <button class="btn btn-primary" (click)="OnUpdate(element,2)" matTooltip="Payment Date Update">
-                    Date Update
-                </button>&nbsp;
-                <button class="btn btn-danger"   *ngIf="element.paidAmount > 0" (click)="onEdit(element)" matTooltip="Cancle Bill" style="color: white;">
-                    Edit
-                </button>
-            </div>
-        </ng-template>
-
-        <ng-template #actionButtonTemplateSale let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <button class="btn btn-primary" (click)="OnUpdate(element,1)" matTooltip="Sales Date Update">
-                    SalesDate
-                </button>&nbsp;
-                 <button class="btn btn-primary" (click)="OnUpdate(element,2)" matTooltip="Payment Date Update">
-                    PaymentDate
-                </button>&nbsp;
-                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle SalesBill" style="color: white;">
-                    Edit
-                </button>
-            </div>
-        </ng-template>
-
-        <ng-template #ColorCodeIp let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.oP_IP_Type=='1'" matTooltip="IP Reciept"
-                    class="pill orange-600 s-16">circle</mat-icon>
-            </div>
-        </ng-template>
-
-        <ng-template #ColorCodeSale let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.oP_IP_Type=='0'" matTooltip="Sales"
-                    class="pill green-600 s-16">circle</mat-icon>
-            </div>
-        </ng-template>
-
-        <airmid-table [gridConfig]="gridConfig" class="content">
-            <ng-container filters>
-                <form [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup" fxLayout="column">
-
-                    <airmid-datepicker [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup"
-                        [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
-                        [(fromValue)]="gridConfig.filters[2].fieldValue" [(toValue)]="gridConfig.filters[3].fieldValue">
-                    </airmid-datepicker>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" (input)="onNameFieldChange()"
-                            formControlName="RegNo" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilteropd('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" (input)="onNameFieldChange()"
-                            formControlName="FirstName" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilteropd('FirstName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Last Name</mat-label>
-                        <input matInput placeholder="Search Last Name" autocomplete="off" (input)="onNameFieldChange()"
-                            formControlName="LastName" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilteropd('LastName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Sales No</mat-label>
-                        <input matInput placeholder="Search Sales No" autocomplete="off" (input)="onNameFieldChange()"
-                            formControlName="SalesNo" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)=" Clearfilteropd('SalesNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <mat-radio-group formControlName="Radio" name="Radio" (change)="onRadioChange($event)">
-                        <mat-label>Type :</mat-label>&nbsp;
-
-                        <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill green s-16">circle</mat-icon>
-                            <!-- <span>: Sales</span> -->
-                            <mat-radio-button value="0">Sales</mat-radio-button>
+        <mat-tab label="Pharmacy Payment List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Payment Mode Change For Pharmacy
+                            </span>
                         </div>
-                        <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill orange s-16">circle</mat-icon>
-                            <!-- <span>: IP Pharmacy Advance</span> -->
-                            <mat-radio-button value="1">IP Phar Advance</mat-radio-button>
+                    </div>
+                </div>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element,2)"
+                                matTooltip="Payment Date Update">
+                                Date Update
+                            </button>&nbsp;
+                            <button class="btn btn-danger" *ngIf="element.paidAmount > 0" (click)="onEdit(element)"
+                                matTooltip="Cancle Bill" style="color: white;">
+                                Edit
+                            </button>
                         </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplateSale let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element,1)"
+                                matTooltip="Sales Date Update">
+                                SalesDate
+                            </button>&nbsp;
+                            <button class="btn btn-primary" (click)="OnUpdate(element,2)"
+                                matTooltip="Payment Date Update">
+                                PaymentDate
+                            </button>&nbsp;
+                            <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Edit SalesBill"
+                                style="color: white;">
+                                Edit
+                            </button>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #ColorCodeIp let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.oP_IP_Type=='1'" matTooltip="IP Reciept"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #ColorCodeSale let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.oP_IP_Type=='0'" matTooltip="Sales"
+                                class="pill green-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+                            <form [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup" fxLayout="column">
+
+                                <airmid-datepicker [formGroup]="_PaymentmodechangeforpharmacyService.userFormGroup"
+                                    [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue">
+                                </airmid-datepicker>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>UHID No</mat-label>
+                                    <input matInput placeholder="Search UHID No" autocomplete="off"
+                                        (input)="onNameFieldChange()" formControlName="RegNo" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilteropd('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        (input)="onNameFieldChange()" formControlName="FirstName" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilteropd('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        (input)="onNameFieldChange()" formControlName="LastName" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilteropd('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Sales No</mat-label>
+                                    <input matInput placeholder="Search Sales No" autocomplete="off"
+                                        (input)="onNameFieldChange()" formControlName="SalesNo" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" Clearfilteropd('SalesNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-radio-group formControlName="Radio" name="Radio" (change)="onRadioChange($event)">
+                                    <mat-label>Type :</mat-label>&nbsp;
+
+                                    <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                        <mat-icon class="pill green s-16">circle</mat-icon>
+                                        <!-- <span>: Sales</span> -->
+                                        <mat-radio-button value="0">Sales</mat-radio-button>
+                                    </div>
+                                    <div style="color: orange" fxLayout="row" fxLayoutAlign="start center"
+                                        class="gap-4">
+                                        <mat-icon class="pill orange s-16">circle</mat-icon>
+                                        <!-- <span>: IP Pharmacy Advance</span> -->
+                                        <mat-radio-button value="1">IP Phar Advance</mat-radio-button>
+                                    </div>
 
 
-                    </mat-radio-group>
-                </form>
-            </ng-container>
-        </airmid-table>
-    </div>
+                                </mat-radio-group>
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+
+        </mat-tab>
+
+        <mat-tab label="Pharmacy Payment List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Payment Mode Change For Pharmacy
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+                    <!-- <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element,2)"
+                                matTooltip="Payment Date Update">
+                                Date Update
+                            </button>&nbsp;
+                            <button class="btn btn-danger" *ngIf="element.paidAmount > 0" (click)="onEdit(element)"
+                                matTooltip="Cancle Bill" style="color: white;">
+                                Edit
+                            </button>
+                        </div>
+                    </ng-template> -->
+
+                    <ng-template #actionButtonTemplateSale1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <!-- <button class="btn btn-primary" (click)="OnUpdate(element,4)"
+                                matTooltip="Sales Date Update">
+                                SalesDate
+                            </button>&nbsp; -->
+                            <!-- <button class="btn btn-primary" (click)="OnUpdate(element,4)"
+                                matTooltip="Payment Date Update">
+                                PaymentDate
+                            </button>&nbsp; -->
+                            <!-- <button class="btn btn-danger" (click)="onEdit1(element)" matTooltip="Update SalesBill"
+                                style="color: white;">
+                                Edit
+                            </button> -->
+
+                              <button class="btn btn-primary" (click)="OnUpdate(element,4)" *ngIf="element.payAmount > 0"
+                                matTooltip="Payment Date Update">
+                               <img width="30" height="30" src="assets/images/logos/Billdate.jpg">
+                            </button>&nbsp;
+
+                            <button class="btn btn-primary" (click)="OnUpdate(element,4)" *ngIf="element.payAmount > 0"
+                                matTooltip="Payment Date Update">
+                               <img width="30" height="30" src="assets/images/logos/padate.jpg">
+                            </button>&nbsp;
+                            <!-- *ngIf="element.payAmount > 0" -->
+                            <button class="btn btn-danger" (click)="onEdit1(element)" matTooltip="Update PaymentMode" *ngIf="element.payAmount > 0"
+                                style="color: rgb(126, 216, 90);">
+                               <img width="30" height="30" src="assets/images/logos/pamode.png">
+                            </button>
+
+
+                        </div>
+                    </ng-template>
+
+                    <!-- <ng-template #ColorCodeIp let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.oP_IP_Type=='1'" matTooltip="IP Reciept"
+                                class="pill orange-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #ColorCodeSale let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.oP_IP_Type=='0'" matTooltip="Sales"
+                                class="pill green-600 s-16">circle</mat-icon>
+                        </div>
+                    </ng-template> -->
+
+                    <airmid-table [gridConfig]="gridConfigTpaySales" class="content">
+                        <ng-container filters>
+                            <form [formGroup]="_PaymentmodechangeforpharmacyService.phartpayFormGroup" fxLayout="column">
+
+                                <airmid-datepicker [formGroup]="_PaymentmodechangeforpharmacyService.phartpayFormGroup"
+                                    [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfigTpaySales.filters[2].fieldValue"
+                                    [(toValue)]="gridConfigTpaySales.filters[3].fieldValue">
+                                </airmid-datepicker>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>UHID No</mat-label>
+                                    <input matInput placeholder="Search UHID No" autocomplete="off"
+                                        (input)="onNameFieldChange1()" formControlName="RegNo" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfiltertpay('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        (input)="onNameFieldChange1()" formControlName="FirstName" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfiltertpay('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        (input)="onNameFieldChange1()" formControlName="LastName" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfiltertpay('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Sales No</mat-label>
+                                    <input matInput placeholder="Search Sales No" autocomplete="off"
+                                        (input)="onNameFieldChange1()" formControlName="SalesNo" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" Clearfiltertpay('SalesNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-radio-group formControlName="Radio" name="Radio" (change)="onRadioChange1($event)">
+                                    <mat-label>Type :</mat-label>&nbsp;
+
+                                    <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                        <mat-icon class="pill green s-16">circle</mat-icon>
+                                        <!-- <span>: Sales</span> -->
+                                        <mat-radio-button value="0">Sales</mat-radio-button>
+                                    </div>
+                                    <div style="color: orange" fxLayout="row" fxLayoutAlign="start center"
+                                        class="gap-4">
+                                        <mat-icon class="pill orange s-16">circle</mat-icon>
+                                        <!-- <span>: IP Pharmacy Advance</span> -->
+                                        <mat-radio-button value="1">IP Phar Advance</mat-radio-button>
+                                    </div>
+
+
+                                </mat-radio-group>
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+
+        </mat-tab>
+
+
+
+
+    </mat-tab-group>
+
+
 </div>

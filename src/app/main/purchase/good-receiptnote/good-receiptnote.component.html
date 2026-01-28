@@ -124,7 +124,7 @@
                     <airmid-dropdown label="Store Name" formControlName="ToStoreId"
                         [formGroup]="_GRNService.GRNSearchGroup" [validations]="getValidationMessages().ToStoreId"
                         fxFlex [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
-                        (keyup)="selectChangeStore($event)">
+                        (keyup)="selectChangeStore($event)" [readonly]="true">
                     </airmid-dropdown>
 
 

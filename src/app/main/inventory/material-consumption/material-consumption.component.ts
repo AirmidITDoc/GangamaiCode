@@ -11,6 +11,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { MaterialConsumptionService } from './material-consumption.service';
 import { NewMaterialConsumptionComponent } from './new-material-consumption/new-material-consumption.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
     selector: 'app-material-consumption',
@@ -20,6 +22,8 @@ import { NewMaterialConsumptionComponent } from './new-material-consumption/new-
     animations: fuseAnimations,
 })
 export class MaterialConsumptionComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.MaterialConsumption, permissionType.Add);
+      
     hasSelectedContacts: boolean;
     myFilterform: FormGroup;
     autocompletestore: string = "Store";
@@ -51,6 +55,7 @@ export class MaterialConsumptionComponent implements OnInit {
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.MaterialConsumption,
         apiUrl: "MaterialConsumption/MaterialConsumptionList",
         columnsList: this.allcolumns,
         sortField: "MaterialConsumptionId",
@@ -63,7 +68,7 @@ export class MaterialConsumptionComponent implements OnInit {
 
     constructor(
         public _MaterialConsumptionService: MaterialConsumptionService, public _formBuilder: UntypedFormBuilder, private commonService: PrintserviceService,
-        public toastr: ToastrService, public _matDialog: MatDialog, public datePipe: DatePipe, private accountService: AuthenticationService,
+        public toastr: ToastrService, public _matDialog: MatDialog, public datePipe: DatePipe, private accountService: AuthenticationService,public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void { this.myFilterform = this._MaterialConsumptionService.createSearchFrom(); }

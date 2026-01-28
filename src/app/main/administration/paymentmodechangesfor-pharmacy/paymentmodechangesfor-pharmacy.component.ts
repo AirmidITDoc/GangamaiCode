@@ -17,6 +17,7 @@ import { BillDateUpdateComponent } from '../cancellation/bill-date-update/bill-d
 import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
 import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
 import { EditPaymentComponent } from '../paymentmodechanges/edit-payment/edit-payment.component';
+import { NewTPaymenModeUpdateComponent } from './new-tpaymen-mode-update/new-tpaymen-mode-update.component';
 
 @Component({
   selector: 'app-paymentmodechangesfor-pharmacy',
@@ -35,6 +36,14 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   SalesNo: any = "0"
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+   f_name1: any = ""
+  regNo1: any = "0"
+  l_name1: any = ""
+  SalesNo1: any = "0"
+  fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
 
   pf_name: any = ""
   pregNo: any = "0"
@@ -61,6 +70,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplateSale') actionButtonTemplateSale!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplateSale1') actionButtonTemplateSale1!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('ColorCodeIp') ColorCodeIp!: TemplateRef<any>;
   @ViewChild('ColorCodeSale') ColorCodeSale!: TemplateRef<any>;
@@ -79,6 +89,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   ngAfterViewInit() {
     // Assign the template to the column dynamically
     this.gridConfigSales.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateSale;
+     this.gridConfigTpaySales.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateSale1;
     this.gridConfigSales.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeSale;
     this.gridConfigIpPhy.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfigIpPhy.columnsList.find(col => col.key === 'oP_IP_Type')!.template = this.ColorCodeIp;
@@ -87,7 +98,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
 
 
   onNameFieldChange(): void {
-    debugger
+    
     const selectedType = this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio')?.value;
 
     if (selectedType === '0' || selectedType === 0) {
@@ -96,6 +107,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       this.onChange();
     }
   }
+
 
   allColumns = [
     { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -144,7 +156,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   }
 
   getfilteropd() {
-    debugger
+    
     this.gridConfigSales = {
       apiUrl: "paymentpharmacy/BrowsePharmacyPayReceiptList",
       columnsList: this.allColumns,
@@ -164,7 +176,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   }
 
   Clearfilteropd(event) {
-    debugger
+    
     console.log(event)
     if (event == 'FirstName')
       this._PaymentmodechangeforpharmacyService.userFormGroup.get('FirstName').setValue("")
@@ -225,7 +237,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   }
 
   getfilter() {
-    debugger
+    
     this.gridConfigIpPhy = {
       apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
       columnsList: this.allColumns1,
@@ -246,7 +258,18 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
 
 
   onRadioChange(event: MatRadioChange) {
-    debugger
+    
+    const selectedValue = event.value;
+    if (selectedValue === '0' || selectedValue === 0) {
+      this.onChangeopd();
+    } else if (selectedValue === '1' || selectedValue === 1) {
+      this.onChange();
+    }
+  }
+
+  
+  onRadioChange1(event: MatRadioChange) {
+    
     const selectedValue = event.value;
     if (selectedValue === '0' || selectedValue === 0) {
       this.onChangeopd();
@@ -333,7 +356,151 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   BillDate() {
     Swal.fire('Api Error !', 'Bill Date Update!')
   }
+//pharpayyment
 
+allColumnsTpay = [
+    { heading: "-", key: "oP_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "Sales Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Paid Amount", key: "payAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+    { heading: "Tran No", key: "tranNo", sort: true, align: 'left', emptySign: 'NA', width: 150},
+    { heading: "Bank Name", key: "bankName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "payMode", key: "payMode", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+    { heading: "transactionLabel", key: "transactionLabel", sort: true, align: 'left', emptySign: 'NA', width: 150},
+    {
+      heading: "Action", key: "action", align: "right", width: 300, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplateSale1  // Assign ng-template to the column
+    }
+  ]
+
+  allFiltersTpay = [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals }, //year from 2021 to 2025
+    { fieldName: "ToDate", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.StartsWith }
+  ]
+
+  gridConfigTpaySales: gridModel = {
+    apiUrl: "paymentpharmacy/BrowseTPayPharmacyPayReceiptList",
+    columnsList: this.allColumnsTpay,
+    sortField: "PaymentId",
+    sortOrder: 0,
+    filters: this.allFiltersTpay
+  }
+
+  onChangeTpay() {
+    this.fromDate1 = this.datePipe.transform(this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('startdate').value, "yyyy-MM-dd")
+    this.toDate1 = this.datePipe.transform(this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('enddate').value, "yyyy-MM-dd")
+    this.f_name1 = this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('FirstName').value + "%"
+    this.l_name1 = this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('LastName').value + "%"
+    this.regNo1 = this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('RegNo').value || "0"
+    this.SalesNo1 = this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('SalesNo').value || "0"
+    this.getfilterTpay();
+  }
+
+  getfilterTpay() {
+    debugger
+    this.gridConfigTpaySales = {
+      apiUrl: "paymentpharmacy/BrowseTPayPharmacyPayReceiptList",
+      columnsList: this.allColumns,
+      sortField: "PaymentId",
+      sortOrder: 0,
+      filters: [{ fieldName: "F_Name", fieldValue: this.f_name1, opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: this.l_name1, opType: OperatorComparer.StartsWith },
+      { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
+      { fieldName: "ToDate", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: this.regNo1, opType: OperatorComparer.Equals },
+      { fieldName: "SalesNo", fieldValue: this.SalesNo1, opType: OperatorComparer.Equals }
+      ]
+    }
+    this.grid.gridConfig = this.gridConfigTpaySales;
+    this.grid.bindGridData();
+    console.log("opd:", this.gridConfigTpaySales)
+  }
+
+  Clearfiltertpay(event) {
+    
+    console.log(event)
+    if (event == 'FirstName')
+      this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('RegNo').setValue("")
+    if (event == 'SalesNo')
+      this._PaymentmodechangeforpharmacyService.phartpayFormGroup.get('SalesNo').setValue("")
+
+    this.onNameFieldChange();
+  }
+
+    
+  onNameFieldChange1(): void {
+    
+    const selectedType = this._PaymentmodechangeforpharmacyService.userFormGroup.get('Radio')?.value;
+
+    // if (selectedType === '0' || selectedType === 0) {
+    //   this.onChangeopd();
+    // } else if (selectedType === '1' || selectedType === 1) {
+    //   this.onChange();
+    // }
+this.onChangeTpay();
+
+  }
+
+
+   onEdit1(m) {
+    console.log(m)
+    // let xx = {
+    //   UserId: m.UserId,
+    //   FirstName: m.FirstName,
+    //   LastName: m.LastName,
+    //   UserLoginName: m.UserLoginName,
+    //   IsActive: m.IsActive,
+    //   AddedBy: m.AddedBy,
+    //   RoleName: m.RoleName,
+    //   RoleId: m.RoleId,
+    //   UserName: m.UserName,
+    //   StoreId: m.StoreId,
+    //   StoreName: m.StoreName,
+    //   IsDoctorType: m.IsDoctorType,
+    //   DoctorID: m.DoctorID,
+    //   DoctorName: m.DoctorName,
+    //   IsPOVerify: m.IsPOVerify,
+    //   IsGRNVerify: m.IsGRNVerify,
+    //   IsCollection: m.IsCollection,
+    //   IsBedStatus: m.IsBedStatus,
+    //   IsCurrentStk: m.IsCurrentStk,
+    //   IsPatientInfo: m.IsPatientInfo,
+    //   IsDateInterval: m.IsDateInterval,
+    //   IsDateIntervalDays: m.IsDateIntervalDays,
+    //   MailId: m.MailId,
+    //   MailDomain: m.MailDomain,
+    //   AddChargeIsDelete: m.AddChargeIsDelete,
+    //   IsIndentVerify: m.IsIndentVerify,
+    //   IsInchIndVfy: m.IsInchIndVfy,
+    // };
+    // this.advanceDataStored.storage = new PaymentPharmayList(xx);
+
+    const dialogRef = this._matDialog.open(NewTPaymenModeUpdateComponent,
+      {
+        height: "97%",
+        width: '85%',
+        data: {
+          registerObj: m,
+          FromName: "Pharma-PaymentModeChange"
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
 }
 export class PaymentPharmayList {
   Date: Number;

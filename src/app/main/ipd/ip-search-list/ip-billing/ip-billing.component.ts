@@ -436,7 +436,9 @@ classId=0
             isInclusionExclusion: [false],
             isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: this.accountService.currentUserValue.userId,
+        
             packcagecharges: this.formBuilder.array([])
+          
         });
     }
     // Create pacakge form
@@ -478,7 +480,8 @@ classId=0
               unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          
+            serviceName:item?.serviceName,
+            chargesId: 0
         });
     }
     // Getters 
@@ -799,7 +802,7 @@ classId=0
             if (formValue.doctorId)
                 doctorid = this.Serviceform.get("doctorId")?.value ?? 0;
         }
-
+debugger
         this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id)
         this.Serviceform.get("wardId").setValue(this.WardId)
         this.Serviceform.get("bedId").setValue(this.BedId)
@@ -813,6 +816,8 @@ classId=0
         this.Serviceform.get("doctorId")?.enable();
         this.Serviceform.get("doctorId").setValue(doctorid ?? 0)
         this.Serviceform.get("tariffId").setValue(this.TariffId)
+        // this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName)
+        // this.Serviceform.get("chargesId").setValue(0)
 
         console.log(this.Serviceform.get('doctorId'));
         console.log(this.Serviceform.get('doctorId')?.enabled);
@@ -1950,7 +1955,8 @@ classId=0
     getDatewiseChargesList(param) {
         this.chargeslist = [];
         this.dataSource.data = [];
-        this.chargeDate = this.datePipe.transform(this.IpbillFooterform.get('ChargeDate').value, "MM/dd/yyyy")
+        this.chargeDate = this.datePipe.transform(param, "MM/dd/yyyy")
+        // this.chargeDate = this.datePipe.transform(this.IpbillFooterform.get('ChargeDate').value, "MM/dd/yyyy")
         this.getChargesList()
     }
     OnDateChange() {

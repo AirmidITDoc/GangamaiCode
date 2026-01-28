@@ -105,6 +105,13 @@ export class LabPatientRegService {
   public getRefundofBillServiceList(employee) {
     return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList", employee);
   }
+
+  public InsertEstimate(employee) {
+    return this._httpClient.PostData("Estimate/Insert", employee);
+  }
+  public LastCreditList(Param) {
+    return this._httpClient.PostData("Common", Param);
+  }
   public getRtevPackageDetList(param) {
     return this._httpClient.PostData("BillingService/PackageDetailList", param);
   }

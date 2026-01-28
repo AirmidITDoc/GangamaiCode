@@ -16,6 +16,7 @@ import { ExcelDownloadService } from "app/main/shared/services/excel-download.se
 import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
 import { DoctorschdulerComponent } from "./doctorschduler/doctorschduler.component";
 import { PageNames } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
+import { DoctorExecutiveComponent } from "./doctor-executive/doctor-executive.component";
 
 @Component({
     selector: "app-doctor-master",
@@ -39,7 +40,7 @@ export class DoctorMasterComponent implements OnInit {
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
- @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     ngAfterViewInit() {
@@ -47,13 +48,13 @@ export class DoctorMasterComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isInHouseDoctor')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isOnCallDoctor')!.template = this.actionsTemplate1;
-         this.gridConfig.columnsList.find(col => col.key === 'isConsultant')!.template = this.actionsTemplate2;
+        this.gridConfig.columnsList.find(col => col.key === 'isConsultant')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'isRefDoc')!.template = this.actionsTemplate3;
 
     }
 
     allColumns = [
-         { heading: "-", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "-", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
 
         { heading: "-", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
@@ -385,6 +386,25 @@ export class DoctorMasterComponent implements OnInit {
         } catch (error) {
             console.log('Error in importinge excel file => ', error);
         }
+    }
+
+    onOpenForm(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(DoctorExecutiveComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: '50%',
+                width: '30%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+            }
+        });
     }
 }
 

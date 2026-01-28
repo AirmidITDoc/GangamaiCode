@@ -39,7 +39,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 })
 export class IndentComponent implements OnInit {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Indent, permissionType.Add);
-    
+
 
   hasSelectedContacts: boolean;
   IndentSearchGroup: FormGroup;
@@ -96,7 +96,7 @@ export class IndentComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
-     permissionCode: permissionCodes.Indent,
+    permissionCode: permissionCodes.Indent,
     apiUrl: "Indent/IndentList",
     columnsList: this.allcolumns,
     sortField: "IndentId",
@@ -141,7 +141,7 @@ export class IndentComponent implements OnInit {
   constructor(
     public _IndentService: IndentService, private commonService: PrintserviceService,
     public toastr: ToastrService, public _matDialog: MatDialog, private accountService: AuthenticationService,
-    public datePipe: DatePipe,  public _ConfigService: ConfigService,public permissionService: PagePermissionService,
+    public datePipe: DatePipe, public _ConfigService: ConfigService, public permissionService: PagePermissionService,
   ) { }
 
   ngOnInit(): void {
@@ -149,11 +149,11 @@ export class IndentComponent implements OnInit {
 
     // console.log(this.accountService)
     // this.IsIndentVerify = this.accountService.currentUserValue.user.isIndentVerify
-debugger
+    debugger
     console.log(this._ConfigService.configParams)
-      const [vIsIndentVerify, IsIndentVerify] = this._ConfigService.configParams.IsIndentVerify.split(":");
-    this.IsIndentVerify=parseInt(vIsIndentVerify)
-       console.log(this.IsIndentVerify)
+    const [vIsIndentVerify, IsIndentVerify] = this._ConfigService.configParams.IsIndentVerify.split(":");
+    this.IsIndentVerify = parseInt(vIsIndentVerify)
+    console.log(this.IsIndentVerify)
   }
 
   ListView(value) {
@@ -234,7 +234,7 @@ debugger
         maxWidth: "97vw",
         height: '98%',
         width: '96%',
-        data: row 
+        data: row
       });
     dialogRef.afterClosed().subscribe(result => {
       that.grid.bindGridData();
@@ -286,7 +286,7 @@ debugger
     });
   }
   onVerify(row) {
-debugger
+    debugger
     let submitData = {
       "indentId": row.indentId,
       "isInchargeVerifyId": this.accountService.currentUserValue.userId

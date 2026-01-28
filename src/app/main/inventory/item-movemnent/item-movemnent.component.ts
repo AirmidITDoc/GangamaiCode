@@ -36,16 +36,16 @@ export class ItemMovemnentComponent implements OnInit {
 
     allColumns = [
         { heading: "No", key: "movementNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "Date", key: "tranDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Date", key: "tranDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "TransactionType", key: "transactionType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Doc.No", key: "documentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Receipt Qty", key: "receiptQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Bal Qty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100 }
+        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Receipt Qty", key: "receiptQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "IssueQty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Bal Qty", key: "balQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 90 }
     ]
 
     allFilters = [
