@@ -37,6 +37,9 @@
                     <mat-icon>delete</mat-icon>
                 </button>
 
+                <button mat-icon-button matTooltip="Company Executive" (click)="onOpenForm(element)">
+                    <mat-icon>insert_drive_file</mat-icon>
+                </button>
 
             </div>
         </ng-template>
@@ -55,20 +58,22 @@
                         </button>
                     </mat-form-field>
 
-                    <airmid-dropdown label="Company Type" formControlName="compTypeId" [formGroup]="searchform"  [(ngModel)]="gridConfig.filters[1].fieldValue"
-                        [mode]="autocompleteModetypeName" (selectionChange)="onChangeFirst()">
+                    <airmid-dropdown label="Company Type" formControlName="compTypeId" [formGroup]="searchform"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue" [mode]="autocompleteModetypeName"
+                        (selectionChange)="onChangeFirst()">
                     </airmid-dropdown>
 
-                    <airmid-dropdown label="City" formControlName="cityId" [formGroup]="searchform"  [(ngModel)]="gridConfig.filters[2].fieldValue"
-                      (selectionChange)="onChangeFirst()" [mode]="autocompleteModecity">
+                    <airmid-dropdown label="City" formControlName="cityId" [formGroup]="searchform"
+                        [(ngModel)]="gridConfig.filters[2].fieldValue" (selectionChange)="onChangeFirst()"
+                        [mode]="autocompleteModecity">
                     </airmid-dropdown>
 
-                  
 
-                     <mat-form-field appearance="outline" fxFlex>
+
+                    <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Mobile No</mat-label>
-                        <input matInput placeholder="Mobile No"  (input)="onChangeFirst()" 
-                            [formGroup]="searchform" formControlName="phoneNo" [max]="10"/>
+                        <input matInput placeholder="Mobile No" (input)="onChangeFirst()" [formGroup]="searchform"
+                            formControlName="phoneNo" [max]="10" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('phoneNo')">
                             <mat-icon>close</mat-icon>
                         </button>

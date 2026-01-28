@@ -51,6 +51,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { UpdateServCodePrintComponent } from './update-serv-code-print/update-serv-code-print.component';
+import { CompanyExecutiveComponent } from './company-executive/company-executive.component';
 
 const routes: Routes = [
     {
@@ -60,7 +61,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CompanyMasterListComponent, NewCompanyMasterComponent, ServeToCompanyComponent, UpdateServCodePrintComponent],
+    declarations: [CompanyMasterListComponent, NewCompanyMasterComponent, ServeToCompanyComponent, UpdateServCodePrintComponent, CompanyExecutiveComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
