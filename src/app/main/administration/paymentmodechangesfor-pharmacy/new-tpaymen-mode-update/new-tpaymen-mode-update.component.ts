@@ -1,33 +1,30 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OperatorComparer } from 'app/core/models/gridRequest';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { PaymentmodechangesService } from '../paymentmodechanges.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { Overlay, ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { PaymentChange, tPaymentChange } from '../paymentmodechanges.component';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { ThemeService } from 'ng2-charts';
 import { HttpService } from 'app/core/http/http.service';
 import { isEmpty } from 'lodash';
 import { fuseAnimations } from '@fuse/animations';
+import { tPaymentChange } from '../../paymentmodechanges/paymentmodechanges.component';
+import { PaymentmodechangesforpharmacyService } from '../paymentmodechangesfor-pharmacy.service';
 
 @Component({
-  selector: 'app-newedipamode',
-  templateUrl: './newedipamode.component.html',
-  styleUrls: ['./newedipamode.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  selector: 'app-new-tpaymen-mode-update',
+  templateUrl: './new-tpaymen-mode-update.component.html',
+  styleUrls: ['./new-tpaymen-mode-update.component.scss']
 })
-export class NewedipamodeComponent {
-
-  paymentForm: FormGroup
+export class NewTPaymenModeUpdateComponent {
+paymentForm: FormGroup
   mainpaymentForm: FormGroup
 
 
@@ -61,9 +58,7 @@ export class NewedipamodeComponent {
   vCardNo: any;
   vchequeNo: any;
   vNeftno: any;
- public bankList: BankNames[] = [];
-  filteredbankList: BankNames[] = [];
-  selectedPaymnet1: string = '';
+
 
 
   public displayedColumn: string[] =
@@ -106,7 +101,7 @@ export class NewedipamodeComponent {
   public dsPayList = new MatTableDataSource<tPaymentChange>();
 
   constructor(
-    public _Paymentmodesevice: PaymentmodechangesService,
+    public _Paymentmodesevice: PaymentmodechangesforpharmacyService,
     private _loggedService: AuthenticationService,
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
@@ -379,12 +374,14 @@ export class NewedipamodeComponent {
     // }
   }
 
+  selectedPaymnet1: string = '';
   getselectObjPayMode(obj) {
     console.log(obj)
     this.selectedPaymnet1 = obj.text
     //  this.onChangePaymentType();
   }
- 
+  public bankList: BankNames[] = [];
+  filteredbankList: BankNames[] = [];
   getBanklist() {
     // this.selectedRow = contact;
     this.bankList = [];

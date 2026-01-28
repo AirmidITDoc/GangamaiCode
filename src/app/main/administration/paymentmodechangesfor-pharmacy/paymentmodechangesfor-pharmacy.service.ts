@@ -12,6 +12,7 @@ export class PaymentmodechangesforpharmacyService {
   userFormGroup: FormGroup;
   paymentform: FormGroup;
   paymentInsertform: FormGroup;
+    phartpayFormGroup: FormGroup;
   constructor(
     private _httpClient: ApiCaller,
     private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,
@@ -19,6 +20,7 @@ export class PaymentmodechangesforpharmacyService {
   ) {
     this.userFormGroup = this.createUseForm()
     this.paymentform = this.createpaymentForm();
+     this.phartpayFormGroup=this.createUseForm()
     this.paymentInsertform = this.createpaymentInsertForm();
   }
 
@@ -147,5 +149,24 @@ export class PaymentmodechangesforpharmacyService {
     if (employee.PaymentId)
       return this._httpClient.PutData("paymentpharmacy/Edit/" + employee.PaymentId, employee);
   }
+
+
+  
+public TPaymentUpdate(paymentId,m_data) {
+    return this._httpClient.PutData("PaymentMode/PaymentMode"+paymentId,m_data);
+}
+
+public getpaybBillBrowseList(m_data) {
+    return this._httpClient.PostData("PaymentMode/OPBillListForPaymentModeChangeListBillNoWise",m_data);
+}
+
+
+public getpaymodeList(m_data) {
+    return this._httpClient.PostData("Common", m_data)
+}
+
+public getBankNameList(m_data) {
+    return this._httpClient.PostData("Common", m_data)
+}
 
 }
