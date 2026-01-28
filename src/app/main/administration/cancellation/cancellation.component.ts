@@ -608,6 +608,7 @@ console.log(row)
           this.grid.bindGridData();
               this.lable= ''
               this.billcancelList='';
+              this._matDialog.closeAll()
         });
       }
     })
@@ -637,6 +638,7 @@ console.log(row)
            this.grid.bindGridData();
                this.lable= ''
               this.billcancelList='';
+              this._matDialog.closeAll()
         });
       }
     }) 

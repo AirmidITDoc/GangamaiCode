@@ -1181,7 +1181,7 @@ export class IPBillBrowseListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType: 'OPBill'
+                    emailType: 'IPFinalBillClassWise'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

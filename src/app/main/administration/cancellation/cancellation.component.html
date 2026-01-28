@@ -132,7 +132,7 @@
                                 BillDate
                             </button>&nbsp;
                             <button class="btn btn-primary" (click)="OnUpdatepayment(element,1)"
-                                matTooltip="Payment Date Update">
+                                matTooltip="Payment Date Update" *ngIf="element.isCancelled =='0'">
                                 PaymentDate
                             </button>&nbsp;
                             <button class="btn btn-danger" *ngIf="element.isCancelled =='0'"

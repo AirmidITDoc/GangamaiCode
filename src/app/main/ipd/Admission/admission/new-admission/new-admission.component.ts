@@ -687,7 +687,7 @@ this.Is9_Digit_National_Id = id === "1";
     patientPolicyId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
     opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
     opiptype: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    policyNo: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    policyNo: [0,[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
     policyValidateDate: [new Date().toISOString()],
     approvedAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
     createdBy:[this.accountService.currentUserValue.userId],
