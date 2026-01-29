@@ -543,8 +543,8 @@
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
 
                                                                         </mat-form-field>
-                                                                        <!-- <span >{{
-                                                                            contact.price | number:'1.2-2'}}</span> -->
+                                                                        <span *ngIf="Lable == 'Pharmacy'">{{
+                                                                            contact.price | number:'1.2-2'}}</span>
                                                                     </mat-cell>
                                                                 </ng-container>
 
@@ -566,8 +566,8 @@
                                                                                 required
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
                                                                         </mat-form-field>
-                                                                          <!-- <span>{{
-                                                                            contact.qty}}</span> -->
+                                                                          <span  *ngIf="Lable == 'Pharmacy'">{{
+                                                                            contact.qty}}</span>
                                                                     </mat-cell>
                                                                 </ng-container>
 
