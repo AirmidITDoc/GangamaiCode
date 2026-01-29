@@ -2199,6 +2199,16 @@ console.log(item)
 
         })
     }
+        DraftbillCancel(Obj) {
+        var vdata = {
+            "drbno": Obj?.drbno
+        }
+        this._AppointmentlistService.getDeleteDratfBill(vdata).subscribe((data) => {
+            if (data) {
+                this.getdraftlist();
+            }
+        });
+    }
     draftChargelist: any = [];
     DraftdetObj:any;
     getdraftchargelist(contact) {
