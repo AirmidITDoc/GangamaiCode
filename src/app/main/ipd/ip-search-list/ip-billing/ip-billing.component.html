@@ -189,7 +189,7 @@
                 </div>
 
                 <form [formGroup]="BillReviwe" fxLayout="column">
-                  <mat-checkbox name="IsSupplimentryBill" (change)="AllowToaddcharges($event)">
+                  <mat-checkbox formControlName="IsSupplimentryBill" (change)="AllowToaddcharges($event)">
                     Check
                   </mat-checkbox>
                 </form>
