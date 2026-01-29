@@ -15,6 +15,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
 import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 
 @Component({
   selector: 'app-lab-sample-collection',
@@ -312,8 +313,44 @@ export class LabSampleCollectionComponent {
     });
   }
 
-  OnPrintPatientIcard(element) {
-    this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
+  // OnPrintPatientIcard(element) {
+  //   this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
+  // }
+
+  OnPrintPatientIcard(data) {
+    const param = {
+      searchFields: [
+        {
+          fieldName: "LabPatientId",
+          fieldValue: String(data.labPatientId),
+          opType: "13"
+        },
+        {
+          fieldName: "OPD_IPD_Type",
+          fieldValue: "4",
+          opType: "13"
+        }
+      ],
+      mode: "LabStickerPrint"
+    };
+
+    console.log(param);
+
+    this._SampleCollectionService.getReportHtml(param).subscribe(res => {
+      const matDialog = this._matDialog.open(HtmlviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            html: res["html"] as string,
+            title: res["title"]
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+
   }
 
 }

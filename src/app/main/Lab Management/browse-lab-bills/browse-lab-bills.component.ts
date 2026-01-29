@@ -386,9 +386,9 @@ export class BrowseLabBillsComponent {
 
   viewgetOPPayemntPdf(data, status) {
     if (status == true)
-      this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
+      this.commonService.Onprint("PaymentId", data, "OPLabPaymentReceipt");
     else
-      this.commonService.Onprint("PaymentId", data.paymentId, "OPPaymentReceipt");
+      this.commonService.Onprint("PaymentId", data.paymentId, "OPLabPaymentReceipt");
   }
   getWhatsappsharePaymentReceipt(Id, Mobile) { }
 
@@ -402,10 +402,10 @@ export class BrowseLabBillsComponent {
   OnPrint(element) {
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     if (ThermalPrint != 1) {
-      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+      this.commonService.Onprint("BillNo", element.billNo, "LabBillReceipt");
     } else {
       // Use thermal print with preview - shows preview first, then auto-prints
-      this.commonService.OnThermalPrint("BillNo", element.billNo, "OpBillReceiptT");
+      this.commonService.OnThermalPrint("BillNo", element.billNo, "LabBillReceiptT");
     }
   }
 
@@ -429,16 +429,16 @@ export class BrowseLabBillsComponent {
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     // if (m == "Bill Print"){
     //       if (ThermalPrint != 1) {
-    //              this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+    //              this.commonService.Onprint("BillNo", element.billNo, "LabBillReceipt");
     //             } else {
-    //               this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+    //               this.commonService.Onprint("BillNo", element.billNo, "LabBillReceiptT");
     //             } 
     // }
     // else 
     if (m == "Bill Print-Package Info")
       this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
     else if (m == "Bill Print")
-      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+      this.commonService.Onprint("BillNo", element.billNo, "LabBillReceipt");
   }
 
 

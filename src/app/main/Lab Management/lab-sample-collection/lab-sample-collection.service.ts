@@ -106,4 +106,7 @@ export class LabSampleCollectionService {
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("PhoneApp", m_data);
   }
+  public getReportHtml(Param) {
+    return this._httpClient1.PostData("Report/get-report-html", Param);
+  }
 }

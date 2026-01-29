@@ -75,7 +75,10 @@ export class NewLabPatientRegComponent {
   public dsPackageList = new MatTableDataSource<ChargesList>();
   filteredOptions: any[] = [];
   prevResults: any[] = [];
+
   public dstable1 = new MatTableDataSource<ChargesList>();
+  dsCopyItemList = new MatTableDataSource<ChargesList>();
+
   debounceTimers: { [key: string]: any } = {};
 
   chargeslist: any = [];
@@ -647,7 +650,7 @@ export class NewLabPatientRegComponent {
 
   regflag = false
   VlabPatRegId: any;
-  showPrevBtn:boolean=false
+  showPrevBtn: boolean = false
   getSelectedObj(obj) {
     console.log(obj)
     // this.PatientName = obj.patientName;
@@ -670,31 +673,57 @@ export class NewLabPatientRegComponent {
             address: this.registerObj.address.trim(),
             // DateOfBirth:this.registerObj.dateofBirth,
           });
-          
+
         });
       }, 100);
     }
 
-    if(this.VlabPatRegId){
-      this.showPrevBtn=true
+    if (this.VlabPatRegId) {
+      this.showPrevBtn = true
       this.getPrevList(obj);
     }
   }
 
-  PrevregisterObj: any;
-  getPrevList(row:any=null) {
+  getPrevList(row: any = null) {
     const dialogRef = this._matDialog.open(PrevlabHistoryComponent,
       {
-        maxWidth: "60vw",
-        height: '45%',
+        maxWidth: "80vw",
+        height: '80%',
         width: '100%',
-        data: row
+        data: this.VlabPatRegId
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.PrevregisterObj = result
-      this.myForm.get("departmentId").setValue(this.PrevregisterObj.departmentId)
-      console.log(this.PrevregisterObj)
+      console.log('Prev List:', result);
+      if (!result || result.length === 0) {
+        return;
+      }
+
+      if (Array.isArray(result)) {
+        result.forEach(item => {
+          item.serviceId = item.serviceId || item.ServiceId;
+          item.serviceName = item.serviceName || item.ServiceName;
+          item.price = item.price || item.Price;
+          item.isPathology = item.isPathology ?? item.IsPathology;
+          item.isRadiology = item.isRadiology ?? item.IsRadiology;
+          item.isPackage = item.isPackage ?? item.IsPackage;
+          item.DoctorId = item.DoctorId;
+          item.DoctorName = item.DoctorName;
+          item.creditedtoDoctor = (item.DoctorId > 0);
+
+          if (item.PackageId > 0) {
+            //goes ONLY to package table
+            this.addCopyToPackageTable(item);
+          } else {
+            this.onSaveEntry(item);
+          }
+
+          // this.onSaveEntry(item);
+        });
+      }
+
+      else {
+        this.onSaveEntry(result);
+      }
     });
   }
 
@@ -897,8 +926,10 @@ export class NewLabPatientRegComponent {
   }
 
   onSaveEntry(row) {
+    // debugger
     let doctorid = 0;
     const formValue = this.myForm.value
+
     const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
     if (!isDuplicate) {
       this.onAddCharges(row)
@@ -975,11 +1006,21 @@ export class NewLabPatientRegComponent {
   public isDiscountApplied = false;
   isRowDiscountApplied = false;
   onAddCharges(row): void {
+    // debugger
+    const isPackage = (row.isPackage ?? row.IsPackage) == 1;
 
-    if (this.myForm.get("IsPathRad").value == '1')
-      this.IsPathology = true
-    else
-      this.IsRadiology = true
+    if (row.isPathology !== undefined || row.IsPathology !== undefined) {
+      this.IsPathology = row.isPathology ?? row.IsPathology;
+      this.IsRadiology = row.isRadiology ?? row.IsRadiology;
+    } else {
+      if (this.myForm.get("IsPathRad")?.value == '1') {
+        this.IsPathology = true;
+        this.IsRadiology = false;
+      } else {
+        this.IsRadiology = true;
+        this.IsPathology = false;
+      }
+    }
 
     const formValue = this.myForm.value;
 
@@ -1018,7 +1059,38 @@ export class NewLabPatientRegComponent {
     this.chargeList.push(newCharge);
     this.dstable1.data = this.chargeList;
     this.updateCalculation();
-    this.getRtevPackageDetList(row)
+
+
+    if (row.PackageId == undefined) {
+      this.getRtevPackageDetList(row)
+    }
+  }
+
+  addCopyToPackageTable(row) {
+    // prevent duplicates
+    if (this.PacakgeList.some(p => p.PackageServiceId === (row.ServiceId ?? row.serviceId))) {
+      return;
+    }
+
+    this.PacakgeList.push({
+      serviceId: row.packageServiceId ?? row.serviceId,
+      serviceName: row.serviceName,
+      price: row.price || 0,
+      Qty: 1,
+      TotalAmt: (row.price * 1) || 0,
+      ConcessionPercentage: 0,
+      DiscAmt: 0,
+      NetAmount: (row.price * 1) || 0,
+      packageId: row.PackageId ?? row.packageId,
+      PackageServiceId: row.ServiceId ?? row.serviceId,
+      doctorId: row.DoctorId ?? 0,
+      doctorName: row.DoctorName ?? '',
+      isPathology: row.isPathology,
+      isRadiology: row.isRadiology,
+      pacakgeServiceName: row.pacakgeServiceName,
+    });
+
+    this.dsPackageList.data = [...this.PacakgeList];
   }
 
   public packageList: ChargesList[] = [];
@@ -1039,7 +1111,7 @@ export class NewLabPatientRegComponent {
     }
     //console.log(vdata)
     this._labPatientRegService.getRtevPackageDetList(vdata).subscribe(data => {
-      debugger
+      // debugger
       this.dsPackageList.data = data.data as ChargesList[];
       this.dsPackageList.data.forEach(element => {
         this.PacakgeList.push(
@@ -1064,6 +1136,7 @@ export class NewLabPatientRegComponent {
       this.dsPackageList.data = this.PacakgeList
     });
   }
+
   getPacakgeDetail(contact) {
     const dialogRef = this._matDialog.open(PackageDetailsComponent,
       {

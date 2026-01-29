@@ -43,6 +43,7 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { ToastrService } from 'ngx-toastr';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 
 @Component({
     selector: 'app-result-entry',
@@ -1151,9 +1152,45 @@ export class ResultEntryComponent implements OnInit {
             }
         });
     }
-    OnPrintPatientIcard(element) {
-        console.log('Third action clicked for:', element);
-        this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+    // OnPrintPatientIcard(element) {
+    //     console.log('Third action clicked for:', element);
+    //     this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+    // }
+
+    OnPrintPatientIcard(data) {
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "LabPatientId",
+                    fieldValue: String(data.visit_Adm_ID),
+                    opType: "13"
+                },
+                {
+                    fieldName: "OPD_IPD_Type",
+                    fieldValue: String(data.opdipdtype),
+                    opType: "13"
+                }
+            ],
+            mode: "LabStickerPrint"
+        };
+
+        console.log(param);
+
+        this._SampleService.getReportHtml(param).subscribe(res => {
+            const matDialog = this._matDialog.open(HtmlviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        html: res["html"] as string,
+                        title: res["title"]
+                    }
+                });
+            matDialog.afterClosed().subscribe(result => {
+            });
+        });
+
     }
     selection = new SelectionModel<SampleList>(true, []);
 

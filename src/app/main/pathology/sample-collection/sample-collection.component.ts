@@ -17,6 +17,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 
 
 @Component({
@@ -327,9 +328,46 @@ export class SampleCollectionComponent implements OnInit {
 
         });
     }
-    OnPrintPatientIcard(element) {
-        console.log('Third action clicked for:', element);
-        this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+    OnPrintPatientIcard(data) {
+        var opiptype;
+        if (data.lbl == "IP") {
+            opiptype = 1
+        } else {
+            opiptype = 0
+        }
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "LabPatientId",
+                    fieldValue: String(data.visit_Adm_ID),
+                    opType: "13"
+                },
+                {
+                    fieldName: "OPD_IPD_Type",
+                    fieldValue: String(opiptype),
+                    opType: "13"
+                }
+            ],
+            mode: "LabStickerPrint"
+        };
+
+        console.log(param);
+
+        this._SampleCollectionService.getReportHtml(param).subscribe(res => {
+            const matDialog = this._matDialog.open(HtmlviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        html: res["html"] as string,
+                        title: res["title"]
+                    }
+                });
+            matDialog.afterClosed().subscribe(result => {
+            });
+        });
+
     }
 
 }
