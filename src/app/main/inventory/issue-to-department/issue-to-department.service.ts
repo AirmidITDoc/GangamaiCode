@@ -129,4 +129,8 @@ export class IssueToDepartmentService {
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("BedMaster", m_data);
 }
+
+  public getVerifyIssue(Param) {
+    return this._httpClient1.PostData("Indent/Verify", Param)
+  }
 }

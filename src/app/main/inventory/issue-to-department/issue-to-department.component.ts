@@ -263,7 +263,18 @@ export class IssueToDepartmentComponent implements OnInit {
         console.log(element)
         this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
     }
+  onVerify(row) {
+    debugger
+    let submitData = {
+      "indentId": row.indentId,
+      "isInchargeVerifyId": this.accountService.currentUserValue.userId
 
+    };
+    this._IssueToDep.getVerifyIssue(submitData).subscribe(response => {
+      this.onChangeFirst(event);
+
+    });
+  }
 
 }
 

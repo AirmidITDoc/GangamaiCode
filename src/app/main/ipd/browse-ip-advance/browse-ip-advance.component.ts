@@ -17,7 +17,7 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
- 
+
 @Component({
     selector: 'app-browse-ip-advance',
     templateUrl: './browse-ip-advance.component.html',
@@ -31,8 +31,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
         public _BrowseIpAdvanceService: BrowseIpAdvanceService,
         public datePipe: DatePipe,
         public _matDialog: MatDialog,
-        public toastr: ToastrService ,   public _whatsppService: WhatsAppEmailService,
-                        private overlay: Overlay,
+        public toastr: ToastrService, public _whatsppService: WhatsAppEmailService,
+        private overlay: Overlay,
         private commonService: PrintserviceService,
     ) { }
 
@@ -51,7 +51,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateone;
     }
 
-   
+
     @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
     @ViewChild('ipRefund', { static: false }) grid1: AirmidTableComponent;
 
@@ -112,6 +112,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
         { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Advance Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Advance UsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 150 },
         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -123,7 +124,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
         {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,width:120,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
@@ -238,212 +239,331 @@ export class BrowseIPAdvanceComponent implements OnInit {
         console.log(element)
         this.commonService.Onprint("RefundId", element.refundId, "IpAdvanceRefundReceipt");
     }
-    
-    
-     private overlayRef: OverlayRef | null = null;
-            private EmailOverlayRef: OverlayRef | null = null;
-            private whatsappOverlayRef: OverlayRef | null = null;
-            private hoverTimeout: any = null;
-            private patientCloseTimeout: any = null;
-            private doctorCloseTimeout: any = null;
-            
-            openEmailDetailsPopover(event: MouseEvent, patientData: any) {
-                event.stopPropagation();
-        
-                // Clear any existing timeout
-                if (this.hoverTimeout) {
-                    clearTimeout(this.hoverTimeout);
-                }
-        
-                // Add small delay to prevent flickering
-                this.hoverTimeout = setTimeout(() => {
-                    // Close any existing patient popover
-                    if (this.EmailOverlayRef) {
-                        this.EmailOverlayRef.dispose();
-                        this.EmailOverlayRef = null;
+
+
+    private overlayRef: OverlayRef | null = null;
+    private EmailOverlayRef: OverlayRef | null = null;
+    private whatsappOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private patientCloseTimeout: any = null;
+    private doctorCloseTimeout: any = null;
+
+    openEmailDetailsPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.EmailOverlayRef) {
+                this.EmailOverlayRef.dispose();
+                this.EmailOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
                     }
-        
-                    const positionStrategy = this.overlay.position()
-                        .flexibleConnectedTo(event.target as HTMLElement)
-                        .withPositions([
-                            {
-                                originX: 'start',
-                                originY: 'bottom',
-                                overlayX: 'start',
-                                overlayY: 'top',
-                            },
-                            {
-                                originX: 'start',
-                                originY: 'top',
-                                overlayX: 'start',
-                                overlayY: 'bottom',
-                            },
-                            {
-                                originX: 'end',
-                                originY: 'center',
-                                overlayX: 'start',
-                                overlayY: 'center',
-                            },
-                            {
-                                originX: 'start',
-                                originY: 'center',
-                                overlayX: 'end',
-                                overlayY: 'center',
-                            }
-                        ]);
-        
-                    this.EmailOverlayRef = this.overlay.create({
-                        positionStrategy,
-                        scrollStrategy: this.overlay.scrollStrategies.close(),
-                        hasBackdrop: false,
-                    });
-        
-                    const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
-                    const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
-                    componentRef.instance.patientData = patientData;
-                    
-                    // Handle mouse events on the overlay element
-                    const overlayElement = this.EmailOverlayRef.overlayElement;
-                    overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
-                    overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover());
-                }, 300); // 300ms delay before showing popover
+                ]);
+
+            this.EmailOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
+            const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+          
+               patientData.billNo = patientData.advanceId
+            componentRef.instance.patientData = patientData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.EmailOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeEmailDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.EmailOverlayRef) {
+                this.EmailOverlayRef.dispose();
+                this.EmailOverlayRef = null;
             }
-            closeEmailDetailsPopover() {
-                // Clear timeout if popover hasn't opened yet
-                if (this.hoverTimeout) {
-                    clearTimeout(this.hoverTimeout);
-                    this.hoverTimeout = null;
-                }
-        
-                // Clear any existing close timeout
-                if (this.patientCloseTimeout) {
-                    clearTimeout(this.patientCloseTimeout);
-                }
-        
-                // Add delay before closing to allow moving mouse to popover
-                this.patientCloseTimeout = setTimeout(() => {
-                    if (this.EmailOverlayRef) {
-                        this.EmailOverlayRef.dispose();
-                        this.EmailOverlayRef = null;
+        }, 200);
+    }
+
+
+    openWhatsappDetailsPopoverrefund(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
                     }
-                }, 200);
+                ]);
+
+            this.whatsappOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+            const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+            patientData.billNo = patientData.refundId
+            componentRef.instance.patientData = patientData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.whatsappOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopoverrefund());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeWhatsappDetailsPopoverrefund() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
             }
-                openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
-                event.stopPropagation();
-        
-                // Clear any existing timeout
-                if (this.hoverTimeout) {
-                    clearTimeout(this.hoverTimeout);
-                }
-        
-                // Add small delay to prevent flickering
-                this.hoverTimeout = setTimeout(() => {
-                    // Close any existing patient popover
-                    if (this.whatsappOverlayRef) {
-                        this.whatsappOverlayRef.dispose();
-                        this.whatsappOverlayRef = null;
+        }, 200);
+    }
+
+    openWhatsappDetailsPopoveradv(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
                     }
-        
-                    const positionStrategy = this.overlay.position()
-                        .flexibleConnectedTo(event.target as HTMLElement)
-                        .withPositions([
-                            {
-                                originX: 'start',
-                                originY: 'bottom',
-                                overlayX: 'start',
-                                overlayY: 'top',
-                            },
-                            {
-                                originX: 'start',
-                                originY: 'top',
-                                overlayX: 'start',
-                                overlayY: 'bottom',
-                            },
-                            {
-                                originX: 'end',
-                                originY: 'center',
-                                overlayX: 'start',
-                                overlayY: 'center',
-                            },
-                            {
-                                originX: 'start',
-                                originY: 'center',
-                                overlayX: 'end',
-                                overlayY: 'center',
-                            }
-                        ]);
-        
-                    this.whatsappOverlayRef = this.overlay.create({
-                        positionStrategy,
-                        scrollStrategy: this.overlay.scrollStrategies.close(),
-                        hasBackdrop: false,
-                    });
-        
-                    const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
-                    const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
-                    componentRef.instance.patientData = patientData;
-                    
-                    // Handle mouse events on the overlay element
-                    const overlayElement = this.whatsappOverlayRef.overlayElement;
-                    overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
-                    overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover());
-                }, 300); // 300ms delay before showing popover
+                ]);
+
+            this.whatsappOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+            const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+          
+            console.log(patientData)
+            patientData.billNo = patientData.advanceId
+                      componentRef.instance.patientData = patientData;
+            // Handle mouse events on the overlay element
+            const overlayElement = this.whatsappOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopoveadv());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeWhatsappDetailsPopoveadv() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
             }
-            closeWhatsappDetailsPopover() {
-                // Clear timeout if popover hasn't opened yet
-                if (this.hoverTimeout) {
-                    clearTimeout(this.hoverTimeout);
-                    this.hoverTimeout = null;
+        }, 200);
+    }
+
+
+    keepPatientPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+            this.patientCloseTimeout = null;
+        }
+    }
+    Onmessage(data) { }
+
+    getWhatsappshareAdvance(el) {
+        console.log(el);
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.advanceId,
+            smsType: "IPAdvance",
+            patientId: el.regNo
+        })
+    }
+
+    OnemailBillAdvance(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'IPAdvance'
                 }
-        
-                // Clear any existing close timeout
-                if (this.patientCloseTimeout) {
-                    clearTimeout(this.patientCloseTimeout);
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    getWhatsappshareadvrefund(el) {
+        console.log(el);
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.refundId,
+            smsType: "IPAdvanceRefund",
+            patientId: el.regNo
+        })
+    }
+
+    OnemailAdvrefund(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'IPAdvanceRefund'
                 }
-        
-                // Add delay before closing to allow moving mouse to popover
-                this.patientCloseTimeout = setTimeout(() => {
-                    if (this.whatsappOverlayRef) {
-                        this.whatsappOverlayRef.dispose();
-                        this.whatsappOverlayRef = null;
-                    }
-                }, 200);
-            }
-            keepPatientPopoverOpen() {
-                // Clear close timeout when hovering over popover
-                if (this.patientCloseTimeout) {
-                    clearTimeout(this.patientCloseTimeout);
-                    this.patientCloseTimeout = null;
-                }
-            }
-               Onmessage(data) { }
-            
-                getWhatsappshareBill(el) {
-                    console.log(el);
-                    this._whatsppService.OnWhatsAppMsgSent({
-                        mobileNo: el.mobileNo,
-                        patientName: el.patientName,
-                        billNo: el.billNo,
-                        smsType: "OPBill",
-                        patientId:el.regNo
-                    })
-                }
-                
-                Onemail(contact) {
-                    const dialogRef = this._matDialog.open(EmailSendComponent,
-                        {
-                            maxWidth: "100%",
-                            height: '75%',
-                            width: '55%',
-                            data: {
-                                Obj: contact,
-                                emailType:'OPBill'
-                            }
-                        });
-                    dialogRef.afterClosed().subscribe(result => {
-                        this.grid.bindGridData();
-                    });
-                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
 
 }
 
@@ -490,7 +610,7 @@ export class IpdAdvanceBrowseModel {
     Remark: any;
     usedAmount: any;
     balanceAmount: any;
-   advanceDetailId:any;
+    advanceDetailId: any;
     /**
   * Constructor
   *
@@ -521,7 +641,7 @@ export class IpdAdvanceBrowseModel {
             this.HospAddress = IpdAdvanceBrowseModel.HospAddress || '';
             this.Phone = IpdAdvanceBrowseModel.Phone || 0;
             this.EmailId = IpdAdvanceBrowseModel.EmailId || 0;
-            this.reason = IpdAdvanceBrowseModel.reason || 0; 
+            this.reason = IpdAdvanceBrowseModel.reason || 0;
             this.advanceDetailId = IpdAdvanceBrowseModel.advanceDetailId || 0;
             this.Address = IpdAdvanceBrowseModel.Address || '';
             this.PatientType = IpdAdvanceBrowseModel.PatientType || '';

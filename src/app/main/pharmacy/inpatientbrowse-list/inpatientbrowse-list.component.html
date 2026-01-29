@@ -142,14 +142,6 @@
                                 <mat-icon>visibility</mat-icon>
                             </button>
 
-                            <button mat-icon-button
-                                [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
-                                matTooltipPosition="right" (click)="Onemail(element)"
-                                (mouseenter)="openEmailDetailsPopover($event, element)"
-                                (mouseleave)="closeEmailDetailsPopover()"
-                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                                <mat-icon>email</mat-icon>
-                            </button>
 
                             <button mat-icon-button
                                 [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
@@ -158,6 +150,15 @@
                                 (mouseleave)="closeWhatsappDetailsPopover()"
                                 style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
                                 <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                            </button>
+
+                              <button mat-icon-button
+                                [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                matTooltipPosition="right" (click)="Onemail(element)"
+                                (mouseenter)="openEmailDetailsPopover($event, element)"
+                                (mouseleave)="closeEmailDetailsPopover()"
+                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                <mat-icon>email</mat-icon>
                             </button>
 
                         </div>
@@ -348,9 +349,23 @@
                             <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(element)">
                                 <mat-icon>visibility</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                (click)="getWhatsappshareSales(element)">
-                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+
+                              <button mat-icon-button
+                                [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                matTooltipPosition="right" (click)="getWhatsappshareReturn(element)"
+                                (mouseenter)="openWhatsappDetailsPopover1($event, element)"
+                                (mouseleave)="closeWhatsappDetailsPopover1()"
+                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                            </button>
+
+                              <button mat-icon-button
+                                [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                matTooltipPosition="right" (click)="Onemailreturn(element)"
+                                (mouseenter)="openEmailDetailsPopover1($event, element)"
+                                (mouseleave)="closeEmailDetailsPopover1()"
+                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                <mat-icon>email</mat-icon>
                             </button>
                         </div>
                     </ng-template>

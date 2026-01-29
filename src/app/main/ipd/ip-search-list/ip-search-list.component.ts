@@ -130,6 +130,7 @@ export class IPSearchListComponent implements OnInit {
     IsShowGrid: boolean = false;
     id: string;
     mode: string;
+    FinalBill=0
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
         this.myFilterform.get('fromDate').setValue('');
@@ -162,6 +163,7 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Refund of Bill');
         }
         else if (this._ActRoute.url == '/ipd/add-billing') {
+            //  if (this.FinalBill = 1) 
             this.menuActions.push('Advance');
             this.menuActions.push('Bill');
             this.menuActions.push('Payment');
@@ -376,7 +378,7 @@ export class IPSearchListComponent implements OnInit {
                 }
             });
         }
-        else if (m == "Advance") {
+        else if (m == "Advance" && !element.isBillGenerated) {
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             let Advflag: boolean = false;
             if (element.isBillGenerated) {

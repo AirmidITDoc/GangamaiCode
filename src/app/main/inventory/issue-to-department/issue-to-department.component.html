@@ -28,6 +28,9 @@
                         (click)="viewgetIssuetodeptReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
+                       <button *ngIf="!element.isInchargeVerify" mat-icon-button (click)="onVerify(element)">
+                        <mat-icon class="disabled-icon" matTooltip="verify Menu">verified_user</mat-icon>
+                    </button>
                 </div>
             </ng-template>
 

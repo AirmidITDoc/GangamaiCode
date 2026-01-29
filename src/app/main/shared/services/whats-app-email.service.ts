@@ -45,6 +45,7 @@ export class WhatsAppEmailService {
         "patientId": params?.patientId,
 
       }
+      console.log(param)
       this._OPListService.InsertWhatsapp(param).subscribe(response => {
 
       });

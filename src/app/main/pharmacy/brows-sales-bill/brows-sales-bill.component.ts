@@ -1029,7 +1029,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
     if (event.keyCode === 114) {
       // this. selectRow(event,this.dssaleList1.data);
-      this.getWhatsappshareSales(this.rowid);
+      // this.getWhatsappshareSales(this.rowid);
     }
   }
   // getPrint2(el) {
@@ -1791,79 +1791,79 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   loadingarry: any = [];
-  getWhatsappshareSales(el) {
+  // getWhatsappshareSales(el) {
 
-    var m_data = {
-      "insertWhatsappsmsInfo": {
-        "mobileNumber": el.RegNo,
-        "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
-        "isSent": 0,
-        "smsType": 'Sales',
-        "smsFlag": 0,
-        "smsDate": this.currentDate,
-        "tranNo": el.SalesId,
-        "PatientType": 2,//el.PatientType,
-        "templateId": 0,
-        "smSurl": "info@gmail.com",
-        "filePath": this.Filepath || '',
-        "smsOutGoingID": 0
+  //   var m_data = {
+  //     "insertWhatsappsmsInfo": {
+  //       "mobileNumber": el.RegNo,
+  //       "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+  //       "isSent": 0,
+  //       "smsType": 'Sales',
+  //       "smsFlag": 0,
+  //       "smsDate": this.currentDate,
+  //       "tranNo": el.SalesId,
+  //       "PatientType": 2,//el.PatientType,
+  //       "templateId": 0,
+  //       "smSurl": "info@gmail.com",
+  //       "filePath": this.Filepath || '',
+  //       "smsOutGoingID": 0
 
-      }
-    }
-    console.log(m_data);
-    this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe(response => {
-      if (response) {
-        Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
+  //     }
+  //   }
+  //   console.log(m_data);
+  //   this._BrowsSalesBillService.InsertWhatsappSales(m_data).subscribe(response => {
+  //     if (response) {
+  //       Swal.fire('Congratulations !', 'WhatsApp Sms  Data  save Successfully !', 'success').then((result) => {
+  //         if (result.isConfirmed) {
+  //           this._matDialog.closeAll();
 
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
-      }
+  //         }
+  //       });
+  //     } else {
+  //       Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+  //     }
 
-    });
-    this.IsLoading = false;
-    el.button.disbled = false;
-  }
+  //   });
+  //   this.IsLoading = false;
+  //   el.button.disbled = false;
+  // }
 
-  getWhatsappshareSalesReturn(el) {
-    // 
-    var m_data = {
-      "insertWhatsappsmsInfo": {
-        "mobileNumber": el.RegNo,
-        "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
-        "isSent": 0,
-        "smsType": 'SalesReturn',
-        "smsFlag": 0,
-        "smsDate": this.currentDate,
-        "tranNo": el.SalesReturnId,
-        "PatientType": 2,//el.PatientType,
-        "templateId": 0,
-        "smSurl": "info@gmail.com",
-        "filePath": this.Filepath || '',
-        "smsOutGoingID": 0
+  // getWhatsappshareSalesReturn(el) {
+  //   // 
+  //   var m_data = {
+  //     "insertWhatsappsmsInfo": {
+  //       "mobileNumber": el.RegNo,
+  //       "smsString": "Dear" + el.PatientName + ",Your Sales Bill has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
+  //       "isSent": 0,
+  //       "smsType": 'SalesReturn',
+  //       "smsFlag": 0,
+  //       "smsDate": this.currentDate,
+  //       "tranNo": el.SalesReturnId,
+  //       "PatientType": 2,//el.PatientType,
+  //       "templateId": 0,
+  //       "smSurl": "info@gmail.com",
+  //       "filePath": this.Filepath || '',
+  //       "smsOutGoingID": 0
 
-      }
-    }
-    console.log(m_data);
-    this._BrowsSalesBillService.InsertWhatsappSalesReturn(m_data).subscribe(response => {
-      if (response) {
-        Swal.fire('Congratulations !', 'WhatsApp  Data  save Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
+  //     }
+  //   }
+  //   console.log(m_data);
+  //   this._BrowsSalesBillService.InsertWhatsappSalesReturn(m_data).subscribe(response => {
+  //     if (response) {
+  //       Swal.fire('Congratulations !', 'WhatsApp  Data  save Successfully !', 'success').then((result) => {
+  //         if (result.isConfirmed) {
+  //           this._matDialog.closeAll();
 
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
-      }
+  //         }
+  //       });
+  //     } else {
+  //       Swal.fire('Error !', 'Whatsapp Sms Data  not saved', 'error');
+  //     }
 
-    });
-    this.IsLoading = false;
-    el.button.disbled = false;
-  }
+  //   });
+  //   this.IsLoading = false;
+  //   el.button.disbled = false;
+  // }
 
 
   expPrint(el, xls) {
@@ -2252,14 +2252,10 @@ export class BrowsSalesBillComponent implements OnInit {
       const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
       const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
 
-
+debugger
       console.log(patientData)
       patientData.billNo = patientData.salesId
-      patientData.patientName = patientData.patientName
-      patientData.regNo = parseInt(patientData.regNo)
-      patientData.mobileNo = patientData.mobileNo
-      patientData.emailId = patientData.emailId
-
+     
       componentRef.instance.patientData = patientData;
 
       // Handle mouse events on the overlay element
@@ -2297,33 +2293,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
   Onmessage(data) { }
 
-  getWhatsappshareBill(el) {
-    console.log(el);
-    debugger
-    this._whatsppService.OnWhatsAppMsgSent({
-      mobileNo: el.mobileNo,
-      patientName: el.patientName,
-      billNo: el.salesId,
-      smsType: "SalesReceipt",
-      patientId: parseInt(el.regNo)
-    })
-  }
-
-  Onemail(contact) {
-    const dialogRef = this._matDialog.open(EmailSendComponent,
-      {
-        maxWidth: "100%",
-        height: '75%',
-        width: '55%',
-        data: {
-          Obj: contact,
-          emailType: 'SalesReceipt'
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-    });
-  }
+ 
   //salesReturn
   openEmailDetailsPopover1(event: MouseEvent, patientData: any) {
     event.stopPropagation();
@@ -2382,10 +2352,10 @@ export class BrowsSalesBillComponent implements OnInit {
 
       console.log(patientData)
       patientData.billNo = patientData.SalesReturnId
-      patientData.patientName = patientData.patientName
-      patientData.regNo = parseInt(patientData.regNo)
-      patientData.mobileNo = patientData.mobileNo
-      patientData.emailId = patientData.emailId
+      // patientData.patientName = patientData.patientName
+      // patientData.regNo = parseInt(patientData.regNo)
+      // patientData.mobileNo = patientData.mobileNo
+      // patientData.emailId = patientData.emailId
 
       componentRef.instance.patientData = patientData;
 
@@ -2472,11 +2442,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
       console.log(patientData)
       patientData.billNo = patientData.salesReturnId
-      patientData.patientName = patientData.patientName
-      patientData.regNo = parseInt(patientData.regNo)
-      patientData.mobileNo = patientData.mobileNo
-      patientData.emailId = patientData.emailId
-
+    
       componentRef.instance.patientData = patientData;
 
       // Handle mouse events on the overlay element
@@ -2514,7 +2480,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
   Onmessage1(data) { }
 
-  getWhatsappshareBill1(el) {
+    getWhatsappshareSalesBill(el) {
     console.log(el);
     debugger
     this._whatsppService.OnWhatsAppMsgSent({
@@ -2526,7 +2492,7 @@ export class BrowsSalesBillComponent implements OnInit {
     })
   }
 
-  Onemail1(contact) {
+  OnemailSales(contact) {
     const dialogRef = this._matDialog.open(EmailSendComponent,
       {
         maxWidth: "100%",
@@ -2535,6 +2501,36 @@ export class BrowsSalesBillComponent implements OnInit {
         data: {
           Obj: contact,
           emailType: 'SalesReceipt'
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
+
+
+
+  getWhatsappsharesalesrefund(el) {
+    console.log(el);
+    debugger
+    this._whatsppService.OnWhatsAppMsgSent({
+      mobileNo: el.mobileNo,
+      patientName: el.patientName,
+      billNo: el.salesReturnId,
+      smsType: "SalesReturnReceipt",
+      patientId: el.regNo
+    })
+  }
+
+  Onemasalesrefund(contact) {
+    const dialogRef = this._matDialog.open(EmailSendComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '55%',
+        data: {
+          Obj: contact,
+          emailType: 'SalesReturnReceipt'
         }
       });
     dialogRef.afterClosed().subscribe(result => {

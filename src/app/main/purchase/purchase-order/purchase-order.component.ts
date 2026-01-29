@@ -474,7 +474,7 @@ IsPoverify=0;
           }
       }
   
-          getWhatsappshareBill(el) {
+          getWhatsappsharePurchase(el) {
             debugger
           console.log(el);
           this._whatsppService.OnWhatsAppMsgSent({

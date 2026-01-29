@@ -270,7 +270,7 @@ currency:any='';
   }
 
   onChangeFirst() {
-    debugger
+    
     this.isShowDetailTable = false;
     this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value + "%"
     this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value + "%"
@@ -285,7 +285,7 @@ currency:any='';
     }
   }
   getSaleslistdata() {
-    debugger
+    
     this.gridConfig = {
       apiUrl: "InPatient/SalesInPatientBillList",
       columnsList: this.BrowseHColumns,
@@ -307,7 +307,7 @@ currency:any='';
   }
   chargelist: any = [];
   getsaleslist() {
-    debugger
+    
     var vdata = {
       "first": 0,
       "rows": 10000,
@@ -384,7 +384,7 @@ currency:any='';
     row.isEditing = true;
   }
   savePatientName(row: any) {
-    debugger
+    
     row.isEditing = false;
     var vadat = {
       "extMobileNo": row?.extMobileNo || 0,
@@ -514,7 +514,7 @@ currency:any='';
     this.getSalesRetrunlistdata();
   }
   getSalesRetrunlistdata() {
-    debugger
+    
     this.gridConfig2 = {
       apiUrl: "InPatient/SalesInPatientReturnBillList",
       columnsList: this.SalesReturnHColumns,
@@ -539,7 +539,7 @@ currency:any='';
   //Sales return
     retchargelist: any = [];
   getsalesreturnlist() {
-    debugger
+    
     var vdata = {
       "first": 0,
       "rows": 10000,
@@ -609,7 +609,7 @@ currency:any='';
   /// Patient list  
   apiUrl: any = '';
   onChangeFirstPatient() {
-    debugger
+    
     if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
       this.apiUrl = "Admission/AdmissionDischargeList"
       this.status = "0"
@@ -631,7 +631,7 @@ currency:any='';
   }
 
   getPatientlistdata() {
-    debugger
+    
     this.gridConfig4 = {
       apiUrl: this.apiUrl,
       columnsList: this.PatientlistColumns,
@@ -652,7 +652,7 @@ currency:any='';
     
   }
   getchangeDate() {
-    debugger
+    
     if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value != false) {
       this.apiUrl = "InPatient/AdmissionDischargeList"
       this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
@@ -668,7 +668,7 @@ currency:any='';
   }
 
   onChangeDiscahrge(event) {
-    debugger
+    
     if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
       this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('')
       this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('')
@@ -849,7 +849,7 @@ currency:any='';
     return this.PharmaSettlementfrom.get('payment') as FormArray;
   }
   OnPayment(contact) {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -885,7 +885,7 @@ currency:any='';
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      debugger
+      
       if (result && result.IsSubmitFlag) {
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
@@ -1603,7 +1603,7 @@ currency:any='';
 
 
   printsalesDetails(contact) {
-    debugger
+    
     setTimeout(() => {
       let param = {
         "searchFields": [
@@ -1659,7 +1659,7 @@ currency:any='';
 
 
   viewgetSalesBillReportPdf(response) {
-    debugger
+    
     console.log(response)
     setTimeout(() => {
       let param = {
@@ -1698,7 +1698,7 @@ currency:any='';
   }
    viewgetSalesreturnBillReportPdf(response) {
     console.log(response)
-    debugger
+    
     setTimeout(() => {
       let param = {
         "searchFields": [
@@ -1794,6 +1794,8 @@ currency:any='';
       
                   const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
                   const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+                   patientData.billNo = patientData.salesId
+     
                   componentRef.instance.patientData = patientData;
                   
                   // Handle mouse events on the overlay element
@@ -1875,6 +1877,9 @@ currency:any='';
       
                   const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
                   const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+                
+                  patientData.billNo = patientData.salesId
+     
                   componentRef.instance.patientData = patientData;
                   
                   // Handle mouse events on the overlay element
@@ -1914,7 +1919,7 @@ currency:any='';
           
               getWhatsappshareBill(el) {
                   console.log(el);
-                  debugger
+                  
                   this._whatsppService.OnWhatsAppMsgSent({
                       mobileNo: el.mobileNo,
                       patientName: el.patientName,
@@ -1933,6 +1938,214 @@ currency:any='';
                           data: {
                               Obj: contact,
                               emailType:'SalesReceipt'
+                          }
+                      });
+                  dialogRef.afterClosed().subscribe(result => {
+                      this.grid.bindGridData();
+                  });
+              }
+
+  //salesReturn
+  openEmailDetailsPopover1(event: MouseEvent, patientData: any) {
+    event.stopPropagation();
+
+    // Clear any existing timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    // Add small delay to prevent flickering
+    this.hoverTimeout = setTimeout(() => {
+      // Close any existing patient popover
+      if (this.EmailOverlayRef) {
+        this.EmailOverlayRef.dispose();
+        this.EmailOverlayRef = null;
+      }
+
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+          {
+            originX: 'end',
+            originY: 'center',
+            overlayX: 'start',
+            overlayY: 'center',
+          },
+          {
+            originX: 'start',
+            originY: 'center',
+            overlayX: 'end',
+            overlayY: 'center',
+          }
+        ]);
+
+      this.EmailOverlayRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close(),
+        hasBackdrop: false,
+      });
+
+      const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
+      const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+
+
+      console.log(patientData)
+      patientData.billNo = patientData.SalesReturnId
+     
+      componentRef.instance.patientData = patientData;
+
+      // Handle mouse events on the overlay element
+      const overlayElement = this.EmailOverlayRef.overlayElement;
+      overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen1());
+      overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover1());
+    }, 300); // 300ms delay before showing popover
+  }
+  closeEmailDetailsPopover1() {
+    // Clear timeout if popover hasn't opened yet
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+
+    // Clear any existing close timeout
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+    }
+
+    // Add delay before closing to allow moving mouse to popover
+    this.patientCloseTimeout = setTimeout(() => {
+      if (this.EmailOverlayRef) {
+        this.EmailOverlayRef.dispose();
+        this.EmailOverlayRef = null;
+      }
+    }, 200);
+  }
+  openWhatsappDetailsPopover1(event: MouseEvent, patientData: any) {
+    event.stopPropagation();
+
+    // Clear any existing timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    // Add small delay to prevent flickering
+    this.hoverTimeout = setTimeout(() => {
+      // Close any existing patient popover
+      if (this.whatsappOverlayRef) {
+        this.whatsappOverlayRef.dispose();
+        this.whatsappOverlayRef = null;
+      }
+
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+          {
+            originX: 'end',
+            originY: 'center',
+            overlayX: 'start',
+            overlayY: 'center',
+          },
+          {
+            originX: 'start',
+            originY: 'center',
+            overlayX: 'end',
+            overlayY: 'center',
+          }
+        ]);
+
+      this.whatsappOverlayRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close(),
+        hasBackdrop: false,
+      });
+
+      const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+      const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+
+
+      console.log(patientData)
+      patientData.billNo = patientData.salesReturnId
+     
+      componentRef.instance.patientData = patientData;
+
+      // Handle mouse events on the overlay element
+      const overlayElement = this.whatsappOverlayRef.overlayElement;
+      overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen1());
+      overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover1());
+    }, 300); // 300ms delay before showing popover
+  }
+  closeWhatsappDetailsPopover1() {
+    // Clear timeout if popover hasn't opened yet
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+
+    // Clear any existing close timeout
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+    }
+
+    // Add delay before closing to allow moving mouse to popover
+    this.patientCloseTimeout = setTimeout(() => {
+      if (this.whatsappOverlayRef) {
+        this.whatsappOverlayRef.dispose();
+        this.whatsappOverlayRef = null;
+      }
+    }, 200);
+  }
+  keepPatientPopoverOpen1() {
+    // Clear close timeout when hovering over popover
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+      this.patientCloseTimeout = null;
+    }
+  }
+                 getWhatsappshareReturn(el) {
+                  console.log(el);
+                  
+                  this._whatsppService.OnWhatsAppMsgSent({
+                      mobileNo: el.mobileNo,
+                      patientName: el.patientName,
+                      billNo: el.salesReturnId,
+                      smsType: "SalesReturnReceipt",
+                      patientId:el.regNo
+                  })
+              }
+              
+              Onemailreturn(contact) {
+                  const dialogRef = this._matDialog.open(EmailSendComponent,
+                      {
+                          maxWidth: "100%",
+                          height: '75%',
+                          width: '55%',
+                          data: {
+                              Obj: contact,
+                              emailType:'SalesReturnReceipt'
                           }
                       });
                   dialogRef.afterClosed().subscribe(result => {
