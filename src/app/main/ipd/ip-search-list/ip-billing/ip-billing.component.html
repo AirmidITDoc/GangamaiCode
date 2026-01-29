@@ -22,14 +22,14 @@
         </mat-cell>
       </ng-container>
 
-       <ng-container matColumnDef="Price">
+      <ng-container matColumnDef="Price">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Price</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
           <span>{{ contact.price }}</span>
         </mat-cell>
       </ng-container>
 
-     <!-- <ng-container matColumnDef="reqDate">
+      <!-- <ng-container matColumnDef="reqDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">ReqDateTime</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
           <span>{{ contact.reqDate }}-{{ contact.reqTime }}</span>
@@ -187,12 +187,12 @@
                     </button>
                   </div>
                 </div>
- 
-                 <form [formGroup]="BillReviwe" fxLayout="column">
-                  <mat-checkbox name="IsSupplimentryBill"  (change)="AllowToaddcharges($event)">
-                     Check
+
+                <form [formGroup]="BillReviwe" fxLayout="column">
+                  <mat-checkbox name="IsSupplimentryBill" (change)="AllowToaddcharges($event)">
+                    Check
                   </mat-checkbox>
-                  </form>
+                </form>
 
                 <!-- <div  fxLayout="row" style="padding-top: 15px;">
                 <button class="btn" matTooltip="Add Auto Service" (click)="getChargesList()">
@@ -383,7 +383,7 @@
                           </li>
                         </ul>
                       </div>-->
-                      <div fxLayout="column" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
+                      <!-- <div fxLayout="column" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
                         <ng-container *ngIf="isFilteredDateDisabled">
                           <form [formGroup]="IpbillFooterform">
                             <mat-form-field appearance="outline" fxFlex class="padding-fix">
@@ -399,11 +399,8 @@
                         <div fxLayout="row" fxLayoutAlign="end center" class="date-time-container gap-8">
                           <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">Show All
                             Charges</mat-checkbox>
-                          <!-- <button mat-icon-button (click)="openServiceTable()">
-                            <span class="material-icons">notifications_none</span>
-                          </button> -->
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </mat-expansion-panel>
@@ -419,18 +416,20 @@
                   <!-- <div class="net-amt gap-12">  dayWiseCredit-->
                   <div class="net-amt-box">
                     <span class="net-amt-label">Day Limit: </span>
-                    <span class="net-amt-value">{{ (selectedAdvanceObj?.dayWiseCredit || 0) | currency: currency:'symbol'
+                    <span class="net-amt-value">{{ (selectedAdvanceObj?.dayWiseCredit || 0) | currency:
+                      currency:'symbol'
                       }}</span>
                   </div>
 
-                   <div class="net-amt-box">
+                  <div class="net-amt-box">
                     <span class="net-amt-label">Day Balance: </span>
                     <span class="net-amt-value">{{ (DayLimitbal || 0) | currency: currency:'symbol'}}</span>
                   </div>
 
                   <div class="net-amt-box">
                     <span class="net-amt-label">Bill Amount : </span>
-                    <span class="net-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency: currency:'symbol'
+                    <span class="net-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency:
+                      currency:'symbol'
                       }}</span>
                   </div>
                   <div class="net-amt-box">
@@ -455,6 +454,29 @@
                   </div>
 
                   <div fxLayout="row" fxLayoutGap="4px">
+                    <div fxLayout="row" class="right-content input-error-hidden gap-4" fxLayoutAlign="end center">
+                      <ng-container *ngIf="isFilteredDateDisabled">
+                        <form [formGroup]="IpbillFooterform">
+                          <mat-form-field appearance="outline" fxFlex class="padding-fix">
+                            <mat-label>Choose date</mat-label>
+                            <input name="ChargeDate" matInput [matDatepicker]="picker" formControllName="ChargeDate"
+                              (dateChange)="getDatewiseChargesList($event.value)" [value]="currentDate"
+                              [readonly]="true" />
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                        </form>
+                      </ng-container>
+
+                      <div fxLayout="row" fxLayoutAlign="end center" class="date-time-container gap-8">
+                        <mat-checkbox (change)="showAllFilter($event)" aria-label="Remember Me">Show All
+                          Charges</mat-checkbox>
+                        <!-- <button mat-icon-button (click)="openServiceTable()">
+                            <span class="material-icons">notifications_none</span>
+                          </button> -->
+                      </div>
+                    </div>
+
                     <button mat-icon-button (click)="openServiceTable()" style="padding: 0px;">
                       <mat-icon>notifications_none</mat-icon>
                     </button>
@@ -486,7 +508,7 @@
                         <span>Add New Charge</span>
                       </button>
                     </div> -->
-                    
+
                     <div class="content-card">
                       <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
                         class="airmid-table table">
@@ -495,8 +517,8 @@
                             <span class="material-icons" (click)="getChargesList()">cached</span>
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-60">
-                            <mat-checkbox aria-label="Checked"
-                              (change)="tableElementChecked($event, contact)" *ngIf="!contact.isNewRow"></mat-checkbox>
+                            <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"
+                              *ngIf="!contact.isNewRow"></mat-checkbox>
                           </mat-cell>
                         </ng-container>
 
@@ -519,11 +541,12 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ChargesDate">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">Charges Date</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">Charges
+                            Date</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-120">
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDate">
                               <mat-form-field appearance="outline" class="compact-field">
-                                <input matInput [matDatepicker]="pickerRow" placeholder="Select date" 
+                                <input matInput [matDatepicker]="pickerRow" placeholder="Select date"
                                   [(ngModel)]="contact.chargesDate" (dateChange)="onTableDateChange(contact)" />
                                 <mat-datepicker-toggle matSuffix [for]="pickerRow"></mat-datepicker-toggle>
                                 <mat-datepicker #pickerRow></mat-datepicker>
@@ -549,8 +572,7 @@
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showService">
                               <mat-form-field appearance="outline" class="compact-field w-100-p">
-                                <input matInput placeholder="Enter Service Name" 
-                                  [(ngModel)]="contact.serviceName"
+                                <input matInput placeholder="Enter Service Name" [(ngModel)]="contact.serviceName"
                                   (blur)="onServiceSelect(contact)" />
                               </mat-form-field>
                             </ng-container>
@@ -594,8 +616,8 @@
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDiscPer">
                               <mat-form-field floatLabel="never" class="compact-field">
-                                <input matInput [(ngModel)]="contact.concessionPercentage" type="text" 
-                                  placeholder="Disc %" (keyup)="gettablecalculation(contact)" 
+                                <input matInput [(ngModel)]="contact.concessionPercentage" type="text"
+                                  placeholder="Disc %" (keyup)="gettablecalculation(contact)"
                                   (keypress)="keyPressCharater($event)" min="0" max="100">
                               </mat-form-field>
                             </ng-container>
@@ -610,8 +632,8 @@
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDiscAmt">
                               <mat-form-field floatLabel="never" class="compact-field">
-                                <input matInput [(ngModel)]="contact.concessionAmount" type="text" 
-                                  placeholder="Disc Amt" (keyup)="gettablecalculation(contact)" 
+                                <input matInput [(ngModel)]="contact.concessionAmount" type="text"
+                                  placeholder="Disc Amt" (keyup)="gettablecalculation(contact)"
                                   (keypress)="keyPressCharater($event)" min="0">
                               </mat-form-field>
                             </ng-container>
@@ -658,8 +680,7 @@
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showClass">
                               <mat-form-field appearance="outline" floatLabel="never" class="compact-field w-100-p">
                                 <mat-select [(ngModel)]="contact.classId" placeholder="Select Class"
-                                  (selectionChange)="onTableClassSelect(contact)"
-                                  [compareWith]="compareClassValues">
+                                  (selectionChange)="onTableClassSelect(contact)" [compareWith]="compareClassValues">
                                   <mat-option *ngFor="let classItem of classList" [value]="classItem.value">
                                     {{ classItem.text }}
                                   </mat-option>
@@ -673,8 +694,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ChargesAddedName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                            class="w-200">ChargesAdded Name</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ChargesAdded
+                            Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                             <span>{{ contact.chargesAddedName }}</span>
                           </mat-cell>
@@ -689,7 +710,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="buttons" stickyEnd>
-                          <mat-header-cell *matHeaderCellDef class="table-actions" class="w-120">Action</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef class="table-actions"
+                            class="w-120">Action</mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-120">
                             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
                               <!-- New Row Actions -->
@@ -702,7 +724,7 @@
                                   <mat-icon class="active-icon red-600-fg s-16">close</mat-icon>
                                 </button>
                               </ng-container>
-                              
+
                               <!-- Edit Mode Actions -->
                               <ng-container *ngIf="contact.isEditMode && !contact.isNewRow">
                                 <button mat-icon-button (click)="saveEditedTableRow(contact)" matTooltip="Save"
@@ -713,7 +735,7 @@
                                   <mat-icon class="active-icon red-600-fg s-16">close</mat-icon>
                                 </button>
                               </ng-container>
-                              
+
                               <!-- Normal Row Actions -->
                               <ng-container *ngIf="!contact.isNewRow && !contact.isEditMode">
                                 <button mat-icon-button (click)="enableTableRowEdit(contact)" matTooltip="Edit"
@@ -907,7 +929,7 @@
               <form class="example-form" [formGroup]="IpbillFooterform">
                 <div class="net-amt-section mb-2 mt-16">
                   <div class="net-amt gap-12" style="margin-left:20%;">
-                  
+
                     <!-- <div class="net-amt-box">
                                         <div class="net-amt-label">Company Amt :</div>
                                         <div class="net-amt-value">{{ ExclusionAmt | currency: currency:'symbol' }}</div>
@@ -915,8 +937,8 @@
                                       <div class="net-amt-box">
                                         <span class="net-amt-label">Patient Amt :</span>
                                         <span class="net-amt-value">{{ InclusionAmt | currency: currency:'symbol' }}</span>
-                                      </div> --> 
-                  
+                                      </div> -->
+
                     <div class="net-amt-box">
                       <span class="net-amt-label">Advance Bal Amt : </span>
                       <span class="net-amt-value">{{ AdvanceBalAmt | currency: currency:'symbol' }}</span>
@@ -935,24 +957,26 @@
                       <span class="net-amt-label">No of Items :</span>
                       <span class="net-amt-value">{{ chargeslist.length }}</span>
                     </div>
-                  
+
                     <div class="net-amt-box">
                       <span class="net-amt-label">Total Amt :</span>
                       <span class="net-amt-value">{{ TotalShowAmt | currency: currency:'symbol' }}</span>
                     </div>
                     <div class="net-amt-box">
                       <span class="net-amt-label">Disc Amt :</span>
-                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency: currency:'symbol'
+                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency:
+                        currency:'symbol'
                         }}</span>
                     </div>
-                  
+
                     <div class="final-amt-box">
                       <span class="final-amt-label">Net Amt :</span>
-                      <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency: currency:'symbol'
+                      <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency:
+                        currency:'symbol'
                         }}</span>
                     </div>
                   </div>
-                
+
                 </div>
                 <div fxLayout="column" class="gap-6" style="width: 100%">
                   <div fxLayout="row" class="gap-6">
@@ -1003,8 +1027,9 @@
                     </div>
 
                     <div fxFlex="10%">
-                      <airmid-textbox label="Shah Approval Amt" formControlName="GovrnApprovAmt" [formGroup]="IpbillFooterform"
-                        [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)"></airmid-textbox>
+                      <airmid-textbox label="Shah Approval Amt" formControlName="GovrnApprovAmt"
+                        [formGroup]="IpbillFooterform" [type]="'text'" [min]="0"
+                        (keypress)="keyPressCharater($event)"></airmid-textbox>
                     </div>
 
                     <div fxFlex>
@@ -1021,22 +1046,23 @@
                       <mat-checkbox formControlName="GenerateBill" (checked)="(true)">Generate Bill</mat-checkbox>
                       <mat-checkbox *ngIf="IpbillFooterform.get('GenerateBill')?.value == true"
                         formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
-                        <mat-checkbox formControlName="MPesa" (checked)="(true)">MPesa</mat-checkbox>
+                      <mat-checkbox formControlName="MPesa" (checked)="(true)">MPesa</mat-checkbox>
                     </div>
 
-                      <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
-                        *ngIf="IpbillFooterform.get('GenerateBill')?.value == true && IpbillFooterform.get('MPesa')?.value === true">
-                        <airmid-textbox label="PMesa Mobile" formControlName="mpesaMobile" [formGroup]="IpbillFooterform" maxlength="10"
-                          min="10">
-                        </airmid-textbox>
-                      </div>
-                      
-                      <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
-                        *ngIf="IpbillFooterform.get('GenerateBill')?.value == true && IpbillFooterform.get('MPesa')?.value === true">
-                        <button mat-icon-button (click)="getMpesaTransactionlist()" matTooltip="Mpesa Transaction History">
-                          <mat-icon>remove_red_eye</mat-icon>
-                        </button> 
-                      </div>
+                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
+                      *ngIf="IpbillFooterform.get('GenerateBill')?.value == true && IpbillFooterform.get('MPesa')?.value === true">
+                      <airmid-textbox label="PMesa Mobile" formControlName="mpesaMobile" [formGroup]="IpbillFooterform"
+                        maxlength="10" min="10">
+                      </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
+                      *ngIf="IpbillFooterform.get('GenerateBill')?.value == true && IpbillFooterform.get('MPesa')?.value === true">
+                      <button mat-icon-button (click)="getMpesaTransactionlist()"
+                        matTooltip="Mpesa Transaction History">
+                        <mat-icon>remove_red_eye</mat-icon>
+                      </button>
+                    </div>
 
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center"
                       class="gap-24">
@@ -1068,145 +1094,144 @@
 
 <!-- Waiting Screen -->
 <div class="waiting-overlay" *ngIf="isWaiting">
-    <div class="waiting-box">
-        <div class="spinner"></div>
+  <div class="waiting-box">
+    <div class="spinner"></div>
 
-        <!-- Timer -->
-        <div class="timer-box" [ngClass]="{ 'warning': countdown <= 60 }">
-            <span class="timer-text">
-                ⏳ {{ countdown * 1000 | date:'mm:ss':'UTC' }}
-            </span>
-            <span class="timer-label">Remaining</span>
-        </div>
+    <!-- Timer -->
+    <div class="timer-box" [ngClass]="{ 'warning': countdown <= 60 }">
+      <span class="timer-text">
+        ⏳ {{ countdown * 1000 | date:'mm:ss':'UTC' }}
+      </span>
+      <span class="timer-label">Remaining</span>
+    </div>
 
-        <!-- Title -->
-        <h3 class="waiting-title">Waiting for customer approval...</h3>
+    <!-- Title -->
+    <h3 class="waiting-title">Waiting for customer approval...</h3>
 
-        <!-- Message -->
-        <pre class="message-box">{{ statusMessage }}</pre>
+    <!-- Message -->
+    <pre class="message-box">{{ statusMessage }}</pre>
 
-        <!-- <button class="btn btn-outline-secondary" (click)="manualRefresh()">
+    <!-- <button class="btn btn-outline-secondary" (click)="manualRefresh()">
             Refresh Status
         </button> -->
-    </div>
+  </div>
 </div>
 
 
 
 <!-- Mpesa Transaction list -->
 <ng-template #MpesatranscationlistTable>
-    <div fxLayout="column" style="height: 60vh; width: 100%;">
-        <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                    style="color: white;">account_box
-                </mat-icon>
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Mpesa Transaction list</span>
-            </div>
-            <div class="close-icon">
-                <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-                    <mat-icon>close</mat-icon>
+  <div fxLayout="column" style="height: 60vh; width: 100%;">
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+          style="color: white;">account_box
+        </mat-icon>
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Mpesa Transaction list</span>
+      </div>
+      <div class="close-icon">
+        <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div class="mpesa-table1 p-12" fxFlex style="display: flex; flex-direction: column;">
+      <div class="table-body" fxFlex style="overflow: auto;">
+        <div class="airmid-table" fxFlex style="min-width: 600px;">
+          <mat-table #table matSort [dataSource]="dsMpesaTransactionlist" [@animateStagger]="{ value: '50' }"
+            style="width: 100%;">
+            <ng-container matColumnDef="PayStatus">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Pay
+                Status</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                <mat-icon *ngIf="contact.resultCode == 0" matTooltip="Verified"
+                  style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="contact.resultCode != 0" matTooltip="Pending"
+                  style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="transactionDate">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">Transaction
+                Date</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
+                <span>{{ contact.transactionDate | date:'dd/MM/yyyy'}} - {{ contact.transactionDate |
+                  date:'hh:mm a'}}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="phoneNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Mobile
+                No.</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                <span>{{ contact.phoneNumber }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="mpesaReceiptNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">Receipt
+                no.</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                <span class="ellipsis-text" [matTooltip]="contact.mpesaReceiptNumber">{{
+                  contact.mpesaReceiptNumber }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Paid
+                Amt</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                <span>{{ contact.amount | currency: currency:'symbol' }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="ResponseDate">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">Response
+                Date</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
+                <span>{{ contact.responseOn | date:'dd/MM/yyyy'}} - {{ contact.responseOn | date:'hh:mm
+                  a'}}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Description">
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                class="w-250">Description</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                <span class="ellipsis-text" [matTooltip]="contact.resultDesc">{{ contact.resultDesc
+                  }}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Action" stickyEnd>
+              <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Action</mat-header-cell>
+              <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                <button mat-icon-button matTooltip="Make Payment" (click)="OnmPesaSave(contact)">
+                  <mat-icon color="warn">add</mat-icon>
                 </button>
-            </div>
-        </mat-toolbar>
+              </mat-cell>
+            </ng-container>
 
-        <div class="mpesa-table1 p-12" fxFlex style="display: flex; flex-direction: column;">
-            <div class="table-body" fxFlex style="overflow: auto;">
-                <div class="airmid-table" fxFlex style="min-width: 600px;">
-                    <mat-table #table matSort [dataSource]="dsMpesaTransactionlist" [@animateStagger]="{ value: '50' }"
-                        style="width: 100%;">
-                        <ng-container matColumnDef="PayStatus">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Pay
-                                Status</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <mat-icon *ngIf="contact.resultCode == 0" matTooltip="Verified"
-                                    style="color: green;">check_circle</mat-icon>
-                                <mat-icon *ngIf="contact.resultCode != 0" matTooltip="Pending"
-                                    style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
-                            </mat-cell>
-                        </ng-container>
+            <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+            </ng-container>
 
-                        <ng-container matColumnDef="transactionDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">Transaction
-                                Date</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
-                                <span>{{ contact.transactionDate | date:'dd/MM/yyyy'}} - {{ contact.transactionDate |
-                                    date:'hh:mm a'}}</span>
-                            </mat-cell>
-                        </ng-container>
+            <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+            </ng-container>
 
-                        <ng-container matColumnDef="phoneNumber">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Mobile
-                                No.</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                <span>{{ contact.phoneNumber }}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="mpesaReceiptNumber">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">Receipt
-                                no.</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
-                                <span class="ellipsis-text" [matTooltip]="contact.mpesaReceiptNumber">{{
-                                    contact.mpesaReceiptNumber }}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="amount">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Paid
-                                Amt</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
-                                <span>{{ contact.amount | currency: currency:'symbol' }}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="ResponseDate">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">Response
-                                Date</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
-                                <span>{{ contact.responseOn | date:'dd/MM/yyyy'}} - {{ contact.responseOn | date:'hh:mm
-                                    a'}}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Description">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                class="w-250">Description</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                <span class="ellipsis-text" [matTooltip]="contact.resultDesc">{{ contact.resultDesc
-                                    }}</span>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Action" stickyEnd>
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                class="w-90">Action</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
-                                <button mat-icon-button matTooltip="Make Payment" (click)="OnmPesaSave(contact)">
-                                    <mat-icon color="warn">add</mat-icon>
-                                </button>
-                            </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="loading">
-                            <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="noData">
-                            <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
-                        </ng-container>
-
-                        <mat-header-row class="accent" *matHeaderRowDef="mPesaColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: mPesaColumns"
-                            [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                        <mat-footer-row *matFooterRowDef="['loading']"
-                            [ngClass]="{ hide: dsMpesaTransactionlist != null }"></mat-footer-row>
-                        <mat-footer-row *matFooterRowDef="['noData']"
-                            [ngClass]="{ hide: !(dsMpesaTransactionlist != null && dsMpesaTransactionlist.data.length == 0) }"></mat-footer-row>
-                    </mat-table>
-                </div>
-            </div>
+            <mat-header-row class="accent" *matHeaderRowDef="mPesaColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let contact; columns: mPesaColumns"
+              [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']"
+              [ngClass]="{ hide: dsMpesaTransactionlist != null }"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']"
+              [ngClass]="{ hide: !(dsMpesaTransactionlist != null && dsMpesaTransactionlist.data.length == 0) }"></mat-footer-row>
+          </mat-table>
         </div>
+      </div>
     </div>
+  </div>
 
 </ng-template>
