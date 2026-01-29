@@ -32,8 +32,9 @@
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <airmid-dropdown label="CategoryName" formControlName="CategoryId"
                                         [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
-                                        [(ngModel)]="gridConfig.filters[7].fieldValue"
-                                        [mode]="autocompleteModeCategoryId"></airmid-dropdown>
+                                        
+                                        [mode]="autocompleteModeCategoryId" ></airmid-dropdown>
+                                        <!-- [(ngModel)]="gridConfig.filters[7].fieldValue" -->
                                 </div>
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <airmid-autocomplete lbl="UHID" [formGroup]="myformSearch"
@@ -41,9 +42,10 @@
                                         label="Search UNID / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
-                                        TextField="formattedText">
+                                        TextField="formattedText"  (onClearSelection)="resetFormPatient()">
                                     </airmid-autocomplete>
                                 </div>
+ 
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
