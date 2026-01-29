@@ -30,12 +30,13 @@
                                     <airmid-dropdown label="From Store Name" formControlName="FromStoreId" fxFlex="30%"
                                         [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().FromStoreId"
                                         [readonly]="true" [value]="data?.FromStoreId" [mode]="autocompletestore"
-                                         (selectionChange)="selectChangeStore($event)">
+                                        >
+                                        <!--  (selectionChange)="selectChangeStore($event)" -->
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="To Store Name" formControlName="ToStoreId" fxFlex="30%"
                                         [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().ToStoreId"
-                                        [value]="data?.ToStoreId" [mode]="autocompletestore">
+                                        [value]="data?.ToStoreId" [mode]="autocompletestore"   (selectionChange)="selectChangeStore($event)">
                                     </airmid-dropdown>
                                     <!-- [(ngModel)]="status" -->
                                     <mat-slide-toggle name="IsUrgent" (change)="setpriority($event)"
@@ -50,7 +51,7 @@
                                 <div  fxLayout="row" fxLayoutGap="8px">
                                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="IndentForm"
                                         formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
-                                        [ApiUrl]="'ItemMaster/search-GetItemListForIndent?StoreId=' + storeId + '&ItemName='"
+                                        [ApiUrl]="'ItemMaster/search-GetItemListForIndent?StoreId=' + vstoreId + '&ItemName='"
                                         
                                         fxFlex="38%"
                                         (selectionChange)="getSelectedItem($event)" TextField="itemName"

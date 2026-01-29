@@ -772,7 +772,7 @@ export class UserDetail {
       this.accessInputValue = UserDetail.accessInputValue || ''
       this.accessValueName = UserDetail.accessValueName || ''
       this.loginId = UserDetail.loginId || 0
-      this.isBillReview = UserDetail.isBillReview || true
+      this.isBillReview = UserDetail.isBillReview || false
       this.isAdminMultiview = UserDetail.isAdminMultiview || false
     }
 
