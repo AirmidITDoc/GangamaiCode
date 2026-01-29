@@ -37,15 +37,24 @@
                                         <!-- [(ngModel)]="gridConfig.filters[7].fieldValue" -->
                                 </div>
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <airmid-autocomplete lbl="UHID" [formGroup]="myformSearch"
+                                    <!-- <airmid-autocomplete lbl="UHID" [formGroup]="myformSearch"
                                         formControlName="RegNoSearch" placeholderText="IP-UHID/FirstName/LastName"
                                         label="Search UNID / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                         TextField="formattedText"  (onClearSelection)="resetFormPatient()">
+                                    </airmid-autocomplete> -->
+
+                                    <airmid-autocomplete  label="Search Reg No / Patient Name / Mobile No"
+                                     [formGroup]="myformSearch" formControlName="RegNoSearch" 
+                                     placeholderText="Search Reg No / Patient Name / Mobile No"
+                                        ApiUrl="OutPatient/auto-complete?Keyword=" 
+                                       (selectionChange)="getSelectedObjIP($event)"
+                                         (onClearSelection)="resetFormPatient()">
                                     </airmid-autocomplete>
                                 </div>
- 
+
+                                 
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"

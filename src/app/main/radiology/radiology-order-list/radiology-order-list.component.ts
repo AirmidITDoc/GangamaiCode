@@ -307,7 +307,7 @@ export class RadiologyOrderListComponent implements OnInit {
     getSelectedObjIP(obj) {
 
         console.log(obj)
-        if ((obj.regID ?? 0) > 0) {
+        if ((obj.regNo ?? 0) > 0) {
             this.regNo = obj.regNo || 0
            // this.regNo = obj.regID
 
