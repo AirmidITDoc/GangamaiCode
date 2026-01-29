@@ -140,20 +140,20 @@ export class RadiologyOrderListComponent implements OnInit {
         if (value.value !== 0)
             this.CategoryId = value.value
         else
-            this.CategoryId = "0"
+            this.CategoryId = "0" 
 
         this.onChangeFirst();
-    }
-
+    } 
     onChangeFirst() {
-        // debugger
+        debugger
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
         this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
-        this.status = this.myformSearch.get('StatusSearch').value
-        this.opipType = this.myformSearch.get('PatientTypeSearch').value
-        // this.regNo = this.myformSearch.get('RegNoSearch').value || 0
+        this.status = this.myformSearch.get('StatusSearch').value 
+        this.opipType = this.myformSearch.get('PatientTypeSearch').value 
+        //this.regNo = this.myformSearch.get('RegNoSearch').value  || 0
+        this.CategoryId =  this.myformSearch.get('CategoryId').value || '0' 
         this.getfilterdata();
     }
 
@@ -308,12 +308,16 @@ export class RadiologyOrderListComponent implements OnInit {
 
         console.log(obj)
         if ((obj.regID ?? 0) > 0) {
-            this.regNo = obj.regID
+            this.regNo = obj.regNo || 0
+           // this.regNo = obj.regID
 
             this.onChangeFirst();
         }
     }
-
+resetFormPatient(){
+      this.regNo = 0
+      this.onChangeFirst();
+}
     Editoutsoucedata(row) {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur(); // Remove focus from the button

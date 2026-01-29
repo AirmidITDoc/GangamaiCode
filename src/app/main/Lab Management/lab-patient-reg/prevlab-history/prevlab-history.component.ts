@@ -22,6 +22,15 @@ export class PrevlabHistoryComponent {
     'paidAmt',
     'balAmt'
   ]
+  displayedColumns1: string[] = [
+    // 'visitDate',
+    'ServiceName',
+    'Price',
+    'total',
+    'dicPer',
+    'dicAmt',
+    'netAmt'
+  ]
 
   registerObj: any;
   dsPrevCreditHistory = new MatTableDataSource<RegInsert>();
@@ -52,33 +61,53 @@ export class PrevlabHistoryComponent {
       "searchFields": [
         {
           "fieldName": "LabPatRegId",
-          "fieldValue": String(Obj.visitId),//"12",
-          "opType": "Contains"
+          "fieldValue": String(Obj),//"12",
+          "opType": "13"
         }
       ],
       "mode": "LabCreditBillList"
     }
     this._labPatientRegService.LastCreditList(vdata).subscribe(data => {
-      this.dsPrevCreditHistory.data = data.data as RegInsert[]
+      this.dsPrevCreditHistory.data = data as RegInsert[]
       console.log("credit Bill:", this.dsPrevCreditHistory.data)
     })
   }
 
+  uniqueBillNo: any[] = [];
   getLastBillHistoryList(Obj) {
     var vdata = {
       "searchFields": [
         {
           "fieldName": "LabPatRegId",
-          "fieldValue": String(Obj.visitId),//"12",
-          "opType": "Contains"
+          "fieldValue": String(Obj),//"12",
+          "opType": "13"
         }
       ],
       "mode": "LabBillHistoryList"
     }
     this._labPatientRegService.LastCreditList(vdata).subscribe(data => {
-      this.dsPrevBillHistory.data = data.data as RegInsert[]
+      this.dsPrevBillHistory.data = data as RegInsert[]
+      this.extractUniqueBillNo();
       console.log("credit Bill:", this.dsPrevBillHistory.data)
     })
+  }
+
+  extractUniqueBillNo() {
+    const vBillNo = this.dsPrevBillHistory.data.map(patient => patient.BillNo);
+    this.uniqueBillNo = Array.from(new Set(vBillNo));
+  }
+
+  getFirstPatientForDate(billno: string) {
+    return this.dsPrevBillHistory.data.filter(patient => patient.BillNo === billno); //
+  }
+
+  CopyHistoryList: any = [];
+  CopyList: any = [];
+  getCopyPreviouseList(billno: string) {
+    this.CopyHistoryList.date = [];
+    this.CopyList = this.dsPrevBillHistory.data.filter(patient => patient.BillNo === billno); // 
+    console.log(this.CopyList)
+    this.dialogRef.close(this.CopyList);
   }
 
   onClose() {

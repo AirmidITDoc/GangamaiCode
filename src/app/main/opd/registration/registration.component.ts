@@ -34,11 +34,11 @@ export class RegistrationComponent implements OnInit {
     mobileno: any = "%"
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    photo: PageNames=PageNames.PATIENT_PHOTO;
-    signature: PageNames=PageNames.PATIENT_SIGNATURE;
-    
+    photo: PageNames = PageNames.PATIENT_PHOTO;
+    signature: PageNames = PageNames.PATIENT_SIGNATURE;
+
     constructor(
-        public _RegistrationService: RegistrationService,public permissionService: PagePermissionService,
+        public _RegistrationService: RegistrationService, public permissionService: PagePermissionService,
         public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
@@ -70,14 +70,14 @@ export class RegistrationComponent implements OnInit {
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "EmgContactPerson Name", key: "emgContactPersonName", sort: true, align: 'left', emptySign: 'NA',width:150},
+        { heading: "EmgContactPerson Name", key: "emgContactPersonName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Emg MobileNo", key: "emgMobileNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Emg LandlineNo", key: "emgLandlineNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Emg Address", key: "engAddress", sort: true, align: 'left', emptySign: 'NA',width:150 },
+        { heading: "Emg Address", key: "engAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Created Date", key: "createdDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 ,width:170},
+        { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
         { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Modify Date", key: "modifiedDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 ,width:170},
+        { heading: "Modify Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -91,10 +91,10 @@ export class RegistrationComponent implements OnInit {
         //             }},]
         // }
     ];
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Add);
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Add);
+
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.Registration,
+        permissionCode: permissionCodes.Registration,
         apiUrl: "OutPatient/RegistrationList",
         columnsList: this.allcolumns,
         sortField: "RegId",
@@ -131,7 +131,7 @@ export class RegistrationComponent implements OnInit {
     }
 
     capturedImage = '';
-     onPhotoCaptured(photoBase64: string) {
+    onPhotoCaptured(photoBase64: string) {
         if (photoBase64) {
             this.capturedImage = photoBase64;
             // Save or display
@@ -347,8 +347,9 @@ export class RegInsert {
     emgId: any
     ipdNo: any;
     genderName: any;
-    traiffId:any;
-companyId:any;
+    traiffId: any;
+    companyId: any;
+    BillNo: any;
 
     /**
      * Constructor
@@ -448,8 +449,9 @@ companyId:any;
             this.ipdNo = RegInsert.ipdNo || 0
             this.genderName = RegInsert.genderName || ''
             this.traiffId = RegInsert.traiffId || 0
-this.companyId = RegInsert.companyId || 0
-            
+            this.companyId = RegInsert.companyId || 0
+            this.BillNo = RegInsert.BillNo || 0
+
         }
     }
 }

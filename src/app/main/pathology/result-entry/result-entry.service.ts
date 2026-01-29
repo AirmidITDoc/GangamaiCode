@@ -191,4 +191,7 @@ export class ResultEntryService {
   public gettemplatebyService(ServiceId) {
     return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
   }
+  public getReportHtml(Param) {
+    return this._httpClient1.PostData("Report/get-report-html", Param);
+  }
 }

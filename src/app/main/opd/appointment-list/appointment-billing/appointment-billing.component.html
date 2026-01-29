@@ -829,13 +829,16 @@
                                                             </ng-container>
                                 
                                                             <ng-container matColumnDef="Action" StickEnd>
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
                                                                 </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70">
                                                                     <button mat-icon-button matTooltip="Print Draft Bill"
                                                                         style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" >
                                                                         <mat-icon (click)="viewgetOPBillDraftReportPdf(contact.drbno)"> print</mat-icon>
                                                                     </button>
+                                                                     <!-- <button mat-icon-button matTooltip="Cancel Draft Bill">
+                                                                         <mat-icon matTooltip="Cancel" (click)="DraftbillCancel(row)">cancel</mat-icon> 
+                                                                    </button> -->
                                                                 </mat-cell>
                                                             </ng-container>
                                 

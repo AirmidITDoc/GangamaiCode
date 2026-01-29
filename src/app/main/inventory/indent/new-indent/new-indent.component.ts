@@ -37,7 +37,7 @@ export class NewIndentComponent implements OnInit {
   vprintflag: boolean = false;
   vItemId: any;
   ItemName: any;
-  vstoreId:any;
+  vstoreId:any = 0;
   storeId=0
   vQty: any;
   chargeslist: any = [];
@@ -77,7 +77,7 @@ export class NewIndentComponent implements OnInit {
     debugger
 
     console.log(this._loggedService.currentUserValue.user.storeId)
-    this.vstoreId = this._loggedService.currentUserValue.user.storeId;
+  //  this.vstoreId = this._loggedService.currentUserValue.user.storeId;
       this.storeId = this._loggedService.currentUserValue.user.storeId;
 
     this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`

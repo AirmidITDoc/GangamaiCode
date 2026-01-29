@@ -80,7 +80,8 @@ export class PackageDetailsComponent {
       }
       console.log(this.registerObj)
       //GetServiceListwithTraiff
-      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.data?.PatientDet?.tariffId + "&ClassId=" + this.data?.PatientDet?.classId + "&ServiceName="
+      //this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.data?.PatientDet?.tariffId + "&ClassId=" + this.data?.PatientDet?.classId + "&SrvcName="
+      this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.data?.PatientDet?.tariffId + "&ClassId=" + this.data?.PatientDet?.classId + "&ServiceName="
     }
     this.createForm();
     this.CreatePacakgeUpdateForm();

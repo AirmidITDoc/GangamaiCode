@@ -62,7 +62,7 @@ export class SampleCollectionService {
     return this._httpClient1.PostData("PathlogySampleCollection/SampleCollectionTestList", employee)
   }
 
-   public getSampleDetailsListLab(employee) {
+  public getSampleDetailsListLab(employee) {
     return this._httpClient1.PostData("LabPatientRegistration/LabSampleCollectionDetailList", employee)
   }
 
@@ -170,6 +170,8 @@ export class SampleCollectionService {
   public deactivateTheStatus(m_data) {
     return this._httpClient1.PostData("PhoneApp", m_data);
   }
-
+  public getReportHtml(Param) {
+    return this._httpClient1.PostData("Report/get-report-html", Param);
+  }
 }
 
