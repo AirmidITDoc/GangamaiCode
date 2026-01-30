@@ -32,7 +32,7 @@
                                     BillNo
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.BillNo || '-'}}</span>
+                                    <span> {{contact.PBillNo || '-'}}</span>
                                 </mat-cell>
                             </ng-container>
 
@@ -86,101 +86,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <div class="content-card" style="border-radius:4px;">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="10px" fxLayoutAlign="stretch">
-
-                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="50%">
-
-                        <div class="detail-header" style="font-size: 16px; font-weight: bold;padding: 5px;">
-                            Billing History List
-                        </div>
-                        <mat-table #table2 matSort [dataSource]="dsPrevBillHistory" [@animateStagger]="{value:'50'}"
-                            style="overflow-x: auto;">
-
-                            <ng-container matColumnDef="billNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    BillNo
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.BillNo || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="ServiceName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>ServiceName
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ServiceName || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Price">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.Price || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="total">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmt
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ChargesTotalAmount || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="dicPer">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>dicPer
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ConcessionPercentage || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="dicAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>dicAmt
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.ConcessionAmount || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="netAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>NetAmt
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    <span> {{contact.NetAmount || '-'}}</span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    loading data...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    <span>No Data Found</span>
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let contact; columns: displayedColumns1;"
-                                [@animate]="{value:'*',params:{y:'100%'}}" (click)="getData(contact)"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsPrevBillHistory!=null}">
-                            </mat-footer-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsPrevBillHistory!=null && dsPrevBillHistory.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-
-                    </div>
-                </div>
-            </div> -->
 
             <duv class="simple page-layout inner-scroll inner-sidebar left-sidebar">
                 <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">

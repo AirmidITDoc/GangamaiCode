@@ -49,10 +49,17 @@
                         </airmid-textbox>
                     </div>
 
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox label="Amount" [value]="data?.surgeryAmount"
                             (keypress)="keyPressCharater($event)" formControlName="surgeryAmount" [formGroup]="myForm"
                             [validations]="getValidationMessages().surgeryAmount" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-textbox label="Total Duration" [value]="data?.totalDuration"
+                            (keypress)="keyPressCharater($event)" formControlName="totalDuration" [formGroup]="myForm"
+                            [maxLength]="50">
                         </airmid-textbox>
                     </div>
 

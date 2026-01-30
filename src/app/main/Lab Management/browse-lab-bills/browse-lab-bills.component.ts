@@ -395,7 +395,7 @@ export class BrowseLabBillsComponent {
 
   viewgetOPRefundBillReportPdf(data) {
 
-    this.commonService.Onprint("RefundId", data.refundId, "OPRefundReceipt");
+    this.commonService.Onprint("RefundId", data.refundId, "LabRefundReceipt");
   }
   getWhatsappshareRefundBill(Id) { }
 

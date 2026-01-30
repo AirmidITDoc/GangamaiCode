@@ -349,7 +349,8 @@ export class RegInsert {
     genderName: any;
     traiffId: any;
     companyId: any;
-    BillNo: any;
+    PBillNo: any;
+    BillNo:any;
 
     /**
      * Constructor
@@ -450,8 +451,8 @@ export class RegInsert {
             this.genderName = RegInsert.genderName || ''
             this.traiffId = RegInsert.traiffId || 0
             this.companyId = RegInsert.companyId || 0
+            this.PBillNo = RegInsert.PBillNo || 0
             this.BillNo = RegInsert.BillNo || 0
-
         }
     }
 }

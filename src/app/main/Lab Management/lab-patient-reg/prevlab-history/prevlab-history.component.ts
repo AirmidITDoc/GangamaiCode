@@ -93,19 +93,19 @@ export class PrevlabHistoryComponent {
   }
 
   extractUniqueBillNo() {
-    const vBillNo = this.dsPrevBillHistory.data.map(patient => patient.BillNo);
+    const vBillNo = this.dsPrevBillHistory.data.map(patient => patient.PBillNo);
     this.uniqueBillNo = Array.from(new Set(vBillNo));
   }
 
   getFirstPatientForDate(billno: string) {
-    return this.dsPrevBillHistory.data.filter(patient => patient.BillNo === billno); //
+    return this.dsPrevBillHistory.data.filter(patient => patient.PBillNo === billno); //
   }
 
   CopyHistoryList: any = [];
   CopyList: any = [];
   getCopyPreviouseList(billno: string) {
     this.CopyHistoryList.date = [];
-    this.CopyList = this.dsPrevBillHistory.data.filter(patient => patient.BillNo === billno); // 
+    this.CopyList = this.dsPrevBillHistory.data.filter(patient => patient.PBillNo === billno); // 
     console.log(this.CopyList)
     this.dialogRef.close(this.CopyList);
   }

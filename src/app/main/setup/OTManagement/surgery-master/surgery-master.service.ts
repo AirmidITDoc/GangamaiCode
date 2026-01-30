@@ -29,17 +29,16 @@ export class SurgeryMasterService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            surgeryCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            departmentId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-            surgeryAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            surgeryCategoryId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            departmentId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeryAmount: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             ottemplateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            siteDescId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            siteDescId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             serviceId: 0,
+            totalDuration:[0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isCancelled: false,
             isCancelledBy: 0,
             isCancelledDateTime: "1900-01-01"
-
-
         });
     }
 
