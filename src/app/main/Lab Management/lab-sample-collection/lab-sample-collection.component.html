@@ -95,19 +95,18 @@
                     </div>
                 </div>
             </ng-template>
-
-            <ng-template #actionButtonTemplate1 let-element>
-
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
-                        <mat-icon>pages</mat-icon>
-                    </button>
-                </div>
+            <ng-template #serviceNames let-element>
+                <mat-chip-set class="example-chip" cdkDropList cdkDropListOrientation="horizontal"
+                    (cdkDropListDropped)="drop($event)">
+                    <mat-chip class="example-box" cdkDrag *ngFor="let service of element?.serviceNames?.split('|')??[]"
+                        (click)="OnPrintPatientIcard(element,service)">
+                        {{service}}
+                    </mat-chip>
+                </mat-chip-set>
             </ng-template>
 
 
-            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
-                (onSelectRow)="getSelectedRow($event)">
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
                         <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
@@ -164,18 +163,6 @@
                     </form>
 
                 </ng-container>
-            </airmid-table>
-        </div>
-
-        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-            <!-- <div style="padding: 10px; height: 30px; margin-bottom: 10px;">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                    <div class="table-header-title" style="padding: 10px;">
-                        <span class="h3 font-weight-600">Test Details</span>
-                    </div>
-                </div>
-            </div> -->
-            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
             </airmid-table>
         </div>
     </div>
