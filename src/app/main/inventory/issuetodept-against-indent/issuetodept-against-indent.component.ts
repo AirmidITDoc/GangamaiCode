@@ -84,18 +84,18 @@ export class IssuetodeptAgainstIndentComponent {
 
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "IndentId",
       "sortOrder": 0,
       "filters": [
         {
           "fieldName": "FromStoreId",
-          "fieldValue": String(this.tostoreId),
+          "fieldValue": String(this.vstoreId),
           "opType": "Equals"
         },
         {
           "fieldName": "ToStoreId",
-          "fieldValue": String(this.vstoreId),
+          "fieldValue": String(this.tostoreId),
           "opType": "Equals"
         },
         {
