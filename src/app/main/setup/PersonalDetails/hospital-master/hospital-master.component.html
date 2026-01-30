@@ -27,8 +27,13 @@
             <airmid-signature-icon [refId]="element.hospitalId" [refType]="logo" [multiple]="true"
                 docName="HospitalLogo"></airmid-signature-icon>
 
-            <airmid-signature-icon [refId]="element.hospitalId" [refType]="nabh" [multiple]="true"
-                docName="HospitalLogo"></airmid-signature-icon>
+            <!-- <airmid-signature-icon [refId]="element.hospitalId" [refType]="nabh" [multiple]="true"
+                docName="HospitalLogo"></airmid-signature-icon> -->
+
+            <button mat-icon-button matTooltip="NABH Logo" (click)="onFiles(element)">
+                 <img width="60" height="60" src="assets/images/logos/nabh.png">
+            </button>
+
         </div>
     </ng-template>
     <airmid-table [gridConfig]="gridConfig" class="content">
