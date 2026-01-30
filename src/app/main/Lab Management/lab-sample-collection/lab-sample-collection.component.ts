@@ -62,24 +62,22 @@ export class LabSampleCollectionComponent {
 
     allcolumns = [
         {
-            heading: "-", key: "action1", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            heading: "-", key: "action1", align: "right", width: 50, sticky: true, type: gridColumnTypes.template,
             template: this.statusbtnTemplate
         },
-        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
-        // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:60 },
+        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      
+        { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         {
-            heading: "Test Name", key: "serviceNames", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            heading: "Test Name", key: "serviceNames", align: "right", width: 450, sticky: true, type: gridColumnTypes.template,
             template: this.serviceNames
         },
-        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
-            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ];

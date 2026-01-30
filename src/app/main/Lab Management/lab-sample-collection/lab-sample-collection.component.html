@@ -8,7 +8,7 @@
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Lab Sample Collection List
+                Sample Collection List
             </span>
         </div>
 
@@ -60,7 +60,6 @@
             </ng-template>
 
             <ng-template #actionButtonTemplate let-element>
-                <!-- *ngIf="element.isSampleCollection?.toString().trim() === 'False'" -->
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button (click)="onSave(element)" matTooltip="Edit" *ngIf="IsEdit">
                         <mat-icon>edit</mat-icon>
@@ -74,13 +73,13 @@
             <ng-template #statusbtnTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
 
-                    <div fxLayout="row" fxLayoutAlign="center center">
+                    <!-- <div fxLayout="row" fxLayoutAlign="center center">
                         <mat-icon *ngIf="!element.companyName" matTooltip="Patient Category Self">account_box
                         </mat-icon>
 
                         <mat-icon *ngIf="element.companyName" matTooltip="Patient Category Company">business
                         </mat-icon>
-                    </div>
+                    </div> -->
 
                     <div fxLayout="row" fxLayoutAlign="center center">
                         <mat-icon *ngIf="element.isSampleCollection == 'True'" title="Sample Collected"
