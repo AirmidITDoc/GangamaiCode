@@ -68,8 +68,8 @@ export class ReportGenerationComponent implements OnInit {
     StoreId: any;
     FromStoreId: any;
     ToStoreId: any;
-     ExpHeadId: any;
-      ExpCatId: any;
+    ExpHeadId: any;
+    ExpCatId: any;
     SupplierId: any;
     PaymentId: any;
     DrugTypeId: any;
@@ -107,8 +107,8 @@ export class ReportGenerationComponent implements OnInit {
 
     filteredOptionsCashCounter: Observable<string[]>;
     searchCashCounterList: any = [];
-    FlaExpCategorySelected:boolean = false;
-    FlaExpHeadSelected:boolean = false;
+    FlaExpCategorySelected: boolean = false;
+    FlaExpHeadSelected: boolean = false;
     flagDoctorSelected: boolean = false;
     flagRefDoctorSelected: boolean = false;
     flagUserSelected: boolean = false;
@@ -189,8 +189,18 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.getAllReporConfig(param).subscribe(
             (response) => {
                 this.reportsData = response.data;
+
                 console.log("List:", this.reportsData)
-                let mainData = this.reportsData.filter(x => (x.parentid == undefined || x.parentid == null || x.parentid == '')).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
+                debugger
+                // let mainData = this.reportsData.filter(x => (x.parentid == undefined || x.parentid == null || x.parentid == '')).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
+                let mainData = this.reportsData
+                    .filter(x =>  !x.parentid  || x.parentid=='NULL')               // shortest & very common
+                    .map(x => ({
+                        id: x.reportId,
+                        name: x.reportName,
+                        mode: x.reportMode
+                    }));
+
                 mainData.forEach(element => {
                     element.children = this.reportsData.filter(x => (x.parentid == element.id)).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
                 });
@@ -262,9 +272,9 @@ export class ReportGenerationComponent implements OnInit {
             this.flagOPIPTypeSelected = true;
         if (controllerPermission.filter(x => x == "type")?.length > 0)
             this.flagTypeSelected = true;
-         if (controllerPermission.filter(x => x == "ExpenseHead")?.length > 0)
+        if (controllerPermission.filter(x => x == "ExpenseHead")?.length > 0)
             this.FlaExpHeadSelected = true;
-         if (controllerPermission.filter(x => x == "ExpensesCategory")?.length > 0)
+        if (controllerPermission.filter(x => x == "ExpensesCategory")?.length > 0)
             this.FlaExpCategorySelected = true;
         // 
     }
@@ -400,14 +410,14 @@ export class ReportGenerationComponent implements OnInit {
         this.FlaExpCategorySelected = false;
         this.FlaExpHeadSelected = false;
     }
-      resetExpHead() { 
-        this._ReportService.userForm.get('expHeadId').setValue(''); 
-        this.ExpHeadId = 0; 
-  }
-        resetExpCat() {  
-        this._ReportService.userForm.get('expCategoryId').setValue(''); 
-        this.ExpCatId = 0; 
-  }
+    resetExpHead() {
+        this._ReportService.userForm.get('expHeadId').setValue('');
+        this.ExpHeadId = 0;
+    }
+    resetExpCat() {
+        this._ReportService.userForm.get('expCategoryId').setValue('');
+        this.ExpCatId = 0;
+    }
     CallReportData(type) {
         this.StoreId = this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
@@ -559,13 +569,13 @@ export class ReportGenerationComponent implements OnInit {
             if (this.FlaExpHeadSelected)
                 paramFilterList.push({
                     "fieldName": "ExpHeadId",
-                    "fieldValue":  this.ExpHeadId.toString() || "0",
+                    "fieldValue": this.ExpHeadId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             if (this.FlaExpCategorySelected)
                 paramFilterList.push({
                     "fieldName": "ExpCategoryId",
-                    "fieldValue":  this.ExpCatId.toString() || "0",
+                    "fieldValue": this.ExpCatId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   
