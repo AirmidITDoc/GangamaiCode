@@ -234,7 +234,7 @@
                                         #itemAutocomplete formControlName="ItemId" placeholderText="Enter Item Name"
                                         fxFlex="30%" 
                                          [ApiUrl]="OP_IP_Id? 'ItemMaster/GetItemListForPrescriptionReturn?StoreId=' + vstoreId + '&IPAdmID=' + OP_IP_Id + '&ItemName=': null"
-                                          (onClearSelection)="ItemFromReset()"
+                                          (onClearSelection)="ItemFromReset()" (selectionChange)="selectChangeItem($event)"
                                         [validations]="getValidationMessages().ItemId" TextField="formattedText"
                                         ValueField="ItemId">
                                     </airmid-autocomplete>
