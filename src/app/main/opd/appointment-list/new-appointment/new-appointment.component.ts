@@ -392,6 +392,7 @@ export class NewAppointmentComponent implements OnInit {
         if (value.text != "Self") {
             this._AppointmentlistService.getMaster(mode, 1);
             this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
+            this.VisitFormGroup.get('policyNumber').setValidators([Validators.required]); 
             this.isCompanySelected = true;
             this.patienttype = 2;
         } else if (value.text == "Self") {
@@ -400,6 +401,8 @@ export class NewAppointmentComponent implements OnInit {
             this.VisitFormGroup.get('SubCompanyId').clearValidators();
             this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
             this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
+            this.VisitFormGroup.get('policyNumber').clearValidators();
+            this.VisitFormGroup.get('policyNumber').updateValueAndValidity();
             this.patienttype = 1;
         }
     }
@@ -773,6 +776,12 @@ export class NewAppointmentComponent implements OnInit {
 
                     if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
                         this.toastr.warning('Please select valid Company ', 'Warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                        });
+                        return;
+                    }
+                     if (this.isCompanySelected && this.VisitFormGroup.get('policyNumber').value == 0) {
+                        this.toastr.warning('Please enter Membership No', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
                         });
                         return;

@@ -797,12 +797,25 @@
                                                     <div class="airmid-table-container ">
                                                         <mat-table #table matSort [dataSource]="dsOpDraftlist" [@animateStagger]="{value:'50'}"
                                                           class="airmid-table table"> 
+
+                                                           <ng-container matColumnDef="Status" StickEnd>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-50">
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-50"> 
+                                                                    <button mat-icon-button (click)="getdraftchargelist(contact)">
+                                                                        <span class="material-icons" >
+                                                                            <mat-icon matTooltip="Add">add_shopping_cart</mat-icon>
+                                                                        </span>
+                                                                        <!--  (click)="getdraftchargelist(contact)" -->
+                                                                    </button>  
+                                                                </mat-cell>
+                                                            </ng-container>
                                 
                                                             <ng-container matColumnDef="DraftDate">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                                                     Date
                                                                 </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                                                     <span matTooltip="{{contact.billDate | date:'dd/MM/YYYY'}}-{{contact.billTime | date:'hh:mm a'}}"> 
                                                                         {{contact.billDate | date:'dd/MM/YYYY'}}
                                                                         <!-- -{{contact.billTime | date:'hh:mm a'}} -->
@@ -831,14 +844,16 @@
                                                             <ng-container matColumnDef="Action" StickEnd>
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
                                                                 </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70">
-                                                                    <button mat-icon-button matTooltip="Print Draft Bill"
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70"> 
+
+                                                                    <button mat-icon-button matTooltip="Print Draft Bill" (click)="viewgetOPBillDraftReportPdf(contact.drbno)"
                                                                         style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" >
-                                                                        <mat-icon (click)="viewgetOPBillDraftReportPdf(contact.drbno)"> print</mat-icon>
+                                                                        <mat-icon > print</mat-icon>
                                                                     </button>
-                                                                     <!-- <button mat-icon-button matTooltip="Cancel Draft Bill">
-                                                                         <mat-icon matTooltip="Cancel" (click)="DraftbillCancel(row)">cancel</mat-icon> 
-                                                                    </button> -->
+
+                                                                     <button mat-icon-button matTooltip="Cancel Draft Bill" (click)="DraftbillCancel(contact.drbno)">
+                                                                         <mat-icon matTooltip="Cancel" >cancel</mat-icon> 
+                                                                    </button>
                                                                 </mat-cell>
                                                             </ng-container>
                                 
@@ -857,7 +872,7 @@
                                                             <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsDraft; sticky: true">
                                                             </mat-header-row>
                                                             <mat-row *matRowDef="let contact; columns: displayedColumnsDraft;"
-                                                               [ngClass]="{'red-row': contact.isCancelled == '1'}" (click)="getdraftchargelist(contact)"
+                                                               [ngClass]="{'red-row': contact.isCancelled == '1'}"
                                                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                             <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsOpDraftlist!=null}">
                                                             </mat-footer-row>

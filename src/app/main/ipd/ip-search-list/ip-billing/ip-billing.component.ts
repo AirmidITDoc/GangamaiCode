@@ -577,7 +577,7 @@ classId=0
                 companyName: [this.selectedAdvanceObj?.companyName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+                totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -629,7 +629,7 @@ classId=0
                 cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 cardDate: ['1999-01-01'],
-                advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -894,13 +894,13 @@ debugger
         this.Serviceform.get('netAmount').reset();
     }
     deletecharges(contact) {
-        if (contact.isPathTestCompleted == 1) {
+        if (contact.isPathTestCompleted) {
             this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return
         }
-        if (contact.isRadTestCompleted == 1) {
+        if (contact.isRadTestCompleted) {
             this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
