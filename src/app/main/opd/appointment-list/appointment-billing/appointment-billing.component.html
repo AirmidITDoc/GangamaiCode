@@ -799,9 +799,9 @@
                                                           class="airmid-table table"> 
 
                                                            <ng-container matColumnDef="Status" StickEnd>
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-50">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">
                                                                 </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-50"> 
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60"> 
                                                                     <button mat-icon-button (click)="getdraftchargelist(contact)">
                                                                         <span class="material-icons" >
                                                                             <mat-icon matTooltip="Add">add_shopping_cart</mat-icon>
@@ -823,14 +823,14 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="draftNo">
+                                                            <!-- <ng-container matColumnDef="draftNo">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                                                     Draft No
                                                                 </mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                                     <span  matTooltip="{{contact.drbno}}"> {{contact.drbno}}</span>
                                                                 </mat-cell>
-                                                            </ng-container>
+                                                            </ng-container> -->
                                 
                                                             <ng-container matColumnDef="NetAmount">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -842,9 +842,9 @@
                                                             </ng-container>
                                 
                                                             <ng-container matColumnDef="Action" StickEnd>
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                                                 </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70"> 
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80"> 
 
                                                                     <button mat-icon-button matTooltip="Print Draft Bill" (click)="viewgetOPBillDraftReportPdf(contact.drbno)"
                                                                         style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" >
