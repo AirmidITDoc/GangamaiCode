@@ -1786,6 +1786,7 @@ export class SalesHospitalKenyaComponent {
     draftextMobilenolist: any = [];
     onAddDraftList(contact) {
         debugger
+         this.saveflag = false;
         console.log(contact)
         this.DraftID = contact.dsalesId;
         this.saleSelectedDatasource.data = [];

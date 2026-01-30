@@ -894,13 +894,14 @@ debugger
         this.Serviceform.get('netAmount').reset();
     }
     deletecharges(contact) {
-        if (contact.isPathTestCompleted) {
+        debugger
+        if (contact.isPathTestCompleted == "True") {
             this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return
         }
-        if (contact.isRadTestCompleted) {
+        if (contact.isRadTestCompleted == "True") {
             this.toastr.warning('Selected Service Test is Already Completed you cannot delete !', 'warning', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
