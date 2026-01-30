@@ -16,6 +16,7 @@ import { FormGroup } from '@angular/forms';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { AirmidSignatureComponent } from 'app/main/shared/componets/airmid-signature/airmid-signature.component';
 
 @Component({
   selector: 'app-hospital-master',
@@ -154,6 +155,23 @@ export class HospitalMasterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
 
+    });
+  }
+
+  // nabh logo
+  onFiles(element) {
+    const dialogRef = this._matDialog.open(
+      AirmidSignatureComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "70vh",
+        width: "100%",
+        data: { refId: element.hospitalId, refType: 'nabh', multiple: 'true', docName: 'NABHLogo' }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.onCloseDialog.emit(result);
     });
   }
 }

@@ -26,6 +26,8 @@ export class ApiCaller {
                         // Swal.fire("Data Not Find .....")
                     } else if(data.message == 'Not Found'){
                         // Swal.fire("Data Not Find .....")
+                    }else if(data.message == ''){
+                        //this if is added becasue in hospitalmaster 1st time nabh logo show error 
                     }
                     else {
                         this.toastr.error(data.message, 'Error !', {

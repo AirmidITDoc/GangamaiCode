@@ -45,7 +45,7 @@ export class CompanyMasterListComponent {
 
     allColumns = [
         { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Company Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
