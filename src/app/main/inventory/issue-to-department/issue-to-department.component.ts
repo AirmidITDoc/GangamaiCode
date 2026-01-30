@@ -266,8 +266,8 @@ export class IssueToDepartmentComponent implements OnInit {
   onVerify(row) {
     debugger
     let submitData = {
-      "indentId": row.indentId,
-      "isInchargeVerifyId": this.accountService.currentUserValue.userId
+      "issueId": row.issueId
+    //   "isInchargeVerifyId": this.accountService.currentUserValue.userId
 
     };
     this._IssueToDep.getVerifyIssue(submitData).subscribe(response => {

@@ -100,6 +100,10 @@ export class IssueToDepartmentService {
   public IssuetodepSave(Param){
     return this._httpClient1.PostData("IssueToDepartment/InsertSP",Param);
   }
+
+   public IssuetodepAcceptMaterialSave(Param){
+    return this._httpClient1.PostData("IssueToDepartment/IssuetoDeptWithMaterialAccept",Param);
+  }
   public IssuetodepAgaintIndetSave(Param){
     return this._httpClient1.PostData("IssueToDepartment/UpdateIndentStatusAganist",Param);
   }
@@ -131,6 +135,6 @@ export class IssueToDepartmentService {
 }
 
   public getVerifyIssue(Param) {
-    return this._httpClient1.PostData("Indent/Verify", Param)
+    return this._httpClient1.PostData("IssueToDepartment/Verify", Param)
   }
 }

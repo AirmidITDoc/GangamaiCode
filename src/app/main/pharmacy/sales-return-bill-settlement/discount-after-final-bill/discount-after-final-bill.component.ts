@@ -158,7 +158,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
 
     this.saveform.get('salesId').setValue( this.selectedAdvanceObj?.salesId)
     this.saveform.get('netAmount').setValue(formvalues?.NetAmount)
-    this.saveform.get('discAmount').setValue(formvalues?.DiscAmount2) 
+    this.saveform.get('discAmount').setValue(formvalues?.FinalDiscAmt) 
     this.saveform.get('balanceAmount').setValue(BalAmt)
     this.saveform.get('concessionReasonId').setValue(formvalues?.ConcessionId) 
 
