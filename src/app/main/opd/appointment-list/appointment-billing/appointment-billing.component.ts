@@ -35,7 +35,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         ['groupName', 'serviceName', 'classRate', 'userName'];
     public mPesaColumns = ['PayStatus', 'transactionDate', 'phoneNumber', 'mpesaReceiptNumber', 'amount', 'ResponseDate', 'Description', 'Action'];
     public displayedColumnsDraft: string[] =
-        ['DraftDate', 'draftNo', 'NetAmount', 'Action'];
+        ['Status','DraftDate','NetAmount', 'Action'];
 
     countdown: number = 180; // 3 minutes
     countdownColorClass = 'green';
@@ -2199,9 +2199,13 @@ console.log(item)
 
         })
     }
-        DraftbillCancel(Obj) {
+    DraftbillCancel(drbno) {
+        debugger
         var vdata = {
-            "drbno": Obj?.drbno
+            "drbno": drbno || 0,
+            "isCancelled": true,
+            "isCancelledBy": this.accountService.currentUserValue.userId || 0,
+            "isCancelledDate": this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1999-01-01'
         }
         this._AppointmentlistService.getDeleteDratfBill(vdata).subscribe((data) => {
             if (data) {

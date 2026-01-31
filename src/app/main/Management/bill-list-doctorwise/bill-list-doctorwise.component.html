@@ -39,11 +39,11 @@
                             </div> -->
                             <mat-card style="padding-left: 15%;padding-right: 20%;">
 
-                                <div  fxLayout="row">
+                                <div  fxLayout="row" >
 
-                                    <span style="color: rgb(114, 3, 64);padding: 10px;"
-                                        class=" border-bottom h3 font-weight-600">
-                                        Doctorshare data will be Available after Payment</span>
+                                    <span style="color: rgb(114, 3, 64);padding: 20px;"
+                                        class=" border-bottom h1 font-weight-600">
+                                        Doctorshare data will be available after Bill</span>
                                     <!-- <div class="net-amt gap-12"> -->
                                     <div class="net-amt-box">
                                         <span class="net-amt-label">No of Items : </span>
@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="net-amt-box">
                                         <span class="net-amt-label">Total Net Amt : </span>
-                                        <span class="net-amt-value">{{ TotAmt | currency : 'INR' }}</span>
+                                        <span class="net-amt-value">{{ TotNetamt | currency : 'INR' }}</span>
                                     </div>
                                     <div class="net-amt-box">
                                         <span class="net-amt-label">Hospiatl Amt : </span>
@@ -84,11 +84,22 @@
 
                             <form [formGroup]="DocSummaryfilterForm">
 
-                                <airmid-datepicker [formGroup]="DocSummaryfilterForm" [isRangePicker]="true"
+                                <!-- <airmid-datepicker [formGroup]="DocSummaryfilterForm" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig1.filters[0].fieldValue"
                                     [(toValue)]="gridConfig1.filters[1].fieldValue">
-                                </airmid-datepicker>
+                                </airmid-datepicker> -->
+
+                                   <mat-form-field appearance="outline">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date"
+                                            (dateChange)="onChangeFirst1()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
 
                                 <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                     [formGroup]="DocSummaryfilterForm" [(ngModel)]="gridConfig1.filters[2].fieldValue"

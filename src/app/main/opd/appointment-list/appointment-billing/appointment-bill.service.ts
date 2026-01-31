@@ -85,6 +85,6 @@ export class AppointmentBillService {
         return this._httpClient1.PostData("OPBill/OPDraftBillList", param)
     }
         public getDeleteDratfBill(param) {
-        return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestListFromEMR", param)
+        return this._httpClient1.PostData("OPBill/Cancel", param)
     }
 }

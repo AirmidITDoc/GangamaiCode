@@ -34,7 +34,8 @@ export class NewIssueTodeptComponent {
   FinalIssueForm: FormGroup;
   IssueMainForm: FormGroup;
   FinalIssueaginstForm: FormGroup;
-
+  MaterialForm: FormGroup;
+  NewIssueGroupAccept: FormGroup;
   Indentid: any;
   indentdetid: any;
   IsClosed: any;
@@ -82,7 +83,7 @@ export class NewIssueTodeptComponent {
   vstoreId: any = '';
   vstoreId1: any = '';
   fromstore: any;
-ItemstoreId:any=0;
+  ItemstoreId: any = 0;
 
   batchresult: any;
   vItemObj: NewIssueList3;
@@ -97,7 +98,7 @@ ItemstoreId:any=0;
   Isclosedchk: boolean = false;
   AgainstInd: boolean = true;
   ItemID = 0;
-
+  Status = ''
 
   autocompletestore: string = "Store";
   autocompletestore1: string = "Store";
@@ -146,22 +147,37 @@ ItemstoreId:any=0;
     private accountService: AuthenticationService,
     private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    @Inject(MAT_DIALOG_DATA) public data: any,   public _configue:ConfigService,
+    @Inject(MAT_DIALOG_DATA) public data: any, public _configue: ConfigService,
   ) { }
 
-  IsMaterialAcceptVerify: boolean = false;
+  IsMaterialAccept: boolean = false;
   ngOnInit(): void {
     this.vstoreId = this.accountService.currentUserValue.user.storeId;
-     const rawValue = this?._configue?.configParams?.IsMaterialAccept || "";
+    const rawValue = this?._configue?.configParams?.IsMaterialAccept || "";
 
-     const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-  this.IsMaterialAcceptVerify = id === "1";
-       
+    const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+    this.IsMaterialAccept = id === "1";
+
+    if (this.IsMaterialAccept)
+      this.Status = 'Issed Material Direct Accepted'
+    else
+      this.Status = 'Material Issued Only'
+
     this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
 
     this.NewIssueGroup = this._IssueToDep.getNewIssueForm();
+
+    this.NewIssueGroupAccept = this.getNewIssueAcceptForm();
+    this.materialAcceptIssuedetailArray.push(this.materialAcceptIssueDetailsform());
+
+
     this.IssueFinalForm = this._IssueToDep.createfinal()
     this.StoreFrom = this._IssueToDep.CreateStoreFrom();
+
+    this.MaterialForm = this.creatematerial()
+    this.itemdetailarray.push(this.itemdetailform());
+    this.AcceptstockArray.push(this.currentstockform());
+    this.AcceptdeptArray.push(this.IssueItemdetailform());
 
     this.IssueFinalForm.markAllAsTouched();
     this.StoreFrom.markAllAsTouched();
@@ -172,13 +188,16 @@ ItemstoreId:any=0;
     this.deptArray1.push(this.IssueItemdetailform());
     this.stockArray1.push(this.currentstockform());
     this.indentdetailArray.push(this.indentdetailform());
+
+
+
     if (this.data) {
-      
+
       console.log(this.data)
-      
+
       this.fromstoreId = this.data.fromStoreId
       this.vIndentId = this.data.indentId
-      
+
       this.getIndentItemDetList()
     }
 
@@ -188,9 +207,18 @@ ItemstoreId:any=0;
     return this.FinalIssueForm.get('issue.tIssueToDepartmentDetails') as FormArray;
   }
 
+  get AcceptdeptArray(): FormArray {
+    return this.NewIssueGroupAccept.get('issuetoDeptWihMaterialAccept.tIssueToDepartmentDetails') as FormArray;
+  }
+
   get stockArray(): FormArray {
     return this.FinalIssueForm.get('tCurrentStock') as FormArray;
   }
+
+  get AcceptstockArray(): FormArray {
+    return this.NewIssueGroupAccept.get('tCurrentStock') as FormArray;
+  }
+
 
   get deptArray1(): FormArray {
     return this.FinalIssueaginstForm.get('updateIndent.tIssueToDepartmentDetails') as FormArray;
@@ -203,6 +231,12 @@ ItemstoreId:any=0;
   get indentdetailArray(): FormArray {
     return this.FinalIssueaginstForm.get('tIndentDetails') as FormArray;
   }
+
+
+  get materialAcceptIssuedetailArray(): FormArray {
+    return this.NewIssueGroupAccept.get('materialAcceptIssueDetails') as FormArray;
+  }
+
   IssueFrom() {
     return this._formBuilder.group({
       "issue": this._formBuilder.group({
@@ -227,6 +261,39 @@ ItemstoreId:any=0;
     });
   }
 
+  getNewIssueAcceptForm() {
+    return this._formBuilder.group({
+      "issuetoDeptWihMaterialAccept": this._formBuilder.group({
+        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "indentId": [this.vIndentId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "issueDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        "issueTime": this.datePipe.transform(new Date(), 'shortTime'),
+        "fromStoreId": [this.accountService.currentUserValue.user.storeId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "addedby": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "createdBy": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "isVerified": [false],
+        "isClosed": [false],
+        "unitId": [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        "tIssueToDepartmentDetails": this._formBuilder.array([]),
+      }),
+      tCurrentStock: this._formBuilder.array([]),
+      "materialAcceptIssueHeader": {
+        "issueId": 0,
+        "acceptedBy": 1,
+        "isAccepted": true
+      },
+      materialAcceptIssueDetails: this._formBuilder.array([]),
+      "materialAcceptStockUpdate": {
+        "issueId": 0
+      }
+    });
+  }
+
   IssueItemdetailform(element: any = {}): FormGroup {
 
     console.log(element)
@@ -246,7 +313,7 @@ ItemstoreId:any=0;
       vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
       vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
       stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      status:["0"]
+      status: ["0"]
     });
   }
   currentstockform(element: any = {}): FormGroup {
@@ -268,6 +335,16 @@ ItemstoreId:any=0;
       indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isClosed: [element.IsClosed],
       indQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
+  materialAcceptIssueDetailsform(element: any = {}): FormGroup {
+
+    console.log(element)
+    return this._formBuilder.group({
+      issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      status: ['A']
     });
   }
 
@@ -296,6 +373,36 @@ ItemstoreId:any=0;
         "isClosed": false
       }),
       tIndentDetails: this._formBuilder.array([]),
+    });
+  }
+
+
+  get itemdetailarray(): FormArray {
+    return this.MaterialForm.get('materialAcceptIssueDetails') as FormArray;
+  }
+
+
+  creatematerial() {
+    return this._formBuilder.group({
+      "materialAcceptIssueHeader": this._formBuilder.group({
+        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "acceptedBy": [this.accountService.currentUserValue.user.userId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "IsAccepted": [true, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      "materialAcceptIssueDetails": this._formBuilder.array([]),
+      "materialAcceptStockUpdate": this._formBuilder.group({
+        "issueId": 0
+      })
+    });
+  }
+
+
+  itemdetailform(element: any = {}): FormGroup {
+    console.log(element)
+    return this._formBuilder.group({
+      issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      status: [1]
     });
   }
 
@@ -392,7 +499,7 @@ ItemstoreId:any=0;
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      
+
       console.log(result);
       if (result.selectedData) {
         result = result.selectedData
@@ -459,7 +566,7 @@ ItemstoreId:any=0;
     return this.vFinalTotalAmount;
   }
 
- 
+
   getSelectedItem(item: GRNItemResponseType): void {
     this.ItemID = item.itemId
 
@@ -499,7 +606,7 @@ ItemstoreId:any=0;
   }
 
   getIndentItemDetList() {
-    
+
     this.sIsLoading = 'loading-data';
     var vdata = {
       "first": 0,
@@ -549,7 +656,7 @@ ItemstoreId:any=0;
     this.showIndentFlag = true
   }
   AddIndentSelectedItem(contact) {
-    
+
     console.log(contact)
     this.vIndentId = contact.indentId;
     this.indentdetid = contact.indentDetailsId;
@@ -586,7 +693,7 @@ ItemstoreId:any=0;
       }
       else if (this.Itemchargeslist1.length > 0) {
         let ItemID = contact.itemId;
-        
+
         let remaing_qty = contact.balanceQty;
         let bal_qnt = 0;
         this.Itemchargeslist1.forEach((element) => {
@@ -678,8 +785,6 @@ ItemstoreId:any=0;
   CellCalculation = 0
   getCellCalculation(contact, Qty) {
 
-    // console.log(this.Indbalqty)
-    // console.log(this.issueqty)
 
     console.log(contact)
     // console.log(Qty)
@@ -721,9 +826,9 @@ ItemstoreId:any=0;
 
 
   }
-Accept=0
-    onAcceptChange(event: any) {
-    this.Accept=event.value
+  Accept = 0
+  onAcceptChange(event: any) {
+    this.Accept = event.value
   }
 
   OnSave() {
@@ -745,12 +850,12 @@ Accept=0
       if (this.vIndentId > 0) {
         this.OnSaveAgaintIndent();
       } else {
-        if(this.Accept)
-        this.OnNewSave();
-      else
-         this.OnNewAcceptSave();
+        if (this.IsMaterialAccept)
+          this.OnNewAcceptSave();
+        else
+          this.OnNewSave();
       }
-     
+
     } else {
       let invalidFields = [];
 
@@ -773,39 +878,50 @@ Accept=0
 
   OnNewAcceptSave() {
 
-    this.deptArray.clear();
+    this.AcceptdeptArray.clear();
     this.dsNewIssueItemList.data.forEach(item => {
-      this.deptArray.push(this.IssueItemdetailform(item));
+      this.AcceptdeptArray.push(this.IssueItemdetailform(item));
     });
 
-    this.stockArray.clear();
+    this.AcceptstockArray.clear();
     this.dsNewIssueItemList.data.forEach(item => {
-      this.stockArray.push(this.currentstockform(item));
+      this.AcceptstockArray.push(this.currentstockform(item));
     });
 
-    this.FinalIssueForm.get("issue.issueId").setValue(0)
-    this.FinalIssueForm.get("issue.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
-    this.FinalIssueForm.get("issue.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
-    this.FinalIssueForm.get("issue.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
-    this.FinalIssueForm.get("issue.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
-    this.FinalIssueForm.get("issue.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
-    this.FinalIssueForm.get("issue.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
-    this.FinalIssueForm.get("issue.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
-    this.FinalIssueForm.get("issue.isVerified").setValue(true)
-    this.FinalIssueForm.get("issue.isClosed").setValue(false)
-    this.FinalIssueForm.get("issue.indentId").setValue(0)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.issueId").setValue(0)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.isVerified").setValue(true)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.isClosed").setValue(false)
+    this.NewIssueGroupAccept.get("issuetoDeptWihMaterialAccept.indentId").setValue(0)
 
-    console.log(this.FinalIssueForm.value)
-    this._IssueToDep.IssuetodepSave(this.FinalIssueForm.value).subscribe(response => {
+    this.itemdetailarray.clear();
+    this.dsNewIssueItemList.data.forEach(element => {
+
+      this.itemdetailarray.push(this.itemdetailform(element));
+    });
+
+    this.materialAcceptIssuedetailArray.clear();
+    this.dsNewIssueItemList.data.forEach(element => {
+
+      this.materialAcceptIssuedetailArray.push(this.materialAcceptIssueDetailsform(element));
+    });
+
+    console.log(this.NewIssueGroupAccept.value);
+    // console.log(this.FinalIssueForm.value)
+    this._IssueToDep.IssuetodepAcceptMaterialSave(this.NewIssueGroupAccept.value).subscribe(response => {
       this.viewgetIssuetodeptReportPdf(response)
-       if (this.IsMaterialAcceptVerify){
-         this.OnNewMaterialAcceptSave();
-      }
+
       this._matDialog.closeAll();
     });
   }
 
-   OnNewSave() {
+  OnNewSave() {
 
     this.deptArray.clear();
     this.dsNewIssueItemList.data.forEach(item => {
@@ -832,9 +948,7 @@ Accept=0
     console.log(this.FinalIssueForm.value)
     this._IssueToDep.IssuetodepSave(this.FinalIssueForm.value).subscribe(response => {
       this.viewgetIssuetodeptReportPdf(response)
-       if (this.IsMaterialAcceptVerify){
-         this.OnNewMaterialAcceptSave();
-      }
+
       this._matDialog.closeAll();
     });
   }
@@ -850,7 +964,7 @@ Accept=0
       console.log(element)
       if (this.CellCalculation == 0)
         console.log(element)
-      
+
       let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
 
       if (balQty == 0)
@@ -896,9 +1010,9 @@ Accept=0
     });
   }
 
- OnNewMaterialAcceptSave() {
+  OnNewMaterialAcceptSave() {
     debugger
-   
+
     // if ((!this.tempItemlist.length)) {
     //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
     //     toastClass: 'tostr-tost custom-toast-warning',
@@ -938,7 +1052,7 @@ Accept=0
     //   });
     // }
 
-    
+
   }
   resetForm(): void {
     this.NewIssueGroup.reset({
@@ -957,11 +1071,11 @@ Accept=0
 
   }
 
- 
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
- 
+
   viewgetIssuetodeptReportPdf(issueId) {
     this.commonService.Onprint("IssueId", issueId, "Issutodeptissuewise");
   }

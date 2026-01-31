@@ -18,339 +18,296 @@ import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collect
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 
 @Component({
-  selector: 'app-lab-sample-collection',
-  templateUrl: './lab-sample-collection.component.html',
-  styleUrls: ['./lab-sample-collection.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+    selector: 'app-lab-sample-collection',
+    templateUrl: './lab-sample-collection.component.html',
+    styleUrls: ['./lab-sample-collection.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class LabSampleCollectionComponent {
-  myformSearch: FormGroup;
-  autocompleteModeunit: string = "Hospital";
-  isShowDetailTable: boolean = false;
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  vOPIPId = 0;
-  f_name: any = "%"
-  regNo: any = "0"
-  l_name: any = "%"
-  status: any = "0"
-  // Ptype: any = "5"
-  Vtotalcount = 0
-  VCompletedcount = 0
-  Vpendingcount = 0
-  dataSource = new MatTableDataSource<NursingPathRadRequestList>();
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  @ViewChild('grid1') grid1: AirmidTableComponent;
-  UnitId: any = this._loggedService.currentUserValue.user.unitId;
-  isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
+    myformSearch: FormGroup;
+    autocompleteModeunit: string = "Hospital";
+    isShowDetailTable: boolean = false;
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    vOPIPId = 0;
+    f_name: any = "%"
+    regNo: any = "0"
+    l_name: any = "%"
+    status: any = "0"
+    // Ptype: any = "5"
+    Vtotalcount = 0
+    VCompletedcount = 0
+    Vpendingcount = 0
+    dataSource = new MatTableDataSource<NursingPathRadRequestList>();
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
+    UnitId: any = this._loggedService.currentUserValue.user.unitId;
+    isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
 
-  IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
 
-  @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('statusbtnTemplate') statusbtnTemplate!: TemplateRef<any>;
-  @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+    @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('statusbtnTemplate') statusbtnTemplate!: TemplateRef<any>;
+    @ViewChild('serviceNames') serviceNames!: TemplateRef<any>;
 
-  ngAfterViewInit() {
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'action1')!.template = this.statusbtnTemplate;
-  }
-
-  gridConfig1: gridModel = new gridModel();
-
-
-  allcolumns = [
-    {
-      heading: "-", key: "action1", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.statusbtnTemplate
-    },
-    { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
-    // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action1')!.template = this.statusbtnTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'serviceNames')!.template = this.serviceNames;
     }
-  ];
-  gridConfig: gridModel = {
-    apiUrl: "LabPatientRegistration/LabSampleCollectionList",
-    columnsList: this.allcolumns,
-    sortField: "LabPatientId",
-    sortOrder: 0,
-    filters: [
-      { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
-    ]
-  }
 
-  constructor(public _SampleCollectionService: LabSampleCollectionService,
-    public _matDialog: MatDialog, private commonService: PrintserviceService,
-    public datePipe: DatePipe,
-    public toastr: ToastrService,
-    private _loggedService: AuthenticationService,
-    public permissionService: PagePermissionService,) { }
 
-  ngOnInit(): void {
-    this.myformSearch = this._SampleCollectionService.createSearchForm()
-    this.GetSampleCollectiondetail()
-  }
 
-  getSelectedRow(row: any): void {
-    // debugger
-    console.log("selectedRow:", row)
-    let billNo = row.billNo;
-
-    let rawDate = row.pathDate;
-    let day = rawDate.split("T")[0];
-    let rest = rawDate.split("T")[1].split("-");
-    let month = rest[0];
-    let year = rest[1];
-
-    let formattedDate = `${day}`
-
-    console.log(formattedDate);
-
-    this.gridConfig1 = {
-      permissionCode: permissionCodes.ExternalInvestigation,
-      apiUrl: "LabPatientRegistration/LabSampleCollectionDetailList",
-      columnsList: [
+    allcolumns = [
         {
-          heading: "Status", key: "isCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
-          template: this.iconisCompeleted, width: 50
+            heading: "-", key: "action1", align: "right", width: 50, sticky: true, type: gridColumnTypes.template,
+            template: this.statusbtnTemplate
         },
-        { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-        { heading: "Sample No | Collected By", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Collection Date/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:60 },
+        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+      
+        { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         {
-          heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-          template: this.actionButtonTemplate1
+            heading: "Test Name", key: "serviceNames", align: "right", width: 450, sticky: true, type: gridColumnTypes.template,
+            template: this.serviceNames
+        },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-      ],
-      sortField: "PathTestID",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "BillNo", fieldValue: String(billNo), opType: OperatorComparer.Equals },
-        { fieldName: "BillDate", fieldValue: formattedDate, opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_Type", fieldValue: '4', opType: OperatorComparer.Equals },
-      ]
-    };
-
-    this.isShowDetailTable = true;
-
-    setTimeout(() => {
-      this.grid1.gridConfig = this.gridConfig1;
-      this.grid1.bindGridData();
-    });
-    console.log(this.gridConfig1)
-  }
-
-  ListView1(value) {
-    console.log(value)
-    if (value.value !== 0)
-      this.UnitId = value.value
-    else
-      this.UnitId = 0
-
-    // this.onChangeFirst();
-  }
-
-  onChangeFirst() {
-    // debugger
-    this.isShowDetailTable = false;
-    this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
-    this.f_name = this.myformSearch.get('FirstName').value + "%"
-    this.l_name = this.myformSearch.get('LastName').value + "%"
-    this.regNo = this.myformSearch.get('RegNo').value || "0"
-    this.status = this.myformSearch.get('StatusSearch').value
-    // this.Ptype = this.myformSearch.get('PatientTypeSearch').value
-    this.getfilterdata();
-  }
-
-  getfilterdata() {
-    // debugger
-    this.gridConfig = {
-      apiUrl: "LabPatientRegistration/LabSampleCollectionList",
-      columnsList: this.allcolumns,
-      sortField: "LabPatientId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
-      ]
+    ];
+    gridConfig: gridModel = {
+        apiUrl: "LabPatientRegistration/LabSampleCollectionList",
+        columnsList: this.allcolumns,
+        sortField: "LabPatientId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+        ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-    this.GetSampleCollectiondetail()
 
-  }
+    constructor(public _SampleCollectionService: LabSampleCollectionService,
+        public _matDialog: MatDialog, private commonService: PrintserviceService,
+        public datePipe: DatePipe,
+        public toastr: ToastrService,
+        private _loggedService: AuthenticationService,
+        public permissionService: PagePermissionService,) { }
 
-  GetSampleCollectiondetail() {
-
-    let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
-    let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
-
-    this.Vtotalcount = 0;
-    this.VCompletedcount = 0;
-    this.Vpendingcount = 0;
-    // debugger
-    let filters: any[] = [];
-
-    // Handle date range
-    if (fromDateControl && toDateControl) {
-      this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-      this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+    ngOnInit(): void {
+        this.myformSearch = this._SampleCollectionService.createSearchForm()
+        this.GetSampleCollectiondetail()
     }
-    filters.push(
-      {
-        "fieldName": "F_Name",
-        "fieldValue": String(this.f_name),
-        "opType": "Contains"
-      },
-      {
-        "fieldName": "L_Name",
-        "fieldValue": String(this.l_name),
-        "opType": "Contains"
-      },
-      {
-        "fieldName": "Reg_No",
-        "fieldValue": String(this.regNo),
-        "opType": "Equals"
-      },
+    ListView1(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.UnitId = value.value
+        else
+            this.UnitId = 0
 
-      {
-        "fieldName": "From_Dt",
-        "fieldValue": this.fromDate,
-        "opType": "GreaterThanOrEqual"
-      },
-      {
-        "fieldName": "To_Dt",
-        "fieldValue": this.toDate,
-        "opType": "GreaterThanOrEqual"
-      },
-      {
-        "fieldName": "IsCompleted",
-        "fieldValue": String(this.status),
-        "opType": "Equals"
-      },
-      {
-        "fieldName": "UnitId",
-        "fieldValue": String(this.UnitId),
-        "opType": "Equals"
-      }
-    );
+        // this.onChangeFirst();
+    }
 
-    let data = {
-      "first": 0,
-      "rows": 999999,
-      "sortField": "RegNo",
-      "sortOrder": 0,
-      "filters": filters,
-      "exportType": "JSON",
-      "columns": []
-    };
-    console.log(data)
-    this._SampleCollectionService.getSampleCollectionlist(data).subscribe((response) => {
-      this.dataSource.data = response.data;
-      console.log(this.dataSource.data)
-      if (this.dataSource.data.length > 0) {
+    onChangeFirst() {
         // debugger
-        this.Vtotalcount = this.dataSource.data.length
-        this.VCompletedcount = this.dataSource.data.filter(
-          (element: any) => element.isSampleCollection == true
-        ).length;
+        this.isShowDetailTable = false;
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstName').value + "%"
+        this.l_name = this.myformSearch.get('LastName').value + "%"
+        this.regNo = this.myformSearch.get('RegNo').value || "0"
+        this.status = this.myformSearch.get('StatusSearch').value
+        // this.Ptype = this.myformSearch.get('PatientTypeSearch').value
+        this.getfilterdata();
+    }
 
-        this.Vpendingcount = this.dataSource.data.filter(
-          (element: any) => element.isSampleCollection == false
-        ).length;
-
-        console.log(this.dataSource.data)
-      }
-    });
-  }
-
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'FirstName')
-      this.myformSearch.get('FirstName').setValue("")
-    else
-      if (event == 'LastName')
-        this.myformSearch.get('LastName').setValue("")
-    if (event == 'RegNo')
-      this.myformSearch.get('RegNo').setValue("0")
-
-    this.onChangeFirst();
-  }
-
-  onSave(row: any = null) {
-    let that = this;
-    const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
-      {
-        maxHeight: '80vh',
-        width: '60%',
-        data: { row: row, type: 'Lab' }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-      this.grid1.bindGridData();
-    });
-  }
-
-  // OnPrintPatientIcard(element) {
-  //   this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
-  // }
-
-  OnPrintPatientIcard(data) {
-    const param = {
-      searchFields: [
-        {
-          fieldName: "LabPatientId",
-          fieldValue: String(data.labPatientId),
-          opType: "13"
-        },
-        {
-          fieldName: "OPD_IPD_Type",
-          fieldValue: "4",
-          opType: "13"
+    getfilterdata() {
+        // debugger
+        this.gridConfig = {
+            apiUrl: "LabPatientRegistration/LabSampleCollectionList",
+            columnsList: this.allcolumns,
+            sortField: "LabPatientId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+            ]
         }
-      ],
-      mode: "LabStickerPrint"
-    };
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+        this.GetSampleCollectiondetail()
 
-    console.log(param);
+    }
 
-    this._SampleCollectionService.getReportHtml(param).subscribe(res => {
-      const matDialog = this._matDialog.open(HtmlviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            html: res["html"] as string,
-            title: res["title"]
-          }
+    GetSampleCollectiondetail() {
+
+        let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
+        let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
+
+        this.Vtotalcount = 0;
+        this.VCompletedcount = 0;
+        this.Vpendingcount = 0;
+        // debugger
+        let filters: any[] = [];
+
+        // Handle date range
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.f_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.l_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.regNo),
+                "opType": "Equals"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "IsCompleted",
+                "fieldValue": String(this.status),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "UnitId",
+                "fieldValue": String(this.UnitId),
+                "opType": "Equals"
+            }
+        );
+
+        let data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+        console.log(data)
+        this._SampleCollectionService.getSampleCollectionlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+            if (this.dataSource.data.length > 0) {
+                // debugger
+                this.Vtotalcount = this.dataSource.data.length
+                this.VCompletedcount = this.dataSource.data.filter(
+                    (element: any) => element.isSampleCollection == true
+                ).length;
+
+                this.Vpendingcount = this.dataSource.data.filter(
+                    (element: any) => element.isSampleCollection == false
+                ).length;
+
+                console.log(this.dataSource.data)
+            }
         });
-      matDialog.afterClosed().subscribe(result => {
-      });
-    });
+    }
 
-  }
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myformSearch.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myformSearch.get('LastName').setValue("")
+        if (event == 'RegNo')
+            this.myformSearch.get('RegNo').setValue("0")
+
+        this.onChangeFirst();
+    }
+
+    onSave(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
+            {
+                maxHeight: '80vh',
+                width: '60%',
+                data: { row: row, type: 'Lab' }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+            this.grid1.bindGridData();
+        });
+    }
+
+    // OnPrintPatientIcard(element) {
+    //   this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
+    // }
+
+    OnPrintPatientIcard(data,serviceName) {
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "LabPatientId",
+                    fieldValue: String(data.labPatientId),
+                    opType: "13"
+                },
+                {
+                    fieldName: "ServiceName",
+                    fieldValue: String(serviceName??"").trim(),
+                    opType: "13"
+                },
+                {
+                    fieldName: "OPD_IPD_Type",
+                    fieldValue: "4",
+                    opType: "13"
+                }
+            ],
+            mode: "LabStickerPrint"
+        };
+
+        console.log(param);
+
+        this._SampleCollectionService.getReportHtml(param).subscribe(res => {
+            const matDialog = this._matDialog.open(HtmlviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        html: res["html"] as string,
+                        title: res["title"]
+                    }
+                });
+            matDialog.afterClosed().subscribe(result => {
+            });
+        });
+
+    }
 
 }
