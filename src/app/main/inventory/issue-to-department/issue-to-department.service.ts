@@ -85,15 +85,6 @@ export class IssueToDepartmentService {
     return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_IssueItemList",Param);
   }
   
-  // public getToStoreSearchList(){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
-  // }
-  // public getLoggedStoreList(Param){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
-  // }
-  // public getItemlist(Param){//RetrieveItemMasterForCombo
-  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param)
-  // }
  public getBatchList(Param){ 
     return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId); 
   }

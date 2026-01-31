@@ -208,7 +208,7 @@ export class NewIssueTodeptComponent {
   }
 
   get AcceptdeptArray(): FormArray {
-    return this.NewIssueGroupAccept.get('issuetoDeptWihMaterialAccept.tIssueToDepartmentDetails') as FormArray;
+    return this.NewIssueGroupAccept.get('tIssueToDepartmentDetails') as FormArray;
   }
 
   get stockArray(): FormArray {
@@ -279,8 +279,9 @@ export class NewIssueTodeptComponent {
         "isVerified": [false],
         "isClosed": [false],
         "unitId": [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        "tIssueToDepartmentDetails": this._formBuilder.array([]),
+
       }),
+      "tIssueToDepartmentDetails": this._formBuilder.array([]),
       tCurrentStock: this._formBuilder.array([]),
       "materialAcceptIssueHeader": {
         "issueId": 0,
@@ -344,7 +345,7 @@ export class NewIssueTodeptComponent {
     return this._formBuilder.group({
       issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      status: ['A']
+      status: ["1"]
     });
   }
 
@@ -964,7 +965,7 @@ export class NewIssueTodeptComponent {
       console.log(element)
       if (this.CellCalculation == 0)
         console.log(element)
-
+      debugger
       let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
 
       if (balQty == 0)

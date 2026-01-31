@@ -267,8 +267,7 @@ export class IssueToDepartmentComponent implements OnInit {
     debugger
     let submitData = {
       "issueId": row.issueId
-    //   "isInchargeVerifyId": this.accountService.currentUserValue.userId
-
+    
     };
     this._IssueToDep.getVerifyIssue(submitData).subscribe(response => {
       this.onChangeFirst(event);
