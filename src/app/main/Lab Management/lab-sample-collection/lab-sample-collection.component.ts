@@ -51,25 +51,30 @@ export class LabSampleCollectionComponent {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('statusbtnTemplate') statusbtnTemplate!: TemplateRef<any>;
     @ViewChild('serviceNames') serviceNames!: TemplateRef<any>;
+    @ViewChild('actionsPatientType') actionsPatientType!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action1')!.template = this.statusbtnTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'serviceNames')!.template = this.serviceNames;
+        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsPatientType;
     }
 
 
 
     allcolumns = [
         {
-            heading: "-", key: "action1", align: "right", width: 50, sticky: true, type: gridColumnTypes.template,
+            heading: "-", key: "action1", align: "right",sticky: true, type: gridColumnTypes.template,
             template: this.statusbtnTemplate
         },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width:60 },
+        {
+            heading: "Patient Type", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
+            template: this.actionsPatientType
+        },
         { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
         { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-      
+
         { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         {
@@ -269,7 +274,7 @@ export class LabSampleCollectionComponent {
     //   this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
     // }
 
-    OnPrintPatientIcard(data,serviceName) {
+    OnPrintPatientIcard(data, serviceName) {
         const param = {
             searchFields: [
                 {
@@ -279,7 +284,7 @@ export class LabSampleCollectionComponent {
                 },
                 {
                     fieldName: "ServiceName",
-                    fieldValue: String(serviceName??"").trim(),
+                    fieldValue: String(serviceName ?? "").trim(),
                     opType: "13"
                 },
                 {

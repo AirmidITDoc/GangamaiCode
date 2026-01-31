@@ -58,6 +58,9 @@ export class OtReservationService {
     public getReportView(Param) {
         return this._httpClient.PostData("Report/ViewReport", Param);
     }
+     public getMultiReportView(Param) {
+        return this._httpClient.PostData("Report/NewMultiReport", Param);
+    }
     public getotRequestById(Id) {
         return this._httpClient.GetData("OTRequest/" + Id);
     }
