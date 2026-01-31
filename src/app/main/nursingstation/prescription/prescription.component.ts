@@ -147,7 +147,7 @@ export class PrescriptionComponent implements OnInit {
     GetDetails1(data: any): void {
 
         console.log("detailList:", data)
-        let ipMedID = data.ipMedID;
+        let ipMedID = data.medicalRecoredId;
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
@@ -275,7 +275,7 @@ export class PrescriptionComponent implements OnInit {
                 "searchFields": [
                     {
                         "fieldName": "OP_IP_ID",
-                        "fieldValue": String(response.ipMedID),
+                        "fieldValue": String(response.medicalRecoredId),
                         "opType": "Equals"
                     },
                     {
@@ -318,20 +318,6 @@ export class PrescriptionComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
-
-    // onPrescriptionReturn(row: any = null) {
-    //     const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
-    //         {
-    //             maxWidth: "80vw",
-    //             height: '90%',
-    //             width: '100%',
-    //             data: row
-    //         });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         this.grid2.bindGridData();
-    //     });
-    // }
-
 
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);

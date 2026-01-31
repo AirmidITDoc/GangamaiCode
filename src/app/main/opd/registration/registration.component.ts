@@ -346,6 +346,7 @@ export class RegInsert {
     medTourismDateOfEntry: Date;
     emgId: any
     ipdNo: any;
+    ipdno:any;
     genderName: any;
     traiffId: any;
     companyId: any;
@@ -448,6 +449,7 @@ export class RegInsert {
             this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || '1900-01-01';
             this.emgId = RegInsert.emgId || 0
             this.ipdNo = RegInsert.ipdNo || 0
+            this.ipdno = RegInsert.ipdno || 0
             this.genderName = RegInsert.genderName || ''
             this.traiffId = RegInsert.traiffId || 0
             this.companyId = RegInsert.companyId || 0

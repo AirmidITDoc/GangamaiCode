@@ -90,13 +90,15 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vDOA
-                                                            |date:'dd/MM/YYYY'}}</span>
+                                                        <span class="patient-col-value">
+                                                             {{vDOA |date:'dd/MM/YYYY'}}
+                                                             <!-- {{ (vDOA || data.vst_Adm_Date) | date:'dd/MM/yyyy' }} -->
+                                                        </span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">IPD No</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj.ipdNo}}</span>
+                                                        <span class="patient-col-value">{{(registerObj.ipdNo || registerObj.ipdno)}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Age | Sex
@@ -167,7 +169,7 @@
                                     [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
                                 </airmid-dropdown>
                                 <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="myForm"
-                                    [validations]="getValidationMessages().WardName" [value]="data?.WardName"
+                                    [validations]="getValidationMessages().WardName" [value]="data?.wardId"
                                     fxFlex="50%" [mode]="autocompleteward">
                                 </airmid-dropdown>
                             </div>
@@ -237,10 +239,10 @@
                     <!-- Item Table Section -->
                     <div class="modal-card-container table-container">
                         <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
-                            <div class="table-left" fxFlex fxFlex.xs="100%" fxFlex.sm="70%">
+                            <div class="airmid-table-container" fxFlex fxFlex.xs="100%" fxFlex.sm="70%">
                                 <mat-card>
                                     <mat-table class="h-280" matSort [dataSource]="dsItemList"
-                                        [@animateStagger]="{value:'50'}">
+                                        [@animateStagger]="{value:'50'}" class="airmid-table">
 
                                         <ng-container matColumnDef="itemMolecule">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
@@ -268,7 +270,10 @@
                                                 Qty
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                <span> {{element.Qty}}</span>
+                                                <!-- <span> {{element.Qty}}</span> -->
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="element.Qty" type="number" />
+                                                </mat-form-field>
                                             </mat-cell>
                                         </ng-container>
 
@@ -312,7 +317,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSavePrescription()" [disabled]="SaveFlag">
+                <button class="btn btn-primary" (click)="OnSavePrescription()">
                     Save
                 </button>
             </div>

@@ -48,10 +48,15 @@
                                         (selectionChange)="onChangePatient($event)"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
+                                    <!-- <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
                                         [formGroup]="myForm" [value]="data?.companyId"
                                         [validations]="getValidationMessages().companyId"
                                         [mode]="autocompleteModecompany"
+                                        (selectionChange)="onChangeCompany($event)"></airmid-dropdown> -->
+                                    <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
+                                        [formGroup]="myForm" [value]="data?.companyId" ValueField="companyId"
+                                        TextField="companyName" [validations]="getValidationMessages().companyId"
+                                        ApiUrl="CompanyMaster/CompanyComboList?keywoard="
                                         (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
                                 </div>
 
@@ -75,8 +80,8 @@
                                 <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
                                         [validations]="getValidationMessages().refDocId" [formGroup]="myForm"
-                                        [mode]="autocompleteModerefdoc">
-                                    </airmid-dropdown>
+                                        TextField="doctorName" ValueField="doctorId" ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                                        (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Doctor Name" formControlName="doctorId" [formGroup]="myForm"
@@ -248,23 +253,6 @@
                                     </div>
 
                                     <div>
-                                        <!-- <div>
-                                            <form [formGroup]="myForm">
-                                                <mat-form-field appearance="outline" fxFlex="100%">
-                                                    <input matInput type="text" formControlName="ServiceId"
-                                                        placeholder="Service Name" (keyup)="getServiceList()">
-                                                    <span matSuffix style="display: flex;">
-                                                        <mat-icon
-                                                            (click)="myForm.get('ServiceId').setValue(''); isServiceIdSelected = false;">close</mat-icon>
-                                                        <mat-icon (click)="getServiceList()">search</mat-icon>
-                                                    </span>
-                                                    <mat-error
-                                                        *ngIf="myForm.get('ServiceId').invalid && myForm.get('ServiceId').touched">
-                                                        Service Name is required
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </form>
-                                            </div> -->
                                         <div fxFlex="100%">
                                             <form [formGroup]="myForm">
                                                 <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm"
@@ -406,8 +394,8 @@
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" class="w-100"><span
                                                                         class="text-overflow">
-                                                                        {{(contact.NetAmount || 0) | currency:
-                                                                        currency:'symbol'}}
+                                                                        {{ (contact.NetAmount || 0) |
+                                                                        currency:'INR':'symbol' }}
                                                                     </span></mat-cell>
                                                             </ng-container>
 

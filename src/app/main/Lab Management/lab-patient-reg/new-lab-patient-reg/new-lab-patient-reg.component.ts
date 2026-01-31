@@ -207,15 +207,6 @@ export class NewLabPatientRegComponent {
     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
   }
 
-  ngAfterViewInit() {
-
-    this._labPatientRegService.getexecByCompany(0).subscribe((data: any) => {
-      console.log(data);
-      this.ddlcompanyExec.options = data;
-      this.ddlcompanyExec.bindGridAutoComplete();
-    });
-  }
-
   createFinalFormView() {
     {
       return this._formbuilder.group({
@@ -331,7 +322,7 @@ export class NewLabPatientRegComponent {
     return this._formbuilder.group({
       //bill header  
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdipdid: [this.VlabPatRegId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdid: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       regNo: ["0", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       patientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       ipdno: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -428,7 +419,7 @@ export class NewLabPatientRegComponent {
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdIpdId: [this.VlabPatRegId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdId: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -482,7 +473,7 @@ export class NewLabPatientRegComponent {
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdIpdId: [this.VlabPatRegId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdId: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -562,11 +553,6 @@ export class NewLabPatientRegComponent {
       this.myForm.get('companyId').setValue(0);
       this.myForm.get('tariffId').setValue(1);
       this.isTariffSelect = false //tariff not readonly
-
-      this._labPatientRegService.getexecByCompany(0).subscribe((data: any) => {
-        this.ddlcompanyExec.options = data;
-        this.ddlcompanyExec.bindGridAutoComplete();
-      });
     }
   }
 
@@ -604,37 +590,21 @@ export class NewLabPatientRegComponent {
 
   ////////////////////////// dd new method end ////////////////////
   onChangeCompany(value) {
-    this.companyId = value.value
+    this.companyId = value.companyId
     if (this.companyId) {
       this.isTariffSelect = true
     }
-    this._labPatientRegService.getCompanyById(value.value).subscribe((response) => {
+    this._labPatientRegService.getCompanyById(value.companyId).subscribe((response) => {
       this.companyDet = response;
       this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
       this.vTariffId = this.companyDet.traiffId
 
       this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
     });
+  }
 
-    if (value.value) {
-      this._labPatientRegService.getexecByCompany(value.value).subscribe((data: any) => {
-        // console.log(data)
-        debugger
-        // this.ddlcompanyExec.options = data;
-        const incomingId = data[0].executiveId;
-        console.log("Id:", incomingId)
-        // setTimeout(() => {
-        // this.ddlcompanyExec.bindGridAutoComplete();
-        if (incomingId) {
-          const matchedId = data.find(exec => exec.executiveId === incomingId);
-          if (matchedId) {
-            // this.ddlcompanyExec.SetSelection(matchedId.executiveId);
-            this.myForm.get('companyExecutiveId').setValue(matchedId.executiveId)
-          }
-        }
-        // }, 100);
-      });
-    }
+  onChangeRefdoc(value) {
+    this.myForm.get('refDocId').setValue(value.doctorId);
   }
 
   onChangeTariff(value) {
@@ -684,6 +654,37 @@ export class NewLabPatientRegComponent {
     }
   }
 
+  private updateFooterFromPrev(): void {
+    if (!this.chargeList || this.chargeList.length === 0) return;
+
+    let total = 0;
+    let totalDisc = 0;
+
+    this.chargeList.forEach(item => {
+      const rowTotal = (+item.Price || 0) * (+item.Qty || 1);
+      const rowDisc = +item.DiscAmt || 0;
+
+      total += rowTotal;
+      totalDisc += rowDisc;
+    });
+
+    // const discPer = total > 0 ? +(totalDisc * 100 / total).toFixed(2) : 0;
+    const discPer = this.chargeList.reduce( (sum, item) => sum + (Number(item.DiscPer) || 0), 0 );
+
+    const netAmt = Math.round(total - totalDisc);
+
+    this.myForm.patchValue({
+      totalAmt: total,
+      discountAmt: totalDisc,
+      totalDiscountPer: discPer,
+      netPayableAmt: netAmt
+    }, { emitEvent: false });
+
+    this.isDiscountApplied = totalDisc > 0;
+    this.Consessionres = totalDisc > 0;
+  }
+
+
   getPrevList(row: any = null) {
     const dialogRef = this._matDialog.open(PrevlabHistoryComponent,
       {
@@ -698,6 +699,7 @@ export class NewLabPatientRegComponent {
         return;
       }
 
+      let hasPrevDiscount = false;
       if (Array.isArray(result)) {
         result.forEach(item => {
           item.serviceId = item.serviceId || item.ServiceId;
@@ -708,7 +710,14 @@ export class NewLabPatientRegComponent {
           item.isPackage = item.isPackage ?? item.IsPackage;
           item.DoctorId = item.DoctorId;
           item.DoctorName = item.DoctorName;
+          item.DiscPer = item.ConcessionPercentage
+          item.DiscAmt = item.ConcessionAmount
           item.creditedtoDoctor = (item.DoctorId > 0);
+
+          if (item.DiscAmt > 0 || item.DiscPer > 0) {
+            this.isDiscountApplied = true;
+            hasPrevDiscount = true;
+          }
 
           if (item.PackageId > 0) {
             //goes ONLY to package table
@@ -716,9 +725,15 @@ export class NewLabPatientRegComponent {
           } else {
             this.onSaveEntry(item);
           }
-
-          // this.onSaveEntry(item);
         });
+
+        // need to check here during prevlist call diff addcharge so do there only calculateion
+        if (hasPrevDiscount) {
+          setTimeout(() => {
+            this.updateFooterFromPrev();
+          });
+        }
+
       }
 
       else {
@@ -768,6 +783,7 @@ export class NewLabPatientRegComponent {
   Consessionres: boolean = false;
 
   onDiscountPerChange(row: ChargesList): void {
+    debugger
     if (!row) return;
     let discountPer = +row.DiscPer || 0;
     const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
@@ -816,6 +832,7 @@ export class NewLabPatientRegComponent {
   }
   // Calculation of total amount.
   calculateTotalAmount(): void {
+    debugger
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
     let totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
@@ -942,20 +959,52 @@ export class NewLabPatientRegComponent {
     }
   }
 
-  updateCalculation() {
+  // updateCalculation(row: any = null) {
+  //   debugger
+  //   const total = this.chargeList.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
+  //   const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
 
-    const total = this.chargeList.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
-    const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
+  //   this.Consessionres = discPer > 0;
 
-    this.Consessionres = discPer > 0;
+  //   const discountAmt = (total * discPer) / 100;
+  //   const netAmt = Math.round(total - discountAmt);
 
-    const discountAmt = (total * discPer) / 100;
-    const netAmt = Math.round(total - discountAmt);
+  //   this.myForm.patchValue({
+  //     totalAmt: total,
+  //     discountAmt: discountAmt,
+  //     netPayableAmt: netAmt
+  //   }, { emitEvent: false });
+  // }
+  updateCalculation(row: any = null) {
+    debugger
+    const totalAmt = this.chargeList.reduce(
+      (sum, item) => sum + (Number(item.Price) || 0),
+      0
+    );
+
+    const discountAmt = this.chargeList.reduce(
+      (sum, item) => sum + (Number(item.DiscAmt) || 0),
+      0
+    );
+
+    const netAmt = this.chargeList.reduce(
+      (sum, item) => sum + (Number(item.NetAmount) || 0),
+      0
+    );
+
+    // const discPer = totalAmt > 0
+    //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
+    //   : 0;
+    // const discPer = this.chargeList.reduce(
+    //   (sum, item) => sum + (Number(item.DiscPer) || 0),
+    //   0
+    // );
 
     this.myForm.patchValue({
-      totalAmt: total,
+      totalAmt: totalAmt,
       discountAmt: discountAmt,
-      netPayableAmt: netAmt
+      // totalDiscountPer: discPer,
+      netPayableAmt: Math.round(netAmt)
     }, { emitEvent: false });
   }
 
@@ -980,24 +1029,67 @@ export class NewLabPatientRegComponent {
   }
 
   total = 0
+  // getCellCalculation(element) {
+
+  //   const total = this.dstable1.data.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
+  //   const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
+  //   // this.myForm.get('discountAmt').value
+  //   const discountAmt = (total * discPer) / 100;
+  //   const netAmt = total - discountAmt;
+  //   element.TotalAmt = total
+  //   element.DiscPer = 0,
+  //     element.DiscAmt = discountAmt | 0,
+  //     element.NetAmount = netAmt,
+
+  //     this.myForm.patchValue({
+  //       totalAmt: total,
+  //       discountAmt: discountAmt,
+  //       netPayableAmt: netAmt
+  //     });
+  // }
+
   getCellCalculation(element) {
+    debugger
+    const price = Number(element.Price) || 0;
 
-    const total = this.dstable1.data.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
-    const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
-    // this.myForm.get('discountAmt').value
-    const discountAmt = (total * discPer) / 100;
-    const netAmt = total - discountAmt;
-    element.TotalAmt = total
-    element.DiscPer = 0,
-      element.DiscAmt = discountAmt | 0,
-      element.NetAmount = netAmt,
+    // row-level calculation ONLY
+    element.TotalAmt = price;
+    element.DiscPer = element.DiscPer || 0;
+    element.DiscAmt = +(price * element.DiscPer / 100).toFixed(2);
+    element.NetAmount = price - element.DiscAmt;
 
-      this.myForm.patchValue({
-        totalAmt: total,
-        discountAmt: discountAmt,
-        netPayableAmt: netAmt
-      });
+    // update footer separately
+    this.updateFooterTotals();
   }
+  updateFooterTotals() {
+
+    const totalAmt = this.dstable1.data.reduce(
+      (sum, item) => sum + (Number(item.TotalAmt) || 0),
+      0
+    );
+
+    const discountAmt = this.dstable1.data.reduce(
+      (sum, item) => sum + (Number(item.DiscAmt) || 0),
+      0
+    );
+
+    const netAmt = this.dstable1.data.reduce(
+      (sum, item) => sum + (Number(item.NetAmount) || 0),
+      0
+    );
+
+    // const discPer = totalAmt > 0
+    //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
+    //   : 0;
+
+    this.myForm.patchValue({
+      totalAmt: totalAmt,
+      discountAmt: discountAmt,
+      // totalDiscountPer: discPer,
+      netPayableAmt: Math.round(netAmt)
+    }, { emitEvent: false });
+  }
+
 
   showDoctorDropdown(row: any): boolean {
     return row && row.creditedtoDoctor === true;
@@ -1006,7 +1098,6 @@ export class NewLabPatientRegComponent {
   public isDiscountApplied = false;
   isRowDiscountApplied = false;
   onAddCharges(row): void {
-    // debugger
     const isPackage = (row.isPackage ?? row.IsPackage) == 1;
 
     if (row.isPathology !== undefined || row.IsPathology !== undefined) {
@@ -1023,27 +1114,49 @@ export class NewLabPatientRegComponent {
     }
 
     const formValue = this.myForm.value;
-
+    // var totalAmount;
+    // if (row.PackageId == 0 || row.PackageId > 0) {
+    //   totalAmount = row.NetAmount * 1;
+    // } else {
+    //   totalAmount = row.price * 1;
+    // }
     const totalAmount = row.price * 1;
-    const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
+    debugger
+
+    // const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
+    // const netAmount = totalAmount - discountAmount;
+
+    let discountAmount = 0;
+    let discountPer = 0;
+
+    // 🔐 Apply discount ONLY if this row itself has discount (prev data)
+    if (row.DiscAmt > 0 || row.DiscPer > 0) {
+      discountAmount = row.DiscAmt || 0;
+      discountPer = row.DiscPer || 0;
+    }
+
     const netAmount = totalAmount - discountAmount;
-    // debugger
+
+    debugger
     const newRow = {
       ServiceId: row.serviceId,
       ServiceName: row.serviceName,
       Price: row.price ?? 0,
       Qty: 1,
       TotalAmt: totalAmount || 0,
-      DiscPer: 0,
-      DiscAmt: discountAmount || 0,
+      // DiscPer: row.DiscPer ?? 0,
+      // DiscAmt: row.DiscAmt ?? 0,
+      DiscPer: discountPer,
+      DiscAmt: discountAmount,
+      // DiscAmt: discountAmount || row.DiscAmt,
       NetAmount: netAmount || 0,
       ClassName: 1,//this.className || '-',
       creditedtoDoctor: row.creditedtoDoctor === true,
       DoctorId: row.DoctorId || 0,
       DoctorName: row.DoctorName || '-',
       ChargesAddedName: this.accountService.currentUserValue.userName,
-      IsPathology: row.isPathology,
-      IsRadiology: row.isRadiology,
+      IsPathology: row.isPathology == 1 ? true : false,
+      IsRadiology: row.isRadiology == 1 ? true : false,
       IsPackage: row.isPackage,
       serviceCode: 0,//formValue.serviceName.companyCode, 
       isInclusionExclusion: true,//formValue.serviceName.isInclusionOrExclusion
@@ -1058,7 +1171,8 @@ export class NewLabPatientRegComponent {
     newCharge.DiscPer = newCharge.DiscPer || 0;
     this.chargeList.push(newCharge);
     this.dstable1.data = this.chargeList;
-    this.updateCalculation();
+
+    this.updateCalculation(row);
 
 
     if (row.PackageId == undefined) {
@@ -1284,41 +1398,6 @@ export class NewLabPatientRegComponent {
       this.ddlCountry.SetSelection(Response.countryId);
     });
   }
-  departmentId = 0
-  selectChangedepartment(obj: any) {
-    // console.log(obj)
-    this.departmentId = obj.value
-    this.departmentname = obj.text
-
-    if (obj.value) {
-      this._labPatientRegService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-        // console.log(data)
-        this.ddlDoctor.options = data;
-        this.ddlDoctor.bindGridAutoComplete();
-      });
-    }
-    else {
-      this._labPatientRegService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-        // 
-        this.ddlDoctor.options = data;
-        const incomingDoctorId = obj.doctorId ?? obj.consultantDocId;
-        console.log("Id:", incomingDoctorId)
-        setTimeout(() => {
-          this.ddlDoctor.bindGridAutoComplete();
-          if (incomingDoctorId) {
-            const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-            if (matchedDoctor) {
-              this.ddlDoctor.SetSelection(matchedDoctor.value);
-              this.doctorname = matchedDoctor.text
-            }
-          }
-        }, 100);
-      });
-    }
-
-    // this.myForm.get('departmentId').setValue(this.departmentId)
-    // this.myForm.get('doctorId').setValue(parseInt(this.myForm.get('refDocId').value))
-  }
 
   allowOnlyDigits(event: KeyboardEvent) {
     const charCode = event.which ? event.which : event.keyCode;
@@ -1503,7 +1582,7 @@ export class NewLabPatientRegComponent {
     // Bill data
     const formattedDate1 = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
     const formattedTime1 = this.datePipe.transform(new Date(), "HH:mm:ss");
-
+    debugger
     this.OpBillForm.get('billDate').setValue(formattedDate1);
     this.OpBillForm.get('billTime').setValue(formattedDate1 + ' ' + formattedTime1);
     this.OpBillForm.get('opdipdid')?.setValue(0)
@@ -1528,7 +1607,7 @@ export class NewLabPatientRegComponent {
 
     // this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
     console.log("form values", this.OpBillForm.value)
-    // debugger
+    debugger
     console.log("form values", this.LabBillfinalform.value)
     if (this.OpBillForm.invalid) {
 

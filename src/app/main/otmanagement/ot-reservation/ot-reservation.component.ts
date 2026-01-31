@@ -429,6 +429,44 @@ export class OTReservationComponent implements OnInit {
         });
     }
 
+    summeryPrint(Param) {
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "OPIPID",
+                    fieldValue: String(Param.opIpId),
+                    opType: "Equals"
+                },
+                {
+                    fieldName: "ReservationId",
+                    fieldValue: String(Param.otReservationId),
+                    opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: String(Param.opIpType),
+                    opType: "Equals"
+                }
+            ],
+            mode: "OTMultiTabReport_V1"
+        };
+        this._OtReservationService.getMultiReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "OtReservation Report Viewer"
+                }
+            });
+
+            matDialog.afterClosed().subscribe(result => {
+
+            });
+        });
+    }
+
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
@@ -989,7 +1027,7 @@ export class OtReserInsert {
     AnesthesiaId: any;
     anesthesiaId: any;
     checkOutTime: any;
-    toDepartment:any;
+    toDepartment: any;
     /**
      * Constructor
      *

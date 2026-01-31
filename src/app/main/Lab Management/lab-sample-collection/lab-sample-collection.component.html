@@ -104,6 +104,15 @@
                 </mat-chip-set>
             </ng-template>
 
+            <ng-template #actionsPatientType let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.patientType=='Self'" matTooltip="Patient Category Self">account_box
+                    </mat-icon>
+                    <mat-icon *ngIf="element.patientType=='Company'" matTooltip="Patient Category Company">business
+                    </mat-icon>
+                </div>
+            </ng-template>
+
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
                 <ng-container filters>
