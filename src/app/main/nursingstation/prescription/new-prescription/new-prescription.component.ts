@@ -71,9 +71,10 @@ export class NewPrescriptionComponent implements OnInit {
   vdoseId: any;
   doseName: any;
   day: any;
-  SaveFlag:boolean=true
+  SaveFlag: boolean = true
   dsPresList = new MatTableDataSource<MedicineItemList>();
   dsItemList = new MatTableDataSource<PrecriptionItemList>();
+  vMediId: any = 0
 
   autocompletestore: string = "PharmacyStore";
   autocompleteward: string = "Room";
@@ -126,6 +127,22 @@ export class NewPrescriptionComponent implements OnInit {
     this.prescriptionArray.push(this.createPrescriptionFormInsert());
     // this.vstoreId = this._loggedService.currentUserValue.user.storeId
     // this.myForm.get("StoreId").setValue(this._loggedService.currentUserValue.user.storeId)
+    console.log("data:", this.data)
+
+    if (this.data.medicalRecoredId > 0)
+      this.registerObj = this.data
+    this.vMediId = this.data.medicalRecoredId
+    this.vPatientName = this.registerObj.patientName
+    this.vRefDocName = this.data.refDoctorName
+    this.vBedName = this.data.wardName
+    this.vPatientType = this.data.patientType
+    this.vCompanyName = this.data.companyName
+    this.vAdmissionID = this.data.opipid
+    this.vstoreId = this.data.storeId
+    this.vRegNo = this.data.regNo
+    this.myForm.get("StoreId").setValue(this.data.storeId)
+    this.myForm.get("WardName").setValue(this.data?.wardId)
+    this.GetDetails1(this.data)
   }
 
 
@@ -197,7 +214,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.vInstruction = obj.instruction ?? '';
     this.vQty = obj.balanceQty;
     this.ItemForm.get('ItemId').setValue(obj);
-debugger
+    debugger
     if (this.vdoseId > 0) {
       setTimeout(() => {
         this._PrescriptionService.getDoseMasterById(this.vdoseId).subscribe((response) => {
@@ -266,7 +283,7 @@ debugger
         data: {
           Obj: this.dsItemList.data,
           opiptype: 1,
-          category:'PrescriptionTemplate'
+          category: 'PrescriptionTemplate'
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -316,8 +333,8 @@ debugger
         this.Chargelist = data.data.map(x => ({
           ItemID: x.itemID ?? x.drugId,
           ItemName: x.itemName ?? x.drugName,
-          Qty:x.totalQty,
-          Remark:x.instruction,
+          Qty: x.totalQty,
+          Remark: x.instruction,
           ...x
         }));
 
@@ -326,8 +343,8 @@ debugger
           this.Chargelist.push({
             ItemID: element.drugId,
             ItemName: element.drugName,
-            Qty:element.totalQty,
-            Remark:element.instruction,
+            Qty: element.totalQty,
+            Remark: element.instruction,
           });
         });
         this.dsItemList.data = this.Chargelist;
@@ -341,24 +358,8 @@ debugger
       return;
     }
     this.ItemForm.get('TemplateId').reset('');
-     this.SaveFlag = false;
+    this.SaveFlag = false;
   }
-
-  // onEdit(row) {
-  //   console.log(row);
-  //   this.registerObj = row;
-  //   this.getSelectedObjIP(row);
-  // }
-
-  // onChangeReg(event) {
-  //   if (event.value == 'registration') {
-  //     this.registerObj = new RegInsert({});
-  //     this.myForm.get('RegID').disable();
-  //   }
-  //   else {
-  //     this.isRegSearchDisabled = false;
-  //   }
-  // }
 
   onAdd() {
 
@@ -372,8 +373,8 @@ debugger
             ItemName: this.vitemname || '',
             Qty: this.ItemForm.get('Qty').value || this.vQty,
             Remark: this.ItemForm.get('Instruction').value || '',
-            doseId:this.vdoseId ?? 0,
-            day:this.day ?? 0
+            doseId: this.vdoseId ?? 0,
+            day: this.day ?? 0
           });
         this.dsItemList.data = this.Chargelist
         this.ItemForm.get('ItemId').reset('');
@@ -412,14 +413,50 @@ debugger
         }
       }
     }, 100);
-     this.SaveFlag = false;
+    this.SaveFlag = false;
+  }
+
+  GetDetails1(data: any): void {
+
+    const m_data2 = {
+      first: 0,
+      rows: 10,
+      sortField: "ipMedID",
+      sortOrder: 0,
+      filters: [
+        {
+          fieldName: "ipMedID",
+          fieldValue: String(data.medicalRecoredId),
+          opType: "Equals"
+        }
+      ],
+      Columns: [],
+      exportType: "JSON"
+    }
+    this._PrescriptionService.getDetailList(m_data2).subscribe(Visit => {
+      // this.dsItemList.data = Visit.data as PrecriptionItemList[];
+      this.FetchList = Visit.data as PrecriptionItemList[];
+      this.FetchList.forEach(element => {
+        this.Chargelist.push(
+          {
+            ItemID: element.itemID,
+            ItemName: element.itemName || '',
+            Qty: element.qty ?? 0,
+            Remark: element.remark == 0 ? '' : element.remark,
+            doseId: element.doseId ?? 0,
+            day: element.days ?? 0
+          });
+      })
+      this.dsItemList.data = this.Chargelist
+      console.log(this.dsItemList.data)
+    });
   }
 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     if (event.keyCode === 119) {
-        this.Oncheckitemmolecule(1);
+      this.Oncheckitemmolecule(1);
     }
-}
+  }
   Oncheckitemmolecule(contact) {
     const dialogRef = this._matDialog.open(SubstitutesComponent,
       {
@@ -492,7 +529,7 @@ debugger
         });
         this.ItemForm.get('ItemId').reset();
         this.ItemForm.get('ItemId').updateValueAndValidity();
-         this.SaveFlag = false;
+        this.SaveFlag = false;
         return;
       }
       if (this.vRegNo == 0) {
@@ -505,7 +542,7 @@ debugger
       this.prescriptionArray.clear();
       if (this.dsItemList.data.length === 0) {
         this.toastr.warning('No data in the item list!', 'Warning');
-         this.SaveFlag = false;
+        this.SaveFlag = false;
         return;
       }
 
@@ -513,9 +550,10 @@ debugger
       this.dsItemList.data.forEach(item => {
         this.prescriptionArray.push(this.createPrescriptionFormInsert(item));
       });
+      this.prescForm.get("medicalRecoredId").setValue(this.vMediId)
       this.prescForm.get("admissionId").setValue(this.vAdmissionID)
       console.log(this.prescForm.value)
-      
+
       this._PrescriptionService.presciptionSave(this.prescForm.value).subscribe(response => {
         console.log(response)
         this.viewgetIpprescriptionReportPdf(response)
@@ -541,7 +579,7 @@ debugger
       }
     }
 
-     
+
   }
 
   viewgetIpprescriptionReportPdf(response) {

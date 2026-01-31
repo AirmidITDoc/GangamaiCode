@@ -115,7 +115,7 @@ export class NewReservationComponent implements OnInit {
   registerObj2 = new OtReserInsert({});
   AllTypeDescription: any = []
   RtrvDescriptionList: any = [];
-  vanesthesiaType:any;
+  vanesthesiaType: any;
 
   constructor(public _OtReservationService: OtReservationService,
     public dialogRef: MatDialogRef<NewReservationComponent>,
@@ -166,7 +166,7 @@ export class NewReservationComponent implements OnInit {
           this._OtReservationService.getotReservationById(this.data.otReservationId).subscribe((response) => {
             this.registerObj2 = response;
             console.log("Get Data:", this.registerObj2)
-            this.vanesthesiaType=this.registerObj2.anesthesiaType
+            this.vanesthesiaType = this.registerObj2.anesthesiaType
             this.vreservationId = this.registerObj2.otreservationId
             this.opIpId = this.registerObj2.opipid
             this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
@@ -640,6 +640,7 @@ export class NewReservationComponent implements OnInit {
   }
   selectChangeSurgery(obj: any) {
     this.surgName = obj.surgeryName
+    this.reservationForm.get('surgeryDuration')?.setValue(obj.totalDuration);
     this.ddlSurgerytype.SetSelection(obj.siteDescId);
     setTimeout(() => {
       this._OtReservationService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
@@ -819,6 +820,13 @@ export class NewReservationComponent implements OnInit {
   }
 
   /////////////////////////////// surgery detail part /////////////////////////////
+  getCurrentTime(): string {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
   onAdd() {
     if (!this.reservationForm.get("surgeryId")?.value || this.reservationForm.get("surgeryId")?.value == "0") {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
@@ -832,24 +840,24 @@ export class NewReservationComponent implements OnInit {
       });
       return;
     }
-    if (!this.reservationForm.get("surgeryDuration")?.value) {
-      this.toastr.warning('Please enter Duration', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.reservationForm.get("surgeryFromTime")?.value) {
-      this.toastr.warning('Please enter From time', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.reservationForm.get("surgeryEndTime")?.value) {
-      this.toastr.warning('Please enter To time', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (!this.reservationForm.get("surgeryDuration")?.value) {
+    //   this.toastr.warning('Please enter Duration', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (!this.reservationForm.get("surgeryFromTime")?.value) {
+    //   this.toastr.warning('Please enter From time', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    // if (!this.reservationForm.get("surgeryEndTime")?.value) {
+    //   this.toastr.warning('Please enter To time', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if (!this.reservationForm.get("surgeonId")?.value || this.reservationForm.get("surgeonId")?.value == "0") {
       this.toastr.warning('Please select a Surgeon', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -859,23 +867,6 @@ export class NewReservationComponent implements OnInit {
     if (!this.reservationForm.get("anesthetistId")?.value || this.reservationForm.get("anesthetistId")?.value == "0") {
       this.AnthName = ""
     }
-    // if (!this.reservationForm.get("anesthetistId")?.value || this.reservationForm.get("anesthetistId")?.value == "0") {
-    //   this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // debugger
-    // const surgeryDate = this.reservationForm.get('surgeryDate')?.value;
-    // const surgeryFromTime = this.reservationForm.get('surgeryFromTime')?.value;
-
-    // let combinedDateTime = null;
-
-    // if (surgeryDate && surgeryFromTime) {
-    //   combinedDateTime = new Date(surgeryDate);
-    //   const [hours, minutes] = surgeryFromTime.split(':');
-    //   combinedDateTime.setHours(+hours, +minutes, 0, 0);
-    // }
 
     const selectedPrimary = this.reservationForm.get('isPrimary').value;
     const alreadyHasPrimary = this.dssurgeryDetailList.data.some(x => x.isPrimary === "true" || x.isPrimary === true);
@@ -884,6 +875,32 @@ export class NewReservationComponent implements OnInit {
       return;
     }
 
+    // let fromTime = this.reservationForm.get('surgeryFromTime')?.value;
+
+    // if (!fromTime) {
+    //   fromTime = this.getCurrentTime();
+    //   this.reservationForm.patchValue({
+    //     surgeryFromTime: fromTime
+    //   });
+    // }
+    debugger
+    let fromTime = this.reservationForm.get('surgeryFromTime')?.value;
+
+    if (!fromTime) {
+      fromTime = this.getCurrentTime();
+      this.reservationForm.patchValue({ surgeryFromTime: fromTime });
+    }
+
+    this.calculateToTime();
+
+    const endTime = this.reservationForm.get('surgeryEndTime')?.value;
+
+    if (!endTime) {
+      this.toastr.warning('Unable to calculate surgery end time');
+      return;
+    }
+
+
     let newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.reservationForm.get('surgeryCategoryId').value,
@@ -891,8 +908,8 @@ export class NewReservationComponent implements OnInit {
       surgeryName: this.surgName,
       surgeryPart: this.reservationForm.get('surgeryPart').value,
       surgeryDuration: this.reservationForm.get('surgeryDuration').value,
-      // surgeryFromTime: combinedDateTime,
-      surgeryFromTime: this.reservationForm.get('surgeryFromTime').value,
+      // surgeryFromTime: this.reservationForm.get('surgeryFromTime').value,
+      surgeryFromTime: fromTime,
       surgeryEndTime: this.reservationForm.get('surgeryEndTime').value,
       isPrimary: String(this.reservationForm.get('isPrimary').value),
       surgeonId: this.reservationForm.get('surgeonId').value,//

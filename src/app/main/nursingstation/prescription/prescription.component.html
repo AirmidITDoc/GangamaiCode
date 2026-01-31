@@ -26,6 +26,10 @@
             </div>
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button (click)="onSave(element)" matTooltip="Prescription Edit">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
                     <button mat-icon-button (click)="viewgetIpprescriptionReportPdf(element)"
                         matTooltip="IP Prescription Print">
                         <mat-icon title="Prescription Print">print</mat-icon>
