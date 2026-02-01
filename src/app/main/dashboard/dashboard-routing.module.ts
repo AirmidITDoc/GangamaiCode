@@ -8,12 +8,10 @@ import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashbo
 import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
+import { LabFinancialDashboardComponent } from './lab-financial-dashboard/lab-financial-dashboard.component';
+import { FinancialDashboardComponent } from './financial-dashboard/financial-dashboard.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   component: HomePageComponent
-  // },
   {
     path: '',
     component: NewDashboardComponent
@@ -50,7 +48,15 @@ const routes: Routes = [
     path: 'home-page',
     component: HomePageComponent
   },
-
+  {
+    path: 'Financial-dashboard',
+    component: FinancialDashboardComponent
+  }
+  ,
+  {
+    path: 'Lab-Financial-dashboard',
+    component: LabFinancialDashboardComponent
+  }
 ];
 
 @NgModule({
