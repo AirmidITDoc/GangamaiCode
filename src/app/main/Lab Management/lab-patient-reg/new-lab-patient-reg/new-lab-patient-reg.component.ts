@@ -1606,11 +1606,7 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
 
     // this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
-    console.log("form values", this.OpBillForm.value)
-    debugger
-    console.log("form values", this.LabBillfinalform.value)
-    if (this.OpBillForm.invalid) {
-
+   
       this.ChargeddetailsArray.clear();
       this.BillDetailsArray.clear();
 
@@ -1623,7 +1619,7 @@ export class NewLabPatientRegComponent {
           'Please select Doctor for added service', 'Warning!');
         return;
       }
-      debugger
+      
       this.dstable1.data.forEach(item => {
         this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
@@ -1635,17 +1631,20 @@ export class NewLabPatientRegComponent {
           });
         }
       });
+      console.log("1. from values", this.OpBillForm.value)
+    console.log('2. Invalid Checks Form status:', this.OpBillForm.status);
 
-      console.log("form values", this.OpBillForm.value)
+    debugger
       // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+      if (!this.OpBillForm.invalid) {
 
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
           PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
         PatientHeaderObj['RegNo'] = this.regNo;
-        PatientHeaderObj['DoctorName'] = this.doctorname;
-        PatientHeaderObj['CompanyName'] = this.companyName;
+        PatientHeaderObj['DoctorName'] = this.doctorname || '';
+        PatientHeaderObj['CompanyName'] = this.companyName ;
         PatientHeaderObj['DepartmentName'] = this.departmentname;
         PatientHeaderObj['OPD_IPD_Id'] = this.VlabPatRegId;
         PatientHeaderObj['CompanyId'] = this.companyId || 0;
