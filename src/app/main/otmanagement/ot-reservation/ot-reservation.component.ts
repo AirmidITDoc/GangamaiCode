@@ -29,6 +29,7 @@ import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesi
 import { OtOperativeNoteComponent } from "./ot-operative-note/ot-operative-note.component";
 import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { NewMaterialConsumptionComponent } from "app/main/inventory/material-consumption/new-material-consumption/new-material-consumption.component";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -392,7 +393,17 @@ export class OTReservationComponent implements OnInit {
     onStatus(row: any = null) {
 
     }
+    openmaerialConsumpion() {
+        const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
+            {
+                maxHeight: '98vh',
+                width: '95%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
 
+        });
+    }
     OnPrint(Param) {
         const param = {
             searchFields: [

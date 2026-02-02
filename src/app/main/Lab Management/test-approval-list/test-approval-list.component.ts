@@ -38,23 +38,7 @@ import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outso
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { LabResultListService } from '../lab-result-list/lab-result-list.service';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-// function formatDate(rawDate: string): string {
-//   if (!rawDate) return '';
 
-//   // Case 1: ISO format with T → 2026-01-15T00:00:00
-//   if (rawDate.includes('T')) {
-//     return rawDate.split('T')[0]; // 2026-01-15
-//   }
-
-//   // Case 2: Space format → 15-01-2026 00:00:00
-//   if (rawDate.includes(' ')) {
-//     const datePart = rawDate.split(' ')[0]; // 15-01-2026
-//     const [day, month, year] = datePart.split('-');
-//     return `${year}-${month}-${day}`; // 2026-01-15
-//   }
-
-//   return '';
-// }
 
 @Component({
   selector: 'app-test-approval-list',
@@ -306,50 +290,6 @@ export class TestApprovalListComponent {
   }
 
 
-  // getSampledetailList1(row) {
-  //   this.dataSource1.data = [];
-  //   let rawDate = row.pathDate;
-
-  //   let formattedDate = formatDate(row.pathDate);
-  //   // let formattedDate = `${day}`
-
-  //   console.log(formattedDate);
-
-  //   var m_data = {
-  //     "first": 0,
-  //     "rows": 20,
-  //     "sortField": "PathDate",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       {
-  //         "fieldName": "BillNo",
-  //         "fieldValue": String(row.billNo),
-  //         "opType": "Equals"
-  //       },
-  //       {
-  //         "fieldName": "OP_IP_Type",
-  //         "fieldValue": "4",
-  //         "opType": "Equals"
-  //       },
-  //       {
-  //         "fieldName": "From_Dt",
-  //         "fieldValue": formattedDate,
-  //         "opType": "Equals"
-  //       }
-  //     ],
-  //     "Columns": [],
-  //     "exportType": "JSON"
-  //   }
-
-  //   console.log(m_data);
-  //   this._LabResultListService.PathResultentryDetailList(m_data).subscribe(Visit => {
-  //     this.dataSource1.data = Visit.data as SampleList[];
-  //     console.log("ResultList:", this.dataSource1.data)
-  //     this.dataSource1.sort = this.sort;
-  //     this.dataSource1.paginator = this.paginator;
-
-  //   });
-  // }
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -408,21 +348,7 @@ export class TestApprovalListComponent {
     this.onChangeFirst();
   }
 
-  // onSampleCollSave(row: any = null) {
-  //   const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
-  //     {
-  //       // maxWidth: "75vw",
-  //       maxHeight: '75vh',
-  //       width: '70%',
-  //       data: { row: row, type: 'Lab' }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.grid.bindGridData();
-  //     this.getSelectedRow(event);
-  //   });
-  // }
-
-
+  
 
   OPIPID: any = 0;
   onresultentryshow(event, m) {
@@ -1243,6 +1169,6 @@ export class TestApprovalListComponent {
   //         this.outSourceCloseTimeout = null;
   //     }
   // }
-
+  viewgetReportPdf(){}
 }
 

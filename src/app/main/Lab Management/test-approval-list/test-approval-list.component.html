@@ -161,16 +161,30 @@
                                                 <mat-icon *ngIf="element.isVerified=='0'" matTooltip="NotVerified"
                                                     color="warn">check_circle</mat-icon>
 
-                                                     <!-- <span class="status-box" [ngClass]="{
-                                                                    'status-completed': element.isVerifyid,
-                                                                    'status-pending': !element.isVerifyid
-                                                                }" [matTooltip]="getVerifyTooltip(contact)"
-                                                                    matTooltipClass="verify-tooltip"
-                                                                    (click)=" chkresultentryVerify(contact, true)"
-                                                                    [style.cursor]="element.isCompleted && !element.isVerifyid ? 'pointer' : 'default'"
-                                                                    [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
-                                                                    {{ element.isVerifyid ? 'Verified' : 'UnVerified' }}
-                                                                </span> -->
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template #actionButtonTemplate let-element>
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+                                                <!-- <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)" *ngIf="IsEdit">
+                                                    <mat-icon>edit</mat-icon>
+                                                </button> -->
+                                    
+                                    
+                                                <button mat-icon-button matTooltip="Print" (click)="viewgetReportPdf(element)">
+                                                    <mat-icon>print</mat-icon>
+                                                </button>
+                                    
+                                                  <!-- <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatch(element)">
+                                                         <img width="40" height="40" src="assets/images/logos/DispatchReport.png">
+                                                  
+                                                </button>
+                                                <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
+                                                     <img width="40" height="40" src="assets/images/logos/SMS.png">
+                                                  
+                                                </button> -->
+                                               
+                                              
                                             </div>
                                         </ng-template>
 

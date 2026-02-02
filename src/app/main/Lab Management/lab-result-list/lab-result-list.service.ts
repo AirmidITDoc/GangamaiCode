@@ -44,6 +44,26 @@ export class LabResultListService {
     });
   }
 
+  createBranchSummarySearchForm(): FormGroup {
+    return this._formBuilder.group({
+      UnitId: [this.accountService.currentUserValue.user.unitId],
+     
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      // TestStatusSearch: ['1'],
+    
+      // CategoryId:0
+    });
+  }
+  createServicerevenuSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      UnitId: [this.accountService.currentUserValue.user.unitId],
+     
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+    
+    });
+  }
   createtemplateForm(): FormGroup {
     return this._formBuilder.group({
       TemplateId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -195,4 +215,9 @@ export class LabResultListService {
      public getarrovallist(employee) {
     return this._httpClient1.PostData("LabPatientRegistration/LabApprovaltList", employee)
   }
+
+  public getBillrevenudetailList(param) {
+
+    return this._httpClient1.PostData("Branch/UnitBranchWiseRevenueSummary", param)
+}
 }

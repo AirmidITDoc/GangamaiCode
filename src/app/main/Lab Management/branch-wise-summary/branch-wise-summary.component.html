@@ -1,1 +1,255 @@
-<p>branch-wise-summary works!</p>
+<div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" fusePerfectScrollbar>
+    <!-- HEADER -->
+    <div class="top-header">
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
+
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>All Revenue Details List </span>
+            </div>
+        </div>
+
+    </div>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab label="Branch Wise Revenue ">
+            <mat-card>
+                <div class="layout-body p-12">
+                    <div class="layout-body-container center">
+
+                        <form [formGroup]="myformSearch" class="mat-error-fix">
+                            <mat-card style="padding: 20px;">
+                                <div fxLayout="column" style="padding-top:5px ;">
+                                    <div class="layout-card-container" style="height: 60px;">
+
+                                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
+                                            <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+
+
+                                                <div fxFlex="40" fxFlex.xs="100" fxFlex.sm="33">
+
+                                                    <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                                        (selectionChange)="ListView($event)"
+                                                        [(ngModel)]="gridConfig.filters[0].fieldValue"
+                                                        [formGroup]="myformSearch"
+                                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                                        formStartControlName="start" formEndControlName="end"
+                                                        [(fromValue)]="gridConfig.filters[1].fieldValue"
+                                                        [(toValue)]="gridConfig.filters[2].fieldValue">
+                                                    </airmid-datepicker>
+                                                </div>
+
+
+                                                <div class="action-button-container" style="padding-left: 20px;">
+                                                    <div class="button-row-group">
+                                                        <button class="btn btn-danger-outline btn-xs"
+                                                            (click)="onClear()">clear</button>
+                                                        <button class="btn btn-primary btn-with-icon btn-xs"
+                                                            (click)="onChangeFirst()">
+                                                            <span>Search</span>
+                                                            <span class="btn-icon">
+                                                                <mat-icon>search</mat-icon>
+                                                            </span>
+                                                        </button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                    dynamicTableHeight>
+
+                    <div class="main-content overflow-auto ml-8" fxLayout="row" fxLayoutAlign="start stretch">
+                        <div style="width:65%;">
+                            <mat-card>
+                                <mat-card-content>
+
+                                    <div class="personal-panel">
+
+                                        <div style="padding-top: 20px;">
+                                            <div fxFlex="calc(33.33% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                <mat-card class="chart-card">
+                                                    <mat-card-content>
+                                                        <div class="chart-header">
+                                                            <h3 class="chart-title">Branch Revenu Distribution</h3>
+                                                            <p class="chart-subtitle">Selected period breakdown</p>
+                                                        </div>
+                                                        <div style="height: 300px; display: flex; align-items: center; justify-content: center;">
+                                                            <canvas id="paymentModeChart"></canvas>
+                                                        </div>
+                                                    </mat-card-content>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div fxFlex="45%">
+                            <div>
+                                <mat-card>
+                                    <mat-card-content>
+                                        <mat-card style="padding-left: 15%;padding-right: 20%;">
+
+                                            <div fxLayout="row">
+
+
+                                                <div class="net-amt-box">
+                                                    <span class="net-amt-label">Total Count : </span>
+                                                    <span class="net-amt-value">{{ TotCount }}</span>
+                                                </div>
+                                                <div class="net-amt-box">
+                                                    <span class="net-amt-label">Total Net Amt : </span>
+                                                    <span class="net-amt-value">{{ TotNetamt | currency : 'INR'
+                                                        }}</span>
+                                                </div>
+                                               
+
+                                            </div>
+                                        </mat-card>
+                                        <div>
+
+
+                                            <div style="height: 300px; overflow:auto;">
+                                                <ng-template #actionButtonTemplate let-element>
+                                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                                        <button mat-icon-button matTooltip="Print"
+                                                            (click)="viewgetReportPdf(element)">
+                                                            <mat-icon>print</mat-icon>
+                                                        </button>
+
+
+                                                    </div>
+                                                </ng-template>
+
+                                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"
+                                                    :ShowButtons="false">
+                                                </airmid-table>
+
+                                            </div>
+
+                                        </div>
+
+                                    </mat-card-content>
+                                </mat-card>
+
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </mat-card>
+        </mat-tab>
+        <mat-tab label="Service Wise Revenue  List">
+          
+                <div style="height:100px;">
+                    <form [formGroup]="myServicewiseSearch">
+                        <mat-card style="padding: 20px;">
+                            <div fxLayout="column" style="padding-top:5px ;">
+                                <div class="layout-card-container" style="height: 60px;">
+
+                                    <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
+                                        <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+
+                                            <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Service Code</mat-label>
+                                                    <input matInput placeholder="Search Service Code" autocomplete="off"
+                                                        [formGroup]="myServicewiseSearch" formControlName="Servicecode"
+                                                        (input)="onChangeService()" />
+                                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                                        (click)="Clearfilter1('Servicecode')">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </mat-form-field>
+                                            </div>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Service</mat-label>
+                                                    <input matInput placeholder="Search Service" autocomplete="off"
+                                                        [formGroup]="myServicewiseSearch" formControlName="ServiceId"
+                                                        (input)="onChangeService()" />
+                                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                                        (click)="Clearfilter('ServiceId')">
+                                                        <mat-icon>close</mat-icon>
+                                                    </button>
+                                                </mat-form-field>
+                                            </div> -->
+
+                                            <div fxFlex="40" fxFlex.xs="100" fxFlex.sm="33">
+
+                                                <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                                    (selectionChange)="ListView1($event)"
+                                                    [(ngModel)]="gridConfig1.filters[0].fieldValue"
+                                                    [formGroup]="myServicewiseSearch"
+                                                    [mode]="autocompleteModeunit"></airmid-dropdown>
+                                            </div>
+                                            <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                                <airmid-datepicker [formGroup]="myServicewiseSearch"
+                                                    [isRangePicker]="true" formStartControlName="start"
+                                                    formEndControlName="end"
+                                                    [(fromValue)]="gridConfig1.filters[1].fieldValue"
+                                                    [(toValue)]="gridConfig1.filters[2].fieldValue">
+                                                </airmid-datepicker>
+                                            </div>
+
+
+                                            <div class="action-button-container">
+                                                <div class="button-row-group">
+                                                    <button class="btn btn-danger-outline btn-xs"
+                                                        (click)="onClear()">clear</button>
+                                                    <button class="btn btn-primary btn-with-icon btn-xs"
+                                                        (click)="onChangeService()">
+                                                        <span>Search</span>
+                                                        <span class="btn-icon">
+                                                            <mat-icon>search</mat-icon>
+                                                        </span>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </mat-card>
+                    </form>
+
+                </div>
+                <div style="height: 600px; overflow:auto;">
+                    <ng-template #actionButtonTemplate1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button mat-icon-button matTooltip="Print"
+                                (click)="viewgetReportPdf(element)">
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                        </div>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfig1" #ServiceGrid :ShowFilter="false" :ShowButtons="false">
+                    </airmid-table>
+                </div>
+
+           
+        </mat-tab>
+
+    </mat-tab-group>
+</div>

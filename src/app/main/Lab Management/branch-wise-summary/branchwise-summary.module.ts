@@ -30,7 +30,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
-import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
+import { FuseConfirmDialogModule, FuseSidebarModule, FuseWidgetModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { BranchWiseSummaryComponent } from './branch-wise-summary.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 const routes: Routes = [
@@ -97,6 +98,14 @@ const routes: Routes = [
     MatButtonToggleModule,
     MatSliderModule,
     MatTreeModule,
+
+
+
+    // DashboardRoutingModule,
+  
+    NgxChartsModule,
+    FuseWidgetModule,
+  
   ],
   providers: [
     DatePipe,
