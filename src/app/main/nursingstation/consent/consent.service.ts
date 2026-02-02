@@ -59,11 +59,9 @@ export class ConsentService {
 
    createSearchForm(): FormGroup {
     return this._frombuilder.group({
-      RegNo: [],
-      PatientName: ['', [Validators.pattern("^[A-Za-z]*[a-zA-z]*$")]],
-      IsIPOrOP:['2'],
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      consentName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]]
     });
   }
 

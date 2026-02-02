@@ -31,6 +31,8 @@ import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
 import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
+import { LabFinancialDashboardComponent } from './lab-financial-dashboard/lab-financial-dashboard.component';
+import { FinancialDashboardComponent } from './financial-dashboard/financial-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +45,9 @@ import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashbo
         NewDashboardComponent,
         RadiologyDashboardComponent,
         PathologyDashboardComponent,
-        CashlessDashboardComponent
+        CashlessDashboardComponent,
+        LabFinancialDashboardComponent,
+        FinancialDashboardComponent
     ],
     imports: [
         CommonModule,

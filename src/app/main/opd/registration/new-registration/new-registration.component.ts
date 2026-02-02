@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -50,6 +50,9 @@ export class NewRegistrationComponent implements OnInit {
     ageMonth = 0;
     ageDay = 0;
     CityName = ""
+    vFirstNameConfig: any;
+    vmiddleNameConfig: any;
+    vlastNameConfig: any;
 
     autocompleteModegender: string = "Gender";
     autocompleteModearea: string = "Area";
@@ -74,7 +77,7 @@ export class NewRegistrationComponent implements OnInit {
         public datePipe: DatePipe,
         private commonService: PrintserviceService,
         private readonly changeDetectorRef: ChangeDetectorRef,
-        public _configue:ConfigService
+        public _configue: ConfigService
     ) { }
 
     ngAfterViewChecked(): void {
@@ -84,8 +87,8 @@ export class NewRegistrationComponent implements OnInit {
     onChangePrefix(e) {
         this.ddlGender.SetSelection(e.sexId);
     }
-     options: string[]
-     filteredOptions: Observable<string[]>; 
+    options: string[]
+    filteredOptions: Observable<string[]>;
     Is9_Digit_National_Id: boolean = false;
     ngOnInit(): void {
 
@@ -102,32 +105,65 @@ export class NewRegistrationComponent implements OnInit {
                     this.isEditMode = true;
                     this.regNo = this.registerObj.regNo
                     this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-                    this.value=this.registerObj.dateofBirth
+                    this.value = this.registerObj.dateofBirth
                     this.onChangeDateofBirth(this.registerObj.dateofBirth)
                 });
             }, 500);
         }
 
-    this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value)),
+        this.filteredOptions = this.personalFormGroup.get('AreaId').valueChanges.pipe(
+            startWith(''),
+            map(value => this._filter(value)),
 
-    );
-//this code for Mediforte 9 digit national id
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
+        );
+        //this code for Mediforte 9 digit national id
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
 
+        const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
+        const [firstnameid, firstnameval] = rawValue.includes(":") ? firstValue.split(":") : [null, null];
+        this.vFirstNameConfig = firstnameid
+
+        const middleValue = this?._configue?.configParams?.MiddleNameMandatory || "";
+        const [middlenameid, middlenameval] = rawValue.includes(":") ? middleValue.split(":") : [null, null];
+        this.vmiddleNameConfig = middlenameid
+
+        const lastValue = this?._configue?.configParams?.LastNameMandatory || "";
+        const [lastnameid, lastnameval] = rawValue.includes(":") ? lastValue.split(":") : [null, null];
+        this.vlastNameConfig = lastnameid
+
+        this.setNameValidations();
     }
 
+    setNameValidations() {
+        const fieldConfigs = [
+            { field: 'FirstName', config: this.vFirstNameConfig },
+            { field: 'MiddleName', config: this.vmiddleNameConfig },
+            { field: 'LastName', config: this.vlastNameConfig }
+        ];
 
-  AreaList: any = [];
-   private _filter(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.AreaName ? value.areaName.toLowerCase() : value.toLowerCase();
-      return this.AreaList.filter(option => option.areaName.toLowerCase().includes(filterValue));
+        fieldConfigs.forEach(item => {
+            const ctrl = this.personalFormGroup.get(item.field);
+            if (!ctrl) return;
+
+            if (item.config === '1') {
+                ctrl.setValidators([Validators.required]);
+            } else {
+                ctrl.clearValidators();
+            }
+
+            ctrl.updateValueAndValidity();
+        });
     }
-  }
+
+    AreaList: any = [];
+    private _filter(value: any): string[] {
+        if (value) {
+            const filterValue = value && value.AreaName ? value.areaName.toLowerCase() : value.toLowerCase();
+            return this.AreaList.filter(option => option.areaName.toLowerCase().includes(filterValue));
+        }
+    }
 
     OnSubmit() {
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
@@ -165,7 +201,7 @@ this.Is9_Digit_National_Id = id === "1";
         this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaIssueDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaIssueDate || '1900-01-01');
         this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismVisaValidityDate").value, "yyyy-MM-dd") || this.registerObj.medTourismVisaValidityDate || '1900-01-01');
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || this.registerObj.medTourismDateOfEntry || '1900-01-01');
-debugger
+        debugger
         if (
             (!this.ageYear || this.ageYear == 0) &&
             (!this.ageMonth || this.ageMonth == 0) &&
@@ -239,16 +275,16 @@ debugger
         });
     }
 
-    onChangedate(event){
+    onChangedate(event) {
         // debugger
-    const selectedDate = new Date(event);
-    const vday = this.personalFormGroup.get("medTourismVisaIssueDate").value
+        const selectedDate = new Date(event);
+        const vday = this.personalFormGroup.get("medTourismVisaIssueDate").value
 
-    // selectedDate.setHours(0, 0, 0, 0);
-    // vday.setHours(0, 0, 0, 0);
-    if(selectedDate < vday )
-        Swal.fire("VisaValidity Date Shoud Be Greater than IssueDate !........")
-    return;
+        // selectedDate.setHours(0, 0, 0, 0);
+        // vday.setHours(0, 0, 0, 0);
+        if (selectedDate < vday)
+            Swal.fire("VisaValidity Date Shoud Be Greater than IssueDate !........")
+        return;
     }
 
 
@@ -301,8 +337,9 @@ debugger
     }
 
     getValidationMessages() {
-                 const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-                 const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+
         return {
             firstName: [
                 { name: "required", Message: "First Name is required" },
@@ -391,8 +428,8 @@ debugger
         };
     }
 
-    value=new Date()
-       onChangeDateofBirth(DateOfBirth: Date) {
+    value = new Date()
+    onChangeDateofBirth(DateOfBirth: Date) {
         // debugger
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
@@ -404,7 +441,7 @@ debugger
             const todayDate = new Date();
             const dob = new Date(DateOfBirth);
             const timeDiff = Math.abs(Date.now() - dob.getTime());
-          
+
             this.ageYear = todayDate.getFullYear() - dob.getFullYear();
             this.ageMonth = (todayDate.getMonth() - dob.getMonth());
             this.ageDay = (todayDate.getDate() - dob.getDate());
@@ -424,13 +461,13 @@ debugger
             this.personalFormGroup.get('DateOfBirth').setValue(DateOfBirth);
             if (this.ageYear > 110)
                 this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
         }
     }
 
-  areaList: any[] = [];
-  
+    areaList: any[] = [];
+
     // getarealist(){
     //     debugger
     // this._registerService.getareaList1().subscribe(response => {
@@ -441,20 +478,20 @@ debugger
 
 
 
-//   getAreaList() {
-//     this._registerService.getAreaCombo().subscribe(data => {
-//       this.AreaList = data;
-//       if (this.data) {
-//         const ddValue = this.AreaList.filter(c => c.AreaId == this.registerObj.AreaId);
-//         this.personalFormGroup.get('AreaId').setValue(ddValue[0]);
-//         this.personalFormGroup.updateValueAndValidity();
-//         return;
-//       }
-//     });
-//   }
+    //   getAreaList() {
+    //     this._registerService.getAreaCombo().subscribe(data => {
+    //       this.AreaList = data;
+    //       if (this.data) {
+    //         const ddValue = this.AreaList.filter(c => c.AreaId == this.registerObj.AreaId);
+    //         this.personalFormGroup.get('AreaId').setValue(ddValue[0]);
+    //         this.personalFormGroup.updateValueAndValidity();
+    //         return;
+    //       }
+    //     });
+    //   }
 
-  CalcDOB(mode, e) {
-// debugger
+    CalcDOB(mode, e) {
+        // debugger
         let d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
@@ -492,26 +529,26 @@ debugger
         this.dateTimeObj = dateTimeObj;
     }
 
-aadharRaw = '';
-aadharRaw1 = '';
+    aadharRaw = '';
+    aadharRaw1 = '';
 
-onAadhaarInput(e: any) {
-  const v = (e.target.value || '').replace(/\D/g, '').slice(0, 12); // only digits
-  this.aadharRaw = v;
+    onAadhaarInput(e: any) {
+        const v = (e.target.value || '').replace(/\D/g, '').slice(0, 12); // only digits
+        this.aadharRaw = v;
 
-  const displayValue = (v.length === 12)
-    ? 'xxxxxxxx' + v.slice(-4)
-    : v;
-  this.personalFormGroup.get('aadharCardNo')?.setValue(displayValue, { emitEvent: false });
-}
-onAadhaarInput1(e: any) {
-  const v = (e.target.value || '').replace(/\D/g, '').slice(0, 12); // only digits
-  this.aadharRaw1 = v;
+        const displayValue = (v.length === 12)
+            ? 'xxxxxxxx' + v.slice(-4)
+            : v;
+        this.personalFormGroup.get('aadharCardNo')?.setValue(displayValue, { emitEvent: false });
+    }
+    onAadhaarInput1(e: any) {
+        const v = (e.target.value || '').replace(/\D/g, '').slice(0, 12); // only digits
+        this.aadharRaw1 = v;
 
-  const displayValue = (v.length === 12)
-    ? 'xxxxxxxx' + v.slice(-4)
-    : v;
-  this.personalFormGroup.get('emgAadharCardNo')?.setValue(displayValue, { emitEvent: false });
-}
+        const displayValue = (v.length === 12)
+            ? 'xxxxxxxx' + v.slice(-4)
+            : v;
+        this.personalFormGroup.get('emgAadharCardNo')?.setValue(displayValue, { emitEvent: false });
+    }
 
 }

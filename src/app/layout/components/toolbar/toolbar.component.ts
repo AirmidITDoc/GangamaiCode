@@ -185,7 +185,15 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         // this.accountService.logout();
         this.router.navigate(['/dashboard/Pharmacy-dashboard']);
     }
-
+    
+    navigateToFinancialDashboard() {
+        // this.accountService.logout();
+        this.router.navigate(['/dashboard/Financial-dashboard']);
+    }
+     navigateToLabFinancialDashboard() {
+        // this.accountService.logout();
+        this.router.navigate(['/dashboard/Lab-Financial-dashboard']);
+    }
     /**
      * On destroy
      */

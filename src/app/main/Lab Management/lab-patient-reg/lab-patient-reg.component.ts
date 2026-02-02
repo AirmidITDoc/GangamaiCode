@@ -62,6 +62,7 @@ export class LabPatientRegComponent {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
   @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
+  @ViewChild('PatientTypeColorCode') PatientTypeColorCode!: TemplateRef<any>;
   @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
   @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
 
@@ -172,6 +173,7 @@ export class LabPatientRegComponent {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'balanceAmt1')!.template = this.actionsTemplate4;
     this.gridConfig.columnsList.find(col => col.key === 'colorPad')!.template = this.ColorCode;
+    this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.PatientTypeColorCode;
     this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'doctorName')!.template = this.doctorNameWithPopoverTemplate;
   }
@@ -181,9 +183,12 @@ export class LabPatientRegComponent {
       heading: "", key: "colorPad", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 120,
       template: this.ColorCode
     },
-    { heading: "Status", key: "statua", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+    // { heading: "Status", key: "statua", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 120,
+      template: this.PatientTypeColorCode
+    },
     { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -544,7 +549,7 @@ export class LabPatientRegComponent {
   }
 
 
-viewgetReportdispatch(element) {
+  viewgetReportdispatch(element) {
     console.log(element)
     const dialogRef = this._matDialog.open(ReportDispatchComponent,
       {
@@ -565,7 +570,7 @@ viewgetReportdispatch(element) {
       {
         maxWidth: "90vw",
         maxHeight: '115%',
-                 
+
         width: '100%',
         data: element
 
@@ -576,7 +581,8 @@ viewgetReportdispatch(element) {
 
   }
   viewgetOPBillReportPdf(element) {
-    this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+    // this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+    this.commonService.Onprint("BillNo", element, "LabMoneyReceipt");
   }
 
 
@@ -897,10 +903,10 @@ export class LabPatientList {
   subCompanyId: any;
   pBillNo: any;
   labPatientId: any;
-  balanceAmt: any=0;
-  regTime:any;
-  dispatchModeId:any
-  emailId:any
+  balanceAmt: any = 0;
+  regTime: any;
+  dispatchModeId: any
+  emailId: any
 
   constructor(LabPatientList) {
     {
@@ -978,9 +984,9 @@ export class LabPatientList {
       this.balanceAmt = LabPatientList.balanceAmt || 0
       this.regTime = LabPatientList.regTime
       this.dispatchModeId = LabPatientList.dispatchModeId || 0
- this.emailId = LabPatientList.emailId || ''
+      this.emailId = LabPatientList.emailId || ''
 
-      
+
     }
   }
 }
@@ -1003,115 +1009,115 @@ export class LabRequest {
 }
 
 export class ChargesList {
-    ChargesId: number;
-    ConcessionAmt: any;
-    ServiceId: number;
-    serviceId: number;
-    ServiceName: String;
-    Price: any;
-    Qty: any;
-    isInclusionExclusion: any;
-    serviceCode: any;
-    TotalAmt: number;
-    DiscPer: number;
-    DiscAmt: number;
-    NetAmount: number;
-    DoctorId: number;
-    ChargeDoctorName: String;
-    ChargesDate: Date;
-    IsPathology: any;
-    IsRadiology: any;
-    ClassId: number;
-    ClassName: string;
-    ChargesAddedName: string;
-    PackageId: any;
-    PackageServiceId: any;
-    IsPackage: any;
-    PacakgeServiceName: any;
-    BillwiseTotalAmt: any;
-    DoctorName: any;
-    OpdIpdId: any;
-    serviceName: any;
+  ChargesId: number;
+  ConcessionAmt: any;
+  ServiceId: number;
+  serviceId: number;
+  ServiceName: String;
+  Price: any;
+  Qty: any;
+  isInclusionExclusion: any;
+  serviceCode: any;
+  TotalAmt: number;
+  DiscPer: number;
+  DiscAmt: number;
+  NetAmount: number;
+  DoctorId: number;
+  ChargeDoctorName: String;
+  ChargesDate: Date;
+  IsPathology: any;
+  IsRadiology: any;
+  ClassId: number;
+  ClassName: string;
+  ChargesAddedName: string;
+  PackageId: any;
+  PackageServiceId: any;
+  IsPackage: any;
+  PacakgeServiceName: any;
+  BillwiseTotalAmt: any;
+  DoctorName: any;
+  OpdIpdId: any;
+  serviceName: any;
 
-    RegNo: any;
-    PatientName: any;
-    BillNo: any;
-    TotalBillAmount: any;
-    ConcessionAmount: any;
-    NetPayableAmt: any;
-    ConsultantDocName: any;
-    AddedByName: any;
-    BillTime: any;
-    DiscComments: any;
-    PaymentMode: any;
-    TokenNo: any;
-    RefundAmt: any;
-    PaidAmount: any;
-    doctorName: any;
-    doctorId: any;
-    isPathology: any;
-    isRadiology: any;
-    pacakgeServiceName: any;
-    packageServiceId: any;
-    price: any;
-    packageId: any;
-    ConcessionPercentage: any = 0;
-    userName: any;
-    BalanceAmt: any;
-    creditedtoDoctor:any;
-    constructor(ChargesList) {
-        this.ChargesId = ChargesList.ChargesId || '';
-        this.ServiceId = ChargesList.ServiceId || '';
-        this.serviceId = ChargesList.serviceId || '';
-        this.ServiceName = ChargesList.ServiceName || '';
-        this.Price = ChargesList.Price || '';
-        this.Qty = ChargesList.Qty || '';
-        this.TotalAmt = ChargesList.TotalAmt || '';
-        this.DiscPer = ChargesList.DiscPer || '';
-        this.DiscAmt = ChargesList.DiscAmt || '';
-        this.NetAmount = ChargesList.NetAmount || '';
-        this.DoctorId = ChargesList.DoctorId || 0;
-        this.DoctorName = ChargesList.DoctorName || '';
-        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
-        this.ChargesDate = ChargesList.ChargesDate || '';
-        this.IsPathology = ChargesList.IsPathology || '';
-        this.IsRadiology = ChargesList.IsRadiology || '';
-        this.ClassId = ChargesList.ClassId || 0;
-        this.ClassName = ChargesList.ClassName || '';
-        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-        this.PackageId = ChargesList.PackageId || 0;
-        this.PackageServiceId = ChargesList.PackageServiceId || 0;
-        this.IsPackage = ChargesList.IsPackage || 0;
-        this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
-        this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
-        this.OpdIpdId = ChargesList.OpdIpdId || '';
-        this.serviceName = ChargesList.serviceName || ''
-        this.ConcessionPercentage = ChargesList.ConcessionPercentage || 0;
-        this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
-        this.packageServiceId = ChargesList.packageServiceId || 0;
-        this.price = ChargesList.price || 0;
-        this.packageId = ChargesList.packageId || '';
-        this.doctorName = ChargesList.doctorName || 0;
-        this.BalanceAmt = ChargesList.BalanceAmt || 0;
-        this.doctorId = ChargesList.doctorId || 0;
-        this.serviceCode = ChargesList.serviceCode || 0;
-        this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
-        this.isPathology = ChargesList.isPathology || 0;
-        this.isRadiology = ChargesList.isRadiology || 0;
-        this.userName = ChargesList.userName || '';
+  RegNo: any;
+  PatientName: any;
+  BillNo: any;
+  TotalBillAmount: any;
+  ConcessionAmount: any;
+  NetPayableAmt: any;
+  ConsultantDocName: any;
+  AddedByName: any;
+  BillTime: any;
+  DiscComments: any;
+  PaymentMode: any;
+  TokenNo: any;
+  RefundAmt: any;
+  PaidAmount: any;
+  doctorName: any;
+  doctorId: any;
+  isPathology: any;
+  isRadiology: any;
+  pacakgeServiceName: any;
+  packageServiceId: any;
+  price: any;
+  packageId: any;
+  ConcessionPercentage: any = 0;
+  userName: any;
+  BalanceAmt: any;
+  creditedtoDoctor: any;
+  constructor(ChargesList) {
+    this.ChargesId = ChargesList.ChargesId || '';
+    this.ServiceId = ChargesList.ServiceId || '';
+    this.serviceId = ChargesList.serviceId || '';
+    this.ServiceName = ChargesList.ServiceName || '';
+    this.Price = ChargesList.Price || '';
+    this.Qty = ChargesList.Qty || '';
+    this.TotalAmt = ChargesList.TotalAmt || '';
+    this.DiscPer = ChargesList.DiscPer || '';
+    this.DiscAmt = ChargesList.DiscAmt || '';
+    this.NetAmount = ChargesList.NetAmount || '';
+    this.DoctorId = ChargesList.DoctorId || 0;
+    this.DoctorName = ChargesList.DoctorName || '';
+    this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+    this.ChargesDate = ChargesList.ChargesDate || '';
+    this.IsPathology = ChargesList.IsPathology || '';
+    this.IsRadiology = ChargesList.IsRadiology || '';
+    this.ClassId = ChargesList.ClassId || 0;
+    this.ClassName = ChargesList.ClassName || '';
+    this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+    this.PackageId = ChargesList.PackageId || 0;
+    this.PackageServiceId = ChargesList.PackageServiceId || 0;
+    this.IsPackage = ChargesList.IsPackage || 0;
+    this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
+    this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+    this.OpdIpdId = ChargesList.OpdIpdId || '';
+    this.serviceName = ChargesList.serviceName || ''
+    this.ConcessionPercentage = ChargesList.ConcessionPercentage || 0;
+    this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
+    this.packageServiceId = ChargesList.packageServiceId || 0;
+    this.price = ChargesList.price || 0;
+    this.packageId = ChargesList.packageId || '';
+    this.doctorName = ChargesList.doctorName || 0;
+    this.BalanceAmt = ChargesList.BalanceAmt || 0;
+    this.doctorId = ChargesList.doctorId || 0;
+    this.serviceCode = ChargesList.serviceCode || 0;
+    this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
+    this.isPathology = ChargesList.isPathology || 0;
+    this.isRadiology = ChargesList.isRadiology || 0;
+    this.userName = ChargesList.userName || '';
 
-        this.RegNo = ChargesList.RegNo || 0;
-        this.BillNo = ChargesList.BillNo || 0;
-        this.PatientName = ChargesList.PatientName || '';
-        this.TotalBillAmount = ChargesList.TotalBillAmount || 0;
-        this.ConcessionAmount = ChargesList.ConcessionAmount || 0;
-        this.NetPayableAmt = ChargesList.NetPayableAmt || 0;
-        this.ConsultantDocName = ChargesList.ConsultantDocName || '';
-        this.AddedByName = ChargesList.AddedByName || '';
-        this.DiscComments = ChargesList.DiscComments || '';
-        this.PaymentMode = ChargesList.PaymentMode || 0;
-        this.TokenNo = ChargesList.TokenNo || 0;
-        this.RefundAmt = ChargesList.RefundAmt || 0;
-       this.creditedtoDoctor = ChargesList.creditedtoDoctor || ''
-    }
+    this.RegNo = ChargesList.RegNo || 0;
+    this.BillNo = ChargesList.BillNo || 0;
+    this.PatientName = ChargesList.PatientName || '';
+    this.TotalBillAmount = ChargesList.TotalBillAmount || 0;
+    this.ConcessionAmount = ChargesList.ConcessionAmount || 0;
+    this.NetPayableAmt = ChargesList.NetPayableAmt || 0;
+    this.ConsultantDocName = ChargesList.ConsultantDocName || '';
+    this.AddedByName = ChargesList.AddedByName || '';
+    this.DiscComments = ChargesList.DiscComments || '';
+    this.PaymentMode = ChargesList.PaymentMode || 0;
+    this.TokenNo = ChargesList.TokenNo || 0;
+    this.RefundAmt = ChargesList.RefundAmt || 0;
+    this.creditedtoDoctor = ChargesList.creditedtoDoctor || ''
+  }
 }

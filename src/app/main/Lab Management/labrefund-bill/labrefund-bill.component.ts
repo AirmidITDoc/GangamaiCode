@@ -236,22 +236,22 @@ export class LabrefundBillComponent {
   }
 
   regflag = false
-  VlabPatRegId: any;
+  VlabPatId: any;
   getSelectedObj(obj) {
     console.log(obj)
-    this.RegId = obj.labPatientId;
-    // this.RegId = obj.visitId;
+    // this.RegId = obj.labPatientId;
+    this.RegId = obj.visitId;
     if (this.RegId) {
       setTimeout(() => {
         this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
           this.registerObj = response;
-          this.VlabPatRegId = this.registerObj?.labPatRegId
+          this.VlabPatId = this.registerObj?.labPatientId
           this.RegNo = this.registerObj?.labRequestNo
           this.PatientName = this.registerObj?.patientName
           // this.billNo = this.registerObj.billNo;
           this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.registerObj.billNo);
           console.log(response)
-          this.getfilterdata(this.VlabPatRegId)
+          this.getfilterdata(this.VlabPatId)
         });
       }, 100);
     }

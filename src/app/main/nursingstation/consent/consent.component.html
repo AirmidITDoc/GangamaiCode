@@ -6,88 +6,59 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Consent
+                    Nursing Consent
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="NewConsent()" *ngIf="IsAdd">
-                <mat-icon>how_to_reg</mat-icon>New Consent
+            <button mat-raised-button (click)="onFiles()" *ngIf="IsAdd">New Consent
             </button>
         </div>
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-         <ng-template #actionsIPOP let-element>
+        <ng-template #actionsIPOP let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-icon *ngIf="element.opipType==0" title="OP"
-                    class="pill orange s-16">circle</mat-icon>
-                <mat-icon *ngIf="element.opipType==1" title="IP"
-                    class="pill green s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.opipType==0" title="OP" class="pill orange s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.opipType==1" title="IP" class="pill green s-16">circle</mat-icon>
+
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <app-airmid-consentform-icon [Id]="element.consentId" [refId]="element.refId" [opipId]="element.opipid"
+                    title="Edit Consent Of Name: {{ element.patientName }}  UHID: {{ element.regNo }}"
+                    labelType="Nursing" [opipType]="1"></app-airmid-consentform-icon>
+
+                <button mat-icon-button (click)="OnViewReportPdf(element)" matTooltip="Print">
+                    <mat-icon title="Print">print</mat-icon>
+                </button>
 
             </div>
         </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
+                <form [formGroup]="myFilterform">
 
-                <form [formGroup]="myFormSearch" fxLayout="column">
-
-                    <airmid-datepicker [formGroup]="myFormSearch" [isRangePicker]="true" formStartControlName="start"
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
                         formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                        [(toValue)]="gridConfig.filters[1].fieldValue">
-                    </airmid-datepicker>
+                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Patient Name</mat-label>
-                        <input matInput placeholder="Search Patient Name" autocomplete="off" [formGroup]="myFormSearch"
-                            formControlName="PatientName" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('PatientName')">
+                    <!-- <mat-form-field appearance="outline">
+                        <mat-label>Consent Name</mat-label>
+                        <input matInput placeholder="Search Consent Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="consentName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
-                    <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFormSearch" (keypress)="keyPressAlphanumeric($event)"
-                            formControlName="RegNo" (input)="onChangeFirst()" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
-
-                    <div fxFlex fxLayout="row">
-
-                        <mat-radio-group name="IsIPOrOP" formControlName="IsIPOrOP" [formGroup]="myFormSearch" fxLayout="row" value="2"
-                            style="padding: 6px;" class="gap-4" (change)="onChangeFirst()">
-                            <mat-label>Type:</mat-label>
-                            <div fxLayout="row">
-                                <mat-radio-button value="2">All
-                                </mat-radio-button>&nbsp;
-                                <mat-radio-button value="1">IP
-                                </mat-radio-button>&nbsp;
-                                <mat-radio-button value="0">OP
-                                </mat-radio-button>
-                            </div>
-                        </mat-radio-group>
-                    </div>
                 </form>
-
-                <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" style="padding: 6px;">
-
-                    <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                        <mat-icon class="pill orange s-16">circle</mat-icon>
-                        <span class="orange-fg"> OP</span>
-                    </div>
-                    <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                        <mat-icon class="pill green s-16">circle</mat-icon>
-                        <span class="green-fg">IP</span>
-                    </div>
-
-                </div>
-
             </ng-container>
         </airmid-table>
     </div>

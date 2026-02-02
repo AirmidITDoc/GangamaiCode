@@ -130,7 +130,7 @@ export class IPSearchListComponent implements OnInit {
     IsShowGrid: boolean = false;
     id: string;
     mode: string;
-    FinalBill=0
+    FinalBill = 0
     ngOnInit(): void {
         this.myFilterform = this._IpSearchListService.filterForm();
         this.myFilterform.get('fromDate').setValue('');
@@ -378,19 +378,23 @@ export class IPSearchListComponent implements OnInit {
                 }
             });
         }
-        else if (m == "Advance" && !element.isBillGenerated) {
-            this.advanceDataStored.storage = new AdvanceDetailObj(element);
-            let Advflag: boolean = false;
-            if (element.isBillGenerated) {
-                Advflag = true;
-            }
-            if (element.isDischarged) {
-                Advflag = true;
-            }
+        else
+            if (m === "Advance") {
+                debugger
 
-            if (!Advflag) {
-                const dialogRef = this._matDialog.open(IPAdvanceComponent,
-                    {
+                this.advanceDataStored.storage = new AdvanceDetailObj(element);
+
+                if (element.isBillGenerated && element.isDischarged) {
+
+                    Swal.fire({
+                        title: 'Selected Patient Bill Is Already Generated and Patient Is Discharged',
+                        icon: "warning",
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Ok!"
+                    });
+
+                } else {
+                    const dialogRef = this._matDialog.open(IPAdvanceComponent, {
                         maxWidth: "100%",
                         height: '95%',
                         width: '80%',
@@ -398,21 +402,50 @@ export class IPSearchListComponent implements OnInit {
                             Obj: element
                         }
                     });
-                dialogRef.afterClosed().subscribe(result => {
-                    console.log('The dialog was closed - Insert Action', result);
-                });
-            } else {
 
-                Swal.fire({
-                    title: 'Selected Patient Bill Is Already Generated or Patient Already Discharged',
-                    icon: "warning",
-                    showCancelButton: false,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ok!"
-                })
+                    dialogRef.afterClosed().subscribe(result => {
+                        console.log('The dialog was closed - Insert Action', result);
+                    });
+                }
             }
-        }
+
+        // if (m == "Advance" && !element.isBillGenerated) {
+        //     debugger
+        //     this.advanceDataStored.storage = new AdvanceDetailObj(element);
+        //     let Advflag: boolean = false;
+        //     if (element.isBillGenerated) {
+        //         Advflag = false;
+        //         // Advflag = true;
+        //     }
+        //     if (element.isDischarged) {
+        //         Advflag = true;
+        //     }
+
+        //     if (!Advflag) {
+        //         const dialogRef = this._matDialog.open(IPAdvanceComponent,
+        //             {
+        //                 maxWidth: "100%",
+        //                 height: '95%',
+        //                 width: '80%',
+        //                 data: {
+        //                     Obj: element
+        //                 }
+        //             });
+        //         dialogRef.afterClosed().subscribe(result => {
+        //             console.log('The dialog was closed - Insert Action', result);
+        //         });
+        //     } else {
+
+        //         Swal.fire({
+        //             title: 'Selected Patient Bill Is Already Generated or Patient Already Discharged',
+        //             icon: "warning",
+        //             showCancelButton: false,
+        //             confirmButtonColor: "#3085d6",
+        //             cancelButtonColor: "#d33",
+        //             confirmButtonText: "Ok!"
+        //         })
+        //     }
+        // }
 
 
         this.grid.gridConfig = this.gridConfig;
@@ -863,7 +896,7 @@ export class ChargesList {
     unitId: any
     classId: any
     tariffId: any
-    IsPackage:any;
+    IsPackage: any;
 
 
     constructor(ChargesList) {
