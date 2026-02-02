@@ -669,7 +669,7 @@ export class NewLabPatientRegComponent {
     });
 
     // const discPer = total > 0 ? +(totalDisc * 100 / total).toFixed(2) : 0;
-    const discPer = this.chargeList.reduce( (sum, item) => sum + (Number(item.DiscPer) || 0), 0 );
+    const discPer = this.chargeList.reduce((sum, item) => sum + (Number(item.DiscPer) || 0), 0);
 
     const netAmt = Math.round(total - totalDisc);
 
@@ -975,38 +975,74 @@ export class NewLabPatientRegComponent {
   //     netPayableAmt: netAmt
   //   }, { emitEvent: false });
   // }
-  updateCalculation(row: any = null) {
+  updateCalculation(source: 'PER' | 'LIST' = 'LIST') {
     debugger
     const totalAmt = this.chargeList.reduce(
       (sum, item) => sum + (Number(item.Price) || 0),
       0
     );
 
-    const discountAmt = this.chargeList.reduce(
-      (sum, item) => sum + (Number(item.DiscAmt) || 0),
-      0
-    );
+    let discountAmt = Number(this.myForm.get('discountAmt')?.value) || 0;
+    let discountPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
 
-    const netAmt = this.chargeList.reduce(
-      (sum, item) => sum + (Number(item.NetAmount) || 0),
-      0
-    );
+    if (source === 'PER') {
+      // Discount % entered
+      discountAmt = totalAmt > 0
+        ? +(totalAmt * discountPer / 100).toFixed(2)
+        : 0;
 
-    // const discPer = totalAmt > 0
-    //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
-    //   : 0;
-    // const discPer = this.chargeList.reduce(
-    //   (sum, item) => sum + (Number(item.DiscPer) || 0),
-    //   0
-    // );
+      this.Consessionres = discountPer > 0;
+    }
+
+    // if (source === 'AMT') {
+    //   // Discount Amount entered
+    //   discountPer = totalAmt > 0
+    //     ? +(discountAmt * 100 / totalAmt).toFixed(2)
+    //     : 0;
+    // }
+
+    const netAmt = totalAmt - discountAmt;
 
     this.myForm.patchValue({
       totalAmt: totalAmt,
       discountAmt: discountAmt,
-      // totalDiscountPer: discPer,
+      totalDiscountPer: discountPer,
       netPayableAmt: Math.round(netAmt)
     }, { emitEvent: false });
   }
+
+  // updateCalculation(row: any = null) {
+  //   debugger
+  //   const totalAmt = this.chargeList.reduce(
+  //     (sum, item) => sum + (Number(item.Price) || 0),
+  //     0
+  //   );
+
+  //   const discountAmt = this.chargeList.reduce(
+  //     (sum, item) => sum + (Number(item.DiscAmt) || 0),
+  //     0
+  //   );
+
+  //   const netAmt = this.chargeList.reduce(
+  //     (sum, item) => sum + (Number(item.NetAmount) || 0),
+  //     0
+  //   );
+
+  //   // const discPer = totalAmt > 0
+  //   //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
+  //   //   : 0;
+  //   // const discPer = this.chargeList.reduce(
+  //   //   (sum, item) => sum + (Number(item.DiscPer) || 0),
+  //   //   0
+  //   // );
+
+  //   this.myForm.patchValue({
+  //     totalAmt: totalAmt,
+  //     discountAmt: discountAmt,
+  //     // totalDiscountPer: discPer,
+  //     netPayableAmt: Math.round(netAmt)
+  //   }, { emitEvent: false });
+  // }
 
   updateFromDiscountAmt() {
     const total = this.chargeList.reduce(
@@ -1606,37 +1642,37 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
 
     // this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
-   
-      this.ChargeddetailsArray.clear();
-      this.BillDetailsArray.clear();
 
-      const invalidRow = this.dstable1.data.find(item =>
-        item.creditedtoDoctor === true && (!item.DoctorId || item.DoctorId === 0)
-      );
+    this.ChargeddetailsArray.clear();
+    this.BillDetailsArray.clear();
 
-      if (invalidRow) {
-        this.toastrService.warning(
-          'Please select Doctor for added service', 'Warning!');
-        return;
+    const invalidRow = this.dstable1.data.find(item =>
+      item.creditedtoDoctor === true && (!item.DoctorId || item.DoctorId === 0)
+    );
+
+    if (invalidRow) {
+      this.toastrService.warning(
+        'Please select Doctor for added service', 'Warning!');
+      return;
+    }
+
+    this.dstable1.data.forEach(item => {
+      this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
+      this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+
+      if (item.IsPackage == 1) {
+        this.packcagechargesArray.clear();
+        this.dsPackageList.data.forEach(item => {
+          this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
+        });
       }
-      
-      this.dstable1.data.forEach(item => {
-        this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
-        this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-
-        if (item.IsPackage == 1) {
-          this.packcagechargesArray.clear();
-          this.dsPackageList.data.forEach(item => {
-            this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
-          });
-        }
-      });
-      console.log("1. from values", this.OpBillForm.value)
+    });
+    console.log("1. from values", this.OpBillForm.value)
     console.log('2. Invalid Checks Form status:', this.OpBillForm.status);
 
     debugger
-      // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
-      if (!this.OpBillForm.invalid) {
+    // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+    if (!this.OpBillForm.invalid) {
 
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         let PatientHeaderObj = {};
@@ -1644,7 +1680,7 @@ export class NewLabPatientRegComponent {
           PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
         PatientHeaderObj['RegNo'] = this.regNo;
         PatientHeaderObj['DoctorName'] = this.doctorname || '';
-        PatientHeaderObj['CompanyName'] = this.companyName ;
+        PatientHeaderObj['CompanyName'] = this.companyName;
         PatientHeaderObj['DepartmentName'] = this.departmentname;
         PatientHeaderObj['OPD_IPD_Id'] = this.VlabPatRegId;
         PatientHeaderObj['CompanyId'] = this.companyId || 0;

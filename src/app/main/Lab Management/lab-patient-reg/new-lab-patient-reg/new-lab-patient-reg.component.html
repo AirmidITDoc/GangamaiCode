@@ -532,7 +532,7 @@
                                                             <airmid-textbox label="Discount %"
                                                                 formControlName="totalDiscountPer" [formGroup]="myForm"
                                                                 [min]="0" [max]="100" [readonly]="isDiscountApplied"
-                                                                [type]="'number'" (valueChange)="updateCalculation()">
+                                                                [type]="'number'" (valueChange)="updateCalculation('PER')">
                                                             </airmid-textbox>
                                                         </div>
                                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
