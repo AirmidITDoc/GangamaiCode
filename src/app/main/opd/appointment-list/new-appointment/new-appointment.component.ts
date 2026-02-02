@@ -103,6 +103,9 @@ export class NewAppointmentComponent implements OnInit {
 
     stateId = 0
     counryId = 0
+    vFirstNameConfig: any;
+    vmiddleNameConfig: any;
+    vlastNameConfig: any;
 
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
@@ -250,6 +253,19 @@ export class NewAppointmentComponent implements OnInit {
         // if (DoctorId > 0)
         //     this.setdoctor(DoctorId)
 
+        const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
+        const [firstnameid, firstnameval] = rawValue.includes(":") ? firstValue.split(":") : [null, null];
+        this.vFirstNameConfig = firstnameid
+
+        const middleValue = this?._configue?.configParams?.MiddleNameMandatory || "";
+        const [middlenameid, middlenameval] = rawValue.includes(":") ? middleValue.split(":") : [null, null];
+        this.vmiddleNameConfig = middlenameid
+
+        const lastValue = this?._configue?.configParams?.LastNameMandatory || "";
+        const [lastnameid, lastnameval] = rawValue.includes(":") ? lastValue.split(":") : [null, null];
+        this.vlastNameConfig = lastnameid
+
+        this.setNameValidations();
     }
 
     // setdoctorconfig() {
@@ -285,6 +301,27 @@ export class NewAppointmentComponent implements OnInit {
         }
 
         control.updateValueAndValidity();
+    }
+
+    setNameValidations() {
+        const fieldConfigs = [
+            { field: 'FirstName', config: this.vFirstNameConfig },
+            { field: 'MiddleName', config: this.vmiddleNameConfig },
+            { field: 'LastName', config: this.vlastNameConfig }
+        ];
+
+        fieldConfigs.forEach(item => {
+            const ctrl = this.personalFormGroup.get(item.field);
+            if (!ctrl) return;
+
+            if (item.config === '1') {
+                ctrl.setValidators([Validators.required]);
+            } else {
+                ctrl.clearValidators();
+            }
+
+            ctrl.updateValueAndValidity();
+        });
     }
 
     setdoctor(data) {
@@ -345,6 +382,7 @@ export class NewAppointmentComponent implements OnInit {
 
             this.Regflag = false;
             this.IsPhoneAppflag = true;
+            this.setNameValidations()
 
         } else if (event.value === 'registrered') {
 
@@ -379,6 +417,8 @@ export class NewAppointmentComponent implements OnInit {
             this.Regflag = true;
             this.IsPhoneAppflag = false;
             this.isRegSearchDisabled = true;
+
+            this.setNameValidations()
         }
     }
 
@@ -392,7 +432,7 @@ export class NewAppointmentComponent implements OnInit {
         if (value.text != "Self") {
             this._AppointmentlistService.getMaster(mode, 1);
             this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
-            this.VisitFormGroup.get('policyNumber').setValidators([Validators.required]); 
+            this.VisitFormGroup.get('policyNumber').setValidators([Validators.required]);
             this.isCompanySelected = true;
             this.patienttype = 2;
         } else if (value.text == "Self") {
@@ -780,7 +820,7 @@ export class NewAppointmentComponent implements OnInit {
                         });
                         return;
                     }
-                     if (this.isCompanySelected && this.VisitFormGroup.get('policyNumber').value == 0) {
+                    if (this.isCompanySelected && this.VisitFormGroup.get('policyNumber').value == 0) {
                         this.toastr.warning('Please enter Membership No', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
                         });
@@ -835,7 +875,7 @@ export class NewAppointmentComponent implements OnInit {
         this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value, "yyyy-MM-dd") || '1900-01-01');
         this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
         this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
-        
+
         //  this.personalFormGroup.get('RegDate').setValue(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd');
         //         this.personalFormGroup.get('RegTime').setValue(this.personalFormGroup.get('RegDate').value)
 
@@ -848,10 +888,10 @@ export class NewAppointmentComponent implements OnInit {
 
         console.log(submitData);
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
-          if(!this.Is9_Digit_National_Id){
-          this.OnViewReportPdf(response);
-          }
-             this.onClear(true);
+            if (!this.Is9_Digit_National_Id) {
+                this.OnViewReportPdf(response);
+            }
+            this.onClear(true);
             this._matDialog.closeAll();
         });
     }
@@ -919,10 +959,10 @@ export class NewAppointmentComponent implements OnInit {
         };
         console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
-            console.log(response) 
-             if(!this.Is9_Digit_National_Id){
-             this.OnViewReportPdf(response);
-              }
+            console.log(response)
+            if (!this.Is9_Digit_National_Id) {
+                this.OnViewReportPdf(response);
+            }
             this.onClear(true);
             this._matDialog.closeAll();
         });
