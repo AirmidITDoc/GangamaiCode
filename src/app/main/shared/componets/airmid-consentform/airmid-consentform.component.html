@@ -27,7 +27,7 @@
                             <div class="radio-container">
                                 <mat-radio-group formControlName="PatientType" [(ngModel)]="vSelectedOption"
                                     (change)="onChangePatientType($event)">
-                                    <mat-radio-button value="OP" [disabled]="vCheckBox == true">OP</mat-radio-button>
+                                    <mat-radio-button value="OP" [disabled]="vCheckBox == true" *ngIf="data?.labelType !== 'Nursing'">OP</mat-radio-button>
                                     <mat-radio-button value="IP">IP</mat-radio-button>
                                 </mat-radio-group>
                             </div>

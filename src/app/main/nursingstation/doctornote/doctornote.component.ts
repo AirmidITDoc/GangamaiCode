@@ -251,7 +251,13 @@ export class DoctornoteComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.vDescription || this.vDescription.trim() === '') {
+    // if (!this.vDescription || this.vDescription.trim() === '') {
+    //   this.toastr.warning('Please enter template description', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    if (this.myNoteform.get('doctorsNotes')?.value === '') {
       this.toastr.warning('Please enter template description', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -344,7 +350,7 @@ export class DoctornoteComponent implements OnInit {
     this.dsHandOverNoteList.data = [];
   }
 
-    OnHandOverPrint(element) {
+  OnHandOverPrint(element) {
     this.commonService.Onprint("AdmId", element, "DoctorPatientHandoverReceipt");
   }
 

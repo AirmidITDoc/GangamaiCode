@@ -323,7 +323,7 @@ export class NewLabPatientRegComponent {
       //bill header  
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdipdid: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      regNo: ["0", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      regNo: ["0", [this._FormvalidationserviceService.onlyNumberValidator()]],
       patientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       ipdno: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       ageYear: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1626,9 +1626,12 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('regNo')?.setValue(this.regNo)
     this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
     this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
-    this.OpBillForm.get('ageYear')?.setValue(Number(this.ageYear) || 0)
-    this.OpBillForm.get('ageMonth')?.setValue(Number(this.ageMonth) || 0)
-    this.OpBillForm.get('ageDays')?.setValue(Number(this.ageDays) || 0)
+    // this.OpBillForm.get('ageYear')?.setValue(Number(this.ageYear) || 0)
+    // this.OpBillForm.get('ageMonth')?.setValue(Number(this.ageMonth) || 0)
+    // this.OpBillForm.get('ageDays')?.setValue(Number(this.ageDays) || 0)
+    this.OpBillForm.get('ageYear')?.setValue(this.myForm.get('ageYear')?.value || 0)
+    this.OpBillForm.get('ageMonth')?.setValue(this.myForm.get('ageMonth')?.value || 0)
+    this.OpBillForm.get('ageDays')?.setValue(this.myForm.get('ageDay')?.value || 0)
     this.OpBillForm.get('doctorId')?.setValue(this.myForm.get('doctorId').value || 0)
     this.OpBillForm.get('doctorName')?.setValue(this.doctorname || '')
     this.OpBillForm.get('patientType')?.setValue(this.companyId ? true : false)

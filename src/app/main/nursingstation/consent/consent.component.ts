@@ -17,6 +17,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
 
 @Component({
   selector: 'app-consent',
@@ -27,7 +28,7 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
 })
 export class ConsentComponent implements OnInit {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingConsent, permissionType.Add);
-   
+
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
   }
@@ -53,7 +54,7 @@ export class ConsentComponent implements OnInit {
   CompanyName: any;
   TarrifName: any;
   DoctorName: any;
-  myFormSearch: FormGroup
+  myFilterform: FormGroup
   patientName = "%";
   regNo = "0";
   opiptype: any = "2"
@@ -64,50 +65,41 @@ export class ConsentComponent implements OnInit {
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'opipType')!.template = this.actionsIPOP;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-  allcolumns = [
+   allcolumns = [
+    { heading: "-", key: "opipType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "Date", key: "consentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
+    { heading: "UHID", key: "regNo", align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Department Name", key: "departmentName", align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Doctor Name", key: "doctorName", align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "DOA", key: "admissionDate", align: 'left', emptySign: 'NA', type: 6 },
+    { heading: "AgeYear", key: "ageYear", align: 'left', emptySign: 'NA', },
+    { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
-        heading: "-", key: "opipType", sort: true, align: 'left', type: gridColumnTypes.template,
-        template: this.actionsIPOP
-    },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Date&Time", key: "createdDatetime", sort: true, align: 'left', emptySign: 'NA', type:9,width:200},
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width:250},
-    { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA',width:200 },
-    { heading: "Consent Desc", key: "consentText", sort: true, align: 'left', emptySign: 'NA',width:250 },
-    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
-    {
-      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        {
-          action: gridActions.edit, callback: (data: any) => {
-            this.OnEdit(data);
-          }
-        }, {
-          action: gridActions.print, callback: (data: any) => {
-            this.OnViewReportPdf(data)
-          }
-        }]
+      heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
 
   allfilters = [
-    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "PatientName", fieldValue: this.patientName, opType: OperatorComparer.Equals },
-    { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-    { fieldName: "OPIPType", fieldValue: this.opiptype, opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "TranLabel", fieldValue: 'Nursing', opType: OperatorComparer.Equals }
   ]
 
   gridConfig: gridModel = {
-     permissionCode: permissionCodes.NursingConsent,
-    apiUrl: "NursingConsent/ConsentpatientInfoList",
+    permissionCode: permissionCodes.NursingConsent,
+    apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
     columnsList: this.allcolumns,
     sortField: "ConsentId",
     sortOrder: 0,
@@ -120,81 +112,60 @@ export class ConsentComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private commonService: PrintserviceService,
-    public toastr: ToastrService,public permissionService: PagePermissionService,
+    public toastr: ToastrService, public permissionService: PagePermissionService,
   ) { }
 
   ngOnInit(): void {
-    this.myFormSearch = this._ConsentService.createSearchForm()
+    this.myFilterform = this._ConsentService.createSearchForm()
   }
 
   onChangeFirst() {
-    debugger
-    this.fromDate = this.datePipe.transform(this.myFormSearch.get('start').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myFormSearch.get('end').value, "yyyy-MM-dd")
-    this.patientName = this.myFormSearch.get('PatientName').value + "%"
-    this.regNo = this.myFormSearch.get('RegNo').value || ""
-    this.opiptype = this.myFormSearch.get('IsIPOrOP').value
-
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.getfilterdata();
   }
 
-  getfilterdata() {
-    debugger
-    this.gridConfig = {
-      apiUrl: "NursingConsent/ConsentpatientInfoList",
-      columnsList: this.allcolumns,
-      sortField: "ConsentId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "PatientName", fieldValue: this.patientName, opType: OperatorComparer.Equals },
-        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-        { fieldName: "OPIPType", fieldValue: this.opiptype, opType: OperatorComparer.Equals },
-      ]
-    }
-    console.log(this.gridConfig)
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-  }
+   getfilterdata() {
+     this.gridConfig = {
+       apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
+       columnsList: this.allcolumns,
+       sortField: "ConsentId",
+       sortOrder: 0,
+       filters: [
+         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+         { fieldName: "TranLabel", fieldValue: 'Nursing', opType: OperatorComparer.Equals }
+       ],
+       row: 25
+     }
+     console.log(this.gridConfig)
+     this.grid.gridConfig = this.gridConfig;
+     this.grid.bindGridData();
+   }
 
   Clearfilter(event) {
     console.log(event)
     if (event == 'PatientName')
-      this.myFormSearch.get('PatientName').setValue("")
+      this.myFilterform.get('PatientName').setValue("")
     if (event == 'RegNo')
-      this.myFormSearch.get('RegNo').setValue("")
+      this.myFilterform.get('RegNo').setValue("")
 
     this.onChangeFirst();
   }
 
-  NewConsent() {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-    const dialogRef = this._matDialog.open(NewConsentComponent,
+  onFiles() {
+    const dialogRef = this._matDialog.open(
+      AirmidConsentformComponent,
       {
-        maxHeight: '90vh',
-        width: '100%'
-      });
-    dialogRef.afterClosed().subscribe(result => {
-        this.grid.bindGridData();
-    });
-  }
+        maxWidth: "90vw",
+        maxHeight: '85%',
+        width: '70%',
+        data: { refId: 0, opipId: 0, opipType: 1, Id: 0, title: 'NursingConsent', labelType: 'Nursing' }
+      }
+    );
 
-  OnEdit(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    const dialogRef = this._matDialog.open(NewConsentComponent,
-      {
-        maxHeight: '90vh',
-        width: '100%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-    that.grid.bindGridData();
-      
+    dialogRef.afterClosed().subscribe((result) => {
+      this.grid.bindGridData();
     });
   }
 
@@ -209,40 +180,40 @@ export class ConsentComponent implements OnInit {
   }
 
   OnViewReportPdf(element: any) {
-      
-        setTimeout(() => {
-          let param = {
-            "searchFields": [
-              {
-                "fieldName": "ConsentId",
-                "fieldValue": String(element.consentId),
-                "opType": "Equals"
-              },
-              {
-                "fieldName": "OPIPType",
-                "fieldValue": String(element.opipType),
-                "opType": "Equals"
-              }
-            ],
-            "mode": "ConsentInformation"
+
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "ConsentId",
+            "fieldValue": String(element.consentId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OPIPType",
+            "fieldValue": String(element.opipType),
+            "opType": "Equals"
           }
-      
-          this._ConsentService.getReportView(param).subscribe(res => {
-      
-            const matDialog = this._matDialog.open(PdfviewerComponent,
-              {
-                maxWidth: "85vw",
-                height: '750px',
-                width: '100%',
-                data: {
-                  base64: res["base64"] as string,
-                  title: "Consent Report" + " " + "Viewer"
-                }
-              });
-            matDialog.afterClosed().subscribe(result => {
-            });
+        ],
+        "mode": "ConsentInformation"
+      }
+
+      this._ConsentService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Consent Report" + " " + "Viewer"
+            }
           });
-        }, 100);
-    }
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
 
 }
