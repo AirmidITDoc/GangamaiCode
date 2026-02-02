@@ -26,16 +26,6 @@
         </div>
     </ng-template>
 
-    <!-- <ng-template #ColorCode let-element>
-        <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
-            <span [ngClass]="{
-                'status-completed': element.paidAmt>0,
-                'status-pending': element.balanceAmt =0
-                        }">
-                {{ element.paidAmt ? 'Completed' : 'Pending' }}
-            </span>
-        </div>
-    </ng-template> -->
     <ng-template #ColorCode let-element>
         <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
             <span [ngClass]="{
@@ -43,6 +33,18 @@
                     'status-pending': element.paidAmt == 0
                 }">
                 {{ element.paidAmt > 0 ? 'Paid' : 'Pending' }}
+            </span>
+        </div>
+    </ng-template>
+
+    <ng-template #PatientTypeColorCode let-element>
+        <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+            <span [ngClass]="{
+                    'Patienttype-urgent': element.patientType === 'Urgent',
+                    'Patienttype-vip': element.patientType === 'VIP',
+                    'Patienttype-normal' : element.patientType === 'Normal'
+                }">
+                {{ element.patientType }}
             </span>
         </div>
     </ng-template>

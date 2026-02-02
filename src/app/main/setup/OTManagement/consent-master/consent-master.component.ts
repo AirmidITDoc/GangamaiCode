@@ -29,6 +29,7 @@ export class ConsentMasterComponent implements OnInit {
         { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Consent Type", key: "value", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -46,8 +47,8 @@ export class ConsentMasterComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
     allFilters = [
-        { fieldName: "consent name", fieldValue: "", opType: OperatorComparer.StartsWith },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+        { fieldName: "isActive", fieldValue: "2", opType: OperatorComparer.Equals },
+        { fieldName: "ConsentName", fieldValue: "", opType: OperatorComparer.StartsWith },
     ]
     gridConfig: gridModel = {
         permissionCode: permissionCodes.SetupOtManagment,

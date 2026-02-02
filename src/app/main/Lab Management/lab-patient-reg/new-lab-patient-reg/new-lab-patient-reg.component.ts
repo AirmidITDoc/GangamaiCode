@@ -1875,7 +1875,8 @@ export class NewLabPatientRegComponent {
   }
 
   viewgetOPBillReportPdf(element) {
-    this.commonService.Onprint("BillNo", element, "LabregisterBillReceipt");
+    // this.commonService.Onprint("BillNo", element, "LabregisterBillReceipt");
+    this.commonService.Onprint("BillNo", element, "LabMoneyReceipt");
   }
   filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
     const { firstName, lastName, mobileNo } = fields;
