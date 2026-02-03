@@ -582,7 +582,7 @@ export class LabPatientRegComponent {
   }
   viewgetOPBillReportPdf(element) {
     // this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
-    this.commonService.Onprint("BillNo", element, "LabMoneyReceipt");
+    this.commonService.Onprint("BillNo", element.billNo, "LabMoneyReceipt");
   }
 
 

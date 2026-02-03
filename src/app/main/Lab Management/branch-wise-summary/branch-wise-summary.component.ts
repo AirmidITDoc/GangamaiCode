@@ -47,26 +47,30 @@ export class BranchWiseSummaryComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('ServiceGrid', { static: false }) grid1: AirmidTableComponent;
+  @ViewChild('CategoryGrid', { static: false }) grid2: AirmidTableComponent;
+  @ViewChild('DoctorGrid', { static: false }) grid3: AirmidTableComponent;
+  @ViewChild('b2bGrid', { static: false }) grid4: AirmidTableComponent;
   @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
-
+    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+    this.gridConfig3.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+    this.gridConfig4.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
   }
-
 
   allcolumns = [
 
     { heading: "Department Name", key: "unitBranchName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     { heading: "Count", key: "patientCount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Amount", key: "netRevenue", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
     {
       heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
+
   gridConfig: gridModel = {
     permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "Branch/UnitBranchWiseRevenueSummary",
@@ -118,6 +122,7 @@ export class BranchWiseSummaryComponent {
 
     this.onChangeFirst();
   }
+
   onChangeFirst() {
     this.updateDateFilteredCharts();
     this.UnitId = this.myformSearch.get('UnitId').value || "0"
@@ -125,15 +130,17 @@ export class BranchWiseSummaryComponent {
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
 
-
     this.getfilterdata();
-    this.GetBillRevenudetail()
-    
+    this.GetBillRevenudetail();
+    this.getfilterdataservice();
+    this.getfilterdataCategoryWise();
+    this.getfilterdataDoctorWise();
+    this.getfilterdataB2bWise();
+
     this.paymentModeChart = this.getPaymentDoughnutChart();
   }
 
   getfilterdata() {
-
     this.gridConfig = {
       apiUrl: "Branch/UnitBranchWiseRevenueSummary",
       columnsList: this.allcolumns,
@@ -154,26 +161,22 @@ export class BranchWiseSummaryComponent {
     console.log(event)
     // if (event == 'RegNoSearch')
     //   this.myformSearch.get('RegNoSearch').setValue("0")
-
-
     this.onChangeFirst();
   }
 
   Clearfilter1(event) {
     console.log(event)
-    // if (event == 'RegNoSearch')
-    //   this.myformSearch.get('RegNoSearch').setValue("0")
-
-    this.onChangeService();
+    
   }
   onClear() {
     // this.myformSearch.get('RegNoSearch').setValue("0");
     // this.myformSearch.get('StatusSearch').setValue("0");
     // this.myformSearch.get('PatientTypeSearch').setValue("3");
   }
+
   Billdetaildatasource = new MatTableDataSource<BillRevenuList>();
-  paydata=[]
-  paymentModeData1:any[]=[]
+  paydata = []
+  paymentModeData1: any[] = []
   GetBillRevenudetail() {
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
@@ -214,8 +217,8 @@ export class BranchWiseSummaryComponent {
 
       if (this.paymentModeChart) {
         this.paymentModeChart.destroy();
-    }
-      this.Billdetaildatasource.data.forEach(element=>{
+      }
+      this.Billdetaildatasource.data.forEach(element => {
         console.log(element)
         this.paydata.push({
           mode: element.unitBranchName?.trim() || '',
@@ -230,7 +233,6 @@ export class BranchWiseSummaryComponent {
         this.getsumdetail()
     })
   }
-
 
   TotAmt = 0
   TotconAmt = 0
@@ -252,7 +254,6 @@ export class BranchWiseSummaryComponent {
   }
 
   //service wise
-
 
   allServicefilters = [
     { fieldName: "UnitId", fieldValue: String(this.UnitId1), opType: OperatorComparer.Equals },
@@ -285,18 +286,7 @@ export class BranchWiseSummaryComponent {
     sortOrder: 0,
     filters: this.allServicefilters
   }
-
-
-  onChangeService() {
-
-    this.UnitId1 = this.myServicewiseSearch.get('UnitId').value || "0"
-
-    this.fromDate1 = this.datePipe.transform(this.myServicewiseSearch.get('start').value, "yyyy-MM-dd")
-    this.toDate1 = this.datePipe.transform(this.myServicewiseSearch.get('end').value, "yyyy-MM-dd")
-
-    this.getfilterdataservice();
-  }
-
+  
   getfilterdataservice() {
 
     this.gridConfig1 = {
@@ -304,30 +294,86 @@ export class BranchWiseSummaryComponent {
       columnsList: this.allervicecolumns,
       sortField: "UnitId",
       sortOrder: 0,
-      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId1), opType: OperatorComparer.Equals },
-      { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.StartsWith },
-      { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.StartsWith }
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
       ]
     }
     this.grid1.gridConfig = this.gridConfig1;
     this.grid1.bindGridData();
   }
-  ListView1(value) {
-    console.log(value)
-    if (value.value !== 0)
-      this.UnitId1 = value.value
-    else
-      this.UnitId1 = 0
-
-    this.onChangeService();
+  
+   gridConfig2: gridModel = {
+    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    columnsList: this.allervicecolumns,
+    sortField: "UnitId",
+    sortOrder: 0,
+    filters: this.allServicefilters
   }
+  
+  getfilterdataCategoryWise() {
+    this.gridConfig2 = {
+      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      columnsList: this.allervicecolumns,
+      sortField: "UnitId",
+      sortOrder: 0,
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid2.gridConfig = this.gridConfig2;
+    this.grid2.bindGridData();
+  }
+
+   gridConfig3: gridModel = {
+    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    columnsList: this.allervicecolumns,
+    sortField: "UnitId",
+    sortOrder: 0,
+    filters: this.allServicefilters
+  }
+  
+  getfilterdataDoctorWise() {
+    this.gridConfig3 = {
+      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      columnsList: this.allervicecolumns,
+      sortField: "UnitId",
+      sortOrder: 0,
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid3.gridConfig = this.gridConfig3;
+    this.grid3.bindGridData();
+  }
+
+   gridConfig4: gridModel = {
+    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    columnsList: this.allervicecolumns,
+    sortField: "UnitId",
+    sortOrder: 0,
+    filters: this.allServicefilters
+  }
+  
+  getfilterdataB2bWise() {
+    this.gridConfig4 = {
+      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      columnsList: this.allervicecolumns,
+      sortField: "UnitId",
+      sortOrder: 0,
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid4.gridConfig = this.gridConfig4;
+    this.grid4.bindGridData();
+  }
+
   viewgetReportPdf() { }
-  // paymentModeData = [
-  //   { mode: 'Cash', amount: 450000 },
-  //   { mode: 'Card', amount: 380000 },
-  //   { mode: 'Online', amount: 320000 },
-  //   { mode: 'Insurance', amount: 100000 }
-  // ];
+  
   getPaymentDoughnutChart() {
     debugger
     return new Chart('paymentModeChart', {
@@ -382,21 +428,21 @@ export class BranchWiseSummaryComponent {
   }
 
   updateDateFilteredCharts(): void {
-   
+
     if (this.paymentModeChart) {
-        this.paymentModeChart.destroy();
+      this.paymentModeChart.destroy();
     }
-   
+
     // Reinitialize the affected charts
     setTimeout(() => {
-       
-        if (document.getElementById('paymentModeChart')) {
-            this.paymentModeChart = this.getPaymentDoughnutChart();
-        }
 
-      
+      if (document.getElementById('paymentModeChart')) {
+        this.paymentModeChart = this.getPaymentDoughnutChart();
+      }
+
+
     }, 100);
-}
+  }
 }
 
 

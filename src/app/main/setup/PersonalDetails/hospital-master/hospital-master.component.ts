@@ -174,6 +174,23 @@ export class HospitalMasterComponent implements OnInit {
       // this.onCloseDialog.emit(result);
     });
   }
+
+  // img upload
+   onFiles1(element) {
+    const dialogRef = this._matDialog.open(
+      AirmidSignatureComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "70vh",
+        width: "100%",
+        data: { refId: element.hospitalId, refType: 'Img_Upload', multiple: 'true', docName: 'Img_Upload' }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // this.onCloseDialog.emit(result);
+    });
+  }
 }
 
 

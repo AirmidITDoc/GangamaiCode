@@ -1183,6 +1183,7 @@ this.Is9_Digit_National_Id = id === "1";
           this._AdmissionService.getRegistraionById(selectedRow.regID).subscribe((response) => {
             this.registerObj = response;
             console.log("Visit Data:", this.registerObj)
+            this.RegId=this.registerObj.regId
             this.personalFormGroup.patchValue({
               FirstName: this.registerObj.firstName.trim(),
               LastName: this.registerObj.lastName.trim(),

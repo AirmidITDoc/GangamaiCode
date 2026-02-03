@@ -791,7 +791,7 @@ export class AdmissionComponent implements OnInit {
   //
   dataSource = new MatTableDataSource<AdmissionPersonlModel>();
   GetAdmissiondetail() {
-    debugger
+    // debugger
     // Format date values
     let fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
     let toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
@@ -876,7 +876,7 @@ export class AdmissionComponent implements OnInit {
 
     // API call to admission service
     this._AdmissionService.getadmissionlist(data).subscribe((response) => {
-      debugger
+      // debugger
       this.dataSource.data = response.data;
 
       if (this.dataSource.data.length > 0) {
