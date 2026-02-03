@@ -7,10 +7,7 @@
       </div>
       <div class="modal-header-right">
         <div class="comman-date-container">
-          <!-- <div class="comman-date">
-            <app-common-date [screenFrom]="screenFromString"
-              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-          </div> -->
+
           <div class="close-icon">
             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
               matTooltip="Close">
@@ -22,179 +19,224 @@
     </div>
   </div>
   <!-- Modal body -->
-  <div class="modal-body" fusePerfectScrollbar>
-    <div class="modal-body-container">
-      <div fxLayout="column" class="gap-12">
-        <div class="modal-card-container">
-          <mat-card style="padding: 10px;">
-            <div class="modal-card-container">
-              <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 5px">
-                <div class="patient-info-sales my-8">
-                  <div class="sales-patient-info-title">
-                    <span style="font-weight: 700;">
-                      Patient Information
-                    </span>
+
+  <div>
+    <div fxLayout="column" class="gap-4">
+
+      <div class="modal-card-container">
+        <!-- <div class="patient-info-sales my-8">
+
+            <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 120px;">Patient
+              Details</span>
+            <span>:</span>
+            <span style="font-size: medium;font-weight: bolder;">
+
+              <mat-icon title="Lab Details">
+                <img width="90px" height="90px" src="assets/images/logos/patient.jpg"
+                  style="margin-left: 10px;margin-right: 10px;">
+              </mat-icon>
+              <span style="font-size: medium;font-weight: bolder;">{{Personaldata.labPatientId}}--
+                {{Personaldata.pBillNo}} | </span>
+
+              <mat-icon title="Reg Data">
+                <img width="70px" height="70px" src="assets/images/logos/padate.jpg"
+                  style="margin-left: 10px;margin-right: 10px;">
+              </mat-icon>
+              <span style="font-size: medium;font-weight: bolder;">{{Personaldata.regTime }} |
+              </span>
+
+              <mat-icon title="Patient"
+                style="background-color: rgb(206, 236, 239);margin-left: 10px;margin-right: 10px;">
+                <img width="50px" height="50px" src="assets/images/logos/patient.jpg">
+              </mat-icon>
+
+              {{ Personaldata.regNo }} -- {{
+              Personaldata.patientName }} -- {{
+              Personaldata.ageYear }}Y -- {{ Personaldata.ageMonth }}M--{{
+              Personaldata.ageDay }} D -- {{ Personaldata.genderName }} |
+              --{{Personaldata.mobileNo}} | </span>
+
+            <mat-icon title="Dr.Details">
+              <img width="70px" height="70px" src="assets/images/logos/consultantdr.jpg"
+                style="margin-left: 10px;margin-right: 10px;">
+            </mat-icon>
+            <span style="font-size: medium;font-weight: bolder;">{{Personaldata.doctorName}}</span>
+
+          </div> -->
+
+        <div fxLayout="column" fxLayout.gt-xs="row" class="gap-10 h-100-p">
+          <div fxFlex="75%" fxFlex.sm="70%" fxFlex.xs="100%" class="table-left">
+
+            <div class="patient-info-sales my-8"
+              style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding-left: 20px;">
+
+              <span style="font-size: large; font-weight: bolder; color: rgb(17, 65, 118);">
+                Patient Details :
+              </span>
+              <!-- Reg Time group -->
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <mat-icon title="Reg Data">
+                  <img width="60" height="60" src="assets/images/logos/padate.jpg" style="display: block;">
+                </mat-icon>
+                <span style="font-size: medium; font-weight: bolder;">
+                  {{Personaldata.regTime}}
+                </span>
+              </div>
+              <!-- Lab / Patient ID group -->
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <mat-icon title="Lab Details">
+                  <img width="60" height="60" src="assets/images/logos/patient.jpg" style="display: block;">
+                </mat-icon>
+                <span style="font-size: medium; font-weight: bolder;">
+                  {{Personaldata.labPatientId}} -- {{Personaldata.pBillNo}}
+                </span>
+              </div>
+
+          <!-- Patient main info group -->
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <mat-icon title="Patient" style="background-color: rgb(206, 236, 239);">
+                  <img width="60" height="60" src="assets/images/logos/Admission.png" style="display: block;">
+                </mat-icon>
+                <span style="font-size: medium; font-weight: bolder;">
+                  {{Personaldata.regNo}} -- {{Personaldata.patientName}} --
+                  {{Personaldata.ageYear}} Y - {{Personaldata.ageMonth}} M - {{Personaldata.ageDay}} D |
+                  {{Personaldata.genderName}} | Mobile No:- {{Personaldata.mobileNo}}
+                </span>
+              </div>
+
+              <!-- Doctor group -->
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <mat-icon title="Dr.Details">
+                  <img width="60" height="60" src="assets/images/logos/consultantdr.jpg" alt="Doctor"
+                    style="display: block;">
+                </mat-icon>
+                <span style="font-size: medium; font-weight: bolder;">
+                  {{Personaldata.doctorName}}
+                </span>
+              </div>
+
+            </div>
+          </div>
+          <div fxFlex="25%" fxFlex.sm="80%" fxFlex.xs="100%" class="table-right">
+            <div class="sales-table-right-box" fxLayout="column" fxLayoutGap="6px">
+              <div>
+                <div class="Sales-bill-summary-title pb-2 border-bottom">
+                  <span style="font-weight: bold;color: rgb(7, 50, 88);font-size: large;align-items: center;">Report
+                    Data</span>
+                </div>
+                <div>
+
+                  <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                    <span style="font-size: large;color:rgb(17, 65, 118);font-weight: bold;">Dispatch
+                      Branch :-
+                      {{UnitId}}</span>
+
                   </div>
-                  <hr>
-                  <div class="patient-col">
-                    <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Patient
-                      Details</span>
-                    <span>:</span>
-                    <span style="font-size: medium;font-weight: bolder;">
-
-                      <mat-icon title="Lab Details">
-                        <img width="90px" height="90px" src="assets/images/logos/patient.jpg"
-                          style="margin-left: 10px;margin-right: 10px;">
-                      </mat-icon>
-                      <span style="font-size: medium;font-weight: bolder;">{{Personaldata.labPatientId}}--
-                        {{Personaldata.pBillNo}} | </span>
-
-                      <mat-icon title="Reg Data">
-                        <img width="70px" height="70px" src="assets/images/logos/padate.jpg"
-                          style="margin-left: 10px;margin-right: 10px;">
-                      </mat-icon>
-                      <span style="font-size: medium;font-weight: bolder;">{{Personaldata.regTime }} |
-                      </span>
-
-
-
-                      <mat-icon title="Patient"
-                        style="background-color: rgb(206, 236, 239);margin-left: 10px;margin-right: 10px;">
-                        <img width="50px" height="50px" src="assets/images/logos/patient.jpg">
-                      </mat-icon>
-
-                      {{ Personaldata.regNo }} -- {{
-                      Personaldata.patientName }} -- {{
-                      Personaldata.ageYear }}Y -- {{ Personaldata.ageMonth }}M--{{
-                      Personaldata.ageDay }} D -- {{ Personaldata.genderName }} |
-                      --{{Personaldata.mobileNo}} | </span>
-
-                    <mat-icon title="Dr.Details">
-                      <img width="70px" height="70px" src="assets/images/logos/consultantdr.jpg"
-                        style="margin-left: 10px;margin-right: 10px;">
-                    </mat-icon>
-                    <span style="font-size: medium;font-weight: bolder;">{{Personaldata.doctorName}}</span>
-
+                  <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                    <span style="font-size: large;color: rgb(17, 65, 118);font-weight: bold;">Due Amount :-
+                      {{DueAmt}}</span>
                   </div>
                 </div>
-              </mat-card>
-            </div>
+              </div>
 
-          </mat-card>
+            </div>
+          </div>
         </div>
         <div class="modal-card-container">
-          <mat-card style="padding: 5px;">
-            <div fxLayout="column" class="gap-8">
-              <div class="form-title mb-2 border-bottom pb-2">
-                <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-                  <span style="font-size: large;color: rgb(17, 65, 118);;margin-left: 30px;font-weight: bold;">Login ID
-                    :-
-                    {{LabId}}</span>
 
-                </div>
-                <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-                  <span style="font-size: large;color:rgb(17, 65, 118);;margin-left: 30px;font-weight: bold;">Dispatch
-                    Branch :-
-                    {{UnitId}}</span>
-
-                </div>
-                <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-                  <span style="font-size: large;color: rgb(17, 65, 118);font-weight: bold;">Due Amount :-
-                    {{DueAmt}}</span>
-                </div>
-              </div>
-              <form [formGroup]="myReportform" style="border: blue">
-                <div class="modal-body" fusePerfectScrollbar>
-
-                  <input type="hidden" name="dispatchId" formControlName="dispatchId">
-
-                  <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px" class="h-100-p gap-5">
-                    <div fxFlex.gt-xs="80" fxFlex="100" class="table-left">
-                      <mat-card fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card-content>
-                          <div fxLayout="column" fxFlex>
-                            <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
-
-                              <div fxFlex="49%" fxFlex.sm="100%">
-                                <airmid-dropdown label="Branch" formControlName="unitId" [formGroup]="myReportform"
-                                  [validations]="getValidationMessages().UnitId" [mode]="autocompleteModehospital"
-                                  (selectionChange)="getSelectedObjunit($event)">
-                                </airmid-dropdown>
-                              </div>
+          <div fxLayout="column" class="gap-4">
 
 
-                              <div fxFlex="49%" fxFlex.sm="100%">
-                                <airmid-dropdown label="Mode" formControlName="dispatchModeId"
-                                  [formGroup]="myReportform" [validations]="getValidationMessages().Mode"
-                                  [mode]="autocompleteModedispatch" (selectionChange)="getSelectedObjMode($event)">
-                                </airmid-dropdown>
-                              </div>
+            <form [formGroup]="myReportform" style="border: blue">
+              <div class="modal-body">
+
+                <input type="hidden" name="dispatchId" formControlName="dispatchId">
+
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                  <div fxFlex.gt-xs="60" fxFlex="100" class="table-left">
+                    <mat-card fxFlex.gt-sm="100%" fxFlex>
+                      <mat-card-content>
+                        <div fxLayout="column" fxFlex>
+                          <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
+
+                            <div fxFlex="48%" fxFlex.sm="100%">
+                              <airmid-dropdown label="Branch" formControlName="unitId" [formGroup]="myReportform"
+                                [validations]="getValidationMessages().UnitId" [mode]="autocompleteModehospital"
+                                (selectionChange)="getSelectedObjunit($event)">
+                              </airmid-dropdown>
                             </div>
 
-                            <div fxLayout="row wrap" fxLayoutGap="5px grid">
-                              <div fxFlex="98" fxFlex.xs="100" fxFlex.sm="33">
-                                <airmid-textbox label="Remark" formControlName="comments" [formGroup]="myReportform"
-                                  [validations]="getValidationMessages().Remark" [maxLength]="500">
-                                </airmid-textbox>
-                              </div>
+
+                            <div fxFlex="48%" fxFlex.sm="100%">
+                              <airmid-dropdown label="Mode" formControlName="dispatchModeId" [formGroup]="myReportform"
+                                [validations]="getValidationMessages().Mode" [mode]="autocompleteModedispatch"
+                                (selectionChange)="getSelectedObjMode($event)">
+                              </airmid-dropdown>
                             </div>
                           </div>
-                        </mat-card-content>
-                      </mat-card>
-                    </div>
-                    <div fxFlex.gt-xs="20" fxFlex="100" class="table-left">
+                          <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
 
-                      <mat-card fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card-content>
-                          <div fxLayout="column" fxFlex>
-                            <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
-                              <div fxLayout="column" fxFlex>
-                                <mat-checkbox aria-label="Service Name" formControlName="Service">
-                                  Service Name
-                                </mat-checkbox>
-
-                                <!-- Uncomment if needed -->
-                                <!--
-                    <mat-checkbox 
-                      aria-label="1 SGPT" 
-                      formControlName="SGPT" 
-                      style="margin-left:30px;">
-                      1SGPT
-                    </mat-checkbox>
-                    -->
-                              </div>
+                            <div fxFlex="96%" fxFlex.xs="100" fxFlex.sm="100%">
+                              <airmid-textbox label="Remark" formControlName="comments" [formGroup]="myReportform"
+                                [validations]="getValidationMessages().Remark" [maxLength]="500">
+                              </airmid-textbox>
                             </div>
                           </div>
-                        </mat-card-content>
-                      </mat-card>
-                    </div>
+                          <div fxLayoutAlign="end">
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
+                              style="margin: 10px 5px 0px 5px; ">
+                              <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                              <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                            </div>
+                          </div>
+                        </div>
+
+                      </mat-card-content>
+                    </mat-card>
+
+                  </div>
+                  <div fxFlex.gt-xs="40" fxFlex="100" class="table-left">
+
+                    <mat-card fxFlex.gt-sm="100%" fxFlex>
+                      <mat-card-content>
+
+                        <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
+                          <div fxLayout="column" fxFlex>
+                            <mat-checkbox aria-label="Service Name" formControlName="Service">
+                              Service Name
+                            </mat-checkbox>
+                            <div style="height: 100px; overflow:auto;">
+                              <!-- <airmid-table [gridConfig]="gridConfig" #EBillGrid :ShowFilter="false"
+                                :ShowButtons="false">
+                              </airmid-table> -->
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </mat-card-content>
+                    </mat-card>
                   </div>
                 </div>
-              </form>
-              <div fxLayoutAlign="end">
-                <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 10px 5px 0px 5px; ">
-                  <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                  <button class="btn btn-primary" (click)="onSubmit()">Save</button>
-                </div>
               </div>
-            </div>
-          </mat-card>
+            </form>
+
+          </div>
+
         </div>
       </div>
     </div>
 
-  </div>
-
-  <div>
-    <div class="form-title mb-2 border-bottom pb-2">
+    <div>
       <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>
     </div>
-    <div style="height: 220px; overflow:auto;">
+    <!-- style="height: 200px; overflow:auto;"? -->
+    <div style="height: 300px; overflow:auto;">
       <airmid-table [gridConfig]="gridConfigReportdispatch" #ReportGrid [ShowFilter]="false" [ShowButtons]="false">
 
       </airmid-table>
     </div>
-  </div>
 
-  
-</div>
+
+
+  </div>

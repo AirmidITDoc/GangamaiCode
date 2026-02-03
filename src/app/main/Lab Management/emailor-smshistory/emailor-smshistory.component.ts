@@ -77,20 +77,16 @@ constructor(public _LabmanagementService: LabmanagementService, public _matDialo
 
       console.log(this.Personaldata)
     }
-    // this.SMSform = this._LabmanagementService.CreateSMSform()
-    // this.Emailform = this._LabmanagementService.CreateEmailform()
-
+   
     if (this.LabId > 0) {
       this.onAddrow()
       if (this.emailId != '')
         this.onAddEmailrow()
 
       this.getfilterSMShistory()
-
+      this.getfilterEmailhistory()
     }
-    // if (this.LabId > 0)
-    //   debugger
-    // this.getfilterEmailhistory()
+      
   }
 
 
@@ -147,7 +143,7 @@ constructor(public _LabmanagementService: LabmanagementService, public _matDialo
   allFiltersemail = [
     // { fieldName: "FromDate", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
     // { fieldName: "ToDate", fieldValue: this.toDate2, opType: OperatorComparer.Equals }
-    { fieldName: "PatientId", fieldValue: "20483", opType: OperatorComparer.Equals }
+    { fieldName: "PatientId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
 
   ]
 
@@ -179,7 +175,7 @@ debugger
 
   getfilterEmailhistory() {
     debugger
-    // this.LabId = 200247
+   
     this.gridConfigEmail = {
       apiUrl: "LabPatientRegistration/LabPatientEmailOutgoingList",
       columnsList: this.allColumnsemail,

@@ -158,7 +158,7 @@ export class IPBillingComponent implements OnInit {
     draftSaveform: FormGroup;
     IPBillMyForm: FormGroup
     Serviceform: FormGroup;
-        BillReviwe:FormGroup
+    BillReviwe: FormGroup
     sIsLoading: string = '';
     chargeslist: any = [];
     chargeslist1: any = [];
@@ -190,14 +190,14 @@ export class IPBillingComponent implements OnInit {
     TariffId: any;
     WardId: any;
     BedId: any;
-   
-    Is9_Digit_National_Id:boolean=false;
+
+    Is9_Digit_National_Id: boolean = false;
     autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModeService: string = "Service";
     autocompleteModeConcession: string = "Concession";
     autocompleteModeClass: string = "Class";
-classId=0
+    classId = 0
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
 
@@ -249,12 +249,12 @@ classId=0
             this.TariffId = this.selectedAdvanceObj.tariffId
             this.WardId = this.selectedAdvanceObj.wardId;
             this.BedId = this.selectedAdvanceObj.bedId;
-            this.classId=this.selectedAdvanceObj.classId
+            this.classId = this.selectedAdvanceObj.classId
         }
         this.getChargesList();
         this.getLabRequestChargelist();
         this.getRtrvpackagedetList();
-        
+
         this.loadClassList(); // Load class list for inline table editing
 
         // this.getBillheaderList();
@@ -264,7 +264,7 @@ classId=0
         this.Is9_Digit_National_Id = ids === "1";
         if (!this.Is9_Digit_National_Id) {
             this.AddBedCharge();
-        } 
+        }
 
         if (this.selectedAdvanceObj.isDischarged) {
             this.IpbillFooterform.get('GenerateBill').enable();
@@ -439,9 +439,9 @@ classId=0
             isInclusionExclusion: [false],
             isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: this.accountService.currentUserValue.userId,
-        
+
             packcagecharges: this.formBuilder.array([])
-          
+
         });
     }
     // Create pacakge form
@@ -480,10 +480,10 @@ classId=0
             bedId: [this.BedId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'HH:mm:ss.SSS') || '00:00:00.000',
             createdBy: this.accountService.currentUserValue.userId,
-              unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceName:item?.serviceName,
+            serviceName: item?.serviceName,
             chargesId: 0
         });
     }
@@ -689,8 +689,8 @@ classId=0
         return this.formBuilder.group({
             paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId: [this.accountService.currentUserValue.user.unitId],
-            billNo: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            opdipdtype: [ 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
             payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -711,7 +711,7 @@ classId=0
             tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             createdBy: [this.accountService.currentUserValue.userId],
             transactionLabel: ['IP_FINAL_BILL', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        }); 
+        });
     }
     // Getters 
     get BillDetailsArray(): FormArray {
@@ -753,31 +753,31 @@ classId=0
             discPerElement.focus();
         }
     }
- 
-    
-    createbillReviwe(){
-          return this.formBuilder.group({
-            IsSupplimentryBill:false
-          })
+
+
+    createbillReviwe() {
+        return this.formBuilder.group({
+            IsSupplimentryBill: false
+        })
     }
     //Class selected 
     getSelectedClassObj(event) {
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&SrvcName="
-        this.classId=event.value
+        this.classId = event.value
     }
-        AllowToaddcharges(event) {
+    AllowToaddcharges(event) {
         if (event.checked == true) {
             this.BillReviwe.get('IsSupplimentryBill').setValue(true);
-        } else { 
-              this.BillReviwe.get('IsSupplimentryBill').setValue(false); 
+        } else {
+            this.BillReviwe.get('IsSupplimentryBill').setValue(false);
         }
     }
-     // Service Add 
- 
+    // Service Add 
+
     onSaveAddCharges() {
         debugger
-        const formValue = this.Serviceform.value 
-      
+        const formValue = this.Serviceform.value
+
         if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0) {
             if (!this.BillReviwe.get('IsSupplimentryBill').value) {
                 if (this.DayLimitbal <= 0) {
@@ -808,7 +808,7 @@ classId=0
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.Serviceform.get('chargesDate').setValue(formattedDate);
         this.Serviceform.get('chargesTime').setValue(formattedDate + ' ' + formattedTime);
-        
+
         let doctorid = 0;
         if (this.isDoctor) {
             if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
@@ -820,7 +820,7 @@ classId=0
             if (formValue.doctorId)
                 doctorid = this.Serviceform.get("doctorId")?.value ?? 0;
         }
-debugger
+        debugger
         this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id)
         this.Serviceform.get("wardId").setValue(this.WardId)
         this.Serviceform.get("bedId").setValue(this.BedId)
@@ -1002,7 +1002,7 @@ debugger
         }
     }
     checkAdvBalAmt: any = 0;
-    DayLimitbal:any = 0;
+    DayLimitbal: any = 0;
     getbillbalamt() {
         this.AdvanceBalAmt = this.checkAdvBalAmt
         if (this.AdvanceBalAmt > 0) {
@@ -1035,7 +1035,7 @@ debugger
 
                 // Remaining balance (never go below 0)
                 // this.DayLimitbal = Math.max(this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt, 0);
-                 this.DayLimitbal = (this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt);
+                this.DayLimitbal = (this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt);
 
                 console.log('Today Net Amount:', todayNetAmt);
                 console.log('Remaining Balance:', this.DayLimitbal);
@@ -1121,50 +1121,71 @@ debugger
         let finalNetAmt = 0
         let finalDiscAmt = 0
         let discPer = this.IpbillFooterform.get('totaldiscPer').value || 0;
-        const perControl = this.IpbillFooterform.get("AdminPer");
-        let adminPer = perControl.value;
-        let totalAmount = this.TotalShowAmt;
-        let adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
-        let finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2));
+       
+        let AdminPer = this.IpbillFooterform.get('AdminPer').value || 0;
+        if (AdminPer > 10) {
+            Swal.fire({
+                title: 'Do you want to Give Disc More Than 10% Generate Request ',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Generate!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.GeneraeRequest();
+                } else
+                    return;
+            })
+        } else {
+            const perControl = this.IpbillFooterform.get("AdminPer");
+            let adminPer = perControl.value;
+            let totalAmount = this.TotalShowAmt;
+            let adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
+            let finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2));
 
-        if (!perControl.valid || perControl.value == 0) {
-            if (discPer > 0) {
+            if (!perControl.valid || perControl.value == 0) {
+                if (discPer > 0) {
+                    this.ConcessionShow = true
+                    finalDiscAmt = parseFloat((totalAmount * discPer / 100).toFixed(2));
+                    finalNetAmt = parseFloat((totalAmount - finalDiscAmt).toFixed(2));
+                } else {
+                    finalDiscAmt = this.DiscShowAmt
+                    finalNetAmt = this.FinalNetAmt
+                }
+                this.IpbillFooterform.patchValue({
+                    AdminPer: '',
+                    AdminAmt: 0,
+                    totalconcessionAmt: finalDiscAmt,
+                    FinalAmount: Math.round(finalNetAmt),
+                }, { emitEvent: false });
+                // this.toastr.error("Enter Admin % between 0-100");  
+                return;
+            }
+            if (this.DiscShowAmt > 0) {
                 this.ConcessionShow = true
-                finalDiscAmt = parseFloat((totalAmount * discPer / 100).toFixed(2));
-                finalNetAmt = parseFloat((totalAmount - finalDiscAmt).toFixed(2));
-            } else {
                 finalDiscAmt = this.DiscShowAmt
-                finalNetAmt = this.FinalNetAmt
+                finalNetAmt = parseFloat((finalTotalAmt - this.DiscShowAmt).toFixed(2));
+            } else {
+                if (discPer > 0) {
+                    this.ConcessionShow = true
+                    finalDiscAmt = parseFloat((finalTotalAmt * discPer / 100).toFixed(2));
+                    finalNetAmt = parseFloat((finalTotalAmt - finalDiscAmt).toFixed(2));
+                } else {
+                    finalNetAmt = finalTotalAmt
+                }
             }
             this.IpbillFooterform.patchValue({
-                AdminPer: '',
-                AdminAmt: 0,
                 totalconcessionAmt: finalDiscAmt,
+                AdminAmt: adminAmt || 0,
                 FinalAmount: Math.round(finalNetAmt),
-            }, { emitEvent: false });
-            // this.toastr.error("Enter Admin % between 0-100");  
-            return;
+            }, { emitEvent: false }); // Prevent infinite loop
+            this.BillBalAmount();
         }
-        if (this.DiscShowAmt > 0) {
-            this.ConcessionShow = true
-            finalDiscAmt = this.DiscShowAmt
-            finalNetAmt = parseFloat((finalTotalAmt - this.DiscShowAmt).toFixed(2));
-        } else {
-            if (discPer > 0) {
-                this.ConcessionShow = true
-                finalDiscAmt = parseFloat((finalTotalAmt * discPer / 100).toFixed(2));
-                finalNetAmt = parseFloat((finalTotalAmt - finalDiscAmt).toFixed(2));
-            } else {
-                finalNetAmt = finalTotalAmt
-            }
-        }
-        this.IpbillFooterform.patchValue({
-            totalconcessionAmt: finalDiscAmt,
-            AdminAmt: adminAmt || 0,
-            FinalAmount: Math.round(finalNetAmt),
-        }, { emitEvent: false }); // Prevent infinite loop
-        this.BillBalAmount();
     }
+
+    GeneraeRequest() { }
     // Total Bill Disc Per cal 
     CalFinalDiscper() {
         let netAmount = this.FinalNetAmt;
@@ -1467,7 +1488,7 @@ debugger
     statusMessage: any;
     pollingSub?: Subscription;
     mPesa_ReceiptNo: any = '0';
-     public dsMpesaTransactionlist = new MatTableDataSource<ChargesList>();
+    public dsMpesaTransactionlist = new MatTableDataSource<ChargesList>();
     openWaitingScreen() {
         debugger
         this._IpSearchListService.postpayment(this.IpbillFooterform.controls["FinalAmount"]?.value, this.IpbillFooterform.get('mpesaMobile')?.value,
@@ -1579,15 +1600,15 @@ debugger
             // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
         });
     }
-      @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
-      getMpesaTransactionlist(): void {
+    @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
+    getMpesaTransactionlist(): void {
         if (!this.dataSource.data.length) {
-          this.toastr.warning('Charges are not available in list, Please add Charges', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
+            this.toastr.warning('Charges are not available in list, Please add Charges', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
-         const formValue = this.IpbillFooterform.value
+        const formValue = this.IpbillFooterform.value
         if (formValue.totalconcessionAmt > 0 || formValue.totaldiscPer > 0) {
             if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
                 this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -1597,31 +1618,31 @@ debugger
             }
         }
         if (!formValue?.mpesaMobile) {
-          this.toastr.warning('Enter Mobile number', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
+            this.toastr.warning('Enter Mobile number', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
         this._matDialog.open(this.MpesatranscationlistTable, {
-          width: '65vw',
-          maxHeight: '60vh'
+            width: '65vw',
+            maxHeight: '60vh'
         })
         //424929  this.vOPIPId
         let Data = {
-          "first": 0,
-          "rows": 100,
-          "sortField": "Id",
-          "sortOrder": 0,
-          "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
-          { "fieldName": "PhoneNumber", "fieldValue": String(formValue?.mpesaMobile || 0), "opType": "Equals" }],
-          "exportType": "JSON",
-          "columns": [{ "data": "string", "name": "string" }]
+            "first": 0,
+            "rows": 100,
+            "sortField": "Id",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
+            { "fieldName": "PhoneNumber", "fieldValue": String(formValue?.mpesaMobile || 0), "opType": "Equals" }],
+            "exportType": "JSON",
+            "columns": [{ "data": "string", "name": "string" }]
         }
         this._IpSearchListService.getmPesaTranscationlist(Data).subscribe((response) => {
-          this.dsMpesaTransactionlist.data = response.data;
-          console.log(this.dsMpesaTransactionlist.data)
+            this.dsMpesaTransactionlist.data = response.data;
+            console.log(this.dsMpesaTransactionlist.data)
         });
-      }
+    }
     //Save with credit
     onSaveDraft() {
         this.draftSaveform.get('tDrbill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
@@ -1665,7 +1686,7 @@ debugger
                             this.viewgetDraftBillservicewiseA5PageReportPdf(response.drbno);
                         }
                     }
-                } 
+                }
                 this._matDialog.closeAll();
             });
         }
@@ -1747,9 +1768,9 @@ debugger
                         pacakgeServiceName: element.pacakgeServiceName,
                         doctorName: element.doctorName,
                         doctorId: element.doctorId,
-                        uniId:element.unitId || this.accountService.currentUserValue.user.unitId,
-                        classId:element.classId || this.classId,
-                        tariffId:element.tariffId || this.TariffId,
+                        uniId: element.unitId || this.accountService.currentUserValue.user.unitId,
+                        classId: element.classId || this.classId,
+                        tariffId: element.tariffId || this.TariffId,
                     })
             })
             this.PackageDatasource.data = this.PacakgeList
@@ -1786,9 +1807,9 @@ debugger
                         pacakgeServiceName: element.pacakgeServiceName,
                         doctorName: element.doctorName,
                         doctorId: element.doctorId,
-                        uniId:this.accountService.currentUserValue.user.unitId,
-                        classId:this.classId,
-                        tariffId:this.TariffId
+                        uniId: this.accountService.currentUserValue.user.unitId,
+                        classId: this.classId,
+                        tariffId: this.TariffId
                     })
             })
             this.PackageDatasource.data = this.PacakgeList
@@ -1952,7 +1973,7 @@ debugger
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWiseA5");
     }
     //draft print charge date wise
-     viewgetDraftBillDateewiseReportPdf(Id) {
+    viewgetDraftBillDateewiseReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillDateWise");
     }
 

@@ -31,7 +31,7 @@ export class BranchWiseSummaryComponent {
 
   myformSearch: FormGroup;
   myServicewiseSearch: FormGroup;
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate ="2026-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -137,7 +137,7 @@ export class BranchWiseSummaryComponent {
     this.getfilterdataDoctorWise();
     this.getfilterdataB2bWise();
 
-    this.paymentModeChart = this.getPaymentDoughnutChart();
+    // this.paymentModeChart = this.getPaymentDoughnutChart();
   }
 
   getfilterdata() {
@@ -209,15 +209,15 @@ export class BranchWiseSummaryComponent {
     }
 
     console.log(vdata)
-    debugger
+    
     this._LabResultListService.getBillrevenudetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillRevenuList[]
       console.log(this.Billdetaildatasource.data)
       this.paydata = [];
 
-      if (this.paymentModeChart) {
-        this.paymentModeChart.destroy();
-      }
+      // if (this.paymentModeChart) {
+      //   this.paymentModeChart.destroy();
+      // }
       this.Billdetaildatasource.data.forEach(element => {
         console.log(element)
         this.paydata.push({
@@ -241,11 +241,9 @@ export class BranchWiseSummaryComponent {
   count = 0
   TotCount = 0
   getsumdetail() {
-    debugger
+    
     this.count = this.Billdetaildatasource.data.length
-
     this.TotCount = this.Billdetaildatasource.data.reduce((sum, { patientCount }) => sum += +(patientCount || 0), 0);
-
     this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netRevenue }) => sum += +(netRevenue || 0), 0);
 
     // this.TotDocAmt = this.Billdetaildatasource.data.reduce((sum, { docAmt }) => sum += +(docAmt || 0), 0);
@@ -375,6 +373,10 @@ export class BranchWiseSummaryComponent {
   viewgetReportPdf() { }
   
   getPaymentDoughnutChart() {
+
+    if (this.paymentModeChart) {
+      this.paymentModeChart.destroy();
+    }
     debugger
     return new Chart('paymentModeChart', {
       type: 'doughnut',
@@ -391,7 +393,7 @@ export class BranchWiseSummaryComponent {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: 'bottom'
+            position: 'top'
           },
           tooltip: {
             enabled: true,
@@ -436,12 +438,11 @@ export class BranchWiseSummaryComponent {
     // Reinitialize the affected charts
     setTimeout(() => {
 
-      if (document.getElementById('paymentModeChart')) {
-        this.paymentModeChart = this.getPaymentDoughnutChart();
-      }
+     this.paymentModeChart = this.getPaymentDoughnutChart();
+      
+      // this.initializeCharts()
 
-
-    }, 100);
+    }, 500);
   }
 }
 

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LabPatientRegService } from '../lab-patient-reg.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
@@ -13,6 +13,9 @@ import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.componen
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { OperatorComparer, gridModel } from 'app/core/models/gridRequest';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 @Component({
     selector: 'app-estimate-for-patient',
@@ -23,11 +26,11 @@ import Swal from 'sweetalert2';
 })
 export class EstimateForPatientComponent {
     estimateform: FormGroup
-    // estimateform: FormGroup
+    myformSearch: FormGroup;
     Is9_Digit_National_Id: boolean = false;
     registerObj = new LabPatientList({});
     ApiURL: any = '';
-
+    myFilterbillform: FormGroup;
     // All dropdown modes 
     // autocompleteModepatienttype: string = "PatientType";
     autocompleteModegender: string = "Gender";
@@ -35,16 +38,22 @@ export class EstimateForPatientComponent {
     // autocompleteModeDepartment: string = "Department";
     autocompleteModerefdoc: string = "RefDoctor";
     autocompleteModeunit: string = "Hospital";
-    // autocompleteModeClass: string = "Class";
-    // autocompleteModetariff: string = "Tariff";
-    // autocompleteModecompany: string = "Company";
-    // autocompleteModesubcompany: string = "SubCompany";
-    // autocompleteModecamp: string = "CampMaster";
+
     autocompleteModedoctor: string = "ConDoctor";
     // autocompleteModeConcession: string = "Concession";
     // autocompleteModeLabPatientType: string = "LabPatientType";
     autocompleteModecompany: string = "Company";
 
+    sidebarName = 'patient-sidebar';
+    prevResults: any[] = [];
+    filteredOptions: any[] = [];
+    debounceTimers: { [key: string]: any } = {};
+    Patient = '%'
+    Mobile = '%'
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+    @ViewChild('Edetailgrid') grid1: AirmidTableComponent;
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
     @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
@@ -75,15 +84,33 @@ export class EstimateForPatientComponent {
     ) { }
 
     ngOnInit(): void {
-        // this.estimateform = this.CreateMyForm();
+       debugger
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
         this.estimateform = this.createEstimatefform()
         this.estimateform.markAllAsTouched();
-
+        // this.myFilterbillform = this.myFilterbillbrowseform();
+        this.myformSearch = this.myFilterbillbrowseform()
         this.estimatedetailArray.push(this.createtEstimateDetails());
 
     }
+    myFilterbillbrowseform(): FormGroup {
+        return this._formbuilder.group({
 
+            PatientName: ['', [Validators.maxLength(50),
+            Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            MobileNo: ['', [Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+            ]],
+            fromDate: [(new Date()).toISOString()],
+            enddate: [(new Date()).toISOString()],
+
+            CompanyId: 0
+
+        });
+    }
     createEstimatefform() {
         return this._formbuilder.group({
             estimateId: [0],
@@ -137,19 +164,15 @@ export class EstimateForPatientComponent {
     }
 
     getCellCalculation(element) {
-
-       debugger
+        debugger
         element.TotalAmt = element.Price
-      
         const netAmt = element.TotalAmt - element.DiscAmt;
-
         // element.DiscAmt = discountAmt | 0,
         element.NetAmount = netAmt,
             this.updateCalculation()
     }
     getValidationMessages() {
-        // const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-        // const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+
         return {
             RegId: [],
             firstName: [
@@ -196,19 +219,11 @@ export class EstimateForPatientComponent {
 
     }
 
-    // prefixName: any;
-    // onChangePrefix(e) {
-    //     this.prefixName = e.prefixName
-    //     this.ddlGender.SetSelection(e.sexId);
-    // }
+
     CityName = ""
     onChangecity(e) {
         this.CityName = e.cityName
-        // this.registerObj.stateId = e.stateId
-        // this._labPatientRegService.getstateId(e.stateId).subscribe((Response) => {
-        //     this.ddlState.SetSelection(Response.stateId)
-        //     this.ddlCountry.SetSelection(Response.countryId);
-        // });
+
     }
     updateCalculation() {
 
@@ -279,11 +294,6 @@ export class EstimateForPatientComponent {
     }
 
     onAddCharges(row): void {
-
-        // if (this.estimateform.get("IsPathRad").value == '1')
-        //     this.IsPathology = true
-        // else
-        //     this.IsRadiology = true
 
         const formValue = this.estimateform.value;
 
@@ -370,19 +380,19 @@ export class EstimateForPatientComponent {
 
 
         if (!this.estimateform.invalid) {
-        this.estimateform.removeControl('prefixId')
-        this.estimateform.removeControl('genderId')
-        this.estimateform.removeControl('DateOfBirth')
-        this.estimateform.removeControl('ServiceId')
-        this.estimateform.removeControl('totalDiscountPer')
+            this.estimateform.removeControl('prefixId')
+            this.estimateform.removeControl('genderId')
+            this.estimateform.removeControl('DateOfBirth')
+            this.estimateform.removeControl('ServiceId')
+            this.estimateform.removeControl('totalDiscountPer')
 
 
-        console.log(this.estimateform.value)
+            console.log(this.estimateform.value)
 
-        this._labPatientRegService.InsertEstimate(this.estimateform.value).subscribe(response => {
-            this.viewgetEsimatePBillReportPdf(response)
-            this._matDialog.closeAll()
-        });
+            this._labPatientRegService.InsertEstimate(this.estimateform.value).subscribe(response => {
+                this.viewgetEsimatePBillReportPdf(response)
+                this._matDialog.closeAll()
+            });
 
 
         } else {
@@ -399,9 +409,9 @@ export class EstimateForPatientComponent {
         }
     }
 
-      viewgetEsimatePBillReportPdf(element) {
-    this.commonService.Onprint("EstimateId", element, "EstimatePrint");
-  }
+    viewgetEsimatePBillReportPdf(element) {
+        this.commonService.Onprint("EstimateId", element, "EstimatePrint");
+    }
 
     deleteTableRow(event, element) {
         // if (this.key == "Delete") {
@@ -419,4 +429,271 @@ export class EstimateForPatientComponent {
     onClose() {
 
     }
+    UnitId: any = this.accountService.currentUserValue.user.unitId;
+    // 
+    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
+        const { firstName, lastName, mobileNo } = fields;
+        return results.filter(item => {
+            return (!firstName || item.firstName?.toLowerCase().includes(firstName.toLowerCase()))
+                && (!lastName || item.lastName?.toLowerCase().includes(lastName.toLowerCase()))
+                && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+        });
+    }
+    handleInputChange(changedField: string): void {
+        // Get all current field values
+        // debugger
+        const firstName = this.estimateform.get('patientName').value?.trim() || '';
+        const lastName = ''//this.estimateform.get('lastName').value?.trim() || '';
+        const mobileNo = this.estimateform.get('mobileNo').value?.trim() || '';
+
+        // If all fields are empty, clear everything
+        if (!firstName && !lastName && !mobileNo) {
+            this.resetFilteredOptions();
+            return;
+        }
+
+        // Count how many fields are filled
+        const filledFields = [firstName, mobileNo].filter(Boolean).length;
+
+        // If only one field is filled, and it's FirstName or MobileNo, call API
+        if (filledFields === 1 && (changedField === 'firstName' || changedField === 'mobileNo')) {
+            const keyword = firstName || mobileNo;
+            this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`, keyword).subscribe(results => {
+                this.prevResults = results || [];
+                // console.log(results)
+                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            });
+            return;
+        }
+
+        // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
+        if (filledFields === 1 && changedField === 'lastName') {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+            return;
+        }
+
+        // If more than one field is filled, filter from prevResults
+        if (this.prevResults.length > 0) {
+            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+        } else if (changedField === 'firstName' || changedField === 'mobileNo') {
+            // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+            const keyword = this.estimateform.get(changedField).value?.trim();
+            if (keyword) {
+                this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`, keyword).subscribe(results => {
+                    this.prevResults = results || [];
+                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+                });
+            }
+        } else {
+            // If changedField is LastName and prevResults is empty, do nothing
+            this.filteredOptions = [];
+        }
+    }
+
+    handleInputChangeDebounced(changedField: string): void {
+        // Clear any existing timer for this field
+        if (this.debounceTimers[changedField]) {
+            clearTimeout(this.debounceTimers[changedField]);
+        }
+        // Set a new timer
+        this.debounceTimers[changedField] = setTimeout(() => {
+            this.handleInputChange(changedField);
+        }, 300); // 300ms debounce
+    }
+
+    onSelectPatient(row: any) {
+        this.getSelectedObj(row);
+        this.resetFilteredOptions();
+    }
+    resetFilteredOptions() {
+        this.filteredOptions = [];
+        this.prevResults = [];
+    }
+    PatientName = ''
+    VlabPatRegId = 0
+    getSelectedObj(obj) {
+        console.log(obj)
+        // this.PatientName = obj.patientName;
+        this.PatientName = obj.firstName + ' ' + obj.lastName;
+        // this.VlabPatRegId = obj.visitId;
+        if (this.VlabPatRegId) {
+            setTimeout(() => {
+                this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
+                    console.log(response)
+                    this.registerObj = response;
+                    //   this.value = response.dateofBirth
+                    //   this.regNo = response.labRequestNo
+                    //   this.onChangeDateofBirth(response.dateofBirth)
+                    //   this.regflag = true
+                    this.estimateform.patchValue({
+                        firstName: this.registerObj.firstName.trim(),
+                        middleName: this.registerObj.middleName.trim(),
+                        LastName: this.registerObj.lastName.trim(),
+                        MobileNo: this.registerObj.mobileNo.trim(),
+                        address: this.registerObj.address.trim(),
+                        // DateOfBirth:this.registerObj.dateofBirth,
+                    });
+
+                });
+            }, 100);
+        }
+
+        // if (this.VlabPatRegId) {
+        //   this.showPrevBtn = true
+        //   this.getPrevList(obj);
+        // }
+    }
+    //tab
+
+    @ViewChild('EBillGrid', { static: false }) Egrid: AirmidTableComponent;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+   
+    isShowDetailTable: boolean = false; 
+     
+   
+    allEBillfilters = [
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "PatientName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Contains },
+
+    ];
+
+    allEbillcolumns = [
+        { heading: "BillDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "EstimateNo", key: "estimateNo", sort: true, align: 'center', emptySign: 'NA', width: 80 },
+        { heading: "UHID", key: "patientId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+
+        { heading: "Age", key: "AgeYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "EmailId", key: "EmailId", sort: true, align: 'left', emptySign: 'NA', width: 100},
+
+        { heading: "Total Amount", key: "totalAmount", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 }, // It is just example of apply color based on condition
+        { heading: "Disc Amount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+        { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+
+        {
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate
+        }  // Assign ng-template to the column
+
+    ];
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        // this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+        // this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate2;
+
+    }
+
+
+    gridConfig: gridModel = {
+
+        apiUrl: "Estimate/EstimateList",
+        columnsList: this.allEbillcolumns,
+        sortField: "PatientId",
+        sortOrder: 0,
+        filters: this.allEBillfilters
+    }
+
+
+    onChangeOPBill() {
+        debugger
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
+        this.Patient = this.myformSearch.get('PatientName').value + "%"
+        this.Mobile = this.myformSearch.get('MobileNo').value + "%"
+        this.CompanyId = this.myformSearch.get('CompanyId').value
+
+
+        this.getfilterdataEBill();
+    }
+
+    getfilterdataEBill() {
+debugger
+        this.gridConfig = {
+            apiUrl: "Estimate/EstimateList",
+            columnsList: this.allEbillcolumns,
+            sortField: "PatientId",
+            sortOrder: 0,
+            filters: [{ fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "PatientName", fieldValue: this.Patient, opType: OperatorComparer.Contains },
+            { fieldName: "MobileNo", fieldValue: this.Mobile, opType: OperatorComparer.Contains },
+            { fieldName: "CompanyId", fieldValue: String(this.CompanyId), opType: OperatorComparer.Equals }
+
+            ]
+        }
+        this.Egrid.gridConfig = this.gridConfig;
+        this.Egrid.bindGridData();
+    }
+   
+     gridConfig1: gridModel = new gridModel();
+   GetDetails1(data: any): void {
+        debugger
+
+        let ID = data.estimateId;
+
+        this.gridConfig1 = {
+            apiUrl: "Estimate/EstimateDetailsList",
+            columnsList: [
+
+                { heading: "EstimateNo", key: "estimateNo", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100 },
+
+                { heading: "Service Name", key: "serviceName", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 400 },
+                { heading: "Qty", key: "qty", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "MRP", key: "Price", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+
+                { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+                { heading: "Net Amount", key: "netAmount", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+                { heading: "Comments", key: "comments", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100},
+
+
+            ],
+            sortField: "EstimateId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "EstimateId", fieldValue: String(ID), opType: OperatorComparer.Equals }
+            ]
+        };
+        this.isShowDetailTable = true;
+        this.grid1.gridConfig = this.gridConfig1;
+        this.grid1.bindGridData();
+    }
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'PatientName')
+            this.myformSearch.get('PatientName').setValue("")
+        else
+            if (event == 'MobileNo')
+                this.myformSearch.get('MobileNo').setValue("")
+        // if (event == 'RegNo')
+        //     this.myFilterbillform.get('RegNo').setValue("")
+        // if (event == 'PBillNo')
+        //     this.myFilterbillform.get('PBillNo').setValue("")
+
+        this.onChangeOPBill();
+    }
+    CompanyId = 0
+
+    ListView(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.CompanyId = value.value
+        else
+            this.CompanyId = 0
+
+        this.onChangeOPBill();
+    }
+    onClear() {
+        this.myformSearch.get('PatientName').setValue("0");
+        this.myformSearch.get('MobileNo').setValue("0");
+        // this._LabResultListService.myformSearch.get('PatientTypeSearch').setValue("3");
+    }
+
 }
