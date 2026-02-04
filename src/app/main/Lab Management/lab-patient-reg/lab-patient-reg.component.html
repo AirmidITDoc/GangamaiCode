@@ -102,13 +102,12 @@
                 <mat-icon>print</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatch(element)">
-                <img width="40" height="40" src="assets/images/logos/DispatchReport.png">
-
+            <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)">
+                <mat-icon>local_shipping</mat-icon>
             </button>
-            <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
-                <img width="40" height="40" src="assets/images/logos/SMS.png">
 
+            <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
+                <mat-icon>sms</mat-icon>
             </button>
             <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
                 (click)="$event.stopPropagation();">
