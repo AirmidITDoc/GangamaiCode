@@ -1,0 +1,84 @@
+.store-unit-dropdown-container {
+    ::ng-deep {
+        .airmid-dropdown {
+            // Auto adjust width with min and max constraints
+            min-width: 150px;
+            max-width: 200px;
+
+            // Reduce height of mat-form-field
+            .mat-mdc-text-field-wrapper {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+
+            .mat-mdc-form-field-flex {
+                height: 36px;
+                align-items: center;
+            }
+
+            .mat-mdc-form-field-infix {
+                padding-top: 8px;
+                padding-bottom: 8px;
+                min-height: 36px;
+            }
+
+            // Reduce notch/label size
+            .mdc-notched-outline__notch {
+                .mdc-floating-label {
+                    top: 18px;
+                }
+            }
+
+            // Reduce select trigger height
+            .mat-mdc-select {
+                .mat-mdc-select-trigger {
+                    height: 20px;
+                }
+
+                .mat-mdc-select-value {
+                    padding-right: 24px;
+                    max-width: 100%;
+                    font-size: 13px;
+
+                    .mat-mdc-select-value-text {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+
+                .mat-mdc-select-arrow-wrapper {
+                    height: 20px;
+                }
+            }
+
+            // Hide subscript/hint area to reduce overall height
+            .mat-mdc-form-field-subscript-wrapper {
+                display: none;
+            }
+
+            // Position the close icon properly
+            .dropdown-close-icon {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                z-index: 1;
+
+                mat-icon {
+                    font-size: 16px;
+                    width: 16px;
+                    height: 16px;
+                    line-height: 16px;
+                }
+            }
+        }
+
+        // Compact label styling
+        mat-label {
+            font-size: 12px;
+        }
+    }
+}
+
