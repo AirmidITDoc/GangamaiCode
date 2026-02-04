@@ -6,7 +6,7 @@
                 <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                     <mat-icon>menu</mat-icon>
                 </button>
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> SMS / EMAIL Details </span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> SMS | EMAIL DETAILS </span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -27,59 +27,57 @@
 
                 <div fxFlexFill fxLayout="column" fxLayoutGap="8px">
 
-                    <div class="modal-card-container">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 5px">
-                            <div class="patient-info-sales my-8">
-                                <div class="sales-patient-info-title">
-                                    <span style="font-weight: 700;">
-                                        Patient Information
-                                    </span>
-                                </div>
-                                <hr>
-                                <div class="patient-col">
-                                    <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Patient
-                                        Details</span>
-                                    <span>:</span>
-                                    <span style="font-size: medium;font-weight: bolder;">
+                    <div class="patient-info-sales my-8"
+                        style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding-left: 20px;">
 
-                                        <mat-icon title="Lab Details">
-                                            <img width="90px" height="90px" src="assets/images/logos/patient.jpg"
-                                                style="margin-left: 10px;margin-right: 10px;">
-                                        </mat-icon>
-                                        <span
-                                            style="font-size: medium;font-weight: bolder;">{{Personaldata.labPatientId}}--
-                                            {{Personaldata.pBillNo}} | </span>
+                        <span style="font-size: large; font-weight: bolder; color: rgb(17, 65, 118);">
+                            Patient Details :
+                        </span>
+                        <!-- Reg Time group -->
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <mat-icon title="Reg Data">
+                                <img width="60" height="60" src="assets/images/logos/padate.jpg"
+                                    style="display: block;">
+                            </mat-icon>
+                            <span style="font-size: medium; font-weight: bolder;">
+                                {{Personaldata.regTime}}
+                            </span>
+                        </div>
+                        <!-- Lab / Patient ID group -->
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <mat-icon title="Lab Details">
+                                <img width="60" height="60" src="assets/images/logos/patient.jpg"
+                                    style="display: block;">
+                            </mat-icon>
+                            <span style="font-size: medium; font-weight: bolder;">
+                                {{Personaldata.labPatientId}} -- {{Personaldata.pBillNo}}
+                            </span>
+                        </div>
 
-                                        <mat-icon title="Reg Data">
-                                            <img width="70px" height="70px" src="assets/images/logos/padate.jpg"
-                                                style="margin-left: 10px;margin-right: 10px;">
-                                        </mat-icon>
-                                        <span style="font-size: medium;font-weight: bolder;">{{Personaldata.regTime }} |
-                                        </span>
+                        <!-- Patient main info group -->
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <mat-icon title="Patient" style="background-color: rgb(206, 236, 239);">
+                                <img width="60" height="60" src="assets/images/logos/Admission.png"
+                                    style="display: block;">
+                            </mat-icon>
+                            <span style="font-size: medium; font-weight: bolder;">
+                                {{Personaldata.regNo}} -- {{Personaldata.patientName}} --
+                                {{Personaldata.ageYear}} Y - {{Personaldata.ageMonth}} M - {{Personaldata.ageDay}} D |
+                                {{Personaldata.genderName}} | Mobile No:- {{Personaldata.mobileNo}}
+                            </span>
+                        </div>
 
+                        <!-- Doctor group -->
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <mat-icon title="Dr.Details">
+                                <img width="60" height="60" src="assets/images/logos/consultantdr.jpg" alt="Doctor"
+                                    style="display: block;">
+                            </mat-icon>
+                            <span style="font-size: medium; font-weight: bolder;">
+                                {{Personaldata.doctorName}}
+                            </span>
+                        </div>
 
-
-                                        <mat-icon title="Patient"
-                                            style="background-color: rgb(206, 236, 239);margin-left: 10px;margin-right: 10px;">
-                                            <img width="50px" height="50px" src="assets/images/logos/patient.jpg">
-                                        </mat-icon>
-
-                                        {{ Personaldata.regNo }} -- {{
-                                        Personaldata.patientName }} -- {{
-                                        Personaldata.ageYear }}Y -- {{ Personaldata.ageMonth }}M--{{
-                                        Personaldata.ageDay }} D -- {{ Personaldata.genderName }} |
-                                        --{{Personaldata.mobileNo}} | </span>
-
-                                    <mat-icon title="Dr.Details">
-                                        <img width="70px" height="70px" src="assets/images/logos/consultantdr.jpg"
-                                            style="margin-left: 10px;margin-right: 10px;">
-                                    </mat-icon>
-                                    <span
-                                        style="font-size: medium;font-weight: bolder;">{{Personaldata.doctorName}}</span>
-
-                                </div>
-                            </div>
-                        </mat-card>
                     </div>
 
                     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
@@ -89,8 +87,7 @@
                                     <mat-card style="padding: 5px;">
                                         <form [formGroup]="SMSform" style="border: blue">
                                             <div class="modal-card-container">
-                                                <mat-card>
-
+                                            
                                                     <div class="form-body">
                                                         <div fxLayout="row wrap" fxLayoutGap="5px 0px grid"
                                                             style="padding-left: 10px;padding-right:10px;">
@@ -187,8 +184,7 @@
                                                                 [maxLength]="500"></airmid-textbox>
                                                         </div>
                                                     </div>
-                                                </mat-card>
-
+                                               
                                             </div>
                                         </form>
                                         <div fxLayoutAlign="end">
@@ -226,9 +222,7 @@
                                     <mat-card style="padding: 5px;">
                                         <form [formGroup]="Emailform" style="border: blue">
                                             <div class="modal-card-container">
-                                                <mat-card>
-
-                                                    <div class="form-body">
+                                                  <div class="form-body">
                                                         <div fxLayout="row wrap" fxLayoutGap="5px 0px grid"
                                                             style="padding-left: 10px;padding-right:10px;height: 50px;">
                                                             <div fxFlex="40" fxFlex.xs="100" fxFlex.sm="33">
@@ -260,7 +254,7 @@
                                                             </div>
 
                                                         </div>
-                                                      
+
 
                                                         <div style="height: 200px; overflow:auto;">
                                                             <!-- <airmid-table [gridConfig]="gridConfigSms"
@@ -312,8 +306,7 @@
                                                                 [maxLength]="500"></airmid-textbox>
                                                         </div>
                                                     </div>
-                                                </mat-card>
-
+                                               
                                             </div>
                                         </form>
                                         <div fxLayoutAlign="end">
@@ -337,7 +330,7 @@
                                             style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>
                                     </div>
                                     <div>
-                                        <airmid-table [gridConfig]="gridConfigEmail" class="content"
+                                        <airmid-table [gridConfig]="gridConfigEmail" 
                                             [ShowFilter]="false" [ShowButtons]="false" #EmailGrid>
 
                                         </airmid-table>

@@ -61,7 +61,7 @@ export class ReportDispatchComponent {
 
     }
     this.myReportform = this.CreateReportDiscpathform()
-    if (this.LabId)
+    if (this.LabId!=0)
       this.getfilterReporthistory()
   }
 
@@ -113,6 +113,44 @@ export class ReportDispatchComponent {
         }]
     }
   ];
+  allservicefilters = [
+    { fieldName: "DispatchId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
+
+  ];
+
+  allServicecolumns = [
+    { heading: "Service Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+  //   { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150  },
+  //   { heading: "Dispatch By", key: "dispatchBy", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+  //  { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+  //  { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
+  //   { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+  //   { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        {
+          action: gridActions.edit, callback: (data: any) => {
+            this.OnEdit(data)
+          }
+        }, {
+          action: gridActions.delete, callback: (data: any) => {
+            this._LabmanagementService.deactivateTheStatus(data.id).subscribe((response: any) => {
+              // this.getfilterdata();
+            });
+          }
+        }]
+    }
+  ];
+  gridConfig: gridModel = {
+
+    apiUrl: "Estimate/EstimateList",
+    columnsList: this.allServicecolumns,
+    sortField: "PatientId",
+    sortOrder: 0,
+    filters: this.allservicefilters
+}
 
 
   gridConfigReportdispatch: gridModel = {
@@ -123,8 +161,6 @@ export class ReportDispatchComponent {
     sortOrder: 0,
     filters: this.allReportfilters
   }
-
-
 
   getfilterReporthistory() {
 

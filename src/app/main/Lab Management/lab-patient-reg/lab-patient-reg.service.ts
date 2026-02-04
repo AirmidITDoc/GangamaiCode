@@ -126,4 +126,13 @@ export class LabPatientRegService {
   public getRtevPackageDetList(param) {
     return this._httpClient.PostData("BillingService/PackageDetailList", param);
   }
+
+  public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+    debugger
+    return this._httpClient.GetData(apiUrl + inputValue);
+}
+
+public getRegistraionById(Id) {
+  return this._httpClient.GetData("LabPatientRegistration/" + Id);
+}
 }

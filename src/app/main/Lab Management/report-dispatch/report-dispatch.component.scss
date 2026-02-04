@@ -1,0 +1,14 @@
+.icon-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  mat-icon img {
+    display: block;           /* removes bottom gap */
+    vertical-align: middle;   /* fallback if needed */
+  }
+  
+  mat-icon {
+    line-height: normal !important;  /* helps override Material defaults */
+  }

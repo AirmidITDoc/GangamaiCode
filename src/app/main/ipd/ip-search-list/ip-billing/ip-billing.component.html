@@ -987,7 +987,7 @@
 
                     <div fxFlex="6%" *ngIf="isAdminDisabled">
                       <airmid-textbox label="Admin %" formControlName="AdminPer" [formGroup]="IpbillFooterform"
-                        [type]="'text'" (keypress)="keyPressCharater($event)" [min]="0" (keyup)="CalculateAdminCharge()"
+                        [type]="'text'" (keypress)="keyPressCharater($event)" [min]="0" [max]="10" (keyup)="CalculateAdminCharge()"
                         [max]="100"></airmid-textbox>
                     </div>
 
