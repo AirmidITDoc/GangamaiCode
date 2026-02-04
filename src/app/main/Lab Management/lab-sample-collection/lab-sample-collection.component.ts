@@ -16,6 +16,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
 import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
+import { LabsampleCollFormComponent } from './labsample-coll-form/labsample-coll-form.component';
 
 @Component({
     selector: 'app-lab-sample-collection',
@@ -64,7 +65,7 @@ export class LabSampleCollectionComponent {
 
     allcolumns = [
         {
-            heading: "-", key: "action1", align: "right",sticky: true, type: gridColumnTypes.template,
+            heading: "-", key: "action1", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.statusbtnTemplate
         },
         {
@@ -270,6 +271,20 @@ export class LabSampleCollectionComponent {
         });
     }
 
+    onSavedemo(row: any = null) {
+        let that = this;
+        const dialogRef = this._matDialog.open(LabsampleCollFormComponent,
+            {
+                maxHeight: '80vh',
+                width: '80%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+            this.grid1.bindGridData();
+        });
+    }
+
     // OnPrintPatientIcard(element) {
     //   this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
     // }
@@ -315,4 +330,36 @@ export class LabSampleCollectionComponent {
 
     }
 
+}
+
+export class SampleList {
+  VADate: Date;
+  VATime: Date;
+  PathTestID: Number;
+  ServiceName: String;
+  IsSampleCollection: boolean;
+  isSampleCollection: any;
+  SampleCollectionTime: Date;
+  PathReportID: any;
+  SampleNo: any;
+  RegNo: any;
+  pathReportID: any;
+  sampleNo: any;
+  isApprovedByCamp: any;
+
+  constructor(SampleList) {
+    this.VADate = SampleList.VADate || '';
+    this.VATime = SampleList.VATime || '';
+    this.PathTestID = SampleList.PathTestID || 0;
+    this.ServiceName = SampleList.ServiceName || '';
+    this.IsSampleCollection = SampleList.IsSampleCollection || 0;
+    this.isSampleCollection = SampleList.isSampleCollection || 0;
+    this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
+    this.PathReportID = SampleList.PathReportID || 0;
+    this.SampleNo = SampleList.SampleNo || 0;
+    this.RegNo = SampleList.RegNo || 0;
+    this.pathReportID = SampleList.pathReportID || 0;
+    this.sampleNo = SampleList.sampleNo || 0;
+    this.isApprovedByCamp = SampleList.isApprovedByCamp || 0;
+  }
 }
