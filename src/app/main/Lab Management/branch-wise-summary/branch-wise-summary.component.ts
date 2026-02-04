@@ -62,9 +62,9 @@ export class BranchWiseSummaryComponent {
 
   allcolumns = [
 
-    { heading: "Department Name", key: "unitBranchName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    { heading: "Count", key: "patientCount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Amount", key: "netRevenue", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Branch / Unit Name", key: "unitBranchName", sort: true, align: 'left', emptySign: 'NA', width: 800 },
+    { heading: "Count", key: "patientCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Amount", key: "netRevenue", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     {
       heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -262,10 +262,10 @@ export class BranchWiseSummaryComponent {
   allervicecolumns = [
     // { heading: "UnitBranchName", key: "unitBranchName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
 
-    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 900 },
+    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     {
