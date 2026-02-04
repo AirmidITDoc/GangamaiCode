@@ -106,10 +106,10 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   }
 
   getItemList(IssueId) {
-
+debugger
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "IssueId",
       "sortOrder": 0,
       "filters": [

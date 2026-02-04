@@ -589,9 +589,9 @@ export class LabPatientRegComponent {
   OnEstimate() {
     const dialogRef = this._matDialog.open(EstimateForPatientComponent,
       {
-        maxWidth: "90vw",
-        height: '90%',
-        width: '90%',
+        maxWidth: "97vw",
+        height: '97%',
+        width: '92%',
       });
     dialogRef.afterClosed().subscribe(result => {
     });

@@ -412,6 +412,10 @@ export class EstimateForPatientComponent {
     viewgetEsimatePBillReportPdf(element) {
         this.commonService.Onprint("EstimateId", element, "EstimatePrint");
     }
+    viewgetEsimatePBillReportPdf1(element) {
+        debugger
+        this.commonService.Onprint("EstimateId", element.estimateId, "EstimatePrint");
+    }
 
     deleteTableRow(event, element) {
         // if (this.key == "Delete") {
@@ -561,10 +565,10 @@ export class EstimateForPatientComponent {
     ];
 
     allEbillcolumns = [
-        { heading: "BillDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "BillDate", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 110, type: 6 },
         { heading: "EstimateNo", key: "estimateNo", sort: true, align: 'center', emptySign: 'NA', width: 80 },
-        { heading: "UHID", key: "patientId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "UHID", key: "patientId", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
 
         { heading: "Age", key: "AgeYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -575,20 +579,17 @@ export class EstimateForPatientComponent {
         { heading: "Total Amount", key: "totalAmount", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 }, // It is just example of apply color based on condition
         { heading: "Disc Amount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
 
         {
-            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width:80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }  // Assign ng-template to the column
 
     ];
     ngAfterViewInit() {
-        // Assign the template to the column dynamically
-        // this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
-        // this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate2;
-
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
 
@@ -633,38 +634,38 @@ debugger
         this.Egrid.bindGridData();
     }
    
-     gridConfig1: gridModel = new gridModel();
-   GetDetails1(data: any): void {
-        debugger
+//      gridConfig1: gridModel = new gridModel();
+//    GetDetails1(data: any): void {
+//         debugger
 
-        let ID = data.estimateId;
+//         let ID = data.estimateId;
 
-        this.gridConfig1 = {
-            apiUrl: "Estimate/EstimateDetailsList",
-            columnsList: [
+//         this.gridConfig1 = {
+//             apiUrl: "Estimate/EstimateDetailsList",
+//             columnsList: [
 
-                { heading: "EstimateNo", key: "estimateNo", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100 },
+//                 { heading: "EstimateNo", key: "estimateNo", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100 },
 
-                { heading: "Service Name", key: "serviceName", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 400 },
-                { heading: "Qty", key: "qty", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 100 },
-                { heading: "MRP", key: "Price", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+//                 { heading: "Service Name", key: "serviceName", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 400 },
+//                 { heading: "Qty", key: "qty", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 100 },
+//                 { heading: "MRP", key: "Price", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
 
-                { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
-                { heading: "Net Amount", key: "netAmount", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-                { heading: "Comments", key: "comments", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100},
+//                 { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+//                 { heading: "Net Amount", key: "netAmount", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+//                 { heading: "Comments", key: "comments", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100},
 
 
-            ],
-            sortField: "EstimateId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "EstimateId", fieldValue: String(ID), opType: OperatorComparer.Equals }
-            ]
-        };
-        this.isShowDetailTable = true;
-        this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
-    }
+//             ],
+//             sortField: "EstimateId",
+//             sortOrder: 0,
+//             filters: [
+//                 { fieldName: "EstimateId", fieldValue: String(ID), opType: OperatorComparer.Equals }
+//             ]
+//         };
+//         this.isShowDetailTable = true;
+//         this.grid1.gridConfig = this.gridConfig1;
+//         this.grid1.bindGridData();
+//     }
     Clearfilter(event) {
         console.log(event)
         if (event == 'PatientName')

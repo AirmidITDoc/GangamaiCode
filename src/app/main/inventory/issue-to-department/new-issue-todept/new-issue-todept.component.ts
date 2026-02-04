@@ -36,6 +36,7 @@ export class NewIssueTodeptComponent {
   FinalIssueaginstForm: FormGroup;
   MaterialForm: FormGroup;
   NewIssueGroupAccept: FormGroup;
+  FinalIssueaginstAcceptForm: FormGroup
   Indentid: any;
   indentdetid: any;
   IsClosed: any;
@@ -151,18 +152,32 @@ export class NewIssueTodeptComponent {
   ) { }
 
   IsMaterialAccept: boolean = false;
+  IsIndentAgainstMaterialAccept: boolean = false;
   ngOnInit(): void {
     this.vstoreId = this.accountService.currentUserValue.user.storeId;
-    const rawValue = this?._configue?.configParams?.IsMaterialAccept || "";
+    const rawValue = this?._configue?.configParams?.IsMaterialAcceptDirect || "";
 
     const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
     this.IsMaterialAccept = id === "1";
 
-    if (this.IsMaterialAccept)
-      this.Status = 'Issed Material Direct Accepted'
-    else
-      this.Status = 'Material Issued Only'
+    const rawValue1 = this?._configue?.configParams?.IsMaterialAcceptAgainstIndent || "";
 
+    const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
+    this.IsIndentAgainstMaterialAccept = id1 === "1";
+
+
+
+    if (this.IsMaterialAccept)
+      this.Status = 'Issed Material Directly Accepted By Department'
+    else
+      this.Status = 'Material Issued Only To Department'
+
+      if (this.IsIndentAgainstMaterialAccept)
+        this.Status = 'Indent Against Issed Material Directly Accepted By Department'
+      else
+        this.Status = 'Indent Against  Material Issued Only To Department'
+
+        
     this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
 
     this.NewIssueGroup = this._IssueToDep.getNewIssueForm();
@@ -189,16 +204,24 @@ export class NewIssueTodeptComponent {
     this.stockArray1.push(this.currentstockform());
     this.indentdetailArray.push(this.indentdetailform());
 
-
-
     if (this.data) {
-
+      debugger
       console.log(this.data)
 
       this.fromstoreId = this.data.fromStoreId
       this.vIndentId = this.data.indentId
-
       this.getIndentItemDetList()
+      if (this.vIndentId > 0) {
+
+        this.FinalIssueaginstAcceptForm = this.IssueIndentaganistAcceptFrom()
+        this.itemdetailIndentaginstacceptarray.push(this.itemdetailform());
+        this.AcceptstockIndentaginstacceptarray.push(this.currentstockform());
+        this.AcceptdeptIndentaginstdeptArray.push(this.IssueItemdetailform());
+        this.AcceptdeptIndentaginstindentdetailArray.push(this.indentdetailform());
+
+      }
+
+
     }
 
   }
@@ -223,6 +246,8 @@ export class NewIssueTodeptComponent {
   get deptArray1(): FormArray {
     return this.FinalIssueaginstForm.get('updateIndent.tIssueToDepartmentDetails') as FormArray;
   }
+
+
 
   get stockArray1(): FormArray {
     return this.FinalIssueaginstForm.get('tCurStockModel') as FormArray;
@@ -285,7 +310,7 @@ export class NewIssueTodeptComponent {
       tCurrentStock: this._formBuilder.array([]),
       "materialAcceptIssueHeader": {
         "issueId": 0,
-        "acceptedBy": 1,
+        "acceptedBy":1,// [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "isAccepted": true
       },
       materialAcceptIssueDetails: this._formBuilder.array([]),
@@ -295,49 +320,51 @@ export class NewIssueTodeptComponent {
     });
   }
 
-  IssueItemdetailform(element: any = {}): FormGroup {
 
-    console.log(element)
-    return this._formBuilder.group({
-      issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      batchNo: [element.BatchNo],
-      batchExpDate: [(new Date()).toISOString().split('T')[0]],
-      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      status: ["0"]
-    });
-  }
-  currentstockform(element: any = {}): FormGroup {
 
-    console.log(element)
-    return this._formBuilder.group({
-      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      istkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
-    });
-  }
+  // IssueItemdetailform(element: any = {}): FormGroup {
 
-  indentdetailform(element: any = {}): FormGroup {
+  //   console.log(element)
+  //   return this._formBuilder.group({
+  //     issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     batchNo: [element.BatchNo],
+  //     batchExpDate: [(new Date()).toISOString().split('T')[0]],
+  //     issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     status: ["0"]
+  //   });
+  // }
+  // currentstockform(element: any = {}): FormGroup {
 
-    console.log(element)
-    return this._formBuilder.group({
-      indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isClosed: [element.IsClosed],
-      indQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]]
-    });
-  }
+  //   console.log(element)
+  //   return this._formBuilder.group({
+  //     itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     istkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+  //   });
+  // }
+
+  // indentdetailform(element: any = {}): FormGroup {
+
+  //   console.log(element)
+  //   return this._formBuilder.group({
+  //     indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  //     isClosed: [element.IsClosed],
+  //     indQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]]
+  //   });
+  // }
 
   materialAcceptIssueDetailsform(element: any = {}): FormGroup {
 
@@ -377,12 +404,112 @@ export class NewIssueTodeptComponent {
     });
   }
 
+  //Indent against Issue Accept ................
+  IssueIndentaganistAcceptFrom() {
+    debugger
+    return this._formBuilder.group({
+      "issuetoDeptWihMaterialAccept": this._formBuilder.group({
+        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "indentId": [this.vIndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "issueDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        "issueTime": this.datePipe.transform(new Date(), 'shortTime'),
+        "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "totalAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "totalVatAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "netAmount": [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        "remark": [''],
+        "addedby": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "modifiedBy": [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "isVerified": [false],
+        "isClosed": [true],
+        "unitId": [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        "createdBy": 1
+      }),
+      tIssueToDepartmentDetails: this._formBuilder.array([]),
+      tCurrentStock: this._formBuilder.array([]),
+      "indentHeader": this._formBuilder.group({
+        "indentId": this.vIndentId,
+        "isClosed": [true]
+      }),
+      "materialAcceptIssueHeader": {
+        "issueId": 0,
+        "acceptedBy": 1,// [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "isAccepted": true
+      },
+      "materialAcceptStockUpdate": {
+        "issueId": 0
 
+      },
+      materialAcceptIssueDetails: this._formBuilder.array([]),
+      tIndentDetails: this._formBuilder.array([]),
+    });
+  }
+
+  get itemdetailIndentaginstacceptarray(): FormArray {
+    return this.FinalIssueaginstAcceptForm.get('materialAcceptIssueDetails') as FormArray;
+  }
+
+  get AcceptstockIndentaginstacceptarray(): FormArray {
+    return this.FinalIssueaginstAcceptForm.get('tCurrentStock') as FormArray;
+  }
+ 
+  get AcceptdeptIndentaginstdeptArray(): FormArray {
+    return this.FinalIssueaginstAcceptForm.get('tIssueToDepartmentDetails') as FormArray;
+  }
+
+  get AcceptdeptIndentaginstindentdetailArray(): FormArray {
+    return this.FinalIssueaginstAcceptForm.get('tIndentDetails') as FormArray;
+  }
+
+  //
   get itemdetailarray(): FormArray {
     return this.MaterialForm.get('materialAcceptIssueDetails') as FormArray;
   }
 
+  IssueItemdetailform(element: any = {}): FormGroup {
 
+    console.log(element)
+    return this._formBuilder.group({
+      issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      batchNo: [element.BatchNo],
+      batchExpDate: [(new Date()).toISOString().split('T')[0]],
+      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      status: ["0"]
+    });
+  }
+  currentstockform(element: any = {}): FormGroup {
+debugger
+    console.log(element)
+    return this._formBuilder.group({
+      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      istkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
+
+  indentdetailform(element: any = {}): FormGroup {
+
+    console.log(element)
+    return this._formBuilder.group({
+      indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isClosed: [element.IsClosed],
+      indQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]]
+    });
+  }
   creatematerial() {
     return this._formBuilder.group({
       "materialAcceptIssueHeader": this._formBuilder.group({
@@ -400,10 +527,11 @@ export class NewIssueTodeptComponent {
 
   itemdetailform(element: any = {}): FormGroup {
     console.log(element)
+    debugger
     return this._formBuilder.group({
       issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      status: [1]
+      status: ["1"]
     });
   }
 
@@ -607,7 +735,7 @@ export class NewIssueTodeptComponent {
   }
 
   getIndentItemDetList() {
-
+    debugger
     this.sIsLoading = 'loading-data';
     var vdata = {
       "first": 0,
@@ -657,7 +785,7 @@ export class NewIssueTodeptComponent {
     this.showIndentFlag = true
   }
   AddIndentSelectedItem(contact) {
-
+debugger
     console.log(contact)
     this.vIndentId = contact.indentId;
     this.indentdetid = contact.indentDetailsId;
@@ -849,7 +977,10 @@ export class NewIssueTodeptComponent {
 
     if (!this.IssueFinalForm.invalid) {
       if (this.vIndentId > 0) {
-        this.OnSaveAgaintIndent();
+        if (this.IsIndentAgainstMaterialAccept)
+          this.OnSaveAgaintIndentMaterialAccept();
+        else
+          this.OnSaveAgaintIndent();
       } else {
         if (this.IsMaterialAccept)
           this.OnNewAcceptSave();
@@ -1011,49 +1142,62 @@ export class NewIssueTodeptComponent {
     });
   }
 
-  OnNewMaterialAcceptSave() {
-    debugger
+  OnSaveAgaintIndentMaterialAccept() {
 
-    // if ((!this.tempItemlist.length)) {
-    //   this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    // if (this.dsSelectedIndentItemList.data.length) {
-    //   // if (this.dsSelectedIndentItemList.data.length == this.tempItemlist.length) {
-    //   //   this.Acceptedchk = true;
-    //   // } else {
-    //   //   this.Acceptedchk = false;
-    //   // }
+    this.AcceptdeptIndentaginstdeptArray.clear();
+    this.dsNewIssueItemList.data.forEach(item => {
+      this.AcceptdeptIndentaginstdeptArray.push(this.IssueItemdetailform(item));
+    });
 
-    //   this.MaterialForm.get('materialAcceptIssueHeader.issueId').setValue(this.registerObj.issueId)
-    //   this.MaterialForm.get('materialAcceptIssueHeader.acceptedBy').setValue(this._loggedService.currentUserValue.userId)
-    //   this.MaterialForm.get('materialAcceptIssueHeader.IsAccepted').setValue(this.Acceptedchk)
+    this.AcceptdeptIndentaginstindentdetailArray.clear();
+    this.dsNewIssueItemList.data.forEach(element => {
+      console.log(element)
+      if (this.CellCalculation == 0)
+        console.log(element)
+      debugger
+      let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
 
-    //   this.itemdetailarray.clear();
-    //   this.tempItemlist.forEach(element => {
-    //     let selectedchk = "0";
-    //     if (element.selected == 1) {
-    //       selectedchk = "1";
-    //     } else if (element.selected != 1) {
-    //       selectedchk = "0";
-    //     }
+      if (balQty == 0)
+        element.IsClosed = true;
+      else
+        element.IsClosed = false;
 
-    //     element.status = selectedchk
-    //     this.itemdetailarray.push(this.itemdetailform(element));
-    //   });
+      this.AcceptdeptIndentaginstindentdetailArray.push(this.indentdetailform(element));
+    });
 
-    //   this.MaterialForm.get('materialAcceptStockUpdate.issueId').setValue(this.registerObj.issueId)
+    this.AcceptstockIndentaginstacceptarray.clear();
+    this.dsNewIssueItemList.data.forEach(item => {
+      if (item.IsClosed)
+        this.Isclosedchk = true
+      else
+        this.Isclosedchk = false
+      this.AcceptstockIndentaginstacceptarray.push(this.currentstockform(item));
+    });
 
-    //   console.log(this.MaterialForm.value);
-    //   this._materialAcceptanceService.AcceptmaterialSave(this.MaterialForm.value).subscribe(response => {
-    //     this.dialogRef.close();
-    //     this.viewgetIssuetodeptReportPdf(this.registerObj.issueId)
-    //   });
-    // }
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.issueId").setValue(0)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.toStoreId").setValue(parseInt(this.StoreFrom.get('ToStoreId').value || 0))
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.modifiedBy").setValue(this.accountService.currentUserValue.user.userId || 0)
+
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.isVerified").setValue(true)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.isClosed").setValue(true)
+    this.FinalIssueaginstAcceptForm.get("issuetoDeptWihMaterialAccept.indentId").setValue(this.vIndentId)
+
+    this.FinalIssueaginstAcceptForm.get('indentHeader.indentId').setValue(this.vIndentId)
+    this.FinalIssueaginstAcceptForm.get('indentHeader.isClosed').setValue(true)
 
 
+    console.log(this.FinalIssueaginstAcceptForm.value)
+
+    this._IssueToDep.IssuetodepAgaintIndetdirectAcceptSave(this.FinalIssueaginstAcceptForm.value).subscribe(response => {
+      this.viewgetIssuetodeptReportPdf(response)
+      this._matDialog.closeAll();
+    });
   }
   resetForm(): void {
     this.NewIssueGroup.reset({

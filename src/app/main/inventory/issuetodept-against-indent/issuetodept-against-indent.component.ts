@@ -76,6 +76,7 @@ export class IssuetodeptAgainstIndentComponent {
   }
 
   getIndentList() {
+    debugger
     this.sIsLoading = 'loading-data';
 
     let frdate = this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")

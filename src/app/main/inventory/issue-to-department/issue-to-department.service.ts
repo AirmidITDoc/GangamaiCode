@@ -99,6 +99,12 @@ export class IssueToDepartmentService {
     return this._httpClient1.PostData("IssueToDepartment/UpdateIndentStatusAganist",Param);
   }
 
+  public IssuetodepAgaintIndetdirectAcceptSave(Param){
+    return this._httpClient1.PostData("IssueToDepartment/UpdateIndentStatusAganistMaterialAccept",Param);
+  }
+
+  
+
   public updateStockToMainStock(Param){
     return this._httpClient.post("Pharmacy/UpdateStockToMainStock",Param);
   }
