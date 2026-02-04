@@ -16,9 +16,11 @@ import { LabPatientRegService } from '../lab-patient-reg.service';
 })
 export class PrevlabHistoryComponent {
   displayedColumns: string[] = [
-    // 'visitDate',
+    'patientType',
+    'billDate',
     'billNo',
     'netAmt',
+    'discAmt',
     'paidAmt',
     'balAmt'
   ]
@@ -61,7 +63,7 @@ export class PrevlabHistoryComponent {
       "searchFields": [
         {
           "fieldName": "LabPatRegId",
-          "fieldValue": String(Obj),//"12",
+          "fieldValue": String(Obj),
           "opType": "13"
         }
       ],
@@ -79,7 +81,7 @@ export class PrevlabHistoryComponent {
       "searchFields": [
         {
           "fieldName": "LabPatRegId",
-          "fieldValue": String(Obj),//"12",
+          "fieldValue": String(Obj),
           "opType": "13"
         }
       ],
@@ -92,10 +94,26 @@ export class PrevlabHistoryComponent {
     })
   }
 
+  // extractUniqueBillNo() {
+  //   const vBillNo = this.dsPrevBillHistory.data.map(patient => patient.PBillNo);
+  //   this.uniqueBillNo = Array.from(new Set(vBillNo));
+  // }
   extractUniqueBillNo() {
-    const vBillNo = this.dsPrevBillHistory.data.map(patient => patient.PBillNo);
-    this.uniqueBillNo = Array.from(new Set(vBillNo));
+    const uniqueMap = new Map();
+
+    this.dsPrevBillHistory.data.forEach(patient => {
+      if (!uniqueMap.has(patient.PBillNo)) {
+        uniqueMap.set(patient.PBillNo, {
+          billNo: patient.PBillNo,
+          dateTime: patient.BillTime,
+          patientType: patient.PatientType
+        });
+      }
+    });
+
+    this.uniqueBillNo = Array.from(uniqueMap.values());
   }
+
 
   getFirstPatientForDate(billno: string) {
     return this.dsPrevBillHistory.data.filter(patient => patient.PBillNo === billno); //

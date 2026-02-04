@@ -34,6 +34,17 @@ export class LabPatientRegService {
     })
   }
 
+  createAbhadetailForm() {
+    return this._frombuilder.group({
+      hipCode: ['', this._FormvalidationserviceService.onlyNumberValidator()],
+      abhaAddress: ['', this._FormvalidationserviceService.allowEmptyStringValidator()],
+      abhaNumber: ['', this._FormvalidationserviceService.onlyNumberValidator()],
+      fullName: ['', this._FormvalidationserviceService.allowEmptyStringValidator()],
+      token: [''],
+      nameFormat: ['F_M_L']
+    });
+  }
+
   public getDoctorsByDepartment(deptId) {
     return this._httpClient.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
   }

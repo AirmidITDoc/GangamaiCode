@@ -48,11 +48,6 @@
                                         (selectionChange)="onChangePatient($event)"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
-                                        [formGroup]="myForm" [value]="data?.companyId"
-                                        [validations]="getValidationMessages().companyId"
-                                        [mode]="autocompleteModecompany"
-                                        (selectionChange)="onChangeCompany($event)"></airmid-dropdown> -->
                                     <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
                                         [formGroup]="myForm" [value]="data?.companyId" ValueField="companyId"
                                         TextField="companyName" [validations]="getValidationMessages().companyId"
@@ -60,27 +55,11 @@
                                         (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
                                 </div>
 
-                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Company Executive" formControlName="companyExecutiveId"
-                                        [formGroup]="myForm" #ddlcompanyExec ValueField="executiveId"
-                                        TextField="executiveName">
-                                    </airmid-dropdown>
-                                </div> -->
-                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="!isTariffSelect">
-                                    <airmid-dropdown label="Tariff Name" formControlName="tariffId" [formGroup]="myForm"
-                                        [value]="data?.tariffId" [mode]="autocompleteModetariff"
-                                        (selectionChange)="onChangeTariff($event)"></airmid-dropdown>
-                                </div>
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isTariffSelect">
-                                    <airmid-dropdown label="Company Tariff" formControlName="tariffId"
-                                        [formGroup]="myForm" [value]="data?.tariffId" [readonly]="true"
-                                        [mode]="autocompleteModetariff"
-                                        (selectionChange)="onChangeTariff($event)"></airmid-dropdown>
-                                </div> -->
                                 <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
                                         [validations]="getValidationMessages().refDocId" [formGroup]="myForm"
-                                        TextField="doctorName" ValueField="doctorId" ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                                        TextField="doctorName" ValueField="doctorId"
+                                        ApiUrl="Doctor/RefdoctorComboList?keywoard="
                                         (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -92,7 +71,7 @@
                         </form>
                     </div>
                     <div class="main-content overflow-auto ml-8" fxLayout="row" fxLayoutAlign="start stretch">
-                        <div style="width:40%;">
+                        <div style="width:40%;height: 450px;">
                             <div class="personal-panel">
                                 <mat-accordion multi>
                                     <mat-expansion-panel expanded>
@@ -231,7 +210,53 @@
                                             </form>
                                         </div>
                                     </mat-expansion-panel>
+                                    <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded2">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>ABHA</mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <form [formGroup]="abhaForm" class="mat-form-field-100">
+                                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="HIP Code" formControlName="hipCode"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
 
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Abha Address" formControlName="abhaAddress"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Abha Number" formControlName="abhaNumber"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Full Name" formControlName="fullName"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Token #" formControlName="token"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                                    <mat-radio-group formControlName="nameFormat" fxLayout="row"
+                                                        fxLayoutGap="10px">
+                                                        <mat-radio-button value="F_M_L">F_M_L Name</mat-radio-button>
+                                                        <mat-radio-button value="L_M_F">L_M_F Name</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                                                    <button type="button" class="btn btn-primary">Create ABHA</button>
+                                                    <button type="button" class="btn btn-primary">Verify ABHA</button>
+                                                    <button type="button" class="btn btn-primary">HIP QR Q</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </mat-expansion-panel>
                                 </mat-accordion>
                             </div>
                         </div>
@@ -403,10 +428,10 @@
                                                                 <mat-header-cell *matHeaderCellDef
                                                                     class="w-100">Action</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact" class="w-100">
-                                                                    <button mat-icon-button color="warn"
-                                                                        (click)="deleteTableRow(contact)"><mat-icon>delete_outline</mat-icon></button>
-                                                                    <button mat-icon-button color="warn"
-                                                                        (click)="deleteTableRow(contact)"><mat-icon>perm_device_information</mat-icon></button>
+                                                                    <button mat-icon-button matTooltip="Consent"
+                                                                        color="primary"><mat-icon>insert_drive_file</mat-icon></button>
+                                                                    <button mat-icon-button matTooltip="Info"
+                                                                        color="primary"><mat-icon>error_outline</mat-icon></button>
                                                                     <button mat-icon-button color="warn"
                                                                         (click)="deleteTableRow(contact)"><mat-icon>delete_outline</mat-icon></button>
                                                                 </mat-cell>
@@ -532,7 +557,8 @@
                                                             <airmid-textbox label="Discount %"
                                                                 formControlName="totalDiscountPer" [formGroup]="myForm"
                                                                 [min]="0" [max]="100" [readonly]="isDiscountApplied"
-                                                                [type]="'number'" (valueChange)="updateCalculation('PER')">
+                                                                [type]="'number'"
+                                                                (valueChange)="updateCalculation('PER')">
                                                             </airmid-textbox>
                                                         </div>
                                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">

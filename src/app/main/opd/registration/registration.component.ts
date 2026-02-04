@@ -346,12 +346,14 @@ export class RegInsert {
     medTourismDateOfEntry: Date;
     emgId: any
     ipdNo: any;
-    ipdno:any;
+    ipdno: any;
     genderName: any;
     traiffId: any;
     companyId: any;
     PBillNo: any;
-    BillNo:any;
+    BillNo: any;
+    BillTime: any;
+    PatientType: any;
 
     /**
      * Constructor
@@ -455,6 +457,8 @@ export class RegInsert {
             this.companyId = RegInsert.companyId || 0
             this.PBillNo = RegInsert.PBillNo || 0
             this.BillNo = RegInsert.BillNo || 0
+            this.BillTime = RegInsert.BillTime || ''
+            this.PatientType = RegInsert.PatientType || ''
         }
     }
 }

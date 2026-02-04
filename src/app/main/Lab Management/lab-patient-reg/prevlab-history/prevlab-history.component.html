@@ -16,16 +16,35 @@
 
     <div class="content">
 
-        <div class="center p-12 pb-56" fxFlexAlign="start center">
+        <div class="center p-12" fxFlexAlign="start center">
 
             <div class="content-card" style="border-radius:4px; height: 220px;">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="10px" fxLayoutAlign="stretch">
-                    <div class="detail-header" style="font-size: 16px; font-weight: bold;padding: 5px;">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="column" fxLayoutGap="5px" fxLayoutAlign="stretch">
+                    <div class="detail-header" style="font-size: 16px; font-weight: bold;">
                         Credit Billing List
                     </div>
                     <div style="flex: 1 1 auto; overflow: auto;">
                         <mat-table #table1 matSort [dataSource]="dsPrevCreditHistory" [@animateStagger]="{value:'50'}"
                             style="width: 100%;">
+
+                            <ng-container matColumnDef="patientType">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                    -
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                    <span>{{ contact.PatientType ? 'Company' : 'Self' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="billDate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span>{{ contact.BillTime ? (contact.BillTime | date:'dd/MM/yyyy hh:mm a') : '-'
+                                        }}</span>
+                                </mat-cell>
+                            </ng-container>
 
                             <ng-container matColumnDef="billNo">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -41,6 +60,14 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.NetPayableAmt || '-'}}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="discAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DiscAmt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <span> {{contact.ConcessionAmt || '-'}}</span>
                                 </mat-cell>
                             </ng-container>
 
@@ -106,14 +133,52 @@
                                         <div fxLayout="column" fxLayoutGap="6px">
                                             <div fxFlex.gt-sm="100%" fxlayout="column">
                                                 <div class="visit-info-title" fxLayoutAlign="space-between">
-                                                    <span style="font-weight: 900;">
-                                                        BillNo : {{ data }}
-                                                    </span>
+                                                    <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="start center">
+                                                        <span>
+                                                            <strong>Bill No :</strong> {{ data.billNo }}
+                                                        </span><br>
+
+                                                        <span>
+                                                            <strong>Date & Time :</strong> {{ data.dateTime | date:'dd-MM-yyyy HH:mm' }}
+                                                        </span><br>
+
+                                                        <span>
+                                                            <strong>Patient Type :</strong> {{ data.patientType ? 'Company' : 'Self'}}
+                                                        </span>
+                                                    </div>
+
                                                     <mat-icon matTooltip="Copy" style="cursor: pointer;"
-                                                        (click)="getCopyPreviouseList(data)">file_copy</mat-icon>
+                                                        (click)="getCopyPreviouseList(data.billNo)">
+                                                        file_copy
+                                                    </mat-icon>
                                                 </div>
+                                                <!-- <div class="visit-info-title" fxLayoutAlign="space-between center">
+                                                    <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="start center">
+
+                                                        <span style="font-weight: 900;">
+                                                            Bill No : {{ data.billNo }}
+                                                        </span>
+
+                                                        <span fxLayout="row" fxLayoutGap="4px"
+                                                            fxLayoutAlign="start center">
+                                                            <mat-icon>access_time</mat-icon>
+                                                            {{ data.dateTime | date:'dd-MM-yyyy HH:mm' }}
+                                                        </span>
+
+                                                        <mat-icon matTooltip="Patient Type" color="primary">
+                                                            {{ data.patientType ? 'business' : 'person' }}
+                                                        </mat-icon>
+
+                                                    </div>
+
+                                                    <mat-icon matTooltip="Copy" style="cursor: pointer;"
+                                                        (click)="getCopyPreviouseList(data.billNo)">
+                                                        file_copy
+                                                    </mat-icon>
+                                                </div> -->
+
                                                 <hr>
-                                                <table mat-table [dataSource]="getFirstPatientForDate(data)"
+                                                <table mat-table [dataSource]="getFirstPatientForDate(data.billNo)"
                                                     [@animateStagger]="{value:'50'}" style="width: 100%;overflow: auto">
 
                                                     <ng-container matColumnDef="ServiceName">
