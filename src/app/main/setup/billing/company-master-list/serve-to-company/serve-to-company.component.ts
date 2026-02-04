@@ -62,8 +62,8 @@ export class ServeToCompanyComponent {
         // 'qty',
         'classRate',
         'DiscountAmount',
-        'DiscountPercentage'
-        // 'checkbox',
+        'DiscountPercentage',
+        'patientRate',
         // 'Action'
     ];
 
@@ -219,6 +219,7 @@ export class ServeToCompanyComponent {
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discountAmount: [item.DiscountAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discountPercentage: [item.DiscountPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // patientRate: [item.patientRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     get serviceDetailsArray(): FormArray {

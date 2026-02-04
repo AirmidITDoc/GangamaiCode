@@ -58,6 +58,8 @@ export class LabPatientRegComponent {
 
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Add);
   IsEdit: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Edit);
+  // billView: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.View);
+  // print: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Edit);
 
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
@@ -580,11 +582,35 @@ export class LabPatientRegComponent {
     });
 
   }
-  viewgetOPBillReportPdf(element) {
+  viewgetOPBillReportPdf(element, mode: string) {
     // this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
-    this.commonService.Onprint("BillNo", element.billNo, "LabMoneyReceipt");
+    this.commonService.Onprint("BillNo", element.billNo, mode);
   }
 
+  getPrint(contact) {
+
+    console.log(contact)
+
+    Swal.fire({
+      title: 'Select Report Format',
+      text: "Choose how you want to view the report:",
+      icon: "warning",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      denyButtonColor: "#6c757d",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "With Header",
+      denyButtonText: "Without Header",
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        this.viewgetOPBillReportPdf(contact, "LabMoneyReceipt");
+      } else if (result.isDenied) {
+        this.viewgetOPBillReportPdf(contact, "LabMoneyReceiptWithoutHeader");
+      }
+    });
+  }
 
   OnEstimate() {
     const dialogRef = this._matDialog.open(EstimateForPatientComponent,

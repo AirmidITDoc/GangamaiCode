@@ -81,7 +81,8 @@
 
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-            <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)" *ngIf="IsEdit">
+            <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)"
+                [style.visibility]="IsEdit ? 'visible' : 'hidden'">
                 <mat-icon>edit</mat-icon>
             </button>
 
@@ -92,29 +93,27 @@
             <airmid-fileupload-icon [refId]="element.labPatientId" [refType]="page" [multiple]="true"
                 [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
 
-            <button mat-icon-button matTooltip="Final Discount" *ngIf="element.balanceAmt > 0"
-                (click)="getFinalDisc(element)">
+            <button mat-icon-button matTooltip="Final Discount"
+                [style.visibility]="element.balanceAmt > 0 ? 'visible' : 'hidden'" (click)="getFinalDisc(element)">
                 <mat-icon> money </mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Print" (click)="viewgetOPBillReportPdf(element)">
+            <button mat-icon-button matTooltip="Print" (click)="getPrint(element)">
                 <mat-icon>print</mat-icon>
             </button>
 
-              <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatch(element)">
-                     <img width="40" height="40" src="assets/images/logos/DispatchReport.png">
-              
+            <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatch(element)">
+                <img width="40" height="40" src="assets/images/logos/DispatchReport.png">
+
             </button>
             <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
-                 <img width="40" height="40" src="assets/images/logos/SMS.png">
-              
+                <img width="40" height="40" src="assets/images/logos/SMS.png">
+
             </button>
             <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
                 (click)="$event.stopPropagation();">
                 <mat-icon>more_vert</mat-icon>
             </button>
-          
-           
 
             <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
 

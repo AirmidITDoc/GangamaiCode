@@ -31,7 +31,7 @@ export class BranchWiseSummaryComponent {
 
   myformSearch: FormGroup;
   myServicewiseSearch: FormGroup;
-  fromDate ="2026-01-01"//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -107,9 +107,9 @@ export class BranchWiseSummaryComponent {
   ngOnInit(): void {
     this.myformSearch = this._LabResultListService.createBranchSummarySearchForm()
     this.myServicewiseSearch = this._LabResultListService.createServicerevenuSearchForm()
-    setTimeout(() => {
-      this.initializeCharts();
-    }, 500);
+    // setTimeout(() => {
+    //   this.initializeCharts();
+    // }, 500);
     this.GetBillRevenudetail();
   }
 
@@ -124,7 +124,7 @@ export class BranchWiseSummaryComponent {
   }
 
   onChangeFirst() {
-    this.updateDateFilteredCharts();
+    // this.updateDateFilteredCharts();
     this.UnitId = this.myformSearch.get('UnitId').value || "0"
 
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
@@ -137,7 +137,7 @@ export class BranchWiseSummaryComponent {
     this.getfilterdataDoctorWise();
     this.getfilterdataB2bWise();
 
-    // this.paymentModeChart = this.getPaymentDoughnutChart();
+    this.paymentModeChart = this.getPaymentDoughnutChart();
   }
 
   getfilterdata() {
@@ -166,13 +166,213 @@ export class BranchWiseSummaryComponent {
 
   Clearfilter1(event) {
     console.log(event)
-    
+
   }
   onClear() {
     // this.myformSearch.get('RegNoSearch').setValue("0");
     // this.myformSearch.get('StatusSearch').setValue("0");
     // this.myformSearch.get('PatientTypeSearch').setValue("3");
   }
+
+  TotAmt = 0
+  TotconAmt = 0
+  TotNetamt = 0
+
+  count = 0
+  TotCount = 0
+  getsumdetail() {
+    // debugger
+    this.count = this.Billdetaildatasource.data.length
+
+    this.TotCount = this.Billdetaildatasource.data.reduce((sum, { patientCount }) => sum += +(patientCount || 0), 0);
+
+    this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netRevenue }) => sum += +(netRevenue || 0), 0);
+
+    // this.TotDocAmt = this.Billdetaildatasource.data.reduce((sum, { docAmt }) => sum += +(docAmt || 0), 0);
+    // this.TothospitalAmt = this.Billdetaildatasource.data.reduce((sum, { hospitalAmt }) => sum += +(hospitalAmt || 0), 0);
+
+  }
+
+  //service wise
+
+  allServicefilters = [
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+  ];
+
+  allServicecolumns = [
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 1500 },
+    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    // { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    {
+      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate1
+    }  // Assign ng-template to the column
+
+  ];
+
+
+  gridConfig1: gridModel = {
+
+    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    columnsList: this.allServicecolumns,
+    sortField: "UnitId",
+    sortOrder: 0,
+    filters: this.allServicefilters
+  }
+
+  getfilterdataservice() {
+
+    this.gridConfig1 = {
+      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      columnsList: this.allServicecolumns,
+      sortField: "UnitId",
+      sortOrder: 0,
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
+  }
+
+  // category wise
+
+  allCategoryfilters = [
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+  ];
+
+  allCategorycolumns = [
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 1500 },
+    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    // { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    {
+      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate1
+    }  // Assign ng-template to the column
+
+  ];
+
+  gridConfig2: gridModel = {
+    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    columnsList: this.allCategorycolumns,
+    sortField: "UnitId",
+    sortOrder: 0,
+    filters: this.allCategoryfilters
+  }
+
+  getfilterdataCategoryWise() {
+    this.gridConfig2 = {
+      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      columnsList: this.allCategorycolumns,
+      sortField: "UnitId",
+      sortOrder: 0,
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid2.gridConfig = this.gridConfig2;
+    this.grid2.bindGridData();
+  }
+
+  // doctor wise
+
+  alldoctorfilters = [
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+  ];
+
+  alldoctorcolumns = [
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 1500 },
+    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    // { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    {
+      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate1
+    }  // Assign ng-template to the column
+
+  ];
+
+  gridConfig3: gridModel = {
+    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    columnsList: this.alldoctorcolumns,
+    sortField: "UnitId",
+    sortOrder: 0,
+    filters: this.alldoctorfilters
+  }
+
+  getfilterdataDoctorWise() {
+    this.gridConfig3 = {
+      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      columnsList: this.alldoctorcolumns,
+      sortField: "UnitId",
+      sortOrder: 0,
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid3.gridConfig = this.gridConfig3;
+    this.grid3.bindGridData();
+  }
+
+  // b2b wise
+
+  all2b2filters = [
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+  ];
+
+  all2b2columns = [
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 1500 },
+    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    // { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    {
+      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate1
+    }  // Assign ng-template to the column
+
+  ];
+
+  gridConfig4: gridModel = {
+    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    columnsList: this.all2b2columns,
+    sortField: "UnitId",
+    sortOrder: 0,
+    filters: this.all2b2filters
+  }
+
+  getfilterdataB2bWise() {
+    this.gridConfig4 = {
+      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      columnsList: this.all2b2columns,
+      sortField: "UnitId",
+      sortOrder: 0,
+      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+      ]
+    }
+    this.grid4.gridConfig = this.gridConfig4;
+    this.grid4.bindGridData();
+  }
+
+  viewgetReportPdf() { }
 
   Billdetaildatasource = new MatTableDataSource<BillRevenuList>();
   paydata = []
@@ -209,15 +409,15 @@ export class BranchWiseSummaryComponent {
     }
 
     console.log(vdata)
-    
+    // debugger
     this._LabResultListService.getBillrevenudetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillRevenuList[]
       console.log(this.Billdetaildatasource.data)
       this.paydata = [];
 
-      // if (this.paymentModeChart) {
-      //   this.paymentModeChart.destroy();
-      // }
+      if (this.paymentModeChart) {
+        this.paymentModeChart.destroy();
+      }
       this.Billdetaildatasource.data.forEach(element => {
         console.log(element)
         this.paydata.push({
@@ -228,156 +428,50 @@ export class BranchWiseSummaryComponent {
         // this.paymentModeData1.push(this.paydata)
       })
 
+      // ✅ Re-create chart AFTER data is ready
+      setTimeout(() => {
+        this.renderPaymentChart();
+      }, 0);
+
       // console.log(this.paymentModeData1)
       if (this.Billdetaildatasource.data.length > 0)
         this.getsumdetail()
     })
   }
 
-  TotAmt = 0
-  TotconAmt = 0
-  TotNetamt = 0
-
-  count = 0
-  TotCount = 0
-  getsumdetail() {
-    
-    this.count = this.Billdetaildatasource.data.length
-    this.TotCount = this.Billdetaildatasource.data.reduce((sum, { patientCount }) => sum += +(patientCount || 0), 0);
-    this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netRevenue }) => sum += +(netRevenue || 0), 0);
-
-    // this.TotDocAmt = this.Billdetaildatasource.data.reduce((sum, { docAmt }) => sum += +(docAmt || 0), 0);
-    // this.TothospitalAmt = this.Billdetaildatasource.data.reduce((sum, { hospitalAmt }) => sum += +(hospitalAmt || 0), 0);
-
-  }
-
-  //service wise
-
-  allServicefilters = [
-    { fieldName: "UnitId", fieldValue: String(this.UnitId1), opType: OperatorComparer.Equals },
-    { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
-    { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.Equals }
-  ];
-
-  allervicecolumns = [
-    // { heading: "UnitBranchName", key: "unitBranchName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-
-    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 900 },
-    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-    {
-      heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate1
-    }  // Assign ng-template to the column
-
-  ];
-
-
-  gridConfig1: gridModel = {
-
-    apiUrl: "Branch/UnitBranchWiseTestSummary",
-    columnsList: this.allervicecolumns,
-    sortField: "UnitId",
-    sortOrder: 0,
-    filters: this.allServicefilters
-  }
-  
-  getfilterdataservice() {
-
-    this.gridConfig1 = {
-      apiUrl: "Branch/UnitBranchWiseTestSummary",
-      columnsList: this.allervicecolumns,
-      sortField: "UnitId",
-      sortOrder: 0,
-      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-      ]
-    }
-    this.grid1.gridConfig = this.gridConfig1;
-    this.grid1.bindGridData();
-  }
-  
-   gridConfig2: gridModel = {
-    apiUrl: "Branch/UnitBranchWiseTestSummary",
-    columnsList: this.allervicecolumns,
-    sortField: "UnitId",
-    sortOrder: 0,
-    filters: this.allServicefilters
-  }
-  
-  getfilterdataCategoryWise() {
-    this.gridConfig2 = {
-      apiUrl: "Branch/UnitBranchWiseTestSummary",
-      columnsList: this.allervicecolumns,
-      sortField: "UnitId",
-      sortOrder: 0,
-      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-      ]
-    }
-    this.grid2.gridConfig = this.gridConfig2;
-    this.grid2.bindGridData();
-  }
-
-   gridConfig3: gridModel = {
-    apiUrl: "Branch/UnitBranchWiseTestSummary",
-    columnsList: this.allervicecolumns,
-    sortField: "UnitId",
-    sortOrder: 0,
-    filters: this.allServicefilters
-  }
-  
-  getfilterdataDoctorWise() {
-    this.gridConfig3 = {
-      apiUrl: "Branch/UnitBranchWiseTestSummary",
-      columnsList: this.allervicecolumns,
-      sortField: "UnitId",
-      sortOrder: 0,
-      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-      ]
-    }
-    this.grid3.gridConfig = this.gridConfig3;
-    this.grid3.bindGridData();
-  }
-
-   gridConfig4: gridModel = {
-    apiUrl: "Branch/UnitBranchWiseTestSummary",
-    columnsList: this.allervicecolumns,
-    sortField: "UnitId",
-    sortOrder: 0,
-    filters: this.allServicefilters
-  }
-  
-  getfilterdataB2bWise() {
-    this.gridConfig4 = {
-      apiUrl: "Branch/UnitBranchWiseTestSummary",
-      columnsList: this.allervicecolumns,
-      sortField: "UnitId",
-      sortOrder: 0,
-      filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-      ]
-    }
-    this.grid4.gridConfig = this.gridConfig4;
-    this.grid4.bindGridData();
-  }
-
-  viewgetReportPdf() { }
-  
-  getPaymentDoughnutChart() {
-
+  renderPaymentChart() {
     if (this.paymentModeChart) {
       this.paymentModeChart.destroy();
+      this.paymentModeChart = null!;
     }
-    debugger
+
+    this.paymentModeChart = new Chart('paymentModeChart', {
+      type: 'doughnut',
+      data: {
+        labels: this.paydata.map(d => d.mode),
+        datasets: [{
+          data: this.paydata.map(d => d.amount),
+          backgroundColor: ['#FF3784', '#36A2EB', '#4BC0C0', '#F77825']
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label(context) {
+                return `₹${context.parsed.toLocaleString('en-IN')}`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  getPaymentDoughnutChart() {
+    // debugger
     return new Chart('paymentModeChart', {
       type: 'doughnut',
       data: {
@@ -393,7 +487,7 @@ export class BranchWiseSummaryComponent {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: 'top'
+            position: 'bottom'
           },
           tooltip: {
             enabled: true,
@@ -413,37 +507,33 @@ export class BranchWiseSummaryComponent {
     });
   }
 
-  initializeCharts(): void {
-    console.log('Initializing charts...');
+  // initializeCharts(): void {
+  //   console.log('Initializing charts...');
 
-    if (document.getElementById('paymentModeChart')) {
-      console.log('Creating payment mode chart');
-      try {
-        this.paymentModeChart = this.getPaymentDoughnutChart();
-      } catch (error) {
-        console.error('Error creating payment mode chart:', error);
-      }
-    }
+  //   if (document.getElementById('paymentModeChart')) {
+  //     console.log('Creating payment mode chart');
+  //     try {
+  //       this.paymentModeChart = this.getPaymentDoughnutChart();
+  //     } catch (error) {
+  //       console.error('Error creating payment mode chart:', error);
+  //     }
+  //   }
+  //   console.log('Charts initialization complete');
+  // }
 
+  // updateDateFilteredCharts(): void {
 
-    console.log('Charts initialization complete');
-  }
+  //   if (this.paymentModeChart) {
+  //     this.paymentModeChart.destroy();
+  //   }
+  //   // Reinitialize the affected charts
+  //   setTimeout(() => {
 
-  updateDateFilteredCharts(): void {
-
-    if (this.paymentModeChart) {
-      this.paymentModeChart.destroy();
-    }
-
-    // Reinitialize the affected charts
-    setTimeout(() => {
-
-     this.paymentModeChart = this.getPaymentDoughnutChart();
-      
-      // this.initializeCharts()
-
-    }, 500);
-  }
+  //     if (document.getElementById('paymentModeChart')) {
+  //       this.paymentModeChart = this.getPaymentDoughnutChart();
+  //     }
+  //   }, 100);
+  // }
 }
 
 

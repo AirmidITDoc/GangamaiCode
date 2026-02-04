@@ -75,6 +75,9 @@ export class LabSampleCollectionService {
     return this._httpClient1.PostData("PathlogySampleCollection/UpdateSamplecollectionDatetime", employee);
   }
 
+  public getSampleDetailsListLab(employee) {
+    return this._httpClient1.PostData("LabPatientRegistration/LabSampleCollectionDetailList", employee)
+  }
 
   public InsertLabDetail(employee) {
 

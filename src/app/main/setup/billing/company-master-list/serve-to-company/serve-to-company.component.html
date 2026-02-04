@@ -131,6 +131,16 @@
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
+
+                    <ng-container matColumnDef="patientRate">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientRate</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="element.classRate" OnlyNumber
+                            (keypress)="keyPressCharater($event)" />
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
                     <!--  (keyup)="gettableclassrate(element, $event.value)" -->
 
                     <ng-container matColumnDef="noData">

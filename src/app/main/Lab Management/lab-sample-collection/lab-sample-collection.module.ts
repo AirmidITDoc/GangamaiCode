@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { LabSampleCollectionComponent } from './lab-sample-collection.component';
+import { LabsampleCollFormComponent } from './labsample-coll-form/labsample-coll-form.component';
 
 const routes: Routes = [
   {
@@ -50,7 +51,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LabSampleCollectionComponent],
+  declarations: [LabSampleCollectionComponent, LabsampleCollFormComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

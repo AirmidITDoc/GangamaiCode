@@ -28,6 +28,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
 import { PrevlabHistoryComponent } from '../prevlab-history/prevlab-history.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -114,7 +115,7 @@ export class NewLabPatientRegComponent {
   isTariffSelect: boolean = false;
   patienttype = 0
   mode: any;
-
+  isExpanded2 = false;
   public chargeList: ChargesList[] = [];
 
   savebtn: boolean = true;
@@ -141,6 +142,7 @@ export class NewLabPatientRegComponent {
 
   doctorOptions: any[] = [];
   onlineflag: boolean = false;
+  abhaForm: FormGroup;
   UnitId: any = this.accountService.currentUserValue.user.unitId;
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
@@ -176,6 +178,7 @@ export class NewLabPatientRegComponent {
     this.OpBillForm = this.createTotalChargeForm();
     this.OPFooterForm = this.CreateOPFooter();
     // this.TPaymentForm = this.CreateModePaymentform();
+    this.abhaForm = this._labPatientRegService.createAbhadetailForm();
 
     this.mode = this.data?.mode || 'add';
 
@@ -531,6 +534,11 @@ export class NewLabPatientRegComponent {
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
+  }
+
+  selectedTabIndex = 0;
+  onTabChange(event: MatTabChangeEvent) {
+    this.selectedTabIndex = event.index;
   }
 
   onChangePatient(value) {
