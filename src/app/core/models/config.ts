@@ -113,6 +113,7 @@ OPEmrPrescriptionA5:any;
 IsIndentVerify:any
 IsMaterialAcceptDirect:any
 IsMaterialAcceptAgainstIndent:any
+IsMaterialAccept:any;
  /**
      * Constructor
      *
@@ -234,6 +235,7 @@ this.IsDischargeSummaryTemplate=ConfigSettingParams.IsDischargeSummaryTemplate;
 this.IsIndentVerify=ConfigSettingParams.IsIndentVerify;
 this.IsMaterialAcceptDirect=ConfigSettingParams.IsMaterialAcceptDirect;
 this.IsMaterialAcceptAgainstIndent=ConfigSettingParams.IsMaterialAcceptAgainstIndent;
+this.IsMaterialAccept=ConfigSettingParams.IsMaterialAccept;
     }
 
 }
