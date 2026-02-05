@@ -938,7 +938,7 @@
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
                                             *ngIf="OPFooterForm.get('paymentType')?.value === 'Mpesa'">
                                             <airmid-textbox label="PMesa Mobile" formControlName="mpesaMobile"
-                                                [formGroup]="OPFooterForm" maxlength="10" min="10"
+                                                [formGroup]="OPFooterForm" 
                                                 [validations]="getValidationMessages().mpesaMobile">
                                             </airmid-textbox>
                                         </div>
@@ -970,6 +970,7 @@
                                             <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
                                             <mat-radio-button value="OnlinePay">Online Payment</mat-radio-button>
                                             <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
+                                            <mat-radio-button value="Mpesa">MPesa</mat-radio-button>
                                              
                                         </mat-radio-group>
                                         <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4" *ngIf="Is9_Digit_National_Id">

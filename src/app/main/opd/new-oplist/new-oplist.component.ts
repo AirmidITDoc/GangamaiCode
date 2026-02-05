@@ -1031,7 +1031,7 @@ export class NewOPListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.paymentId,
-            smsType: "OpBillReceipt",
+            smsType: "OPBill",
             patientId:el.regNo
         })
     }
@@ -1043,7 +1043,7 @@ export class NewOPListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType:'OpBillReceipt'
+                    emailType:'OPBill'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

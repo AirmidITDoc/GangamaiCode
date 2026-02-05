@@ -414,7 +414,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: ['CreditPay'],
             GovrnApprovAmt: [0],
-            mpesaMobile: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+            mpesaMobile: ['' ],
             UpiNo: [0]
         })
     }
