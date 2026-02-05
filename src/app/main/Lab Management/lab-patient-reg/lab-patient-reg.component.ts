@@ -586,6 +586,9 @@ export class LabPatientRegComponent {
     // this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
     this.commonService.Onprint("BillNo", element.billNo, mode);
   }
+  viewgetOPBillReportPdf1(element, mode: string) {
+    this.commonService.Onprint("BillNo", element.billNo, mode);
+  }
 
   getPrint(contact) {
 
@@ -605,7 +608,22 @@ export class LabPatientRegComponent {
     }).then((result) => {
 
       if (result.isConfirmed) {
-        this.viewgetOPBillReportPdf(contact, "LabMoneyReceipt");
+        // this.viewgetOPBillReportPdf(contact, "LabMoneyReceipt");
+        Swal.fire({
+          title: 'More Options',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'With Header',
+          denyButtonText: 'With Image',
+          showDenyButton: true,
+        }).then(subResult => {
+
+          if (subResult.isConfirmed) {
+            this.viewgetOPBillReportPdf(contact, 'LabMoneyReceipt');
+          } else if (subResult.isDenied) {
+            this.viewgetOPBillReportPdf1(contact, 'LabMoneyReceiptWithImage');
+          }
+        });
       } else if (result.isDenied) {
         this.viewgetOPBillReportPdf(contact, "LabMoneyReceiptWithoutHeader");
       }
@@ -1149,214 +1167,214 @@ export class ChargesList {
 }
 
 export class RegInsert {
-    RegId: Number;
-    regId: Number;
-    RegID: Number;
-    RegDate: Date;
-    regDate: Date;
-    PatientName: string;
-    patientName: string;
-    // RegTime: Time;
-    prefixId: number;
-    PrefixId: number;
-    PrefixID: number;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    FirstName: string;
-    MiddleName: string;
-    LastName: string;
-    Address: string;
-    address: string;
-    City: string;
-    city: string;
-    PinNo: string;
-    regNo: string;
-    RegNo: string;
-    dateOfBirth: Date;
-    dateofBirth: Date;
-    DateofBirth: Date;
-    Age: any;
-    age: any;
-    GenderId: Number;
-    genderId: any;
-    PhoneNo: string;
-    phoneNo: string;
-    MobileNo: string;
-    mobileNo: string;
-    AddedBy: number;
-    AgeYear: any;
-    AgeMonth: any;
-    AgeDay: any;
-    ageYear: any;
-    ageMonth: any;
-    ageDay: any;
-    CountryId: number;
-    countryId: number;
-    StateId: number;
-    stateId: number;
-    CityId: number;
-    cityId: number;
-    MaritalStatusId: number;
-    maritalStatusId: number;
-    IsCharity: Boolean;
-    ReligionId: number;
-    religionId: number;
-    AreaId: number;
-    areaId: number;
-    VillageId: number;
-    TalukaId: number;
-    PatientWeight: number;
-    AreaName: string;
-    AadharCardNo: string;
-    aadharCardNo: string;
-    PanCardNo: string;
-    currentDate = new Date();
-    AdmissionID: any;
-    VisitId: any;
-    isSeniorCitizen: boolean
-    doctorName: any;
-    departmentName: any;
-    UnitId: any;
-    billNo: any;
-    departmentId: any;
-    doctorId: any;
-    campId: any;
-    emgContactPersonName: any;
-    emgRelationshipId: any;
-    emgMobileNo: any;
-    emgLandlineNo: any;
-    engAddress: any;
-    emgAadharCardNo: any;
-    emgDrivingLicenceNo: any;
-    medTourismNationalityId: any;
-    medTourismPassportNo: any;
-    medTourismVisaIssueDate: Date;
-    medTourismCitizenship: any;
-    medTourismPortOfEntry: any;
-    medTourismResidentialAddress: any;
-    medTourismOfficeWorkAddress: any;
-    medTourismVisaValidityDate: Date;
-    medTourismDateOfEntry: Date;
-    emgId: any
-    ipdNo: any;
-    ipdno: any;
-    genderName: any;
-    traiffId: any;
-    companyId: any;
-    PBillNo: any;
-    BillNo: any;
-    BillTime: any;
-    PatientType: any;
-    CompanyExecutiveName:any;
-DoctorExecutiveName:any;
+  RegId: Number;
+  regId: Number;
+  RegID: Number;
+  RegDate: Date;
+  regDate: Date;
+  PatientName: string;
+  patientName: string;
+  // RegTime: Time;
+  prefixId: number;
+  PrefixId: number;
+  PrefixID: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  FirstName: string;
+  MiddleName: string;
+  LastName: string;
+  Address: string;
+  address: string;
+  City: string;
+  city: string;
+  PinNo: string;
+  regNo: string;
+  RegNo: string;
+  dateOfBirth: Date;
+  dateofBirth: Date;
+  DateofBirth: Date;
+  Age: any;
+  age: any;
+  GenderId: Number;
+  genderId: any;
+  PhoneNo: string;
+  phoneNo: string;
+  MobileNo: string;
+  mobileNo: string;
+  AddedBy: number;
+  AgeYear: any;
+  AgeMonth: any;
+  AgeDay: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  CountryId: number;
+  countryId: number;
+  StateId: number;
+  stateId: number;
+  CityId: number;
+  cityId: number;
+  MaritalStatusId: number;
+  maritalStatusId: number;
+  IsCharity: Boolean;
+  ReligionId: number;
+  religionId: number;
+  AreaId: number;
+  areaId: number;
+  VillageId: number;
+  TalukaId: number;
+  PatientWeight: number;
+  AreaName: string;
+  AadharCardNo: string;
+  aadharCardNo: string;
+  PanCardNo: string;
+  currentDate = new Date();
+  AdmissionID: any;
+  VisitId: any;
+  isSeniorCitizen: boolean
+  doctorName: any;
+  departmentName: any;
+  UnitId: any;
+  billNo: any;
+  departmentId: any;
+  doctorId: any;
+  campId: any;
+  emgContactPersonName: any;
+  emgRelationshipId: any;
+  emgMobileNo: any;
+  emgLandlineNo: any;
+  engAddress: any;
+  emgAadharCardNo: any;
+  emgDrivingLicenceNo: any;
+  medTourismNationalityId: any;
+  medTourismPassportNo: any;
+  medTourismVisaIssueDate: Date;
+  medTourismCitizenship: any;
+  medTourismPortOfEntry: any;
+  medTourismResidentialAddress: any;
+  medTourismOfficeWorkAddress: any;
+  medTourismVisaValidityDate: Date;
+  medTourismDateOfEntry: Date;
+  emgId: any
+  ipdNo: any;
+  ipdno: any;
+  genderName: any;
+  traiffId: any;
+  companyId: any;
+  PBillNo: any;
+  BillNo: any;
+  BillTime: any;
+  PatientType: any;
+  CompanyExecutiveName: any;
+  DoctorExecutiveName: any;
 
-    /**
-     * Constructor
-     *
-     * @param RegInsert
-     */
+  /**
+   * Constructor
+   *
+   * @param RegInsert
+   */
 
-    constructor(RegInsert) {
-        {
-            this.RegId = RegInsert.RegId || 0;
-            this.regId = RegInsert.regId || 0;
-            this.RegID = RegInsert.RegID || 0;
-            this.RegDate = RegInsert.RegDate || this.currentDate;
-            this.regDate = RegInsert.regDate || this.currentDate;
-            this.patientName = RegInsert.patientName;
-            // this.RegTime = RegInsert.RegTime || this.currentDate;
-            this.prefixId = RegInsert.prefixId || 0;
-            this.PrefixId = RegInsert.PrefixId || 0;
-            this.PrefixID = RegInsert.PrefixID || 0;
-            this.PrefixID = RegInsert.PrefixID || 0;
-            this.firstName = RegInsert.firstName || '';
-            this.middleName = RegInsert.middleName || '%';
-            this.lastName = RegInsert.lastName || '';
-            this.FirstName = RegInsert.FirstName || '';
-            this.MiddleName = RegInsert.MiddleName || '';
-            this.LastName = RegInsert.LastName || '';
-            this.Address = RegInsert.Address || '';
-            this.RegNo = RegInsert.RegNo || '';
-            this.regNo = RegInsert.regNo || '';
-            this.City = RegInsert.City || 'SS';
-            this.PinNo = RegInsert.PinNo || '';
-            this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;
-            this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
-            this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
-            this.Age = RegInsert.Age || '';
-            this.GenderId = RegInsert.GenderId || 0;
-            this.genderId = RegInsert.genderId || 0;
-            this.PhoneNo = RegInsert.PhoneNo || '';
-            this.phoneNo = RegInsert.phoneNo || '';
-            this.MobileNo = RegInsert.MobileNo || '';
-            this.mobileNo = RegInsert.mobileNo || '';
-            this.AddedBy = RegInsert.AddedBy || '';
-            this.AgeYear = RegInsert.AgeYear || '0';
-            this.AgeMonth = RegInsert.AgeMonth || '0';
-            this.AgeDay = RegInsert.AgeDay || '0';
-            this.ageYear = RegInsert.ageYear || '0';
-            this.ageMonth = RegInsert.ageMonth || '0';
-            this.ageDay = RegInsert.ageDay || '0';
-            this.CountryId = RegInsert.CountryId || 0;
-            this.countryId = RegInsert.countryId || 0;
-            this.StateId = RegInsert.StateId || 0;
-            this.stateId = RegInsert.stateId || 0;
-            this.CityId = RegInsert.CityId || 0;
-            this.cityId = RegInsert.cityId || 0;
-            this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
+  constructor(RegInsert) {
+    {
+      this.RegId = RegInsert.RegId || 0;
+      this.regId = RegInsert.regId || 0;
+      this.RegID = RegInsert.RegID || 0;
+      this.RegDate = RegInsert.RegDate || this.currentDate;
+      this.regDate = RegInsert.regDate || this.currentDate;
+      this.patientName = RegInsert.patientName;
+      // this.RegTime = RegInsert.RegTime || this.currentDate;
+      this.prefixId = RegInsert.prefixId || 0;
+      this.PrefixId = RegInsert.PrefixId || 0;
+      this.PrefixID = RegInsert.PrefixID || 0;
+      this.PrefixID = RegInsert.PrefixID || 0;
+      this.firstName = RegInsert.firstName || '';
+      this.middleName = RegInsert.middleName || '%';
+      this.lastName = RegInsert.lastName || '';
+      this.FirstName = RegInsert.FirstName || '';
+      this.MiddleName = RegInsert.MiddleName || '';
+      this.LastName = RegInsert.LastName || '';
+      this.Address = RegInsert.Address || '';
+      this.RegNo = RegInsert.RegNo || '';
+      this.regNo = RegInsert.regNo || '';
+      this.City = RegInsert.City || 'SS';
+      this.PinNo = RegInsert.PinNo || '';
+      this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;
+      this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
+      this.DateofBirth = RegInsert.DateofBirth || this.currentDate;
+      this.Age = RegInsert.Age || '';
+      this.GenderId = RegInsert.GenderId || 0;
+      this.genderId = RegInsert.genderId || 0;
+      this.PhoneNo = RegInsert.PhoneNo || '';
+      this.phoneNo = RegInsert.phoneNo || '';
+      this.MobileNo = RegInsert.MobileNo || '';
+      this.mobileNo = RegInsert.mobileNo || '';
+      this.AddedBy = RegInsert.AddedBy || '';
+      this.AgeYear = RegInsert.AgeYear || '0';
+      this.AgeMonth = RegInsert.AgeMonth || '0';
+      this.AgeDay = RegInsert.AgeDay || '0';
+      this.ageYear = RegInsert.ageYear || '0';
+      this.ageMonth = RegInsert.ageMonth || '0';
+      this.ageDay = RegInsert.ageDay || '0';
+      this.CountryId = RegInsert.CountryId || 0;
+      this.countryId = RegInsert.countryId || 0;
+      this.StateId = RegInsert.StateId || 0;
+      this.stateId = RegInsert.stateId || 0;
+      this.CityId = RegInsert.CityId || 0;
+      this.cityId = RegInsert.cityId || 0;
+      this.MaritalStatusId = RegInsert.MaritalStatusId || 0;
 
-            this.IsCharity = RegInsert.IsCharity || false;
-            this.ReligionId = RegInsert.ReligionId || 0;
-            this.religionId = RegInsert.religionId || 0;
-            this.AreaId = RegInsert.AreaId || 0;
-            this.areaId = RegInsert.areaId || 0;
-            this.VillageId = RegInsert.VillageId || '';
-            this.TalukaId = RegInsert.TalukaId || '';
-            this.PatientWeight = RegInsert.PatientWeight || '';
-            this.AreaName = RegInsert.AreaName || '';
-            this.AadharCardNo = RegInsert.AadharCardNo || '';
-            this.aadharCardNo = RegInsert.aadharCardNo || '';
-            this.PanCardNo = RegInsert.PanCardNo || '';
-            this.AdmissionID = RegInsert.AdmissionID || '';
-            this.VisitId = RegInsert.VisitId || 0;
-            this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
-            this.maritalStatusId = RegInsert.maritalStatusId || 0;
-            this.doctorName = RegInsert.doctorName || "";
-            this.departmentName = RegInsert.departmentName || "";
-            this.UnitId = RegInsert.UnitId || 0;
-            this.billNo = RegInsert.billNo || 0;
-            this.departmentId = RegInsert.departmentId || 0;
-            this.doctorId = RegInsert.doctorId || 0;
-            this.campId = RegInsert.campId || 0;
-            this.emgContactPersonName = RegInsert.emgContactPersonName || "";
-            this.emgRelationshipId = RegInsert.emgRelationshipId || 0;
-            this.emgMobileNo = RegInsert.emgMobileNo || 0;
-            this.emgLandlineNo = RegInsert.emgLandlineNo || 0;
-            this.engAddress = RegInsert.engAddress || '';
-            this.emgAadharCardNo = RegInsert.emgAadharCardNo || 0;
-            this.emgDrivingLicenceNo = RegInsert.emgDrivingLicenceNo || 0;
-            this.medTourismPassportNo = RegInsert.medTourismPassportNo || 0;
-            this.medTourismNationalityId = RegInsert.medTourismNationalityId || 0;
-            this.medTourismVisaIssueDate = RegInsert.medTourismVisaIssueDate || '1900-01-01';
-            this.medTourismCitizenship = RegInsert.medTourismCitizenship || ''
-            this.medTourismPortOfEntry = RegInsert.medTourismPortOfEntry || ''
-            this.medTourismResidentialAddress = RegInsert.medTourismResidentialAddress || ''
-            this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
-            this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || '1900-01-01';
-            this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || '1900-01-01';
-            this.emgId = RegInsert.emgId || 0
-            this.ipdNo = RegInsert.ipdNo || 0
-            this.ipdno = RegInsert.ipdno || 0
-            this.genderName = RegInsert.genderName || ''
-            this.traiffId = RegInsert.traiffId || 0
-            this.companyId = RegInsert.companyId || 0
-            this.PBillNo = RegInsert.PBillNo || 0
-            this.BillNo = RegInsert.BillNo || 0
-            this.BillTime = RegInsert.BillTime || ''
-            this.PatientType = RegInsert.PatientType || ''
-            this.CompanyExecutiveName = RegInsert.CompanyExecutiveName || ''
-            this.DoctorExecutiveName = RegInsert.DoctorExecutiveName || ''
-        }
+      this.IsCharity = RegInsert.IsCharity || false;
+      this.ReligionId = RegInsert.ReligionId || 0;
+      this.religionId = RegInsert.religionId || 0;
+      this.AreaId = RegInsert.AreaId || 0;
+      this.areaId = RegInsert.areaId || 0;
+      this.VillageId = RegInsert.VillageId || '';
+      this.TalukaId = RegInsert.TalukaId || '';
+      this.PatientWeight = RegInsert.PatientWeight || '';
+      this.AreaName = RegInsert.AreaName || '';
+      this.AadharCardNo = RegInsert.AadharCardNo || '';
+      this.aadharCardNo = RegInsert.aadharCardNo || '';
+      this.PanCardNo = RegInsert.PanCardNo || '';
+      this.AdmissionID = RegInsert.AdmissionID || '';
+      this.VisitId = RegInsert.VisitId || 0;
+      this.isSeniorCitizen = RegInsert.isSeniorCitizen || 0
+      this.maritalStatusId = RegInsert.maritalStatusId || 0;
+      this.doctorName = RegInsert.doctorName || "";
+      this.departmentName = RegInsert.departmentName || "";
+      this.UnitId = RegInsert.UnitId || 0;
+      this.billNo = RegInsert.billNo || 0;
+      this.departmentId = RegInsert.departmentId || 0;
+      this.doctorId = RegInsert.doctorId || 0;
+      this.campId = RegInsert.campId || 0;
+      this.emgContactPersonName = RegInsert.emgContactPersonName || "";
+      this.emgRelationshipId = RegInsert.emgRelationshipId || 0;
+      this.emgMobileNo = RegInsert.emgMobileNo || 0;
+      this.emgLandlineNo = RegInsert.emgLandlineNo || 0;
+      this.engAddress = RegInsert.engAddress || '';
+      this.emgAadharCardNo = RegInsert.emgAadharCardNo || 0;
+      this.emgDrivingLicenceNo = RegInsert.emgDrivingLicenceNo || 0;
+      this.medTourismPassportNo = RegInsert.medTourismPassportNo || 0;
+      this.medTourismNationalityId = RegInsert.medTourismNationalityId || 0;
+      this.medTourismVisaIssueDate = RegInsert.medTourismVisaIssueDate || '1900-01-01';
+      this.medTourismCitizenship = RegInsert.medTourismCitizenship || ''
+      this.medTourismPortOfEntry = RegInsert.medTourismPortOfEntry || ''
+      this.medTourismResidentialAddress = RegInsert.medTourismResidentialAddress || ''
+      this.medTourismOfficeWorkAddress = RegInsert.medTourismOfficeWorkAddress || ''
+      this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || '1900-01-01';
+      this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || '1900-01-01';
+      this.emgId = RegInsert.emgId || 0
+      this.ipdNo = RegInsert.ipdNo || 0
+      this.ipdno = RegInsert.ipdno || 0
+      this.genderName = RegInsert.genderName || ''
+      this.traiffId = RegInsert.traiffId || 0
+      this.companyId = RegInsert.companyId || 0
+      this.PBillNo = RegInsert.PBillNo || 0
+      this.BillNo = RegInsert.BillNo || 0
+      this.BillTime = RegInsert.BillTime || ''
+      this.PatientType = RegInsert.PatientType || ''
+      this.CompanyExecutiveName = RegInsert.CompanyExecutiveName || ''
+      this.DoctorExecutiveName = RegInsert.DoctorExecutiveName || ''
     }
+  }
 }

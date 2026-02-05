@@ -97,8 +97,8 @@ export class TestApprovalListComponent {
   reportIdData: any = [];
   ServiceIdData: any = [];
 
-  fromDate = "2026-01-02"//this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
-  toDate = "2026-02-04"//this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
+  fromDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
+  toDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
   searchregNo: any;
   vOPIPId = 0;
   f_name: any = "%"

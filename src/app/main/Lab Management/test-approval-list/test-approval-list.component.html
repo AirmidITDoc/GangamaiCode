@@ -155,10 +155,10 @@
                                         </ng-template>
                                         <ng-template #isVerifiedstatus let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
-                                                <mat-icon *ngIf="element.isVerifyid=='1'" matTooltip="Verified"
+                                                <mat-icon *ngIf="element.isVerifySign==true" matTooltip="Verified"
                                                     style="color: green;">verified_user</mat-icon>
 
-                                                <mat-icon *ngIf="element.isVerified=='0'" matTooltip="NotVerified"
+                                                <mat-icon *ngIf="element.isVerifySign==false" matTooltip="NotVerified"
                                                     color="warn">check_circle</mat-icon>
 
                                             </div>
