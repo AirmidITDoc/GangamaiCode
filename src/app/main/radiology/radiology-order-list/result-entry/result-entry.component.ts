@@ -135,7 +135,7 @@ export class ResultEntryComponent implements OnInit {
       this.VisitId = this.regObj.visitId
       this.RegId = this.regObj.regId
       this.PatientName = this.regObj.patientName
-      this.Doctorname = this.regObj.doctorName || this.regObj.consultantDoctor
+      this.Doctorname = this.regObj.consultantDoctor || this.regObj.doctorName
       this.vOPDIPdNo = this.regObj.oP_IP_Number
       this.AgeYear = this.regObj.ageYear
       this.AgeMonth = this.regObj.ageMonth

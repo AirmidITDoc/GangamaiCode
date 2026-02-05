@@ -83,7 +83,7 @@ export class RadiologyOrderListComponent implements OnInit {
             template: this.actionsverify
         },
         //  { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
-        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 160 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -400,12 +400,12 @@ resetFormPatient(){
     // }
 
     getVerifyTooltip(contact: any): string {
-        if (contact.isVerified) {
-            const formattedDate = this.datePipe.transform(
-                contact.isVerifyedDate,
-                'dd-MM-yyyy'
-            );
-            return `Verified On : ${formattedDate}\nVerified By : ${contact.verifiedUserName}`;
+        if (contact.isVerified && contact.isVerifyedDate) {
+            // const formattedDate = this.datePipe.transform(
+            //     contact.isVerifyedDate,
+            //     'yyyy-MM-dd'
+            // );
+            return `Verified On : ${contact.isVerifyedDate}\nVerified By : ${contact.verifiedUserName}`;
         }
         return contact.isCompleted
             ? 'Verify Report'
