@@ -1635,7 +1635,8 @@ console.log(item)
     mPesa_ReceiptNo: any = '0';
     openWaitingScreen() {
         debugger
-        this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
+        const mobileWithCode = '+254' + this.OPFooterForm.get('mpesaMobile')?.value || '0';  
+        this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, mobileWithCode,
             this.OpBillForm.get('opdipdid')?.value).subscribe(response => {
                 this.mpesaResponse = response;
                 console.log(this.mpesaResponse)
