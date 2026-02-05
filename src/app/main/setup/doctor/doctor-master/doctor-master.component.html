@@ -94,9 +94,20 @@
 
                     <div fxLayout="column" class="gap-4 ">
                         <span style="font-weight: bold;">Doctor Type :</span>
-                        <mat-slide-toggle name="IsConsultant" (change)="onChangeFirst()" formControlName="IsConsultant">
+
+                        <mat-radio-group formControlName="DoctorType" fxLayout="column" fxLayoutGap="8px"
+                            (change)="onDoctorTypeChange($event)">
+
+                            <mat-radio-button value="0">All</mat-radio-button>
+                            <mat-radio-button value="1">RMO Doctor</mat-radio-button>
+                            <mat-radio-button value="2">Consultant</mat-radio-button>
+                            <mat-radio-button value="3">Ref Doctor</mat-radio-button>
+
+                        </mat-radio-group>
+
+                        <!-- <mat-slide-toggle name="IsConsultant" (change)="onChangeFirst()" formControlName="IsConsultant">
                             IsConsultant / IsRefDoctor
-                        </mat-slide-toggle>
+                        </mat-slide-toggle> -->
 
                         <!-- <mat-slide-toggle name="IsRef" formControlName="IsRef">
                             IsRefDoctor

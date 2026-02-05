@@ -144,6 +144,8 @@ export class NewLabPatientRegComponent {
   onlineflag: boolean = false;
   abhaForm: FormGroup;
   UnitId: any = this.accountService.currentUserValue.user.unitId;
+  vRefDocId: any = 0
+  vRefDocName: any = ''
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -599,6 +601,7 @@ export class NewLabPatientRegComponent {
   ////////////////////////// dd new method end ////////////////////
   onChangeCompany(value) {
     this.companyId = value.companyId
+    this.companyName = value.companyName
     if (this.companyId) {
       this.isTariffSelect = true
     }
@@ -612,6 +615,8 @@ export class NewLabPatientRegComponent {
   }
 
   onChangeRefdoc(value) {
+    this.vRefDocId=value.doctorId
+    this.vRefDocName=value.doctorName
     this.myForm.get('refDocId').setValue(value.doctorId);
   }
 
@@ -1634,16 +1639,19 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('regNo')?.setValue(this.regNo)
     this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
     this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
-    // this.OpBillForm.get('ageYear')?.setValue(Number(this.ageYear) || 0)
-    // this.OpBillForm.get('ageMonth')?.setValue(Number(this.ageMonth) || 0)
-    // this.OpBillForm.get('ageDays')?.setValue(Number(this.ageDays) || 0)
     this.OpBillForm.get('ageYear')?.setValue(this.myForm.get('ageYear')?.value || 0)
     this.OpBillForm.get('ageMonth')?.setValue(this.myForm.get('ageMonth')?.value || 0)
     this.OpBillForm.get('ageDays')?.setValue(this.myForm.get('ageDay')?.value || 0)
-    this.OpBillForm.get('doctorId')?.setValue(this.myForm.get('doctorId').value || 0)
-    this.OpBillForm.get('doctorName')?.setValue(this.doctorname || '')
+
+    // commented doctor field & passing ref doctor
+    // this.OpBillForm.get('doctorId')?.setValue(this.myForm.get('doctorId').value || 0)
+    // this.OpBillForm.get('doctorName')?.setValue(this.doctorname || '')
+    this.OpBillForm.get('doctorId')?.setValue(this.vRefDocId || 0)
+    this.OpBillForm.get('doctorName')?.setValue(this.vRefDocName || '')
+
     this.OpBillForm.get('patientType')?.setValue(this.companyId ? true : false)
     this.OpBillForm.get('companyName')?.setValue(this.companyName || '')
+    this.OpBillForm.get('companyId')?.setValue(this.companyId || 0)
     this.OpBillForm.get('companyAmt')?.setValue(0)
     this.OpBillForm.get('patientAmt')?.setValue(this.myForm.get('netPayableAmt')?.value)
     this.OpBillForm.get('totalAmt')?.setValue(this.myForm.get('totalAmt')?.value)
@@ -1856,30 +1864,56 @@ export class NewLabPatientRegComponent {
       }
     }
     else {
-      let invalidFields = [];
-      if (this.OpBillForm.invalid) {
-        for (const controlName in this.OpBillForm.controls) {
-          const control = this.OpBillForm.get(controlName);
-
-          if (control instanceof FormGroup || control instanceof FormArray) {
-            for (const nestedKey in control.controls) {
-              if (control.get(nestedKey)?.invalid) {
-                invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
-              }
-            }
-          } else if (control?.invalid) {
-            invalidFields.push(`OpBill From: ${controlName}`);
-          }
-        }
-      }
+      const invalidFields = this.collectErrors(this.OpBillForm);
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-          this.toastrService.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-          );
+          this.toastrService.warning(`Field "${field}" is invalid.`, 'Warning');
         });
-        return
+        return;
       }
     }
+    // else {
+    //   let invalidFields = [];
+    //   if (this.OpBillForm.invalid) {
+    //     for (const controlName in this.OpBillForm.controls) {
+    //       const control = this.OpBillForm.get(controlName);
+
+    //       if (control instanceof FormGroup || control instanceof FormArray) {
+    //         for (const nestedKey in control.controls) {
+    //           if (control.get(nestedKey)?.invalid) {
+    //             invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
+    //           }
+    //         }
+    //       } else if (control?.invalid) {
+    //         invalidFields.push(`OpBill From: ${controlName}`);
+    //       }
+    //     }
+    //   }
+    //   if (invalidFields.length > 0) {
+    //     invalidFields.forEach(field => {
+    //       this.toastrService.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+    //       );
+    //     });
+    //     return
+    //   }
+    // }
+  }
+
+  collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {
+    let errors: string[] = [];
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        // go deeper
+        errors = errors.concat(this.collectErrors(control, newKey));
+      } else {
+        if (control?.invalid) {
+          errors.push(newKey);
+        }
+      }
+    });
+    return errors;
   }
 
   viewgetOPBillReportPdf(element) {

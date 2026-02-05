@@ -145,6 +145,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     signature: any;
     visConsultant = true;
     visRefDoc = false;
+    vIsInHouseDoctor=false;
     autocompleteModeprefix: string = "Prefix";
     autocompleteModegender: string = "Gender";
     autocompleteModecity: string = "City";
@@ -239,6 +240,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 console.log(this.registerObj)
                 this.visConsultant = this.data.isConsultant
                 this.visRefDoc = this.data.isRefDoc
+                this.vIsInHouseDoctor = this.data.isInHouseDoctor
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
                 // debugger
                 if (this.registerObj.signature) {
@@ -805,7 +807,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             let data = this.myForm.value;
             // data.IsConsultant = true
             // data.IsRefDoc = false
-            data.IsInHouseDoctor = false
+            // data.IsInHouseDoctor = false
             data.IsOnCallDoctor = false
             data.IsActive = true
 

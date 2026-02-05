@@ -227,7 +227,7 @@ export class LabrefundBillComponent {
     });
   }
 
-   ListView1(value) {
+  ListView1(value) {
     console.log(value)
     if (value.value !== 0)
       this.UnitId = value.value
@@ -251,9 +251,9 @@ export class LabrefundBillComponent {
           // this.billNo = this.registerObj.billNo;
           this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.registerObj.billNo);
           console.log(response)
-          this.getfilterdata(this.VlabPatId)
         });
       }, 100);
+      this.getfilterdata(this.RegId)
     }
   }
 

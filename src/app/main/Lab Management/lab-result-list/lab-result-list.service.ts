@@ -213,7 +213,8 @@ export class LabResultListService {
   }
 
      public getarrovallist(employee) {
-    return this._httpClient1.PostData("LabPatientRegistration/LabApprovaltList", employee)
+    return this._httpClient1.PostData("LabApproval/LabResultCompletedList", employee)
+    // return this._httpClient1.PostData("LabPatientRegistration/LabApprovaltList", employee)
   }
 
   public getBillrevenudetailList(param) {

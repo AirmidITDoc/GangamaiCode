@@ -29,7 +29,7 @@
 
                             <ng-container matColumnDef="patientType">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                    -
+                                    Type
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     <span>{{ contact.PatientType ? 'Company' : 'Self' }}</span>
@@ -139,11 +139,23 @@
                                                         </span><br>
 
                                                         <span>
-                                                            <strong>Date & Time :</strong> {{ data.dateTime | date:'dd-MM-yyyy HH:mm' }}
+                                                            <strong>Date & Time :</strong> {{ data.dateTime |
+                                                            date:'dd-MM-yyyy HH:mm' }}
                                                         </span><br>
 
                                                         <span>
-                                                            <strong>Patient Type :</strong> {{ data.patientType ? 'Company' : 'Self'}}
+                                                            <strong>Patient Type :</strong> {{ data.patientType ?
+                                                            'Company' : 'Self'}}
+                                                        </span>
+
+                                                        <span>
+                                                            <strong>Company Executive :</strong> {{
+                                                            data.CompanyExecutiveName}}
+                                                        </span>
+
+                                                        <span>
+                                                            <strong>Doctor Executive :</strong> {{
+                                                            data.DoctorExecutiveName}}
                                                         </span>
                                                     </div>
 

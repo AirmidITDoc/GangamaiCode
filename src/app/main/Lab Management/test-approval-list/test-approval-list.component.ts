@@ -97,8 +97,8 @@ export class TestApprovalListComponent {
   reportIdData: any = [];
   ServiceIdData: any = [];
 
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
+  toDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
   searchregNo: any;
   vOPIPId = 0;
   f_name: any = "%"
@@ -150,12 +150,10 @@ export class TestApprovalListComponent {
 
   IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
 
-  fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
-  todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
- 
+  fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, 'MM/dd/yyyy') : "";
+  todate = this.toDate ? this.datePipe.transform(this.toDate, 'MM/dd/yyyy') : "";
 
- 
- ngAfterViewInit() {
+  ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isVerifyid')!.template = this.isVerifiedstatus;
     this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.isCompletedstatus;
@@ -164,9 +162,7 @@ export class TestApprovalListComponent {
   @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
   @ViewChild('isCompletedstatus') isCompletedstatus!: TemplateRef<any>;
 
-
-
- allcolumns = [
+  allcolumns = [
 
     { heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
 
@@ -199,20 +195,20 @@ export class TestApprovalListComponent {
   ];
   gridConfig: gridModel = {
     permissionCode: permissionCodes.ExternalInvestigation,
-    apiUrl: "LabPatientRegistration/LabApprovaltList",
+    apiUrl: "LabApproval/LabResultCompletedList",
     columnsList: this.allcolumns,
-    sortField: "LabPatientId",
+    sortField: "PathTestID",
     sortOrder: 0,
     filters: [
-
-      { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
-      { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-      { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
+      // { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+      // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+      // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
+      // { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+      // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+      // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
     ]
   }
 
@@ -252,44 +248,43 @@ export class TestApprovalListComponent {
     this.onChangeFirst();
   }
 
-  searchRecords(data) {
-    this.dataSource1.data = [];
-    // this.selection.clear();
+  // searchRecords(data) {
+  //   this.dataSource1.data = [];
+  //   // this.selection.clear();
 
-    let regno = this.myformSearch.get("RegNoSearch").value || "0";
-    let fromDate = this.myformSearch.get("start").value || "";
-    let toDate = this.myformSearch.get("end").value || "";
-    fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
-    toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-    let status = this.myformSearch.get("StatusSearch").value || "0";
+  //   let regno = this.myformSearch.get("RegNoSearch").value || "0";
+  //   let fromDate = this.myformSearch.get("start").value || "";
+  //   let toDate = this.myformSearch.get("end").value || "";
+  //   fromDate = fromDate ? this.datePipe.transform(fromDate, 'MM/dd/yyyy') : "";
+  //   toDate = toDate ? this.datePipe.transform(toDate, 'MM/dd/yyyy') : "";
+  //   let status = this.myformSearch.get("StatusSearch").value || "0";
 
-    // this.GetResultdetail()
-    // Update the filters dynamically
-
-    
-    this.gridConfig = {
-      apiUrl: "LabPatientRegistration/LabResultList",
-
-      columnsList: this.allcolumns,
-      sortField: "LabPatientId",
-      sortOrder: 0,
-      filters: [
-
-        { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
-        { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
-        { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
-        { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-        { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
-      ]
-    }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-  }
+  //   // this.GetResultdetail()
+  //   // Update the filters dynamically
 
 
+  //   this.gridConfig = {
+  //     apiUrl: "LabPatientRegistration/LabResultList",
+
+  //     columnsList: this.allcolumns,
+  //     sortField: "LabPatientId",
+  //     sortOrder: 0,
+  //     filters: [
+
+  //       // { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+  //       // { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+  //       // { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
+  //       { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
+  //       { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
+  //       { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
+  //       // { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
+  //       // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+  //       // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
+  //     ]
+  //   }
+  //   this.grid.gridConfig = this.gridConfig;
+  //   this.grid.bindGridData();
+  // }
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -300,12 +295,12 @@ export class TestApprovalListComponent {
   onChangeFirst() {
     this.dataSource1.data = [];
 
-    this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
-    this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
-    this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
-    this.status = this.myformSearch.get('StatusSearch').value
-    this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
+    this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, 'MM/dd/yyyy')
+    this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, 'MM/dd/yyyy')
+    // this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
+    // this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
+    // this.status = this.myformSearch.get('StatusSearch').value
+    // this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
 
     this.GetResultdetail();
     this.getfilterdata();
@@ -314,19 +309,20 @@ export class TestApprovalListComponent {
   getfilterdata() {
 
     this.gridConfig = {
-      apiUrl: "LabPatientRegistration/LabApprovaltList",
+      apiUrl: "LabApproval/LabResultCompletedList",
       columnsList: this.allcolumns,
-      sortField: "LabPatientId",
+      sortField: "PathTestID",
       sortOrder: 0,
       filters: [
-        { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        // { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+        // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+        // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-        { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
+        { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
+        // { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+        // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -348,7 +344,7 @@ export class TestApprovalListComponent {
     this.onChangeFirst();
   }
 
-  
+
 
   OPIPID: any = 0;
   onresultentryshow(event, m) {
@@ -979,7 +975,7 @@ export class TestApprovalListComponent {
     }
   }
 
- chkresultentryVerify(contact, flag) {
+  chkresultentryVerify(contact, flag) {
     // debugger
     this.printdata = [];
     this.reportIdData = [];
@@ -988,8 +984,8 @@ export class TestApprovalListComponent {
   }
   GetResultdetail() {
 
-    this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+    this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, 'MM/dd/yyyy')
+    this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, 'MM/dd/yyyy')
     this.Vtotalcount = 0;
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
@@ -998,24 +994,24 @@ export class TestApprovalListComponent {
     {
       "first": 0,
       "rows": 150,
-      "sortField": "PresReId",
+      "sortField": "PathTestID",
       "sortOrder": 0,
       "filters": [
-        {
-          "fieldName": "F_Name",
-          "fieldValue": String(this.f_name),
-          "opType": "Contains"
-        },
-        {
-          "fieldName": "L_Name",
-          "fieldValue": String(this.l_name),
-          "opType": "Contains"
-        },
-        {
-          "fieldName": "Reg_No",
-          "fieldValue": String(this.regNo),
-          "opType": "Equals"
-        },
+        // {
+        //   "fieldName": "F_Name",
+        //   "fieldValue": String(this.f_name),
+        //   "opType": "Contains"
+        // },
+        // {
+        //   "fieldName": "L_Name",
+        //   "fieldValue": String(this.l_name),
+        //   "opType": "Contains"
+        // },
+        // {
+        //   "fieldName": "Reg_No",
+        //   "fieldValue": String(this.regNo),
+        //   "opType": "Equals"
+        // },
 
         {
           "fieldName": "From_Dt",
@@ -1028,20 +1024,25 @@ export class TestApprovalListComponent {
           "opType": "Equals"
         },
         {
-          "fieldName": "IsCompleted",
-          "fieldValue": String(this.status),
+          "fieldName": "OP_IP_Type",
+          "fieldValue": "4",
           "opType": "Equals"
         },
-        {
-          "fieldName": "UnitId",
-          "fieldValue": String(this.UnitId || "1"),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Category",
-          "fieldValue": String(this.Category || "%"),
-          "opType": "Equals"
-        }
+        // {
+        //   "fieldName": "IsCompleted",
+        //   "fieldValue": String(this.status),
+        //   "opType": "Equals"
+        // },
+        // {
+        //   "fieldName": "UnitId",
+        //   "fieldValue": String(this.UnitId || "1"),
+        //   "opType": "Equals"
+        // },
+        // {
+        //   "fieldName": "Category",
+        //   "fieldValue": String(this.Category || "%"),
+        //   "opType": "Equals"
+        // }
       ],
       "exportType": "JSON",
       "columns": [
@@ -1169,6 +1170,6 @@ export class TestApprovalListComponent {
   //         this.outSourceCloseTimeout = null;
   //     }
   // }
-  viewgetReportPdf(){}
+  viewgetReportPdf() { }
 }
 
