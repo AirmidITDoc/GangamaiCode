@@ -31,8 +31,9 @@ export class DoctorMasterComponent implements OnInit {
     f_name: any = ""
     l_name: any = ""
     active: any = "1"
-    isCon: any = "1"
+    isCon: any = "0"
     isRef: any = "0"
+    isRmo: any = "0"
     page: PageNames = PageNames.DOCTOR;
     signature: PageNames = PageNames.DOCTOR_SIGNATURE;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -126,7 +127,8 @@ export class DoctorMasterComponent implements OnInit {
         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "FlagActive", fieldValue: "1", opType: OperatorComparer.Equals },
-        { fieldName: "ConsultantDoc_All", fieldValue: "1", opType: OperatorComparer.Equals },
+        { fieldName: "RmoDoc_All", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "ConsultantDoc_All", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "ReferDoc_All", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
@@ -156,26 +158,102 @@ export class DoctorMasterComponent implements OnInit {
         this._doctorService.initializeFormGroup();
     }
 
+    onDoctorTypeChange(event: any) {
+        debugger
+        const flag = Number(event.value);
+
+        let IsInHouseDoctor = 0;
+        let IsConsultant = 0;
+        let IsRefDoc = 0;
+
+        switch (flag) {
+
+            case 0: // ALL → backend will include all combinations
+                IsInHouseDoctor = 0;
+                IsConsultant = 0;
+                IsRefDoc = 0;
+                break;
+
+            case 1: // ONLY RMO
+                IsInHouseDoctor = 1;
+                IsConsultant = 0;
+                IsRefDoc = 0;
+                break;
+
+            case 2: // ONLY Consultant
+                IsInHouseDoctor = 0;
+                IsConsultant = 1;
+                IsRefDoc = 0;
+                break;
+
+            case 3: // ONLY Ref Doctor
+                IsInHouseDoctor = 0;
+                IsConsultant = 0;
+                IsRefDoc = 1;
+                break;
+        }
+
+        this.myformSearch.patchValue({
+            IsInHouseDoctor,
+            IsConsultant,
+            IsRefDoc
+        });
+
+        this.onChangeFirst(); // reload data
+    }
+
+
+    // onChangeFirst() {
+
+    //     this.f_name = this.myformSearch.get('DoctorNameSearch').value + "%"
+    //     this.l_name = this.myformSearch.get('lastName').value + "%" || "%"
+    //     this.active = this.myformSearch.get('FlagActive').value
+    //     debugger
+    //     if (this.myformSearch.get('IsConsultant').value == true) {
+    //         this.isCon = "1"
+    //         this.isRef = "0"
+    //     } else {
+    //         this.isCon = "0"
+    //         this.isRef = "1"
+    //     }
+    //     this.getfilterdata();
+    // }
     onChangeFirst() {
 
-        this.f_name = this.myformSearch.get('DoctorNameSearch').value + "%"
-        this.l_name = this.myformSearch.get('lastName').value + "%" || "%"
-        this.active = this.myformSearch.get('FlagActive').value
+        this.f_name = (this.myformSearch.get('DoctorNameSearch')?.value || '') + '%';
+        this.l_name = (this.myformSearch.get('lastName')?.value || '') + '%';
+        this.active = this.myformSearch.get('FlagActive')?.value;
         debugger
-        if (this.myformSearch.get('IsConsultant').value == true) {
-            this.isCon = "1"
-            this.isRef = "0"
-        } else {
-            this.isCon = "0"
-            this.isRef = "1"
+        const flagDoctor = Number(this.myformSearch.get('DoctorType')?.value);
+
+        // default = ALL
+        this.isRmo = '0';
+        this.isCon = '0';
+        this.isRef = '0';
+
+        switch (flagDoctor) {
+
+            case 1: // RMO
+                this.isRmo = '1';
+                break;
+
+            case 2: // Consultant
+                this.isCon = '1';
+                break;
+
+            case 3: // Ref Doctor
+                this.isRef = '1';
+                break;
+
+            case 0: // ALL
+            default:
+                // all 0 → backend treats as ALL
+                break;
         }
-        //  if (this.myformSearch.get('IsConsultant').value == false) {
-        //   this.isRef = "1"
-        // } else {
-        //   this.isCon = "0"
-        // }
+
         this.getfilterdata();
     }
+
 
 
     getfilterdata() {
@@ -189,6 +267,7 @@ export class DoctorMasterComponent implements OnInit {
                 { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
                 { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
                 { fieldName: "FlagActive", fieldValue: this.active, opType: OperatorComparer.Equals },
+                { fieldName: "RmoDoc_All", fieldValue: this.isRmo, opType: OperatorComparer.Equals },
                 { fieldName: "ConsultantDoc_All", fieldValue: this.isCon, opType: OperatorComparer.Equals },
                 { fieldName: "ReferDoc_All", fieldValue: this.isRef, opType: OperatorComparer.Equals }
 

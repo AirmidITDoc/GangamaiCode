@@ -45,20 +45,20 @@
                             <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
                                 <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
 
-                                    <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                    <!-- <airmid-dropdown label="Unit Name" formControlName="UnitId"
                                         [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
                                         [(ngModel)]="gridConfig.filters[6].fieldValue" [formGroup]="myformSearch"
-                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+                                        [mode]="autocompleteModeunit"></airmid-dropdown> -->
 
                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                                             formStartControlName="start" formEndControlName="end"
-                                            [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                            [(toValue)]="gridConfig.filters[1].fieldValue">
                                         </airmid-datepicker>
                                     </div>
 
-                                    <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <!-- <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="35%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>UHID</mat-label>
                                             <input matInput placeholder="Search UHID" autocomplete="off"
@@ -111,7 +111,7 @@
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
                                             </div>
                                         </mat-radio-group>
-                                    </div>
+                                    </div> -->
                                     <!-- (click)="searchRecords($event)" -->
                                     <div class="action-button-container">
                                         <div class="button-row-group">

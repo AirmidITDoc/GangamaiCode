@@ -2,10 +2,10 @@ import { DatePipe } from '@angular/common';
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
 import { LabPatientRegService } from '../lab-patient-reg.service';
+import { RegInsert } from '../lab-patient-reg.component';
 
 @Component({
   selector: 'app-prevlab-history',
@@ -106,7 +106,9 @@ export class PrevlabHistoryComponent {
         uniqueMap.set(patient.PBillNo, {
           billNo: patient.PBillNo,
           dateTime: patient.BillTime,
-          patientType: patient.PatientType
+          patientType: patient.PatientType,
+          CompanyExecutiveName: patient.CompanyExecutiveName,
+          DoctorExecutiveName: patient.DoctorExecutiveName
         });
       }
     });

@@ -136,7 +136,7 @@
                                                             (keypress)="keyPressAlphanumeric($event)"
                                                             [value]="registerObj.aadharCardNo" [formGroup]="myForm"
                                                             [maxLength]="Is9_Digit_National_Id ? 9 : 12"
-                                                            [minLength]="Is9_Digit_National_Id ? 7 : 12" 
+                                                            [minLength]="Is9_Digit_National_Id ? 7 : 12"
                                                             [validations]="getValidationMessages().AadharCardNo"></airmid-textbox>
                                                     </div>
 
@@ -857,12 +857,15 @@
         <div class="footer-navigation-container" fxLayoutAlign="space-between">
             <form [formGroup]="myForm">
                 <div fxLayout="row">
-                <app-airmid-slider label="IsConsultant" formControlName="IsConsultant"
-                    [formGroup]="myForm" [(ngModel)]="visConsultant"></app-airmid-slider>
+                    <app-airmid-slider label="IsConsultant" formControlName="IsConsultant" [formGroup]="myForm"
+                        [(ngModel)]="visConsultant"></app-airmid-slider>
 
-                <app-airmid-slider label="IsRefDoctor" formControlName="IsRefDoc"
-                    [formGroup]="myForm" [(ngModel)]="visRefDoc"></app-airmid-slider>
-            </div>
+                    <app-airmid-slider label="IsRefDoctor" formControlName="IsRefDoc" [formGroup]="myForm"
+                        [(ngModel)]="visRefDoc"></app-airmid-slider>
+
+                    <app-airmid-slider label="IsRMODoctor" formControlName="IsInHouseDoctor" [formGroup]="myForm"
+                        [(ngModel)]="vIsInHouseDoctor"></app-airmid-slider>
+                </div>
             </form>
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>

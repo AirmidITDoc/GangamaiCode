@@ -43,8 +43,8 @@ function formatDate(rawDate: string): string {
 })
 export class LabsampleCollFormComponent {
   regObj: any;
-    dataSource = new MatTableDataSource<SampleList>();
-sampleList: SampleList[] = [];
+  dataSource = new MatTableDataSource<SampleList>();
+  sampleList: SampleList[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder,
     public _SampleService: LabSampleCollectionService,
@@ -111,4 +111,38 @@ sampleList: SampleList[] = [];
       console.log(this.dataSource.data)
     });
   }
+
+  getTubeIcon(specimen: string): string {
+    switch (specimen) {
+      case 'Blood':
+        return 'assets/images/logos/tube-red.png';
+      case 'Urine':
+        return 'assets/images/logos/tube-yellow.png';
+      case 'Plasma':
+        return 'assets/images/logos/tube-blue.png';
+      default:
+        return 'assets/images/logos/tube-gray.png';
+    }
+  }
+
+  onSubmit() {
+
+  }
+
+  OnReset() {
+    this._matDialog.closeAll();
+  }
+
+  count = 0;
+
+  increase() {
+    this.count++;
+  }
+
+  decrease() {
+    if (this.count > 0) {
+      this.count--;
+    }
+  }
+
 }

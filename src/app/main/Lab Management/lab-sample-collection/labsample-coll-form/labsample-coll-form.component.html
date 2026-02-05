@@ -152,109 +152,153 @@
 
                 </mat-card>
 
-                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" fxFlexFill>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px" fxFlexFill fxLayoutAlign="end">
 
-                    <!-- Camera -->
-                    <button mat-stroked-button color="primary">
+                    <!-- <button mat-stroked-button color="primary">
                         <mat-icon>photo_camera</mat-icon>
                         Camera
                     </button>
 
-                    <!-- Search + Browse -->
                     <mat-form-field appearance="outline" fxFlex>
                         <input matInput placeholder="Search" autocomplete="off">
 
                         <button matSuffix mat-button type="button">
                             Browse
                         </button>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
                     <!-- Action Buttons -->
-                    <button mat-stroked-button>
+                    <button style="color: black;border-radius: 5px;border: 2px solid gray;">
                         All Barcode
                     </button>
 
-                    <button mat-stroked-button color="warn">
+                    <button style="color: black;border-radius: 5px;border: 2px solid gray;">
                         Phlebotomy Error
                     </button>
 
-                    <button mat-stroked-button>
+                    <button style="color: black;border-radius: 5px;border: 2px solid gray;">
                         PSN
                     </button>
 
-                    <button mat-flat-button color="primary">
-                        Job Card
-                    </button>
+                    <button class="btn btn-primary">Job Card</button>
 
                 </div>
 
-                <div fxLayout="row wrap" fxLayoutGap="12px">
+                <div fxLayout="column wrap" fxLayoutGap="8px">
 
                     <mat-card *ngFor="let sample of sampleList" fxFlex="100%" appearance="outlined">
 
-                        <div fxLayout="row wrap">
-                            <div style="border: 1px solid red;" fxFlex="10%">
-                                <p>test tube</p>
-                            </div>
-                            <div style="border: 1px solid black;" fxFlex="90%">
-                                <div fxLayout="row" fxLayoutAlign="space-between center">
-                                    <div fxLayout="row" class="gap-8">
-                                        <mat-form-field appearance="outline" fxFlex="250px">
-                                            <mat-label>TestType</mat-label>
-                                            <mat-select>
-                                                <mat-option>Serum</mat-option>
-                                                <mat-option>EDTA Blood</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                        <!-- <div fxLayout="row wrap">
+                            <div style="border: 1px solid red;" fxFlex="10%" class="p-4">
+                                <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
+                                    <img style="width:30px;height:30px;" src="assets/images/logos/testtube.png">
+                                </button>
+                            </div> -->
+                        <div style="padding: 4px;" fxFlex>
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <div fxLayout="row" class="gap-8">
+                                    <button mat-icon-button>
+                                        <div style=" width:32px; height:32px; border-radius:50%; display:flex; align-items:center;
+                                            justify-content:center; background-color: yellow;">
+                                            <img style="width:30px;height:30px;" src="assets/images/logos/testtube.png">
+                                        </div>
+                                        <!-- <img [src]="getTubeIcon(element.specimenType)" style="width:30px;height:30px;"> -->
+                                    </button>
 
-                                        <span class="info-item">
-                                            {{ sample.sampleNo }} <mat-icon>refresh</mat-icon>
-                                        </span>
+                                    <!-- <button mat-icon-button matTooltip="Specimen" (click)="viewgetSms(element)">
+
+                                        <div style=" width:32px; height:32px; border-radius:50%; display:flex; align-items:center;
+                                            justify-content:center; " [style.backgroundColor]="element.specimenColor">
+                                            <img src="assets/images/logos/testtube.png" style="width:18px;height:18px;">
+                                        </div>
+
+                                    </button> -->
+
+                                    <mat-form-field appearance="outline" fxFlex="250px">
+                                        <mat-label>TestType</mat-label>
+                                        <mat-select>
+                                            <mat-option>Serum</mat-option>
+                                            <mat-option>EDTA Blood</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <span class="info-item">
+                                        {{ sample.sampleNo }} <mat-icon>refresh</mat-icon>
+                                    </span>
+                                </div>
+
+                                <div fxLayout="row" class="gap-8">
+
+                                    <div style="height: 50px; width: 50px;">
+                                        <button style="color: black;border-radius: 5px;border: 2px solid gray;">
+                                            <mat-icon>question_answer</mat-icon>
+                                        </button>
                                     </div>
 
-                                    <div fxLayout="row" class="gap-8">
-
-                                        <span class="info-item">
-                                            {{ sample.sampleNo }} <mat-icon>question_answer</mat-icon>
-                                        </span>
-
-                                        <button>
+                                    <div style="height: 50px; width: 50px;">
+                                        <button style="color: black;border-radius: 5px;border: 2px solid gray;">
                                             <mat-icon>warning</mat-icon>
                                         </button>
                                     </div>
-                                </div>
 
-                                <div fxLayout="row" fxLayoutGap="4px">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Status</mat-label>
-                                        <mat-select [(value)]="sample.isSampleCollection">
-                                            <mat-option [value]="true">Collected</mat-option>
-                                            <mat-option [value]="false">Pending</mat-option>
-                                        </mat-select>
+                                    <mat-form-field appearance="outline" fxFlex="150px">
+                                        <button mat-icon-button matPrefix color="primary" (click)="decrease()"
+                                            [disabled]="count === 0">
+                                            <mat-icon>remove</mat-icon>
+                                        </button>
+
+                                        <input matInput type="number" [value]="count" readonly
+                                            style="text-align:center;">
+
+                                        <button mat-icon-button matSuffix color="primary" (click)="increase()">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
                                     </mat-form-field>
 
-                                    <airmid-textbox label="Name" fxFlex>
-                                    </airmid-textbox>
 
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Date & Time</mat-label>
-                                        <input matInput
-                                            [value]="sample.doa + ' ' + (sample.sampleCollectionTime || sample.dot)"
-                                            readonly>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Site</mat-label>
-                                        <mat-select [(value)]="sample.isSampleCollection">
-                                            <mat-option [value]="true">Collected</mat-option>
-                                            <mat-option [value]="false">Pending</mat-option>
-                                            <mat-option [value]="false">Received</mat-option>
-                                            <mat-option [value]="false">Will Not Receive</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
                                 </div>
                             </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Status</mat-label>
+                                    <mat-select [(value)]="sample.isSampleCollection">
+                                        <mat-option [value]="true">Collected</mat-option>
+                                        <mat-option [value]="false">Pending</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <airmid-textbox label="Name" fxFlex>
+                                </airmid-textbox>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Date & Time</mat-label>
+                                    <input matInput
+                                        [value]="sample.doa + ' ' + (sample.sampleCollectionTime || sample.dot)"
+                                        readonly>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Site</mat-label>
+                                    <mat-select [(value)]="sample.isSampleCollection">
+                                        <mat-option [value]="true">Collected</mat-option>
+                                        <mat-option [value]="false">Pending</mat-option>
+                                        <mat-option [value]="false">Received</mat-option>
+                                        <mat-option [value]="false">Will Not Receive</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px">
+                                <mat-chip-list>
+                                    <mat-chip color="primary" selected>
+                                        {{ sample.serviceName }}
+                                    </mat-chip>
+                                </mat-chip-list>
+                            </div>
+
                         </div>
+                        <!-- </div> -->
 
                     </mat-card>
 
@@ -310,155 +354,13 @@
 
                 </div>
 
+                <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 10px;">
 
-
-                <div class="modal-card-container table-container">
-                    <!-- <mat-card>
-                        <div class="table-wrapper">
-                            <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}"
-                                class="h-220" style="overflow: auto;">
-
-                                <ng-container matColumnDef="select">
-                                    <th mat-header-cell *matHeaderCellDef>
-                                        <mat-checkbox (change)="$event ? masterToggle() : null"
-                                            [checked]="selection.hasValue()"
-                                            [indeterminate]="selection.hasValue() && !isAllSelected()">
-                                        </mat-checkbox>
-                                    </th>
-
-                                    <td mat-cell *matCellDef="let contact">
-                                        <mat-checkbox (click)="$event.stopPropagation()"
-                                            (change)="tableElementChecked($event,contact)"
-                                            (change)="$event ? selection.toggle(contact) : null"
-                                            *ngIf="!contact.sampleNo  else noMLC"
-                                            [checked]="selection.isSelected(contact)"
-                                            [disabled]="isCheckboxDisabled(contact)">
-                                        </mat-checkbox>
-                                        <ng-template #noMLC>
-                                            <div
-                                                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                                <span>----</span>
-                                            </div>
-                                        </ng-template>
-                                    </td>
-
-                                </ng-container>
-
-                                <ng-container matColumnDef="ServiceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                        class="w-400">TestName
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-400">
-                                        <span> {{contact.serviceName}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="SampleCollectionTime">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-300">
-                                        CollectionDate/Time
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-300">
-                                        <span> {{contact.sampleCollectionTime }}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="editSampleCollectionTime">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="5%">
-                                        
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxFlex="5%">
-                                        <ng-container>
-                                            <button mat-icon-button (click)="EditSampleDate(contact)"
-                                                *ngIf="contact.sampleNo" matTooltip="Edit Sample  CollectionDate/Time">
-                                                <mat-icon>edit</mat-icon></button>
-                                        </ng-container>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="approval">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                        -
-                                    </mat-header-cell>
-
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                        <span *ngIf="contact.patientTypeId > 1 && !contact.isApprovedByCamp"
-                                            class="text-warn">
-                                            Approval from the company is pending for the unbilled lab collection
-                                        </span>
-
-                                        <span *ngIf="contact.patientTypeId > 1 && contact.isApprovedByCamp">
-                                            Approved
-                                        </span>
-
-                                        <span *ngIf="contact.patientTypeId === 1">
-                                            -
-                                        </span>
-                                    </mat-cell>
-                                </ng-container>
-
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-
-                                        <mat-spinner [color]="blue" [diameter]="20"></mat-spinner>
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent min-width-800"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns;"
-                                    class="contact min-width-800" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row>
-                            </mat-table>
-                        </div>
-
-                    </mat-card> -->
-
-                    <!-- <div class="modal-footer" style="padding: 10px 10px 10px 30px; height: 80px;">
-
-                        <div class="footer-navigation-container" fxLayout="row" fxLayoutAling="start center"
-                            style="justify-content: space-between;">
-                            <div class="date-container">
-                                <form [formGroup]="_SampleService.sampldetailform">
-                                    <div class="form-title">
-                                        <span class="h3"
-                                            style="margin-right: 10px;font-size: large;color: rgb(6, 41, 56);font-weight: bolder;">
-                                            {{ type === 'Lab' ? 'Lab Sample Collection :-' : 'Sample Collection :-'
-                                            }}</span>
-
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>Collection Date / Time</mat-label>
-                                            <input matInput type="datetime-local" placeholder="date" [value]="date"
-                                                [(ngModel)]="date" (change)="date=$event.target.value"
-                                                formControlName="SampleDateTime" />
-
-                                        </mat-form-field>
-                                    </div>
-                                </form>
-                            </div>
-                            <div>
-
-                                <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                    <button class="btn btn-primary " color="accent" (click)="onSave()">
-                                        <span>Save</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
+                    <button class="btn btn-primary">Select All</button>
+                    <button class="btn btn-primary">Service Mark as Urgent</button>
+                    <button class="btn btn-primary">Consumption</button>
+                    <button class="btn btn-primary " (click)="onSubmit()">Save</button>
+                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
                 </div>
             </div>
         </div>

@@ -26,8 +26,12 @@ export class DoctorMasterService {
             lastName: ["", Validators.pattern("^[A-Za-z/() ]*$")],
             // IsDeletedSearch: ["2"],
             FlagActive: ["1"],
-            IsConsultant: [true],
-            IsRef: [false]
+            // IsConsultant: [true],
+            // IsRef: [false]
+            DoctorType: ["0"],       
+            IsInHouseDoctor: [0],
+            IsConsultant: [0],
+            IsRefDoc: [0]
         });
     }
 

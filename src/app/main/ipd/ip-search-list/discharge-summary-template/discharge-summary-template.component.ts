@@ -66,7 +66,7 @@ export class DischargeSummaryTemplateComponent {
   vstoreId = this.accountService.currentUserValue.user.storeId
 
   autocompleteModeDose: string = "DoseMaster";
-  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompleteModeRefDoctor: string = "RMODoctor";
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteitem: string = "Item";
   autocompletetemplate: string = "DischargeTemplate";
