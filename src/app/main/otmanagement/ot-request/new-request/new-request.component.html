@@ -42,7 +42,7 @@
 
                             <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('opiptype').value == 'OP'"
                                 [formGroup]="requestForm" formControlName="opipid"
-                                placeholderText="OP-RegNo/Patient Name/Mobile No"
+                                placeholderText="OP-RegNo/Patient Name/Mobile No" fxFlex="40%"
                                 label="Search Reg No / Patient Name / Mobile No"
                                 ApiUrl="VisitDetail/search-patient?Keyword="
                                 (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
@@ -50,7 +50,7 @@
                             </airmid-autocomplete>
 
                             <airmid-autocomplete lbl="RgId" *ngIf="requestForm.get('opiptype').value == 'IP'"
-                                [formGroup]="requestForm" formControlName="opipid"
+                                [formGroup]="requestForm" formControlName="opipid" fxFlex="40%"
                                 placeholderText="IP-RegNo/Patient Name/Mobile No"
                                 label="Search Reg No / Patient Name / Mobile No"
                                 ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjIP($event)"

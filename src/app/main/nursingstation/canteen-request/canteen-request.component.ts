@@ -193,6 +193,7 @@ export class CanteenRequestComponent implements OnInit {
         }
     }
     Canteencancle(data) {
+        debugger
         Swal.fire({
             title: 'Do you want to cancel the Prescription?',
             text: "You won't be able to revert this!",
@@ -204,7 +205,8 @@ export class CanteenRequestComponent implements OnInit {
         }).then((flag) => {
             if (flag.isConfirmed) {
                 let sub={
-                    reqDetId:data.reqDetId
+                    reqDetId:data.reqId
+
                 }
                 this._CanteenRequestService.CanrequestCancle(sub).subscribe((response: any) => {
                     this.toastr.success(response.message);

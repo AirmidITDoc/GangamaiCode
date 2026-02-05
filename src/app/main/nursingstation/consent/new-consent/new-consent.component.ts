@@ -96,8 +96,7 @@ export class NewConsentComponent {
       this.ConsentinsertForm.patchValue(this.data);
       console.log(this.data)
       this.registerObj = this.data
-      // this.getSelectedObjOP(this.data)
-      // this.getSelectedObjIP(this.data)
+     
       this.selectChangedepartment(this.data)
       
     this.ConsentinsertForm.get('consentDeptId').disable();    

@@ -146,11 +146,14 @@
                                         <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-                                                    <div fxLayout="row" fxLayoutGap="10px" fxFlex fxFlexFill class="mat-elevation-z0" style="min-height: 600px;">
+                                                    <div fxLayout="row" fxLayoutGap="10px" fxFlex fxFlexFill
+                                                        class="mat-elevation-z0" style="min-height: 600px;">
                                                         <div fxFlex.gt-sm="40%" fxFlex fxFlexFill>
-                                                            <mat-card class="mat-elevation-z2" fxLayout="column" fxFlexFill style="padding: 5px; min-height: 400px;">
+                                                            <mat-card class="mat-elevation-z2" fxLayout="column"
+                                                                fxFlexFill style="padding: 5px; min-height: 400px;">
 
-                                                                <div id="contacts" fxFlex="1 1 auto" style="overflow: auto; min-height: 350px;"
+                                                                <div id="contacts" fxFlex="1 1 auto"
+                                                                    style="overflow: auto; min-height: 350px;"
                                                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                                                                     <airmid-table [gridConfig]="gridConfig" #docNote
                                                                         :ShowFilter="false" :ShowButtons="false">
@@ -162,9 +165,11 @@
 
                                                         <div fxFlex.gt-sm="60%" fxFlex fxFlexFill>
 
-                                                            <form [formGroup]="myNursingForm" fxLayout="column" fxFlexFill>
+                                                            <form [formGroup]="myNursingForm" fxLayout="column"
+                                                                fxFlexFill>
 
-                                                                <div fxLayout="column" fxLayoutGap="2px" fxFlex fxFlexFill>
+                                                                <div fxLayout="column" fxLayoutGap="2px" fxFlex
+                                                                    fxFlexFill>
 
                                                                     <form [formGroup]="myform">
                                                                         <div fxLayout="row" fxLayoutGap="10px">
@@ -195,17 +200,24 @@
                                                                         </div>
                                                                     </form>
 
-                                                                    <mat-card class="mat-elevation-z2" style="padding: 0; overflow: hidden; flex: 1 1 auto; display: flex; flex-direction: column;">
-                                                                        <div fxLayout="column" fxFlexFill style="height: 100%;">
+                                                                    <mat-card class="mat-elevation-z2"
+                                                                        style="padding: 0; overflow: hidden; flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                                        <div fxLayout="column" fxFlexFill
+                                                                            style="height: 100%;">
                                                                             <!-- Editor Container with proper height -->
-                                                                            <div fxFlex="1 1 auto" style="min-height: 400px;">
-                                                                                <airmid-editor formControlName="nursingNotes"
-                                                                                   [formGroup]="myNursingForm" (valueChange)="onEditorValueChange($event)">
+                                                                            <div fxFlex="1 1 auto"
+                                                                                style="min-height: 400px;">
+                                                                                <airmid-editor
+                                                                                    formControlName="nursingNotes"
+                                                                                    [formGroup]="myNursingForm"
+                                                                                    (valueChange)="onEditorValueChange($event)">
                                                                                 </airmid-editor>
                                                                             </div>
                                                                         </div>
                                                                     </mat-card>
-                                                                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="6px" class="mt-16">
+                                                                    <div fxLayout="row"
+                                                                        fxLayoutAlign="space-between center"
+                                                                        fxLayoutGap="6px" class="mt-16">
                                                                         <div>
                                                                             <button class="btn btn-primary-outline"
                                                                                 (click)="onTemplate()">
@@ -355,7 +367,7 @@
                                     </div>
                                 </mat-tab>
 
-                                <mat-tab label="Madication-Chart">
+                                <!-- <mat-tab label="Madication-Chart">
                                     <div class="content" style="overflow: auto;">
                                         <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
                                             <div class="content-card">
@@ -396,15 +408,7 @@
                                                             <div fxLayout="column" fxLayoutGap="10px">
                                                                 <mat-card style="padding: 15px;">
 
-                                                                    <!-- <div id="contacts"
-                                                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                                        <airmid-table [gridConfig]="gridConfig2" #grid
-                                                                            :ShowFilter="false" :ShowButtons="false">
-                                                                            <ng-container filters>
-
-                                                                            </ng-container>
-                                                                        </airmid-table>
-                                                                    </div> -->
+                                                                 
                                                                     <mat-table class="table2" matSort
                                                                         [dataSource]="dsItemList"
                                                                         [@animateStagger]="{value:'50'}"
@@ -525,8 +529,149 @@
                                             </div>
                                         </div>
                                     </div>
-                                </mat-tab>
+                                </mat-tab> -->
 
+                                <mat-tab label="MEDICINE AT THE TIME OF DISCHARGE">
+                                    <div class="form-container h-100-p" fxLayout="column">
+                                        <div class="modal-card-container">
+                                            <div class="form-title mb-2 pb-2 border-bottom">
+                                                <span class="h3 font-weight-600">MEDICINE AT THE TIME OF
+                                                    DISCHARGE</span>
+                                            </div>
+
+                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                <div fxFlex.gt-sm="100%" fxFlex>
+                                                    <form [formGroup]="MedicineItemForm">
+                                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
+                                                            class="gap-8">
+                                                            <airmid-autocomplete label="Enter Item Name"
+                                                                [formGroup]="MedicineItemForm" formControlName="ItemId"
+                                                                placeholderText="Enter Item Name" fxFlex
+                                                                [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
+                                                                (selectionChange)="getSelectedserviceObj($event)"
+                                                                TextField="itemName" ValueField="itemId"
+                                                                (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
+
+                                                            <airmid-dropdown label="Dose Name" formControlName="DoseId"
+                                                                [formGroup]="MedicineItemForm"
+                                                                [validations]="getValidationMessages().DoseId"
+                                                                (selectionChange)="getdose($event)"
+                                                                [mode]="autocompleteModeDose" [(ngModel)]="doseId"
+                                                                *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
+
+                                                            <airmid-textbox label="Day" formControlName="Day"
+                                                                [value]="vDay" [formGroup]="MedicineItemForm"
+                                                                [type]="'text'"
+                                                                (keypress)="keyPressCharater($event)"></airmid-textbox>
+
+                                                            <div class="input-add-button">
+                                                                <div matTooltip="Select Itemname to enable this button!!"
+                                                                    [matTooltipPosition]="'above'" fxLayoutGap="10px"
+                                                                    fxLayout="row">
+                                                                    <button #addbutton
+                                                                        class="btn btn-primary btn-with-icon"
+                                                                        (click)="onAdd()">
+                                                                        <span class="btn-icon">
+                                                                            <mat-icon>add</mat-icon>
+                                                                        </span>
+                                                                        <span>Add</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            <mat-divider [vertical]="true"></mat-divider>&nbsp;
+
+                                                            <button mat-raised-button (click)="getDosemaster()">
+                                                                <mat-icon>add</mat-icon>
+                                                                Dose</button>
+
+                                                            <button mat-raised-button (click)="TemplateList()">
+                                                                <mat-icon>save</mat-icon>
+                                                                Template List</button>
+
+                                                            <button mat-raised-button (click)="SaveTemplate()">
+                                                                <mat-icon>save</mat-icon>
+                                                                Save Template</button>
+
+                                                            <airmid-dropdown label="Template List"
+                                                                *ngIf="showTemplateRefresh" formControlName="TemplateId"
+                                                                [formGroup]="MedicineItemForm"
+                                                                [mode]="autocompleteModeTemplate"
+                                                                (selectionChange)="selectChangeTemplateName($event)"
+                                                                ValueField="presId" TextField="presTemplateName"
+                                                                ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=DischargeSummeryTemplate">
+                                                            </airmid-dropdown>
+
+                                                            <div class="input-add-button">
+                                                                <!-- <div matTooltip="Select Drug to enable this button!!"
+                                                                    [matTooltipPosition]="'above'">
+                                                                    <button #addbutton
+                                                                        class="btn btn-primary btn-with-icon"
+                                                                        (click)="onTemplDetAdd()">
+                                                                        <span class="btn-icon">
+                                                                            <mat-icon> add </mat-icon>
+                                                                        </span>
+                                                                    </button>
+                                                                </div> -->
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-card-container table-container overflow-auto">
+                                            <!-- Table 1 -->
+                                            <div class="airmid-table-container">
+                                                <div class="content-card">
+                                                    <mat-table class="airmid-table" matSort [dataSource]="dsItemList"
+                                                        [@animateStagger]="{ value: '50' }">
+                                                        <ng-container matColumnDef="itemName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>ItemName</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span>{{ element.itemName }}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="doseName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>Dose Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span>{{ element.doseName }}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="day">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>Day</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span>{{ element.days }}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                            <mat-header-cell *matHeaderCellDef
+                                                                class="table-actions">Action</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact">
+                                                                <ng-container class="actions">
+                                                                    <mat-icon (click)="deleteTableRow($event, contact)"
+                                                                        color="warn">delete</mat-icon>
+                                                                </ng-container>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedColumns"
+                                                            class="element"
+                                                            [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                                    </mat-table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
                             </mat-tab-group>
                         </div>
 

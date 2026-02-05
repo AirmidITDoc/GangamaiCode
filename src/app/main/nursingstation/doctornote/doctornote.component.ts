@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
 import { DoctornoteService } from "./doctornote.service";
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { PrintserviceService } from "app/main/shared/services/printservice.service";
+import { permissionCodes } from "app/main/shared/model/permission.model";
 
 @Component({
   selector: 'app-doctornote',
@@ -167,6 +168,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.DoctorNote,
     apiUrl: "Nursing/DoctorsNotesList",
     columnsList: this.allColumns,
     sortField: "AdmId",
@@ -175,6 +177,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   gridConfig1: gridModel = {
+    permissionCode: permissionCodes.DoctorNote,
     apiUrl: "Nursing/DoctorPatientHandoverList",
     columnsList: this.allColumnOfHandOver,
     sortField: "AdmId",
@@ -183,6 +186,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   initializeGridConfig() {
+    permissionCode: permissionCodes.DoctorNote,
     this.gridConfig = {
       apiUrl: "Nursing/DoctorsNotesList",
       columnsList: this.allColumns,

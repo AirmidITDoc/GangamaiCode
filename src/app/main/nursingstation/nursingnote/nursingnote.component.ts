@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,6 +15,9 @@ import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-schedu
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { NursingnoteService } from './nursingnote.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
+import Swal from 'sweetalert2';
+import { PrescriptionTemplateComponent } from 'app/main/opd/new-casepaper/prescription-template/prescription-template.component';
 
 @Component({
   selector: 'app-nursingnote',
@@ -24,7 +27,16 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
   animations: fuseAnimations,
 })
 export class NursingnoteComponent implements OnInit {
-
+  MedicineItemForm: FormGroup;
+   autocompleteModeDose: string = "DoseMaster";
+   vstoreId = this.accountService.currentUserValue.user.storeId
+    displayedColumns: string[] = [
+    'itemName',
+    'doseName',
+    'day',
+    //  'Remark',
+    'Action'
+  ]
   onBlur(e: any) {
     this.vDescription = e.target.innerHTML;
     throw new Error('Method not implemented.');
@@ -39,7 +51,7 @@ export class NursingnoteComponent implements OnInit {
     'NurseName',
     'Action'
   ]
-
+dateTimeObj:any
   currentDate = new Date();
   vCompanyName: any;
   vRegNo: any;
@@ -84,6 +96,14 @@ export class NursingnoteComponent implements OnInit {
   showDropdown = true;
   tempdesc: any = '';
   nursingId: any;
+
+  ItemName: any;
+  ItemId: any;
+  vDay: any;
+    doseId = 0;
+  doseName1 = "";
+
+
   @ViewChild('docNote', { static: false }) grid: AirmidTableComponent;
   @ViewChild('Handover', { static: false }) grid1: AirmidTableComponent;
   @ViewChild('MedicationItem', { static: false }) grid2: AirmidTableComponent;
@@ -237,7 +257,7 @@ export class NursingnoteComponent implements OnInit {
   constructor(
     public _NursingStationService: NursingnoteService,
     private accountService: AuthenticationService,
-    public datePipe: DatePipe,
+    public datePipe: DatePipe,    private _formBuilder: FormBuilder,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
     private commonService: PrintserviceService,
@@ -247,7 +267,24 @@ export class NursingnoteComponent implements OnInit {
     this.myform = this._NursingStationService.createtemplateForm();
     this.myNursingForm = this._NursingStationService.createnursingForm();
     this.myHandOverForm = this._NursingStationService.createHandOverForm();
+
+       this.MedicineItemForm = this.MedicineItemform();
+    // this.DischargesumForm.markAllAsTouched()
   }
+
+
+  
+  MedicineItemform(): FormGroup {
+    return this._formBuilder.group({
+      ItemId: '',
+      DoseId: '',
+      Day: '',
+      Instruction: '',
+      TemplateId: ['']
+    });
+  }
+
+
 
   onTemplate(row: any = null) {
     let that = this;
@@ -371,35 +408,35 @@ export class NursingnoteComponent implements OnInit {
     })
   }
 
-  deleteTableRow(event, element) {
-    const index = this.Chargelist.indexOf(element);
-    if (index >= 0) {
-      this.Chargelist.splice(index, 1);
-      this.dsItemList.data = [...this.Chargelist];
-      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
-    }
-  }
+  // deleteTableRow(event, element) {
+  //   const index = this.Chargelist.indexOf(element);
+  //   if (index >= 0) {
+  //     this.Chargelist.splice(index, 1);
+  //     this.dsItemList.data = [...this.Chargelist];
+  //     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+  //       toastClass: 'tostr-tost custom-toast-success',
+  //     });
+  //   }
+  // }
 
-  onAdd() {
-    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this.tempdesc == '') {
-      this.toastr.warning('Please select Template', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+  // onAdd() {
+  //   if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+  //     this.toastr.warning('Please select Patient', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //   if (this.tempdesc == '') {
+  //     this.toastr.warning('Please select Template', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
 
-    this.vDescription = this.tempdesc || '';
-    this.myNursingForm.get('nursingNotes')?.setValue(this.vDescription);
-    this.myform.get('TemplateId').setValue('');
-  }
+  //   this.vDescription = this.tempdesc || '';
+  //   this.myNursingForm.get('nursingNotes')?.setValue(this.vDescription);
+  //   this.myform.get('TemplateId').setValue('');
+  // }
 
   onEditorValueChange(content: string) {
     this.myNursingForm.get('nursingNotes')?.setValue(content);
@@ -532,7 +569,252 @@ export class NursingnoteComponent implements OnInit {
       });
     }
   }
+//
 
+  @ViewChild('dosename') dosename: ElementRef;
+  @ViewChild('Day') Day: ElementRef;
+  @ViewChild('Instruction') Instruction: ElementRef;
+  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+  add: boolean = false;
+
+  onEnterItem(event): void {
+    if (event.which === 13) {
+      this.dosename.nativeElement.focus();
+    }
+  }
+  public onEnterDose(event): void {
+    if (event.which === 13) {
+      this.Day.nativeElement.focus();
+    }
+  }
+  public onEnterqty(event): void {
+    if (event.which === 13) {
+      this.Instruction.nativeElement.focus();
+    }
+  }
+  public onEnterremark(event): void {
+    if (event.which === 13) {
+      this.addbutton.focus;
+      this.add = true;
+    }
+  }
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
+
+  getdose(event) {
+    this.doseName1 = event.text
+    this.doseId = event.value
+  }
+
+  getSelectedserviceObj(obj) {
+    this.ItemId = obj.itemId
+    this.ItemName = obj.itemName
+    this.doseId = Number(obj.doseName)
+    this.vDay = obj.doseDay
+    console.log(obj)
+
+    if (this.doseId > 0) {
+      this._NursingStationService.getDoseMasterById(this.doseId).subscribe((response) => {
+        this.doseName1 = response.doseName;
+      });
+      const doseRow = {
+        value: this.doseId,
+        text: this.doseName1
+      };
+      this.getdose(doseRow);
+    }
+  }
+  ItemFromReset() {
+    const form = this.MedicineItemForm;
+    form.patchValue({
+      ItemId: "",
+      DoseId: "",
+      vDay: "",
+      Day: "",
+    });
+  }
+
+  showTemplateRefresh = true;
+  templateId: any;
+  templateName: any;
+  
+  onAdd() {
+      if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
+        this.toastr.warning('Please select Item', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (!this.MedicineItemForm.get("DoseId")?.value) {
+        this.toastr.warning('Please select a Dose Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      //  if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+      //   this.toastr.warning('Please enter a Day', 'Warning !', {
+      //     toastClass: 'tostr-tost custom-toast-warning',
+      //   });
+      //   return;
+      // }
+  
+      if (!Array.isArray(this.Chargelist)) {
+        console.warn("Chargelist was not an array. Resetting...");
+        this.Chargelist = [...this.dsItemList.data];
+      }
+  
+      const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
+      if (!iscekDuplicate) {
+        // this.dsItemList.data = [];
+        let newEntry = {
+          itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
+          itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
+          doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
+          doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
+          days: this.MedicineItemForm.get('Day').value || 0,
+          instruction: this.vInstruction || ''
+        }
+        this.Chargelist.push(newEntry);
+        this.dsItemList.data = [...this.Chargelist];
+      } else {
+        this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      this.MedicineItemForm.get('ItemId').reset('');
+      this.MedicineItemForm.get('DoseId').reset('');
+      this.MedicineItemForm.get('Day').reset('');
+      this.MedicineItemForm.get('Instruction').reset('');
+      // this.itemid.nativeElement.focus();
+    }
+  
+    deleteTableRow(event, element) {
+  
+      let index = this.Chargelist.indexOf(element);
+      if (index >= 0) {
+        this.Chargelist.splice(index, 1);
+        this.dsItemList.data = [];
+        this.dsItemList.data = this.Chargelist;
+      }
+      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    }
+  
+    getPrescription(AdmissionId) {
+      console.log(AdmissionId)
+      var m_data2 = {
+        "first": 0,
+        "rows": 10,
+        "sortField": "AdmissionId",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "AdmissionId",
+            "fieldValue": String(AdmissionId),//"40773",	
+            "opType": "Equals"
+          }
+        ],
+        "exportType": "JSON",
+        "columns": [
+          {
+            "data": "string",
+            "name": "string"
+          }
+        ]
+      }
+      console.log(m_data2)
+      this._NursingStationService.getPrescriptionList(m_data2).subscribe((data) => {
+        // this.dsItemList.data = data?.data as MedicineItemList[];
+        // if (this.dsItemList.data)
+        this.Chargelist = data.data as MedicineItemList[];
+        this.dsItemList.data = [...this.Chargelist];
+        // console.log(this.dsItemList.data);
+      });
+    }
+  
+    showDoseDropdownRefresh = true;
+    getDosemaster() {
+      const buttonElement = document.activeElement as HTMLElement;
+      buttonElement.blur();
+      const dialogRef = this._matDialog.open(NewDoseMasterComponent,
+        {
+          maxWidth: "50vw",
+          maxHeight: '50%',
+          width: '70%',
+        });
+      // dialogRef.componentInstance.openedFromOPD = true;
+      dialogRef.afterClosed().subscribe(result => {
+        this.showDoseDropdownRefresh = false;
+        setTimeout(() => {
+          this.showDoseDropdownRefresh = true;
+        }, 100);
+      });
+    }
+
+      keyPressCharater(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+   TemplateList() {
+      // const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+      // buttonElement.blur();
+      // const dialogRef = this._matDialog.open(SetupPrescriptionTemplateMaster,
+      //   {
+      //     maxWidth: "100vw",
+      //     maxHeight: '90%',
+      //     width: '90%',
+      //   });
+      // dialogRef.componentInstance.openedFromIPD = true;
+      // dialogRef.afterClosed().subscribe(result => {
+      //   this.showTemplateRefresh = false;
+      //   setTimeout(() => {
+      //     this.showTemplateRefresh = true;
+      //   }, 100);
+      // });
+    }
+
+
+ SaveTemplate() {
+    if (this.dsItemList.data.length == 0) {
+      Swal.fire('Error !', 'Please add prescription in table', 'error');
+      return
+    }
+    const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "35vh",
+        width: '100%',
+        // height: "100%",
+        data: {
+          Obj: this.dsItemList.data,
+          opiptype: 1,
+          category: 'DischargeSummeryTemplate'
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.showTemplateRefresh = false;
+      setTimeout(() => {
+        this.showTemplateRefresh = true;
+      }, 100);
+    });
+  }
+
+  getValidationMessages() {
+    return {
+        DoseId: []
+
+    };
+  }
+  
   onClose() {
     this.IsAddFlag = true
     this._matDialog.closeAll();
@@ -585,6 +867,7 @@ export class MedicineItemList {
   Day2: number;
   Instruction: any;
   DoseDateTime: any;
+  itemID: any;
 
   /**
   * Constructor
@@ -600,7 +883,7 @@ export class MedicineItemList {
       this.DoseName = MedicineItemList.DoseName || '';
       this.Route = MedicineItemList.Route || 0;
       this.NurseName = MedicineItemList.NurseName || 0;
-
+      this.itemID = MedicineItemList.itemID || 0;
     }
   }
 }
