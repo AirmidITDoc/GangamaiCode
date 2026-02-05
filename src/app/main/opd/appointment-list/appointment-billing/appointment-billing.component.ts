@@ -1636,7 +1636,7 @@ console.log(item)
     openWaitingScreen() {
         debugger
         const mobileWithCode = '+254' + this.OPFooterForm.get('mpesaMobile')?.value || '0';  
-        this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, mobileWithCode,
+        this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
             this.OpBillForm.get('opdipdid')?.value).subscribe(response => {
                 this.mpesaResponse = response;
                 console.log(this.mpesaResponse)
