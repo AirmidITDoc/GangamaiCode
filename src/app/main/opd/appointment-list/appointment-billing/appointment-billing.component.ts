@@ -414,7 +414,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: ['CreditPay'],
             GovrnApprovAmt: [0],
-            mpesaMobile: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+            mpesaMobile: ['' ],
             UpiNo: [0]
         })
     }
@@ -1635,6 +1635,7 @@ console.log(item)
     mPesa_ReceiptNo: any = '0';
     openWaitingScreen() {
         debugger
+        const mobileWithCode = '+254' + this.OPFooterForm.get('mpesaMobile')?.value || '0';  
         this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
             this.OpBillForm.get('opdipdid')?.value).subscribe(response => {
                 this.mpesaResponse = response;
