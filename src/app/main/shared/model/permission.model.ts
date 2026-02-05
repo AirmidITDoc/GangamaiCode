@@ -115,6 +115,8 @@ export enum permissionCodes {
 
     //Nursing Station
     NursingConsent = 'NursingConsent',
+    DoctorNote = 'DoctorNote',
+    NursingPrescription = 'NursingPrescription',
 
     //Pathology
     SamplecollectionList = 'SamplecollectionList',
