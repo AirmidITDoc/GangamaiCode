@@ -184,6 +184,7 @@ export class NewCasepaperComponent implements OnInit {
     autocompleteModeItem: string = "Item"; //ItemType
     autocompleteModeItemGeneric: string = "ItemGeneric";
     autocompleteModeDose: string = "DoseMaster";
+    autocompleteModeInstr: string = "InstructionMaster";
     autocompleteModeTemplate: string = "PrescriptionTemplateMaster";
     autocompleteModeServcie: string = "Service"; //ServiceName
     autocompleteModeDoctor: string = "ConDoctor";
