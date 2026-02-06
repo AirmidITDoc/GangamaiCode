@@ -72,7 +72,7 @@ export class LabSampleCollectionComponent {
             heading: "Patient Type", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsPatientType
         },
-        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "SampleCollection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
         { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 

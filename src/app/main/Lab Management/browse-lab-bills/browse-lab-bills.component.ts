@@ -100,7 +100,7 @@ export class BrowseLabBillsComponent {
     { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     { heading: "", key: "refundAmount1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+    { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150},
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -147,7 +147,7 @@ export class BrowseLabBillsComponent {
   ];
 
   allOPpaymentcolumns = [
-    { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
+    { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -184,7 +184,7 @@ export class BrowseLabBillsComponent {
   ]
 
   allOPRefundColumns = [
-    { heading: "RefundDate", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+    { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

@@ -66,7 +66,7 @@ export class LabrefundBillComponent {
   ];
   @ViewChild('grid') grid: AirmidTableComponent;
   allColumns1 = [
-    { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    { heading: "Bill Date", key: "bilDate", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
     { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },

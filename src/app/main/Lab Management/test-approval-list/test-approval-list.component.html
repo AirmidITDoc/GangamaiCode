@@ -140,15 +140,17 @@
                                 <mat-card>
                                     <div id="contacts"
                                         class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                      
+
                                         <ng-template #isCompletedstatus let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
-                                                <mat-icon *ngIf="element.isCompleted==true" matTooltip="Report Completed"
-                                                    class="s-20 mr-4" style="color: #4caf50;">
+                                                <mat-icon *ngIf="element.isCompleted==true"
+                                                    matTooltip="Report Completed" class="s-20 mr-4"
+                                                    style="color: #4caf50;">
                                                     check_circle
                                                 </mat-icon>
-                                                <mat-icon *ngIf="!element.isCompleted==true" matTooltip="Report Not Completed"
-                                                    class="s-20 mr-4" style="color: #f44336;">
+                                                <mat-icon *ngIf="!element.isCompleted==true"
+                                                    matTooltip="Report Not Completed" class="s-20 mr-4"
+                                                    style="color: #f44336;">
                                                     hourglass_empty
                                                 </mat-icon>
                                             </div>
@@ -159,32 +161,24 @@
                                                     style="color: green;">verified_user</mat-icon>
 
                                                 <mat-icon *ngIf="element.isVerifySign==false" matTooltip="NotVerified"
-                                                    color="warn">check_circle</mat-icon>
+                                                    color="warn">hourglass_empty</mat-icon>
 
                                             </div>
                                         </ng-template>
 
                                         <ng-template #actionButtonTemplate let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
-                                                <!-- <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)" *ngIf="IsEdit">
-                                                    <mat-icon>edit</mat-icon>
-                                                </button> -->
-                                    
-                                    
-                                                <button mat-icon-button matTooltip="Print" (click)="viewgetReportPdf(element)">
+                                                <button mat-icon-button matTooltip="Print"
+                                                    (click)="viewgetReportPdf(element)"
+                                                    [style.visibility]="element.PaymentCompleted == 0 ? 'hidden' : 'visible'">
                                                     <mat-icon>print</mat-icon>
                                                 </button>
-                                    
-                                                  <!-- <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatch(element)">
-                                                         <img width="40" height="40" src="assets/images/logos/DispatchReport.png">
-                                                  
+
+                                                <button mat-icon-button matTooltip="Verify" (click)="onVerify(element)"
+                                                    *ngIf="element.isVerifySign==false">
+                                                    <mat-icon>verified_user</mat-icon>
                                                 </button>
-                                                <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
-                                                     <img width="40" height="40" src="assets/images/logos/SMS.png">
-                                                  
-                                                </button> -->
-                                               
-                                              
+
                                             </div>
                                         </ng-template>
 

@@ -171,7 +171,7 @@ export class LabSettlementComponent {
       heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
       template: this.actionsTemplate, width: 40
     },
-    { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', type: 9 },
+    { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', type: 8 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

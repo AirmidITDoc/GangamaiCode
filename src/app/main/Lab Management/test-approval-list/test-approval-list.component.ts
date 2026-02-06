@@ -171,9 +171,9 @@ export class TestApprovalListComponent {
 
     { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "DOA", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100},
-    { heading: "No", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "No", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
@@ -182,11 +182,11 @@ export class TestApprovalListComponent {
     { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "SampleCollectionTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "OutSource LabName", key: "outSourceLabName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "OutSource LabName", key: "outSourceLabName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-    { heading: "SampleSentDateTime", key: "outSourceSampleSentDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "outSourceCreatedDateTime", key: "outSourceCreatedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "outSourceModifiedDateTime", key: "outSourceModifiedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "SampleSentDateTime", key: "outSourceSampleSentDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "outSourceCreatedDateTime", key: "outSourceCreatedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "outSourceModifiedDateTime", key: "outSourceModifiedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     {
       heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -643,7 +643,36 @@ export class TestApprovalListComponent {
     this._LabResultListService.myformSearch.get('PatientTypeSearch').setValue("3");
   }
 
+  onVerify(row) {
+    Swal.fire({
+      title: 'Confirm Verify Report ',
+      text: 'Are you sure you want to Verify Report?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#41ea76ff',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Verify!'
 
+    }).then((flag) => {
+      // debugger
+      if (flag.isConfirmed) {
+
+        let submitData = {
+
+          "pathReportId": row.pathReportID,
+          "isVerifyid": this.accountService.currentUserValue.userId,
+          "isVerifySign": true,
+          "isVerifyedDate": new Date().toISOString()
+
+        };
+        console.log(submitData);
+        this._LabResultListService.PathReportverifyMaster(submitData).subscribe(response => {
+          this.grid.bindGridData();
+        });
+      }
+    });
+    // this.onEdit(row);
+  }
 
   getVerifyTooltip(contact: any): string {
     if (contact.isVerifyid) {
