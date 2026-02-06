@@ -483,7 +483,7 @@ export class NewCasepaperComponent implements OnInit {
             daysOption2: [0],
             doseOption3: [0],
             daysOption3: [0],
-            instructionId: [0],
+            instructionId: [element.instructionId ?? 0],
             qtyPerDay: [element.QtyPerDay ?? element.qtyPerDay ?? 0],
             totalQty: [(element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -2296,6 +2296,177 @@ export class NewCasepaperComponent implements OnInit {
             console.log('Radiology Data for', visitId, this.RadMap[visitId]);
         });
     }
+
+    getLabPrint(contact) {
+
+        console.log(contact)
+
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                this.Printresultentrywithheader(contact);
+            } else if (result.isDenied) {
+                this.Printresultentry(contact);
+            }
+        });
+    }
+
+    Printresultentry(row) {
+        // debugger
+        console.log("WithHeader", row);
+        let pathologyDelete = [{
+            pathReportId: row.pathReportID
+        }];
+
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+
+        console.log(submitData);
+
+        this._CasepaperService.PathPrintResultentryInsert(submitData).subscribe(res => {
+            if (res) {
+                this.viewgetPathologyTestReportPdf("0")
+            }
+        });
+    }
+
+    viewgetPathologyTestReportPdf(data) {
+        this.commonService.Onprint("OP_IP_Type", data, "PathologyReportWithOutHeader");
+    }
+
+    Printresultentrywithheader(row: any) {
+
+        console.log("WithHeader", row);
+        let pathologyDelete = [{
+            pathReportId: row.pathReportID
+        }];
+
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+
+        console.log(submitData);
+
+        this._CasepaperService.PathPrintResultentryInsert(submitData).subscribe(res => {
+            if (res) {
+                this.viewgetPathologyTestReportwithheaderPdf("0")
+            }
+        });
+    }
+
+    viewgetPathologyTestReportwithheaderPdf(data) {
+        this.commonService.Onprint("OP_IP_Type", data, "PathologyReportWithHeader");
+    }
+
+    getRadPrint(contact) {
+
+        console.log(contact)
+
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                this.viewgetRadioloyTemplateReportPdf(contact);
+            } else if (result.isDenied) {
+                this.viewgetRadioloyTemplateReportPdf1(contact);
+            }
+        });
+    }
+
+    viewgetRadioloyTemplateReportPdf(contact) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "RadReportId",
+                        "fieldValue": String(contact.pathReportID),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OP_IP_Type",
+                        "fieldValue": "0",
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "RadiologyTemplateReportWithHeader"
+            }
+
+            this._CasepaperService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Radiology Template Report" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
+
+    viewgetRadioloyTemplateReportPdf1(contact) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "RadReportId",
+                        "fieldValue": String(contact.pathReportID),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OP_IP_Type",
+                        "fieldValue": "0",
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "RadiologyTemplateReportWithoutHeader"
+            }
+
+            this._CasepaperService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Radiology Template Report" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
+
     // lab code end
 
     // tryed
