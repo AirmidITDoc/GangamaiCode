@@ -23,6 +23,7 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { cond } from 'lodash';
  
 
 @Component({
@@ -1044,6 +1045,22 @@ export class NewOPListComponent implements OnInit {
                 data: {
                     Obj: contact,
                     emailType:'OPBill'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+       OnemailPaymentReceipt(contact) {
+        console.log(contact)
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType:'OPPaymentReceipt'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
