@@ -1575,7 +1575,7 @@ export class NewLabPatientRegComponent {
 
     if (overallDiscAmt > 0 || rowDiscApplied) {
       if (!this.myForm.get('concessionReasonId')?.value) {
-        this.toastrService.warning('Please select ConcessionReason.', 'Warning !', {
+        this.toastrService.warning('Please select DiscountReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
