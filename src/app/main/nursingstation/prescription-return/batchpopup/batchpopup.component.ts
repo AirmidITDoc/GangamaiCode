@@ -29,6 +29,7 @@ export class BatchpopupComponent implements OnInit {
   selectedRowIndex: number = 0;
   screenFromString = 'admission-form';
   registerObj:any;  
+  vStoreId:any=0;
   
   constructor(
     private dialogRef: MatDialogRef<BatchpopupComponent>,
@@ -67,7 +68,8 @@ export class BatchpopupComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.data){
-      this.registerObj = this.data;
+      this.registerObj = this.data.obj;
+      this.vStoreId = this.data.storeId || 0
       console.log("PopUp data:", this.registerObj)
     }
     this.getSalesData(this.registerObj);
@@ -78,20 +80,33 @@ export class BatchpopupComponent implements OnInit {
  
   getSalesData(obj) {
     this.isLoadingStr = 'loading';
+    debugger
     var reqData = {
+
       // "ItemId": this.data.ItemId,
       // "StoreId": this.data.StoreId,
       // "OP_IP_Id":this.data.OP_IP_Id
-      "ItemId": this.registerObj.itemId,
-      "StoreId": this.registerObj.StoreId || 2,
-    }
+      // "ItemId": this.registerObj.itemId,
+      // "StoreId": this.registerObj.StoreId || 2,
+
+      "first": 0,
+      "rows": 999,
+      "sortField": "BatchNo",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.registerObj?.itemId), "opType": "Equals" },
+      { "fieldName": "StoreId", "fieldValue": String(this.vStoreId), "opType": "Equals" }
+      ],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }
+      ]
+    } 
     this._PrescriptionReturnService.getBatchList1(reqData).subscribe((res: any) => {
-      console.log("fffff:",res)
-      if (res && res.length > 0) {
-        res.forEach((element, index) => {
+      console.log("fffff:",res.data)
+      if (res && res.data.length > 0) {
+        res.data.forEach((element, index) => {
           element['position'] = index + 1;
         });
-        this.dataSource.data = res as SalesList[];
+        this.dataSource.data = res.data as SalesList[];
         this.highlight(this.dataSource.data[0]);
       } else {
         this.isLoadingStr = 'no-data';

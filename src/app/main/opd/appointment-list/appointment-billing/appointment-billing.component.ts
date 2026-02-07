@@ -279,7 +279,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             const newRow = {
                 ServiceId: contact.serviceId,
                 ServiceName: contact.serviceName,
-                Price: contact.classRate,
+                Price: contact.classRate || 1,
                 Qty: 1,
                 TotalAmt: contact.classRate * 1,// totalAmount,
                 DiscPer: 0,
@@ -289,9 +289,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 ClassName: contact.className || '-',
                 DoctorId: 0,
                 ChargesAddedName: this.accountService.currentUserValue.userName,
-                IsPathology: contact.IsPathology,
-                IsRadiology: contact.IsRadiology,
-                IsPackage: contact.IsPackage,
+                IsPathology: contact.isPathology,
+                IsRadiology: contact.isRadiology,
+                IsPackage: contact.isPackage,
             };
 
 

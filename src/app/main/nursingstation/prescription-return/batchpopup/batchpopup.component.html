@@ -21,6 +21,18 @@
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
                     <mat-card>
+                        <!-- {
+    "itemId": 3891,
+    "batchNo": "02A24017",
+    "batchExpDate": "2027-06-30T00:00:00",
+    "unitMRP": 3.66,
+    "vatPer": 12,
+    "qty": 2,
+    "landedPrice": 1.9134,
+    "purRateWf": 1.7433,
+    "storeId": 2,
+    "position": 1
+} -->
                         <mat-table #table [dataSource]="dataSource" matSort [@animateStagger]="{value:'50'}"  (click)="onTableClick()">
                             <ng-container matColumnDef="BatchNo">
                                 <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
@@ -34,7 +46,7 @@
 
                             <ng-container matColumnDef="BalanceQty">
                                 <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.balanceQty}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.qty}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="MRP">
@@ -44,7 +56,7 @@
 
                             <ng-container matColumnDef="PurPrice">
                                 <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.purchaseRate}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.purRateWf}} </span></mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="ConversionFactor">
@@ -54,7 +66,7 @@
 
                             <ng-container matColumnDef="LandedRate">
                                 <mat-header-cell *matHeaderCellDef> LandedRate </mat-header-cell>
-                                <mat-cell *matCellDef="let element"><span> {{element.landedRate}} </span></mat-cell>
+                                <mat-cell *matCellDef="let element"><span> {{element.landedPrice}} </span></mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">

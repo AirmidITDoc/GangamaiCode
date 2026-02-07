@@ -73,8 +73,8 @@ public getRegistraionById(Id) {
   }
 
   public getBatchList1(param: any) {
-    const apiUrl = `ItemMaster/GetItemListForSalesBatchPop?StoreId=${param.StoreId}&ItemId=${param.ItemId}`;
-    return this._httpClient1.GetData(apiUrl);
+   // const apiUrl = `ItemMaster/GetItemListForSalesBatchPop?StoreId=${param.StoreId}&ItemId=${param.ItemId}`;
+      return this._httpClient1.PostData("Prescription/ItemNameBatchPOP_IPPresReturn",param)   
   }
   
 
