@@ -1172,6 +1172,7 @@ export class NewCasepaperComponent implements OnInit {
         this._CasepaperService.getRtrvTestService(m_data2).subscribe(response => {
             this.RtrvTestServiceList = response.data
             if (Array.isArray(this.RtrvTestServiceList) && this.RtrvTestServiceList.length > 0) {
+                debugger
                 this.RtrvTestServiceList.forEach(element => {
                     // this.selectedItems.push({
                     //     serviceId: element.serviceId || 0,
@@ -1182,9 +1183,17 @@ export class NewCasepaperComponent implements OnInit {
                         serviceName: element.serviceName || ''
                     };
 
-                    this.selectedItems.push(item);
-                    this.selectedItems1.push(item);
+                    // Pathology
+                    if (element.isPathology === 1) {
+                        this.selectedItems.push(item);
+                    }
+
+                    // Radiology
+                    if (element.isRadiology === 1) {
+                        this.selectedItems1.push(item);
+                    }
                 });
+                console.log('Radio & Path:', this.RtrvTestServiceList)
                 this.caseFormGroup.get('mAssignService').setValue(this.selectedItems);
                 this.caseFormGroup.get('mAssignService1').setValue(this.selectedItems1);
             }
