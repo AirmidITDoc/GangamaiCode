@@ -766,7 +766,9 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      this.grid.bindGridData();
+      if(result)
+         this.getdata();
+      // this.grid.bindGridData();
     });
   } 
   getValidationMessages() {

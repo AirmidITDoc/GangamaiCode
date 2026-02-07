@@ -50,7 +50,7 @@ export class SalesInPatientService {
     if (loader) {
       this._loaderService.show();
   }
-      return this._httpClient1.PostData("Sales/SaveSalesInpatient ", employee)
+      return this._httpClient1.PostData("Sales/SaveSalesInpatient", employee)
     }
 
     
