@@ -386,7 +386,7 @@ export class BrowseLabBillsComponent {
 
   viewgetOPPayemntPdf(data, status) {
     if (status == true)
-      this.commonService.Onprint("PaymentId", data, "OPLabPaymentReceipt");
+      this.commonService.Onprint("PaymentId", data.paymentId, "OPLabPaymentReceipt");
     else
       this.commonService.Onprint("PaymentId", data.paymentId, "OPLabPaymentReceipt");
   }

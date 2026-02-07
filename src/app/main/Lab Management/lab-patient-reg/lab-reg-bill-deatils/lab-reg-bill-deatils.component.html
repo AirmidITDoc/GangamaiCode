@@ -4,8 +4,9 @@
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Lab Bill Detail List <span style="margin-left: 20px;font-weight: bold;">Doctor:- {{doctorName}} |
-                        {{BillNo}}</span>
+                    Lab Bill Detail List
+                    <!-- <span style="margin-left: 20px;font-weight: bold;">Doctor:- {{doctorName}} |
+                        {{BillNo}}</span> -->
                 </span>
             </div>
             <div class="modal-header-right">
@@ -21,158 +22,129 @@
         </div>
     </div>
 
-    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
+    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutGap="3px">
 
-        <div fusePerfectScrollbar
-            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-            dynamicTableHeight>
+        <div fxFlex fxLayout="column">
+            <mat-card style="padding: 6px;">
+                <div class="patient-info-title" fxLayout="row">
+                    <span class="h2" style="margin-right: 5px;"><strong>Patient Name:</strong>
+                        {{data.patientName}}</span>
+                    <span class="h2"><strong>Ref. Doctor:</strong> {{data.refDoctorName}}</span>
+                </div>
+            </mat-card>
 
-            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <!-- dynamicTableHeight -->
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
 
-                <ng-template #ColorCode let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
-                        <span [ngClass]="{
+                <div id="contacts" style="height: 280px;">
+
+                    <ng-template #ColorCode let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                            <span [ngClass]="{
                 'status-completed': element.isCompleted === true,
                 'status-pending': element.isCompleted === false
                         }">
-                            {{ element.isCompleted ? 'Completed' : 'Pending' }}
+                                {{ element.isCompleted ? 'Completed' : 'Pending' }}
+                            </span>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #icons let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
+                                style="color: #9c27b0;">
+                                <img width="50px" height="50px" src="assets/images/logos/pathology.png">
+                            </mat-icon>
+
+                            <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
+                                style="color: #4a6be6;">
+                                <img width="50px" height="50px" src="assets/images/logos/pathology.png">
+                            </mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <button mat-icon-button matTooltip="Print">
+                                <!-- --(click)="viewgetOPBillReportPdf(element)" -->
+                                <mat-icon>print</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="EMail">
+                                <!-- //(click)="Onemail(element)" -->
+                                <mat-icon>email</mat-icon>
+                            </button>
+
+                            <button mat-icon-button matTooltip="Send message On WhatsApp">
+                                <!-- (click)="getWhatsappshareBill(element)"  -->
+                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                            </button>
+                        </div>
+                    </ng-template>
+
+                    <div class="gridtitle">
+                        Test & Services
+                    </div>
+                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                        <ng-container filters>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+
+                <div id="contacts" style="height: 250px;margin-top: 20px;">
+                    <div class="gridtitle">
+                        <span>
+                            Discount Details
                         </span>
                     </div>
-                </ng-template>
+                    <airmid-table [gridConfig]="gridConfig1" #Discgrid :ShowFilter="false" :ShowButtons="false">
+                        <ng-container filters>
+                        </ng-container>
+                    </airmid-table>
+                </div>
 
-                <!-- <ng-template #actionButtonTemplate let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-
-                        <mat-icon *ngIf="element.isCompleted==true" title="Print Bill" (click)="viewgetPathologyTestReportPdf()">print
-                        </mat-icon>
-                    
+                <div id="contacts" style="height: 250px;margin-top: 50px;">
+                    <div class="gridtitle">
+                        Payment Details
                     </div>
-                </ng-template> -->
+                    <airmid-table [gridConfig]="gridConfig2" #PayGrid :ShowFilter="false" :ShowButtons="false">
+                        <ng-container filters>
+                        </ng-container>
+                    </airmid-table>
+                </div>
 
-                <ng-template #icons let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-
-                        <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
-                            style="color: #9c27b0;">
-                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
-                        </mat-icon>
-
-                        <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
-                            style="color: #4a6be6;">
-                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
-                        </mat-icon>
+                <div id="contacts" style="height: 280px;margin-top: 60px;">
+                    <div class="gridtitle">
+                        Credit Details
                     </div>
-                </ng-template>
-
-                <ng-template #actionButtonTemplate let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-
-                        <button mat-icon-button matTooltip="Print" > 
-                            <!-- --(click)="viewgetOPBillReportPdf(element)" -->
-                            <mat-icon>print</mat-icon>
-                        </button>
-
-                        <button mat-icon-button matTooltip="EMail" > 
-                            <!-- //(click)="Onemail(element)" -->
-                            <mat-icon>email</mat-icon>
-                        </button>
-
-                        <button mat-icon-button matTooltip="Send message On WhatsApp"> 
-                            <!-- (click)="getWhatsappshareBill(element)"  -->
-                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                        </button>
-
-
-                    </div>
-                </ng-template>
-
-                <!-- <ng-template #iconisPathology let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
-                            style="color: #9c27b0;">
-                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
-                        </mat-icon>
-                    </div>
-                </ng-template> -->
-
-                <!-- <ng-template #iconisRadiology let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-                          <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
-                            style="color: #4a6be6;">
-                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
-                        </mat-icon>
-                    </div>
-                </ng-template> -->
-
-
-                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
-                    <ng-container filters>
-                        <!-- <form [formGroup]="myformSearch">
-                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
-                            formStartControlName="start" formEndControlName="end"
-                            [(fromValue)]="gridConfig.filters[3].fieldValue"
-                            [(toValue)]="gridConfig.filters[4].fieldValue">
-                        </airmid-datepicker>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>UHID</mat-label>
-                            <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch"
-                                formControlName="RegNo" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>First Name</mat-label>
-                            <input matInput placeholder="Search First Name" autocomplete="off"
-                                [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Last Name</mat-label>
-                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
-                                formControlName="LastName" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </mat-form-field>
-
-                        <div fxLayout="column" fxLayoutAlign="start start">
-                            <div fxFlex fxLayout="row">
-                                <mat-radio-group name="Istype" fxLayout="row" [formGroup]="myformSearch"
-                                    formControlName="PatientTypeSearch" (change)="onChangeFirst()" style="padding: 6px;"
-                                    class="gap-4">
-                                    <mat-label>Type:</mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value='2'>All</mat-radio-button>
-                                        <mat-radio-button value='1'>IP</mat-radio-button>
-                                        <mat-radio-button value='0'>OP</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div>
-
-                            <div fxFlex fxLayout="row">
-                                <mat-radio-group name="StatusSearch" fxLayout="row" [formGroup]="myformSearch"
-                                    formControlName="StatusSearch" (change)="onChangeFirst()" style="padding: 6px;"
-                                    class="gap-4">
-                                    <mat-label>Status:</mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value='0'>Pending</mat-radio-button>
-                                        <mat-radio-button value='1'>Completed</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div>
-                        </div>
-                    </form> -->
-
-                    </ng-container>
-                </airmid-table>
+                    <airmid-table [gridConfig]="gridConfig3" #grid :ShowFilter="false" :ShowButtons="false">
+                        <ng-container filters>
+                        </ng-container>
+                    </airmid-table>
+                </div>
             </div>
+        </div>
 
+        <!-- <div fxFlex="25%" fxLayout="column" style="border: 1px solid black;">
 
+        </div> -->
+    </div>
+
+    <div class="modal-footer" style="margin-top: 10px;">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-primary" color="accent">
+                    Path Req
+                </button>
+                <button class="btn btn-primary" color="accent">
+                    Non Path Req
+                </button>
+
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+
+            </div>
         </div>
     </div>

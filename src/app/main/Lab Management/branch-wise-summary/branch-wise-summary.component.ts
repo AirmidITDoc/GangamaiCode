@@ -250,9 +250,7 @@ export class BranchWiseSummaryComponent {
 
   allCategorycolumns = [
     { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 1500 },
-    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    // { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Count", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     {
       heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
@@ -262,7 +260,7 @@ export class BranchWiseSummaryComponent {
   ];
 
   gridConfig2: gridModel = {
-    apiUrl: "Branch/UnitBranchWiseTestSummary",
+    apiUrl: "Branch/UnitBranchWiseCategorySummary",
     columnsList: this.allCategorycolumns,
     sortField: "UnitId",
     sortOrder: 0,
@@ -271,9 +269,9 @@ export class BranchWiseSummaryComponent {
 
   getfilterdataCategoryWise() {
     this.gridConfig2 = {
-      apiUrl: "Branch/UnitBranchWiseTestSummary",
+      apiUrl: "Branch/UnitBranchWiseCategorySummary",
       columnsList: this.allCategorycolumns,
-      sortField: "UnitId",
+      sortField: "CategoryName",
       sortOrder: 0,
       filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
@@ -294,8 +292,6 @@ export class BranchWiseSummaryComponent {
 
   alldoctorcolumns = [
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 1500 },
-    // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    // { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Count", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     {

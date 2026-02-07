@@ -1104,34 +1104,85 @@ export class LabResultListComponent {
   }
   selection = new SelectionModel<SampleList>(true, []);
 
-
-  masterToggle() {
-    // debugger
-    const totalTests = this.dataSource1.data.length;
-    const collectedTests = this.dataSource1.data.filter(
-      (row: any) => row.isSampleCollection === 'True'
+  getSelectableRows() {
+    return this.dataSource1.data.filter(
+      (row: any) =>
+        row.isSampleCollection === 'True' &&
+        row.isVerifySign === false &&
+        row.isTemplateTest != '1'
     );
-    const notCollectedCount = totalTests - collectedTests.length;
-    if (notCollectedCount > 0) {
+  }
+
+  // masterToggle() {
+  //   // debugger
+  //   const totalTests = this.dataSource1.data.length;
+  //   const collectedTests = this.dataSource1.data.filter(
+  //     (row: any) => row.isSampleCollection === 'True'
+  //   );
+  //   const notCollectedCount = totalTests - collectedTests.length;
+  //   if (notCollectedCount > 0) {
+  //     Swal.fire(
+  //       'Sample Pending',
+  //       `Still ${notCollectedCount} test(s) remaining to collect sample`,
+  //       'warning'
+  //     );
+  //     return;
+  //   }
+
+  //   if (this.isSomeSelected()) {
+  //     this.selection.clear();
+  //   } else {
+  //     this.isAllSelected()
+  //       ? this.selection.clear()
+  //       : this.dataSource1.data.forEach(row => this.selection.select(row));
+  //   }
+
+  //   console.log('Selected items count:', this.selection.selected.length);
+  //   this.resultSource = [...this.selection.selected];
+  //   console.log('Selected items:', this.resultSource);
+  // }
+  masterToggle() {
+
+    // 🔴 1. Sample collection pending check
+    const notCollected = this.dataSource1.data.filter(
+      (row: any) => row.isSampleCollection === 'False'
+    );
+
+    if (notCollected.length > 0) {
       Swal.fire(
         'Sample Pending',
-        `Still ${notCollectedCount} test(s) remaining to collect sample`,
+        `${notCollected.length} test(s) remaining to collect sample`,
         'warning'
       );
       return;
     }
 
-    if (this.isSomeSelected()) {
-      this.selection.clear();
-    } else {
-      this.isAllSelected()
-        ? this.selection.clear()
-        : this.dataSource1.data.forEach(row => this.selection.select(row));
+    // 🔴 2. Get selectable (pending & not verified) rows
+    const selectableRows = this.dataSource1.data.filter(
+      (row: any) =>
+        row.isSampleCollection === 'True' &&
+        row.isVerifySign === false &&
+        row.isTemplateTest != '1'
+    );
+
+    // 🔴 3. All tests already verified
+    if (selectableRows.length === 0) {
+      Swal.fire(
+        'No Pending Tests',
+        'All tests are already verified',
+        'info'
+      );
+      return;
     }
 
-    console.log('Selected items count:', this.selection.selected.length);
+    // 🔁 Toggle selection
+    if (this.isAllSelected()) {
+      selectableRows.forEach(row => this.selection.deselect(row));
+    } else {
+      selectableRows.forEach(row => this.selection.select(row));
+    }
+
     this.resultSource = [...this.selection.selected];
-    console.log('Selected items:', this.resultSource);
   }
 
   isSomeSelected() {
@@ -1151,13 +1202,27 @@ export class LabResultListComponent {
   onSearchClear() {
     this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
   }
-
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource1.data.length;
+    const selectableRows = this.dataSource1.data.filter(
+      (row: any) =>
+        row.isSampleCollection === 'True' &&
+        row.isVerifySign === false &&
+        row.isTemplateTest != '1'
+    );
 
-    return numSelected === numRows;
+    return (
+      selectableRows.length > 0 &&
+      selectableRows.every(row => this.selection.isSelected(row))
+    );
   }
+
+
+  // isAllSelected() {
+  //   const numSelected = this.selection.selected.length;
+  //   const numRows = this.dataSource1.data.length;
+
+  //   return numSelected === numRows;
+  // }
 
   onClear() {
     this._SampleService.myformSearch.get('RegNoSearch').setValue("0");

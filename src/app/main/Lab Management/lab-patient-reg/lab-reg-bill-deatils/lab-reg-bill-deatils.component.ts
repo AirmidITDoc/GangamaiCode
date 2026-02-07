@@ -28,12 +28,14 @@ export class LabRegBillDeatilsComponent {
     @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
     @ViewChild('icons') icons!: TemplateRef<any>;
     @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
+    @ViewChild('DiscGrid', { static: false }) Discgrid: AirmidTableComponent;
+    @ViewChild('PayGrid', { static: false }) Paygrid: AirmidTableComponent;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'icon')!.template = this.icons;
         // this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
         // this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
         this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.ColorCode;
-          this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
     allcolumns = [
@@ -62,6 +64,69 @@ export class LabRegBillDeatilsComponent {
     gridConfig: gridModel = {
         apiUrl: "LabPatientRegistration/LabBillDetailList",
         columnsList: this.allcolumns,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+        ]
+    }
+
+    allDisccolumns = [
+        { heading: "Discount Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Discount Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DisPer", key: "discper", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DisAmt", key: "discamt", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran MadeBy", key: "madeby", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true
+        }
+    ];
+    gridConfig1: gridModel = {
+        apiUrl: "LabPatientRegistration/LabBillDetailList",
+        columnsList: this.allDisccolumns,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+        ]
+    }
+
+    allPaycolumns = [
+        { heading: "Tran. Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran. Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Amount", key: "amt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran MadeBy", key: "madeby", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true
+        }
+    ];
+    gridConfig2: gridModel = {
+        apiUrl: "LabPatientRegistration/LabBillDetailList",
+        columnsList: this.allPaycolumns,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+        ]
+    }
+
+    allCreditcolumns = [
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran. Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Amount", key: "amt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran MadeBy", key: "madeby", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true
+        }
+    ];
+    gridConfig3: gridModel = {
+        apiUrl: "LabPatientRegistration/LabBillDetailList",
+        columnsList: this.allCreditcolumns,
         sortField: "BillNo",
         sortOrder: 0,
         filters: [

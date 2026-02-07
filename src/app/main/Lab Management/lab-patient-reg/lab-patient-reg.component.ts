@@ -538,8 +538,8 @@ export class LabPatientRegComponent {
     console.log(element)
     const dialogRef = this._matDialog.open(LabRegBillDeatilsComponent,
       {
-        maxWidth: "60vw",
-        height: '650px',
+        maxWidth: "90vw",
+        height: '90%',
         width: '100%',
         data: element
 

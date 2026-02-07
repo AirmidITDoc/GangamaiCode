@@ -464,7 +464,7 @@ export class LabrefundBillComponent {
     this.RefundOfBillFormFooter.patchValue(employee);
   }
   viewgetOPRefundBillReportPdf(data) {
-    this.commonService.Onprint("RefundId", data, "OPRefundReceipt");
+    this.commonService.Onprint("RefundId", data, "LabRefundReceipt");
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
