@@ -59,15 +59,15 @@ import { EditAppointmentComponent } from './edit-appointment/edit-appointment.co
 
 })
 export class AppointmentListComponent implements OnInit {
-    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-    IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-    IsOpdEmr:boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
-    IsBill:boolean = this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
-    IsEditRegistration:boolean = this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
-    IsGastrology:boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
-    IsCheckIn:boolean = this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
-    IsCheckOut:boolean = this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
+    IsAdd: boolean = true ;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    IsEdit: boolean =true ;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    IsDelete: boolean = true ;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    IsOpdEmr:boolean = true ;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
+    IsBill:boolean = true ;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
+    IsEditRegistration:boolean = true ;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
+    IsGastrology:boolean = true ;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
+    IsCheckIn:boolean = true ;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
+    IsCheckOut:boolean = true ;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
 
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
