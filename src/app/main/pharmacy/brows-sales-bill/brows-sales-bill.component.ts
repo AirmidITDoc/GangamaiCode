@@ -38,6 +38,7 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'app/core/services/config.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -253,6 +254,7 @@ export class BrowsSalesBillComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.Sales,
     apiUrl: "Sales/salesbrowselist",
     columnsList: this.BrowseHColumns,
     sortField: "SalesId",
@@ -438,6 +440,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   gridConfig3: gridModel = new gridModel();
   gridConfig2: gridModel = {
+    permissionCode: permissionCodes.Sales,
     apiUrl: "SalesReturn/SalesReturnBrowseList",
     columnsList: this.SalesReturnHColumns,
     sortField: "SalesReturnId",
@@ -635,6 +638,7 @@ export class BrowsSalesBillComponent implements OnInit {
   getPatientlistdata() {
     debugger
     this.gridConfig4 = {
+      // permissionCode: permissionCodes.Sales,
       apiUrl: this.apiUrl,
       columnsList: this.PatientlistColumns,
       sortField: "AdmissionId",

@@ -18,7 +18,7 @@ export enum permissionCodes {
     HospitalMaster = 'HospitalMaster',
     CampMaster = 'CampMaster',
     QuestionMaster = 'QuestionMaster',
-
+    AdmissionType='AdmissionType',
 
 
     //  BillingMaster
@@ -68,6 +68,7 @@ export enum permissionCodes {
 
     // Prescription Master
     Prescription = 'Prescription',
+    NursingPrescription= 'NursingPrescription',
     PGenericMaster = 'GenericMaster',
     DrugMaster = 'DrugMaster',
     DoseMaster = 'DoseMaster',
@@ -118,8 +119,8 @@ export enum permissionCodes {
 
     //Nursing Station
     NursingConsent = 'NursingConsent',
-    DoctorNote = 'DoctorNote',
-    NursingPrescription = 'NursingPrescription',
+    NursingNote='NursingNote',
+    DoctorNote='DoctorNote',
 
     //Pathology
     SamplecollectionList = 'SamplecollectionList',
@@ -147,4 +148,7 @@ export enum permissionCodes {
     // WorkOrder = 'WorkOrder',
     Indent = 'Indent',
     TallyInterface='TallyInterface',
+
+    // Pharmacy?
+    Sales='Sales'
 }
