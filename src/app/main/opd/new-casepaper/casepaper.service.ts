@@ -159,4 +159,10 @@ export class CasepaperService {
   public clinicalQue(employee) {
     return this._httpClient1.PostData("GastrologyEMR/Cancel", employee);
   }
+  public PathPrintResultentryInsert(employee) {
+    return this._httpClient1.PostData("Pathology/PathPrintResultentryInsert", employee);
+  }
+  public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }

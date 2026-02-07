@@ -63,6 +63,11 @@ export class AppointmentListComponent implements OnInit {
     IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
     IsDelete: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
     IsOpdEmr:boolean = this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
+    IsBill:boolean = this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
+    IsEditRegistration:boolean = this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
+    IsGastrology:boolean = this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
+    IsCheckIn:boolean = this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
+    IsCheckOut:boolean = this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
 
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;

@@ -1,1 +1,331 @@
-<p>financial-dashboard works!</p>
+<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll" fxLayout="column">
+    <!-- HEADER -->
+    <div class="top-header accent">
+        <div class="top-header-info">
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">assessment</mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Financial Dashboard</span>
+            </div>
+        </div>
+        <div class="date-filter-container">
+            <div class="date-filter">
+                <span class="date-filter-label">From Date</span>
+                <mat-form-field class="date-field" appearance="outline">
+                    <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" placeholder="From Date" readonly />
+                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="date-filter">
+                <span class="date-filter-label">To Date</span>
+                <mat-form-field class="date-field" appearance="outline">
+                    <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" placeholder="To Date" readonly />
+                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">Go</button>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="center" fusePerfectScrollbar>
+        <div class="p-4 fin-wrap">
+            <!-- Top row -->
+            <div class="fin-grid fin-grid-top">
+                <!-- Patient Head Count -->
+                <mat-card class="panel mat-elevation-z2">
+                    <div class="panel-header">Patient Head Count</div>
+                    <div class="panel-body">
+                        <div class="panel-subtitle">IP</div>
+                        <table mat-table [dataSource]="wardHeadCount" class="compact-table">
+                            <ng-container matColumnDef="wardName">
+                                <th mat-header-cell *matHeaderCellDef> Ward Name </th>
+                                <td mat-cell *matCellDef="let r"> {{ r.wardName }} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="occupancyPct">
+                                <th mat-header-cell *matHeaderCellDef> Occupancy % </th>
+                                <td mat-cell *matCellDef="let r">
+                                    <div class="occ-cell">
+                                        <mat-progress-bar mode="determinate" [value]="r.occupancyPct"></mat-progress-bar>
+                                        <div class="occ-label">{{ r.occupancyPct }}%</div>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="patients">
+                                <th mat-header-cell *matHeaderCellDef class="num"> # patients </th>
+                                <td mat-cell *matCellDef="let r" class="num"> {{ r.patients }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="wardHeadCountColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: wardHeadCountColumns;"></tr>
+                        </table>
+
+                        <div class="panel-footer">
+                            <div class="footer-label">Total</div>
+                            <div class="footer-value">{{ wardTotalPatients }}</div>
+                        </div>
+                    </div>
+                </mat-card>
+
+                <!-- Charges -->
+                <mat-card class="panel mat-elevation-z2">
+                    <div class="panel-header">Charges</div>
+                    <div class="panel-body">
+                        <table mat-table [dataSource]="charges" class="compact-table">
+                            <ng-container matColumnDef="serviceName">
+                                <th mat-header-cell *matHeaderCellDef> Service Name </th>
+                                <td mat-cell *matCellDef="let r"> {{ r.serviceName }} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ip">
+                                <th mat-header-cell *matHeaderCellDef class="num"> IP </th>
+                                <td mat-cell *matCellDef="let r" class="num"> {{ r.ip | number:'1.0-0' }} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="op">
+                                <th mat-header-cell *matHeaderCellDef class="num"> OP </th>
+                                <td mat-cell *matCellDef="let r" class="num"> {{ r.op | number:'1.0-0' }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="chargesColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: chargesColumns;"></tr>
+                        </table>
+
+                        <div class="totals">
+                            <div class="totals-row">
+                                <div class="totals-label">Total Amount</div>
+                                <div class="totals-num">{{ chargesTotalIp | number:'1.0-0' }}</div>
+                                <div class="totals-num">{{ chargesTotalOp | number:'1.0-0' }}</div>
+                            </div>
+                            <div class="totals-row">
+                                <div class="totals-label">Discount</div>
+                                <div class="totals-num">{{ chargesDiscountIp | number:'1.0-0' }}</div>
+                                <div class="totals-num">{{ chargesDiscountOp | number:'1.0-0' }}</div>
+                            </div>
+                            <div class="totals-row totals-strong">
+                                <div class="totals-label">Net Amount</div>
+                                <div class="totals-num">{{ chargesNetIp | number:'1.0-0' }}</div>
+                                <div class="totals-num">{{ chargesNetOp | number:'1.0-0' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+
+                <!-- Receipts -->
+                <mat-card class="panel mat-elevation-z2">
+                    <div class="panel-header">Receipts</div>
+                    <div class="panel-body">
+                        <table mat-table [dataSource]="receipts" class="compact-table">
+                            <ng-container matColumnDef="serviceName">
+                                <th mat-header-cell *matHeaderCellDef> Service Name </th>
+                                <td mat-cell *matCellDef="let r"> {{ r.serviceName }} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ip">
+                                <th mat-header-cell *matHeaderCellDef class="num"> IP </th>
+                                <td mat-cell *matCellDef="let r" class="num"> {{ r.ip | number:'1.0-0' }} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="op">
+                                <th mat-header-cell *matHeaderCellDef class="num"> OP </th>
+                                <td mat-cell *matCellDef="let r" class="num"> {{ r.op | number:'1.0-0' }} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="receiptsColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: receiptsColumns;"></tr>
+                        </table>
+
+                        <div class="totals">
+                            <div class="totals-row">
+                                <div class="totals-label">Total Amount</div>
+                                <div class="totals-num">{{ receiptsTotalIp | number:'1.0-0' }}</div>
+                                <div class="totals-num">{{ receiptsTotalOp | number:'1.0-0' }}</div>
+                            </div>
+                            <div class="totals-row">
+                                <div class="totals-label">Discount</div>
+                                <div class="totals-num">{{ receiptsDiscountIp | number:'1.0-0' }}</div>
+                                <div class="totals-num">{{ receiptsDiscountOp | number:'1.0-0' }}</div>
+                            </div>
+                            <div class="totals-row totals-strong">
+                                <div class="totals-label">Net Amount</div>
+                                <div class="totals-num">{{ receiptsNetIp | number:'1.0-0' }}</div>
+                                <div class="totals-num">{{ receiptsNetOp | number:'1.0-0' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+
+            <!-- Bottom row -->
+            <div class="fin-grid fin-grid-bottom">
+                <!-- Left: OP Summary -->
+                <mat-card class="panel mat-elevation-z2">
+                    <div class="panel-header">OP</div>
+                    <div class="panel-body">
+                        <div class="two-col">
+                            <div>
+                                <div class="panel-subtitle">Type of Visit</div>
+                                <table mat-table [dataSource]="opVisits" class="compact-table">
+                                    <ng-container matColumnDef="typeOfVisit">
+                                        <th mat-header-cell *matHeaderCellDef> Type of Visit </th>
+                                        <td mat-cell *matCellDef="let r"> {{ r.typeOfVisit }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="patients">
+                                        <th mat-header-cell *matHeaderCellDef class="num"> # Patients </th>
+                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.patients }} </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="opVisitColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: opVisitColumns;"></tr>
+                                </table>
+                                <div class="panel-footer">
+                                    <div class="footer-label">Total</div>
+                                    <div class="footer-value">{{ opTotalPatients }}</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="panel-subtitle">Type of Patient</div>
+                                <table mat-table [dataSource]="patientTypes" class="compact-table">
+                                    <ng-container matColumnDef="typeOfPatient">
+                                        <th mat-header-cell *matHeaderCellDef> Type of Patient </th>
+                                        <td mat-cell *matCellDef="let r"> {{ r.typeOfPatient }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ip">
+                                        <th mat-header-cell *matHeaderCellDef class="num"> # IP </th>
+                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.ip }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="op">
+                                        <th mat-header-cell *matHeaderCellDef class="num"> # OP </th>
+                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.op }} </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="patientTypeColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: patientTypeColumns;"></tr>
+                                </table>
+
+                                <div class="panel-subtitle mt-8">Referral List</div>
+                                <table mat-table [dataSource]="referrals" class="compact-table">
+                                    <ng-container matColumnDef="referredBy">
+                                        <th mat-header-cell *matHeaderCellDef> Referred By </th>
+                                        <td mat-cell *matCellDef="let r"> {{ r.referredBy }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ipPatients">
+                                        <th mat-header-cell *matHeaderCellDef class="num"> # IP Patients </th>
+                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.ipPatients }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="opPatients">
+                                        <th mat-header-cell *matHeaderCellDef class="num"> # OP Patients </th>
+                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.opPatients }} </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="referralColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: referralColumns;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+
+                <!-- Middle: Billing Summary -->
+                <mat-card class="panel mat-elevation-z2">
+                    <div class="panel-header">Billing Summary</div>
+                    <div class="panel-body">
+                        <div class="big-total">
+                            <div class="big-total-label">Total Charges</div>
+                            <div class="big-total-value">{{ billingTotalCharges | number:'1.0-0' }}</div>
+                        </div>
+
+                        <div class="two-col mt-8">
+                            <div>
+                                <div class="panel-subtitle">Receipt Summary</div>
+                                <div class="kv" *ngFor="let r of receiptSummary">
+                                    <div class="kv-label">{{ r.label }}</div>
+                                    <div class="kv-value">{{ r.amount | number:'1.0-0' }}</div>
+                                </div>
+                                <div class="kv kv-strong">
+                                    <div class="kv-label">Net Amt</div>
+                                    <div class="kv-value">{{ receiptSummaryTotal | number:'1.0-0' }}</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="panel-subtitle">Mode Summary</div>
+                                <div class="kv" *ngFor="let m of modeSummary">
+                                    <div class="kv-label">{{ m.label }}</div>
+                                    <div class="kv-value">{{ m.amount | number:'1.0-0' }}</div>
+                                </div>
+                                <div class="kv kv-strong">
+                                    <div class="kv-label">Net Amt</div>
+                                    <div class="kv-value">{{ modeSummaryTotal | number:'1.0-0' }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-subtitle mt-8">Collection</div>
+                        <div class="collection">
+                            <div class="kv" *ngFor="let c of collection">
+                                <div class="kv-label">{{ c.mode }}</div>
+                                <div class="kv-value">{{ c.amount | number:'1.0-0' }}</div>
+                            </div>
+                            <div class="kv kv-strong">
+                                <div class="kv-label">Total</div>
+                                <div class="kv-value">{{ collectionTotal | number:'1.0-0' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+
+                <!-- Right: Consultant + Package -->
+                <div class="right-stack">
+                    <mat-card class="panel mat-elevation-z2">
+                        <div class="panel-header">Consultant Charges</div>
+                        <div class="panel-body">
+                            <table mat-table [dataSource]="consultantCharges" class="compact-table">
+                                <ng-container matColumnDef="consultantName">
+                                    <th mat-header-cell *matHeaderCellDef> Consultant Name </th>
+                                    <td mat-cell *matCellDef="let r"> {{ r.consultantName }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="patients">
+                                    <th mat-header-cell *matHeaderCellDef class="num"> # Patients </th>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.patients }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="charges">
+                                    <th mat-header-cell *matHeaderCellDef class="num"> Charges </th>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.charges | number:'1.0-0' }} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="consultantChargeColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: consultantChargeColumns;"></tr>
+                            </table>
+                        </div>
+                    </mat-card>
+
+                    <mat-card class="panel mat-elevation-z2">
+                        <div class="panel-header">Package Details</div>
+                        <div class="panel-body">
+                            <ng-container *ngIf="packages.length; else noPackages">
+                                <table mat-table [dataSource]="packages" class="compact-table">
+                                    <ng-container matColumnDef="packageName">
+                                        <th mat-header-cell *matHeaderCellDef> Package Name </th>
+                                        <td mat-cell *matCellDef="let r"> {{ r.packageName }} </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="patients">
+                                        <th mat-header-cell *matHeaderCellDef class="num"> # patients </th>
+                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.patients }} </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="packageColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: packageColumns;"></tr>
+                                </table>
+                            </ng-container>
+                            <ng-template #noPackages>
+                                <div class="no-data">No data</div>
+                            </ng-template>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

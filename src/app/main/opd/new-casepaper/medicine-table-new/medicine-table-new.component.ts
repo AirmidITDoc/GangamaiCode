@@ -35,6 +35,8 @@ export interface MedicineItem {
     precriptionId?: number;
     presId?: number;
     Presid?: number;
+    instructionId?:any;
+    doseId?:any;
 }
 
 @Component({
@@ -51,6 +53,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     @Input() itemApiUrl: string;
     @Input() autocompleteModeItemGeneric: string = 'ItemGeneric';
     @Input() autocompleteModeDose: string = 'DoseMaster';
+    @Input() autocompleteModeInstr: string = 'InstructionMaster';
 
     @Output() dataChanged = new EventEmitter<MedicineItem[]>();
 
@@ -59,6 +62,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         'ItemGenericName',
         'DoseName',
         'Days',
+        'totalQty',
         'Instruction',
         'Action'
     ];
@@ -69,6 +73,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     drugOptions$: Observable<any[]> = of([]);
     genericOptions: any[] = [];
     doseOptions: any[] = [];
+    InstructionOptions: any[] = [];
     private destroy$ = new Subject<void>();
 
     // Selected values
@@ -76,6 +81,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     private drugName: string = '';
     private doseId: number = 0;
     private doseName: string = '';
+    private instructionId: number = 0;
+    private instruction: string = '';
     private doseQtyPerDay: number = 0;
     private vDay: number = 0;
     private vItemGenericNameId: number = 0;
@@ -195,6 +202,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.doseName = '';
         this.vItemGenericNameId = 0;
         this.vItemGenericName = '';
+        this.instruction=''
+        this.instructionId=0
     }
 
     // Add new row
@@ -210,6 +219,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     }
 
     // Confirm row
+
     confirmRow(row: MedicineItem): boolean {
         if (!this.medicineForm.get('ItemId')?.value) {
             this.toastr.warning('Please select a Drug Name', 'Warning!');
@@ -236,7 +246,9 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         row.Days = days;
         row.QtyPerDay = this.doseQtyPerDay || 0;
         row.totalQty = qty * days;
-        row.instruction = this.medicineForm.get('Instruction').value || '';
+        row.instruction = this.instruction || '';
+        row.instructionId = this.instructionId || '';
+        // row.instruction = this.medicineForm.get('Instruction').value || '';
         row.editable = false;
 
         this.dsItemList.data = [...this.dsItemList.data];
@@ -246,6 +258,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
 
     // Enable edit mode
     enableEdit(row: MedicineItem): void {
+        debugger
         this.removePlaceholderRows(row);
         this.dsItemList.data.forEach(r => (r.editable = false));
         row.editable = true;
@@ -255,15 +268,17 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.medicineForm.patchValue({
             ItemId: drugControlValue,
             Day: row.Days ?? row.days ?? '',
-            Instruction: row.instruction ?? row.Instruction ?? '',
+            Instruction: (row.instructionId ?? '').toString(),
+            // Instruction: row.instruction ?? row.Instruction ?? '',
             ItemGenericNameId: (row.GenericId ?? row.genericId ?? row.genericid ?? '').toString(),
-            DoseId: row.DoseId ?? ''
+            DoseId: (row.DoseId ?? row.doseId ?? '').toString()
         }, { emitEvent: false });
 
         // Set local values for editing
         this.drugId = row.DrugId || 0;
         this.drugName = row.DrugName || row.drugName || '';
         this.doseId = row.DoseId || 0;
+        this.instructionId=row.instructionId || 0
         this.doseName = row.DoseName || row.doseName || '';
         this.vItemGenericNameId = row.GenericId || row.genericId || row.genericid || 0;
         this.vItemGenericName = row.GenericName || row.genericName || '';
@@ -308,6 +323,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.drugId = 0;
         this.drugName = '';
         this.doseId = 0;
+        this.instruction='';
+        this.instructionId=0;
         this.doseName = '';
         this.vItemGenericNameId = 0;
         this.vItemGenericName = '';
@@ -346,7 +363,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         if (event?.stopPropagation) {
             event.stopPropagation();
         }
-        
+
         setTimeout(() => {
             const host = this.tableWrapper?.nativeElement;
             if (!host) {
@@ -554,6 +571,21 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         }
     }
 
+    onInsetSelected(row: any): void {
+        this.instructionId = row.value;
+        this.instruction=row.text
+    }
+
+    onInstSelectionChange(event: MatSelectChange): void {
+        const option = this.InstructionOptions.find(opt => opt.value === event.value || opt.Value === event.value);
+        if (option) {
+            this.onInsetSelected({
+                value: option.value ?? option.Value,
+                text: option.text ?? option.Text
+            });
+        }
+    }
+
     private loadDropdownOptions(): void {
         this.fetchDropdownOptions(this.autocompleteModeItemGeneric)
             .pipe(takeUntil(this.destroy$))
@@ -564,6 +596,11 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(options => {
                 this.doseOptions = options || [];
+            });
+        this.fetchDropdownOptions(this.autocompleteModeInstr)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(options => {
+                this.InstructionOptions = options || [];
             });
     }
 

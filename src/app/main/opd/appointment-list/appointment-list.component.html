@@ -215,19 +215,20 @@
                     </mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Gastrology EMR" (click)="getgastrologyCasePaper(element)">
+                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="IsGastrology"
+                    (click)="getgastrologyCasePaper(element)">
                     <mat-icon>
                         list_alt
                     </mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Bill"
+                <button mat-icon-button matTooltip="Bill" *ngIf="IsBill"
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                     (click)="OnBillPayment(element)">
                     <mat-icon> payment</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Consultant start / Check-In"
+                <button mat-icon-button matTooltip="Consultant start / Check-In" *ngIf="IsCheckIn"
                     style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
                     [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
                     <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
@@ -237,7 +238,7 @@
                     <!-- Check-In -->
                 </button>
 
-                <button mat-icon-button matTooltip="Consultant End / Check Out"
+                <button mat-icon-button matTooltip="Consultant End / Check Out" *ngIf="IsCheckOut"
                     style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
                     [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
                     <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
@@ -254,7 +255,8 @@
                 <!-- Material UI Menu with Compact Design -->
                 <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
 
-                    <button mat-menu-item (click)="OnEditRegistration(element)" style="height: 32px; min-height: 32px;">
+                    <button mat-menu-item (click)="OnEditRegistration(element)" *ngIf="IsEditRegistration"
+                        style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">edit</mat-icon>
                         <span style="font-size: 13px;">Edit Registration</span>
                     </button>

@@ -701,7 +701,7 @@ export class LabResultListComponent {
       if (flag.isConfirmed) {
 
         let submitData = {
-          "pathReportID": row.pathReportId
+          "pathReportID": row.pathReportID
         };
         console.log(submitData);
         this._SampleService.RoolbackStatus(submitData).subscribe(response => {

@@ -1,0 +1,279 @@
+/* Keep styling minimal; rely on Angular Material + existing dashboard theme */
+:host {
+  display: block;
+  box-sizing: border-box;
+}
+
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 70px !important;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.fin-wrap {
+  padding: 4px !important;
+}
+
+.header-center-title {
+  flex: 1 1 auto;
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.date-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.date-filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.date-field {
+  width: 140px;
+}
+
+.go-btn {
+  height: 34px;
+  min-width: 56px;
+  padding: 0 10px;
+}
+
+/* Remove extra mat-form-field space (subscript/hint) inside header */
+.date-filter-container .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
+.date-filter-container .mat-mdc-form-field-infix {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  min-height: 34px !important;
+}
+.date-filter-container .mat-mdc-text-field-wrapper {
+  padding: 0 8px !important;
+}
+
+.fin-grid {
+  display: grid;
+  gap: 6px;
+}
+
+.fin-grid-top {
+  grid-template-columns: 1fr 1.15fr 1.15fr;
+}
+
+.fin-grid-bottom {
+  margin-top: 6px;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  align-items: start;
+}
+
+.right-stack {
+  display: grid;
+  gap: 6px;
+}
+
+.panel {
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 0 !important; /* remove default mat-card padding */
+}
+
+.panel-header {
+  background: linear-gradient(180deg, #dbe9ff 0%, #c7ddff 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 4px 6px;
+  font-weight: 700;
+  color: #1a3d7a;
+  font-size: 12px;
+}
+
+.panel-body {
+  padding: 6px;
+}
+
+.panel-subtitle {
+  font-weight: 700;
+  font-size: 11px;
+  margin-bottom: 4px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.compact-table {
+  width: 100%;
+  /* Make rows compact (MDC table) */
+  --mat-table-row-item-container-height: 28px;
+}
+
+.compact-table .mat-mdc-header-cell,
+.compact-table .mat-mdc-cell {
+  padding: 2px 6px !important;
+  line-height: 1.15;
+  font-size: 11px;
+}
+
+/* Ensure MDC internal cells/rows also become compact */
+.compact-table .mdc-data-table__header-cell,
+.compact-table .mdc-data-table__cell {
+  padding: 0 6px !important;
+}
+.compact-table .mat-mdc-header-row,
+.compact-table .mat-mdc-row,
+.compact-table .mdc-data-table__row {
+  height: 28px !important;
+}
+
+.num {
+  text-align: right;
+}
+
+.occ-cell {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px;
+}
+
+.occ-cell mat-progress-bar {
+  height: 6px;
+}
+
+.occ-label {
+  font-weight: 600;
+  min-width: 42px;
+  text-align: right;
+  font-size: 11px;
+}
+
+.panel-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-weight: 700;
+  font-size: 11px;
+}
+
+.totals {
+  margin-top: 4px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 4px;
+}
+
+.totals-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 90px;
+  gap: 6px;
+  padding: 1px 0;
+  font-size: 11px;
+}
+
+.totals-label {
+  font-weight: 600;
+}
+
+.totals-num {
+  text-align: right;
+}
+
+.totals-strong .totals-label,
+.totals-strong .totals-num {
+  font-weight: 800;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.mt-8 {
+  margin-top: 6px;
+}
+
+.big-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 4px 6px;
+  background: rgba(25, 118, 210, 0.06);
+  border: 1px solid rgba(25, 118, 210, 0.12);
+  border-radius: 6px;
+}
+
+.big-total-label {
+  font-weight: 700;
+}
+
+.big-total-value {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 1px 0;
+  font-size: 11px;
+}
+
+.kv-label {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.kv-value {
+  text-align: right;
+  font-weight: 700;
+}
+
+.kv-strong .kv-label,
+.kv-strong .kv-value {
+  font-weight: 800;
+}
+
+.no-data {
+  padding: 10px 6px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+@media (max-width: 1200px) {
+  .fin-grid-top {
+    grid-template-columns: 1fr;
+  }
+  .fin-grid-bottom {
+    grid-template-columns: 1fr;
+  }
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+  .header-center-title {
+    display: none; /* keep header compact on small screens */
+  }
+  .date-field {
+    width: 100%;
+    min-width: 160px;
+  }
+}

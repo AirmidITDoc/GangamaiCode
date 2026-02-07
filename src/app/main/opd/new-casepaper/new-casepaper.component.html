@@ -438,6 +438,7 @@
                                                 [itemApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                                 [autocompleteModeItemGeneric]="autocompleteModeItemGeneric"
                                                 [autocompleteModeDose]="autocompleteModeDose"
+                                                [autocompleteModeInstr]="autocompleteModeInstr"
                                                 (dataChanged)="onMedicineDataChanged($event)">
                                             </app-medicine-table-new>
                                         </div>
@@ -1016,7 +1017,7 @@
                                                                     fxShow.gt-sm>
                                                                     Action </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
-                                                                    <button mat-icon-button matTooltip="Print"
+                                                                    <button mat-icon-button matTooltip="Lab Print" (click)="getLabPrint(element)"
                                                                         [disabled]="!element.isCompleted">
                                                                         <mat-icon>print</mat-icon>
                                                                     </button>
@@ -1101,7 +1102,7 @@
                                                                     fxShow.gt-sm>
                                                                     Action </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
-                                                                    <button mat-icon-button matTooltip="Print"
+                                                                    <button mat-icon-button matTooltip="Radiology Print" (click)="getRadPrint(element)"
                                                                         [disabled]="!element.isCompleted">
                                                                         <mat-icon>print</mat-icon>
                                                                     </button>

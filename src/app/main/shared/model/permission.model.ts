@@ -106,6 +106,9 @@ export enum permissionCodes {
     Advance = 'Advance',
     Bill = 'Bill',
     MedicalRecords='MedicalRecords',
+    GastrologyCasePaper='GastrologyCasePaper',
+    CheckIn='CheckIn',
+    CheckOut='CheckOut',
 
     // IPD?
     Admission = 'Admission',
