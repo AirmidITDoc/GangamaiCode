@@ -42,9 +42,9 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
 
-          <ng-template #supplierdetTemplate let-element> 
-            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
-            <mat-icon (click)="openServiceTable(element)" matTooltip="Supplier Details">visibility</mat-icon> 
+          <ng-template #supplierdetTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+              <mat-icon (click)="openServiceTable(element)" matTooltip="Supplier Details">visibility</mat-icon>
             </div>
           </ng-template>
 
@@ -58,12 +58,22 @@
                   (keyup)="selectChangeStoreExp($event)">
                 </airmid-dropdown>
 
-                <mat-form-field appearance="outline" fxFlex>
+                <!-- <mat-form-field appearance="outline" fxFlex>
                   <mat-label>Month and Year</mat-label>
                   <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="startdate"
                     (dateChange)="onchangeDate()">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+                </mat-form-field> -->
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Enter a date range</mat-label>
+                  <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate formControlName="startdate" placeholder="Start date">
+                    <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getExpwiseData()">
+                  </mat-date-range-input>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
 
                 <!-- <airmid-textbox fxFlex label="Exp Month" formControlName="ExpMonth"
@@ -73,6 +83,8 @@
                                 <airmid-textbox fxFlex label="Exp Year" formControlName="ExpYear"
                                     [formGroup]="searchFormGroup" (keyup)="onChangeExplist()"
                                     [validations]="getValidationMessages().ExpYear"></airmid-textbox> -->
+
+
 
               </form>
             </ng-container>
@@ -86,7 +98,7 @@
 
 
 
-<ng-template #SupplierdetTable >
+<ng-template #SupplierdetTable>
   <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
     <div fxLayout="row" fxLayoutAlign="start center">
       <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
@@ -102,66 +114,66 @@
   </mat-toolbar>
 
   <div class="supplier-table1 p-12" fxFlex="100%">
-    <mat-table  matSort [dataSource]="dssupplierdet" [@animateStagger]="{ value: '50' }">
+    <mat-table matSort [dataSource]="dssupplierdet" [@animateStagger]="{ value: '50' }">
       <ng-container matColumnDef="GRNDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-120">GRN Date</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-120">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">GRN Date</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-120">
           <span>{{ contact.GRNDate }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="GRNNO">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-110">GRN No</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-110">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">GRN No</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-110">
           <span>{{ contact.GrnNumber }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="InvoiceDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-120">Invoice Date</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-120">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">Invoice Date</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-120">
           <span>{{ contact.InvDate }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="InvoiceNo">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-110">Invoice No</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-110">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110">Invoice No</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-110">
           <span>{{ contact.InvoiceNo }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="SupplierName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-250">Supplier Name</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-250">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">Supplier Name</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-250">
           <span>{{ contact.SupplierName }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="qty">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-100">Qty</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-100">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">Qty</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-100">
           <span>{{ contact.ReceiveQty }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="mrp">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-120">MRP</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-120">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">MRP</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-120">
           <span>{{ contact.MRP | currency:'INR'}}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="Rate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-120">Rate</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-120">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">Rate</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-120">
           <span>{{ contact.Rate | currency:'INR' }}</span>
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="GST">
-        <mat-header-cell *matHeaderCellDef mat-sort-header  class="w-100">GST%</mat-header-cell>
-        <mat-cell *matCellDef="let contact"  class="w-100">
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">GST%</mat-header-cell>
+        <mat-cell *matCellDef="let contact" class="w-100">
           <span>{{ contact.VatPercentage }}</span>
         </mat-cell>
       </ng-container>
@@ -181,5 +193,5 @@
       <mat-footer-row *matFooterRowDef="['noData']"
         [ngClass]="{ hide: !(dssupplierdet != null && dssupplierdet.data.length == 0) }"></mat-footer-row>
     </mat-table>
-  </div> 
+  </div>
 </ng-template>

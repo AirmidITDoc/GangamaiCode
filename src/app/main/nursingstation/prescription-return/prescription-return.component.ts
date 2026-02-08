@@ -21,7 +21,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
     animations: fuseAnimations
 })
 export class PrescriptionReturnComponent implements OnInit {
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Add);
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingPrescription, permissionType.Add);
          
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
@@ -72,7 +72,7 @@ export class PrescriptionReturnComponent implements OnInit {
         { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-        permissionCode: permissionCodes.Prescription,
+        permissionCode: permissionCodes.NursingPrescription,
         apiUrl: "IPPrescription/IPPrescriptionReturnList",
         columnsList: this.allColumns2,
        

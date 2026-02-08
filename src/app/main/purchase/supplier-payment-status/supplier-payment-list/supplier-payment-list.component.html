@@ -23,6 +23,30 @@
     </mat-toolbar>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+         <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="print" (click)="viewgetReportPdf(element)">
+                    <mat-icon>print</mat-icon>
+                </button>
+              
+                <button mat-icon-button [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                    matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                    (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                    (mouseleave)="closeWhatsappDetailsPopover()"
+                    style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                    <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                </button>
+                <button mat-icon-button [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                    matTooltipPosition="right" (click)="Onemail(element)"
+                    (mouseenter)="openEmailDetailsPopover($event, element)" (mouseleave)="closeEmailDetailsPopover()"
+                    style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                    <mat-icon>email</mat-icon>
+                </button>
+
+
+            </div>
+        </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="SupplierListForm">

@@ -32,7 +32,7 @@ import { ConfigService } from 'app/core/services/config.service';
   animations: fuseAnimations,
 })
 export class SalesReturnBillSettlementComponent implements OnInit {
-    displayedColumns = [ 
+  displayedColumns = [
     'Status',
     'date',
     'salesNo',
@@ -47,11 +47,11 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     'balanceAmount',
     'Action'
   ];
-   
+
   userFormGroup: FormGroup;
   MutliSettlemForm: FormGroup;
-  globleDiscFrom:FormGroup;
-  chargelist:any=[];
+  globleDiscFrom: FormGroup;
+  chargelist: any = [];
   RegNo: any;
   TariffName: any;
   CompanyName: any;
@@ -65,7 +65,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   IPDNo: any
   DoctorNamecheck: boolean = false;
   IPDNocheck: boolean = false;
-  OPDNoCheck: boolean = false; 
+  OPDNoCheck: boolean = false;
   vglobledisc: boolean = false;
   WardName: any = ''
   mRegNo: any;
@@ -75,12 +75,12 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   mBedName: any;
   mOPDNo: any;
   mIPDNo: any;
-   Is9_Digit_National_Id:boolean=false;
+  Is9_Digit_National_Id: boolean = false;
   mWardName: any = ''
-  mRegId: any = '' 
-   autocompleteModeConcession: string = "Concession";
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+  mRegId: any = ''
+  autocompleteModeConcession: string = "Concession";
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
   @ViewChild('grid1', { static: false }) grid1: AirmidTableComponent;
@@ -141,7 +141,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Discount Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }, 
+    { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Refund Amt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
     {
@@ -162,7 +162,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     row: 25
   }
   dsPaidItemList = new MatTableDataSource<PaidItemList>();
-  dssalesbillListMultiple = new MatTableDataSource<PaidItemList>(); 
+  dssalesbillListMultiple = new MatTableDataSource<PaidItemList>();
 
   constructor(
     public _SelseSettelmentservice: SalesReturnBillSettlementService,
@@ -171,8 +171,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     private _loggedService: AuthenticationService,
     public toastr: ToastrService,
     public _formBuilder: FormBuilder,
-     private commonService: PrintserviceService,
-     public _ConfigService : ConfigService,
+    private commonService: PrintserviceService,
+    public _ConfigService: ConfigService,
     public _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
@@ -183,10 +183,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.globleDiscFrom = this.CreateApplyglobeDiscForm();
 
 
-            //this code for Mediforte 9 digit national id
-const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
+    //this code for Mediforte 9 digit national id
+    const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+    const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+    this.Is9_Digit_National_Id = id === "1";
   }
   CreateUseFrom() {
     return this._formBuilder.group({
@@ -207,39 +207,39 @@ this.Is9_Digit_National_Id = id === "1";
       FinalNetAmt: 0,
       FinalPaidAmt: 0,
       FinalBalanceAmt: 0,
-      globledisc:[false],
-      globlediscPer:[0],
-      ConcessionId:[0]
+      globledisc: [false],
+      globlediscPer: [0],
+      ConcessionId: [0]
     });
   }
 
   PharmaSettlementfrom: FormGroup;
   createSettlementform() {
-    return this._formBuilder.group({ 
+    return this._formBuilder.group({
       // payment in array
       payment: this._formBuilder.array([]),
-          // Current stock in array
+      // Current stock in array
       saless: this._formBuilder.array([]),
-        // sales return details in array
+      // sales return details in array
       advanceDetail: this._formBuilder.array([]),
-        //Advacne header  
+      //Advacne header  
       advanceHeader: this._formBuilder.group({
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       }),
-       //New Payments
+      //New Payments
       // ✅ Fixed: should be FormArray
       tPayments: this._formBuilder.array([]),
     });
-  } 
-    createAdvanceDetails(element: any): FormGroup {
+  }
+  createAdvanceDetails(element: any): FormGroup {
     return this._formBuilder.group({
       advanceDetailID: [element?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       usedAmount: [element?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       balanceAmount: [element?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
-  } 
+  }
   createsaless(element: any): FormGroup {
     return this._formBuilder.group({
       salesID: [element?.salesID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -315,7 +315,7 @@ this.Is9_Digit_National_Id = id === "1";
   // Getters 
   get ModeOfPaymentsArray(): FormArray {
     return this.PharmaSettlementfrom.get('tPayments') as FormArray;
-    }
+  }
   get AdvanceDetailsArray(): FormArray {
     return this.PharmaSettlementfrom.get('advanceDetail') as FormArray;
   }
@@ -344,26 +344,26 @@ this.Is9_Digit_National_Id = id === "1";
       this.userFormGroup.updateValueAndValidity();
     }
     this.PatientInformRest();
-    this.getdata(); 
+    this.getdata();
   }
-  getSelectedObjRegIP(obj) { 
-    this.registerObj =obj  
-      this.DoctorNamecheck = true;
-      this.IPDNocheck = true;
-      this.OPDNoCheck = false;
-      this.RegId = obj.regID,
-        this.OP_IP_Id = obj.admissionID,
-        this.RegNo = obj.regNo;
-      this.PatientName = obj.firstName + ' ' + obj.lastName;
-      this.IPDNo = obj.ipdNo;
-      this.DoctorName = obj.doctorName;
-      this.TariffName = obj.tariffName;
-      this.WardName = obj.roomName;
-      this.BedName = obj.bedName;
-     this.getdata();
+  getSelectedObjRegIP(obj) {
+    this.registerObj = obj
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
+    this.RegId = obj.regID,
+      this.OP_IP_Id = obj.admissionID,
+      this.RegNo = obj.regNo;
+    this.PatientName = obj.firstName + ' ' + obj.lastName;
+    this.IPDNo = obj.ipdNo;
+    this.DoctorName = obj.doctorName;
+    this.TariffName = obj.tariffName;
+    this.WardName = obj.roomName;
+    this.BedName = obj.bedName;
+    this.getdata();
   }
-  getSelectedObjOp(obj) { 
-     this.registerObj =obj
+  getSelectedObjOp(obj) {
+    this.registerObj = obj
     this.DoctorNamecheck = true;
     this.IPDNocheck = false;
     this.OPDNoCheck = true;
@@ -376,7 +376,7 @@ this.Is9_Digit_National_Id = id === "1";
     this.TariffName = obj.tariffName;
     this.getdata();
   }
-  getdata() { 
+  getdata() {
     debugger
     let opiptype = this.userFormGroup.get('PatientType').value
     this.gridConfig = {
@@ -393,630 +393,701 @@ this.Is9_Digit_National_Id = id === "1";
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
-  openPaymentpopup(contact) {
-    debugger
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    let PatientHeaderObj = {};
-    PatientHeaderObj['Date'] = formattedDate;
-    PatientHeaderObj['PatientName'] = contact?.patientName || '';
-    PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
-    PatientHeaderObj['NetPayAmount'] = Math.round(contact?.balanceAmount);
-    PatientHeaderObj['BillNo'] = contact?.salesId || 0;
-    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id || 0;
-    PatientHeaderObj['RegNo'] = contact?.regNo || 0;
-    PatientHeaderObj['DoctorName'] = this.DoctorName || '';
-    PatientHeaderObj['DepartmentName'] = contact?.departmentName || '';
-    PatientHeaderObj['Age'] = contact?.age || 0; 
-    PatientHeaderObj['CompanyName'] = contact?.companyName || '';  
-    PatientHeaderObj['CompanyId'] = contact?.companyId || 0;  
-    PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT'; 
-    if (this.userFormGroup.get('PatientType').value == '1')
-      PatientHeaderObj['IPDNo'] = this.IPDNo;
+  getSelectedObjRegIP1(obj) {
+    debugger
+    this.registerObj = obj
+    this.DoctorNamecheck = true;
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
+    this.mRegId = obj.regID,
+      this.OP_IP_Id = obj.admissionID,
+      this.RegNo = obj.regNo;
+    this.PatientName = obj.firstName + ' ' + obj.lastName;
+    this.IPDNo = obj.ipdNo;
+    this.DoctorName = obj.doctorName;
+    this.TariffName = obj.tariffName;
+    this.WardName = obj.roomName;
+    this.BedName = obj.bedName;
+    this.getdata1();
+  }
+
+  getdata1() {
+    debugger
+    // let opiptype = this.userFormGroup.get('PatientType').value
+    // this.gridConfig = {
+    //   apiUrl: "Sales/PharSalesSettlemet",
+    //   columnsList: this.AllColumns,
+    //   sortField: "SalesId",
+    //   sortOrder: 0,
+    //   filters: [
+    //     { fieldName: "RegId", fieldValue: String(this.RegId), opType: OperatorComparer.Contains },
+    //     { fieldName: "OP_IP_ID", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Contains },
+    //     { fieldName: "OP_IP_Type", fieldValue: opiptype, opType: OperatorComparer.Contains },
+    //   ]
+    // }
+    // this.grid.gridConfig = this.gridConfig;
+    // this.grid.bindGridData();
+
+    // this.SelectedList = [];
+     let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
+  var vdata = {
+    "first": 0,
+    "rows": 999,
+    "sortField": "SalesId",
+    "sortOrder": 0,
+    "filters": [{ "fieldName": "RegId", "fieldValue": String(this.mRegId), "opType": "Contains" },
+    { "fieldName": "OP_IP_ID", "fieldValue": String(this.OP_IP_Id), "opType": "Contains" },
+    { "fieldName": "OP_IP_Type", "fieldValue": opiptype, "opType": "Contains" },
+    ],
+    "exportType": "JSON",
+    "columns": [{ "data": "string", "name": "string" }]
+  }
+  this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response) => {
+    this.dssalesbillListMultiple.data = response.data
+    this.chargelist = response.data
+    this.dssalesbillListMultiple.sort = this.sort
+    this.dssalesbillListMultiple.paginator = this.paginator
+  })
+  }
+
+
+  openPaymentpopup(contact) {
+      debugger
+    const currentDate = new Date();
+      const datePipe = new DatePipe('en-US');
+      const formattedTime = datePipe.transform(currentDate, 'shortTime');
+      const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+      let PatientHeaderObj = {};
+      PatientHeaderObj['Date'] = formattedDate;
+      PatientHeaderObj['PatientName'] = contact?.patientName || '';
+      PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
+      PatientHeaderObj['NetPayAmount'] = Math.round(contact?.balanceAmount);
+      PatientHeaderObj['BillNo'] = contact?.salesId || 0;
+      PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id || 0;
+      PatientHeaderObj['RegNo'] = contact?.regNo || 0;
+      PatientHeaderObj['DoctorName'] = this.DoctorName || '';
+      PatientHeaderObj['DepartmentName'] = contact?.departmentName || '';
+      PatientHeaderObj['Age'] = contact?.age || 0;
+      PatientHeaderObj['CompanyName'] = contact?.companyName || '';
+      PatientHeaderObj['CompanyId'] = contact?.companyId || 0;
+      PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT';
+      if(this.userFormGroup.get('PatientType').value == '1')
+    PatientHeaderObj['IPDNo'] = this.IPDNo;
     else
       PatientHeaderObj['OPDNo'] = this.OPDNo;
 
-    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-      {
-         maxWidth: "80vw",
-            height: '800px',
-            width: '75%',
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
-          FromName: "IP-Pharma-SETTLEMENT",
-          advanceObj: PatientHeaderObj,
-        }
-      });
+  const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+    {
+      maxWidth: "80vw",
+      height: '800px',
+      width: '75%',
+      data: {
+        vPatientHeaderObj: PatientHeaderObj,
+        FromName: "IP-Pharma-SETTLEMENT",
+        advanceObj: PatientHeaderObj,
+      }
+    });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      debugger
-      if (result && result.IsSubmitFlag) {
-        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-        UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+debugger
+if (result && result.IsSubmitFlag) {
+  let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+  UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 
-        let SalesDataArray =[];
-        SalesDataArray.push({salesID: contact?.salesId, balanceAmount: result?.BalAmt ?? 0 ,refundAmt: 0 }) 
+  let SalesDataArray = [];
+  SalesDataArray.push({ salesID: contact?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
 
-        this.AdvanceDetailsArray.clear();
-        UpdateAdvanceDetailarr1.forEach(item => {
-          this.AdvanceDetailsArray.push(this.createAdvanceDetails(item));
-        });
+  this.AdvanceDetailsArray.clear();
+  UpdateAdvanceDetailarr1.forEach(item => {
+    this.AdvanceDetailsArray.push(this.createAdvanceDetails(item));
+  });
 
-         this.salessArray.clear();
-        SalesDataArray.forEach(item => {
-          this.salessArray.push(this.createsaless(item));
-        });
+  this.salessArray.clear();
+  SalesDataArray.forEach(item => {
+    this.salessArray.push(this.createsaless(item));
+  });
 
-        let AdvanceBalAmt = 0;
-        let AdvanceUsedAmt = 0;
-        if (UpdateAdvanceDetailarr1.length > 0) {
-          UpdateAdvanceDetailarr1.forEach(element => {
-            AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
-            AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
-            this.PharmaSettlementfrom.get('advanceHeader.advanceId')?.setValue(element.AdvanceId)
-            this.PharmaSettlementfrom.get('advanceHeader.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
-            this.PharmaSettlementfrom.get('advanceHeader.balanceAmount')?.setValue(AdvanceBalAmt)
-          })
-        }
-        console.log(this.PharmaSettlementfrom.value);
+  let AdvanceBalAmt = 0;
+  let AdvanceUsedAmt = 0;
+  if (UpdateAdvanceDetailarr1.length > 0) {
+    UpdateAdvanceDetailarr1.forEach(element => {
+      AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+      AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+      this.PharmaSettlementfrom.get('advanceHeader.advanceId')?.setValue(element.AdvanceId)
+      this.PharmaSettlementfrom.get('advanceHeader.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+      this.PharmaSettlementfrom.get('advanceHeader.balanceAmount')?.setValue(AdvanceBalAmt)
+    })
+  }
+  console.log(this.PharmaSettlementfrom.value);
 
-          let PaymentArray: IpPaymentInsert[] = [];
-          PaymentArray = result.submitDataPay.ipPaymentInsert;
-          this.PaymentArray.clear(); 
-          this.PaymentArray.push(this.createSettlmentPyament(PaymentArray));
-        this.ModeOfPaymentsArray.clear();
-        result.submitDataPay.ipModePaymentInsert.forEach(item => {
-          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-        });
-      
-        console.log(this.PharmaSettlementfrom.value);
-        this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
-            this.onclearmultipledata();
-            // this.viewgetIPPayemntPdf(response) 
-            // this.OnSalessettlemtnprint(this.OP_IP_Id,this._loggedService.currentUserValue.user.storeId) 
-            this.grid.bindGridData(); 
-        });
-      }
+  let PaymentArray: IpPaymentInsert[] = [];
+  PaymentArray = result.submitDataPay.ipPaymentInsert;
+  this.PaymentArray.clear();
+  this.PaymentArray.push(this.createSettlmentPyament(PaymentArray));
+  this.ModeOfPaymentsArray.clear();
+  result.submitDataPay.ipModePaymentInsert.forEach(item => {
+    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+  });
+
+  console.log(this.PharmaSettlementfrom.value);
+  this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => {
+    this.onclearmultipledata();
+    // this.viewgetIPPayemntPdf(response) 
+    // this.OnSalessettlemtnprint(this.OP_IP_Id,this._loggedService.currentUserValue.user.storeId) 
+    this.grid.bindGridData();
+  });
+}
     });
   }
 
 
-   viewgetIPPayemntPdf(paymentId) { 
-        this.commonService.Onprint("PaymentId", paymentId, "IpPaymentReceipt");
-    } 
-  ///Multiple settlement section start --------------------
-  onChangePatientTypeMultiple(event) {
-    if (event.value == 'OP') {
-      this.RegId = '';
-      this.MutliSettlemForm.get('MobileNo').clearValidators();
-      this.MutliSettlemForm.get('MobileNo').updateValueAndValidity();
-      this.MutliSettlemForm.get('RegID').setValue('');
-    } else if (event.value == 'IP') {
-      this.RegId = '';
-      this.MutliSettlemForm.get('MobileNo').clearValidators();
-      this.MutliSettlemForm.get('MobileNo').updateValueAndValidity();
-      this.MutliSettlemForm.get('RegID').setValue('');
-    } else {
-      this.MutliSettlemForm.get('MobileNo').reset();
-      this.MutliSettlemForm.get('MobileNo').setValidators([Validators.required]);
-      this.MutliSettlemForm.get('MobileNo').enable();
-      this.MutliSettlemForm.get('RegID').setValue('');
-      this.MutliSettlemForm.updateValueAndValidity();
-    }
-    this.PatientInformRest();
-    this.getdataMultiple();
-    
-  } 
-  getSelectedObjIPMultiple(obj) {
-    console.log(obj);
-    let IsDischarged = 0;
-     this.registerObj =obj
-    IsDischarged = obj.isDischarged;
-    if (IsDischarged == 1) {
-      Swal.fire('Selected Patient is already discharged');
-      this.mRegId = '';
-    } else {
-      this.DoctorNamecheck = true;
-      this.IPDNocheck = true;
-      this.OPDNoCheck = false;
-      this.mRegId = obj.regID,
-        this.OP_IP_Id = obj.admissionID,
-        this.mRegNo = obj.regNo;
-      this.mPatientName = obj.firstName + ' ' + obj.lastName;
-      this.mIPDNo = obj.ipdNo;
-      this.mDoctorName = obj.doctorName;
-      this.mTariffName = obj.tariffName;
-      this.mWardName = obj.roomName;
-      this.mBedName = obj.bedName;
-    }
-    this.getdataMultiple();
+viewgetIPPayemntPdf(paymentId) {
+  this.commonService.Onprint("PaymentId", paymentId, "IpPaymentReceipt");
+}
+///Multiple settlement section start --------------------
+onChangePatientTypeMultiple(event) {
+  if (event.value == 'OP') {
+    this.RegId = '';
+    this.MutliSettlemForm.get('MobileNo').clearValidators();
+    this.MutliSettlemForm.get('MobileNo').updateValueAndValidity();
+    this.MutliSettlemForm.get('RegID').setValue('');
+  } else if (event.value == 'IP') {
+    this.RegId = '';
+    this.MutliSettlemForm.get('MobileNo').clearValidators();
+    this.MutliSettlemForm.get('MobileNo').updateValueAndValidity();
+    this.MutliSettlemForm.get('RegID').setValue('');
+  } else {
+    this.MutliSettlemForm.get('MobileNo').reset();
+    this.MutliSettlemForm.get('MobileNo').setValidators([Validators.required]);
+    this.MutliSettlemForm.get('MobileNo').enable();
+    this.MutliSettlemForm.get('RegID').setValue('');
+    this.MutliSettlemForm.updateValueAndValidity();
   }
-  getSelectedObjOpMultiple(obj) {
-    console.log(obj)
-     this.registerObj =obj
+  this.PatientInformRest();
+  this.getdataMultiple();
+
+}
+getSelectedObjIPMultiple(obj) {
+  console.log(obj);
+  let IsDischarged = 0;
+  this.registerObj = obj
+  IsDischarged = obj.isDischarged;
+  if (IsDischarged == 1) {
+    Swal.fire('Selected Patient is already discharged');
+    this.mRegId = '';
+  } else {
     this.DoctorNamecheck = true;
-    this.IPDNocheck = false;
-    this.OPDNoCheck = true;
-    this.mRegId = obj.regId,
-      this.OP_IP_Id = obj.visitId,
+    this.IPDNocheck = true;
+    this.OPDNoCheck = false;
+    this.mRegId = obj.regID,
+      this.OP_IP_Id = obj.admissionID,
       this.mRegNo = obj.regNo;
     this.mPatientName = obj.firstName + ' ' + obj.lastName;
-    this.mOPDNo = obj.opdNo;
+    this.mIPDNo = obj.ipdNo;
     this.mDoctorName = obj.doctorName;
     this.mTariffName = obj.tariffName;
-    this.getdataMultiple();
+    this.mWardName = obj.roomName;
+    this.mBedName = obj.bedName;
   }
-  getdataMultiple() { 
- this.SelectedList = [];
-    let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0 
-  var vdata= {
-  "first": 0,
-  "rows": 999,
-  "sortField": "SalesId",
-  "sortOrder": 0,
-  "filters": [ {"fieldName": "RegId", "fieldValue":  String(this.mRegId), "opType": "Contains" },
-    {"fieldName": "OP_IP_ID", "fieldValue":String(this.OP_IP_Id), "opType": "Contains" },
-    {"fieldName": "OP_IP_Type", "fieldValue": opiptype, "opType": "Contains" },
-  ],
-  "exportType": "JSON",
-  "columns": [   {  "data": "string",  "name": "string"  }  ]
+  this.getdataMultiple();
 }
-this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
-  this.dssalesbillListMultiple.data = response.data
-  this.chargelist = response.data
-  this.dssalesbillListMultiple.sort = this.sort
-  this.dssalesbillListMultiple.paginator = this.paginator
-}) 
-
+getSelectedObjOpMultiple(obj) {
+  console.log(obj)
+  this.registerObj = obj
+  this.DoctorNamecheck = true;
+  this.IPDNocheck = false;
+  this.OPDNoCheck = true;
+  this.mRegId = obj.regId,
+    this.OP_IP_Id = obj.visitId,
+    this.mRegNo = obj.regNo;
+  this.mPatientName = obj.firstName + ' ' + obj.lastName;
+  this.mOPDNo = obj.opdNo;
+  this.mDoctorName = obj.doctorName;
+  this.mTariffName = obj.tariffName;
+  this.getdataMultiple();
+}
+getdataMultiple() {
+  this.SelectedList = [];
+  let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
+  var vdata = {
+    "first": 0,
+    "rows": 999,
+    "sortField": "SalesId",
+    "sortOrder": 0,
+    "filters": [{ "fieldName": "RegId", "fieldValue": String(this.mRegId), "opType": "Contains" },
+    { "fieldName": "OP_IP_ID", "fieldValue": String(this.OP_IP_Id), "opType": "Contains" },
+    { "fieldName": "OP_IP_Type", "fieldValue": opiptype, "opType": "Contains" },
+    ],
+    "exportType": "JSON",
+    "columns": [{ "data": "string", "name": "string" }]
   }
-  vNetAmount: any = 0;
-  vBalanceAmount: any = 0;
-  vPaidAmount: any = 0;
-  SelectedList: any = [];
-  tableElementChecked(event, element) { 
-    debugger
-    if (event.checked) { 
-      this.SelectedList.push(element)
-      this.vNetAmount += Math.round(+element.netAmount)
-      this.vPaidAmount += Math.round(+element.paidAmount)
-      this.vBalanceAmount += Math.round(+element.balanceAmount)
+  this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response) => {
+    this.dssalesbillListMultiple.data = response.data
+    this.chargelist = response.data
+    this.dssalesbillListMultiple.sort = this.sort
+    this.dssalesbillListMultiple.paginator = this.paginator
+  })
+
+}
+vNetAmount: any = 0;
+vBalanceAmount: any = 0;
+vPaidAmount: any = 0;
+SelectedList: any = [];
+tableElementChecked(event, element) {
+  debugger
+  if (event.checked) {
+    this.SelectedList.push(element)
+    this.vNetAmount += Math.round(+element.netAmount)
+    this.vPaidAmount += Math.round(+element.paidAmount)
+    this.vBalanceAmount += Math.round(+element.balanceAmount)
+  }
+  else {
+    let index = this.SelectedList.indexOf(element);
+    if (index >= 0) {
+      this.SelectedList.splice(index, 1);
     }
-    else {
-      let index = this.SelectedList.indexOf(element);
-      if (index >= 0) {
-        this.SelectedList.splice(index, 1);
+    this.vNetAmount -= Math.round(+element.netAmount)
+    this.vPaidAmount -= Math.round(+element.paidAmount)
+    this.vBalanceAmount -= Math.round(+element.balanceAmount)
+  }
+  console.log(this.SelectedList)
+  this.MutliSettlemForm.patchValue({
+    FinalNetAmt: this.vNetAmount,
+    FinalPaidAmt: this.vPaidAmount,
+    FinalBalanceAmt: this.vBalanceAmount,
+  })
+}
+BalanceAm1: any = 0;
+UsedAmt1: any = 0;
+MultiplePaySave() {
+  const currentDate = new Date();
+  const datePipe = new DatePipe('en-US');
+  const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+  if (!this.dssalesbillListMultiple.data.length) {
+    this.toastr.warning('Please check, Table is empty.', 'Warning')
+    return
+  }
+  if (!this.SelectedList.length) {
+    this.toastr.warning('Please selecte check box', 'Warning')
+    return
+  }
+  console.log(this.SelectedList)
+
+  let PatientHeaderObj = {};
+  PatientHeaderObj['Date'] = formattedDate;
+  PatientHeaderObj['PatientName'] = this.mPatientName;
+  PatientHeaderObj['NetPayAmount'] = Math.round(this.MutliSettlemForm.get('FinalBalanceAmt').value);
+  PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
+  PatientHeaderObj['RegNo'] = this.mRegNo;
+  PatientHeaderObj['DoctorName'] = this.mDoctorName;
+  if (this.userFormGroup.get('PatientType').value == '1')
+    PatientHeaderObj['OPD_IPD_Id'] = this.mIPDNo;
+  else
+    PatientHeaderObj['OPD_IPD_Id'] = this.mOPDNo;
+  PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT';
+  if (this.userFormGroup.get('PatientType').value == '1')
+    PatientHeaderObj['IPDNo'] = this.IPDNo;
+  else
+    PatientHeaderObj['OPDNo'] = this.OPDNo;
+  const dialogRef = this._matDialog.open(OpPaymentComponent,
+    {
+      maxWidth: "80vw",
+      height: '800px',
+      width: '75%',
+      data: {
+        vPatientHeaderObj: PatientHeaderObj,
+        FromName: "IP-Pharma-Multiple-SETTLEMENT",
+        ArrayList: this.SelectedList
       }
-      this.vNetAmount -=  Math.round(+element.netAmount)
-      this.vPaidAmount -= Math.round(+element.paidAmount)
-      this.vBalanceAmount -= Math.round(+element.balanceAmount)
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log(result)
+    debugger
+    if (result && result.IsSubmitFlag) {
+      let SalesDataArray = [];
+      this.SelectedList.forEach(item => {
+        SalesDataArray.push({ salesID: item?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
+      });
+      this.salessArray.clear();
+      SalesDataArray.forEach(item => {
+        this.salessArray.push(this.createsaless(item));
+      });
+
+      console.log(this.PharmaSettlementfrom.value);
+      let PaymentArray: IpPaymentInsert[] = [];
+      PaymentArray = result.submitDataPay.ipPaymentInsert;
+      this.PaymentArray.clear();
+      PaymentArray.forEach(element => {
+        this.PaymentArray.push(this.createSettlmentPyament(element));
+      });
+
+      const newTemPaymentArray: any[] = result.submitDataPay.ipModePaymentInsert || [];
+      const NewPaymentArray: any[] = [];
+
+      this.SelectedList.forEach(contact => {
+        newTemPaymentArray.forEach(element => {
+          NewPaymentArray.push({
+            paymentId: 0,
+            unitId: this._loggedService.currentUserValue.user.unitId,
+            billNo: contact?.salesId || 0,
+            opdipdtype: 3,
+            paymentDate: formattedDate,
+            paymentTime: formattedTime,
+            payAmount: contact?.balanceAmount ?? 0,
+            tranNo: element.tranNo ?? "",
+            bankName: element.bankName ?? "",
+            validationDate: this.datePipe.transform(element.validationDate, 'yyyy-MM-dd') || this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            advanceUsedAmount: 0,
+            comments: "",
+            payMode: element.payMode ?? "",
+            onlineTranNo: '0',
+            onlineTranResponse: '0',
+            companyId: 0,
+            advanceId: 0,
+            refundId: 0,
+            cashCounterId: 0,
+            transactionType: 4,
+            isSelfOrcompany: 0,
+            tranMode: "PHAR",
+            createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+            transactionLabel: 'SALES_SETTLEMENT',
+          });
+        });
+      });
+
+      this.ModeOfPaymentsArray.clear();
+      NewPaymentArray.forEach(item => {
+        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+      });
+
+      console.log(this.PharmaSettlementfrom.value);
+      this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => {
+        this.onclearNormaldata();
+        this.getdataMultiple()
+      });
     }
-    console.log(this.SelectedList)
+  });
+}
+OnReset() {
+  this.vglobledisc = false;
+  this.userFormGroup.reset();
+  this.MutliSettlemForm.reset();
+  this.PatientInformRest();
+  this.userFormGroup.get('RegID').setValue('');
+  this.MutliSettlemForm.get('RegID').setValue('');
+  this.userFormGroup.get('PatientType').setValue('0');
+  this.MutliSettlemForm.get('PatientType').setValue('0');
+
+}
+onclearmultipledata(){
+  this.MutliSettlemForm.reset(this.CreateMultipleFrom().value);
+  this.PatientInformRest();
+  this.getdataMultiple()
+}
+onclearNormaldata(){
+  this.userFormGroup.reset(this.CreateUseFrom().value);
+  this.PatientInformRest();
+}
+PatientInformRest() {
+  this.PatientName = '';
+  this.IPDNo = '';
+  this.RegNo = '';
+  this.DoctorName = '';
+  this.TariffName = '';
+  this.OPDNo = '';
+  this.OP_IP_Id = '';
+  this.RegId = '';
+  this.WardName = '';
+  this.BedName = '';
+  this.mRegNo = '';
+  this.mTariffName = '';
+  this.mPatientName = '';
+  this.mDoctorName = '';
+  this.mBedName = '';
+  this.mOPDNo = '';
+  this.mIPDNo = '';
+  this.mWardName = '';
+  this.mRegId = '';
+}
+getDiscFinalBill(contact) {
+  const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+    {
+      maxWidth: "100%",
+      height: '55%',
+      width: '45%',
+      data: {
+        Obj: contact,
+        PatientObj: this.registerObj
+      }
+    });
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('The dialog was closed - Insert Action', result);
+    if (result)
+      this.getdata();
+    // this.grid.bindGridData();
+  });
+}
+getValidationMessages() {
+  return {
+    MobileNo: [
+      // { name: "required", Message: "MobileNo is required" }
+    ],
+    FinalPaidAmt: [
+      // { name: "required", Message: "FinalPaidAmt is required" }
+    ],
+    FinalBalanceAmt: [
+      // { name: "required", Message: "FinalBalanceAmt is required" }
+    ],
+    FinalNetAmt: [
+      // { name: "required", Message: "FinalNetAmt is required" }
+    ],
+    globlediscPer: [
+      // { name: "required", Message: "globlediscPer is required" }
+    ],
+    ConcessionId: [
+      // { name: "required", Message: "ConcessionId is required" }
+    ]
+  };
+}
+onChangeglobledisc(event){
+  if (event.checked == true) {
+    this.vglobledisc = true;
+  } else {
+    this.vglobledisc = false;
+    this.MutliSettlemForm.get('globlediscPer').reset();
+    this.MutliSettlemForm.get('ConcessionId').reset();
+  }
+  this.vNetAmount = 0;
+  this.vPaidAmount = 0;
+  this.vBalanceAmount = 0;
+  this.MutliSettlemForm.patchValue({
+    FinalNetAmt: this.vNetAmount,
+    FinalPaidAmt: this.vPaidAmount,
+    FinalBalanceAmt: this.vBalanceAmount,
+  })
+  this.getdataMultiple();
+}
+keyPressCharater(event) {
+  var inp = String.fromCharCode(event.keyCode);
+  if (/^\d*\.?\d*$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
+//print  
+OnSalessettlemtnprint(SalesID, OP_IP_Type) {
+  setTimeout(() => {
+    let param = {
+      "searchFields": [
+        { "fieldName": "OP_IP_ID", "fieldValue": String(SalesID), "opType": "13" },
+        { "fieldName": "StoreId", "fieldValue": String(OP_IP_Type), "opType": "13" }
+      ],
+      "mode": "PharmacyPatientStatement"
+    }
+    this._SelseSettelmentservice.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "Sales Settlement" + " " + "Viewer"
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+  }, 100);
+}
+vCheckBox: boolean = false;
+getDischargedList(event) {
+  if (event.checked == true) {
+    this.vCheckBox = true;
+    this.OnReset()
+  }
+  else
+    this.vCheckBox = false;
+  this.userFormGroup.get('RegID').setValue('');
+}
+
+vCheckBox1: boolean = false;
+getDischargedList1(event) {
+  if (event.checked == true) {
+    this.vCheckBox1 = true;
+    this.OnReset()
+  }
+  else
+    this.vCheckBox1 = false;
+  this.MutliSettlemForm.get('RegID').setValue('');
+}
+
+CreateApplyglobeDiscForm(){
+  return this._formBuilder.group({
+    sales: this._formBuilder.array([])
+  })
+}
+CreateApplydiscDet(item : any){
+  return this._formBuilder.group({
+    salesId: [item?.salesId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+    netAmount: [item?.netAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    discAmount: [item?.discAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    balanceAmount: [item?.balanceAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    concessionReasonId: [item?.concessionReasonId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+  })
+}
+    get applydiscgloblearray(): FormArray {
+  return this.globleDiscFrom.get('sales') as FormArray;
+}
+templist: any = [];
+onApplyDiscount() {
+  const formvalue = this.MutliSettlemForm.value
+  if (!this.dssalesbillListMultiple.data.length) {
+    this.toastr.warning('Please check table is blank', 'Warning')
+    return
+  }
+  this.templist = this.dssalesbillListMultiple.data;
+  const globlediscPer = formvalue?.globlediscPer || 0;
+  if (globlediscPer > 0 && globlediscPer <= 100) {
+    this.templist = this.templist.map(element => {
+      let discamt1 = 0;
+      let discountAmt = '0';
+      let netAmt = '0';
+
+      const globlediscPer = formvalue?.globlediscPer || 0;
+      // if ((element?.discAmount || 0) > 0) {
+      //   discamt1 = Math.round(((element?.balanceAmount) * globlediscPer) / 100);
+      //   discountAmt = Math.round(parseFloat(element?.discAmount) + discamt1).toFixed(2);
+      //   netAmt = Math.round(parseFloat(element?.balanceAmount) - discamt1).toFixed(2);
+      // } else {
+      discountAmt = Math.round(((element?.totalAmount) * globlediscPer) / 100).toFixed(2);
+      netAmt = Math.round((element?.totalAmount) - parseFloat(discountAmt)).toFixed(2);
+      //}
+      // Return updated element to rebuild the list
+      return {
+        ...element,
+        discAmount: discountAmt,
+        netAmount: netAmt,
+        balanceAmount: netAmt,
+        discper: globlediscPer
+      };
+    });
+  } else {
+    this.templist = this.chargelist
+    this.vNetAmount = 0;
+    this.vPaidAmount = 0;
+    this.vBalanceAmount = 0;
     this.MutliSettlemForm.patchValue({
       FinalNetAmt: this.vNetAmount,
       FinalPaidAmt: this.vPaidAmount,
       FinalBalanceAmt: this.vBalanceAmount,
     })
   }
-    BalanceAm1: any = 0;
-  UsedAmt1: any = 0; 
-    MultiplePaySave() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    if(!this.dssalesbillListMultiple.data.length){
-        this.toastr.warning('Please check, Table is empty.', 'Warning')
-        return
-    }
-     if(!this.SelectedList.length){
-        this.toastr.warning('Please selecte check box', 'Warning')
-        return
-    }
-    console.log(this.SelectedList) 
+  // Assign updated list back
+  this.dssalesbillListMultiple.data = this.templist;
+}
 
-     let PatientHeaderObj = {};
-    PatientHeaderObj['Date'] = formattedDate;
-    PatientHeaderObj['PatientName'] = this.mPatientName;
-     PatientHeaderObj['NetPayAmount'] = Math.round(this.MutliSettlemForm.get('FinalBalanceAmt').value); 
-    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
-    PatientHeaderObj['RegNo'] = this.mRegNo;
-    PatientHeaderObj['DoctorName'] = this.mDoctorName;   
-    if (this.userFormGroup.get('PatientType').value == '1')
-      PatientHeaderObj['OPD_IPD_Id'] = this.mIPDNo;
-    else
-      PatientHeaderObj['OPD_IPD_Id'] = this.mOPDNo;   
-      PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT'; 
-    if (this.userFormGroup.get('PatientType').value == '1')
-      PatientHeaderObj['IPDNo'] = this.IPDNo;
-    else
-      PatientHeaderObj['OPDNo'] = this.OPDNo;
-    const dialogRef = this._matDialog.open(OpPaymentComponent,
-      {
-        maxWidth: "80vw",
-            height: '800px',
-            width: '75%',
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
-          FromName: "IP-Pharma-Multiple-SETTLEMENT",
-          ArrayList : this.SelectedList
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-         console.log(result)
-      debugger
-      if (result && result.IsSubmitFlag) {  
-        let SalesDataArray =[];  
-        this.SelectedList.forEach(item => {
-           SalesDataArray.push({salesID: item?.salesId, balanceAmount: result?.BalAmt ?? 0 ,refundAmt: 0 }) 
-        });  
-         this.salessArray.clear();
-          SalesDataArray.forEach(item => {
-          this.salessArray.push(this.createsaless(item));
-        }); 
-       
-        console.log(this.PharmaSettlementfrom.value); 
-          let PaymentArray: IpPaymentInsert[] = [];
-          PaymentArray = result.submitDataPay.ipPaymentInsert;
-          this.PaymentArray.clear(); 
-          PaymentArray.forEach(element => {
-          this.PaymentArray.push(this.createSettlmentPyament(element));  
-          });  
+OnSaveGlobelDisc() {
+  const formvalue = this.MutliSettlemForm.value
+  if (!this.dssalesbillListMultiple.data.length) {
+    this.toastr.warning('Please check table is blank', 'Warning')
+    return
+  }
+  if (!(formvalue?.globlediscPer || 0)) {
+    this.toastr.warning('Please add discount %', 'Warning')
+    return
+  }
+  if (!(formvalue?.ConcessionId || 0)) {
+    this.toastr.warning('Please select concession reason', 'Warning')
+    return
+  }
+  this.dssalesbillListMultiple.data = this.dssalesbillListMultiple.data.map(element => ({
+    ...element,
+    concessionReasonId: formvalue?.ConcessionId
+  }));
 
-        const newTemPaymentArray: any[] = result.submitDataPay.ipModePaymentInsert || [];
-        const NewPaymentArray: any[] = [];
-
-        this.SelectedList.forEach(contact => {
-          newTemPaymentArray.forEach(element => {
-            NewPaymentArray.push({
-              paymentId: 0,
-              unitId: this._loggedService.currentUserValue.user.unitId,
-              billNo: contact?.salesId || 0,
-              opdipdtype: 3,
-              paymentDate: formattedDate,
-              paymentTime: formattedTime,
-              payAmount: contact?.balanceAmount ?? 0,
-              tranNo: element.tranNo ?? "",
-              bankName: element.bankName ?? "",
-              validationDate: this.datePipe.transform(element.validationDate, 'yyyy-MM-dd') || this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-              advanceUsedAmount: 0,
-              comments: "",
-              payMode: element.payMode ?? "",
-              onlineTranNo: '0',
-              onlineTranResponse: '0',
-              companyId: 0,
-              advanceId: 0,
-              refundId: 0,
-              cashCounterId: 0,
-              transactionType: 4,
-              isSelfOrcompany: 0,
-              tranMode: "PHAR",
-              createdBy: this._loggedService.currentUserValue?.userId ?? 0,
-              transactionLabel: 'SALES_SETTLEMENT',
-            });
-          });
-        });
-
-        this.ModeOfPaymentsArray.clear();
-        NewPaymentArray.forEach(item => {
-          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-        });
-
-         console.log(this.PharmaSettlementfrom.value);
-        this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
-          this.onclearNormaldata();
-           this.getdataMultiple()  
-        });
-      }
+  if (this.globleDiscFrom.valid) {
+    this.applydiscgloblearray.clear();
+    this.dssalesbillListMultiple.data.forEach(element => {
+      this.applydiscgloblearray.push(this.CreateApplydiscDet(element))
     });
-  } 
-  OnReset() {
-    this.vglobledisc = false;
-    this.userFormGroup.reset();
-    this.MutliSettlemForm.reset(); 
-    this.PatientInformRest();
-    this.userFormGroup.get('RegID').setValue('');
-    this.MutliSettlemForm.get('RegID').setValue('');
-    this.userFormGroup.get('PatientType').setValue('0');
-    this.MutliSettlemForm.get('PatientType').setValue('0');
-    
-  }
-  onclearmultipledata(){ 
-     this.MutliSettlemForm.reset(this.CreateMultipleFrom().value); 
-     this.PatientInformRest();
-     this.getdataMultiple()
-  }
-    onclearNormaldata(){ 
-        this.userFormGroup.reset(this.CreateUseFrom().value);  
-     this.PatientInformRest(); 
-  }
-  PatientInformRest() {
-    this.PatientName = '';
-    this.IPDNo = '';
-    this.RegNo = '';
-    this.DoctorName = '';
-    this.TariffName = '';
-    this.OPDNo = '';
-    this.OP_IP_Id = '';
-    this.RegId = '';
-    this.WardName = '';
-    this.BedName = '';
-    this.mRegNo = '';
-    this.mTariffName = '';
-    this.mPatientName = '';
-    this.mDoctorName = '';
-    this.mBedName = '';
-    this.mOPDNo = '';
-    this.mIPDNo = '';
-    this.mWardName = '';
-    this.mRegId = '';
-  } 
-  getDiscFinalBill(contact) {
-    const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
-      {
-        maxWidth: "100%",
-        height: '55%',
-        width: '45%',
-        data: {
-          Obj: contact,
-          PatientObj: this.registerObj
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      if(result)
-         this.getdata();
-      // this.grid.bindGridData();
-    });
-  } 
-  getValidationMessages() {
-    return {
-      MobileNo: [
-        // { name: "required", Message: "MobileNo is required" }
-      ],
-      FinalPaidAmt: [
-        // { name: "required", Message: "FinalPaidAmt is required" }
-      ],
-      FinalBalanceAmt: [
-        // { name: "required", Message: "FinalBalanceAmt is required" }
-      ],
-      FinalNetAmt: [
-        // { name: "required", Message: "FinalNetAmt is required" }
-      ],
-       globlediscPer: [
-        // { name: "required", Message: "globlediscPer is required" }
-      ],
-       ConcessionId: [
-        // { name: "required", Message: "ConcessionId is required" }
-      ]
-    };
-  }
-  onChangeglobledisc(event){
-    if(event.checked == true){
-      this.vglobledisc = true; 
-     }else{
+    console.log(this.globleDiscFrom.value)
+    this._SelseSettelmentservice.ApplyglobleDisc(this.globleDiscFrom.value).subscribe(response => {
+      this.getdataMultiple();
       this.vglobledisc = false;
       this.MutliSettlemForm.get('globlediscPer').reset();
-      this.MutliSettlemForm.get('ConcessionId').reset();  
-     }
-      this.vNetAmount = 0;
-      this.vPaidAmount = 0;
-      this.vBalanceAmount = 0; 
-      this.MutliSettlemForm.patchValue({
-      FinalNetAmt: this.vNetAmount,
-      FinalPaidAmt: this.vPaidAmount,
-      FinalBalanceAmt: this.vBalanceAmount,
+      this.MutliSettlemForm.get('ConcessionId').reset();
     })
-    this.getdataMultiple();
-  }
-  keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-    //print  
-    OnSalessettlemtnprint(SalesID, OP_IP_Type) {
-      setTimeout(() => {
-        let param = {
-          "searchFields": [
-            { "fieldName": "OP_IP_ID", "fieldValue": String(SalesID), "opType": "13" },
-            { "fieldName": "StoreId", "fieldValue": String(OP_IP_Type), "opType": "13" }
-          ],
-          "mode": "PharmacyPatientStatement"
-        }
-        this._SelseSettelmentservice.getReportView(param).subscribe(res => {
-          const matDialog = this._matDialog.open(PdfviewerComponent,
-            {
-              maxWidth: "85vw",
-              height: '750px',
-              width: '100%',
-              data: {
-                base64: res["base64"] as string,
-                title: "Sales Settlement" + " " + "Viewer"
-              }
-            });
-          matDialog.afterClosed().subscribe(result => {
-          });
-        });
-      }, 100);
-    }
-        vCheckBox:boolean=false;
-  getDischargedList(event) {
-    if (event.checked == true) {
-      this.vCheckBox = true;
-      this.OnReset()
-    }
-    else
-    this.vCheckBox = false;
-    this.userFormGroup.get('RegID').setValue('');
-  } 
-  CreateApplyglobeDiscForm(){
-    return this._formBuilder.group({ 
-        sales: this._formBuilder.array([]) 
-    })
-  }
-  CreateApplydiscDet(item :any){
-    return this._formBuilder.group({  
-      salesId:[item?.salesId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-      netAmount:[item?.netAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discAmount:[item?.discAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      balanceAmount: [item?.balanceAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      concessionReasonId:[item?.concessionReasonId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-    }) 
-  }
-    get applydiscgloblearray(): FormArray {
-    return this.globleDiscFrom.get('sales') as FormArray;
-  } 
-  templist:any=[];
-  onApplyDiscount() {
-    const formvalue = this.MutliSettlemForm.value
-    if (!this.dssalesbillListMultiple.data.length) {
-      this.toastr.warning('Please check table is blank', 'Warning')
-      return
-    }
-    this.templist = this.dssalesbillListMultiple.data; 
-      const globlediscPer = formvalue?.globlediscPer || 0;
-    if (globlediscPer > 0 && globlediscPer <= 100) {
-      this.templist = this.templist.map(element => {
-        let discamt1 = 0;
-        let discountAmt = '0';
-        let netAmt = '0';
-
-        const globlediscPer = formvalue?.globlediscPer || 0;
-        // if ((element?.discAmount || 0) > 0) {
-        //   discamt1 = Math.round(((element?.balanceAmount) * globlediscPer) / 100);
-        //   discountAmt = Math.round(parseFloat(element?.discAmount) + discamt1).toFixed(2);
-        //   netAmt = Math.round(parseFloat(element?.balanceAmount) - discamt1).toFixed(2);
-        // } else {
-          discountAmt = Math.round(((element?.totalAmount) * globlediscPer) / 100).toFixed(2);
-          netAmt = Math.round((element?.totalAmount) - parseFloat(discountAmt)).toFixed(2);
-        //}
-        // Return updated element to rebuild the list
-        return {
-          ...element,
-          discAmount: discountAmt,
-          netAmount: netAmt,
-          balanceAmount: netAmt,
-          discper:globlediscPer
-        };
-      });
-    } else {
-      this.templist = this.chargelist
-      this.vNetAmount = 0;
-      this.vPaidAmount = 0;
-      this.vBalanceAmount = 0; 
-      this.MutliSettlemForm.patchValue({
-      FinalNetAmt: this.vNetAmount,
-      FinalPaidAmt: this.vPaidAmount,
-      FinalBalanceAmt: this.vBalanceAmount,
-    })
-    }
-    // Assign updated list back
-    this.dssalesbillListMultiple.data = this.templist;  
-  } 
-
-  OnSaveGlobelDisc() {
-    const formvalue = this.MutliSettlemForm.value
-    if (!this.dssalesbillListMultiple.data.length) {
-      this.toastr.warning('Please check table is blank', 'Warning')
-      return
-    }
-    if (!(formvalue?.globlediscPer || 0)) {
-      this.toastr.warning('Please add discount %', 'Warning')
-      return
-    }
-    if (!(formvalue?.ConcessionId || 0)) {
-      this.toastr.warning('Please select concession reason', 'Warning')
-      return
-    }
-    this.dssalesbillListMultiple.data = this.dssalesbillListMultiple.data.map(element => ({
-      ...element,
-      concessionReasonId: formvalue?.ConcessionId
-    }));
-
-    if (this.globleDiscFrom.valid) {
-      this.applydiscgloblearray.clear();
-      this.dssalesbillListMultiple.data.forEach(element => {
-        this.applydiscgloblearray.push(this.CreateApplydiscDet(element))
-      });
-      console.log(this.globleDiscFrom.value)
-      this._SelseSettelmentservice.ApplyglobleDisc(this.globleDiscFrom.value).subscribe(response => {
-        this.getdataMultiple();
-        this.vglobledisc = false;
-        this.MutliSettlemForm.get('globlediscPer').reset();
-        this.MutliSettlemForm.get('ConcessionId').reset();
-      })
-    } else {
-      let invalidFields = [];
-      if (this.globleDiscFrom.invalid) {
-        for (const controlName in this.globleDiscFrom.controls) {
-          const control = this.globleDiscFrom.get(controlName);
-          if (control instanceof FormGroup || control instanceof FormArray) {
-            for (const nestedKey in control.controls) {
-              if (control.get(nestedKey)?.invalid) {
-                invalidFields.push(`Globle Discount Date: ${controlName}.${nestedKey}`);
-              }
+  } else {
+    let invalidFields = [];
+    if (this.globleDiscFrom.invalid) {
+      for (const controlName in this.globleDiscFrom.controls) {
+        const control = this.globleDiscFrom.get(controlName);
+        if (control instanceof FormGroup || control instanceof FormArray) {
+          for (const nestedKey in control.controls) {
+            if (control.get(nestedKey)?.invalid) {
+              invalidFields.push(`Globle Discount Date: ${controlName}.${nestedKey}`);
             }
-          } else if (control?.invalid) {
-            invalidFields.push(`Globle Discount From: ${controlName}`);
           }
+        } else if (control?.invalid) {
+          invalidFields.push(`Globle Discount From: ${controlName}`);
         }
       }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
+    }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => {
+        this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+        );
+      });
     }
   }
- 
-      getCellCalculation(item: PaidItemList): void {
-          let discPer = +item?.discper;
-          let totalMrp = +item?.totalAmount;
-  
-          if (discPer < 0 || discPer > 100) {
-              this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
-                  toastClass: 'tostr-tost custom-toast-warning',
-              });
-              item.discper = 0;
-              item.discAmount = 0;
-              item.netAmount  = item.totalAmount ;
-              item.balanceAmount = item.netAmount ;
-              return;
-          }
-          item.discAmount = ((totalMrp * discPer) / 100).toFixed(2);
-          item.netAmount  = (totalMrp - item.discAmount).toFixed(2);
-          item.balanceAmount = item.netAmount;
+}
+
+getCellCalculation(item: PaidItemList): void {
+  let discPer = +item?.discper;
+  let totalMrp = +item?.totalAmount;
+
+  if(discPer < 0 || discPer > 100) {
+  this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
+    toastClass: 'tostr-tost custom-toast-warning',
+  });
+  item.discper = 0;
+  item.discAmount = 0;
+  item.netAmount = item.totalAmount;
+  item.balanceAmount = item.netAmount;
+  return;
+}
+item.discAmount = ((totalMrp * discPer) / 100).toFixed(2);
+item.netAmount = (totalMrp - item.discAmount).toFixed(2);
+item.balanceAmount = item.netAmount;
       }
 
 
-     // it allowed only Digit 
-     keyPressDigitsOnly(event) {
-         var inp = String.fromCharCode(event.keyCode);
-         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-             return true;
-         } else {
-             event.preventDefault();
-             return false;
-         }
-     }
-         // it allowed only Digit & decimal
-     keyPressDigitDecimalOnly(event) {
-         var inp = String.fromCharCode(event.keyCode);
-         if (/^\d*\.?\d*$/.test(inp)) {
-             return true;
-         } else {
-             event.preventDefault();
-             return false;
-         }
-     } 
+// it allowed only Digit 
+keyPressDigitsOnly(event) {
+  var inp = String.fromCharCode(event.keyCode);
+  if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+}
+// it allowed only Digit & decimal
+keyPressDigitDecimalOnly(event) {
+  var inp = String.fromCharCode(event.keyCode);
+  if (/^\d*\.?\d*$/.test(inp)) {
+    return true;
+  } else {
+    event.preventDefault();
+    return false;
+  }
+} 
 }
 
 export class PaidItemList {
@@ -1028,13 +1099,13 @@ export class PaidItemList {
   netAmount: any;
   paidAmount: any;
   balanceAmount: any;
- opipid:any; 
-  salesNo:any;   
-  regId:any;     
-    patientName:any;
-      refundAmt: any; 
+  opipid: any;
+  salesNo: any;
+  regId: any;
+  patientName: any;
+  refundAmt: any;
   date: any;
-  discper:any;
+  discper: any;
 
   constructor(PaidItemList) {
     {
@@ -1046,7 +1117,7 @@ export class PaidItemList {
       this.discAmount = PaidItemList.discAmount || 0;
       this.netAmount = PaidItemList.netAmount || 0;
       this.paidAmount = PaidItemList.paidAmount || 0;
-      this.balanceAmount = PaidItemList.balanceAmount || 0; 
+      this.balanceAmount = PaidItemList.balanceAmount || 0;
       this.refundAmt = PaidItemList.refundAmt || 0;
       this.opipid = PaidItemList.opipid || 0;
       this.salesNo = PaidItemList.salesNo || 0;

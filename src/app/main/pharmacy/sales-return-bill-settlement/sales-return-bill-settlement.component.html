@@ -247,7 +247,7 @@
                                                     </mat-radio-group>
 
                                                     <div fxFlex="30%" fxFlex.sm="100%"
-                                                        *ngIf="MutliSettlemForm.get('PatientType').value != '1' && MutliSettlemForm.get('PatientType').value != '2'">
+                                                        *ngIf="MutliSettlemForm.get('PatientType').value != '1' && MutliSettlemForm.get('PatientType').value != '2'  && !vCheckBox1">
                                                         <airmid-autocomplete
                                                             label="Search Reg No / Patient Name / Mobile No"
                                                             [formGroup]="MutliSettlemForm" fxFlex
@@ -259,7 +259,7 @@
                                                     </div>
 
                                                     <div fxFlex="30%" fxFlex.sm="100%"
-                                                        *ngIf="MutliSettlemForm.get('PatientType').value != '0' && MutliSettlemForm.get('PatientType').value != '2'">
+                                                        *ngIf="MutliSettlemForm.get('PatientType').value != '0' && MutliSettlemForm.get('PatientType').value != '2'  && !vCheckBox1">
                                                         <airmid-autocomplete
                                                             label="IP RegNo / First Name / Last Name / Mobile No"
                                                             [formGroup]="MutliSettlemForm" formControlName="RegID"
@@ -271,13 +271,29 @@
                                                     </div>
 
                                                     <div fxFlex="100%" fxFlex.sm="100%"
-                                                        *ngIf="MutliSettlemForm.get('PatientType').value == '2'">
+                                                        *ngIf="MutliSettlemForm.get('PatientType').value == '2'  && !vCheckBox1">
                                                         <airmid-textbox label="MobileNo" [(ngModel)]="MobileNo"
                                                             fxFlex="30%" formControlName="MobileNo"
                                                             [formGroup]="MutliSettlemForm"
                                                             [validations]="getValidationMessages().mobileNo"
                                                             [type]="'text'" maxLength="10"></airmid-textbox>
                                                     </div>
+
+                                                      <div fxFlex="30%" fxFlex.sm="100%" *ngIf="vCheckBox1">
+                                                        <airmid-autocomplete lbl="RegID" [formGroup]="MutliSettlemForm"
+                                                            label="Search Reg No / Patient Name / Mobile No(DC)"
+                                                            formControlName="RegID" fxFlex
+                                                            placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
+                                                            ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                                            (selectionChange)="getSelectedObjRegIP1($event)"
+                                                            TextField="formattedText" ValueField="admissionID">
+                                                        </airmid-autocomplete>
+                                                    </div>
+
+                                                    <mat-checkbox fxFlex="15%" formControlName="IsDischargedit"
+                                                        [(ngModel)]="vCheckBox1"
+                                                        (change)="getDischargedList1($event)">IsDischarged
+                                                    </mat-checkbox>
                                                 </div>
                                             </div>
                                             <div>

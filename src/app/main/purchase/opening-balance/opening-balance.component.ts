@@ -57,9 +57,9 @@ export class OpeningBalanceComponent {
   allcolumns = [
 
     { heading: "DateTime", key: "openingDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "TransectionNo", key: "openingDocNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-    { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Transection No", key: "openingDocNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
+    { heading: "AdddedBy Name", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
       heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -89,7 +89,7 @@ export class OpeningBalanceComponent {
       apiUrl: "OpeningBalance/OpeningBalnceItemDetailList",
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Exp.Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MRP", key: "perUnitMrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

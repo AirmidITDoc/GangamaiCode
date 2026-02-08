@@ -1,10 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog'; 
-import { fuseAnimations } from '@fuse/animations'; 
-import { AuthenticationService } from 'app/core/services/authentication.service'; 
-import { PharmaitemsummaryService } from './pharmaitemsummary.service'; 
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PharmaitemsummaryService } from './pharmaitemsummary.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
@@ -12,18 +12,19 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDateFormats } from '@angular/material/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
-export const MONTH_YEAR_FORMATS: MatDateFormats = {
-  parse: {
-    dateInput: 'MM/YYYY',
-  },
-  display: {
-    dateInput: 'MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+// export const MONTH_YEAR_FORMATS: MatDateFormats = {
+//   parse: {
+//     dateInput: 'MM/YYYY',
+//   },
+//   display: {
+//     dateInput: 'MM/YYYY',
+//     monthYearLabel: 'MMM YYYY',
+//     dateA11yLabel: 'LL',
+//     monthYearA11yLabel: 'MMMM YYYY',
+//   },
+// };
 
 @Component({
   selector: 'app-pharm-item-summary',
@@ -31,22 +32,22 @@ export const MONTH_YEAR_FORMATS: MatDateFormats = {
   styleUrls: ['./pharm-item-summary.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
-    providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MONTH_YEAR_FORMATS }
-  ]
+  //   providers: [
+  //   { provide: MAT_DATE_FORMATS, useValue: MONTH_YEAR_FORMATS }
+  // ]
 
-}) 
+})
 export class PharmItemSummaryComponent implements OnInit {
-  SupplietDetColumns : string[] =[
-     'GRNDate',
-        'GRNNO', 
-        'InvoiceDate',
-        'InvoiceNo',
-        'SupplierName',
-        'qty',
-        'mrp',
-        'Rate',
-        'GST'
+  SupplietDetColumns: string[] = [
+    'GRNDate',
+    'GRNNO',
+    'InvoiceDate',
+    'InvoiceNo',
+    'SupplierName',
+    'qty',
+    'mrp',
+    'Rate',
+    'GST'
   ]
   searchFormGroup: FormGroup;
   autocompletestore: string = "Store";
@@ -59,10 +60,11 @@ export class PharmItemSummaryComponent implements OnInit {
   ExpDate: any = "1999-01-01";
   Todate: any;
   chosenYear: number;
-  chosenMonth: number; 
-
+  chosenMonth: number;
+  fromdate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  todate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
   dssupplierdet = new MatTableDataSource<any>();
-  
+
 
   @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid2') grid2: AirmidTableComponent;
@@ -70,12 +72,13 @@ export class PharmItemSummaryComponent implements OnInit {
   //Non Moving Item without Batchno list 
   NonMovingColumns = [
     { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Day Sales", key: "daySales", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 160, type: 6 },
-    { heading: "Last SalesDate", key: "lastSalesDate", sort: true, align: 'left', emptySign: 'NA', width: 160, type: 6 }
+    { heading: "Day Sales", key: "daySales", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+    { heading: "Last SalesDate", key: "lastSalesDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 }
   ]
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.Sales,
     apiUrl: this.ApiURl,
     columnsList: this.NonMovingColumns,
     sortField: "ItemName",
@@ -86,33 +89,44 @@ export class PharmItemSummaryComponent implements OnInit {
     ],
     row: 25
   }
+  ngAfterViewInit() {
+    // Assign the template to the column dynamically
+    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.supplierdetTemplate;
+  }
 
-
-
-      ngAfterViewInit() {
-        // Assign the template to the column dynamically
-        this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.supplierdetTemplate;
-    }
-
-    @ViewChild('supplierdetTemplate') supplierdetTemplate!: TemplateRef<any>; 
+  @ViewChild('supplierdetTemplate') supplierdetTemplate!: TemplateRef<any>;
   //Item Batch Expwise list
   ItemExpWiseColumns = [
-     { heading: "", key: "action", align: "left", width: 50, sticky: true, type: gridColumnTypes.template,
-       template: this.supplierdetTemplate },
-    { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    {
+      heading: "", key: "action", align: "left", width: 50, sticky: true, type: gridColumnTypes.template,
+      template: this.supplierdetTemplate
+    },
+    { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+    { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-    { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 160, type: 6 },
-    { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+    // { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 160, type: 6 },
+    { heading: "Batch ExpMonth", key: "expMonth", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Batch ExpYear", key: "expYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
   ]
   gridConfig2: gridModel = {
+    permissionCode: permissionCodes.Sales,
     apiUrl: "PharmacyItemSummary/ItemExpReportMonthWiseList",
     columnsList: this.ItemExpWiseColumns,
     sortField: "StockId",
     sortOrder: 0,
     filters: [
-      { fieldName: "ExpMonth", fieldValue: this.ExpMonth, opType: OperatorComparer.Equals },
-      { fieldName: "ExpYear", fieldValue: this.ExpYear, opType: OperatorComparer.Equals },
-      { fieldName: "StoreId", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
+      // { fieldName: "ExpMonth", fieldValue: this.ExpMonth, opType: OperatorComparer.Equals },
+      // { fieldName: "ExpYear", fieldValue: this.ExpYear, opType: OperatorComparer.Equals },
+      // { fieldName: "StoreId", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
+
+
+      { fieldName: "FromDate", fieldValue: this.ExpMonth, opType: OperatorComparer.Equals },
+      { fieldName: "ToDate", fieldValue: this.ExpYear, opType: OperatorComparer.Equals },
+      { fieldName: "StoreID", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
     ],
     row: 25
   }
@@ -123,7 +137,7 @@ export class PharmItemSummaryComponent implements OnInit {
     public datePipe: DatePipe,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
-    public _FormvalidationserviceService: FormvalidationserviceService, 
+    public _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -131,15 +145,16 @@ export class PharmItemSummaryComponent implements OnInit {
     this.StoreId = this.searchFormGroup.get('StoreId')?.value || 0;
     this.ExpStoreId = this.searchFormGroup.get('StoreId')?.value || 0;
 
-        const CurrentDate = new Date(); 
-        this.ExpYear = CurrentDate.getFullYear(); 
-        this.ExpMonth = CurrentDate.getMonth() + 1;
-        this.getExpwiseData();  
-  } 
+    const CurrentDate = new Date();
+    this.ExpYear = CurrentDate.getFullYear();
+    this.ExpMonth = CurrentDate.getMonth() + 1;
+    this.getExpwiseData();
+  }
   createSearchForm() {
     return this.formBuilder.group({
       BatchRadio: ['Batch'],
       startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
       NonMovingDay: '',
       ExpMonth: '',
       ExpYear: '',
@@ -195,7 +210,7 @@ export class PharmItemSummaryComponent implements OnInit {
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
-  
+
   //---------------------------------Exp wise Item list Tab 2
   selectChangeStoreExp(value) {
     if (value.value !== 0)
@@ -205,73 +220,88 @@ export class PharmItemSummaryComponent implements OnInit {
 
     this.onchangeDate();
   }
- 
-  onchangeDate() { 
-  const selectedDate =new Date(this.datePipe.transform(this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'))
-  this.ExpStoreId = this.searchFormGroup.get('StoreId').value || "0";
-  this.ExpYear = selectedDate.getFullYear();
-  this.ExpMonth = selectedDate.getMonth() + 1;
-  this.getExpwiseData();
-  } 
-  onChangeExplist() {
-    this.ExpStoreId = this.searchFormGroup.get('StoreId').value || "0"
-    if(this.searchFormGroup.get('ExpYear').value && this.searchFormGroup.get('ExpMonth').value){
-     this.ExpYear = this.searchFormGroup.get('ExpYear').value || "0"
-    this.ExpMonth = this.searchFormGroup.get('ExpMonth').value || "0"
-    }else{
-     const selectedDate =new Date(this.datePipe.transform(this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'))
+
+  onchangeDate() {
+    const selectedDate = new Date(this.datePipe.transform(this.searchFormGroup.get('startdate').value, 'yyyy-MM-dd'))
+    this.ExpStoreId = this.searchFormGroup.get('StoreId').value || "0";
     this.ExpYear = selectedDate.getFullYear();
     this.ExpMonth = selectedDate.getMonth() + 1;
+    this.getExpwiseData();
+  }
+  onChangeExplist() {
+    this.ExpStoreId = this.searchFormGroup.get('StoreId').value || "0"
+    if (this.searchFormGroup.get('ExpYear').value && this.searchFormGroup.get('ExpMonth').value) {
+      this.ExpYear = this.searchFormGroup.get('ExpYear').value || "0"
+      this.ExpMonth = this.searchFormGroup.get('ExpMonth').value || "0"
+    } else {
+      const selectedDate = new Date(this.datePipe.transform(this.searchFormGroup.get('startdate').value, 'yyyy-MM-dd'))
+      this.ExpYear = selectedDate.getFullYear();
+      this.ExpMonth = selectedDate.getMonth() + 1;
     }
+
+
+    // this.fromdate=this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'
+    // this.todate=this.searchFormGroup.get('enddate').value,'yyyy-MM-dd'
+
     this.getExpwiseData();
   }
   getExpwiseData() {
+
+    debugger
+    this.fromdate = '2026-01-01',//this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'
+      this.todate = '2026-02-01'//this.searchFormGroup.get('enddate').value,'yyyy-MM-dd'
+
+    debugger
     this.gridConfig2 = {
       apiUrl: "PharmacyItemSummary/ItemExpReportMonthWiseList",
       columnsList: this.ItemExpWiseColumns,
       sortField: "StockId",
       sortOrder: 0,
       filters: [
-        { fieldName: "ExpMonth", fieldValue: String(this.ExpMonth), opType: OperatorComparer.Equals },
-        { fieldName: "ExpYear", fieldValue: String(this.ExpYear), opType: OperatorComparer.Equals },
-        { fieldName: "StoreId", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
+        // { fieldName: "ExpMonth", fieldValue: String(this.ExpMonth), opType: OperatorComparer.Equals },
+        // { fieldName: "ExpYear", fieldValue: String(this.ExpYear), opType: OperatorComparer.Equals },
+        // { fieldName: "StoreId", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
+
+        { fieldName: "FromDate", fieldValue: this.fromdate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.todate, opType: OperatorComparer.StartsWith },
+        { fieldName: "StoreID", fieldValue: String(this.ExpStoreId), opType: OperatorComparer.Equals },
       ],
       row: 25
     }
-    // this.grid2.gridConfig = this.gridConfig2;
-    // this.grid2.bindGridData();
+    this.grid2.gridConfig = this.gridConfig2;
+    this.grid2.bindGridData();
   }
-  chargelist:any=[];
-    getItemSupplierDetList(row) { 
-       const Filters = [
-        { "fieldName": "ItemId", "fieldValue": String(row?.itemId ?? 0), "opType": "Equals" }, 
-      ] 
-         var param = {
-          "searchFields": Filters,
-          "mode": "ItemSupplierDetails"
-        }
-  
-      this._PharmaitemsummaryService.getitemsupplierdet(param).subscribe(response => { 
-        debugger
-        console.log('response',response)
-        this.chargelist = response
-        this.dssupplierdet.data = this.chargelist 
-      })
+  chargelist: any = [];
+  getItemSupplierDetList(row) {
+    const Filters = [
+      { "fieldName": "ItemId", "fieldValue": String(row?.itemId ?? 0), "opType": "Equals" },
+    ]
+    var param = {
+      "searchFields": Filters,
+      "mode": "ItemSupplierDetails"
     }
-    @ViewChild('SupplierdetTable') SupplierdetTable!: TemplateRef<any>;
-    dialogRef!: MatDialogRef<any>; 
-      openServiceTable(row): void { 
-       this.getItemSupplierDetList(row); 
-        this._matDialog.open(this.SupplierdetTable, {
-            width: '65%',
-            height: '50%',
-        })
-    }
-    oncloseservice() { 
-           if (this.dialogRef) {
+
+    this._PharmaitemsummaryService.getitemsupplierdet(param).subscribe(response => {
+      debugger
+      console.log('response', response)
+      this.chargelist = response
+      this.dssupplierdet.data = this.chargelist
+    })
+  }
+  @ViewChild('SupplierdetTable') SupplierdetTable!: TemplateRef<any>;
+  dialogRef!: MatDialogRef<any>;
+  openServiceTable(row): void {
+    this.getItemSupplierDetList(row);
+    this._matDialog.open(this.SupplierdetTable, {
+      width: '65%',
+      height: '50%',
+    })
+  }
+  oncloseservice() {
+    if (this.dialogRef) {
       this.dialogRef.close(this.SupplierdetTable);
-   } 
     }
+  }
   getValidationMessages() {
     return {
       ExpMonth: [

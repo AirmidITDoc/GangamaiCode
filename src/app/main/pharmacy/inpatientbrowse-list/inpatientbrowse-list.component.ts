@@ -39,6 +39,7 @@ import { Subscription } from 'rxjs';
 import { InpatientbrowseListService } from './inpatientbrowse-list.service';
 import { PharmacyBIllEditComponent } from './pharmacy-bill-edit/pharmacy-bill-edit.component';
 import { ConfigService } from 'app/core/services/config.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -253,6 +254,7 @@ currency:any='';
   ]
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.Sales,
     apiUrl: "InPatient/SalesInPatientBillList",
     columnsList: this.BrowseHColumns,
     sortField: "SalesId",

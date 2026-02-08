@@ -22,7 +22,8 @@
                     </button>
                 </div> -->
                 <div class="header-add-button">
-                    <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="newGRNEntry(1)" *ngIf="IsAdd">
+                    <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="newGRNEntry(1)"
+                        *ngIf="IsAdd">
                         New GRN</button>
                 </div>
             </div>
@@ -45,16 +46,18 @@
         </ng-template>
 
         <ng-template #actionButtonTemplateIsClose let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">  
-                <mat-icon *ngIf="element.isClosed == 1" matTooltip="IsClosed" style="color: red;"  title="IsClosed">report
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isClosed == 1" matTooltip="IsClosed" style="color: red;"
+                    title="IsClosed">report
                 </mat-icon>
                 <mat-icon *ngIf="element.isClosed != 1" matTooltip="IsOpen" style="color: rgb(19, 126, 13);">report
                 </mat-icon>
             </div>
         </ng-template>
-             <ng-template #actionButtonTemplateEditsupplier let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">  
-               <button mat-icon-button (click)="EditSupplierdetails(element)" matTooltip="Edit Supplier Name"  *ngIf="!element.isVerified">
+        <ng-template #actionButtonTemplateEditsupplier let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="EditSupplierdetails(element)" matTooltip="Edit Supplier Name"
+                    *ngIf="!element.isVerified">
                     <mat-icon title="Edit  Supplier Name">edit</mat-icon>
                 </button>
             </div>
@@ -65,7 +68,7 @@
                 <button mat-icon-button matTooltip="print" (click)="viewgetGRNReportPdf(element)">
                     <mat-icon>print</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit"  >
+                <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit">
                     <mat-icon title="Edit Menu">edit</mat-icon>
                 </button>
                 <!-- <button mat-icon-button matTooltip="Can't Edit Indent" *ngIf="element.isVerified">
@@ -73,44 +76,43 @@
                 </button> -->
 
                 <button *ngIf="!element.isVerified && IsGRNverify" mat-icon-button (click)="onVerify(element)">
-                    <mat-icon class="disabled-icon" matTooltip="verify Menu"  title="verify Menu">verified_user</mat-icon>
+                    <mat-icon class="disabled-icon" matTooltip="verify Menu"
+                        title="verify Menu">verified_user</mat-icon>
                 </button>
 
                 <button *ngIf="element.isVerified" mat-icon-button>
-                    <mat-icon class="disabled-icon" matTooltip="verified" style="color: green;" title="verified">check_circle</mat-icon>
+                    <mat-icon class="disabled-icon" matTooltip="verified" style="color: green;"
+                        title="verified">check_circle</mat-icon>
                 </button>
                 <!-- <button mat-icon-button (click)="GRNEmail(element)">
                     <mat-icon *ngIf="!element.isVerified" [disabled]="element.disabled" class="disabled-icon"
                         title="Email Menu">mail</mat-icon>
                     <mat-icon *ngIf="element.isVerified" title="Email Menu">mail</mat-icon>
                 </button> -->
-               
-                 <button mat-icon-button *ngIf="element.isVerified"
-                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
-                        matTooltipPosition="right" (click)="Onemail(element)"
-                        (mouseenter)="openEmailDetailsPopover($event, element)"
-                        (mouseleave)="closeEmailDetailsPopover()"
-                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                        <mat-icon>email</mat-icon>
-                    </button>
 
 
-                    <button mat-icon-button *ngIf="element.isVerified"
-                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
-                        matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
-                        (mouseenter)="openWhatsappDetailsPopover($event, element)"
-                        (mouseleave)="closeWhatsappDetailsPopover()"
-                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                        <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
-                    </button>
+                <button mat-icon-button *ngIf="element.isVerified"
+                    [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                    matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                    (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                    (mouseleave)="closeWhatsappDetailsPopover()"
+                    style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                    <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                </button>
+                <button mat-icon-button *ngIf="element.isVerified"
+                    [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                    matTooltipPosition="right" (click)="Onemail(element)"
+                    (mouseenter)="openEmailDetailsPopover($event, element)" (mouseleave)="closeEmailDetailsPopover()"
+                    style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                    <mat-icon>email</mat-icon>
+                </button>
 
-             
 
                 <button mat-icon-button (click)="deleteRow(element)">
                     <mat-icon *ngIf="!element.isVerified" title="Cancle">highlight_off</mat-icon>
                 </button>
             </div>
-        </ng-template>  
+        </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" #grid>
             <ng-container filters>
@@ -138,7 +140,7 @@
                     <div fxLayout="row" class="gap-4 ">
                         <span style="font-weight: bold;">Status :</span>
                         <mat-slide-toggle name="Status1" (change)="onChangeFirst()" formControlName="Status1">
-                             Pending / Verify
+                            Pending / Verify
                         </mat-slide-toggle>
                     </div>
                 </form>
@@ -147,24 +149,24 @@
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-    
+
         <!-- <ng-template #actionButtonTemplateIscheck let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox>
             </div>
         </ng-template> -->
 
-         <ng-template #actionButtonTemplateIscheck let-element>
+        <ng-template #actionButtonTemplateIscheck let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                 <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox>
-                 
+                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox>
+
             </div>
         </ng-template>
 
         <button mat-raised-button *ngIf="selection?.selected?.length>0" (click)="printBulkQrCode()">
             Print QrCode
         </button>
-    
+
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false"
             (onSelectRow)="Onbarcode($event)">
         </airmid-table>
