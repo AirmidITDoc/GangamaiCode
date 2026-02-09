@@ -33,10 +33,10 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PatientList, SampleDetailObj, SampleList } from 'app/main/pathology/result-entry/result-entry.component';
 import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
-import { NewResultEntryComponent } from 'app/main/pathology/result-entry/new-result-entry/new-result-entry.component';
 import { NewResultTemplateComponent } from 'app/main/pathology/result-entry/new-result-template/new-result-template.component';
 import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
+import { NewLabresultEntryComponent } from './new-labresult-entry/new-labresult-entry.component';
 
 function formatDate(rawDate: string): string {
   if (!rawDate) return '';
@@ -451,7 +451,7 @@ export class LabResultListComponent {
               this.Iscompleted = 1;
           });
 
-          const dialogRef = this._matDialog.open(NewResultEntryComponent,
+          const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
             {
               maxWidth: "96vw",
               height: "96vh",
@@ -524,7 +524,7 @@ export class LabResultListComponent {
             this.Iscompleted = 1;
         });
 
-        const dialogRef = this._matDialog.open(NewResultEntryComponent,
+        const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
           {
             maxWidth: "96vw",
             height: "96vh",
@@ -581,7 +581,7 @@ export class LabResultListComponent {
             this.Iscompleted = 1;
         });
 
-        const dialogRef = this._matDialog.open(NewResultEntryComponent,
+        const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
           {
             maxWidth: "96vw",
             height: "96vh",
@@ -756,10 +756,9 @@ export class LabResultListComponent {
   }
 
   getPrint(contact) {
-
     console.log(contact)
 
-    if (contact.isTemplateTest)
+    if (contact.isTemplateTest) {
 
       Swal.fire({
         title: 'Select Report Format',
@@ -780,44 +779,44 @@ export class LabResultListComponent {
           this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithOutHeader");
         }
       });
-    else {
-      // this.viewgetPathologyTestReportPdf(contact)
-      if (this.selection.selected.length == 0) {
-        this.toastr.warning('CheckBox Select !', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      } else {
-        this.Printresultentry();
-      }
+    } else {
+      Swal.fire({
+        title: 'Select Report Format',
+        text: "Choose how you want to view the report:",
+        icon: "warning",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        denyButtonColor: "#6c757d",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "With Header",
+        denyButtonText: "Without Header",
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+          this.Printresultentrywithheader(contact);
+        } else if (result.isDenied) {
+          this.Printresultentry(contact);
+        }
+      });
     }
-    this.selection.clear();
   }
 
-  OP_IP_Type: any;
-
-  selectedItem: any;
-  // opiptype = this.selectedItem.opdipdtype;
   CompletdFlag = 1
 
-  // changed by raksha 5/11/25
   Printresultentry(row: any = null) {
     // debugger
     console.log(row);
-    console.log(this.selection.selected);
     let pathologyDelete = [];
 
-    this.selectedItem = this.selection.selected[0];
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
-    this.selection.selected.forEach((element) => {
-      pathologyDelete.push({ pathReportId: element.pathReportID });
-    });
-    if (this.selectedItem.isCompleted)
+    if (row.isCompleted)
       this.CompletdFlag = 1
     else
       this.CompletdFlag = 0
 
-    pathologyDelete.push({ pathReportId: this.selectedItem.pathReportID });
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -827,11 +826,9 @@ export class LabResultListComponent {
     if (this.CompletdFlag) {
       this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
         if (res) {
-          this.viewgetPathologyTestReportPdf(this.selectedItem)
+          this.viewgetPathologyTestReportPdf(row)
         }
       });
-    } else {
-      Swal.fire("Selcted test Not Completd for Print.....")
     }
   }
 
@@ -840,14 +837,12 @@ export class LabResultListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdIpdType),
+          fieldValue: "4",
           opType: "Equals"
         }
       ],
       mode: "PathologyReportWithOutHeader"
     };
-
-    console.log(param);
 
     this._SampleService.getReportView(param).subscribe(res => {
       const matDialog = this._matDialog.open(PdfviewerComponent, {
@@ -867,16 +862,10 @@ export class LabResultListComponent {
 
   }
 
-  Printresultentrywithheader() {
-
-    console.log(this.selection.selected);
+  Printresultentrywithheader(row: any = null) {
     let pathologyDelete = [];
 
-    this.selectedItem = this.selection.selected[0];
-
-    this.selection.selected.forEach((element) => {
-      pathologyDelete.push({ pathReportId: element.pathReportID });
-    });
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -886,7 +875,7 @@ export class LabResultListComponent {
 
     this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
       if (res) {
-        this.viewgetPathologyTestReportwithheaderPdf(this.selectedItem)
+        this.viewgetPathologyTestReportwithheaderPdf(row)
       }
     });
   }
@@ -898,15 +887,12 @@ export class LabResultListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdIpdType),
+          fieldValue: "4",
           opType: "Equals"
         }
       ],
       mode: "PathologyReportWithHeader"
     };
-
-
-    console.log(param);
 
     this._SampleService.getReportView(param).subscribe(res => {
       const matDialog = this._matDialog.open(PdfviewerComponent, {
@@ -984,37 +970,6 @@ export class LabResultListComponent {
       this.grid.bindGridData();
       this.getSelectedRow(event);
     });
-  }
-
-  onVerify(row) {
-    Swal.fire({
-      title: 'Confirm Verify Report ',
-      text: 'Are you sure you want to Verify Report?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#41ea76ff',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Verify!'
-
-    }).then((flag) => {
-      // debugger
-      if (flag.isConfirmed) {
-
-        let submitData = {
-
-          "pathReportId": row.pathReportId,
-          "isVerifyid": this.accountService.currentUserValue.userId,
-          "isVerifySign": true,
-          "isVerifyedDate": new Date().toISOString()
-
-        };
-        console.log(submitData);
-        this._SampleService.PathReportverifyMaster(submitData).subscribe(response => {
-          this.getSampledetailList1(event);
-        });
-      }
-    });
-    // this.onEdit(row);
   }
 
   GetResultdetail() {

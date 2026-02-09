@@ -38,6 +38,7 @@ import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outso
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { LabResultListService } from '../lab-result-list/lab-result-list.service';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { NewLabresultEntryComponent } from '../lab-result-list/new-labresult-entry/new-labresult-entry.component';
 
 
 @Component({
@@ -445,7 +446,7 @@ export class TestApprovalListComponent {
 
     console.log(contact)
 
-    if (contact.isTemplateTest)
+    if (contact.isTemplateTest) {
 
       Swal.fire({
         title: 'Select Report Format',
@@ -466,44 +467,47 @@ export class TestApprovalListComponent {
           this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithOutHeader");
         }
       });
-    else {
-      // this.viewgetPathologyTestReportPdf(contact)
-      // if (this.selection.selected.length == 0) {
-      //   this.toastr.warning('CheckBox Select !', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else {
-      //   this.Printresultentry();
-      // }
+    } else {
+      Swal.fire({
+        title: 'Select Report Format',
+        text: "Choose how you want to view the report:",
+        icon: "warning",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        denyButtonColor: "#6c757d",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "With Header",
+        denyButtonText: "Without Header",
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+          this.Printresultentry(contact);
+        } else if (result.isDenied) {
+          this.Printresultentrywithheader(contact);
+        }
+      });
     }
-    // this.selection.clear();
   }
 
   OP_IP_Type: any;
-
-  selectedItem: any;
-  // opiptype = this.selectedItem.opdipdtype;
   CompletdFlag = 1
 
   // changed by raksha 5/11/25
   Printresultentry(row: any = null) {
     // debugger
     console.log(row);
-    // console.log(this.selection.selected);
     let pathologyDelete = [];
 
-    // this.selectedItem = this.selection.selected[0];
-
-    // this.selection.selected.forEach((element) => {
-    //   pathologyDelete.push({ pathReportId: element.pathReportID });
-    // });
-    if (this.selectedItem.isCompleted)
+    row.forEach((element) => {
+      pathologyDelete.push({ pathReportId: element.pathReportID });
+    });
+    if (row.isCompleted)
       this.CompletdFlag = 1
     else
       this.CompletdFlag = 0
 
-    pathologyDelete.push({ pathReportId: this.selectedItem.pathReportID });
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -513,7 +517,7 @@ export class TestApprovalListComponent {
     if (this.CompletdFlag) {
       this._LabResultListService.PathPrintResultentryInsert(submitData).subscribe(res => {
         if (res) {
-          this.viewgetPathologyTestReportPdf(this.selectedItem)
+          this.viewgetPathologyTestReportPdf(row)
         }
       });
     } else {
@@ -526,7 +530,7 @@ export class TestApprovalListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdIpdType),
+          fieldValue: "4",
           opType: "Equals"
         }
       ],
@@ -553,16 +557,12 @@ export class TestApprovalListComponent {
 
   }
 
-  Printresultentrywithheader() {
-
-    // console.log(this.selection.selected);
+  Printresultentrywithheader(row:any=null) {
     let pathologyDelete = [];
 
-    // this.selectedItem = this.selection.selected[0];
-
-    // this.selection.selected.forEach((element) => {
-    //   pathologyDelete.push({ pathReportId: element.pathReportID });
-    // });
+    row.forEach((element) => {
+      pathologyDelete.push({ pathReportId: element.pathReportID });
+    });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -572,7 +572,7 @@ export class TestApprovalListComponent {
 
     this._LabResultListService.PathPrintResultentryInsert(submitData).subscribe(res => {
       if (res) {
-        this.viewgetPathologyTestReportwithheaderPdf(this.selectedItem)
+        this.viewgetPathologyTestReportwithheaderPdf(row)
       }
     });
   }
@@ -584,7 +584,7 @@ export class TestApprovalListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdIpdType),
+          fieldValue: "4",
           opType: "Equals"
         }
       ],
@@ -614,8 +614,6 @@ export class TestApprovalListComponent {
 
   AdList: boolean = false;
 
-
-
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -643,35 +641,143 @@ export class TestApprovalListComponent {
     this._LabResultListService.myformSearch.get('PatientTypeSearch').setValue("3");
   }
 
-  onVerify(row) {
-    Swal.fire({
-      title: 'Confirm Verify Report ',
-      text: 'Are you sure you want to Verify Report?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#41ea76ff',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Verify!'
+  chkresultentryVerify(contact, flag) {
+    debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+    this.reportPrintObj = contact
 
-    }).then((flag) => {
-      // debugger
-      if (flag.isConfirmed) {
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
 
-        let submitData = {
+    console.log(contact)
+    if (this.IsTemplateTest == 0) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
 
-          "pathReportId": row.pathReportID,
-          "isVerifyid": this.accountService.currentUserValue.userId,
-          "isVerifySign": true,
-          "isVerifyedDate": new Date().toISOString()
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
 
-        };
-        console.log(submitData);
-        this._LabResultListService.PathReportverifyMaster(submitData).subscribe(response => {
+        const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
+          {
+            maxWidth: "96vw",
+            height: "96vh",
+            width: "96%",
+            data: {
+              RIdData: data,
+              patientdata: this.reportPrintObj,
+              verifyCheck: true,
+              sampleNo: contact.sampleNo
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
           this.grid.bindGridData();
         });
-      }
-    });
-    // this.onEdit(row);
+      }, 100);
+      return;
+    }
+  }
+
+  // onVerify(row) {
+  //   Swal.fire({
+  //     title: 'Confirm Verify Report ',
+  //     text: 'Are you sure you want to Verify Report?',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#41ea76ff',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, Verify!'
+
+  //   }).then((flag) => {
+  //     // debugger
+  //     if (flag.isConfirmed) {
+
+  //       let submitData = {
+
+  //         "pathReportId": row.pathReportID,
+  //         "isVerifyid": this.accountService.currentUserValue.userId,
+  //         "isVerifySign": true,
+  //         "isVerifyedDate": new Date().toISOString()
+
+  //       };
+  //       console.log(submitData);
+  //       this._LabResultListService.PathReportverifyMaster(submitData).subscribe(response => {
+  //         this.grid.bindGridData();
+  //       });
+  //     }
+  //   });
+  //   // this.onEdit(row);
+  // }
+
+  IsTemplateTest: any;
+  chkTemplateVerify(contact, flag) {
+    debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 1) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
+
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+        const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+          {
+            maxWidth: "75vw",
+            height: '95%',
+            width: '96%',
+            data: {
+              data: contact,
+              verifyCheck: true
+            }
+          });
+
+        dialogRef.afterClosed().subscribe(result => {
+          this.grid.bindGridData();
+        });
+        return;
+      }, 100);
+      return;
+    }
   }
 
   getVerifyTooltip(contact: any): string {
@@ -1004,13 +1110,6 @@ export class TestApprovalListComponent {
     }
   }
 
-  chkresultentryVerify(contact, flag) {
-    // debugger
-    this.printdata = [];
-    this.reportIdData = [];
-    this.ServiceIdData = [];
-
-  }
   GetResultdetail() {
 
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, 'MM/dd/yyyy')

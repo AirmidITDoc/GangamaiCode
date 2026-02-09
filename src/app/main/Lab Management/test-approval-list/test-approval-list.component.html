@@ -168,16 +168,58 @@
 
                                         <ng-template #actionButtonTemplate let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
-                                                <button mat-icon-button matTooltip="Print"
+                                                <!-- <button mat-icon-button matTooltip="Print"
                                                     (click)="viewgetReportPdf(element)"
                                                     [style.visibility]="element.PaymentCompleted == 0 ? 'hidden' : 'visible'">
                                                     <mat-icon>print</mat-icon>
-                                                </button>
+                                                </button> -->
 
-                                                <button mat-icon-button matTooltip="Verify" (click)="onVerify(element)"
-                                                    *ngIf="element.isVerifySign==false">
+                                                <button mat-icon-button matTooltip="Verify"
+                                                 [style.visibility]="element.isVerifySign==false ? 'visible' : 'hidden'"
+                                                    (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
+                                                                            ? chkTemplateVerify(element, true) : chkresultentryVerify(element, true)) : null ">
                                                     <mat-icon>verified_user</mat-icon>
                                                 </button>
+
+                                                <span
+                                                    [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
+                                                            : element.PaymentCompleted === 0 ? 'Payment is pending' : '' "
+                                                    matTooltipPosition="above">
+                                                    <button mat-icon-button (click)="getPrint(element)"
+                                                        *ngIf="element.isCompleted"
+                                                        [disabled]="element.isVerifySign === false || element.PaymentCompleted === 0">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
+                                                </span>
+
+
+                                                <span [matTooltip]="element.isVerifySign === false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                                    <button mat-icon-button [disabled]="element.isVerifySign === false"
+                                                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                                        matTooltipPosition="right" (click)="Onemail(element)"
+                                                        (mouseenter)="openEmailDetailsPopover($event, element)"
+                                                        (mouseleave)="closeEmailDetailsPopover()"
+                                                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                        <mat-icon>email</mat-icon>
+                                                    </button>
+                                                </span>
+
+                                                <span [matTooltip]="element.isVerifySign === false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                                    <button mat-icon-button [disabled]="element.isVerifySign === false"
+                                                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                                        matTooltipPosition="right"
+                                                        (click)="getWhatsappshareReport(element)"
+                                                        (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                                        (mouseleave)="closeWhatsappDetailsPopover()"
+                                                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                        <img width="20" height="20"
+                                                            src="assets/images/logos/WhatsApp.png">
+                                                    </button>
+                                                </span>
 
                                             </div>
                                         </ng-template>
