@@ -1,3 +1,5 @@
+import { AdministrationModule } from "app/main/administration/administration.module";
+
 export enum permissionType {
     Add = 1, Edit = 2, Delete = 3, View = 4, Export = 5
 }
@@ -150,5 +152,15 @@ export enum permissionCodes {
     TallyInterface='TallyInterface',
 
     // Pharmacy?
-    Sales='Sales'
+    Sales='Sales',
+
+    // AdministrationModule?
+    RoleTemplateMaster='RoleTemplateMaster',
+    Login='Login',
+    Configuration='Configuration',
+    Paymentmodechanges='Paymentmodechanges',
+    smsconfigrationtool='smsconfigrationtool',
+    TemplateDescription='TemplateDescription',
+    ReportConfig='ReportConfig',
+    BarcodeConfig='BarcodeConfig',
 }

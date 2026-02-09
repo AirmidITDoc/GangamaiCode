@@ -428,7 +428,58 @@ export class NewMaterialConsumptionComponent implements OnInit {
     });
 
   }
+OnDraftSave() {
 
+    if ((!this.dsNewmaterialList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if ((this.vAdmissionId == 0)) {
+      this.toastr.warning('Please Selct Patient ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.Savebtn = true;
+    this.MaterialConDetailsArray.clear();
+    this.dsNewmaterialList.data.forEach(item => {
+      this.MaterialConDetailsArray.push(this.creatematerialconsDetail(item));
+    });
+
+
+    this.currentstockArray.clear();
+    this.dsNewmaterialList.data.forEach(item => {
+      this.currentstockArray.push(this.createcurrentstock(item));
+    });
+
+
+    // changed by raksha
+    this.MaterialInsertForm.get("materialConsumption.consumptionDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this.MaterialInsertForm.get("materialConsumption.consumptionTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
+    this.MaterialInsertForm.get("materialConsumption.landedTotalAmount").setValue(this.vLandedTotalAmount || 0)
+    this.MaterialInsertForm.get("materialConsumption.purTotalAmount").setValue(this.vPurTotalAmount || 0)
+    this.MaterialInsertForm.get("materialConsumption.mrpTotalAmount").setValue(this.vMRPTotalAmount || 0)
+    this.MaterialInsertForm.get("materialConsumption.fromStoreId").setValue(this._loggedService.currentUserValue.user.storeId || 0)
+     this.MaterialInsertForm.get("materialConsumption.admId").setValue(this.vAdmissionId || 0)
+    this.MaterialInsertForm.get("materialConsumption.remark").setValue(this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value)
+
+    console.log(this.MaterialInsertForm.value)
+
+    this._MaterialConsumptionService.MaterialconsSave(this.MaterialInsertForm.value).subscribe(response => {
+      this.toastr.success(response.message);
+      this.viewgetMaterialconsumptionReportPdf(response)
+      this._matDialog.closeAll();
+      this.Savebtn = true
+      if (response)
+        this.OnReset();
+
+    }, (error) => {
+      this.toastr.error(error.message);
+    });
+
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }

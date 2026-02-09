@@ -18,6 +18,7 @@ import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.co
 import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
 import { EditPaymentComponent } from '../paymentmodechanges/edit-payment/edit-payment.component';
 import { NewTPaymenModeUpdateComponent } from './new-tpaymen-mode-update/new-tpaymen-mode-update.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-paymentmodechangesfor-pharmacy',
@@ -138,6 +139,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   ]
 
   gridConfigSales: gridModel = {
+    permissionCode: permissionCodes.MaterialConsumption,
     apiUrl: "paymentpharmacy/BrowsePharmacyPayReceiptList",
     columnsList: this.allColumns,
     sortField: "PaymentId",
@@ -219,6 +221,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   ]
 
   gridConfigIpPhy: gridModel = {
+    //  permissionCode: permissionCodes.MaterialConsumption,
     apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
     columnsList: this.allColumns1,
     sortField: "PaymentId",
@@ -387,6 +390,7 @@ allColumnsTpay = [
   ]
 
   gridConfigTpaySales: gridModel = {
+    permissionCode: permissionCodes.Paymentmodechanges,
     apiUrl: "paymentpharmacy/BrowseTPayPharmacyPayReceiptList",
     columnsList: this.allColumnsTpay,
     sortField: "PaymentId",

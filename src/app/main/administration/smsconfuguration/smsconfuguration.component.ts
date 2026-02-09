@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SMSConfugurationService } from './smsconfuguration.service';
 import { UpdateSMSComponent } from './update-sms/update-sms.component';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-smsconfuguration',
@@ -115,6 +116,7 @@ export class SMSConfugurationComponent implements OnInit {
 
   ]
   gridConfig1: gridModel = {
+    permissionCode: permissionCodes.smsconfigrationtool,
     apiUrl: "smsConfig/WhatsappSendoutList",
     columnsList: this.allColumns2,
     sortField: "SMSOutGoingID",
@@ -148,6 +150,7 @@ export class SMSConfugurationComponent implements OnInit {
   ]
 
   gridConfig2: gridModel = {
+    permissionCode: permissionCodes.smsconfigrationtool,
     apiUrl: "smsConfig/EmailOutgoingList",
     columnsList: this.allColumnsemail,
     sortField: "Id",

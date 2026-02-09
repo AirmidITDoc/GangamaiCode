@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NewReportConfigurationComponent } from './new-report-configuration/new-report-configuration.component';
 import { ReportConfigurationService } from './report-configuration.service';
 import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
     selector: 'app-report-configuration',
@@ -18,6 +20,7 @@ import { NewreportConfigComponent } from './newreport-config/newreport-config.co
     animations: fuseAnimations,
 })
 export class ReportConfigurationComponent implements OnInit {
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ReportConfig, permissionType.Add);
 
     myform: FormGroup;
     autocompleteModedReport: string = "ReportConfig";
@@ -25,7 +28,7 @@ export class ReportConfigurationComponent implements OnInit {
     parentId = "";
     reportName: any = "";
 
-    constructor(public _ReportConfigurationService: ReportConfigurationService, public _matDialog: MatDialog,
+    constructor(public _ReportConfigurationService: ReportConfigurationService, public _matDialog: MatDialog, public permissionService: PagePermissionService,
         public toastr: ToastrService, private _formBuilder: UntypedFormBuilder,) { }
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     allcolumns = [
@@ -68,6 +71,7 @@ export class ReportConfigurationComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.ReportConfig,
         apiUrl: "ReportConfig/NewList", //"ReportConfig/List",
         columnsList: this.allcolumns,
         sortField: "ReportId",

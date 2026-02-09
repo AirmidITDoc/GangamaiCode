@@ -23,7 +23,7 @@
             <button mat-raised-button (click)="processDocShare()" fxLayoutAlign="center center" class="py-8">
                 <span>Process Doctor Share</span>
             </button>&nbsp; -->
-            <button mat-raised-button (click)="NewDocShare()" fxLayoutAlign="center center" class="py-8">
+            <button mat-raised-button (click)="NewDocShare()" fxLayoutAlign="center center" class="py-8" *ngIf="IsAdd">
                 <mat-icon>add</mat-icon> <span> Doctor Share</span>
             </button>
         </div>

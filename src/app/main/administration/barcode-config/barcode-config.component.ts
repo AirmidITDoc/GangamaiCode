@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { BarcodeConfigService } from './barcodeconfig.service';
 import { NewBarcodeComponent } from './new-barcode/new-barcode.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-barcode-config',
@@ -17,12 +18,15 @@ import { NewBarcodeComponent } from './new-barcode/new-barcode.component';
     animations: fuseAnimations,
 })
 export class BarcodeConfigComponent implements OnInit {
+    //   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RoleTemplateMaster, permissionType.Add);
+          
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     autocompleteModeTemplateCat: string = "TemplateDescCategory";
     categoryid = ""
     myformSearch: FormGroup;
 
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.BarcodeConfig,
         apiUrl: "BarcodeConfig/List",
         columnsList: [
             { heading: "Template Code", key: "templateCode", sort: true, align: 'left', emptySign: 'NA' },

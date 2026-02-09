@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { TemplatedescriptionService } from './templatedescription.service';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
     selector: 'app-template-description',
@@ -21,8 +23,10 @@ export class TemplateDescriptionComponent implements OnInit {
     autocompleteModeTemplateCat: string = "TemplateDescCategory";
     categoryid = ""
     myformSearch: FormGroup;
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TemplateDescription, permissionType.Add);
 
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.TemplateDescription,
         apiUrl: "TemplateDescriptionConfig/List",
         columnsList: [
             { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
@@ -55,7 +59,7 @@ export class TemplateDescriptionComponent implements OnInit {
 
     constructor(public _TemplatedescriptionService: TemplatedescriptionService,
         public _matDialog: MatDialog,
-        private _formBuilder: UntypedFormBuilder,
+        private _formBuilder: UntypedFormBuilder, public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {

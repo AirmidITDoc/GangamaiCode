@@ -9,6 +9,8 @@ import { ToastrService } from "ngx-toastr";
 import { RolePermissionComponent } from "../role-permission/role-permission.component";
 import { NewRoletemplateComponent } from "./new-roletemplate/new-roletemplate.component";
 import { RoleTemplateService } from "./role-template.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 @Component({
   selector: 'app-role-template-master',
@@ -19,9 +21,11 @@ import { RoleTemplateService } from "./role-template.service";
 })
 export class RoleTemplateMasterComponent implements OnInit {
     myformSearch: FormGroup;
+      IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RoleTemplateMaster, permissionType.Add);
+       
     constructor(
         public _RoleTemplateService: RoleTemplateService, private _formBuilder: UntypedFormBuilder,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
     ) { }
 
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -55,6 +59,7 @@ export class RoleTemplateMasterComponent implements OnInit {
     ];
 
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.RoleTemplateMaster,
         apiUrl: "Administration/RoleMasterList",
         columnsList:this.allcolumns,
         sortField: "RoleId",

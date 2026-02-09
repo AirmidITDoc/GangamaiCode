@@ -23,7 +23,7 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
 
-      <button mat-raised-button color="primary" (click)="onSave()">+ New User</button>
+      <button mat-raised-button color="primary" (click)="onSave()" *ngIf="IsAdd">+ New User</button>
     </div>
   </div>
 

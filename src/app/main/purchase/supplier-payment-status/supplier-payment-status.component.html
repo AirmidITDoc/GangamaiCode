@@ -82,7 +82,7 @@
                     <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
                         <mat-table matSort [dataSource]="dsSupplierpayList" [@animateStagger]="{ value: '50' }"
                             class="airmid-table">
-                            <ng-container matColumnDef="CheckBox">
+                            <!-- <ng-container matColumnDef="CheckBox">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
                                     <mat-checkbox (change)="$event ? masterToggle() : null"
                                         [checked]="selection.hasValue()"
@@ -94,6 +94,22 @@
                                         (change)="OnSelectSUpplier($event,contact)"
                                         (change)="$event ? selection.toggle(contact) : null"
                                         [checked]="selection.isSelected(contact)" *ngIf="!contact.paidAmount">
+                                    </mat-checkbox>
+                                </mat-cell>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="CheckBox">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
+                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                        [checked]="selection.hasValue()"
+                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                    </mat-checkbox>
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" required class="w-150">
+                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                        (change)="OnSelectSUpplier($event,contact)"
+                                        (change)="$event ? selection.toggle(contact) : null"
+                                        [checked]="selection.isSelected(contact)">
                                     </mat-checkbox>
                                 </mat-cell>
                             </ng-container>

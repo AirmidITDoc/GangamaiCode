@@ -15,6 +15,7 @@ import { DateUpdateComponent } from './date-update/date-update.component';
 import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 import { PaymentmodechangesService } from './paymentmodechanges.service';
 import { NewedipamodeComponent } from './newedipamode/newedipamode.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -126,6 +127,7 @@ export class PaymentmodechangesComponent implements OnInit {
   ]
 
   gridConfigOP: gridModel = {
+    permissionCode: permissionCodes.Paymentmodechanges,
     apiUrl: "paymentpharmacy/OPDPaymentReceiptList",
     columnsList: this.allopdColumns,
     sortField: "RegNo",
@@ -224,6 +226,7 @@ export class PaymentmodechangesComponent implements OnInit {
   ]
 
   gridConfigIP: gridModel = {
+     permissionCode: permissionCodes.Paymentmodechanges,
     apiUrl: "paymentpharmacy/IPDPaymentReceiptList",
     columnsList: this.allipdColumns,
     sortField: "PaymentId",
@@ -302,6 +305,7 @@ export class PaymentmodechangesComponent implements OnInit {
     { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
   gridConfigIPAdv: gridModel = {
+     permissionCode: permissionCodes.Paymentmodechanges,
     apiUrl: "paymentpharmacy/IPAdvPaymentReceiptList",
     columnsList: this.allAdColumns,
     sortField: "PaymentId",

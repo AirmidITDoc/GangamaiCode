@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New Role Template 
+            <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">+ New Role Template 
             </button>
         </div>
     </div>

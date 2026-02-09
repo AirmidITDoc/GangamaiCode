@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { CreateUserService } from './create-user.service';
 import { NUserComponent } from './nuser/nuser.component';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-create-user',
@@ -24,7 +26,8 @@ export class CreateUserComponent implements OnInit {
   @HostBinding('style.flex') flex = '1 1 auto';
   @HostBinding('style.minHeight') minH = '0';
   @HostBinding('style.flexDirection') dir = 'column';
-
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Login, permissionType.Add);
+     
   myuserform: FormGroup;
   autocompleteModeStoreName: String = "Store";
   autocompleteModeWebRoleName: String = "WebRole";
@@ -62,7 +65,7 @@ export class CreateUserComponent implements OnInit {
 
   signature: PageNames = PageNames.USER_SIGNATURE;
 
-  constructor(public _CreateUserService: CreateUserService, private _formBuilder: UntypedFormBuilder,
+  constructor(public _CreateUserService: CreateUserService, private _formBuilder: UntypedFormBuilder,public permissionService: PagePermissionService,
     public _matDialog: MatDialog, public toastr: ToastrService) { }
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -94,6 +97,7 @@ export class CreateUserComponent implements OnInit {
   ];
 
   gridConfig: gridModel = {
+ permissionCode: permissionCodes.Login,
     apiUrl: "LoginManager/LoginList",
     columnsList: this.allcolumns,
     sortField: "UserId",

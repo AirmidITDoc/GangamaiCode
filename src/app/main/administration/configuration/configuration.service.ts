@@ -108,9 +108,7 @@ export class ConfigurationService {
   }
 
   public ConfigSave(Param: any) {
-    // if (Param.currencyId) {
-    //     return this._httpClient.PutData("Configuration/" + Param.currencyId, Param);
-    // } else
+   
     return this._httpClient.PutData("Configuration/SystemConfig", Param);
   }
 

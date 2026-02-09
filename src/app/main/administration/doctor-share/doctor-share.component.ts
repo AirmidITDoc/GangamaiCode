@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { DoctorShareService } from './doctor-share.service';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { DoctorShareListComponent } from 'app/main/setup/doctor/doctor-payoutpercentage/doctor-share-list/doctor-share-list.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -24,6 +26,9 @@ import { DoctorShareListComponent } from 'app/main/setup/doctor/doctor-payoutper
   animations: fuseAnimations,
 })
 export class DoctorShareComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RoleTemplateMaster, permissionType.Add);
+        
+
   @ViewChild('drawer') public drawer: MatDrawer;
   isRegIdSelected: boolean = false;
   isDoctorIDSelected: boolean = false;
@@ -57,7 +62,7 @@ export class DoctorShareComponent implements OnInit {
   constructor(
     public _DoctorShareService: DoctorShareService,
     public datePipe: DatePipe,
-    public _matDialog: MatDialog,
+    public _matDialog: MatDialog,public permissionService: PagePermissionService,
     public toastr: ToastrService,
   ) { }
 
@@ -108,7 +113,8 @@ export class DoctorShareComponent implements OnInit {
     { fieldName: "OP_IP_TYpe", fieldValue: "1", opType: OperatorComparer.Equals },
   ]
   gridConfig: gridModel = {
-    apiUrl: "Doctor/DoctorshareBillList",
+//  permissionCode: permissionCodes.BarcodeConfig,
+    apiUrl: "DoctorPAy/DoctorshareBillList",
     columnsList: this.allColumns,
     sortField: "DoctorId",
     sortOrder: 0,
@@ -135,7 +141,7 @@ export class DoctorShareComponent implements OnInit {
     console.log("toDate:", this.toDate)
 
     this.gridConfig = {
-      apiUrl: "Doctor/DoctorshareBillList",
+      apiUrl: "DoctorPAy/DoctorshareBillList",
       columnsList: this.allColumns,
       sortField: "DoctorId",
       sortOrder: 0,

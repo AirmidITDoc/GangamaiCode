@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onNew1()">+ New Report Config
+            <button mat-raised-button (click)="onNew1()"  *ngIf="IsAdd">+ New Report Config
             </button>
 
              <!-- <button mat-raised-button (click)="onNew2()">+ New Report

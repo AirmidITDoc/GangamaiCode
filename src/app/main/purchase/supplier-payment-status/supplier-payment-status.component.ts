@@ -491,14 +491,14 @@ export class SupplierPaymentStatusComponent implements OnInit {
       });
       return;
     }
-    if (this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value) {
-      if (!this.filteredSupplier.some(item => item.SupplierId == this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value.SupplierId)) {
-        this.toastr.warning('Please select valid supplier Name', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-    }
+    // if (this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value) {
+    //   if (!this.filteredSupplier.some(item => item.SupplierId == this._SupplierPaymentStatusService.SearchFormGroup.get('SupplierId').value.SupplierId)) {
+    //     this.toastr.warning('Please select valid supplier Name', 'Warning !', {
+    //       toastClass: 'tostr-tost custom-toast-warning',
+    //     });
+    //     return;
+    //   }
+    // }
     if (this.isSomeSelected()) {
       this.vNetAmount = 0;
       this.vPaidAmount = 0;
@@ -523,16 +523,26 @@ export class SupplierPaymentStatusComponent implements OnInit {
     //this.SelectedList.push(this.selection.selected); 
     console.log(this.SelectedList)
   }
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dsSupplierpayList.data.length;
+  // isAllSelected() {
+  //   const numSelected = this.selection.selected.length;
+  //   const numRows = this.dsSupplierpayList.data.length;
 
-    return numSelected === numRows;
-  }
+  //   return numSelected === numRows;
+  // }
 
-  isSomeSelected() {
-    return this.selection.selected.length > 0;
-  }
+  // isSomeSelected() {
+  //   return this.selection.selected.length > 0;
+  // }
+
+    isAllSelected() {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.dsSupplierpayList.data.length;
+
+        return numSelected === numRows;
+    }
+    isSomeSelected() {
+        return this.selection.selected.length > 0;
+    } 
 
   OnSelectSUpplier(event, element) {
     this.GRNID = element.grnid;

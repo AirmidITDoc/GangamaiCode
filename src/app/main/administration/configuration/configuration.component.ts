@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
 import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
 import { EditEmailconfigComponent } from './edit-emailconfig/edit-emailconfig.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -109,6 +110,7 @@ export class ConfigurationComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.Configuration,
     apiUrl: "Configuration/SmsconfigList",
     columnsList: this.allColumnssms,
     sortField: "UserName",
@@ -139,6 +141,7 @@ export class ConfigurationComponent implements OnInit {
   ]
 
   gridConfig1: gridModel = {
+       permissionCode: permissionCodes.Configuration,
     apiUrl: "Configuration/EmailconfigList",
     columnsList: this.allColumnsemail,
     sortField: "UserName",
