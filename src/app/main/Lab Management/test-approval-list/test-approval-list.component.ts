@@ -156,41 +156,21 @@ export class TestApprovalListComponent {
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'isVerifyid')!.template = this.isVerifiedstatus;
     this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.isCompletedstatus;
-
   }
-  @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
   @ViewChild('isCompletedstatus') isCompletedstatus!: TemplateRef<any>;
 
   allcolumns = [
 
-    { heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-
-    { heading: "Verify", key: "isVerifyid", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-    // { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-
-    { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "DOA", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100},
-    // { heading: "No", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    // { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-
-    { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "SampleCollectionTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "OutSource LabName", key: "outSourceLabName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-    // { heading: "SampleSentDateTime", key: "outSourceSampleSentDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "outSourceCreatedDateTime", key: "outSourceCreatedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "outSourceModifiedDateTime", key: "outSourceModifiedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
+    { heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
+    { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "SampleCollectionTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     {
-      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
@@ -201,15 +181,10 @@ export class TestApprovalListComponent {
     sortField: "PathTestID",
     sortOrder: 0,
     filters: [
-      // { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-      // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-      // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-      // { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-      // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-      // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
+      { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
     ]
   }
 
@@ -249,44 +224,6 @@ export class TestApprovalListComponent {
     this.onChangeFirst();
   }
 
-  // searchRecords(data) {
-  //   this.dataSource1.data = [];
-  //   // this.selection.clear();
-
-  //   let regno = this.myformSearch.get("RegNoSearch").value || "0";
-  //   let fromDate = this.myformSearch.get("start").value || "";
-  //   let toDate = this.myformSearch.get("end").value || "";
-  //   fromDate = fromDate ? this.datePipe.transform(fromDate, 'MM/dd/yyyy') : "";
-  //   toDate = toDate ? this.datePipe.transform(toDate, 'MM/dd/yyyy') : "";
-  //   let status = this.myformSearch.get("StatusSearch").value || "0";
-
-  //   // this.GetResultdetail()
-  //   // Update the filters dynamically
-
-
-  //   this.gridConfig = {
-  //     apiUrl: "LabPatientRegistration/LabResultList",
-
-  //     columnsList: this.allcolumns,
-  //     sortField: "LabPatientId",
-  //     sortOrder: 0,
-  //     filters: [
-
-  //       // { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  //       // { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  //       // { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
-  //       { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
-  //       { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
-  //       { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-  //       // { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-  //       // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-  //       // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
-  //     ]
-  //   }
-  //   this.grid.gridConfig = this.gridConfig;
-  //   this.grid.bindGridData();
-  // }
-
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -300,7 +237,7 @@ export class TestApprovalListComponent {
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, 'MM/dd/yyyy')
     // this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
     // this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
-    // this.status = this.myformSearch.get('StatusSearch').value
+    this.status = this.myformSearch.get('StatusSearch').value || 0
     // this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
 
     this.GetResultdetail();
@@ -321,7 +258,7 @@ export class TestApprovalListComponent {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-        // { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+        { fieldName: "ApprovalStatus", fieldValue: this.status, opType: OperatorComparer.Equals },
         // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
         // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
       ]
@@ -329,23 +266,6 @@ export class TestApprovalListComponent {
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
-
-
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'RegNoSearch')
-      this.myformSearch.get('RegNoSearch').setValue("0")
-
-    if (event == 'FirstNameSearch')
-      this.myformSearch.get('FirstNameSearch').setValue("")
-
-    if (event == 'LastNameSearch')
-      this.myformSearch.get('LastNameSearch').setValue("")
-
-    this.onChangeFirst();
-  }
-
-
 
   OPIPID: any = 0;
   onresultentryshow(event, m) {
@@ -493,15 +413,13 @@ export class TestApprovalListComponent {
   OP_IP_Type: any;
   CompletdFlag = 1
 
-  // changed by raksha 5/11/25
   Printresultentry(row: any = null) {
     // debugger
     console.log(row);
     let pathologyDelete = [];
 
-    row.forEach((element) => {
-      pathologyDelete.push({ pathReportId: element.pathReportID });
-    });
+    pathologyDelete.push({ pathReportId: row.pathReportID });
+
     if (row.isCompleted)
       this.CompletdFlag = 1
     else
@@ -557,12 +475,10 @@ export class TestApprovalListComponent {
 
   }
 
-  Printresultentrywithheader(row:any=null) {
+  Printresultentrywithheader(row: any = null) {
     let pathologyDelete = [];
 
-    row.forEach((element) => {
-      pathologyDelete.push({ pathReportId: element.pathReportID });
-    });
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -1125,22 +1041,6 @@ export class TestApprovalListComponent {
       "sortField": "PathTestID",
       "sortOrder": 0,
       "filters": [
-        // {
-        //   "fieldName": "F_Name",
-        //   "fieldValue": String(this.f_name),
-        //   "opType": "Contains"
-        // },
-        // {
-        //   "fieldName": "L_Name",
-        //   "fieldValue": String(this.l_name),
-        //   "opType": "Contains"
-        // },
-        // {
-        //   "fieldName": "Reg_No",
-        //   "fieldValue": String(this.regNo),
-        //   "opType": "Equals"
-        // },
-
         {
           "fieldName": "From_Dt",
           "fieldValue": this.fromDate,
@@ -1156,31 +1056,15 @@ export class TestApprovalListComponent {
           "fieldValue": "4",
           "opType": "Equals"
         },
-        // {
-        //   "fieldName": "IsCompleted",
-        //   "fieldValue": String(this.status),
-        //   "opType": "Equals"
-        // },
-        // {
-        //   "fieldName": "UnitId",
-        //   "fieldValue": String(this.UnitId || "1"),
-        //   "opType": "Equals"
-        // },
-        // {
-        //   "fieldName": "Category",
-        //   "fieldValue": String(this.Category || "%"),
-        //   "opType": "Equals"
-        // }
+        {
+          "fieldName": "ApprovalStatus",
+          "fieldValue": String(this.status),
+          "opType": "Equals"
+        },
       ],
       "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
+      "columns": []
     }
-
 
     console.log(data)
     this._LabResultListService.getarrovallist(data).subscribe((response) => {
@@ -1202,102 +1086,6 @@ export class TestApprovalListComponent {
     });
   }
 
-  // ////////////// outsource popup //////////////////////
-  // private overlayRef: OverlayRef | null = null;
-  // private patientOverlayRef: OverlayRef | null = null;
-  // private hoverTimeout: any = null;
-  // private outSourceCloseTimeout: any = null;
-
-  // openPatientDetailsPopover(event: MouseEvent, outSourceData: any) {
-  //     event.stopPropagation();
-
-  //     // Clear any existing timeout
-  //     if (this.hoverTimeout) {
-  //         clearTimeout(this.hoverTimeout);
-  //     }
-
-  //     // Add small delay to prevent flickering
-  //     this.hoverTimeout = setTimeout(() => {
-  //         // Close any existing patient popover
-  //         if (this.patientOverlayRef) {
-  //             this.patientOverlayRef.dispose();
-  //             this.patientOverlayRef = null;
-  //         }
-
-  //         const positionStrategy = this.overlay.position()
-  //             .flexibleConnectedTo(event.target as HTMLElement)
-  //             .withPositions([
-  //                 {
-  //                     originX: 'start',
-  //                     originY: 'bottom',
-  //                     overlayX: 'start',
-  //                     overlayY: 'top',
-  //                 },
-  //                 {
-  //                     originX: 'start',
-  //                     originY: 'top',
-  //                     overlayX: 'start',
-  //                     overlayY: 'bottom',
-  //                 },
-  //                 {
-  //                     originX: 'end',
-  //                     originY: 'center',
-  //                     overlayX: 'start',
-  //                     overlayY: 'center',
-  //                 },
-  //                 {
-  //                     originX: 'start',
-  //                     originY: 'center',
-  //                     overlayX: 'end',
-  //                     overlayY: 'center',
-  //                 }
-  //             ]);
-
-  //         this.patientOverlayRef = this.overlay.create({
-  //             positionStrategy,
-  //             scrollStrategy: this.overlay.scrollStrategies.close(),
-  //             hasBackdrop: false,
-  //         });
-
-  //         const portal = new ComponentPortal(OutsourceDetailsPopoverComponent);
-  //         const componentRef: ComponentRef<OutsourceDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
-  //         componentRef.instance.outSourceData = outSourceData;
-
-  //         // Handle mouse events on the overlay element
-  //         const overlayElement = this.patientOverlayRef.overlayElement;
-  //         overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
-  //         overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
-  //     }, 300); // 300ms delay before showing popover
-  // }
-
-  // closePatientDetailsPopover() {
-  //     // Clear timeout if popover hasn't opened yet
-  //     if (this.hoverTimeout) {
-  //         clearTimeout(this.hoverTimeout);
-  //         this.hoverTimeout = null;
-  //     }
-
-  //     // Clear any existing close timeout
-  //     if (this.outSourceCloseTimeout) {
-  //         clearTimeout(this.outSourceCloseTimeout);
-  //     }
-
-  //     // Add delay before closing to allow moving mouse to popover
-  //     this.outSourceCloseTimeout = setTimeout(() => {
-  //         if (this.patientOverlayRef) {
-  //             this.patientOverlayRef.dispose();
-  //             this.patientOverlayRef = null;
-  //         }
-  //     }, 200);
-  // }
-
-  // keepPatientPopoverOpen() {
-  //     // Clear close timeout when hovering over popover
-  //     if (this.outSourceCloseTimeout) {
-  //         clearTimeout(this.outSourceCloseTimeout);
-  //         this.outSourceCloseTimeout = null;
-  //     }
-  // }
   viewgetReportPdf() { }
 }
 

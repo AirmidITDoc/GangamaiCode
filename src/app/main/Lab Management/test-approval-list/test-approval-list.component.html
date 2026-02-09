@@ -58,60 +58,18 @@
                                         </airmid-datepicker>
                                     </div>
 
-                                    <!-- <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>UHID</mat-label>
-                                            <input matInput placeholder="Search UHID" autocomplete="off"
-                                                [formGroup]="myformSearch" formControlName="RegNoSearch"
-                                                (input)="onChangeFirst()" />
-                                            <button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="Clearfilter('RegNoSearch')">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>FirstName</mat-label>
-                                            <input matInput placeholder="Search FirstName" autocomplete="off"
-                                                [formGroup]="myformSearch" formControlName="FirstNameSearch"
-                                                (input)="onChangeFirst()" />
-                                            <button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="Clearfilter('FirstNameSearch')">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="35%">
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>LastName</mat-label>
-                                            <input matInput placeholder="Search LastName" autocomplete="off"
-                                                [formGroup]="myformSearch" formControlName="LastNameSearch"
-                                                (input)="onChangeFirst()" />
-                                            <button matSuffix mat-icon-button aria-label="Clear"
-                                                (click)="Clearfilter('LastNameSearch')">
-                                                <mat-icon>close</mat-icon>
-                                            </button>
-                                        </mat-form-field>
-                                    </div>
-                                    <div fxFlex="14%" fxFlex.xs="100%" fxFlex.sm="35%">
-
-                                        <airmid-dropdown label="CategoryName" formControlName="CategoryId"
-                                            [formGroup]="myformSearch" [mode]="autocompleteModeCategoryId"
-                                            (selectionChange)="selectChangeCategoryId($event)"></airmid-dropdown>
-                                    </div>
                                     <div fxFlex="15%" fxLayout="row">
                                         <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
                                             (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
                                             [(ngModel)]="vStatusSearch">
                                             <mat-label><b>Status:</b></mat-label>
                                             <div fxLayout="row">
-                                                <mat-radio-button value='0'>Pending</mat-radio-button>
-                                                <mat-radio-button value='1'>Completed</mat-radio-button>
+                                                <mat-radio-button value='0'>All</mat-radio-button>
+                                                <mat-radio-button value='1'>Pending</mat-radio-button>
+                                                <mat-radio-button value='2'>Completed</mat-radio-button>
                                             </div>
                                         </mat-radio-group>
-                                    </div> -->
+                                    </div>
                                     <!-- (click)="searchRecords($event)" -->
                                     <div class="action-button-container">
                                         <div class="button-row-group">
@@ -154,28 +112,20 @@
                                                     hourglass_empty
                                                 </mat-icon>
                                             </div>
-                                        </ng-template>
-                                        <ng-template #isVerifiedstatus let-element>
+
                                             <div fxLayout="row" fxLayoutAlign="center center">
                                                 <mat-icon *ngIf="element.isVerifySign==true" matTooltip="Verified"
                                                     style="color: green;">verified_user</mat-icon>
 
                                                 <mat-icon *ngIf="element.isVerifySign==false" matTooltip="NotVerified"
                                                     color="warn">hourglass_empty</mat-icon>
-
                                             </div>
                                         </ng-template>
 
                                         <ng-template #actionButtonTemplate let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
-                                                <!-- <button mat-icon-button matTooltip="Print"
-                                                    (click)="viewgetReportPdf(element)"
-                                                    [style.visibility]="element.PaymentCompleted == 0 ? 'hidden' : 'visible'">
-                                                    <mat-icon>print</mat-icon>
-                                                </button> -->
-
                                                 <button mat-icon-button matTooltip="Verify"
-                                                 [style.visibility]="element.isVerifySign==false ? 'visible' : 'hidden'"
+                                                    [style.visibility]="element.isVerifySign==false ? 'visible' : 'hidden'"
                                                     (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
                                                                             ? chkTemplateVerify(element, true) : chkresultentryVerify(element, true)) : null ">
                                                     <mat-icon>verified_user</mat-icon>

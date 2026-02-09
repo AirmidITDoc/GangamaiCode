@@ -80,7 +80,7 @@ export class OutsourceDetailsComponent {
     // this.date = now.toISOString().slice(0, 16);
 
     debugger
-    if (this.data.outSourceSampleSentDateTime != undefined) {
+    if (this.data.outSourceSampleSentDateTime) {
       this.date = this.getLocalDateTimeForInput(
         this.data.outSourceSampleSentDateTime
       );

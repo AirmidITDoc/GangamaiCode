@@ -1,6 +1,5 @@
 import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import Swal from 'sweetalert2';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -20,6 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { LabResultListService } from '../lab-result-list.service';
 import { SampleDetailObj } from 'app/main/pathology/result-entry/result-entry.component';
+import { AdmissionPersonl } from '../lab-result-list.component';
 
 @Component({
   selector: 'app-new-labresult-entry',
@@ -58,7 +58,7 @@ export class NewLabresultEntryComponent {
   msg: any;
 
   selectedAdvanceObj1: SampleDetailObj;
-  selectedAdvanceObj2: AdmissionPersonlModel;
+  selectedAdvanceObj2: AdmissionPersonl;
   screenFromString = 'Common-form';
   hasSelectedContacts: boolean;
   advanceData: any;
@@ -80,7 +80,7 @@ export class NewLabresultEntryComponent {
   reportIdData: any = [];
   ServiceIdData: any = [];
   OPIPID: any = 0;
-  OP_IPType: any;
+  // OP_IPType: any;
   Iscompleted: any;
   vPathReportId: any;
   PathResultDr1: any;
@@ -136,8 +136,7 @@ export class NewLabresultEntryComponent {
       this.sampleNo = this.data.sampleNo.split(" ")[0]
       this.suggestionNotes = this.data.patientdata.suggestionNotes
 
-      this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
-      this.OP_IPType = this.selectedAdvanceObj2.opdipdtype;
+      this.OPIPID = this.selectedAdvanceObj2.opdipdId // this.selectedAdvanceObj2.OPD_IPD_ID;
       this.SexId = this.selectedAdvanceObj2.genderId;
       if (this.selectedAdvanceObj2.ageYear)
         this.CheckAge = this.selectedAdvanceObj2.ageYear.trim();
@@ -171,13 +170,7 @@ export class NewLabresultEntryComponent {
     }
 
     if (this.Iscompleted == 0) {
-      if (this.OP_IPType == 1)
-        this.getResultListIP(this.selectedAdvanceObj2, this.regObj);
-      else
-        this.getResultListOP(this.selectedAdvanceObj2, this.regObj);
-      if (this.OP_IPType == 4)
-        this.getResultListLab(this.selectedAdvanceObj2, this.regObj);
-
+      this.getResultListLab(this.selectedAdvanceObj2, this.regObj);
     } else {
       this.getResultList1(this.regObj);
     }
@@ -352,41 +345,15 @@ export class NewLabresultEntryComponent {
   ///////////////// end ///////////////////
   getResultList1(rbj) {
     // debugger
-    if (this.OP_IPType == 0) {
-      var param = {
-        "searchFields": [
-          {
-            "fieldName": "PathReportId",
-            "fieldValue": String(rbj[0].PathReportId), //"150598",  
-            "opType": "Equals"
-          }
-        ],
-        "mode": "PathologyResultEntryOPCompleted"
-      }
-    }
-    else if (this.OP_IPType == 1) {
-      var param = {
-        "searchFields": [
-          {
-            "fieldName": "PathReportId",
-            "fieldValue": String(rbj[0].PathReportId),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "PathologyResultEntryIPCompleted"
-      }
-    }
-    else if (this.OP_IPType == 4) {
-      var param = {
-        "searchFields": [
-          {
-            "fieldName": "PathReportId",
-            "fieldValue": String(rbj[0].PathReportId),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "PathologyResultEntryLabCompleted"
-      }
+    var param = {
+      "searchFields": [
+        {
+          "fieldName": "PathReportId",
+          "fieldValue": String(rbj[0].PathReportId),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "PathologyResultEntryLabCompleted"
     }
 
     console.log(param)
@@ -411,121 +378,6 @@ export class NewLabresultEntryComponent {
 
   }
 
-  getResultListIP(obj, rbj) {
-
-    var SelectQuery =
-    {
-      "searchFields": [
-        {
-          "fieldName": "OPIPId",
-          "fieldValue": String(obj.opdipdid),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "ServiceId ",
-          "fieldValue": String(rbj[0].ServiceId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "OPIPType",
-          "fieldValue": String(obj.opdipdtype),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "PathReportId",
-          "fieldValue": String(rbj[0].PathReportId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "SexId",
-          "fieldValue": String(obj.genderId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "MaxAge",
-          "fieldValue": String(this.FinalAge),
-          "opType": "Equals"
-        }
-      ],
-      "mode": "PathologyResultEntryIP"
-    }
-
-    console.log(SelectQuery);
-    this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
-      this.dataSource.data = Visit as Pthologyresult[];
-      //  this.Pthologyresult = Visit as Pthologyresult[];
-      console.log(this.dataSource.data)
-      this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-      this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-      this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-      this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-    });
-  }
-
-  getResultListOP(obj, rbj) {
-    const serviceIds = rbj.map(r => String(r.ServiceId));
-    const pathReportIds = rbj.map(r => String(r.PathReportId));
-
-
-    var SelectQuery =
-    {
-      "searchFields": [
-        {
-          "fieldName": "OPIPId",
-          "fieldValue": String(obj.opdipdid),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "ServiceId ",
-          "fieldValue": String(rbj[0].ServiceId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "OPIPType",
-          "fieldValue": String(obj.opdipdtype),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "PathReportId",
-          "fieldValue": String(rbj[0].PathReportId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "SexId",
-          "fieldValue": String(obj.genderId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "MaxAge",
-          "fieldValue": String(this.FinalAge),
-          "opType": "Equals"
-        }
-      ],
-      "mode": "PathologyResultEntryOP"
-    }
-    console.log(SelectQuery)
-    this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
-      this.dataSource.data = Visit as Pthologyresult[];
-      console.log(this.dataSource.data)
-      // this.Pthologyresult = Visit as Pthologyresult[];
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-      // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
-      this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-
-      this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-      this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-      this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-      console.log(this.PathResultDr1);
-      // this.getPathresultDoctorList();
-    });
-
-  }
-
   getResultListLab(obj, rbj) {
     const serviceIds = rbj.map(r => String(r.ServiceId));
     const pathReportIds = rbj.map(r => String(r.PathReportId));
@@ -536,7 +388,7 @@ export class NewLabresultEntryComponent {
       "searchFields": [
         {
           "fieldName": "OPIPId",
-          "fieldValue": String(obj.opdipdid),
+          "fieldValue": String(obj.opdipdId),
           "opType": "Equals"
         },
         {
@@ -546,7 +398,7 @@ export class NewLabresultEntryComponent {
         },
         {
           "fieldName": "OPIPType",
-          "fieldValue": String(obj.opdipdtype),
+          "fieldValue": "4",
           "opType": "Equals"
         },
         {
@@ -600,182 +452,62 @@ export class NewLabresultEntryComponent {
     console.log(this.selectedAdvanceObj2)
     console.log(this.regObj)
 
-    if (this.OP_IPType == 0) {
-      var SelectQuery =
-      {
-        "searchFields": [
-          {
-            "fieldName": "OPIPId",
-            "fieldValue": String(this.selectedAdvanceObj2.opdipdid),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "ServiceId ",
-            "fieldValue": String(this.regObj[0].ServiceId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "OPIPType",
-            "fieldValue": String(this.selectedAdvanceObj2.opdipdtype),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "PathReportId",
-            "fieldValue": String(this.regObj[0].PathReportId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "SexId",
-            "fieldValue": String(this.selectedAdvanceObj2.genderId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "MaxAge",
-            "fieldValue": String(this.FinalAge),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "SampleNo",
-            "fieldValue": String(this.sampleNo),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "PathologyResultEntryOPMachine"
-      }
-      console.log(SelectQuery)
-      this._SampleService.getPathologyResultListforOP(SelectQuery).subscribe(Visit => {
-        this.dataSource.data = Visit as Pthologyresult[];
-        console.log("OP DATA:", this.dataSource.data)
-        // this.Pthologyresult = Visit as Pthologyresult[];
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        // this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].PathResultDr1)
-        this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-
-        this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-        this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-        this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-        console.log(this.PathResultDr1);
-        // this.getPathresultDoctorList();
-      });
-
-    } else if (this.OP_IPType == 1) {
-      var SelectQuery =
-      {
-        "searchFields": [
-          {
-            "fieldName": "OPIPId",
-            "fieldValue": String(this.selectedAdvanceObj2.opdipdid),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "ServiceId ",
-            "fieldValue": String(this.regObj[0].ServiceId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "OPIPType",
-            "fieldValue": String(this.selectedAdvanceObj2.opdipdtype),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "PathReportId",
-            "fieldValue": String(this.regObj[0].PathReportId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "SexId",
-            "fieldValue": String(this.selectedAdvanceObj2.genderId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "MaxAge",
-            "fieldValue": String(this.FinalAge),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "SampleNo",
-            "fieldValue": String(this.sampleNo),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "PathologyResultEntryIPMachine"
-      }
-
-      console.log(SelectQuery);
-      this._SampleService.getPathologyResultListforIP(SelectQuery).subscribe(Visit => {
-        this.dataSource.data = Visit as Pthologyresult[];
-        //  this.Pthologyresult = Visit as Pthologyresult[];
-        console.log("IP DATA:", this.dataSource.data)
-        this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-        this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-        this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-        this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-      });
-
-    } else if (this.OP_IPType == 4) {
-      var SelectQuery =
-      {
-        "searchFields": [
-          {
-            "fieldName": "OPIPId",
-            "fieldValue": String(this.selectedAdvanceObj2.opdipdid),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "ServiceId ",
-            "fieldValue": String(this.regObj[0].ServiceId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "OPIPType",
-            "fieldValue": String(this.selectedAdvanceObj2.opdipdtype),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "PathReportId",
-            "fieldValue": String(this.regObj[0].PathReportId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "SexId",
-            "fieldValue": String(this.selectedAdvanceObj2.genderId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "MaxAge",
-            "fieldValue": String(this.FinalAge),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "SampleNo",
-            "fieldValue": String(this.sampleNo),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "PathologyResultEntryLabMachine"
-      }
-      console.log(SelectQuery)
-      this._SampleService.getPathologyResultListforLab(SelectQuery).subscribe(Visit => {
-        this.dataSource.data = Visit as Pthologyresult[];
-        console.log("LAB DATA:", this.dataSource.data)
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.sIsLoading = '';
-        this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
-
-        this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
-        this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
-        this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
-        console.log(this.PathResultDr1);
-
-      });
-
+    var SelectQuery =
+    {
+      "searchFields": [
+        {
+          "fieldName": "OPIPId",
+          "fieldValue": String(this.selectedAdvanceObj2.opdipdId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ServiceId ",
+          "fieldValue": String(this.regObj[0].ServiceId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OPIPType",
+          "fieldValue": "4",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "PathReportId",
+          "fieldValue": String(this.regObj[0].PathReportId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "SexId",
+          "fieldValue": String(this.selectedAdvanceObj2.genderId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "MaxAge",
+          "fieldValue": String(this.FinalAge),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "SampleNo",
+          "fieldValue": String(this.sampleNo),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "PathologyResultEntryLabMachine"
     }
+    console.log(SelectQuery)
+    this._SampleService.getPathologyResultListforLab(SelectQuery).subscribe(Visit => {
+      this.dataSource.data = Visit as Pthologyresult[];
+      console.log("LAB DATA:", this.dataSource.data)
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.sIsLoading = '';
+      this.otherForm.get('PathResultDoctorId').setValue(this.dataSource.data[0].adm_Visit_docId)
+
+      this.vPathResultDoctorId = this.dataSource.data[0].adm_Visit_docId
+      this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
+      this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
+      console.log(this.PathResultDr1);
+
+    });
 
   }
 
@@ -835,7 +567,7 @@ export class NewLabresultEntryComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(this.selectedAdvanceObj2.opdipdtype),
+          fieldValue: "4",
           opType: "Equals"
         }
       ],
@@ -977,7 +709,7 @@ export class NewLabresultEntryComponent {
       printOrder: [this.pathologyResultArray.length + 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       pisNumeric: [item.ParaIsNumeric || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdipdid: [item.OPD_IPD_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      opdipdtype: [item.OPD_IPD_Type, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opdipdtype: [4, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       categoryName: [item.CategoryName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       testName: [item.TestName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       subTestName: [item.SubTestName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
