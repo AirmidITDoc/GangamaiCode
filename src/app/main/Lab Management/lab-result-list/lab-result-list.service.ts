@@ -34,7 +34,7 @@ export class LabResultListService {
       ]],
 
       PatientTypeSearch: ['3'],
-      StatusSearch: ['1'],
+      StatusSearch: ['0'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],

@@ -40,18 +40,17 @@ import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
-import { LabResultListComponent } from './lab-result-list.component';
-import { NewLabresultEntryComponent } from './new-labresult-entry/new-labresult-entry.component';
+import { LabRadiologyComponent } from './lab-radiology.component';
 
 const routes: Routes = [
   {
     path: '**',
-    component: LabResultListComponent
+    component: LabRadiologyComponent
   },
 ];
 
 @NgModule({
-  declarations: [LabResultListComponent, NewLabresultEntryComponent],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -102,4 +101,4 @@ const routes: Routes = [
     DatePipe,
   ]
 })
-export class LabResultListModule { }
+export class LabRadiologyModule { }

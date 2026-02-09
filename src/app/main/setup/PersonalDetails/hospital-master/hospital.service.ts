@@ -20,6 +20,7 @@ export class HospitalService {
       hospitalId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       hospitalHeaderLine: ["",[Validators.required]],
       hospitalName: ["",[Validators.required]],
+      hospitalShortName: [""],
       hospitalAddress:  ["",[Validators.required]],
       City:   ["",[Validators.required]],
       pin: ["", Validators.pattern("^[0-9]*$")],

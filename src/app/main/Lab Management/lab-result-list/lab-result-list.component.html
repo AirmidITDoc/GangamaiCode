@@ -372,14 +372,13 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                            <ng-container matColumnDef="outSourceLabName">
+                                             <ng-container matColumnDef="outSourceLabName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                     OutSource Name
                                                 </mat-header-cell>
 
                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
 
-                                                    <!-- If OutSource Lab Name exists -->
                                                     <ng-container *ngIf="element.outSourceLabName; else noOutSource">
                                                         <span [matBadge]="element.tokenNo" matBadgeColor="warn"
                                                             matBadgePosition="after" matBadgeOverlap="false"
@@ -390,8 +389,7 @@
                                                             {{ element.outSourceLabName }}
                                                         </span>
 
-                                                        <!-- Edit icon -->
-                                                        <button mat-icon-button *ngIf="element.isPathOutSource == 1"
+                                                        <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
                                                             (click)="Editoutsoucedata(element)"
                                                             matTooltip="Edit OutSource Data">
                                                             <mat-icon style="color:#ff5722;">edit</mat-icon>
@@ -403,7 +401,7 @@
                                                         ? 'Please complete sample collection first'
                                                         : ''">
 
-                                                            <button mat-icon-button *ngIf="element.isPathOutSource == 1"
+                                                            <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
                                                                 [disabled]="element.isSampleCollection === 'False'"
                                                                 (click)="element.isSampleCollection !== 'False' && Editoutsoucedata(element)">
 
@@ -424,7 +422,7 @@
                                                     ? 'Please complete sample collection first'
                                                     : 'Edit Result Entry'">
                                                         <button mat-icon-button
-                                                            *ngIf="contact.isTemplateTest == 0 && contact.isVerifySign == false"
+                                                           [style.visibility]="(contact.isTemplateTest == 0 && contact.isVerifySign == false) ? 'visible' : 'hidden'"
                                                             matTooltip="Edit Result Entry"
                                                             [disabled]="contact.isSampleCollection === 'False'"
                                                             (click)="chkresultentryEdit(contact,true)">
@@ -436,7 +434,7 @@
                                                     ? 'Please complete sample collection first'
                                                     : 'Edit Template Test'">
                                                         <button mat-icon-button
-                                                            *ngIf="contact.isTemplateTest == 1 && contact.isVerifySign == false"
+                                                            [style.visibility]="(contact.isTemplateTest == 1 && contact.isVerifySign == false) ? 'visible' : 'hidden'"
                                                             [disabled]="contact.isSampleCollection === 'False'"
                                                             (click)="chkresultentry(contact, false)">
                                                             <mat-icon style="color:#ff9800;">edit</mat-icon>
@@ -448,34 +446,49 @@
                                                         [title]="contact.patientName + ' Report'"></airmid-fileupload-icon>
 
                                                     <button mat-icon-button (click)="Cancleresult(contact)"
-                                                        matTooltip="Cancel Result" *ngIf="contact.isVerifySign==false">
+                                                        matTooltip="Cancel Result" [style.visibility]="contact.isVerifySign == false ? 'visible' : 'hidden'">
                                                         <mat-icon color="warn">cancel</mat-icon>
                                                     </button>
 
-                                                    <button mat-icon-button (click)="getPrint(contact)"
-                                                        matTooltip="Result Print" *ngIf="contact.isCompleted">
-                                                        <mat-icon>print</mat-icon>
-                                                    </button>
+                                                    <span [matTooltip]="contact.isVerifySign === false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                                        <button mat-icon-button (click)="getPrint(contact)"
+                                                            matTooltip="Result Print" [style.visibility]="contact.isCompleted ? 'visible' : 'hidden'"
+                                                            [disabled]="contact.isVerifySign === false">
+                                                            <mat-icon>print</mat-icon>
+                                                        </button>
+                                                    </span>
 
-                                                    <button mat-icon-button
-                                                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
-                                                        matTooltipPosition="right" (click)="Onemail(element)"
-                                                        (mouseenter)="openEmailDetailsPopover($event, element)"
-                                                        (mouseleave)="closeEmailDetailsPopover()"
-                                                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                                                        <mat-icon>email</mat-icon>
-                                                    </button>
+                                                    <span [matTooltip]="contact.isVerifySign === false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                                        <button mat-icon-button
+                                                            [disabled]="contact.isVerifySign === false"
+                                                            [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                                            matTooltipPosition="right" (click)="Onemail(element)"
+                                                            (mouseenter)="openEmailDetailsPopover($event, element)"
+                                                            (mouseleave)="closeEmailDetailsPopover()"
+                                                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                            <mat-icon>email</mat-icon>
+                                                        </button>
+                                                    </span>
 
-                                                    <button mat-icon-button
-                                                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
-                                                        matTooltipPosition="right"
-                                                        (click)="getWhatsappshareReport(element)"
-                                                        (mouseenter)="openWhatsappDetailsPopover($event, element)"
-                                                        (mouseleave)="closeWhatsappDetailsPopover()"
-                                                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                                                        <img width="20" height="20"
-                                                            src="assets/images/logos/WhatsApp.png">
-                                                    </button>
+                                                    <span [matTooltip]="contact.isVerifySign === false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                                        <button mat-icon-button
+                                                            [disabled]="contact.isVerifySign === false"
+                                                            [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                                            matTooltipPosition="right"
+                                                            (click)="getWhatsappshareReport(element)"
+                                                            (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                                            (mouseleave)="closeWhatsappDetailsPopover()"
+                                                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                            <img width="20" height="20"
+                                                                src="assets/images/logos/WhatsApp.png">
+                                                        </button>
+                                                    </span>
                                                 </mat-cell>
                                             </ng-container>
 

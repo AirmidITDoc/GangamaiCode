@@ -64,7 +64,7 @@ export class OutsourceDetailsComponent {
     var now1 = new Date()
     // debugger
     if (this.data) {
-      this.vPathReportId = this.data.pathReportId
+      this.vPathReportId = this.data.pathReportId ?? this.data.pathReportID
       this.outSourceId = this.data.outSourceId || 0;
       this.LabName = this.data.outSourceLabName;
       this.outSourceStatus = this.data.outSourceStatus;
@@ -80,7 +80,7 @@ export class OutsourceDetailsComponent {
     // this.date = now.toISOString().slice(0, 16);
 
     debugger
-    if (this.data.outSourceSampleSentDateTime != undefined) {
+    if (this.data.outSourceSampleSentDateTime) {
       this.date = this.getLocalDateTimeForInput(
         this.data.outSourceSampleSentDateTime
       );

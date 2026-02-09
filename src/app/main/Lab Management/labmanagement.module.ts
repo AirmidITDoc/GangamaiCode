@@ -38,12 +38,31 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseConfirmDialogModule } from '@fuse/components';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { HomeCollectionComponent } from './home-collection/home-collection.component';
+import { LabRadiologyComponent } from './lab-radiology/lab-radiology.component';
+import { LabRadApprovallistComponent } from './lab-rad-approvallist/lab-rad-approvallist.component';
 
 
 const appRoutes: Routes = [
   {
+    path: "home-collection",
+    loadChildren: () => import("./home-collection/home-collection.module").then((m) => m.HomeCollectionModule),
+  },
+  {
     path: "lab-patientreg",
     loadChildren: () => import("./lab-patient-reg/lab-patient-reg.module").then((m) => m.LabPatientRegModule),
+  },
+  {
+    path: "browse-lab-bills",
+    loadChildren: () => import("./browse-lab-bills/browse-lab-bills.module").then((m) => m.BrowseLabBillsModule),
+  },
+  {
+    path: "labrefund",
+    loadChildren: () => import("./labrefund-bill/labrefund-bill.module").then((m) => m.LabrefundBillModule),
+  },
+  {
+    path: "settlement",
+    loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
   },
   {
     path: "lab-sample-collection",
@@ -54,102 +73,89 @@ const appRoutes: Routes = [
     loadChildren: () => import("./lab-result-list/lab-result-list.module").then((m) => m.LabResultListModule),
   },
   {
-    path: "labrefund",
-    loadChildren: () => import("./labrefund-bill/labrefund-bill.module").then((m) => m.LabrefundBillModule),
-  },
-  // {
-  //   path: "report-dispatch",
-  //   loadChildren: () => import("./report-dispatch/report-dispatch.module").then((m) => m.ReportDispatchModule),
-  // },
-  // {
-  //   path: "report-dispatch",
-  //   loadChildren: () => import("./report-dispatch/report-dispatch.module").then((m) => m.ReportDispatchModule),
-  // },
-  {
-    path: "BranchWiseSummary",
-    loadChildren: () => import("./branch-wise-summary/branchwise-summary.module").then((m) => m.BranchwiseSummaryModule),
-  },
-  {
-    path: "settlement",
-    loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
-  },
-  {
     path: "TestApprovalList",
     loadChildren: () => import("./test-approval-list/test-approval.module").then((m) => m.TestApprovalModule),
   },
-{
-    path: "browse-lab-bills",
-    loadChildren: () => import("./browse-lab-bills/browse-lab-bills.module").then((m) => m.BrowseLabBillsModule),
+  {
+    path: "radiology-list",
+    loadChildren: () => import("./lab-radiology/lab-radiology.module").then((m) => m.LabRadiologyModule),
   },
- 
+  {
+    path: "RadTestApprovalList",
+    loadChildren: () => import("./lab-rad-approvallist/lab-rad-approvallist.module").then((m) => m.LabRadApprovallistModule),
+  },
+
 ];
 
 @NgModule({
-  declarations: [   
-    
+  declarations: [
+
     ReportDispatchComponent,
-    EmailorSMSHistoryComponent
+    EmailorSMSHistoryComponent,
+    HomeCollectionComponent,
+    LabRadiologyComponent,
+    LabRadApprovallistComponent
   ],
   imports: [
-     RouterModule.forChild(appRoutes),
-     CommonModule,
-         SharedModule,
-         MatButtonModule,
-         MatCheckboxModule,
-         MatFormFieldModule,
-         MatIconModule,
-         MatInputModule,
-         MatMenuModule,
-         MatTableModule,
-         MatToolbarModule,
-         MatPaginatorModule,
-         MatSortModule,
-         MatSelectModule,
-         MatRadioModule,
-         MatSnackBarModule,
-         FuseSharedModule,
-         FuseSidebarModule,
-         MatDialogModule,
-         MatSlideToggleModule,
-         MatCheckboxModule,
-         MatDatepickerModule,
-         MatFormFieldModule,
-         MatIconModule,
-         MatInputModule,
-         MatMenuModule,
-         MatRippleModule,
-         MatTableModule,
-         MatToolbarModule,
-         MatPaginatorModule,
-         MatSortModule,
-         MatSelectModule,
-         MatRadioModule,
-         MatTabsModule,
-         MatCardModule,
-         MatDividerModule,
-         MatProgressSpinnerModule,
-         FuseSharedModule,
-         FuseConfirmDialogModule,
-         FuseSidebarModule,
-         MatDialogModule,
-         MatListModule,
-         MatSnackBarModule,
-         MatSlideToggleModule,
-         MatDividerModule,
-         MatDialogModule,
-         FuseSharedModule,
-         FuseConfirmDialogModule,
-         FuseSidebarModule,
-         ReactiveFormsModule,
-         MatSnackBarModule,
-         MatStepperModule,
-         MatAutocompleteModule,
-         MatProgressSpinnerModule,
-         SharedModule,
-         NgxMatSelectSearchModule,
-         MatCardModule,
-         MatTooltipModule,
-         MatExpansionModule,
+    RouterModule.forChild(appRoutes),
+    CommonModule,
+    SharedModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    FuseSharedModule,
+    FuseSidebarModule,
+    MatDialogModule,
+    MatSlideToggleModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatCardModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    MatDialogModule,
+    MatListModule,
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    MatDividerModule,
+    MatDialogModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+    NgxMatSelectSearchModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatExpansionModule,
   ]
 })
 export class LabmanagementModule { }

@@ -34,7 +34,7 @@
                                         [(ngModel)]="registerObj.hospitalId">
 
                                     <div fxLayout="row" fxLayoutGap="12px">
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="HospitalName" formControlName="hospitalName"
                                                 [formGroup]="HospitalForm" [maxLength]="400"
                                                 [(ngModel)]="registerObj.hospitalName"
@@ -42,7 +42,14 @@
                                             </airmid-textbox>
                                         </div>
 
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Hospital Short Name" formControlName="hospitalShortName"
+                                                [formGroup]="HospitalForm" [maxLength]="100"
+                                                [(ngModel)]="registerObj.hospitalShortName">
+                                            </airmid-textbox>
+                                        </div>
+
+                                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="HospitalHeaderLine"
                                                 [(ngModel)]="registerObj.hospitalHeaderLine"
                                                 formControlName="hospitalHeaderLine" [formGroup]="HospitalForm"

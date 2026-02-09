@@ -38,6 +38,7 @@ import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outso
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { LabResultListService } from '../lab-result-list/lab-result-list.service';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { NewLabresultEntryComponent } from '../lab-result-list/new-labresult-entry/new-labresult-entry.component';
 
 
 @Component({
@@ -155,41 +156,21 @@ export class TestApprovalListComponent {
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'isVerifyid')!.template = this.isVerifiedstatus;
     this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.isCompletedstatus;
-
   }
-  @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
   @ViewChild('isCompletedstatus') isCompletedstatus!: TemplateRef<any>;
 
   allcolumns = [
 
-    { heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-
-    { heading: "Verify", key: "isVerifyid", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-    // { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-
-    { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "DOA", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100},
-    // { heading: "No", key: "opdIpdId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    // { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-
-    { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "SampleCollectionTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "OutSource LabName", key: "outSourceLabName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-    // { heading: "SampleSentDateTime", key: "outSourceSampleSentDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "outSourceCreatedDateTime", key: "outSourceCreatedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "outSourceModifiedDateTime", key: "outSourceModifiedDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
+    { heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
+    { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "SampleCollectionTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     {
-      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
@@ -200,15 +181,10 @@ export class TestApprovalListComponent {
     sortField: "PathTestID",
     sortOrder: 0,
     filters: [
-      // { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-      // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-      // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-      // { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-      // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-      // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
+      { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
     ]
   }
 
@@ -248,44 +224,6 @@ export class TestApprovalListComponent {
     this.onChangeFirst();
   }
 
-  // searchRecords(data) {
-  //   this.dataSource1.data = [];
-  //   // this.selection.clear();
-
-  //   let regno = this.myformSearch.get("RegNoSearch").value || "0";
-  //   let fromDate = this.myformSearch.get("start").value || "";
-  //   let toDate = this.myformSearch.get("end").value || "";
-  //   fromDate = fromDate ? this.datePipe.transform(fromDate, 'MM/dd/yyyy') : "";
-  //   toDate = toDate ? this.datePipe.transform(toDate, 'MM/dd/yyyy') : "";
-  //   let status = this.myformSearch.get("StatusSearch").value || "0";
-
-  //   // this.GetResultdetail()
-  //   // Update the filters dynamically
-
-
-  //   this.gridConfig = {
-  //     apiUrl: "LabPatientRegistration/LabResultList",
-
-  //     columnsList: this.allcolumns,
-  //     sortField: "LabPatientId",
-  //     sortOrder: 0,
-  //     filters: [
-
-  //       // { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  //       // { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-  //       // { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
-  //       { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
-  //       { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
-  //       { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-  //       // { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-  //       // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-  //       // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
-  //     ]
-  //   }
-  //   this.grid.gridConfig = this.gridConfig;
-  //   this.grid.bindGridData();
-  // }
-
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -299,7 +237,7 @@ export class TestApprovalListComponent {
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, 'MM/dd/yyyy')
     // this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
     // this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
-    // this.status = this.myformSearch.get('StatusSearch').value
+    this.status = this.myformSearch.get('StatusSearch').value || 0
     // this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
 
     this.GetResultdetail();
@@ -320,7 +258,7 @@ export class TestApprovalListComponent {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-        // { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+        { fieldName: "ApprovalStatus", fieldValue: this.status, opType: OperatorComparer.Equals },
         // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
         // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
       ]
@@ -328,23 +266,6 @@ export class TestApprovalListComponent {
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
-
-
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'RegNoSearch')
-      this.myformSearch.get('RegNoSearch').setValue("0")
-
-    if (event == 'FirstNameSearch')
-      this.myformSearch.get('FirstNameSearch').setValue("")
-
-    if (event == 'LastNameSearch')
-      this.myformSearch.get('LastNameSearch').setValue("")
-
-    this.onChangeFirst();
-  }
-
-
 
   OPIPID: any = 0;
   onresultentryshow(event, m) {
@@ -445,7 +366,7 @@ export class TestApprovalListComponent {
 
     console.log(contact)
 
-    if (contact.isTemplateTest)
+    if (contact.isTemplateTest) {
 
       Swal.fire({
         title: 'Select Report Format',
@@ -466,44 +387,45 @@ export class TestApprovalListComponent {
           this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithOutHeader");
         }
       });
-    else {
-      // this.viewgetPathologyTestReportPdf(contact)
-      // if (this.selection.selected.length == 0) {
-      //   this.toastr.warning('CheckBox Select !', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // } else {
-      //   this.Printresultentry();
-      // }
+    } else {
+      Swal.fire({
+        title: 'Select Report Format',
+        text: "Choose how you want to view the report:",
+        icon: "warning",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        denyButtonColor: "#6c757d",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "With Header",
+        denyButtonText: "Without Header",
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+          this.Printresultentry(contact);
+        } else if (result.isDenied) {
+          this.Printresultentrywithheader(contact);
+        }
+      });
     }
-    // this.selection.clear();
   }
 
   OP_IP_Type: any;
-
-  selectedItem: any;
-  // opiptype = this.selectedItem.opdipdtype;
   CompletdFlag = 1
 
-  // changed by raksha 5/11/25
   Printresultentry(row: any = null) {
     // debugger
     console.log(row);
-    // console.log(this.selection.selected);
     let pathologyDelete = [];
 
-    // this.selectedItem = this.selection.selected[0];
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
-    // this.selection.selected.forEach((element) => {
-    //   pathologyDelete.push({ pathReportId: element.pathReportID });
-    // });
-    if (this.selectedItem.isCompleted)
+    if (row.isCompleted)
       this.CompletdFlag = 1
     else
       this.CompletdFlag = 0
 
-    pathologyDelete.push({ pathReportId: this.selectedItem.pathReportID });
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -513,7 +435,7 @@ export class TestApprovalListComponent {
     if (this.CompletdFlag) {
       this._LabResultListService.PathPrintResultentryInsert(submitData).subscribe(res => {
         if (res) {
-          this.viewgetPathologyTestReportPdf(this.selectedItem)
+          this.viewgetPathologyTestReportPdf(row)
         }
       });
     } else {
@@ -526,7 +448,7 @@ export class TestApprovalListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdIpdType),
+          fieldValue: "4",
           opType: "Equals"
         }
       ],
@@ -553,16 +475,10 @@ export class TestApprovalListComponent {
 
   }
 
-  Printresultentrywithheader() {
-
-    // console.log(this.selection.selected);
+  Printresultentrywithheader(row: any = null) {
     let pathologyDelete = [];
 
-    // this.selectedItem = this.selection.selected[0];
-
-    // this.selection.selected.forEach((element) => {
-    //   pathologyDelete.push({ pathReportId: element.pathReportID });
-    // });
+    pathologyDelete.push({ pathReportId: row.pathReportID });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -572,7 +488,7 @@ export class TestApprovalListComponent {
 
     this._LabResultListService.PathPrintResultentryInsert(submitData).subscribe(res => {
       if (res) {
-        this.viewgetPathologyTestReportwithheaderPdf(this.selectedItem)
+        this.viewgetPathologyTestReportwithheaderPdf(row)
       }
     });
   }
@@ -584,7 +500,7 @@ export class TestApprovalListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdIpdType),
+          fieldValue: "4",
           opType: "Equals"
         }
       ],
@@ -614,8 +530,6 @@ export class TestApprovalListComponent {
 
   AdList: boolean = false;
 
-
-
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -643,35 +557,143 @@ export class TestApprovalListComponent {
     this._LabResultListService.myformSearch.get('PatientTypeSearch').setValue("3");
   }
 
-  onVerify(row) {
-    Swal.fire({
-      title: 'Confirm Verify Report ',
-      text: 'Are you sure you want to Verify Report?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#41ea76ff',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Verify!'
+  chkresultentryVerify(contact, flag) {
+    debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+    this.reportPrintObj = contact
 
-    }).then((flag) => {
-      // debugger
-      if (flag.isConfirmed) {
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
 
-        let submitData = {
+    console.log(contact)
+    if (this.IsTemplateTest == 0) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
 
-          "pathReportId": row.pathReportID,
-          "isVerifyid": this.accountService.currentUserValue.userId,
-          "isVerifySign": true,
-          "isVerifyedDate": new Date().toISOString()
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
 
-        };
-        console.log(submitData);
-        this._LabResultListService.PathReportverifyMaster(submitData).subscribe(response => {
+        const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
+          {
+            maxWidth: "96vw",
+            height: "96vh",
+            width: "96%",
+            data: {
+              RIdData: data,
+              patientdata: this.reportPrintObj,
+              verifyCheck: true,
+              sampleNo: contact.sampleNo
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
           this.grid.bindGridData();
         });
-      }
-    });
-    // this.onEdit(row);
+      }, 100);
+      return;
+    }
+  }
+
+  // onVerify(row) {
+  //   Swal.fire({
+  //     title: 'Confirm Verify Report ',
+  //     text: 'Are you sure you want to Verify Report?',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#41ea76ff',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Yes, Verify!'
+
+  //   }).then((flag) => {
+  //     // debugger
+  //     if (flag.isConfirmed) {
+
+  //       let submitData = {
+
+  //         "pathReportId": row.pathReportID,
+  //         "isVerifyid": this.accountService.currentUserValue.userId,
+  //         "isVerifySign": true,
+  //         "isVerifyedDate": new Date().toISOString()
+
+  //       };
+  //       console.log(submitData);
+  //       this._LabResultListService.PathReportverifyMaster(submitData).subscribe(response => {
+  //         this.grid.bindGridData();
+  //       });
+  //     }
+  //   });
+  //   // this.onEdit(row);
+  // }
+
+  IsTemplateTest: any;
+  chkTemplateVerify(contact, flag) {
+    debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 1) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
+
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+        const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+          {
+            maxWidth: "75vw",
+            height: '95%',
+            width: '96%',
+            data: {
+              data: contact,
+              verifyCheck: true
+            }
+          });
+
+        dialogRef.afterClosed().subscribe(result => {
+          this.grid.bindGridData();
+        });
+        return;
+      }, 100);
+      return;
+    }
   }
 
   getVerifyTooltip(contact: any): string {
@@ -1004,13 +1026,6 @@ export class TestApprovalListComponent {
     }
   }
 
-  chkresultentryVerify(contact, flag) {
-    // debugger
-    this.printdata = [];
-    this.reportIdData = [];
-    this.ServiceIdData = [];
-
-  }
   GetResultdetail() {
 
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, 'MM/dd/yyyy')
@@ -1026,22 +1041,6 @@ export class TestApprovalListComponent {
       "sortField": "PathTestID",
       "sortOrder": 0,
       "filters": [
-        // {
-        //   "fieldName": "F_Name",
-        //   "fieldValue": String(this.f_name),
-        //   "opType": "Contains"
-        // },
-        // {
-        //   "fieldName": "L_Name",
-        //   "fieldValue": String(this.l_name),
-        //   "opType": "Contains"
-        // },
-        // {
-        //   "fieldName": "Reg_No",
-        //   "fieldValue": String(this.regNo),
-        //   "opType": "Equals"
-        // },
-
         {
           "fieldName": "From_Dt",
           "fieldValue": this.fromDate,
@@ -1057,31 +1056,15 @@ export class TestApprovalListComponent {
           "fieldValue": "4",
           "opType": "Equals"
         },
-        // {
-        //   "fieldName": "IsCompleted",
-        //   "fieldValue": String(this.status),
-        //   "opType": "Equals"
-        // },
-        // {
-        //   "fieldName": "UnitId",
-        //   "fieldValue": String(this.UnitId || "1"),
-        //   "opType": "Equals"
-        // },
-        // {
-        //   "fieldName": "Category",
-        //   "fieldValue": String(this.Category || "%"),
-        //   "opType": "Equals"
-        // }
+        {
+          "fieldName": "ApprovalStatus",
+          "fieldValue": String(this.status),
+          "opType": "Equals"
+        },
       ],
       "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
+      "columns": []
     }
-
 
     console.log(data)
     this._LabResultListService.getarrovallist(data).subscribe((response) => {
@@ -1103,102 +1086,6 @@ export class TestApprovalListComponent {
     });
   }
 
-  // ////////////// outsource popup //////////////////////
-  // private overlayRef: OverlayRef | null = null;
-  // private patientOverlayRef: OverlayRef | null = null;
-  // private hoverTimeout: any = null;
-  // private outSourceCloseTimeout: any = null;
-
-  // openPatientDetailsPopover(event: MouseEvent, outSourceData: any) {
-  //     event.stopPropagation();
-
-  //     // Clear any existing timeout
-  //     if (this.hoverTimeout) {
-  //         clearTimeout(this.hoverTimeout);
-  //     }
-
-  //     // Add small delay to prevent flickering
-  //     this.hoverTimeout = setTimeout(() => {
-  //         // Close any existing patient popover
-  //         if (this.patientOverlayRef) {
-  //             this.patientOverlayRef.dispose();
-  //             this.patientOverlayRef = null;
-  //         }
-
-  //         const positionStrategy = this.overlay.position()
-  //             .flexibleConnectedTo(event.target as HTMLElement)
-  //             .withPositions([
-  //                 {
-  //                     originX: 'start',
-  //                     originY: 'bottom',
-  //                     overlayX: 'start',
-  //                     overlayY: 'top',
-  //                 },
-  //                 {
-  //                     originX: 'start',
-  //                     originY: 'top',
-  //                     overlayX: 'start',
-  //                     overlayY: 'bottom',
-  //                 },
-  //                 {
-  //                     originX: 'end',
-  //                     originY: 'center',
-  //                     overlayX: 'start',
-  //                     overlayY: 'center',
-  //                 },
-  //                 {
-  //                     originX: 'start',
-  //                     originY: 'center',
-  //                     overlayX: 'end',
-  //                     overlayY: 'center',
-  //                 }
-  //             ]);
-
-  //         this.patientOverlayRef = this.overlay.create({
-  //             positionStrategy,
-  //             scrollStrategy: this.overlay.scrollStrategies.close(),
-  //             hasBackdrop: false,
-  //         });
-
-  //         const portal = new ComponentPortal(OutsourceDetailsPopoverComponent);
-  //         const componentRef: ComponentRef<OutsourceDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
-  //         componentRef.instance.outSourceData = outSourceData;
-
-  //         // Handle mouse events on the overlay element
-  //         const overlayElement = this.patientOverlayRef.overlayElement;
-  //         overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
-  //         overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
-  //     }, 300); // 300ms delay before showing popover
-  // }
-
-  // closePatientDetailsPopover() {
-  //     // Clear timeout if popover hasn't opened yet
-  //     if (this.hoverTimeout) {
-  //         clearTimeout(this.hoverTimeout);
-  //         this.hoverTimeout = null;
-  //     }
-
-  //     // Clear any existing close timeout
-  //     if (this.outSourceCloseTimeout) {
-  //         clearTimeout(this.outSourceCloseTimeout);
-  //     }
-
-  //     // Add delay before closing to allow moving mouse to popover
-  //     this.outSourceCloseTimeout = setTimeout(() => {
-  //         if (this.patientOverlayRef) {
-  //             this.patientOverlayRef.dispose();
-  //             this.patientOverlayRef = null;
-  //         }
-  //     }, 200);
-  // }
-
-  // keepPatientPopoverOpen() {
-  //     // Clear close timeout when hovering over popover
-  //     if (this.outSourceCloseTimeout) {
-  //         clearTimeout(this.outSourceCloseTimeout);
-  //         this.outSourceCloseTimeout = null;
-  //     }
-  // }
   viewgetReportPdf() { }
 }
 
