@@ -107,9 +107,9 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Pay
                                 Status</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <mat-icon *ngIf="contact.resultCode == 0" matTooltip="Verified"
+                                <mat-icon *ngIf="contact.resultCode == 0" matTooltip="{{contact.resultDesc}}"
                                     style="color: green;">check_circle</mat-icon>
-                                <mat-icon *ngIf="contact.resultCode != 0" matTooltip="Pending"
+                                <mat-icon *ngIf="contact.resultCode != 0" matTooltip="{{contact.resultDesc}}"
                                     style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
                             </mat-cell>
                         </ng-container>
