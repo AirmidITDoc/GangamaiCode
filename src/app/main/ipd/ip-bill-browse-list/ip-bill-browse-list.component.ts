@@ -428,7 +428,7 @@ export class IPBillBrowseListComponent implements OnInit {
             let param = {
                 "searchFields": [
                     { "fieldName": "OPIPId", "fieldValue": String(element.opdipdid), "opType": "13" },
-                    { "fieldName": "OPIPType", "fieldValue": String(element.opD_IPD_Type), "opType": "13" }
+                    { "fieldName": "OPIPType", "fieldValue": String(element.opdipdType), "opType": "13" }
                 ],
                 "mode": "PatientBillStatement"
             }

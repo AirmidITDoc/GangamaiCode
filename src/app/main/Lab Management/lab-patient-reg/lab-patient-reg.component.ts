@@ -951,6 +951,9 @@ export class LabPatientList {
   regTime: any;
   dispatchModeId: any
   emailId: any
+  location:any;
+  remark:any;
+  phlebotomist:any;
 
   constructor(LabPatientList) {
     {
@@ -1029,8 +1032,13 @@ export class LabPatientList {
       this.regTime = LabPatientList.regTime
       this.dispatchModeId = LabPatientList.dispatchModeId || 0
       this.emailId = LabPatientList.emailId || ''
-
-
+      this.remark = LabPatientList.remark || ''
+      this.location = LabPatientList.location || ''
+      this.phlebotomist = LabPatientList.phlebotomist || ''
+      // this.location = LabPatientList.location || ''
+      // this.location = LabPatientList.location || ''
+      // this.location = LabPatientList.location || ''
+      // this.location = LabPatientList.location || ''
     }
   }
 }
