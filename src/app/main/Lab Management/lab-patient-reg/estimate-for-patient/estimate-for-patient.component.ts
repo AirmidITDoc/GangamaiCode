@@ -84,7 +84,7 @@ export class EstimateForPatientComponent {
     ) { }
 
     ngOnInit(): void {
-       debugger
+        debugger
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
         this.estimateform = this.createEstimatefform()
         this.estimateform.markAllAsTouched();
@@ -115,7 +115,7 @@ export class EstimateForPatientComponent {
         return this._formbuilder.group({
             estimateId: [0],
             unitId: this.accountService.currentUserValue.user.unitId,
-            estimateNo: "",
+            estimateNo: [""],
             patientId: [0],
             patientName: ['', [Validators.required, Validators.maxLength(150)]],
             mobileNo: ['', [Validators.required,
@@ -135,8 +135,8 @@ export class EstimateForPatientComponent {
             netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             tEstimateDetails: this.formBuilder.array([]),
 
-            prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            prefixId: [0],
+            genderId: [0],
             DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             totalDiscountPer: 0,
             ServiceId: 0
@@ -153,7 +153,7 @@ export class EstimateForPatientComponent {
             price: [item.Price || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
             qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             totalAmount: [item.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            discAmount: [item.DiscAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discAmount: [item.DiscAmt || 0],
             netAmount: [item.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         });
     }
@@ -371,10 +371,20 @@ export class EstimateForPatientComponent {
         }
         this.estimateform.get('ageYear').setValue(this.ageYear)
 
+
+
         this.estimatedetailArray.clear();
         this.dstable1.data.forEach(item => {
             this.estimatedetailArray.push(this.createtEstimateDetails(item));
         });
+debugger
+        const allPricesPositive = this.dstable1.data.every(row => Number(row.Price) > 0);
+        if (!allPricesPositive) {
+            this.toastr.warning('Please Enter Price Greater >  0.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
         console.log(this.estimateform.value)
 
@@ -399,8 +409,10 @@ export class EstimateForPatientComponent {
             let invalidFields: string[] = [];
 
             if (this.estimateform.invalid) {
+
                 for (const controlName in this.estimateform.controls) {
                     if (this.estimateform.controls[controlName].invalid) {
+                        debugger
                         invalidFields.push(`Estimate Footer: ${controlName}`);
                     }
                 }
@@ -551,10 +563,10 @@ export class EstimateForPatientComponent {
 
     @ViewChild('EBillGrid', { static: false }) Egrid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-   
-    isShowDetailTable: boolean = false; 
-     
-   
+
+    isShowDetailTable: boolean = false;
+
+
     allEBillfilters = [
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
@@ -574,16 +586,16 @@ export class EstimateForPatientComponent {
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "EmailId", key: "EmailId", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "EmailId", key: "EmailId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         { heading: "Total Amount", key: "totalAmount", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 }, // It is just example of apply color based on condition
-        { heading: "Disc Amount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+        { heading: "Disc Amount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
 
         {
-            heading: "Action", key: "action", align: "right", width:80, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }  // Assign ng-template to the column
 
@@ -616,7 +628,7 @@ export class EstimateForPatientComponent {
     }
 
     getfilterdataEBill() {
-debugger
+        debugger
         this.gridConfig = {
             apiUrl: "Estimate/EstimateList",
             columnsList: this.allEbillcolumns,
@@ -633,39 +645,39 @@ debugger
         this.Egrid.gridConfig = this.gridConfig;
         this.Egrid.bindGridData();
     }
-   
-//      gridConfig1: gridModel = new gridModel();
-//    GetDetails1(data: any): void {
-//         debugger
 
-//         let ID = data.estimateId;
+    //      gridConfig1: gridModel = new gridModel();
+    //    GetDetails1(data: any): void {
+    //         debugger
 
-//         this.gridConfig1 = {
-//             apiUrl: "Estimate/EstimateDetailsList",
-//             columnsList: [
+    //         let ID = data.estimateId;
 
-//                 { heading: "EstimateNo", key: "estimateNo", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100 },
+    //         this.gridConfig1 = {
+    //             apiUrl: "Estimate/EstimateDetailsList",
+    //             columnsList: [
 
-//                 { heading: "Service Name", key: "serviceName", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 400 },
-//                 { heading: "Qty", key: "qty", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 100 },
-//                 { heading: "MRP", key: "Price", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+    //                 { heading: "EstimateNo", key: "estimateNo", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100 },
 
-//                 { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
-//                 { heading: "Net Amount", key: "netAmount", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-//                 { heading: "Comments", key: "comments", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100},
+    //                 { heading: "Service Name", key: "serviceName", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 400 },
+    //                 { heading: "Qty", key: "qty", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 100 },
+    //                 { heading: "MRP", key: "Price", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+
+    //                 { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 100},
+    //                 { heading: "Net Amount", key: "netAmount", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    //                 { heading: "Comments", key: "comments", sort: true, sticky: true, align: 'left', emptySign: 'NA' , width: 100},
 
 
-//             ],
-//             sortField: "EstimateId",
-//             sortOrder: 0,
-//             filters: [
-//                 { fieldName: "EstimateId", fieldValue: String(ID), opType: OperatorComparer.Equals }
-//             ]
-//         };
-//         this.isShowDetailTable = true;
-//         this.grid1.gridConfig = this.gridConfig1;
-//         this.grid1.bindGridData();
-//     }
+    //             ],
+    //             sortField: "EstimateId",
+    //             sortOrder: 0,
+    //             filters: [
+    //                 { fieldName: "EstimateId", fieldValue: String(ID), opType: OperatorComparer.Equals }
+    //             ]
+    //         };
+    //         this.isShowDetailTable = true;
+    //         this.grid1.gridConfig = this.gridConfig1;
+    //         this.grid1.bindGridData();
+    //     }
     Clearfilter(event) {
         console.log(event)
         if (event == 'PatientName')
