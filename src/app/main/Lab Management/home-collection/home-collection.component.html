@@ -1,1 +1,88 @@
-<p>home-collection works!</p>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
+
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Home Collection List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onnew()">+ Add Collection
+            </button>
+        </div>
+    </div>
+
+    <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matTooltip="Edit" (click)="onnew(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Cancel">
+                <mat-icon> cancel </mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Print">
+                <mat-icon>print</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <!-- <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
+                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
+                            [formGroup]="myFilterform" [mode]="autocompleteModeunit"></airmid-dropdown> -->
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                    (dateChange)="onChangeFirst()">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="onChangeFirst()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>FirstName</mat-label>
+                            <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="FirstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>LastName</mat-label>
+                            <input matInput placeholder="LastName" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="LastName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <!-- <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
+                            [(ngModel)]="gridConfig.filters[5].fieldValue" [formGroup]="myFilterform"
+                            (selectionChange)="ListView($event)" (keyup)="ListView($event)"
+                            [mode]="autocompleteModedoctor">
+                        </airmid-dropdown> -->
+                    </div>
+
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+</div>

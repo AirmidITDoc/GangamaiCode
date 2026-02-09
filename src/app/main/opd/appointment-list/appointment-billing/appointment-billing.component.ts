@@ -254,6 +254,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (this.countdown <= 0) {
                 clearInterval(interval);
                 this.isWaiting = false;
+                 this.stopPolling();             // Stop polling
+                this.statusMessage = '❌ Payment not completed. User did not approve.';
             }
 
         }, 1000);
@@ -1635,6 +1637,8 @@ console.log(item)
     mPesa_ReceiptNo: any = '0';
     openWaitingScreen() {
         debugger
+         this.countdown = 180;  // reset timer
+         this.statusMessage = 'Waiting for customer approval...';
         const mobileWithCode = '+254' + this.OPFooterForm.get('mpesaMobile')?.value || '0';  
         this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
             this.OpBillForm.get('opdipdid')?.value).subscribe(response => {
@@ -1644,11 +1648,11 @@ console.log(item)
                 this.statusMessage = '' + response.responseDescription + '\n' +
                     'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
                     'MerchantRequestId  : ' + response.merchantRequestID;
-                this.isWaiting = true;
+                this.isWaiting = true; 
+                this.startCountdown();
                 this.startPolling();
-            });
-    }
-
+            }); 
+    } 
     manualRefresh() {
         this.checkStatus();
     }
@@ -1713,13 +1717,13 @@ console.log(item)
             this.isWaiting = false;
             this.SavemPesaBill();
         }
-        else {
-            if (status?.resultDesc) {
-                this.statusMessage = status?.resultDesc;
-                this.stopPolling();
-                this.isWaiting = false;
-            }
-        }
+        // else {
+        //     if (status?.resultDesc) {
+        //         this.statusMessage = status?.resultDesc;
+        //         this.stopPolling();
+        //         this.isWaiting = false;
+        //     }
+        // }
 
     }
     // Mpesa Save  
@@ -1781,6 +1785,24 @@ console.log(item)
     }
     // mpesa Save through history
     OnmPesaSave(row) {
+        const mpesaAmt = row?.amount || 0;
+        const netAmt = this.OPFooterForm.get('netPayableAmt')?.value || 0;
+
+        if (mpesaAmt !== netAmt) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Payment Amount Mismatch',
+                html: `
+    <b>M-Pesa Amount:</b> <span style="color:#d33;">${mpesaAmt}</span><br>
+    <b>Net Payable Amount:</b> <span style="color:#d33;">${netAmt}</span><br><br>
+    Please check and retry.
+  `,
+                confirmButtonText: 'OK'
+            });
+            return;
+
+        }
+
         Swal.fire({
             title: 'Confirm Save',
             text: 'Are you sure you want to save this OPD bill?',
@@ -2021,72 +2043,7 @@ console.log(item)
             addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
-    }
-     CreateDraftDetEdit(item:any) {
-        return this.formBuilder.group({
-            drno: [this.DraftdetObj?.drbno || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            drbillDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            chargesId: [item?.chargesId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        })
-    }
-    CreateDraftAddchargeEditform(item: any): FormGroup {
-        return this.formBuilder.group({
-            chargesId: [item?.chargesId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-            chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
-            opdIpdType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tariffId: [this.vTariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            concessionAmount: [item?.DiscAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            doctorId: [item?.DoctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            doctorName: [item?.DoctorName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            docPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            isPathology: [item?.isPathology],
-            isRadiology: [item?.isRadiology], 
-            isDoctorShareGenerated: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isInterimBillFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isPackage: [Number(item?.IsPackage || 0)],
-            packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isSelfOrCompanyService: [item?.isSelfOrCompanyService || 0],
-            cPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            cQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            cTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isComServ: [false],
-            isPrintCompSer: [false],
-            chPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            chQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            chTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isBillableCharity: [false],
-            salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isGenerated: [true],
-            isApprovedByCamp: [false],
-            wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceCode: [item?.serviceCode || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            serviceName: [item?.ServiceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            isInclusionExclusion: [item?.isInclusionExclusion || false,],
-            isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isCancelled: [false],
-            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isCancelledDate: ['1999-01-01'],
-            addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            modifiedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        });
-    }
+    } 
     get draftchargesArray(): FormArray {
         return this.OpDraftSaveForm.get('tDraddCharge') as FormArray;
     }

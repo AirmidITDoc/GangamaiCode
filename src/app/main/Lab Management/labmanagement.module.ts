@@ -77,6 +77,10 @@ const appRoutes: Routes = [
     loadChildren: () => import("./test-approval-list/test-approval.module").then((m) => m.TestApprovalModule),
   },
   {
+    path: "BranchWiseSummary",
+    loadChildren: () => import("./branch-wise-summary/branchwise-summary.module").then((m) => m.BranchwiseSummaryModule),
+  },
+  {
     path: "radiology-list",
     loadChildren: () => import("./lab-radiology/lab-radiology.module").then((m) => m.LabRadiologyModule),
   },

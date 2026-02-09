@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { HomeCollectionComponent } from './home-collection.component';
+import { NewCollectionComponent } from './new-collection/new-collection.component';
 
 const routes: Routes = [
   {
@@ -50,7 +51,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    NewCollectionComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
