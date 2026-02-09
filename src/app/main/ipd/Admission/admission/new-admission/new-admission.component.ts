@@ -628,9 +628,13 @@ this.Is9_Digit_National_Id = id === "1";
     } else if (value.text == "Self") {
       this.isCompanySelected = false;
       this.admissionFormGroup.get('CompanyId').clearValidators();
-      this.admissionFormGroup.get('SubCompanyId').clearValidators();
+      this.admissionFormGroup.get('SubTpaComId').clearValidators(); 
       this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
-      this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+      this.admissionFormGroup.get('SubTpaComId').updateValueAndValidity(); 
+      this.admissionFormGroup.get('CompanyId').reset(0);
+      this.admissionFormGroup.get('SubTpaComId').reset(0);
+      this.policyFormGroup.get('policyNo').reset('');
+      this.policyFormGroup.get('approvedAmount').reset(0);
       this.patienttype = 1;
     }
 
@@ -729,7 +733,13 @@ this.Is9_Digit_National_Id = id === "1";
       });
       return;
     }
-
+    if (this.isCompanySelected && this.policyFormGroup.get('policyNo').value == 0) {
+      this.toastr.warning('Please enter Membership No', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+     
     this.personalFormGroup.get('medTourismCitizenship').setValue(Number(this.personalFormGroup.get('medTourismCitizenship').value) ?? 0)
     this.personalFormGroup.removeControl('IsNRI')
 
@@ -1082,9 +1092,9 @@ this.Is9_Digit_National_Id = id === "1";
     this.searchFormGroup.get('RegId').disable();
     this.isCompanySelected = false;
     this.admissionFormGroup.get('CompanyId').clearValidators();
-    this.admissionFormGroup.get('SubCompanyId').clearValidators();
+    this.admissionFormGroup.get('SubTpaComId').clearValidators();
     this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
-    this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+    this.admissionFormGroup.get('SubTpaComId').updateValueAndValidity();
     this.patienttype = 1;
     this.personalFormGroup.get('CityId').reset();
   }
@@ -1108,9 +1118,9 @@ this.Is9_Digit_National_Id = id === "1";
     this.admissionFormGroup.markAllAsTouched();
 
     this.admissionFormGroup.get('CompanyId').clearValidators();
-    this.admissionFormGroup.get('SubCompanyId').clearValidators();
+    this.admissionFormGroup.get('SubTpaComId').clearValidators();
     this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
-    this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+    this.admissionFormGroup.get('SubTpaComId').updateValueAndValidity();
 
 
   }

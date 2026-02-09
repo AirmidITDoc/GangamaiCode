@@ -16,6 +16,7 @@ import { ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 import { interval, Subscription, switchMap } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-interim-bill',
@@ -38,7 +39,8 @@ export class InterimBillComponent implements OnInit {
     'ClassName',
   ];
 
-
+  countdown: number = 180; // 3 minutes
+  countdownColorClass = 'green';
   vUPINO: any;
   FinalNetAmt: any = 0;
   selectedAdvanceObj: any;
@@ -94,6 +96,7 @@ export class InterimBillComponent implements OnInit {
     //this is for curreny symbol
     const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
     this.currency = CurrencyValue 
+    this.startCountdown();
   }
   CreateFooterForm(): FormGroup {
     return this.formBuilder.group({
@@ -521,13 +524,34 @@ export class InterimBillComponent implements OnInit {
     })
     this.dialogRef.close();
   }
+  startCountdown() {
+    const interval = setInterval(() => {
+      this.countdown--;
+      // Update color dynamically
+      if (this.countdown > 120) {
+        this.countdownColorClass = 'green';
+      } else if (this.countdown > 60) {
+        this.countdownColorClass = 'orange';
+      } else {
+        this.countdownColorClass = 'red';
+      }
+      if (this.countdown <= 0) {
+        clearInterval(interval);
+        this.isWaiting = false;
+        this.stopPolling();             // Stop polling
+        this.statusMessage = '❌ Payment not completed. User did not approve.';
+      } 
+    }, 1000);
+  }
   isWaiting = false;
   mpesaResponse: any;
   statusMessage: any;
   pollingSub?: Subscription;
   mPesa_ReceiptNo: any = '0';
   openWaitingScreen() {
-    debugger
+    debugger 
+    this.countdown = 180;  // reset timer
+    this.statusMessage = 'Waiting for customer approval...';
     this._IpSearchListService.postpayment(this.InterimFooterForm.get("NetpayAmount")?.value, this.InterimFooterForm.get('mpesaMobile')?.value,
       this.selectedAdvanceObj?.admissionId).subscribe(response => {
         this.mpesaResponse = response;
@@ -537,8 +561,9 @@ export class InterimBillComponent implements OnInit {
           'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
           'MerchantRequestId  : ' + response.merchantRequestID;
         this.isWaiting = true;
+        this.startCountdown();
         this.startPolling();
-      });
+      }); 
   }
   startPolling() {
     this.pollingSub = interval(10000)
@@ -574,14 +599,13 @@ export class InterimBillComponent implements OnInit {
       this.isWaiting = false;
       this.SavemPesaBill();
     }
-    else {
-      if (status?.resultDesc) {
-        this.statusMessage = status?.resultDesc;
-        this.stopPolling();
-        this.isWaiting = false;
-      }
-    }
-
+    // else {
+    //   if (status?.resultDesc) {
+    //     this.statusMessage = status?.resultDesc;
+    //     this.stopPolling();
+    //     this.isWaiting = false;
+    //   }
+    // } 
   }
   // Mpesa Save  
   SavemPesaBill() {
@@ -629,6 +653,138 @@ export class InterimBillComponent implements OnInit {
       this.onClose()
     });
   }
+  // mpesa Save through history
+  OnmPesaSave(row) {
+    const mpesaAmt = row?.amount || 0;
+    const netAmt = this.InterimFooterForm.get('NetpayAmount')?.value || 0;
+
+    if (mpesaAmt !== netAmt) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Payment Amount Mismatch',
+        html: `
+      <b>M-Pesa Amount:</b> <span style="color:#d33;">${mpesaAmt}</span><br>
+      <b>Net Payable Amount:</b> <span style="color:#d33;">${netAmt}</span><br><br>
+      Please check and retry.
+    `,
+        confirmButtonText: 'OK'
+      });
+      return;
+
+    } 
+    Swal.fire({
+      title: 'Confirm Save',
+      text: 'Are you sure you want to save this Supplimentry bill?',
+      icon: 'warning', // or 'question'
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6', // Blue
+      cancelButtonColor: '#d33',     // Red
+      confirmButtonText: 'Yes, save it!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+            const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(new Date(), 'shortTime');
+    const formattedDate = datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
+    debugger
+    const formValue = this.InterimFooterForm.value
+    if (formValue.discPer > 0 || formValue.concessionAmt > 0) {
+      if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
+        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    this.IPInterimBillForm.get('ipBillling.totalAmt')?.setValue(formValue?.TotalAmt ?? 0)
+    this.IPInterimBillForm.get('ipBillling.concessionAmt')?.setValue(formValue?.concessionAmt || 0)
+    this.IPInterimBillForm.get('ipBillling.netPayableAmt')?.setValue(formValue?.NetpayAmount ?? 0)
+    this.IPInterimBillForm.get('ipBillling.paidAmt')?.setValue(formValue?.NetpayAmount ?? 0)
+    this.IPInterimBillForm.get('ipBillling.billDate').setValue(formattedDate)
+    this.IPInterimBillForm.get('ipBillling.billTime').setValue(FormattedDateTime)
+    this.IPInterimBillForm.get('ipBillling.concessionReasonId')?.setValue(formValue?.ConcessionId || 0)
+    this.IPInterimBillForm.get('ipBillling.discComments')?.setValue(formValue?.Remark || '')
+    this.IPInterimBillForm.get('ipBillling.cashCounterId')?.setValue(formValue?.CashCounterID ?? 0)
+
+        if (this.IPInterimBillForm.valid) {
+          this.BillDetailsArray.clear();
+          this.dataSource.data.forEach(item => {
+            this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+          });
+          const [InterimA5_Print, InterimA5_Value] = this._ConfigService.configParams.InterimBillA5Print.split(":");
+
+          if (this.InterimFooterForm.get('paymode').value == 'Mpesa') {
+            this.mPesa_ReceiptNo = row?.mpesaReceiptNumber || 0
+            const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+            const mPesaMerchant_CheckoutRequest_Id = row?.checkoutRequestId + "|" + row?.merchantRequestId;
+
+            this.IPInterimBillForm.get('payments.payTmamount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
+            this.IPInterimBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo)
+            this.IPInterimBillForm.get('payments.payTmdate').setValue(formattedDate)
+            this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
+            this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
+            this.IPInterimBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
+            this.IPInterimBillForm.get('payments.companyId')?.setValue(this.selectedAdvanceObj?.CompanyId || 0)
+
+            let ModePaymentObj = [];
+            ModePaymentObj.push({
+              paymentDate: formattedDate,
+              paymentTime: formattedTime,
+              payAmount: formValue?.NetpayAmount ?? 0,
+              tranNo: this.mPesa_ReceiptNo || 0,
+              bankName: "",
+              validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+              comments: "",
+              payMode: "MPESA",
+              onlineTranNo: this.mPesa_ReceiptNo || 0,
+              onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
+              companyId: this.selectedAdvanceObj?.CompanyId ?? 0,
+              cashCounterId: formValue?.CashCounterID || 0,
+              transactionType: 0,
+              isSelfOrcompany: this.selectedAdvanceObj?.CompanyId ? 1 : 0,
+              createdBy: this.accountService.currentUserValue?.userId ?? 0
+            });
+            this.ModeOfPaymentsArray.clear();
+            ModePaymentObj.forEach(item => {
+              this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+            });
+
+            console.log("form values", this.IPInterimBillForm.value)
+            this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
+              this.viewgetInterimBillReportPdf(response);
+              this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
+              this.onClose()
+            });
+          }
+        }
+        else {
+          let invalidFields = [];
+          if (this.IPInterimBillForm.invalid) {
+            for (const controlName in this.IPInterimBillForm.controls) {
+              const control = this.IPInterimBillForm.get(controlName);
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`IP Supplimentry Bill Data : ${controlName}.${nestedKey}`);
+                  }
+                }
+              } else if (control?.invalid) {
+                invalidFields.push(`IP Supplimentry From: ${controlName}`);
+              }
+            }
+          }
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+              );
+            });
+            return
+          }
+        }
+      }
+    });
+  }
   selectChangeConcession(event) {
     this.concessionId = event.value
   }
@@ -671,6 +827,7 @@ export class InterimBillComponent implements OnInit {
   }
   @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
   getMpesaTransactionlist(): void {
+    debugger
     if (!this.dataSource.data.length) {
       this.toastrService.warning('Charges are not available in list, Please add Charges', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
