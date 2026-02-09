@@ -52,6 +52,7 @@ export class HospitalMasterComponent implements OnInit {
 
   allcolumns = [
     { heading: "Hospital Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', Width: 300 },
+    { heading: "Short Name", key: "hospitalShortName", sort: true, align: 'left', emptySign: 'NA', Width: 150 },
     { heading: "Hospital Address", key: "hospitalAddress", sort: true, align: 'left', emptySign: 'NA', Width: 500 },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
@@ -221,6 +222,7 @@ export class HospitalMaster {
   hospitalHeaderLine: any;
   ipdAdvanceReceiptCounterId: any;
   ipdRefundOfAdvanceReceiptCounterId: any;
+  hospitalShortName:any;
   /**
    * Constructor
    *
@@ -254,6 +256,7 @@ export class HospitalMaster {
       this.hospitalHeaderLine = HospitalMaster.hospitalHeaderLine || '';
       this.ipdAdvanceReceiptCounterId = HospitalMaster.ipdAdvanceReceiptCounterId || 0;
       this.ipdRefundOfAdvanceReceiptCounterId = HospitalMaster.ipdRefundOfAdvanceReceiptCounterId || 0;
+      this.hospitalShortName = HospitalMaster.hospitalShortName || ''
     }
   }
 }
