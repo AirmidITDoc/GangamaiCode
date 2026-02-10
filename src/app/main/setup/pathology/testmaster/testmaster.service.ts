@@ -10,7 +10,7 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 export class TestmasterService {
     is_Test = true;
     is_subtest = false;
-    is_templatetest= false;
+    is_templatetest = false;
     myformSearch: FormGroup;
     myform: FormGroup;
     AddParameterFrom: FormGroup;
@@ -38,7 +38,7 @@ export class TestmasterService {
             TestId: [0],
             TestName: ["", [Validators.required]], //, Validators.pattern('^[a-zA-Z .\\*-]+$')
             PrintTestName: ["", [Validators.required]], //Validators.pattern('^[a-zA-Z .-]*$')
-            CategoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            CategoryId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsSubTest: true,
             TechniqueName: [""],
             MachineName: [""],
@@ -49,32 +49,32 @@ export class TestmasterService {
             IsTemplateTest: true,
             TestTime: ["2022-09-10"],
             TestDate: ["2022-07-11"],
-            ParameterNameSearch:[""],
-            isActive:[true,[Validators.required]],
-            Status:[1],
+            ParameterNameSearch: [""],
+            isActive: [true, [Validators.required]],
+            Status: [1],
         });
     }
 
-     createPathtestInsertForm(): FormGroup {
+    createPathtestInsertForm(): FormGroup {
         return this._formBuilder.group({
-            pathTest:"",
-            pathTemplateDetail:"",
-            pathTestDetail:"",
+            pathTest: "",
+            pathTemplateDetail: "",
+            pathTestDetail: "",
         });
     }
     /**
      * 
      * 
      */
-    templatedetailsForm(): FormGroup{
+    templatedetailsForm(): FormGroup {
         return this._formBuilder.group({
             PtemplateId: [0],
-            TestId:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            TemplateId:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            TemplateName:[""],
+            TestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            TemplateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            TemplateName: [""],
         });
     }
-    testdetailsForm(): FormGroup{
+    testdetailsForm(): FormGroup {
         return this._formBuilder.group({
             TestDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             TestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -88,23 +88,23 @@ export class TestmasterService {
             TestNameSearch: [""],
             CategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ServiceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            Istest:['0']
+            Istest: ['0']
         });
     }
-      
+
     initializeFormGroup() {
         this.createPathtestForm();
     }
-    
+
     // get Test master list
     public getTestListfor(param) {
-        return this._httpClient.PostData("PathTestMaster/PathTestForUpdateList",param);
+        return this._httpClient.PostData("PathTestMaster/PathTestForUpdateList", param);
     }
-    public getSubTestList(param) { 
-        return this._httpClient.PostData("PathTestMaster/PathTestForUpdateList",param);
+    public getSubTestList(param) {
+        return this._httpClient.PostData("PathTestMaster/PathTestForUpdateList", param);
     }
     public getTemplateListfor(param) {
-        return this._httpClient.PostData("PathTestMaster/PathTemplateForUpdateList",param);
+        return this._httpClient.PostData("PathTestMaster/PathTemplateForUpdateList", param);
     }
     // retrieve list remain end       
 
@@ -113,20 +113,20 @@ export class TestmasterService {
     // checkbox list
     // get subTest master list of checkbox
     public getIsSubTestDetaileList(param) {
-        return this._httpClient.PostData("PathTestMaster/PathTestDetailList",param);
+        return this._httpClient.PostData("PathTestMaster/PathTestDetailList", param);
     }
     public getIsSubTestList(param) {
-        return this._httpClient.PostData("PathTestMaster/PathSubTestList",param);
+        return this._httpClient.PostData("PathTestMaster/PathSubTestList", param);
     }
-     // get parameter master list
-     public getParameterMasterList(param) {
-        return this._httpClient.PostData("ParameterMaster/MPathParameterList",param);
+    // get parameter master list
+    public getParameterMasterList(param) {
+        return this._httpClient.PostData("ParameterMaster/MPathParameterList", param);
     }
     // checkbox end
-    
+
     // retrive subtest list
     public getSubTestListfor(param) {
-        return this._httpClient.PostData("Pathology/PathSubtestFillList",param);
+        return this._httpClient.PostData("Pathology/PathSubtestFillList", param);
     }
 
     getValidationMessages() {
@@ -136,33 +136,43 @@ export class TestmasterService {
                 // { name: "maxlength", Message: "TestName should not be greater than 50 char." },
                 // { name: "pattern", Message: "Special char not allowed." }
             ],
-            PrintTestName:[
+            PrintTestName: [
                 { name: "required", Message: "PrintTestName is required" },
                 // { name: "maxlength", Message: "PrintTestName should not be greater than 50 char." },
                 // { name: "pattern", Message: "Special char not allowed." }
             ],
-            CategoryId:[
+            CategoryId: [
                 { name: "required", Message: "Category is required" },
             ],
-            
+
         };
     }
 
     public TestMasterSave(Param: any) {
         if (Param.pathTest.TestId) {
-         return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.TestId, Param);
-        }else return this._httpClient.PostData("PathTestMaster/Insert", Param);
+            return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.TestId, Param);
+        } else return this._httpClient.PostData("PathTestMaster/Insert", Param);
     }
 
     public TestMasterUpdate(Param: any) {
-        
+
         if (Param.pathTest.testId) {
-         return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.testId, Param);
+            return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.testId, Param);
         }
     }
 
-    public deactivateTheStatus(Id:number) {
+    public deactivateTheStatus(Id: number) {
         return this._httpClient.DeleteData(`PathTestMaster/PathTestDelete?Id=${Id}`);
+    }
+
+    public TestInfoUpdate(Param: any) {
+        if (Param.testId) {
+            return this._httpClient.PutData("PathTestMaster/TestSpecimenDetails" + Param.testId, Param);
+        }
+    }
+
+    public gettestInfoById(Id) {
+        return this._httpClient.GetData("PathTestMaster/" + Id);
     }
 }
 

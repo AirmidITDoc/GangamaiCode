@@ -51,8 +51,8 @@ export class SupplierMasterService {
             phone: ["",
                 [
                     Validators.required,
-                    Validators.maxLength(10),
-                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                    Validators.maxLength(11),
+                    // Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
                 ]
             ],
             fax: ["",

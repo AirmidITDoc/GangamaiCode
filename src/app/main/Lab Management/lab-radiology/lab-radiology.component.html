@@ -1,1 +1,247 @@
-<p>lab-radiology works!</p>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Radiology Report Entry
+            </span>
+        </div>
+    </mat-toolbar>
+    <div class="layout-body p-2">
+        <div class="layout-body-container center">
+            <div fxLayout="column">
+                <mat-card>
+                    <div class="layout-card-container" style="height: 80px;">
+                        <form [formGroup]="myformSearch" class="mat-error-fix">
+
+                            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-5">
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                        formStartControlName="start" formEndControlName="end"
+                                        [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                                    </airmid-datepicker>
+                                </div>
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                                        [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
+                                        [mode]="autocompleteModeCategoryId"></airmid-dropdown>
+                                </div>
+                                <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                    <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
+                                        [formGroup]="myformSearch" formControlName="RegNoSearch"
+                                        placeholderText="Search Reg No / Patient Name / Mobile No"
+                                        [ApiUrl]="'LabPatientRegistration/search-patient-1?UnitId=' + vUnitId + '&Keyword='"
+                                        (selectionChange)="getSelectedObjIP($event)"
+                                        (onClearSelection)="resetFormPatient()">
+                                    </airmid-autocomplete>
+                                </div> -->
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>FirstName</mat-label>
+                                        <input matInput placeholder="Search FirstName" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="FirstNameSearch"
+                                            (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('FirstNameSearch')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>LastName</mat-label>
+                                        <input matInput placeholder="Search LastName" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="LastNameSearch"
+                                            (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('LastNameSearch')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                        fxLayout="column" class="gap-4" (change)="onChangeFirst()">
+                                        <mat-label><b>Status:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='0'>Pending</mat-radio-button>
+                                            <mat-radio-button value='1'>Completed</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+
+                                </div>
+                                <div class="action-button-container" style="padding-top: 10px;">
+                                    <div class="button-row-group">
+                                        <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
+                                        <button class="btn btn-primary btn-with-icon btn-xs" (click)="onChangeFirst()">
+                                            <span>Search</span>
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                                <!-- </div> -->
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="layout-card-containr">
+
+                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                            <ng-template #actionOnFirstTemplate let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon *ngIf="element.patientType =='Self'"
+                                            matTooltip="Patient Category Self">account_box
+                                        </mat-icon>
+                                        <mat-icon *ngIf="element.patientType !== 'Self'"
+                                            matTooltip="Patient Category Company">business
+                                        </mat-icon>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <mat-icon *ngIf="element.outSourceStatus" matTooltip="OutSource Completed"
+                                            class="s-20 mr-4" color="warn">
+                                            send
+                                        </mat-icon>
+                                        <mat-icon *ngIf="!element.outSourceStatus" matTooltip="Lab Test"
+                                            class="s-20 mr-4" color="accent">
+                                            local_hospital
+                                        </mat-icon>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+
+                            <ng-template #actionButtonTemplate let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+
+                                    <button mat-icon-button matTooltip="Edit" (click)="onSave(element)"
+                                        [style.visibility]="element.isVerified==false ? 'visible' : 'hidden'">
+                                        <mat-icon title="Edit">edit</mat-icon>
+                                    </button>
+
+                                    <span [matTooltip]="element.isVerified == false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                        <button mat-icon-button matTooltip="Print"
+                                            [style.visibility]="element.isCompleted ? 'visible' : 'hidden'"
+                                            (click)="viewgetRadioloyTemplateReportPdf(element)"
+                                            [disabled]="element.isVerified==false">
+                                            <mat-icon title="Print">print</mat-icon>
+                                        </button>
+                                    </span>
+
+                                    <span [matTooltip]="element.isVerified == false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                        <button mat-icon-button [disabled]="element.isVerified==false"
+                                            [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                            matTooltipPosition="right" (click)="Onemail(element)"
+                                            (mouseenter)="openEmailDetailsPopover($event, element)"
+                                            (mouseleave)="closeEmailDetailsPopover()"
+                                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                            <mat-icon>email</mat-icon>
+                                        </button>
+                                    </span>
+
+                                    <span [matTooltip]="element.isVerified == false
+                                                    ? 'Verification is Pending'
+                                                    : ''">
+                                        <button mat-icon-button [disabled]="element.isVerified==false"
+                                            [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                            matTooltipPosition="right" (click)="getWhatsappshareRadioReport(element)"
+                                            (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                            (mouseleave)="closeWhatsappDetailsPopover()"
+                                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                            <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                                        </button>
+                                    </span>
+
+                                    <airmid-fileupload-icon [refId]="element.radReportId" [refType]="pathFiles"
+                                        [multiple]="true"
+                                        [title]="element.patientName + ' Report'"></airmid-fileupload-icon>
+                                </div>
+                            </ng-template>
+
+                            <ng-template #actionsCompleted let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                                    <span [ngClass]="{
+                                            'status-completed': element.isCompleted === true,
+                                            'status-pending': element.isCompleted === false
+                                                    }">
+                                        {{ element.isCompleted ? 'Completed' : 'Pending' }}
+                                    </span>
+                                </div>
+                            </ng-template>
+
+                            <ng-template #actionsverify let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                                    <span [ngClass]="{
+                                            'status-completed': element.isVerified==true,
+                                            'status-pending': element.isVerified==false
+                                            }" [matTooltip]="getVerifyTooltip(element)"
+                                        matTooltipClass="verify-tooltip"
+                                        [style.cursor]="element.isCompleted && !element.isVerified ? '' : 'default'">
+                                        {{ element.isVerified==true ? 'Verified' : 'UnVerified' }}
+                                    </span>
+                                </div>
+                            </ng-template>
+
+                            <ng-template #outSourcePopOver let-element>
+
+                                <!-- OutSource Lab Name -->
+                                <span *ngIf="element.outSourceLabName; else noOutSourceTpl" [matBadge]="element.tokenNo"
+                                    matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+                                    matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                                    (mouseenter)="openPatientDetailsPopover($event, element)"
+                                    (mouseleave)="closePatientDetailsPopover()" style="font-size:14px; line-height:18px; position:relative; top:4px;
+                                        cursor:pointer; text-decoration:underline; color:#667eea;">
+                                    {{ element.outSourceLabName }}
+                                </span>
+
+                                <!-- Edit icon (already outsourced) -->
+                                <button mat-icon-button
+                                    *ngIf="element.outSourceLabName && element.isRadOutSource === true"
+                                    (click)="Editoutsoucedata(element)" matTooltip="Edit OutSource Data">
+                                    <mat-icon style="color:#ff5722;">edit</mat-icon>
+                                </button>
+
+                                <!-- Add OutSource (not outsourced yet) -->
+                                <ng-template #noOutSourceTpl>
+                                    <button mat-icon-button *ngIf="element.isRadOutSource === true"
+                                        (click)="Editoutsoucedata(element)" matTooltip="Add OutSource Data">
+                                        <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
+                                    </button>
+                                </ng-template>
+
+                            </ng-template>
+
+                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                            </airmid-table>
+
+                        </div>
+
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

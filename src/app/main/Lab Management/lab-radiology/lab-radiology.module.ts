@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { LabRadiologyComponent } from './lab-radiology.component';
+import { NewRadResultTemplateComponent } from './new-rad-result-template/new-rad-result-template.component';
 
 const routes: Routes = [
   {
@@ -50,7 +51,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    NewRadResultTemplateComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

@@ -223,7 +223,7 @@ export class FixSupplierComponent implements OnInit {
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
             ],
             phone: [
-                { name: "required", Message: "Phone No is required" },
+                { name: "required", Message: "LandLine No is required" },
                 { name: "pattern", Message: "Only Numbers Allowed" },
             ],
             address: [
