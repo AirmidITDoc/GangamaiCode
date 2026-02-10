@@ -16,248 +16,241 @@
         </div>
     </div>
 
-    <div class="modal-body labpatientMiddle">
-        <div class="modal-body-container">
+    <div class="modal-body">
+        <!-- <div class="modal-body-container"> -->
 
-            <div class="main-content">
+        <!-- <div class="main-content"> -->
 
-                <div class="personal-panel">
-                    <mat-tab-group animationDuration="0ms">
+        <!-- <div class="personal-panel"> -->
+        <mat-tab-group animationDuration="0ms">
 
-                        <!-- 1. Specimen Details -->
-                        <mat-tab label="Specimen Details">
-                            <form [formGroup]="testSettingForm">
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+            <!-- 1. Specimen Details -->
+            <mat-tab label="Specimen Details">
+                <form [formGroup]="testSettingForm">
+                    <div fxLayout="row wrap" fxLayoutGap="4px">
 
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-dropdown label="Specimen Type" formControlName="specimenId"
-                                            [value]="data?.specimenId" [formGroup]="testSettingForm">
-                                        </airmid-dropdown>
-                                    </div>
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-dropdown label="Specimen Type" formControlName="specimenTypeId"
+                                [value]="data?.specimenTypeId" [formGroup]="testSettingForm"
+                                [mode]="autocompleteModeSpecimen">
+                            </airmid-dropdown>
+                        </div>
 
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-textbox label="Specimen Qty" formControlName="specimenQty"
-                                            (keypress)="keyPressAlphanumeric($event)" [value]="data?.specimenQty"
-                                            [formGroup]="testSettingForm">
-                                        </airmid-textbox>
-                                    </div>
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-dropdown label="Specimen Color" formControlName="specimenColorId"
+                                [value]="data?.specimenColorId" [formGroup]="testSettingForm"
+                                [mode]="autocompleteModeSpecimen">
+                            </airmid-dropdown>
+                        </div>
 
-                                    <!-- Fresh / Preserved / Frozen/ Room Temp / 2–8°C -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-dropdown label="Specimen Condition" formControlName="specimenConId"
-                                            [value]="data?.specimenConId" [formGroup]="testSettingForm">
-                                        </airmid-dropdown>
-                                    </div>
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-textbox label="Specimen Qty" formControlName="specimenQty"
+                                (keypress)="keyPressAlphanumeric($event)" [value]="data?.specimenQty"
+                                [formGroup]="testSettingForm">
+                            </airmid-textbox>
+                        </div>
 
-                                    <!-- Plain tube, EDTA, Heparin, Fluoride, Sterile container -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-dropdown label="Container Type" formControlName="containerTypeId"
-                                            [formGroup]="testSettingForm">
-                                        </airmid-dropdown>
-                                    </div>
+                        <!-- Fresh / Preserved / Frozen/ Room Temp / 2–8°C -->
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-dropdown label="Specimen Condition" formControlName="specimenConditionId"
+                                [value]="data?.specimenConditionId" [formGroup]="testSettingForm"
+                                [mode]="autocompleteModeSpecimen">
+                            </airmid-dropdown>
+                        </div>
 
-                                    <!-- Venipuncture, Catheter, Mid-stream, Biopsy -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-dropdown label="Collection Method" formControlName="collectionMethodId"
-                                            [formGroup]="testSettingForm">
-                                        </airmid-dropdown>
-                                    </div>
+                        <!-- Plain tube, EDTA, Heparin, Fluoride, Sterile container -->
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-dropdown label="Container Type" formControlName="containerTypeId"
+                                [formGroup]="testSettingForm">
+                            </airmid-dropdown>
+                        </div>
 
-                                    <!-- Left arm, Right arm, Throat, Nasal, Urine (Mid-stream) -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-textbox label="Specimen Source / Site" formControlName="specimenSource"
-                                            [formGroup]="testSettingForm">
-                                        </airmid-textbox>
-                                    </div>
+                        <!-- Venipuncture, Catheter, Mid-stream, Biopsy -->
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-dropdown label="Collection Method" formControlName="collectionMethod"
+                                [formGroup]="testSettingForm">
+                            </airmid-dropdown>
+                        </div>
 
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-textbox label="No. of Containers" formControlName="containerCount"
-                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="testSettingForm">
-                                        </airmid-textbox>
-                                    </div>
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-textbox label="No. of Containers" formControlName="noofContainer"
+                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="testSettingForm">
+                            </airmid-textbox>
+                        </div>
 
-                                    <!-- Formalin, EDTA, None -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-dropdown label="Preservative Used" formControlName="preservativeId"
-                                            [formGroup]="testSettingForm">
-                                        </airmid-dropdown>
-                                    </div>
+                        <!-- Formalin, EDTA, None -->
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <airmid-dropdown label="Preservative Used" formControlName="preservationUsed"
+                                [formGroup]="testSettingForm">
+                            </airmid-dropdown>
+                        </div>
 
-                                    <!-- Ice pack required / Handle carefully -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
+                        <!-- Ice pack required / Handle carefully -->
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%">
                                         <airmid-textbox label="Transport / Handling Instructions"
                                             formControlName="transportInstruction" [formGroup]="testSettingForm">
                                         </airmid-textbox>
-                                    </div>
-                                </div>
-                            </form>
-                        </mat-tab>
+                                    </div> -->
+                    </div>
+                </form>
+            </mat-tab>
 
-                        <!-- 2. Barcode -->
-                        <mat-tab label="Barcode & Consent">
-                            <form [formGroup]="testSettingForm">
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+            <!-- 2. Barcode -->
+            <mat-tab label="Barcode & Consent">
+                <form [formGroup]="testSettingForm">
+                    <div fxLayout="row wrap" fxLayoutGap="12px">
 
-                                    <div fxFlex="25%" fxFlex.xs="100%">
-                                        <airmid-textbox label="Barcode Label" formControlName="barcode"
-                                            [value]="data?.barcode" [formGroup]="testSettingForm">
-                                        </airmid-textbox>
-                                    </div>
+                        <div fxFlex="25%" fxFlex.xs="100%">
+                            <airmid-textbox label="Barcode Label" formControlName="barcodeLabel"
+                                [value]="data?.barcodeLabel" [formGroup]="testSettingForm">
+                            </airmid-textbox>
+                        </div>
 
-                                    <div fxFlex="50%" fxFlex.xs="100%">
-                                        <app-airmid-slider label="Consent Required" formControlName="isConsent"
-                                            [formGroup]="testSettingForm">
-                                        </app-airmid-slider>
-                                    </div>
+                        <div fxFlex="50%" fxFlex.xs="100%">
+                            <app-airmid-slider label="Consent Required" formControlName="isConsentRequired"
+                                [formGroup]="testSettingForm">
+                            </app-airmid-slider>
+                        </div>
 
-                                    <div fxFlex="100%" fxFlex.xs="100%" fxLayout="column"
-                                        *ngIf="testSettingForm.get('isConsent')?.value === true">
+                        <div fxFlex="100%" fxFlex.xs="100%" fxLayout="column"
+                            *ngIf="testSettingForm.get('isConsentRequired')?.value === true">
 
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Consent Name" formControlName="consentName"
-                                                [value]="data?.consentName" [formGroup]="testSettingForm">
-                                            </airmid-textbox>
-                                        </div>
+                            <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Consent Name" formControlName="consentName"
+                                    [value]="data?.consentName" [formGroup]="testSettingForm">
+                                </airmid-textbox>
+                            </div> -->
 
-                                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                            <airmid-editor label="Consent Details" formControlName="consentTemplate"
-                                                [(value)]="vConsentTemplate"
-                                                [formGroup]="testSettingForm"></airmid-editor>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </mat-tab>
+                                <airmid-editor label="Consent Details" formControlName="consentTemplate"
+                                    [formGroup]="testSettingForm"
+                                    (valueChange)="onEditorValueChange1($event)"></airmid-editor>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </mat-tab>
 
-                        <!-- 3. Disease -->
-                        <mat-tab label="Disease">
-                            <form [formGroup]="testSettingForm">
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+            <!-- 3. Disease -->
+            <mat-tab label="Disease">
+                <form [formGroup]="testSettingForm">
+                    <div fxLayout="row wrap" fxLayoutGap="12px">
 
-                                    <!-- Diabetes, Thyroid Disorder, TB, COVID-19 -->
-                                    <div fxFlex="25%" fxFlex.xs="100%">
-                                        <airmid-dropdown label="Disease Condition" formControlName="disease"
-                                            [value]="data?.disease" [formGroup]="testSettingForm">
-                                        </airmid-dropdown>
-                                    </div>
-                                    <!-- guide by lab -->
-                                    <div fxFlex="75%" fxFlex.xs="100%">
-                                        <airmid-textbox label="Special Precaution / Handling Note"
-                                            formControlName="diseasePrecautionNote" [formGroup]="testSettingForm">
-                                        </airmid-textbox>
-                                    </div>
+                        <!-- Diabetes, Thyroid Disorder, TB, COVID-19 -->
+                        <div fxFlex="25%" fxFlex.xs="100%">
+                            <airmid-dropdown label="Disease Condition" formControlName="disease" [value]="data?.disease"
+                                [formGroup]="testSettingForm">
+                            </airmid-dropdown>
+                        </div>
+                        <!-- guide by lab -->
+                        <div fxFlex="75%" fxFlex.xs="100%">
+                            <airmid-textbox label="Special Precaution / Handling Note"
+                                formControlName="diseasePrecautionNote" [formGroup]="testSettingForm">
+                            </airmid-textbox>
+                        </div>
 
-                                    <!-- like covid it can infect to others so carfully test -->
-                                    <div fxFlex="30%" fxFlex.xs="100%">
-                                        <app-airmid-slider label="Infectious Test" formControlName="isInfectious"
-                                            [formGroup]="testSettingForm">
-                                        </app-airmid-slider>
-                                    </div>
+                        <!-- like covid it can infect to others so carfully test -->
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <app-airmid-slider label="Infectious Test" formControlName="isInfectious"
+                                [formGroup]="testSettingForm">
+                            </app-airmid-slider>
+                        </div>
 
-                                    <!-- informing to government like tb,covid tests -->
-                                    <div fxFlex="40%" fxFlex.xs="100%">
-                                        <app-airmid-slider label="Notifiable Disease" formControlName="isNotifiable"
-                                            [formGroup]="testSettingForm">
-                                        </app-airmid-slider>
-                                    </div>
+                        <!-- informing to government like tb,covid tests -->
+                        <div fxFlex="40%" fxFlex.xs="100%">
+                            <app-airmid-slider label="Notifiable Disease" formControlName="isNotifiable"
+                                [formGroup]="testSettingForm">
+                            </app-airmid-slider>
+                        </div>
 
-                                </div>
-                            </form>
-                        </mat-tab>
+                    </div>
+                </form>
+            </mat-tab>
 
-                        <!-- 4. Test Information -->
-                        <mat-tab label="Test Information">
-                            <form [formGroup]="testSettingForm">
+            <!-- 4. Test Information -->
+            <mat-tab label="Test Information">
+                <form [formGroup]="testSettingForm">
 
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                    <div fxLayout="row wrap" fxLayoutGap="12px">
 
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-textbox label="Reporting Instructions" formControlName="reported"
-                                            [value]="data?.reported" [formGroup]="testSettingForm">
-                                        </airmid-textbox>
-                                    </div>
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-editor label="Test Details" formControlName="testInformationTemplate"
+                                [formGroup]="testSettingForm"
+                                (valueChange)="onEditorValueChange2($event)"></airmid-editor>
+                        </div>
 
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <airmid-textbox label="Clinical Information / Indication"
-                                            formControlName="information" [value]="data?.information"
-                                            [formGroup]="testSettingForm">
-                                        </airmid-textbox>
-                                    </div>
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <app-airmid-slider label="Fasting Required" formControlName="isFastingRequired"
+                                [formGroup]="testSettingForm">
+                            </app-airmid-slider>
+                        </div>
 
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <app-airmid-slider label="Fasting Required" formControlName="isFasting"
-                                            [formGroup]="testSettingForm">
-                                        </app-airmid-slider>
-                                    </div>
+                        <div fxFlex="33%" fxFlex.xs="100%">
+                            <app-airmid-slider label="Approval Required" formControlName="isApprovedRequired"
+                                [formGroup]="testSettingForm">
+                            </app-airmid-slider>
+                        </div>
 
-                                    <!-- Methods ELISA, CLIA, PCR, Microscopy -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
+                        <!-- Methods ELISA, CLIA, PCR, Microscopy -->
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%">
                                         <airmid-dropdown label="Test Methodology" formControlName="methodologyId"
                                             [formGroup]="testSettingForm">
                                         </airmid-dropdown>
-                                    </div>
+                                    </div> -->
 
-                                    <!-- Units & Reference -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
+                        <!-- Units & Reference -->
+                        <!-- <div fxFlex="33%" fxFlex.xs="100%">
                                         <airmid-textbox label="Units" formControlName="unit"
                                             [formGroup]="testSettingForm">
                                         </airmid-textbox>
-                                    </div>
+                                    </div> -->
 
-                                    <!-- Quality & Compliance -->
-                                    <div fxFlex="33%" fxFlex.xs="100%">
-                                        <app-airmid-slider label="Approval Required"
-                                            formControlName="isApprovalRequired" [formGroup]="testSettingForm">
-                                        </app-airmid-slider>
-                                    </div>
+                        <!-- Quality & Compliance -->
 
-                                </div>
+                    </div>
 
-                            </form>
-                        </mat-tab>
+                </form>
+            </mat-tab>
 
 
-                        <!-- 5. TAT -->
-                        <mat-tab label="TAT">
-                            <form [formGroup]="testSettingForm">
-                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+            <!-- 5. TAT -->
+            <mat-tab label="TAT">
+                <form [formGroup]="testSettingForm">
+                    <div fxLayout="row wrap" fxLayoutGap="12px">
 
-                                    <div fxFlex="25%" fxFlex.xs="100%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Days</mat-label>
-                                            <input matInput type="number" min="0" formControlName="days"
-                                                placeholder="0" />
-                                        </mat-form-field>
-                                    </div>
+                        <div fxFlex="25%" fxFlex.xs="100%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Day</mat-label>
+                                <input matInput type="number" min="0" formControlName="tatday" placeholder="0" />
+                            </mat-form-field>
+                        </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Hours</mat-label>
-                                            <input matInput type="number" min="0" max="23" formControlName="hrs"
-                                                placeholder="0" />
-                                        </mat-form-field>
-                                    </div>
+                        <div fxFlex="25%" fxFlex.xs="100%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Hours</mat-label>
+                                <input matInput type="number" min="0" max="23" formControlName="tathour"
+                                    placeholder="0" />
+                            </mat-form-field>
+                        </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%">
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Minutes</mat-label>
-                                            <input matInput type="number" min="0" max="59" formControlName="min"
-                                                placeholder="0" />
-                                        </mat-form-field>
-                                    </div>
+                        <div fxFlex="25%" fxFlex.xs="100%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Minutes</mat-label>
+                                <input matInput type="number" min="0" max="59" formControlName="tatmin"
+                                    placeholder="0" />
+                            </mat-form-field>
+                        </div>
 
-                                </div>
-                            </form>
-                        </mat-tab>
+                    </div>
+                </form>
+            </mat-tab>
 
-                    </mat-tab-group>
-                </div>
+        </mat-tab-group>
+        <!-- </div> -->
+        <!-- </div> -->
 
-
-            </div>
-
-        </div>
+        <!-- </div> -->
     </div>
 
     <div class="modal-footer">

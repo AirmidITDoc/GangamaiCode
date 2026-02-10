@@ -29,7 +29,9 @@ export class TestSettingsComponent {
 
   testSettingForm: FormGroup;
   autocompleteModeCategoryId: string = "PathCategory";
+  autocompleteModeSpecimen: string = "PathSpecimenMaster"
   vConsentTemplate: any;
+  registerObj: any;
 
   constructor(
     public _TestmasterService: TestmasterService,
@@ -46,12 +48,20 @@ export class TestSettingsComponent {
     this.testSettingForm = this.createSettingForm();
     this.testSettingForm.markAllAsTouched();
 
-    this.testSettingForm.get('isConsent')?.valueChanges.subscribe((isConsent: boolean) => {
+    if (this.data.testId) {
+      setTimeout(() => {
+        this._TestmasterService.gettestInfoById(this.data.testId).subscribe((response) => {
+          this.registerObj = response;
+          console.log("test info:", this.registerObj)
+        });
+      }, 500);
+    }
+    this.testSettingForm.get('isConsentRequired')?.valueChanges.subscribe((isConsentRequired: boolean) => {
 
       const consentNameCtrl = this.testSettingForm.get('consentName');
       const consentTemplateCtrl = this.testSettingForm.get('consentTemplate');
 
-      if (isConsent) {
+      if (isConsentRequired) {
         consentNameCtrl?.setValidators([Validators.required]);
         consentTemplateCtrl?.setValidators([Validators.required]);
       } else {
@@ -69,36 +79,38 @@ export class TestSettingsComponent {
 
   createSettingForm() {
     return this._formBuilder.group({
-      specimenId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      testId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      specimenTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      specimenColorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       specimenQty: ['', [Validators.maxLength(50)]],
-      specimenConId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      specimenConditionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       containerTypeId: [0],
-      collectionMethodId: [0],
-      specimenSource: [''],
-      containerCount: [''],
-      preservativeId: [0],
-      transportInstruction: [''],
+      collectionMethod: [0],
+      // specimenSource: [''],
+      noofContainer: [''],
+      preservationUsed: [0],
+      // transportInstruction: [''],
 
-      isConsent: [false, [Validators.required]],
-      consentName: [''],
+      isConsentRequired: [false, [Validators.required]],
+      // consentName: [''],
       consentTemplate: [''],
-      barcode: [''],
+      barcodeLabel: [''],
 
       disease: [0],
       diseasePrecautionNote: [''],
       isNotifiable: [false],
       isInfectious: [false],
 
-      isFasting: [false, [Validators.required]],
-      methodologyId: [0],
-      reported: [''],
-      information: [''],
-      unit:[],
-      isApprovalRequired:[false],
+      isFastingRequired: [false, [Validators.required]],
+      // methodologyId: [0],
+      // reported: [''],
+      testInformationTemplate: ['', [Validators.required]],
+      // unit:[],
+      isApprovedRequired: [false],
 
-      days: [''],
-      hrs: [''],
-      min: [''],
+      tatday: [''],
+      tathour: [''],
+      tatmin: [''],
     })
   }
 
@@ -112,9 +124,56 @@ export class TestSettingsComponent {
     }
   }
 
+  onEditorValueChange1(content: string) {
+    this.testSettingForm.get('consentTemplate')?.setValue(content);
+  }
+
+  onEditorValueChange2(content: string) {
+    this.testSettingForm.get('testInformationTemplate')?.setValue(content);
+  }
+
+  invalidFields1 = [];
   onSubmit() {
+    // debugger
+    this.testSettingForm.get('testId').setValue(this.data.testId)
+    console.log("json of Test:", this.testSettingForm.value)
+    if (!this.testSettingForm.invalid) {
+      console.log("json of Test:", this.testSettingForm.value)
+      this._TestmasterService.TestInfoUpdate(this.testSettingForm.value).subscribe((response) => {
+        this.onClose(true);
+      });
+
+    } else {
+      this.invalidFields1 = [];
+
+      // checks nested error 
+      if (this.testSettingForm.invalid) {
+        for (const controlName in this.testSettingForm.controls) {
+          const control = this.testSettingForm.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                this.invalidFields1.push(`Table Data : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            this.invalidFields1.push(`Insert Form: ${controlName}`);
+          }
+        }
+      }
+
+      if (this.invalidFields1.length > 0) {
+        this.invalidFields1.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
 
   }
+
+
   onClose(val: boolean) {
     this.dialogRef.close(val);
   }
