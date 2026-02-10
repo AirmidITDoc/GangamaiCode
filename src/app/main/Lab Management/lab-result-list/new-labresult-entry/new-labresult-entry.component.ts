@@ -136,7 +136,7 @@ export class NewLabresultEntryComponent {
       this.sampleNo = this.data.sampleNo.split(" ")[0]
       this.suggestionNotes = this.data.patientdata.suggestionNotes
 
-      this.OPIPID = this.selectedAdvanceObj2.opdipdId // this.selectedAdvanceObj2.OPD_IPD_ID;
+      this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
       this.SexId = this.selectedAdvanceObj2.genderId;
       if (this.selectedAdvanceObj2.ageYear)
         this.CheckAge = this.selectedAdvanceObj2.ageYear.trim();
@@ -388,7 +388,7 @@ export class NewLabresultEntryComponent {
       "searchFields": [
         {
           "fieldName": "OPIPId",
-          "fieldValue": String(obj.opdipdId),
+          "fieldValue": String(obj.opdipdid),
           "opType": "Equals"
         },
         {
@@ -457,7 +457,7 @@ export class NewLabresultEntryComponent {
       "searchFields": [
         {
           "fieldName": "OPIPId",
-          "fieldValue": String(this.selectedAdvanceObj2.opdipdId),
+          "fieldValue": String(this.selectedAdvanceObj2.opdipdid),
           "opType": "Equals"
         },
         {
