@@ -215,5 +215,13 @@ export class DashboardService {
         return this._httpClient.GetData("Dashboard/pathology-dashboard?FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
     }
 
+     public getwardCoutList(params) {
+        debugger
+        // return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=" + params.UnitId + "FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+//   return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=1&FromDate=2026-02-03&ToDate=2026-02-03")
+     return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=" + params.UnitId+"&FromDate="+params.FromDate+"&ToDate="+params.ToDate);
+
+
+}
 }
 

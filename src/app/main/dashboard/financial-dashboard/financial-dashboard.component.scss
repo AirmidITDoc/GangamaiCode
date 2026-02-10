@@ -100,9 +100,9 @@
   background: linear-gradient(180deg, #dbe9ff 0%, #c7ddff 100%);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 4px 6px;
-  font-weight: 700;
+  font-weight: bold;
   color: #1a3d7a;
-  font-size: 12px;
+  font-size: large;
 }
 
 .panel-body {
@@ -110,8 +110,8 @@
 }
 
 .panel-subtitle {
-  font-weight: 700;
-  font-size: 11px;
+  font-weight: bold;
+  font-size: 14px;
   margin-bottom: 4px;
   color: rgba(0, 0, 0, 0.75);
 }
@@ -120,6 +120,14 @@
   width: 100%;
   /* Make rows compact (MDC table) */
   --mat-table-row-item-container-height: 28px;
+}
+
+.compact-table1 {
+  width: 100%;
+  /* Make rows compact (MDC table) */
+  --mat-table-row-item-container-height: 28px;
+  height: 300px !important;
+  overflow: auto;
 }
 
 .compact-table .mat-mdc-header-cell,
@@ -220,7 +228,8 @@
 }
 
 .big-total-label {
-  font-weight: 700;
+  font-weight: bold;
+  font-size: large;
 }
 
 .big-total-value {
