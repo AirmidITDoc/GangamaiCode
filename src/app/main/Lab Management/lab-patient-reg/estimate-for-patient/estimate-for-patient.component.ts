@@ -378,13 +378,13 @@ export class EstimateForPatientComponent {
             this.estimatedetailArray.push(this.createtEstimateDetails(item));
         });
 debugger
-        const allPricesPositive = this.dstable1.data.every(row => Number(row.Price) > 0);
-        if (!allPricesPositive) {
-            this.toastr.warning('Please Enter Price Greater >  0.', 'Warning!', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // const allPricesPositive = this.dstable1.data.every(row => Number(row.Price) > 0);
+        // if (!allPricesPositive) {
+        //     this.toastr.warning('Please Enter Price Greater >  0.', 'Warning!', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
 
         console.log(this.estimateform.value)
 
