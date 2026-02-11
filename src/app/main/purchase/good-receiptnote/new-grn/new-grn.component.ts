@@ -1352,6 +1352,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             BatchNo: [
                 // { name: "required", Message: "StoreId is required" }
             ],
+            qty: [
+                // { name: "required", Message: "qty is required" }
+            ],
+            Disc: [
+                // { name: "required", Message: "Disc is required" }
+            ],
         };
     }
     getDateTime(dateTimeObj) {
@@ -1851,6 +1857,15 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 });
                 return
             }
+        }
+    }
+      keyPressCharater(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
         }
     }
 }

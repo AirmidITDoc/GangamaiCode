@@ -74,7 +74,7 @@
                       [mode]="dropdownMode.supplierMaster" (selectionChange)="selectChangeSupplier($event)"
                       [value]="registerObj.supplierId"></airmid-dropdown>
 
-                    <airmid-textbox fxFlex="11%" label="Contact Persion" formControlName="Contact" [value]="vContact"
+                    <airmid-textbox fxFlex="10%" label="Contact Persion" formControlName="Contact" [value]="vContact"
                       [formGroup]="userFormGroup" [readonly]="true" [disabled]="true"></airmid-textbox>
 
                     <airmid-textbox fxFlex="9%" label="Mobile" formControlName="Mobile" [(value)]="vMobile"
@@ -83,16 +83,16 @@
                     <airmid-datepicker fxFlex="9%" [formGroup]="userFormGroup" formControlName="DateOfInvoice"
                       [label]="'Invoice Date'"></airmid-datepicker>
 
-                    <airmid-textbox fxFlex="6%" label="Invoice No" formControlName="InvoiceNo"
+                    <airmid-textbox fxFlex="6%" label="InvoiceNo" formControlName="InvoiceNo"
                       [(ngModel)]="registerObj.invoiceNo" [formGroup]="userFormGroup" placeholder="Invoice No"
                       [validations]="getValidationMessages().invoiceNo"
                       (change)="chkInvoiceNo(userFormGroup.get('InvoiceNo')?.value)"></airmid-textbox>
 
-                    <airmid-textbox fxFlex="6%" label="Gate Entry No" formControlName="GateEntryNo"
+                    <airmid-textbox fxFlex="7%" label="GateEntryNo" formControlName="GateEntryNo"
                       [(ngModel)]="registerObj.gateEntryNo" [formGroup]="userFormGroup" placeholder="GateEntryNo"
                       [validations]="getValidationMessages().gateEntryNo" (keydown)="onEnterHSNCode($event)"></airmid-textbox>
 
-                    <airmid-datepicker fxFlex="9%" [formGroup]="userFormGroup" formControlName="PaymentDate"
+                    <airmid-datepicker fxFlex="10%" [formGroup]="userFormGroup" formControlName="PaymentDate"
                       [label]="'Payment due date'"></airmid-datepicker>
 
                     <airmid-dropdown label="Select GSTType" formControlName="GSTType" fxFlex="10%"
@@ -101,15 +101,15 @@
                      >
                     </airmid-dropdown>
 
-                    <div fxLayout="row" fxFlex="15%" class="ml-8">
+                    <div fxLayout="row" fxFlex="10%" class="ml-8">
 
-                      <mat-radio-group formControlName="GRNType" fxLayout="column" class="gap-4">
-                        <mat-radio-button [value]="true">Direct Purchase</mat-radio-button>
+                      <mat-radio-group formControlName="GRNType" fxLayout="column" class="gap-2">
+                        <mat-radio-button [value]="true">Direct</mat-radio-button>
                         <mat-radio-button [value]="false" (change)="getPurchaseList()">Purchase
                           Orders</mat-radio-button>
                       </mat-radio-group>
 
-                      <mat-radio-group formControlName="PaymentType" fxLayout="column" class="gap-4">
+                      <mat-radio-group formControlName="PaymentType" fxLayout="column" class="gap-2">
                         <mat-radio-button [value]="true">Cash</mat-radio-button>
                         <mat-radio-button [value]="false">Credit</mat-radio-button>
                       </mat-radio-group>
@@ -131,10 +131,10 @@
                       (selectionChange)="getSelectedItem($event)" ValueField="itemId"
                       (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
-                    <airmid-textbox fxFlex="5%" label="UOM" formControlName="UOMId" [formGroup]="userFormGroup"
-                      placeholder="UOM" [readonly]="true"></airmid-textbox>
+                    <!-- <airmid-textbox fxFlex="5%" label="UOM" formControlName="UOMId" [formGroup]="userFormGroup"
+                      placeholder="UOM" [readonly]="true"></airmid-textbox> -->
 
-                    <airmid-textbox fxFlex="4%" label="Packing" formControlName="ConversionFactor" type="number"
+                    <airmid-textbox fxFlex="5%" label="Packing" formControlName="ConversionFactor" type="number"
                       [formGroup]="userFormGroup" (keyup)="calculateTotalamt()" [min]="1"></airmid-textbox>
 
                     <!-- <airmid-textbox fxFlex="5%" label="Batch No" formControlName="BatchNo" [formGroup]="userFormGroup"
@@ -147,36 +147,62 @@
                       (selectionChange)="onBatchChange($event)" 
                       ></airmid-autocomplete> 
 
-                    <mat-form-field appearance="outline" fxFlex="8%">
+                    <mat-form-field appearance="outline" fxFlex="10%">
                       <mat-label>ExpDate</mat-label>
                       <input matInput #inputField (keyup.enter)="calculateLastDay()" formControlName="ExpDate"
                         autocomplete="off" placeholder="mmyyyy" required (keypress)="keyPressDigitsOnly($event)">
                     </mat-form-field> 
+<!-- type="number" -->
+                    <!-- <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
+                      placeholder="Qty" (valueChange)="calculateTotalamt()" ></airmid-textbox> -->
 
-                    <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
-                      placeholder="Qty" (valueChange)="calculateTotalamt()" type="number"></airmid-textbox>
+                       <airmid-textbox  fxFlex="5%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
+                      placeholder="Qty" [validations]="getValidationMessages().qty" [type]="'text'"
+                        (keypress)="keyPressCharater($event)"></airmid-textbox>
 
-                    <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
-                      placeholder="FreeQty" type="number" [min]="0"  (valueChange)="calculateTotalamt()"></airmid-textbox>
 
-                    <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
-                      placeholder="MRP" type="number" [validations]="getValidationMessages().mrp"
-                      (valueChange)="calculateTotalamt()"></airmid-textbox>
 
-                    <airmid-textbox fxFlex="5%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
-                      placeholder="Rate" type="number" [min]="0" (valueChange)="calculateTotalamt()"
+                    <!-- <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
+                      placeholder="FreeQty"  [min]="0"  (valueChange)="calculateTotalamt()"></airmid-textbox> -->
+
+                       <airmid-textbox  fxFlex="5%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
+                      placeholder="FreeQty" [validations]="getValidationMessages().qty" [type]="'text'"
+                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+
+
+                    <!-- <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
+                      placeholder="MRP"  [validations]="getValidationMessages().mrp"
+                      (valueChange)="calculateTotalamt()"></airmid-textbox> -->
+
+                         <airmid-textbox  fxFlex="6%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
+                      placeholder="MRP" [validations]="getValidationMessages().qty" [type]="'text'"
+                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+
+
+                    <airmid-textbox fxFlex="7%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
+                      placeholder="Rate"  [min]="0" (valueChange)="calculateTotalamt()"
                       [validations]="getValidationMessages().rate"
                        (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
 
-                    <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
+                    <airmid-textbox fxFlex="7%" label="Total Amount" formControlName="TotalAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
 
-                    <airmid-textbox fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
-                      type="number" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                    <!-- <airmid-textbox fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
+                       (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
-                    <div *ngIf="IsDiscPer2" fxFlex="5%">
-                      <airmid-textbox label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup" type="text"
-                        (keyup)="calculateDiscper2Amt()"></airmid-textbox>
+                         <airmid-textbox  fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
+                      placeholder="MRP" [validations]="getValidationMessages().Disc" [type]="'text'"
+                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+
+
+                    <div *ngIf="IsDiscPer2" fxFlex="6%">
+                      <!-- <airmid-textbox label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup" type="text"
+                        (keyup)="calculateDiscper2Amt()"></airmid-textbox> -->
+
+                          <airmid-textbox  fxFlex="6%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
+                      placeholder="MRP" [validations]="getValidationMessages().Disc" [type]="'text'"
+                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+
                     </div>
 
                     <!-- <airmid-textbox fxFlex="4%" label="CGST" formControlName="CGST" [formGroup]="userFormGroup"
@@ -204,7 +230,7 @@
                     <!-- <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup"
                       type="text" [readonly]="true"></airmid-textbox> -->
 
-                    <airmid-textbox fxFlex="5%" label="Net Amount" formControlName="NetAmount"
+                    <airmid-textbox fxFlex="7%" label="Net Amount" formControlName="NetAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
                     <div [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
                       <!-- Temporary disabled false 
