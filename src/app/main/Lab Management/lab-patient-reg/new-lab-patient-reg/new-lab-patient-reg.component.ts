@@ -615,8 +615,8 @@ export class NewLabPatientRegComponent {
   }
 
   onChangeRefdoc(value) {
-    this.vRefDocId=value.doctorId
-    this.vRefDocName=value.doctorName
+    this.vRefDocId = value.doctorId
+    this.vRefDocName = value.doctorName
     this.myForm.get('refDocId').setValue(value.doctorId);
   }
 
@@ -1935,6 +1935,11 @@ export class NewLabPatientRegComponent {
     const lastName = this.myForm.get('lastName').value?.trim() || '';
     const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
 
+    if (mobileNo && mobileNo.length !== 10) {
+      this.filteredOptions = [];
+      return;
+    }
+
     // If all fields are empty, clear everything
     if (!firstName && !lastName && !mobileNo) {
       this.resetFilteredOptions();
@@ -1945,7 +1950,7 @@ export class NewLabPatientRegComponent {
     const filledFields = [firstName, mobileNo].filter(Boolean).length;
 
     // If only one field is filled, and it's FirstName or MobileNo, call API
-    if (filledFields === 1 && (changedField === 'firstName' || changedField === 'mobileNo')) {
+    if (filledFields === 1 && (changedField === 'firstName' || (changedField === 'mobileNo' && mobileNo.length === 10))) {
       const keyword = firstName || mobileNo;
       this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`, keyword).subscribe(results => {
         this.prevResults = results || [];

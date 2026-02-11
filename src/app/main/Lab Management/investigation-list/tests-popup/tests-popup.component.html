@@ -1,0 +1,35 @@
+<div class="policy-info-popover-container">
+    <!-- <div class="popover-header" fxLayoutAlign="space-between center" fxLayout="row">
+        <h3>Test Information</h3>
+
+        <button mat-icon-button (click)="onClose()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div> -->
+
+    <div class="popover-body">
+        <!-- Policy History -->
+         <ng-template #Testcolors let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.serviceName=='CBC'" class="pill purple-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.serviceName=='D DIMER'" class="pill blue s-16">circle</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplate let-element>
+            <!-- *ngIf="element.isSampleCollection?.toString().trim() === 'False'" -->
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
+                    <mat-icon>pages</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
+        <div class="history-section">
+            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <airmid-table [gridConfig]="gridConfig" #grid [ShowFilter]="false" [ShowButtons]="false">
+                </airmid-table>
+            </div>
+        </div>
+    </div>
+</div>

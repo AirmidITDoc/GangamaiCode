@@ -37,8 +37,8 @@
                         </div>
 
                         <div fxFlex="33%" fxFlex.xs="100%">
-                            <airmid-dropdown label="Specimen Color" formControlName="specimenColorId"
-                                [value]="data?.specimenColorId" [formGroup]="testSettingForm"
+                            <airmid-dropdown label="Specimen Color" formControlName="specimenColor"
+                                [value]="data?.specimenColor" [formGroup]="testSettingForm"
                                 [mode]="autocompleteModeSpecimen">
                             </airmid-dropdown>
                         </div>
@@ -123,7 +123,7 @@
 
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                <airmid-editor label="Consent Details" formControlName="consentTemplate"
+                                <airmid-editor label="Consent Details" formControlName="consentDetail"
                                     [formGroup]="testSettingForm"
                                     (valueChange)="onEditorValueChange1($event)"></airmid-editor>
                             </div>

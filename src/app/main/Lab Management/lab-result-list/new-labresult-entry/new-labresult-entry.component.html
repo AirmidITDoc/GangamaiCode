@@ -100,17 +100,18 @@
 
                                 <span class="h1">Patient Information</span>
 
-                                <button mat-raised-button color="primary" (click)="onUpload()"
-                                    style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
-                                    Upload
-                                    <mat-icon class="ml-4">cloud_upload</mat-icon>
-                                </button>
+                                <div class="gap-4">
+                                    <button mat-raised-button color="primary" (click)="onUpload()"
+                                        style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
+                                        Upload
+                                        <mat-icon class="ml-4">cloud_upload</mat-icon>
+                                    </button>
 
-                                <button mat-raised-button color="primary"
-                                    style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
-                                    Re-Run
-                                    <!-- <mat-icon class="ml-4">cloud_upload</mat-icon> -->
-                                </button>
+                                    <button mat-raised-button color="primary"
+                                        style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
+                                        Re-Run
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="Ipd-patient-info" fxFlexFill fxLayout="row"

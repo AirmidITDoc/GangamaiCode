@@ -30,7 +30,7 @@ export class TestSettingsComponent {
   testSettingForm: FormGroup;
   autocompleteModeCategoryId: string = "PathCategory";
   autocompleteModeSpecimen: string = "PathSpecimenMaster"
-  vConsentTemplate: any;
+  vconsentDetail: any;
   registerObj: any;
 
   constructor(
@@ -59,7 +59,7 @@ export class TestSettingsComponent {
     this.testSettingForm.get('isConsentRequired')?.valueChanges.subscribe((isConsentRequired: boolean) => {
 
       const consentNameCtrl = this.testSettingForm.get('consentName');
-      const consentTemplateCtrl = this.testSettingForm.get('consentTemplate');
+      const consentTemplateCtrl = this.testSettingForm.get('consentDetail');
 
       if (isConsentRequired) {
         consentNameCtrl?.setValidators([Validators.required]);
@@ -81,19 +81,19 @@ export class TestSettingsComponent {
     return this._formBuilder.group({
       testId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       specimenTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      specimenColorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      specimenColor: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       specimenQty: ['', [Validators.maxLength(50)]],
       specimenConditionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       containerTypeId: [0],
       collectionMethod: [0],
       // specimenSource: [''],
-      noofContainer: [''],
+      noofContainer: ['',[Validators.required]],
       preservationUsed: [0],
       // transportInstruction: [''],
 
       isConsentRequired: [false, [Validators.required]],
       // consentName: [''],
-      consentTemplate: [''],
+      consentDetail: [''],
       barcodeLabel: [''],
 
       disease: [0],
@@ -125,7 +125,7 @@ export class TestSettingsComponent {
   }
 
   onEditorValueChange1(content: string) {
-    this.testSettingForm.get('consentTemplate')?.setValue(content);
+    this.testSettingForm.get('consentDetail')?.setValue(content);
   }
 
   onEditorValueChange2(content: string) {
