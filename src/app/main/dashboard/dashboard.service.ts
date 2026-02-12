@@ -49,6 +49,15 @@ export class DashboardService {
         });
     }
 
+    filterFormfinance(): FormGroup {
+        return this._formBuilder.group({
+        
+          fromDate: [(new Date()).toISOString()],
+          toDate: [(new Date()).toISOString()],
+          
+        });
+      }
+
     // public getDailyDashboardSummary() {
     //   return this._httpClient.PostData("Generic/GetByProc?procName=rptDailyDashboardSummary", {})
     // }
@@ -215,10 +224,12 @@ export class DashboardService {
         return this._httpClient.GetData("Dashboard/pathology-dashboard?FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
     }
 
+ public getRadiologyDashboard(params) {
+        return this._httpClient.GetData("Dashboard/radiology-dashboard?UnitId=" + params.UnitId+"&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+    }
+    
      public getwardCoutList(params) {
-        debugger
-        // return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=" + params.UnitId + "FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
-//   return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=1&FromDate=2026-02-03&ToDate=2026-02-03")
+        
      return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=" + params.UnitId+"&FromDate="+params.FromDate+"&ToDate="+params.ToDate);
 
 
