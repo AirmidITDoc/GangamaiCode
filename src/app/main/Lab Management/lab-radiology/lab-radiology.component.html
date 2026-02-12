@@ -143,7 +143,7 @@
                                                     : ''">
                                         <button mat-icon-button matTooltip="Print"
                                             [style.visibility]="element.isCompleted ? 'visible' : 'hidden'"
-                                            (click)="viewgetRadioloyTemplateReportPdf(element)"
+                                            (click)="getPrint(element)"
                                             [disabled]="element.isVerified==false">
                                             <mat-icon title="Print">print</mat-icon>
                                         </button>

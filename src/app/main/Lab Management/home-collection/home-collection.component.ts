@@ -44,8 +44,9 @@ export class HomeCollectionComponent {
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  autocompleteModeunit: string = "Hospital";
 
-   ngAfterViewInit() {
+  ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
 
@@ -55,8 +56,6 @@ export class HomeCollectionComponent {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-    private commonService: PrintserviceService,
-    private overlay: Overlay,
     public formBuilder: UntypedFormBuilder,
     public _FormvalidationserviceService: FormvalidationserviceService,
     public permissionService: PagePermissionService,
@@ -76,20 +75,10 @@ export class HomeCollectionComponent {
     //   template: this.PatientTypeColorCode
     // },
     { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-    { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 240, type: gridColumnTypes.template },
-    { heading: "Type", key: "patientType1", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "B2B/Crop Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    { heading: "Ref Doctor", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 170, type: gridColumnTypes.template },
-    { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Bal Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-    { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Date-Time", key: "collectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
+    { heading: "UHID", key: "homeSeqNo", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
@@ -98,20 +87,18 @@ export class HomeCollectionComponent {
   ]
 
   allfilters = [
-    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
-    { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-    { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+    { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
     { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
   ]
 
   gridConfig: gridModel = {
     permissionCode: permissionCodes.LabPatientRegistration,
-    apiUrl: "LabPatientRegistration/List",
+    apiUrl: "HomeCollection/HomeCollectionRegistrationInfoList",
     columnsList: this.allcolumns,
-    sortField: "LabPatientId",
+    sortField: "HomeCollectionId",
     sortOrder: 0,
     filters: this.allfilters
   }
@@ -123,10 +110,16 @@ export class HomeCollectionComponent {
     else
       if (event == 'LastName')
         this.myFilterform.get('LastName').setValue("")
-    // if (event == 'RegNo')
-    //   this.myFilterform.get('RegNo').setValue("")
-    if (event == 'PBillNo')
-      this.myFilterform.get('PBillNo').setValue("")
+    this.onChangeFirst();
+  }
+
+    ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+
     this.onChangeFirst();
   }
 
@@ -140,18 +133,16 @@ export class HomeCollectionComponent {
 
   getfilterdata() {
     this.gridConfig = {
-      apiUrl: "LabPatientRegistration/List",
+      apiUrl: "HomeCollection/HomeCollectionRegistrationInfoList",
       columnsList: this.allcolumns,
-      sortField: "LabPatientId",
+      sortField: "HomeCollectionId",
 
       sortOrder: 0,
       filters: [
-        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
       ]
     }

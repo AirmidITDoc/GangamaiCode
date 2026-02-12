@@ -216,8 +216,6 @@ export class LabRadiologyComponent {
 
     console.log(contact)
 
-    if (contact.isTemplateTest)
-
       Swal.fire({
         title: 'Select Report Format',
         text: "Choose how you want to view the report:",

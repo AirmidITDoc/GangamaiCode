@@ -22,9 +22,9 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Cancel">
+            <!-- <button mat-icon-button matTooltip="Cancel">
                 <mat-icon> cancel </mat-icon>
-            </button>
+            </button> -->
 
             <button mat-icon-button matTooltip="Print">
                 <mat-icon>print</mat-icon>
@@ -40,15 +40,14 @@
 
                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <!-- <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
-                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
-                            [formGroup]="myFilterform" [mode]="autocompleteModeunit"></airmid-dropdown> -->
+                        <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="true"
+                            [(ngModel)]="gridConfig.filters[4].fieldValue" (selectionChange)="ListView1($event)"
+                            [formGroup]="myFilterform" [mode]="autocompleteModeunit"></airmid-dropdown>
 
                         <mat-form-field appearance="outline">
                             <mat-label>Enter a date range</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="fromDate" placeholder="Start date"
-                                    (dateChange)="onChangeFirst()">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date">
                                 <input matEndDate formControlName="enddate" placeholder="End date"
                                     (dateChange)="onChangeFirst()">
                             </mat-date-range-input>
