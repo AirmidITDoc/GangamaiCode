@@ -167,7 +167,7 @@
                                                     </div>
 
                                                     <div fxLayout="row" fxLayoutGap="4px">
-                                                        <div fxFlex="33">
+                                                        <div fxFlex="50">
                                                             <airmid-dropdown label="City" formControlName="cityId"
                                                                 [formGroup]="myForm" ValueField="cityId"
                                                                 TextField="cityName" [value]="registerObj?.cityId"
@@ -175,7 +175,14 @@
                                                                 ApiUrl="CityMaster/get-cities">
                                                             </airmid-dropdown>
                                                         </div>
-                                                        <div fxFlex="33">
+                                                        <div fxFlex="50">
+                                                            <airmid-textbox label="ReferByName"
+                                                                formControlName="ReferByName"
+                                                                [validations]="getValidationMessages().ReferByName"
+                                                                [formGroup]="myForm">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                        <!-- <div fxFlex="33">
                                                             <airmid-dropdown label="State" formControlName="stateId"
                                                                 [formGroup]="myForm" ValueField="stateId"
                                                                 TextField="stateName" #ddlState
@@ -189,19 +196,12 @@
                                                                 [disabled]="true" #ddlCountry
                                                                 [mode]="autocompleteModecountry" [readonly]="true">
                                                             </airmid-dropdown>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div fxLayout="row" fxLayoutGap="4px">
-                                                        <div fxFlex="50">
+                                                        <div fxFlex="100">
                                                             <airmid-textbox label="Comments" formControlName="Comments"
                                                                 [validations]="getValidationMessages().Comments"
-                                                                [formGroup]="myForm">
-                                                            </airmid-textbox>
-                                                        </div>
-                                                        <div fxFlex="50">
-                                                            <airmid-textbox label="ReferByName"
-                                                                formControlName="ReferByName"
-                                                                [validations]="getValidationMessages().ReferByName"
                                                                 [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
@@ -432,7 +432,8 @@
                                                                         color="primary"><mat-icon>insert_drive_file</mat-icon></button>
                                                                     <button mat-icon-button matTooltip="Info"
                                                                         color="primary"><mat-icon>error_outline</mat-icon></button>
-                                                                    <button mat-icon-button color="warn" matTooltip="Delete"
+                                                                    <button mat-icon-button color="warn"
+                                                                        matTooltip="Delete"
                                                                         (click)="deleteTableRow(contact)"><mat-icon>delete_outline</mat-icon></button>
                                                                 </mat-cell>
                                                             </ng-container>

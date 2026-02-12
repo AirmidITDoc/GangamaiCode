@@ -61,7 +61,7 @@ export class ItemFormMasterComponent implements OnInit {
     vCGST: any;
     vIGST: any;
     vSGST: any;
-    VisValidContent:any = false;
+    VisValidContent: any = false;
 
     constructor(
         public _itemService: ItemMasterService,
@@ -115,17 +115,16 @@ export class ItemFormMasterComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(ItemWiseSupplierRateComponent,
             {
-                height:'85%',
+                height: '85%',
                 width: '80%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
-
         });
     }
 
-
+    showDoseDropdownRefresh = true;
     onSave(row: any = null) {
         let that = this;
 
@@ -135,8 +134,12 @@ export class ItemFormMasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            that.grid.bindGridData();
-
+            // that.grid.bindGridData();
+            //  Force re-render of dropdown to reload internal data
+            this.showDoseDropdownRefresh = false;
+            setTimeout(() => {
+                this.showDoseDropdownRefresh = true;
+            }, 100);
         });
     }
 
@@ -314,7 +317,7 @@ export class ItemFormMasterComponent implements OnInit {
             conversionFactor: [
                 { name: "required", Message: "Conversion Factor or packing is required" },
                 { name: "maxlength", Message: "Conversion Factor should not be greater than 5 char." },
-                { name: "pattern", Message: "Only NUMBER allowed."  }
+                { name: "pattern", Message: "Only NUMBER allowed." }
             ],
             reOrder: [
                 { name: "required", Message: "ReOrder is required" },

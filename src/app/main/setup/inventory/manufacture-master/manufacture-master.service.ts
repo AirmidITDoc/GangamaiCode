@@ -25,7 +25,7 @@ export class ManufactureMasterService {
             manufId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             manufName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(225),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]

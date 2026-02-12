@@ -146,6 +146,11 @@ export class NewLabPatientRegComponent {
   UnitId: any = this.accountService.currentUserValue.user.unitId;
   vRefDocId: any = 0
   vRefDocName: any = ''
+  vFirstNameConfig: any;
+  vmiddleNameConfig: any;
+  vlastNameConfig: any;
+  stateId = 0
+  counryId = 0
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -166,6 +171,7 @@ export class NewLabPatientRegComponent {
     private hospitalconfigservice: HospitalConfigService,
     public toastrService: ToastrService, public _ConfigService: ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private _configue: ConfigService,
     private apiCaller: ApiCaller,
   ) { }
 
@@ -210,6 +216,42 @@ export class NewLabPatientRegComponent {
     console.log(this._ConfigService.configParams)
 
     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+
+    // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
+    const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
+    const [firstnameid, firstnameval] = firstValue.includes(":") ? firstValue.split(":") : [null, null];
+    this.vFirstNameConfig = firstnameid
+
+    const middleValue = this?._configue?.configParams?.MiddleNameMandatory || "";
+    const [middlenameid, middlenameval] = middleValue.includes(":") ? middleValue.split(":") : [null, null];
+    this.vmiddleNameConfig = middlenameid
+
+    const lastValue = this?._configue?.configParams?.LastNameMandatory || "";
+    const [lastnameid, lastnameval] = lastValue.includes(":") ? lastValue.split(":") : [null, null];
+    this.vlastNameConfig = lastnameid
+
+    this.setNameValidations();
+  }
+
+  setNameValidations() {
+    const fieldConfigs = [
+      { field: 'firstName', config: this.vFirstNameConfig },
+      { field: 'middleName', config: this.vmiddleNameConfig },
+      { field: 'lastName', config: this.vlastNameConfig }
+    ];
+
+    fieldConfigs.forEach(item => {
+      const ctrl = this.myForm.get(item.field);
+      if (!ctrl) return;
+
+      if (item.config === '1') {
+        ctrl.setValidators([Validators.required]);
+      } else {
+        ctrl.clearValidators();
+      }
+
+      ctrl.updateValueAndValidity();
+    });
   }
 
   createFinalFormView() {
@@ -644,6 +686,8 @@ export class NewLabPatientRegComponent {
         this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
           console.log(response)
           this.registerObj = response;
+          this.counryId=response.countryId
+          this.stateId=response.stateId
           this.value = response.dateofBirth
           this.regNo = response.labRequestNo
           this.onChangeDateofBirth(response.dateofBirth)
@@ -972,22 +1016,6 @@ export class NewLabPatientRegComponent {
     }
   }
 
-  // updateCalculation(row: any = null) {
-  //   debugger
-  //   const total = this.chargeList.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
-  //   const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
-
-  //   this.Consessionres = discPer > 0;
-
-  //   const discountAmt = (total * discPer) / 100;
-  //   const netAmt = Math.round(total - discountAmt);
-
-  //   this.myForm.patchValue({
-  //     totalAmt: total,
-  //     discountAmt: discountAmt,
-  //     netPayableAmt: netAmt
-  //   }, { emitEvent: false });
-  // }
   updateCalculation(source: 'PER' | 'LIST' = 'LIST') {
     debugger
     const totalAmt = this.chargeList.reduce(
@@ -1442,9 +1470,11 @@ export class NewLabPatientRegComponent {
   onChangecity(e) {
     this.CityName = e.cityName
     this.registerObj.stateId = e.stateId
+    this.stateId = e.stateId
     this._labPatientRegService.getstateId(e.stateId).subscribe((Response) => {
-      this.ddlState.SetSelection(Response.stateId)
-      this.ddlCountry.SetSelection(Response.countryId);
+      // this.ddlState.SetSelection(Response.stateId)
+      // this.ddlCountry.SetSelection(Response.countryId);
+      this.counryId = Response.countryId
     });
   }
 
@@ -1525,6 +1555,8 @@ export class NewLabPatientRegComponent {
           }
           // debugger
           this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
+          this.myForm.get('stateId').setValue(this.stateId)
+          this.myForm.get('countryId').setValue(String(this.counryId))
           if (!this.myForm.invalid)
             this.OnSave();
 

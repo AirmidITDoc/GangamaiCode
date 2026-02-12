@@ -67,10 +67,10 @@ export class ItemMasterService {
                 ]
             ],
             itemGenericNameId: [0,
-                [
-                    Validators.required,
-                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
-                ]
+                // [
+                //     Validators.required,
+                //     this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                // ]
             ],
             itemClassId: [0,
                 [
@@ -97,10 +97,10 @@ export class ItemMasterService {
                 ]
             ],
             currencyId: [0,
-                [
-                    Validators.required,
-                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
-                ]
+                // [
+                //     Validators.required,
+                //     this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                // ]
             ],
             taxPer: ["0"],
             isActive: [true],
