@@ -88,6 +88,10 @@ const appRoutes: Routes = [
     path: "RadTestApprovalList",
     loadChildren: () => import("./lab-rad-approvallist/lab-rad-approvallist.module").then((m) => m.LabRadApprovallistModule),
   },
+  {
+    path: "investigation-list",
+    loadChildren: () => import("./investigation-list/investigation-list.module").then((m) => m.InvestigationListModule),
+  },
 
 ];
 

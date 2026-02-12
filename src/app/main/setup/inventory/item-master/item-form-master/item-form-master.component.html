@@ -73,10 +73,9 @@
                     fxFlex="25%">
                   </airmid-dropdown>
 
-                  <airmid-dropdown label="Item Generic Name" formControlName="itemGenericNameId"
-                    [value]="registerObj?.itemGenericNameId" [formGroup]="itemForm"
-                    [validations]="getValidationMessages().itemGenericNameId" [mode]="autocompleteModeItemGenericName"
-                    fxFlex="25%">
+                  <airmid-dropdown *ngIf="showDoseDropdownRefresh" label="Item Generic Name"
+                    formControlName="itemGenericNameId" [value]="registerObj?.itemGenericNameId" [formGroup]="itemForm"
+                    [mode]="autocompleteModeItemGenericName" fxFlex="25%">
                   </airmid-dropdown>
 
                   <airmid-dropdown label="Item Class Name" formControlName="itemClassId"
@@ -84,10 +83,10 @@
                     [validations]="getValidationMessages().itemClassId" [mode]="autocompleteModeItemClass" fxFlex="25%">
                   </airmid-dropdown>
 
-                  <airmid-dropdown label="Currency" formControlName="currencyId" [value]="registerObj?.currencyId"
+                  <!-- <airmid-dropdown label="Currency" formControlName="currencyId" [value]="registerObj?.currencyId"
                     [formGroup]="itemForm" [validations]="getValidationMessages().currencyId"
                     [mode]="autocompleteModeCurrency" fxFlex="25%">
-                  </airmid-dropdown>
+                  </airmid-dropdown> -->
 
                   <!-- 3rd row -->
 

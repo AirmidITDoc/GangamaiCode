@@ -340,7 +340,6 @@ export class LabRadApprovallistComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
-
     });
   }
 
@@ -376,12 +375,12 @@ export class LabRadApprovallistComponent {
           {
             "fieldName": "RadReportId",
             "fieldValue": String(contact.radReportId),
-            "opType": "Equals"
+            "opType": "13"
           },
           {
             "fieldName": "OP_IP_Type",
             "fieldValue": "4",
-            "opType": "Equals"
+            "opType": "13"
           }
         ],
         "mode": "RadiologyTemplateReportWithHeader"
@@ -412,12 +411,12 @@ export class LabRadApprovallistComponent {
           {
             "fieldName": "RadReportId",
             "fieldValue": String(contact.radReportId),
-            "opType": "Equals"
+            "opType": "13"
           },
           {
             "fieldName": "OP_IP_Type",
             "fieldValue": "4",
-            "opType": "Equals"
+            "opType": "13"
           }
         ],
         "mode": "RadiologyTemplateReportWithoutHeader"

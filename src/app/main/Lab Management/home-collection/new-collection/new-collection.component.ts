@@ -181,24 +181,81 @@ export class NewCollectionComponent {
 
     this.loadDropdownOptions();
 
-    if (this.data?.row?.labPatientId) {
-      this._homeColletionService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
+    if (this.data?.homeCollectionId) {
+      this._homeColletionService.gethomeCollById(this.data?.homeCollectionId).subscribe((response) => {
+        console.log(response)
         this.registerObj = response;
-        this.VlabPatRegId = this.registerObj.labPatRegId
-        console.log("retrive Data:", this.registerObj)
-        this._homeColletionService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
-          this.registerObj = response;
-          console.log("Master Data:", this.registerObj)
-          this.myForm.patchValue(this.registerObj)
+        this.value = response.dateofBirth
+        this.regNo = response.labRequestNo
+        this.onChangeDateofBirth(response.dateofBirth)
+        this.regflag = true
+        this.myForm.patchValue({
+          firstName: this.registerObj.firstName.trim(),
+          middleName: this.registerObj.middleName.trim(),
+          LastName: this.registerObj.lastName.trim(),
+          MobileNo: this.registerObj.mobileNo.trim(),
+          address: this.registerObj.address.trim(),
+          // DateOfBirth:this.registerObj.dateofBirth,
         });
+
       });
+
+      // this.myForm.get('DateOfBirth').setValue(this.registerObj.dateofBirth)
+      // this.onChangeDateofBirth(this.registerObj.dateofBirth)
+      // this.myForm.patchValue(this.registerObj)
+      this.getCollectionList();
     }
 
     this.getServiceList();
-    console.log(this.hospitalconfigservice.HospitalconfigParams)
-    console.log(this._ConfigService.configParams)
+    // console.log(this.hospitalconfigservice.HospitalconfigParams)
+    // console.log(this._ConfigService.configParams)
 
     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
+  }
+
+  FetchList: any = [];
+  getCollectionList() {
+    var param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "HomeCollectionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "HomeCollectionId",
+          "fieldValue": String(this.data.homeCollectionId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+
+    this._homeColletionService.getCollectionById(param).subscribe(Menu => {
+      this.FetchList = Menu.data as ChargesList[];
+
+      let hasPrevDiscount = false;
+      if (Array.isArray(this.FetchList)) {
+        this.FetchList.forEach(item => {
+          item.serviceId = item.testId;
+          item.serviceName = item.serviceName;
+          item.price = item.price;
+          item.totalAmt = item.totalAmount;
+          item.netAmount = item.netAmount;
+          item.DiscPer = item.discPer
+          item.DiscAmt = item.discAmount
+
+          if (item.DiscAmt > 0 || item.DiscPer > 0) {
+            this.isDiscountApplied = true;
+            hasPrevDiscount = true;
+          }
+
+          this.onSaveEntry(item);
+
+        });
+      }
+    });
+
   }
 
   getDateTime(dateTimeObj) {
@@ -234,7 +291,7 @@ export class NewCollectionComponent {
         isCancel: false,
         isCancelledBy: 0,
         isCancelledDate: "1900-01-01",
-        status:0,
+        status: 0,
         tHomeCollectionServiceDetails: this._formbuilder.array([]),
 
         // extra fields

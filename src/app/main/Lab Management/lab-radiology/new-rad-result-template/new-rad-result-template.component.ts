@@ -197,7 +197,6 @@ export class NewRadResultTemplateComponent {
         };
         console.log(submitData);
         this._radiologytemplateService.RadioReportverifyMaster(submitData).subscribe(response => {
-          this.grid.bindGridData();
           this.onClose();
         });
       }
