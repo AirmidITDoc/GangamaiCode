@@ -1,4 +1,4 @@
-<div class="airmid-dob-v2-container" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+<div class="airmid-dob-v2-container" fxLayout="row wrap" fxLayoutGap="4px" fxLayoutAlign="start center">
     <!-- Dropdown for Date Style Selection -->
     <mat-form-field appearance="outline" class="dob-dropdown" *ngIf="!hideButtons">
         <mat-select [value]="dateStyle" (selectionChange)="OnChangeDobType($event.value)">

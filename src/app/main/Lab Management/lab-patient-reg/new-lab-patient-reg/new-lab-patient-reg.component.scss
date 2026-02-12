@@ -1,30 +1,87 @@
+// ── Expansion panel body ──
 ::ng-deep .mat-expansion-panel-body {
-  padding: 8px 8px !important;
+  padding: 8px 12px 8px !important;
 }
 
 .mat-expansion-panel-body {
-    padding: 0 10px 16px;
+  padding: 0 12px 8px;
 }
 
+// ── Modal structure ──
 .labpatientMain {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  max-height: 90vh;
-  /* or 100vh if full screen */
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.modal-body {
+  padding: 4px 8px !important;
+}
+
+.main-content {
+  height: 88% !important;
+  overflow: hidden !important;
+}
+
+.modal-footer {
+  padding-bottom: 0 !important;
 }
 
 .labpatientHeader {
   flex-shrink: 0;
   background: #f5f5f5;
+
+  .modal-header-content {
+    padding: 4px 12px !important;
+  }
 }
 
 .labpatientMiddle {
   flex: 1;
-  overflow-y: auto;
-  /* ✅ only body scrolls */
-  padding: 4px;
+  overflow: hidden !important;
+  padding: 4px 8px;
   background: #fff;
+}
+
+// ── Right side billing section ──
+.detail-container {
+  overflow: hidden;
+}
+
+// 3-zone flex layout for billing section
+.billing-flex-layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 240px);
+  max-height: calc(100vh - 240px);
+  margin-bottom: 8px;
+}
+
+// Zone 1: Sticky top - Service name input
+.billing-top-zone {
+  flex-shrink: 0;
+  padding: 4px 0;
+  background: #fff;
+  z-index: 3;
+}
+
+// Zone 2: Flexible middle - Table area (scrollable)
+.billing-middle-zone {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0; // important for flex child scrolling
+}
+
+// Zone 3: Sticky bottom - Totals row
+.billing-bottom-zone {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 6px 8px 10px;
+  z-index: 3;
 }
 
 .labpatientfooter {
@@ -35,13 +92,23 @@
   text-align: right;
   position: sticky;
   bottom: 0;
-  /* ✅ keeps footer visible if body scrolls */
+}
+
+// Hide the "Billing Information" heading text block
+.detail-header {
+  display: none;
+}
+
+// Billing summary row
+.billing-summary-row {
+  background-color: #fff;
 }
 
 .labpatientbtn {
   margin-left: 8px;
 }
 
+// ── Overlay / popup ──
 .overlay {
   position: fixed;
   top: 0;
@@ -50,14 +117,12 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   display: none;
-  /* Hidden by default */
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.3s ease-in-out;
   z-index: 1000;
 }
 
-/* Popup box */
 .popup {
   background: #fff;
   padding: 20px;
@@ -69,7 +134,6 @@
   animation: slideDown 0.3s ease-in-out;
 }
 
-/* Close button */
 .close-btn {
   display: inline-block;
   margin-top: 15px;
@@ -86,48 +150,236 @@
   background: #e60000;
 }
 
-/* Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-/* Show overlay when targeted */
 #popupOverlay:target {
   display: flex;
 }
 
 .ellipsis {
-  max-width: 240px;      /* adjust as needed */
+  max-width: 240px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
 }
 
+// ── Global form field spacing resets ──
 ::ng-deep .mat-form-field-wrapper {
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
 }
 
 ::ng-deep .mat-form-field-subscript-wrapper {
-  margin-top: 2px !important;
+  margin-top: 0 !important;
   min-height: unset !important;
+}
+
+// ── Expansion panel header compact ──
+::ng-deep .mat-expansion-panel-header {
+  padding: 0 12px !important;
+  min-height: 40px !important;
+  height: 40px !important;
+}
+
+::ng-deep .mat-expansion-panel-header.mat-expanded {
+  min-height: 40px !important;
+  height: 40px !important;
+}
+
+// ── Personal panel: hide subscript wrappers ──
+.personal-panel {
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+}
+
+// ══════════════════════════════════════════
+// Dense form field wrapper
+// ══════════════════════════════════════════
+.lab-patient-reg-wrapper {
+  --dense-form-field-height: 36px;
+  --dense-form-field-label-offset: 8px;
+
+
+  .mat-mdc-form-field {
+    --mat-form-field-container-height: var(--dense-form-field-height);
+    --mat-form-field-container-vertical-padding: 0px;
+    --mat-form-field-filled-with-label-container-padding-top: 6px;
+    --mat-form-field-filled-with-label-container-padding-bottom: 0px;
+    margin-bottom: 0;
+  }
+
+  .mdc-data-table__cell {
+    padding: 4px 10px !important;
+  }
+
+  // Table inputs
+  .medicine-table {
+    .mat-mdc-form-field,
+    .mat-form-field {
+      margin-bottom: 0 !important;
+
+      .mat-mdc-form-field-wrapper,
+      .mat-form-field-wrapper {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
+      .mat-mdc-form-field-subscript-wrapper,
+      .mat-form-field-subscript-wrapper {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+
+      .mat-mdc-form-field-bottom-align,
+      .mat-form-field-bottom-align {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+
+        &::before {
+          display: none !important;
+          height: 0 !important;
+        }
+      }
+    }
+  }
+
+  .mat-mdc-form-field .mdc-text-field--filled,
+  .mat-mdc-form-field .mdc-text-field--outlined {
+    height: var(--mat-form-field-container-height);
+  }
+
+  .mat-mdc-form-field .mat-mdc-form-field-infix {
+    min-height: var(--mat-form-field-container-height);
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  .mat-mdc-form-field .mdc-text-field__input {
+    height: auto;
+    line-height: 24px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .mat-mdc-form-field .mdc-text-field--filled .mdc-floating-label--float-above {
+    transform: translateY(
+        calc(
+          (var(--mat-form-field-container-height) * -0.5) +
+            var(--dense-form-field-label-offset)
+        )
+      )
+      scale(var(--mat-mdc-form-field-floating-label-scale, 0.75));
+  }
+
+  .mat-mdc-form-field .mdc-text-field--outlined .mdc-floating-label--float-above,
+  .mat-mdc-form-field
+    .mdc-text-field--outlined.mdc-notched-outline--upgraded
+    .mdc-floating-label--float-above {
+    font-size: calc(
+      var(--mat-form-field-outlined-label-text-size, var(--mat-sys-body-large-size)) *
+        var(--mat-mdc-form-field-floating-label-scale, 0.75)
+    );
+  }
+
+  // Center the placeholder label vertically
+  .mat-mdc-form-field .mdc-floating-label {
+    top: 18px !important;
+  }
+
+  // Position floating label on the border line
+  .mat-mdc-form-field .mdc-floating-label--float-above {
+    top: 28px !important;
+  }
+
+  // Reduce subscript wrapper spacing
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .mat-mdc-form-field-bottom-align::before {
+    height: 0 !important;
+  }
+
+  // Reduce hint wrapper spacing
+  .mat-mdc-form-field-hint-wrapper,
+  .mat-mdc-form-field-error-wrapper {
+    padding: 0 !important;
+  }
+
+  .mdc-icon-button {
+    padding-top: 5px !important;
+  }
+
+  // ── Normal spacing between form fields (8px vertical gap) ──
+  form,
+  .form-section,
+  .form-container {
+    .mat-mdc-form-field + .mat-mdc-form-field {
+      margin-top: 0;
+    }
+
+    .mat-mdc-form-field {
+      margin-bottom: 4px;
+    }
+  }
+
+  .fxLayout,
+  .fxLayoutAlign,
+  [class*="fxLayout"],
+  .row,
+  .form-row,
+  .field-row,
+  [class*="-row"] {
+    .mat-mdc-form-field {
+      margin-bottom: 4px;
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .mat-dialog-content,
+  .mat-mdc-dialog-content {
+    .mat-mdc-form-field {
+      margin-bottom: 4px;
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
 }

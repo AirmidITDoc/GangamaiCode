@@ -1,83 +1,61 @@
 .airmid-dob-v2-container {
     width: 100%;
-    
+    flex-wrap: wrap;
+
     ::ng-deep .mat-mdc-form-field {
         .mat-mdc-form-field-subscript-wrapper {
             display: none;
         }
-        
+
         .mat-mdc-text-field-wrapper {
-            padding: 0 10px;
+            padding: 0 8px;
         }
-        
-        // .mat-mdc-form-field-infix {
-        //     padding-top: 10px;
-        //     padding-bottom: 10px;
-        //     min-height: 40px;
-        // }
     }
 
     .dob-dropdown {
-        width: 110px;
-        min-width: 110px;
-        flex-shrink: 0;
-        
+        flex: 0 1 80px;
+        min-width: 70px;
+        max-width: 90px;
+
         ::ng-deep .mat-mdc-select-value {
-            font-size: 14px;
+            font-size: 13px;
         }
     }
 
     .age-input {
-        width: 153px;
-        min-width: 153px;
-        flex-shrink: 0;
-        
+        flex: 0 1 80px;
+        min-width: 60px;
+        max-width: 90px;
+
         ::ng-deep input {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
         }
     }
 
     .date-picker {
-        width: 250px;
-        min-width: 150px;
-        flex-shrink: 0;
-        
+        flex: 1 1 130px;
+        min-width: 120px;
+        max-width: 180px;
+
         ::ng-deep input {
-            font-size: 14px;
+            font-size: 13px;
         }
-        
-        // ::ng-deep .mat-datepicker-toggle {
-        //     .mat-mdc-icon-button {
-        //         width: 32px;
-        //         height: 32px;
-        //         padding: 4px;
-                
-        //         .mat-mdc-button-touch-target {
-        //             width: 32px;
-        //             height: 32px;
-        //         }
-        //     }
-        // }
     }
 
     .age-display {
-        flex-shrink: 0;
+        flex: 0 1 auto;
     }
 
     .age-readonly {
-        width: 100px;
-        min-width: 100px;
-        
+        flex: 0 1 55px;
+        min-width: 45px;
+        max-width: 65px;
+
         ::ng-deep input {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: rgba(0, 0, 0, 0.6);
-        }
-        
-        ::ng-deep .mat-mdc-form-field-infix {
-            padding-top: 10px;
-            padding-bottom: 10px;
         }
     }
 }
