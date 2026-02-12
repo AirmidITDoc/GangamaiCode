@@ -354,7 +354,7 @@ export class RegInsert {
     BillNo: any;
     BillTime: any;
     PatientType: any;
-
+adharCardNo: any;
     /**
      * Constructor
      *
@@ -459,6 +459,9 @@ export class RegInsert {
             this.BillNo = RegInsert.BillNo || 0
             this.BillTime = RegInsert.BillTime || ''
             this.PatientType = RegInsert.PatientType || ''
+        this.adharCardNo = RegInsert.adharCardNo || ''
+
+            
         }
     }
 }

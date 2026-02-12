@@ -59,6 +59,7 @@ import { PatientDetailsPopoverComponent } from './patient-details-popover/patien
 import { DoctorDetailsPopoverComponent } from './doctor-details-popover/doctor-details-popover.component';
 import { NewAppointmentwithBillComponent } from "./new-appointmentwith-bill/new-appointmentwith-bill.component";
 import { EditAppointmentComponent } from './edit-appointment/edit-appointment.component';
+import { NewAppointmentwihBillComponent } from './new-appointmentwih-bill/new-appointmentwih-bill.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 
 
@@ -94,7 +95,8 @@ const routes: Routes = [
         PatientDetailsPopoverComponent,
         DoctorDetailsPopoverComponent,
         NewAppointmentwithBillComponent,
-        EditAppointmentComponent
+        EditAppointmentComponent,
+        NewAppointmentwihBillComponent
     ],
     imports: [
         RouterModule.forChild(routes),

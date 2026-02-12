@@ -123,6 +123,8 @@ export class AppointmentlistService {
             regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             visitDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             visitTime: [(new Date()).toISOString()],
+          
+          
             PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -146,8 +148,8 @@ export class AppointmentlistService {
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
             visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            policyNumber:[0],
-            policyLimit:[0],
+            policyNumber: [0],
+            policyLimit: [0],
             policyValidateDate: [(new Date()).toISOString()],
         });
     }
@@ -183,8 +185,8 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("VisitDetail/Insert", Param);
 
     }
-    
-     public Editappointment(Param: any) {
+
+    public Editappointment(Param: any) {
         return this._httpClient1.PutData("VisitDetail/VisitUpdate", Param);
 
     }
@@ -193,20 +195,40 @@ export class AppointmentlistService {
 
         return this._httpClient1.PostData("VisitDetail/Update", Param);
     }
+
     
+
+    // RS
+ public getserviceList(param) {
+    return this._httpClient1.PostData("PathlogySampleCollection/PathRadServiceList", param);
+  }
     public InsertAppointmentBilling(Param: any) {
 
         return this._httpClient1.PostData("OPBill/AppointmentBillingInsert", Param);
 
     }
+    public AppointwihRegistredeSave(Param: any) {
 
-public RegistredAppointmentBilling(Param: any) {
+        return this._httpClient1.PostData("OPBill/AppointmentBillingInsert", Param);
+
+    }
+    public AppointwihRegistredeBillSave(Param: any) {
+
+        return this._httpClient1.PostData("OPBill/AppointmentBillingInsert", Param);
+
+    }
+
+    public InsertAppointmentBillingCredit(employee) {
+        return this._httpClient1.PostData("OPBill/AppointmentCreditBillingInsert", employee)
+    }
+
+    public RegistredAppointmentBilling(Param: any) {
 
         return this._httpClient1.PostData("OPBill/AppointmentBillingRegisteredInsert", Param);
 
     }
-    
-     public InsertAppointmentCreditBill(employee) {
+
+    public InsertAppointmentCreditBill(employee) {
         return this._httpClient1.PostData("OPBill/AppointmentCreditBillingInsert", employee)
     }
     public EditConDoctor(Param: any) {
@@ -320,10 +342,10 @@ public RegistredAppointmentBilling(Param: any) {
         return this._httpClient1.PostData("OPBill/OPCreditBillingInsert", employee)
     }
 
-    
 
 
-   
+
+
     public InsertOPBillingpayment(employee) {
         return this._httpClient1.PostData("Payment/PaymentInsert", employee)
     }
@@ -343,7 +365,7 @@ public RegistredAppointmentBilling(Param: any) {
         return this._httpClient1.PostData("VisitDetail/OPprevDoctorVisitList", param)
     }
 
-     public getLabVisitDoctorList(param) {
+    public getLabVisitDoctorList(param) {
 
         return this._httpClient1.PostData("LabPatientRegistration/PrevLabDoctorVisitList", param)
     }
@@ -397,12 +419,12 @@ public RegistredAppointmentBilling(Param: any) {
     public getOPDEmrId(param) {
         return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestListFromEMR", param)
     }
-        public getOpBillthermalReportView(Param,loader = true) {
-    if (loader) {
-      this._loaderService.show();
+    public getOpBillthermalReportView(Param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        //return this._httpClient1.PostData("Report/ViewReport", Param);
+        return this._httpClient1.PostData("Common", Param)
     }
-  //return this._httpClient1.PostData("Report/ViewReport", Param);
-    return this._httpClient1.PostData("Common",Param)
-}
 
 }
