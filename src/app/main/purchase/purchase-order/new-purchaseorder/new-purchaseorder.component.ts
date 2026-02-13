@@ -549,7 +549,7 @@ export class NewPurchaseorderComponent {
     this.ItemName = obj.itemName;
     this.vUOM = obj.umoId;
     this.vConversionFactor = obj.converFactor;
-    this.vHSNcode = obj.hsNcode;
+    this.vHSNcode = obj.hsNcode || '0';
     this.vQty = 0;
     this.vMRP = 0;
     this.vRate = '';
@@ -797,7 +797,7 @@ export class NewPurchaseorderComponent {
       SGSTPer: item.sgstPer,
       IGSTPer: item.igstPer,
       GST: item.cgstPer + item.sgstPer + item.igstPer,
-      HSNcode: item.hsNcode
+      HSNcode: item.hsNcode || '0'
     });
     this.getLastThreeItemInfo();
     const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
@@ -1150,6 +1150,30 @@ export class NewPurchaseorderComponent {
       this.dsLastThreeItemList.data = data.data as LastThreeItemList[]; this.sIsLoading = '';
     });
   }
+  // Check Invice is already exist or not 
+  chkpreviouserates(rate) {
+    const enteredRate = rate;
+    const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
+
+    // Check if rate matches any of last three
+    const isRateSame = lastRates.includes(enteredRate);
+
+    if (!isRateSame && (Number(enteredRate) > 0)) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Price Verification Required',
+        html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
+                  <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
+                  <hr>  `,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#f39c12',
+        background: '#fff',
+        timer: 4000,
+        timerProgressBar: true
+      });
+    }
+
+  }
   // Retreving Item Details Edit Time
   getOldPurchaseOrder(Id) {
     var Param = {
@@ -1244,6 +1268,7 @@ export class LastThreeItemList {
   FreeQty: number;
   MRP: number;
   Rate: number;
+  rate:any;
   TotalAmount: number;
   ConversionFactor: number;
   VatPercentage: number;
@@ -1252,6 +1277,7 @@ export class LastThreeItemList {
     {
 
       this.ItemID = LastThreeItemList.ItemID || 0;
+      this.rate = LastThreeItemList.rate || 0;
       this.ItemName = LastThreeItemList.ItemName || "";
       this.BatchNo = LastThreeItemList.BatchNo || 0;
       this.BatchExpDate = LastThreeItemList.BatchExpDate || 0;

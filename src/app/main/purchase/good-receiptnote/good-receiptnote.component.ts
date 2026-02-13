@@ -90,7 +90,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "", key: "grntime", sort: true, align: 'left', emptySign: 'NA', width: 90 },
         { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Invoice Date", key: "invDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "Invoice Date", key: "invDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
 
         { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         {
