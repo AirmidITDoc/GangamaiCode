@@ -1,0 +1,65 @@
+<div id="contact" class="simple page-layout inner-scroll inner-sidebar right-sidebar">
+    <mat-toolbar style="height: 50px;justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                <mat-icon>menu</mat-icon>
+            </button>
+            
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Lab Sample Collection Date Adjustment -{{registerObj.visit_Adm_ID}} | {{registerObj.patientType}}
+            </span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="content">
+        <div class="center p-24 pb-56">
+            <div class="content-card">
+                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+
+                        <form [formGroup]="sampleform">
+
+
+                            <div fxLayout="row" style="font-size: large;font-weight: bold;">
+                                <label style="margin-bottom: 15px;color: rgb(3, 51, 75);font-size: large;">Sample Data
+                                    :</label>
+                                <span style="padding: 0px 15px 15px 15px;">{{registerObj.sampleNo}} |
+                                    {{registerObj.serviceName}}</span>
+                            </div>
+
+                            <div fxLayout="row" style="font-size: large;font-weight: bold;">
+                                <label style="margin-bottom: 15px;color: rgb(3, 51, 75);font-size: large;">Previous
+                                    Sample Date :</label>
+                                <span style="padding: 0px 15px 15px 15px;"> {{registerObj.sampleCollectionTime}}</span>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px" style="margin-top: 10px;">
+
+                                <mat-form-field appearance="outline" fxFlex="40%">
+                                    <mat-label>Collection Date / Time</mat-label>
+                                    <input matInput type="datetime-local" placeholder="date" [value]="date"
+                                        [(ngModel)]="date" (change)="date=$event.target.value"
+                                        formControlName="SampleCollectionTime" />
+
+                                </mat-form-field>
+
+                            </div>
+                        </form>
+
+                        <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 10px;">
+
+                            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                            <button class="btn btn-primary " (click)="onSubmit()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -67,6 +67,7 @@ export class LabPatientRegComponent {
   @ViewChild('PatientTypeColorCode') PatientTypeColorCode!: TemplateRef<any>;
   @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
   @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
+    @ViewChild('genderANDage') genderANDage!: TemplateRef<any>;
 
   constructor(
     public _labPatientRegService: LabPatientRegService,
@@ -178,6 +179,7 @@ export class LabPatientRegComponent {
     this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.PatientTypeColorCode;
     this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'doctorName')!.template = this.doctorNameWithPopoverTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'genderName')!.template = this.genderANDage;
   }
 
   allcolumns = [
@@ -196,6 +198,7 @@ export class LabPatientRegComponent {
     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 240, type: gridColumnTypes.template },
+    { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.template },
     { heading: "Type", key: "patientType1", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "B2B/Crop Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     { heading: "Ref Doctor", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

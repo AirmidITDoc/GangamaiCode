@@ -17,11 +17,7 @@
     </div>
 
     <div class="modal-body">
-        <!-- <div class="modal-body-container"> -->
 
-        <!-- <div class="main-content"> -->
-
-        <!-- <div class="personal-panel"> -->
         <mat-tab-group animationDuration="0ms">
 
             <!-- 1. Specimen Details -->
@@ -39,7 +35,7 @@
                         <div fxFlex="33%" fxFlex.xs="100%">
                             <airmid-dropdown label="Specimen Color" formControlName="specimenColor"
                                 [value]="data?.specimenColor" [formGroup]="testSettingForm"
-                                [mode]="autocompleteModeSpecimen">
+                                [mode]="autocompleteModeSpecimenColor">
                             </airmid-dropdown>
                         </div>
 
@@ -54,21 +50,21 @@
                         <div fxFlex="33%" fxFlex.xs="100%">
                             <airmid-dropdown label="Specimen Condition" formControlName="specimenConditionId"
                                 [value]="data?.specimenConditionId" [formGroup]="testSettingForm"
-                                [mode]="autocompleteModeSpecimen">
+                                [mode]="autocompleteModeSpecimenCon">
                             </airmid-dropdown>
                         </div>
 
                         <!-- Plain tube, EDTA, Heparin, Fluoride, Sterile container -->
                         <div fxFlex="33%" fxFlex.xs="100%">
                             <airmid-dropdown label="Container Type" formControlName="containerTypeId"
-                                [formGroup]="testSettingForm">
+                                [formGroup]="testSettingForm" [mode]="autocompleteModeSpecimenContainer">
                             </airmid-dropdown>
                         </div>
 
                         <!-- Venipuncture, Catheter, Mid-stream, Biopsy -->
                         <div fxFlex="33%" fxFlex.xs="100%">
                             <airmid-dropdown label="Collection Method" formControlName="collectionMethod"
-                                [formGroup]="testSettingForm">
+                                [formGroup]="testSettingForm" [mode]="autocompleteModeSpecimenCollection">
                             </airmid-dropdown>
                         </div>
 
@@ -81,7 +77,7 @@
                         <!-- Formalin, EDTA, None -->
                         <div fxFlex="33%" fxFlex.xs="100%">
                             <airmid-dropdown label="Preservative Used" formControlName="preservationUsed"
-                                [formGroup]="testSettingForm">
+                                [formGroup]="testSettingForm" [mode]="autocompleteModeSpecimenPreser">
                             </airmid-dropdown>
                         </div>
 

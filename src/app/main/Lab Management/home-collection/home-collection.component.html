@@ -32,6 +32,13 @@
         </div>
     </ng-template>
 
+    <ng-template #stausStart let-element>
+        <div fxLayout="column" fxLayoutAlign="center center" 
+        [ngClass]="element.status > 0 ? 'status-started' : 'status-no'">
+                {{ element.status > 0 ? 'Started' : 'No' }}
+        </div>
+    </ng-template>
+
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
         <airmid-table [gridConfig]="gridConfig" class="content">

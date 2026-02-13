@@ -493,7 +493,10 @@ export class ResultEntryComponent implements OnInit {
                     maxWidth: "75vw",
                     height: '95%',
                     width: '96%',
-                    data: contact,
+                    data: {
+                        data: contact,
+                        verifyCheck: false
+                    }
                 });
 
             dialogRef.afterClosed().subscribe(result => {
@@ -1011,8 +1014,8 @@ export class ResultEntryComponent implements OnInit {
                 height: '95%',
                 width: '96%',
                 data: {
-
-                    regobj: contact
+                    data: contact,
+                    verifyCheck: true
                 }
             });
 

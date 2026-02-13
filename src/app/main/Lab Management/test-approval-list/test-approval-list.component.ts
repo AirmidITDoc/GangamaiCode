@@ -31,14 +31,11 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { ToastrService } from 'ngx-toastr';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PatientList, SampleDetailObj, SampleList } from 'app/main/pathology/result-entry/result-entry.component';
-import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
-import { NewResultEntryComponent } from 'app/main/pathology/result-entry/new-result-entry/new-result-entry.component';
-import { NewResultTemplateComponent } from 'app/main/pathology/result-entry/new-result-template/new-result-template.component';
-import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { LabResultListService } from '../lab-result-list/lab-result-list.service';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { NewLabresultEntryComponent } from '../lab-result-list/new-labresult-entry/new-labresult-entry.component';
+import { NewLabtemplateComponent } from '../lab-result-list/new-labtemplate/new-labtemplate.component';
 
 
 @Component({
@@ -676,7 +673,7 @@ export class TestApprovalListComponent {
             this.Iscompleted = 1;
         });
 
-        const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+        const dialogRef = this._matDialog.open(NewLabtemplateComponent,
           {
             maxWidth: "75vw",
             height: '95%',

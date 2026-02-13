@@ -44,10 +44,12 @@ export class HomeCollectionComponent {
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('stausStart') stausStart!: TemplateRef<any>;
   autocompleteModeunit: string = "Hospital";
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'status')!.template = this.stausStart;
   }
 
   constructor(
@@ -76,10 +78,17 @@ export class HomeCollectionComponent {
     // },
     { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Date-Time", key: "collectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-    { heading: "UHID", key: "homeSeqNo", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "HomeSeqNo", key: "homeSeqNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PatientName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+      template: this.stausStart
+    },
+    { heading: "Reason", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Area", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Phlebotomist", key: "phlebotomist", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PT", key: "priority", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
@@ -113,7 +122,7 @@ export class HomeCollectionComponent {
     this.onChangeFirst();
   }
 
-    ListView1(value) {
+  ListView1(value) {
     console.log(value)
     if (value.value !== 0)
       this.UnitId = value.value

@@ -231,6 +231,7 @@ export class NewLabPatientRegComponent {
     this.vlastNameConfig = lastnameid
 
     this.setNameValidations();
+    this.toggleConcessionValidator();
   }
 
   setNameValidations() {
@@ -686,8 +687,8 @@ export class NewLabPatientRegComponent {
         this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
           console.log(response)
           this.registerObj = response;
-          this.counryId=response.countryId
-          this.stateId=response.stateId
+          this.counryId = response.countryId
+          this.stateId = response.stateId
           this.value = response.dateofBirth
           this.regNo = response.labRequestNo
           this.onChangeDateofBirth(response.dateofBirth)
@@ -837,7 +838,35 @@ export class NewLabPatientRegComponent {
         });
     }
   }
-  Consessionres: boolean = false;
+  // Consessionres: boolean = false;
+  private _Consessionres = false;
+
+  get Consessionres(): boolean {
+    return this._Consessionres;
+  }
+
+  set Consessionres(value: boolean) {
+    if (this._Consessionres !== value) {
+      this._Consessionres = value;
+      this.toggleConcessionValidator();
+    }
+  }
+
+  toggleConcessionValidator() {
+    const control = this.myForm.get('concessionReasonId');
+
+    if (!control) return;
+
+    if (this.Consessionres) {
+      control.setValidators([Validators.required]);
+    } else {
+      control.clearValidators();
+      control.setValue(null);
+    }
+
+    control.updateValueAndValidity({ emitEvent: false });
+  }
+
 
   onDiscountPerChange(row: ChargesList): void {
     debugger

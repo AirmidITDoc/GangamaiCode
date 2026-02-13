@@ -59,6 +59,24 @@
         </span>
     </ng-template>
 
+    <ng-template #genderANDage let-element>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+
+            <span class="patient-link"
+                matTooltip="{{ element.genderName }} • {{ element.ageYear }}y {{ element.ageMonth }}m {{ element.ageDay }}d"
+                matTooltipPosition="above">
+
+                {{ element.genderName }}
+                <span *ngIf="element.ageYear"> • {{ element.ageYear }}y</span>
+                <span *ngIf="element.ageMonth"> {{ element.ageMonth }}m</span>
+                <span *ngIf="element.ageDay"> {{ element.ageDay }}d</span>
+
+            </span>
+
+        </div>
+    </ng-template>
+
+
     <ng-template #doctorNameWithPopoverTemplate let-element>
         <!-- Doctor Name with Hover Popover -->
         <span (mouseenter)="openDoctorDetailsPopover($event, element)" (mouseleave)="closeDoctorDetailsPopover()"

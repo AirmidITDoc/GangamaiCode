@@ -32,11 +32,11 @@ import { LabResultListService } from './lab-result-list.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PatientList, SampleDetailObj, SampleList } from 'app/main/pathology/result-entry/result-entry.component';
-import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
-import { NewResultTemplateComponent } from 'app/main/pathology/result-entry/new-result-template/new-result-template.component';
 import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { NewLabresultEntryComponent } from './new-labresult-entry/new-labresult-entry.component';
+import { SampleCollOldMethodComponent } from '../lab-sample-collection/sample-coll-old-method/sample-coll-old-method.component';
+import { NewLabtemplateComponent } from './new-labtemplate/new-labtemplate.component';
 
 function formatDate(rawDate: string): string {
   if (!rawDate) return '';
@@ -394,7 +394,7 @@ export class LabResultListComponent {
   }
 
   onSampleCollSave(row: any = null) {
-    const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
+    const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
       {
         // maxWidth: "75vw",
         maxHeight: '75vh',
@@ -473,12 +473,15 @@ export class LabResultListComponent {
     }
     else if (contact.isTemplateTest == 1) {
       this.advanceDataStored.storage = new SampleDetailObj(contact);
-      const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+      const dialogRef = this._matDialog.open(NewLabtemplateComponent,
         {
           maxWidth: "75vw",
           height: '95%',
           width: '96%',
-          data: contact,
+          data: {
+            data: contact,
+            verifyCheck: false
+          }
         });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -639,7 +642,7 @@ export class LabResultListComponent {
             this.Iscompleted = 1;
         });
 
-        const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+        const dialogRef = this._matDialog.open(NewLabtemplateComponent,
           {
             maxWidth: "75vw",
             height: '95%',
@@ -932,25 +935,24 @@ export class LabResultListComponent {
     // this.selection.clear();
   }
 
-  onsamplecolltion(contact) {
-    console.log(contact)
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+  // onsamplecolltion(contact) {
+  //   console.log(contact)
+  //   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+  //   buttonElement.blur(); // Remove focus from the button
 
-    const dialogRef1 = this._matDialog.open(NewResultTemplateComponent,
-      {
-        maxWidth: "75vw",
-        height: '95%',
-        width: '96%',
-        data: {
+  //   const dialogRef1 = this._matDialog.open(NewLabtemplateComponent,
+  //     {
+  //       maxWidth: "75vw",
+  //       height: '95%',
+  //       width: '96%',
+  //       data: {
+  //         regobj: contact
+  //       }
+  //     });
 
-          regobj: contact
-        }
-      });
-
-    dialogRef1.afterClosed().subscribe(result => {
-    });
-  }
+  //   dialogRef1.afterClosed().subscribe(result => {
+  //   });
+  // }
   Editoutsoucedata(row) {
     console.log(row)
 
@@ -1763,7 +1765,7 @@ export class AdmissionPersonl {
   VisAdmTime: any;
   serviceId: any;
   pathReportID: any;
-  opdipdId:any;
+  opdipdId: any;
 
   /**
 * Constructor

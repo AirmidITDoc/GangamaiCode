@@ -14,9 +14,9 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
-import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { LabsampleCollFormComponent } from './labsample-coll-form/labsample-coll-form.component';
+import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-coll-old-method.component';
 
 @Component({
     selector: 'app-lab-sample-collection',
@@ -259,7 +259,7 @@ export class LabSampleCollectionComponent {
 
     onSave(row: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
+        const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
             {
                 maxHeight: '80vh',
                 width: '60%',

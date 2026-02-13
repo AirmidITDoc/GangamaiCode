@@ -111,7 +111,7 @@ export class NewCollectionComponent {
   public chargeList: ChargesList[] = [];
   VlabPatRegId: any;
   savebtn: boolean = true;
-  Consessionres: boolean = false;
+  // Consessionres: boolean = false;
 
   displayedServiceColumns: string[] = [
     'ServiceName',
@@ -152,6 +152,8 @@ export class NewCollectionComponent {
   EditedPackageService: any = [];
   OriginalPackageService: any = [];
   TotalPrice: any = 0;
+  vstatus = true;
+  vHomeCollId: any;
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -187,6 +189,8 @@ export class NewCollectionComponent {
         this.registerObj = response;
         this.value = response.dateofBirth
         this.regNo = response.labRequestNo
+        this.vstatus = response.status == 1 ? true : false
+        this.vHomeCollId = response.homeCollectionId
         this.onChangeDateofBirth(response.dateofBirth)
         this.regflag = true
         this.myForm.patchValue({
@@ -200,17 +204,41 @@ export class NewCollectionComponent {
 
       });
 
-      // this.myForm.get('DateOfBirth').setValue(this.registerObj.dateofBirth)
-      // this.onChangeDateofBirth(this.registerObj.dateofBirth)
-      // this.myForm.patchValue(this.registerObj)
       this.getCollectionList();
+      this.toggleConcessionValidator();
     }
 
     this.getServiceList();
-    // console.log(this.hospitalconfigservice.HospitalconfigParams)
-    // console.log(this._ConfigService.configParams)
 
     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
+  }
+
+  private _Consessionres = false;
+
+  get Consessionres(): boolean {
+    return this._Consessionres;
+  }
+
+  set Consessionres(value: boolean) {
+    if (this._Consessionres !== value) {
+      this._Consessionres = value;
+      this.toggleConcessionValidator();
+    }
+  }
+
+  toggleConcessionValidator() {
+    const control = this.myForm.get('concessionReasonId');
+
+    if (!control) return;
+
+    if (this.Consessionres) {
+      control.setValidators([Validators.required]);
+    } else {
+      control.clearValidators();
+      control.setValue(null);
+    }
+
+    control.updateValueAndValidity({ emitEvent: false });
   }
 
   FetchList: any = [];
@@ -284,14 +312,14 @@ export class NewCollectionComponent {
         collectionDate: ['', Validators.required],
         collectionTime: ['', Validators.required],
         phlebotomist: 0,
-        location: "Pune",
-        latitude: "pune", //
-        longitude: "pune", //
-        radius: "srua", //
+        location: "0",
+        latitude: "0", //
+        longitude: "0", //
+        radius: "0", //
         isCancel: false,
         isCancelledBy: 0,
         isCancelledDate: "1900-01-01",
-        status: 0,
+        status: 1,
         tHomeCollectionServiceDetails: this._formbuilder.array([]),
 
         // extra fields
@@ -403,6 +431,8 @@ export class NewCollectionComponent {
     this.myForm.get('collectionDate').setValue(formattedDate);
     this.myForm.get('collectionTime').setValue(formattedTime);
     this.myForm.get('patRegId').setValue(this.VlabPatRegId ?? 0);
+    this.myForm.get('homeCollectionId').setValue(this.vHomeCollId ?? 0);
+    this.myForm.get('status')?.setValue(this.myForm.get('status')?.value == true ? 1 : 0)
 
     const overallDiscAmt = +this.myForm.get('discountAmt')?.value || 0; //bottom discount
 

@@ -17,13 +17,10 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { InvestigationListService } from './investigation-list.service';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
-import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
 import { LabsampleCollFormComponent } from '../lab-sample-collection/labsample-coll-form/labsample-coll-form.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
@@ -35,7 +32,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
-import { NewResultTemplateComponent } from 'app/main/pathology/result-entry/new-result-template/new-result-template.component';
 import { NewLabresultEntryComponent } from '../lab-result-list/new-labresult-entry/new-labresult-entry.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
@@ -43,6 +39,8 @@ import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.com
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { TestsPopupComponent } from './tests-popup/tests-popup.component';
+import { NewLabtemplateComponent } from '../lab-result-list/new-labtemplate/new-labtemplate.component';
+import { SampleCollOldMethodComponent } from '../lab-sample-collection/sample-coll-old-method/sample-coll-old-method.component';
 
 function formatDate(rawDate: string): string {
   if (!rawDate) return '';
@@ -335,7 +333,7 @@ export class InvestigationListComponent {
 
   onSave(row: any = null) {
     let that = this;
-    const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
+    const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
       {
         maxHeight: '80vh',
         width: '60%',
@@ -769,7 +767,7 @@ export class InvestigationListComponent {
   }
 
   onSampleCollSave(row: any = null) {
-    const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
+    const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
       {
         // maxWidth: "75vw",
         maxHeight: '75vh',
@@ -847,7 +845,7 @@ export class InvestigationListComponent {
     }
     else if (contact.isTemplateTest == 1) {
       this.advanceDataStored.storage = new SampleDetailObj(contact);
-      const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+      const dialogRef = this._matDialog.open(NewLabtemplateComponent,
         {
           maxWidth: "75vw",
           height: '95%',
@@ -1200,7 +1198,7 @@ export class InvestigationListComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    const dialogRef1 = this._matDialog.open(NewResultTemplateComponent,
+    const dialogRef1 = this._matDialog.open(NewLabtemplateComponent,
       {
         maxWidth: "75vw",
         height: '95%',
@@ -1993,7 +1991,7 @@ export class InvestigationListComponent {
             this.Iscompleted = 1;
         });
 
-        const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+        const dialogRef = this._matDialog.open(NewLabtemplateComponent,
           {
             maxWidth: "75vw",
             height: '95%',

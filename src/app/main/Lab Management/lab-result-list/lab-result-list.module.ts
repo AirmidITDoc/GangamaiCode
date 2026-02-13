@@ -42,6 +42,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { LabResultListComponent } from './lab-result-list.component';
 import { NewLabresultEntryComponent } from './new-labresult-entry/new-labresult-entry.component';
+import { NewLabtemplateComponent } from './new-labtemplate/new-labtemplate.component';
 
 const routes: Routes = [
   {
@@ -51,7 +52,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LabResultListComponent, NewLabresultEntryComponent],
+  declarations: [LabResultListComponent, NewLabresultEntryComponent, NewLabtemplateComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

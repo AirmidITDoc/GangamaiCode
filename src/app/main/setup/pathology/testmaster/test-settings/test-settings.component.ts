@@ -30,6 +30,11 @@ export class TestSettingsComponent {
   testSettingForm: FormGroup;
   autocompleteModeCategoryId: string = "PathCategory";
   autocompleteModeSpecimen: string = "PathSpecimenMaster"
+  autocompleteModeSpecimenCon: string = "PathSpecimenConditionMaster"
+  autocompleteModeSpecimenColor: string = "SpecimentColors"
+  autocompleteModeSpecimenContainer: string = "PathSpecimenContainerMaster"
+  autocompleteModeSpecimenCollection: string = "PathSpecimenCollectionMaster"
+  autocompleteModeSpecimenPreser: string = "PathSpecimenPreservativeMaster"
   vconsentDetail: any;
   registerObj: any;
 
@@ -52,6 +57,7 @@ export class TestSettingsComponent {
       setTimeout(() => {
         this._TestmasterService.gettestInfoById(this.data.testId).subscribe((response) => {
           this.registerObj = response;
+          this.testSettingForm.patchValue(this.registerObj)
           console.log("test info:", this.registerObj)
         });
       }, 500);
@@ -80,14 +86,14 @@ export class TestSettingsComponent {
   createSettingForm() {
     return this._formBuilder.group({
       testId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      specimenTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      specimenColor: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      specimenTypeId: [0],
+      specimenColor: [0],
       specimenQty: ['', [Validators.maxLength(50)]],
-      specimenConditionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      specimenConditionId: [0],
       containerTypeId: [0],
       collectionMethod: [0],
       // specimenSource: [''],
-      noofContainer: ['',[Validators.required]],
+      noofContainer: [''],
       preservationUsed: [0],
       // transportInstruction: [''],
 
@@ -108,9 +114,9 @@ export class TestSettingsComponent {
       // unit:[],
       isApprovedRequired: [false],
 
-      tatday: [''],
-      tathour: [''],
-      tatmin: [''],
+      tatday: [0],
+      tathour: [0],
+      tatmin: [0],
     })
   }
 

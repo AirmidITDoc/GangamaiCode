@@ -105,12 +105,14 @@
                                                         <div fxFlex="50">
                                                             <airmid-textbox label="Address" formControlName="address"
                                                                 [validations]="getValidationMessages().address"
-                                                                [formGroup]="myForm" [value]="registerObj?.address ?? ''">
+                                                                [formGroup]="myForm"
+                                                                [value]="registerObj?.address ?? ''">
                                                             </airmid-textbox>
                                                         </div>
                                                         <div fxFlex="50">
                                                             <airmid-textbox label="Remarks" formControlName="remark"
-                                                                [formGroup]="myForm" [value]="registerObj?.remark ?? ''">
+                                                                [formGroup]="myForm"
+                                                                [value]="registerObj?.remark ?? ''">
                                                             </airmid-textbox>
                                                         </div>
                                                     </div>
@@ -506,15 +508,17 @@
     </div>
 
     <div class="modal-footer labpatientfooter">
-        <div class="modal-footer-container p-8" fxLayoutAlign="end">
+        <div class="modal-footer-container p-8" fxLayoutAlign="space-between center">
+            <form [formGroup]="myForm">
+                <div fxLayout="row">
+                    <app-airmid-slider label="Status" formControlName="status" [formGroup]="myForm"
+                        [(ngModel)]="vstatus"></app-airmid-slider>
+                </div>
+            </form>
 
             <div class="modal-footer-buttons labpatientbtn">
-                <div>
-                    <button class="btn btn-primary" (click)="OnSave()">Draft Bill</button>
-                </div>
-                <div>
-                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                </div>
+                <button class="btn btn-primary" (click)="OnSave()">Draft Bill</button>
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
             </div>
         </div>
     </div>

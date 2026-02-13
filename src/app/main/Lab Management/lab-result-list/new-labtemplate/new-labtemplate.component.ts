@@ -2,7 +2,6 @@ import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@an
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { Observable } from 'rxjs';
-import { ResultEntryService } from '../result-entry.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -13,16 +12,16 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import Swal from 'sweetalert2';
+import { LabResultListService } from '../lab-result-list.service';
 
 @Component({
-  selector: 'app-new-result-template',
-  templateUrl: './new-result-template.component.html',
-  styleUrls: ['./new-result-template.component.scss'],
+  selector: 'app-new-labtemplate',
+  templateUrl: './new-labtemplate.component.html',
+  styleUrls: ['./new-labtemplate.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class NewResultTemplateComponent {
-
+export class NewLabtemplateComponent {
   TemplateForm: FormGroup
   PathReportTemplateForm: FormGroup
   PathReportHeaderForm: FormGroup
@@ -68,7 +67,7 @@ export class NewResultTemplateComponent {
   verifyCheck: boolean;
 
   constructor(
-    public _SampleService: ResultEntryService,
+    public _SampleService: LabResultListService,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
@@ -76,7 +75,7 @@ export class NewResultTemplateComponent {
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
-    public dialogRef: MatDialogRef<NewResultTemplateComponent>,
+    public dialogRef: MatDialogRef<NewLabtemplateComponent>,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) {
     dialogRef.disableClose = true;
@@ -104,10 +103,10 @@ export class NewResultTemplateComponent {
 
     this.selectChangeService()
     //  this.ApiURL = "Pathology/search-GetServicewiseTemplate?ServiceId=" + this.selectedAdvanceObj1.serviceId;
-
   }
 
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
+
   ngOnInit(): void {
     this.TemplateForm = this.vResultTemplateFormInsert()
     console.log(this.selectedAdvanceObj1)
@@ -118,6 +117,7 @@ export class NewResultTemplateComponent {
     // this.ApiURL = "Pathology/search-GetServicewiseTemplate?ServiceId=" +this.selectedAdvanceObj1.serviceId;
     console.log(this.ApiURL)
   }
+
 
   onVerify() {
     Swal.fire({
@@ -296,8 +296,6 @@ export class NewResultTemplateComponent {
 
   }
 
-
-
   viewgetPathologyTemplateReportPdf(contact) {
     // debugger
     setTimeout(() => {
@@ -310,7 +308,7 @@ export class NewResultTemplateComponent {
           },
           {
             "fieldName": "OP_IP_Type",
-            "fieldValue": String(contact.opdipdtype ?? contact.opdIpdType),
+            "fieldValue": "4",
             "opType": "Equals"
           }
         ],
@@ -356,9 +354,7 @@ export class NewResultTemplateComponent {
         // this.ddltemplate.bindGridAutoComplete();
       });
     }
-
   }
-
 
   getValidationMessages() {
 
@@ -382,6 +378,7 @@ export class NewResultTemplateComponent {
     this._SampleService.myform.reset();
     this.dialogRef.close();
   }
+
 
   Tempdesc: any;
   isSelected: boolean = false;
@@ -411,70 +408,3 @@ export class NewResultTemplateComponent {
   }
 
 }
-
-
-export class PthologyresulUp {
-
-  PathReportID: number;
-  ReportDate: any;
-  ReportTime: any;
-  IsCompleted: boolean;
-  IsPrinted: boolean;
-  PathResultDr1: any;
-  PathResultDr2: any;
-  PathResultDr3: any;
-  IsTemplateTest: any;
-  SuggestionNotes: any;
-  AdmVisitDoctorID: any;
-  RefDoctorID: any;
-
-  constructor(pathologyTemplateUpdateObj) {
-    this.PathReportID = pathologyTemplateUpdateObj.PathReportID || 0;
-    this.ReportDate = pathologyTemplateUpdateObj.ReportDate || '';
-    this.ReportTime = pathologyTemplateUpdateObj.ReportTime || '';
-    this.IsCompleted = pathologyTemplateUpdateObj.IsCompleted || 0;
-    this.IsPrinted = pathologyTemplateUpdateObj.IsPrinted || 0;
-    this.PathResultDr1 = pathologyTemplateUpdateObj.PathResultDr1 || 0;
-    this.PathResultDr2 = pathologyTemplateUpdateObj.PathResultDr2 || 0;
-    this.PathResultDr3 = pathologyTemplateUpdateObj.PathResultDr3 || 0;
-    this.IsTemplateTest = pathologyTemplateUpdateObj.IsTemplateTest || 0;
-    this.SuggestionNotes = pathologyTemplateUpdateObj.SuggestionNotes || '';
-    this.AdmVisitDoctorID = pathologyTemplateUpdateObj.AdmVisitDoctorID || 0;
-    this.RefDoctorID = pathologyTemplateUpdateObj.RefDoctorID || 0;
-  }
-
-}
-
-
-export class PthologyresultInsert {
-
-  PathReportId: number;
-  PathTemplateId: number;
-  PathTemplateDetailsResult: any;
-  TestId: any;
-
-
-  constructor(pathologyTemplateInsertObj) {
-
-    this.PathReportId = pathologyTemplateInsertObj.PathReportId || 0;
-    this.PathTemplateId = pathologyTemplateInsertObj.PathTemplateId || 0;
-    this.PathTemplateDetailsResult = pathologyTemplateInsertObj.PathTemplateDetailsResult || 0;
-    this.TestId = pathologyTemplateInsertObj.TestId || 0;
-
-  }
-
-}
-
-
-export class PthologyresulDelt {
-
-  pathReportId: number;
-
-  constructor(pathologyTemplateDeleteObj) {
-    this.pathReportId = pathologyTemplateDeleteObj.pathReportId || 0;
-
-  }
-
-}
-
-
