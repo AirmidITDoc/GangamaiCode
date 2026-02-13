@@ -213,6 +213,9 @@ export class ItemFormMasterComponent implements OnInit {
         if (this.itemForm.valid) {
             // const formData = this.itemForm.getRawValue() as ItemMaster;
             //  console.log(formData)
+            if(!this.itemForm.get('hsNcode').value){
+              this.itemForm.get('hsNcode').setValue('0')  
+            }
             console.log(this.itemForm.value)
             const formData = { ...this.itemForm.value };
 

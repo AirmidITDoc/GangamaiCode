@@ -125,7 +125,7 @@
                      name="HSNCode" #HSNCodeInput></airmid-textbox> 
  
                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="userFormGroup"
-                      formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="14%"
+                      formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="18%"
                       TextField="formattedText" 
                       [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + StoreId_1 + '&ItemName='"
                       (selectionChange)="getSelectedItem($event)" ValueField="itemId"
@@ -134,7 +134,7 @@
                     <!-- <airmid-textbox fxFlex="5%" label="UOM" formControlName="UOMId" [formGroup]="userFormGroup"
                       placeholder="UOM" [readonly]="true"></airmid-textbox> -->
 
-                    <airmid-textbox fxFlex="5%" label="Packing" formControlName="ConversionFactor" type="number"
+                    <airmid-textbox fxFlex="4%" label="Packing" formControlName="ConversionFactor" type="text"
                       [formGroup]="userFormGroup" (keyup)="calculateTotalamt()" [min]="1"></airmid-textbox>
 
                     <!-- <airmid-textbox fxFlex="5%" label="Batch No" formControlName="BatchNo" [formGroup]="userFormGroup"
@@ -147,7 +147,7 @@
                       (selectionChange)="onBatchChange($event)" 
                       ></airmid-autocomplete> 
 
-                    <mat-form-field appearance="outline" fxFlex="10%">
+                    <mat-form-field appearance="outline" fxFlex="8%">
                       <mat-label>ExpDate</mat-label>
                       <input matInput #inputField (keyup.enter)="calculateLastDay()" formControlName="ExpDate"
                         autocomplete="off" placeholder="mmyyyy" required (keypress)="keyPressDigitsOnly($event)">
@@ -156,7 +156,7 @@
                     <!-- <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
                       placeholder="Qty" (valueChange)="calculateTotalamt()" ></airmid-textbox> -->
 
-                       <airmid-textbox  fxFlex="5%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
+                       <airmid-textbox  fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
                       placeholder="Qty" [validations]="getValidationMessages().qty" [type]="'text'"
                         (keypress)="keyPressCharater($event)"></airmid-textbox>
 
@@ -165,7 +165,7 @@
                     <!-- <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
                       placeholder="FreeQty"  [min]="0"  (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
-                       <airmid-textbox  fxFlex="5%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
+                       <airmid-textbox  fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
                       placeholder="FreeQty" [validations]="getValidationMessages().qty" [type]="'text'"
                         (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
@@ -190,17 +190,17 @@
                     <!-- <airmid-textbox fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
                        (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
-                         <airmid-textbox  fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
+                         <airmid-textbox  fxFlex="4%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
                       placeholder="MRP" [validations]="getValidationMessages().Disc" [type]="'text'"
                         (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
-                    <div *ngIf="IsDiscPer2" fxFlex="6%">
+                    <div *ngIf="IsDiscPer2" fxFlex="4%">
                       <!-- <airmid-textbox label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup" type="text"
                         (keyup)="calculateDiscper2Amt()"></airmid-textbox> -->
 
-                          <airmid-textbox  fxFlex="6%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
-                      placeholder="MRP" [validations]="getValidationMessages().Disc" [type]="'text'"
+                          <airmid-textbox  fxFlex="4%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
+                      placeholder="Disc2" [validations]="getValidationMessages().Disc" [type]="'text'"
                         (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                     </div>
@@ -209,7 +209,7 @@
                       type="text" #CGST
                       (change)="getchangegstper(userFormGroup.get('CGST')?.value, 'CGST')"></airmid-textbox>  -->
 
-                       <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="8%"
+                       <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="7%"
                       [formGroup]="userFormGroup" [validations]="getValidationMessages().CGST"
                       [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
                        (onClearSelection)="getchangegstper($event)"> </airmid-dropdown>

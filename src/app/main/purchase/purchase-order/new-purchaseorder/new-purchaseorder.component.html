@@ -119,7 +119,8 @@
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
                                             [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
                                             type="number" (valueChange)="OnchekPurchaserateValidation()"
-                                            [validations]="getValidationMessages().rate"  [min]="0"></airmid-textbox>
+                                            [validations]="getValidationMessages().rate"  [min]="0"
+                                             (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>

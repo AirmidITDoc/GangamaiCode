@@ -221,7 +221,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.isExpanded = true;
         this.userFormGroup.patchValue({
             UOMId: item.umoId,
-            HSNCode: item.hsNcode,
+            HSNCode: item.hsNcode || '0',
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
         });
         if (((item?.cgstPer ?? 0) || 0) > 0) {
@@ -948,7 +948,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalAmount: [item?.TotalAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            conversionFactor: [item?.ConversionFactor || 1, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             vatPercentage: [item?.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             vatAmount: [item?.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             discPercentage: [item?.Disc || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -982,11 +982,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     createGrnItemInsert(item: any = {}): FormGroup {
         return this.formBuilder.group({
             itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            hsncode: [item?.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            hsncode: [item?.HSNCode || '0', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             cgst: [item?.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             sgst: [item?.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             igst: [item?.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            conversionFactor: [String(item?.ConversionFactor), [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            conversionFactor: [String(item?.ConversionFactor || 1), [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
     get GrndetailArray(): FormArray {
@@ -1031,7 +1031,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
         debugger
         if (!this.isValidForm()) {
-            Swal.fire('Please enter valid table data.');
+           // Swal.fire('Please enter valid table data.');
             return;
         }
         if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null)) {
@@ -1188,7 +1188,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         ItemName: element.itemName,
                         ConversionFactor: element.conversionFactor,
                         UOMId: element.uomId,
-                        HSNCode: element.hsncode,
+                        HSNCode: element.hsncode || '0',
                         BatchNo: element.batchNo,
                         ExpDate: element.batchExpDate,
                         Qty: element.receiveQty,
@@ -1400,13 +1400,57 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.dsLastThreeItemList.data = response.data as LastThreeItemList[];
         });
     }
-    isValidForm(): boolean {
-        //  return this.dsItemNameList.data.every((i) => i.ConversionFactor > 0 && i.Qty > 0 && i.TotalQty > 0 );
-        return this.dsItemNameList.data.every((item) =>
-            item.ConversionFactor > 0 && item.Qty > 0 && item.TotalQty > 0 && !!item.HSNCode && !!item.ExpDate // Checks for null, undefined, false, 0, NaN, ''
-        );
+    // isValidForm(): boolean {
+    //     //  return this.dsItemNameList.data.every((i) => i.ConversionFactor > 0 && i.Qty > 0 && i.TotalQty > 0 );
+    //     return this.dsItemNameList.data.every((item) =>
+    //         item.ConversionFactor > 0 && item.Qty > 0 && item.TotalQty > 0 && !!item.HSNCode && !!item.ExpDate // Checks for null, undefined, false, 0, NaN, ''
+    //     );
 
-    }
+    // }
+    isValidForm(): boolean {
+    const invalidItem = this.dsItemNameList.data.find((item, index) => { 
+debugger
+        if (item.Qty <= 0) {
+            this.toastr.warning(
+                `Row ${index + 1}: Quantity must be greater than 0`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+        if (item.TotalQty <= 0) {
+            this.toastr.warning(
+                `Row ${index + 1}: Total Quantity must be greater than 0`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+         if (item.ConversionFactor <= 0 || item.ConversionFactor == '' || item.ConversionFactor == null) {
+            this.toastr.warning(
+                `Row ${index + 1}: Conversion Factor must be greater than 0`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+        if (!item.ExpDate) {
+            this.toastr.warning(
+                `Row ${index + 1}: Expiry Date is required`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+        return false;
+    });
+
+    return !invalidItem; // valid only if no invalid row
+}
     // it allowed only Digit 
     keyPressDigitsOnly(event) {
         var inp = String.fromCharCode(event.keyCode);
@@ -1577,7 +1621,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         ItemName: element.ItemName?.trim() || '',
                         ConversionFactor: Number(element.ConversionFactor) || 1,
                         UOMId: element.UOMId ?? 0,
-                        HSNCode: element.HSNCode || 'N/A',
+                        HSNCode: element.HSNCode || '0',
                         BatchNo: '',
                         ExpDate: '', // Set default if needed e.g., '1999-01-01'
                         Qty: Number(element.Qty) || 1,
@@ -1694,7 +1738,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalAmount: [item?.TotalAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            conversionFactor: [item?.ConversionFactor || 1, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             vatPercentage: [item?.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             vatAmount: [item?.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             discPercentage: [item?.Disc || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1728,11 +1772,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     createGrnPOItemInsert(item: any = {}): FormGroup {
         return this.formBuilder.group({
             itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            hsncode: [item?.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            hsncode: [item?.HSNCode || '0', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             cgst: [item?.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             sgst: [item?.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             igst: [item?.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            conversionFactor: [String(item?.ConversionFactor), [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            conversionFactor: [String(item?.ConversionFactor || 1), [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
     //Insert Po to grn PoDetails stk form
