@@ -345,3 +345,10 @@ mat-form-field {
         }
     }
 }
+
+// ── Global resize form field class ──
+// Apply class="resize-form-fields" to any container div
+// to reduce input heights for all form fields inside it.
+.resize-form-fields {
+    @include resize-form-fields();
+}

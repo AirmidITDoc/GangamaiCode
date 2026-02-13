@@ -2,6 +2,7 @@
 @import "./animation";
 @import "./form";
 @import "./button";
+@import "./resize-form-fields";
 
 $base-size: 16px;
 @mixin line-height($value) {
