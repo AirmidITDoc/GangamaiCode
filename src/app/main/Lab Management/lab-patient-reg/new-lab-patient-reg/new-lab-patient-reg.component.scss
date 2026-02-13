@@ -20,8 +20,68 @@
   padding: 4px 8px !important;
 }
 
+// Top form row (Unit, PatientType, etc.)
+.top-form-row {
+  flex-shrink: 0;
+  padding: 2px 0 0;
+
+  > form {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mat-mdc-form-field,
+  .mat-form-field {
+    margin-bottom: 0 !important;
+  }
+
+  .mat-form-field-wrapper,
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+
+  [class*="subscript-wrapper"],
+  [class*="bottom-align"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
 .main-content {
-  height: 88% !important;
+  flex: 1 !important;
+  min-height: 0 !important;
   overflow: hidden !important;
 }
 
@@ -43,36 +103,135 @@
   overflow: hidden !important;
   padding: 4px 8px;
   background: #fff;
+  min-height: 0;
+
+  .modal-body-container {
+    height: 100%;
+  }
+
+  ::ng-deep .mat-drawer-content {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+} 
+
+// ── Left panel: Personal details ──
+.left-panel {
+  width: 40%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
 }
 
 // ── Right side billing section ──
 .detail-container {
   overflow: hidden;
+  height: 100%;
 }
 
 // 3-zone flex layout for billing section
 .billing-flex-layout {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 240px);
-  max-height: calc(100vh - 240px);
-  margin-bottom: 8px;
+  height: 100%;
+  overflow: hidden;
 }
 
 // Zone 1: Sticky top - Service name input
 .billing-top-zone {
   flex-shrink: 0;
-  padding: 4px 0;
+  padding: 0 !important;
+  margin: 5px 0 0 0 !important;
   background: #fff;
   z-index: 3;
+
+  > form,
+  > div {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  airmid-autocomplete {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  // Target form field itself and all internal wrappers
+  .mat-mdc-form-field,
+  .mat-form-field {
+    margin-bottom: 0 !important;
+  }
+
+  .mat-form-field-wrapper,
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  // Kill subscript / bottom-align completely
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+
+  // Also catch any [class*="subscript"], [class*="bottom-align"]
+  [class*="subscript-wrapper"],
+  [class*="bottom-align"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 
-// Zone 2: Flexible middle - Table area (scrollable)
+// Zone 2: Flexible middle - Table area
 .billing-middle-zone {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   min-height: 0; // important for flex child scrolling
+
+  .airmid-table-container {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  // Remove any top spacing from tab group
+  .mat-mdc-tab-group,
+  .mat-tab-group {
+    margin-top: 0 !important;
+  }
+
+  .mat-mdc-tab-header,
+  .mat-tab-header {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
 }
 
 // Zone 3: Sticky bottom - Totals row
@@ -92,11 +251,6 @@
   text-align: right;
   position: sticky;
   bottom: 0;
-}
-
-// Hide the "Billing Information" heading text block
-.detail-header {
-  display: none;
 }
 
 // Billing summary row
@@ -173,14 +327,27 @@
 }
 
 // ── Global form field spacing resets ──
-::ng-deep .mat-form-field-wrapper {
+::ng-deep .mat-form-field-wrapper,
+::ng-deep .mat-mdc-form-field-wrapper {
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
 }
 
-::ng-deep .mat-form-field-subscript-wrapper {
+::ng-deep .mat-form-field-subscript-wrapper,
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
   margin-top: 0 !important;
   min-height: unset !important;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align,
+::ng-deep .mat-form-field-bottom-align {
+  height: 0 !important;
+  min-height: 0 !important;
+
+  &::before {
+    height: 0 !important;
+    display: none !important;
+  }
 }
 
 // ── Expansion panel header compact ──

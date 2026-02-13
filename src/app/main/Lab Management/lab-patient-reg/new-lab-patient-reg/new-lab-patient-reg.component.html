@@ -28,7 +28,7 @@
         <div class="modal-body-container">
             <mat-drawer-container class="main-container h-100-p">
                 <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
-                    <div *ngIf="mode !== 'edit'" style="margin-top: 8px;">
+                    <div *ngIf="mode !== 'edit'" class="top-form-row">
                         <form [formGroup]="myForm">
                             <div fxLayout="row wrap" fxLayoutGap="4px">
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -71,7 +71,7 @@
                         </form>
                     </div>
                     <div class="main-content" fxLayout="row" fxLayoutAlign="start stretch">
-                        <div style="width:40%; overflow-y: auto; overflow-x: hidden;">
+                        <div class="left-panel">
                             <div class="personal-panel">
                                 <mat-accordion multi>
                                     <mat-expansion-panel expanded>
@@ -131,17 +131,6 @@
                                                             </airmid-textbox>
                                                         </div>
                                                     </div>
-                                                    <!-- <div fxLayout="row" fxLayoutGap="12px">
-                                                       
-                                                        <div fxFlex="50">
-                                                            <airmid-dropdown label="Gender" formControlName="genderId"
-                                                                [formGroup]="myForm" [value]="registerObj?.genderId"
-                                                                #ddlGender [readonly]="true"
-                                                                [mode]="autocompleteModegender">
-                                                            </airmid-dropdown>
-                                                        </div>
-                                                    </div> -->
-
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="100">
                                                             <app-airmid-dateofbirth-v2 [formGroup]="myForm"
@@ -182,21 +171,6 @@
                                                                 [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
-                                                        <!-- <div fxFlex="33">
-                                                            <airmid-dropdown label="State" formControlName="stateId"
-                                                                [formGroup]="myForm" ValueField="stateId"
-                                                                TextField="stateName" #ddlState
-                                                                [value]="registerObj?.stateId"
-                                                                ApiUrl="StateMaster/get-state" [readonly]="true">
-                                                            </airmid-dropdown>
-                                                        </div>
-                                                        <div fxFlex="33">
-                                                            <airmid-dropdown label="Country" formControlName="countryId"
-                                                                [formGroup]="myForm" [value]="registerObj?.countryId"
-                                                                [disabled]="true" #ddlCountry
-                                                                [mode]="autocompleteModecountry" [readonly]="true">
-                                                            </airmid-dropdown>
-                                                        </div> -->
                                                     </div>
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="100">
@@ -274,34 +248,21 @@
                                         </button>
                                     </div>
 
-                                    <div class="detail-header">
-                                        Billing Information
-                                    </div>
-
-                                    <div>
-                                        <div fxFlex="100%">
-                                            <form [formGroup]="myForm">
-                                                <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm"
-                                                    formControlName="ServiceId" placeholderText="Enter Service Name"
-                                                    fxFlex ApiUrl="{{ApiURL}}"
-                                                    (selectionChange)="getSelectedserviceObj($event)"
-                                                    TextField="formattedText"
-                                                    ValueField="serviceId"></airmid-autocomplete>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    <form [formGroup]="myForm">
+                                        <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm"
+                                            formControlName="ServiceId" placeholderText="Enter Service Name"
+                                            fxFlex ApiUrl="{{ApiURL}}"
+                                            (selectionChange)="getSelectedserviceObj($event)"
+                                            TextField="formattedText"
+                                            ValueField="serviceId"></airmid-autocomplete>
+                                    </form>
                                 </div>
 
                                 <!-- Zone 2: Flexible Middle - Table -->
-                                <div class="billing-middle-zone">
-                                    <mat-card-content>
-                                        <div fxLayout="column" fxLayoutGap="4px">
-                                            <div fxLayout="row" fxLayoutGap="4px">
-
-                                                <div fxFlex="100%" class="airmid-table-container">
-
-                                                    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
-                                                        style="width: 100%">
+                                <div class="billing-middle-zone" [dynamicTableHeight]="120">
+                                    <div class="airmid-table-container">
+                                        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
+                                            style="width: 100%">
                                                         <mat-tab label="Charges List">
                                                             <mat-table #table1 matSort [dataSource]="dstable1"
                                                                 [@animateStagger]="{ value: '50' }"
@@ -550,12 +511,8 @@
 
                                                             </mat-table>
                                                         </mat-tab>
-                                                    </mat-tab-group>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </mat-card-content>
+                                        </mat-tab-group>
+                                    </div>
                                 </div>
 
                                 <!-- Zone 3: Sticky Bottom - Totals -->

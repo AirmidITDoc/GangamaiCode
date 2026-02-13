@@ -1,10 +1,11 @@
 
-import { AfterViewInit, Directive, ElementRef, HostListener, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
     selector: '[dynamicTableHeight]'
 })
 export class DyanmicTableHeightDirective implements OnInit, AfterViewInit, OnDestroy {
+    @Input('dynamicTableHeight') bottomOffset: number | '' = '';
     private observer: MutationObserver;
     public rootElement!: HTMLElement;
     public tableElements!: Array<HTMLElement>;
@@ -41,7 +42,8 @@ export class DyanmicTableHeightDirective implements OnInit, AfterViewInit, OnDes
             //     this.totalPaginatorHeight = this.paginatorElements[0].clientHeight * this.paginatorElements.length;
             // }
             // This is new height of table. 12 is padding-bottom
-            this.availableHeight = this.viewportHeight - 12 - this.tableTopHeight - this.totalPaginatorHeight;
+            const extraOffset = Number(this.bottomOffset) || 0;
+            this.availableHeight = this.viewportHeight - 12 - this.tableTopHeight - this.totalPaginatorHeight - extraOffset;
             this.setTableHeight = this.tableElements.length >= 2 ? this.availableHeight / 2 : this.availableHeight;
             // Iterate each table element and set height
             this.tableElements.forEach((element) => {
