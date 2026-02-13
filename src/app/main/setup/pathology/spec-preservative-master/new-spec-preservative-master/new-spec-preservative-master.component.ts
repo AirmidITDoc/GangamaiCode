@@ -3,22 +3,22 @@ import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
-import { SpecimumMasterService } from '../specimum-master.service';
+import { SpecPreservativeMasterService } from '../spec-preservative-master.service';
 
 @Component({
-  selector: 'app-new-specimum-master',
-  templateUrl: './new-specimum-master.component.html',
-  styleUrls: ['./new-specimum-master.component.scss'],
+  selector: 'app-new-spec-preservative-master',
+  templateUrl: './new-spec-preservative-master.component.html',
+  styleUrls: ['./new-spec-preservative-master.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class NewSpecimumMasterComponent {
+export class NewSpecPreservativeMasterComponent {
   specimenForm: FormGroup;
   isActive: boolean = true;
 
   constructor(
-    public _specimenService: SpecimumMasterService,
-    public dialogRef: MatDialogRef<NewSpecimumMasterComponent>,
+    public _specimenService: SpecPreservativeMasterService,
+    public dialogRef: MatDialogRef<NewSpecPreservativeMasterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService
   ) { }
@@ -26,7 +26,7 @@ export class NewSpecimumMasterComponent {
   ngOnInit(): void {
     this.specimenForm = this._specimenService.createSpecmasterForm();
     this.specimenForm.markAllAsTouched();
-    if ((this.data?.specimenId ?? 0) > 0) {
+    if ((this.data?.specimenPreservativeId ?? 0) > 0) {
       this.isActive = this.data.isActive
       this.specimenForm.patchValue(this.data);
     }
@@ -60,8 +60,8 @@ export class NewSpecimumMasterComponent {
 
   getValidationMessages() {
     return {
-      specimenName: [
-        { name: "required", Message: "Specimen Name is required" },
+      preservativeUsed: [
+        { name: "required", Message: "Specimen Preservative is required" },
         { name: "pattern", Message: "Special char not allowed." }
       ]
     };

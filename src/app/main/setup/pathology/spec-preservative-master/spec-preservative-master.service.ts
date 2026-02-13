@@ -4,10 +4,11 @@ import { ApiCaller } from "app/core/services/apiCaller";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class SpecimumMasterService {
+export class SpecPreservativeMasterService {
 
   currentStatus = 0
   myform: FormGroup;
@@ -25,8 +26,8 @@ export class SpecimumMasterService {
 
   createSpecmasterForm(): FormGroup {
     return this._formBuilder.group({
-      specimenId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      specimenName: ["",
+      specimenPreservativeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      preservativeUsed: ["",
         [
           Validators.required,
           this._FormvalidationserviceService.allowEmptyStringValidator()
@@ -49,12 +50,12 @@ export class SpecimumMasterService {
   }
 
   public specMasterSave(Param: any) {
-    if (Param.specimenId) {
-      return this._httpClient.PutData("PathSpecimenMaster/" + Param.specimenId, Param);
-    } else return this._httpClient.PostData("PathSpecimenMaster", Param);
+    if (Param.specimenPreservativeId) {
+      return this._httpClient.PutData("PathSpecimenPreservativeMaster/" + Param.specimenPreservativeId, Param);
+    } else return this._httpClient.PostData("PathSpecimenPreservativeMaster", Param);
   }
 
   public deactivateTheStatus(m_data) {
-    return this._httpClient.DeleteData("PathSpecimenMaster?Id=" + m_data.toString());
+    return this._httpClient.DeleteData("PathSpecimenPreservativeMaster?Id=" + m_data.toString());
   }
 }

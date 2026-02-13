@@ -52,6 +52,34 @@ const appRoutes: Routes = [
                 (m) => m.SpecimumMasterModule
             ),
     },
+    {
+        path: "specimen-condition",
+        loadChildren: () =>
+            import("./spec-condition-master/spec-condition-master.module").then(
+                (m) => m.SpecConditionMasterModule
+            ),
+    },
+    {
+        path: "specimen-container",
+        loadChildren: () =>
+            import("./spec-container-master/spec-container-master.module").then(
+                (m) => m.SpecContainerMasterModule
+            ),
+    },
+    {
+        path: "specimen-collection",
+        loadChildren: () =>
+            import("./spec-collection-master/spec-collection-master.module").then(
+                (m) => m.SpecCollectionMasterModule
+            ),
+    },
+    {
+        path: "specimen-preservative",
+        loadChildren: () =>
+            import("./spec-preservative-master/spec-preservative-master.module").then(
+                (m) => m.SpecPreservativeMasterModule
+            ),
+    },
 ];
 
 @NgModule({

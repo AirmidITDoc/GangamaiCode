@@ -7,8 +7,7 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 @Injectable({
   providedIn: 'root'
 })
-export class SpecimumMasterService {
-
+export class SpecContainerMasterService {
   currentStatus = 0
   myform: FormGroup;
   myformSearch: FormGroup;
@@ -25,8 +24,8 @@ export class SpecimumMasterService {
 
   createSpecmasterForm(): FormGroup {
     return this._formBuilder.group({
-      specimenId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      specimenName: ["",
+      specimenContainerId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      containerType: ["",
         [
           Validators.required,
           this._FormvalidationserviceService.allowEmptyStringValidator()
@@ -49,12 +48,12 @@ export class SpecimumMasterService {
   }
 
   public specMasterSave(Param: any) {
-    if (Param.specimenId) {
-      return this._httpClient.PutData("PathSpecimenMaster/" + Param.specimenId, Param);
-    } else return this._httpClient.PostData("PathSpecimenMaster", Param);
+    if (Param.specimenContainerId) {
+      return this._httpClient.PutData("PathSpecimenContainerMaster/" + Param.specimenContainerId, Param);
+    } else return this._httpClient.PostData("PathSpecimenContainerMaster", Param);
   }
 
   public deactivateTheStatus(m_data) {
-    return this._httpClient.DeleteData("PathSpecimenMaster?Id=" + m_data.toString());
+    return this._httpClient.DeleteData("PathSpecimenContainerMaster?Id=" + m_data.toString());
   }
 }

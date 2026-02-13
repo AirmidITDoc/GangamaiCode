@@ -28,9 +28,9 @@ import { PrescriptionTemplateComponent } from 'app/main/opd/new-casepaper/prescr
 })
 export class NursingnoteComponent implements OnInit {
   MedicineItemForm: FormGroup;
-   autocompleteModeDose: string = "DoseMaster";
-   vstoreId = this.accountService.currentUserValue.user.storeId
-    displayedColumns: string[] = [
+  autocompleteModeDose: string = "DoseMaster";
+  vstoreId = this.accountService.currentUserValue.user.storeId
+  displayedColumns: string[] = [
     'itemName',
     'doseName',
     'day',
@@ -51,7 +51,7 @@ export class NursingnoteComponent implements OnInit {
     'NurseName',
     'Action'
   ]
-dateTimeObj:any
+  dateTimeObj: any
   currentDate = new Date();
   vCompanyName: any;
   vRegNo: any;
@@ -100,7 +100,7 @@ dateTimeObj:any
   ItemName: any;
   ItemId: any;
   vDay: any;
-    doseId = 0;
+  doseId = 0;
   doseName1 = "";
 
 
@@ -215,7 +215,7 @@ dateTimeObj:any
             this.OnHandOverEdit(data);
           }
         },
-         {
+        {
           action: gridActions.print, callback: (data: any) => {
             this.OnHandOverPrint(data.admID);
           }
@@ -257,7 +257,7 @@ dateTimeObj:any
   constructor(
     public _NursingStationService: NursingnoteService,
     private accountService: AuthenticationService,
-    public datePipe: DatePipe,    private _formBuilder: FormBuilder,
+    public datePipe: DatePipe, private _formBuilder: FormBuilder,
     public toastr: ToastrService,
     public _matDialog: MatDialog,
     private commonService: PrintserviceService,
@@ -268,12 +268,12 @@ dateTimeObj:any
     this.myNursingForm = this._NursingStationService.createnursingForm();
     this.myHandOverForm = this._NursingStationService.createHandOverForm();
 
-       this.MedicineItemForm = this.MedicineItemform();
+    this.MedicineItemForm = this.MedicineItemform();
     // this.DischargesumForm.markAllAsTouched()
   }
 
 
-  
+
   MedicineItemform(): FormGroup {
     return this._formBuilder.group({
       ItemId: '',
@@ -419,32 +419,45 @@ dateTimeObj:any
   //   }
   // }
 
-  // onAdd() {
-  //   if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-  //     this.toastr.warning('Please select Patient', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   if (this.tempdesc == '') {
-  //     this.toastr.warning('Please select Template', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
+  // dont change without asking raksha
+  onAdd() {
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.tempdesc == '') {
+      this.toastr.warning('Please select Template', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
-  //   this.vDescription = this.tempdesc || '';
-  //   this.myNursingForm.get('nursingNotes')?.setValue(this.vDescription);
-  //   this.myform.get('TemplateId').setValue('');
-  // }
+    this.vDescription = this.tempdesc || '';
+    this.myNursingForm.get('nursingNotes')?.setValue(this.vDescription);
+    this.myform.get('TemplateId').setValue('');
+  }
 
   onEditorValueChange(content: string) {
     this.myNursingForm.get('nursingNotes')?.setValue(content);
   }
 
-  // Doctor Note insert
+  // dont change without asking raksha
   onSubmit() {
-    if (!this.vDescription || this.vDescription.trim() === '') {
+    // if (!this.vDescription || this.vDescription.trim() === '') {
+    //   this.toastr.warning('Please enter template description', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.myNursingForm.get('nursingNotes')?.value === '') {
       this.toastr.warning('Please enter template description', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -546,7 +559,7 @@ dateTimeObj:any
     this.dsHandOverNoteList.data = [];
   }
 
-   OnHandOverPrint(element) {
+  OnHandOverPrint(element) {
     this.commonService.Onprint("AdmId", element, "NursingPatientHandoverReceipt");
   }
 
@@ -569,7 +582,7 @@ dateTimeObj:any
       });
     }
   }
-//
+  //
 
   @ViewChild('dosename') dosename: ElementRef;
   @ViewChild('Day') Day: ElementRef;
@@ -638,123 +651,123 @@ dateTimeObj:any
   showTemplateRefresh = true;
   templateId: any;
   templateName: any;
-  
-  onAdd() {
-      if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
-        this.toastr.warning('Please select Item', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-      if (!this.MedicineItemForm.get("DoseId")?.value) {
-        this.toastr.warning('Please select a Dose Name', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-      //  if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
-      //   this.toastr.warning('Please enter a Day', 'Warning !', {
-      //     toastClass: 'tostr-tost custom-toast-warning',
-      //   });
-      //   return;
-      // }
-  
-      if (!Array.isArray(this.Chargelist)) {
-        console.warn("Chargelist was not an array. Resetting...");
-        this.Chargelist = [...this.dsItemList.data];
-      }
-  
-      const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
-      if (!iscekDuplicate) {
-        // this.dsItemList.data = [];
-        let newEntry = {
-          itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
-          itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
-          doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
-          doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
-          days: this.MedicineItemForm.get('Day').value || 0,
-          instruction: this.vInstruction || ''
-        }
-        this.Chargelist.push(newEntry);
-        this.dsItemList.data = [...this.Chargelist];
-      } else {
-        this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
-      }
-      this.MedicineItemForm.get('ItemId').reset('');
-      this.MedicineItemForm.get('DoseId').reset('');
-      this.MedicineItemForm.get('Day').reset('');
-      this.MedicineItemForm.get('Instruction').reset('');
-      // this.itemid.nativeElement.focus();
-    }
-  
-    deleteTableRow(event, element) {
-  
-      let index = this.Chargelist.indexOf(element);
-      if (index >= 0) {
-        this.Chargelist.splice(index, 1);
-        this.dsItemList.data = [];
-        this.dsItemList.data = this.Chargelist;
-      }
-      this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
-    }
-  
-    getPrescription(AdmissionId) {
-      console.log(AdmissionId)
-      var m_data2 = {
-        "first": 0,
-        "rows": 10,
-        "sortField": "AdmissionId",
-        "sortOrder": 0,
-        "filters": [
-          {
-            "fieldName": "AdmissionId",
-            "fieldValue": String(AdmissionId),//"40773",	
-            "opType": "Equals"
-          }
-        ],
-        "exportType": "JSON",
-        "columns": [
-          {
-            "data": "string",
-            "name": "string"
-          }
-        ]
-      }
-      console.log(m_data2)
-      this._NursingStationService.getPrescriptionList(m_data2).subscribe((data) => {
-        // this.dsItemList.data = data?.data as MedicineItemList[];
-        // if (this.dsItemList.data)
-        this.Chargelist = data.data as MedicineItemList[];
-        this.dsItemList.data = [...this.Chargelist];
-        // console.log(this.dsItemList.data);
-      });
-    }
-  
-    showDoseDropdownRefresh = true;
-    getDosemaster() {
-      const buttonElement = document.activeElement as HTMLElement;
-      buttonElement.blur();
-      const dialogRef = this._matDialog.open(NewDoseMasterComponent,
-        {
-          maxWidth: "50vw",
-          maxHeight: '50%',
-          width: '70%',
-        });
-      // dialogRef.componentInstance.openedFromOPD = true;
-      dialogRef.afterClosed().subscribe(result => {
-        this.showDoseDropdownRefresh = false;
-        setTimeout(() => {
-          this.showDoseDropdownRefresh = true;
-        }, 100);
-      });
-    }
 
-      keyPressCharater(event) {
+  // onAdd() {
+  //     if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
+  //       this.toastr.warning('Please select Item', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //       });
+  //       return;
+  //     }
+  //     if (!this.MedicineItemForm.get("DoseId")?.value) {
+  //       this.toastr.warning('Please select a Dose Name', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //       });
+  //       return;
+  //     }
+  //     //  if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+  //     //   this.toastr.warning('Please enter a Day', 'Warning !', {
+  //     //     toastClass: 'tostr-tost custom-toast-warning',
+  //     //   });
+  //     //   return;
+  //     // }
+
+  //     if (!Array.isArray(this.Chargelist)) {
+  //       console.warn("Chargelist was not an array. Resetting...");
+  //       this.Chargelist = [...this.dsItemList.data];
+  //     }
+
+  //     const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
+  //     if (!iscekDuplicate) {
+  //       // this.dsItemList.data = [];
+  //       let newEntry = {
+  //         itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
+  //         itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
+  //         doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
+  //         doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
+  //         days: this.MedicineItemForm.get('Day').value || 0,
+  //         instruction: this.vInstruction || ''
+  //       }
+  //       this.Chargelist.push(newEntry);
+  //       this.dsItemList.data = [...this.Chargelist];
+  //     } else {
+  //       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+  //         toastClass: 'tostr-tost custom-toast-warning',
+  //       });
+  //       return;
+  //     }
+  //     this.MedicineItemForm.get('ItemId').reset('');
+  //     this.MedicineItemForm.get('DoseId').reset('');
+  //     this.MedicineItemForm.get('Day').reset('');
+  //     this.MedicineItemForm.get('Instruction').reset('');
+  //     // this.itemid.nativeElement.focus();
+  //   }
+
+  deleteTableRow(event, element) {
+
+    let index = this.Chargelist.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist.splice(index, 1);
+      this.dsItemList.data = [];
+      this.dsItemList.data = this.Chargelist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+
+  getPrescription(AdmissionId) {
+    console.log(AdmissionId)
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "AdmissionId",
+          "fieldValue": String(AdmissionId),//"40773",	
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
+    }
+    console.log(m_data2)
+    this._NursingStationService.getPrescriptionList(m_data2).subscribe((data) => {
+      // this.dsItemList.data = data?.data as MedicineItemList[];
+      // if (this.dsItemList.data)
+      this.Chargelist = data.data as MedicineItemList[];
+      this.dsItemList.data = [...this.Chargelist];
+      // console.log(this.dsItemList.data);
+    });
+  }
+
+  showDoseDropdownRefresh = true;
+  getDosemaster() {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    const dialogRef = this._matDialog.open(NewDoseMasterComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: '50%',
+        width: '70%',
+      });
+    // dialogRef.componentInstance.openedFromOPD = true;
+    dialogRef.afterClosed().subscribe(result => {
+      this.showDoseDropdownRefresh = false;
+      setTimeout(() => {
+        this.showDoseDropdownRefresh = true;
+      }, 100);
+    });
+  }
+
+  keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
@@ -764,26 +777,26 @@ dateTimeObj:any
     }
   }
 
-   TemplateList() {
-      // const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-      // buttonElement.blur();
-      // const dialogRef = this._matDialog.open(SetupPrescriptionTemplateMaster,
-      //   {
-      //     maxWidth: "100vw",
-      //     maxHeight: '90%',
-      //     width: '90%',
-      //   });
-      // dialogRef.componentInstance.openedFromIPD = true;
-      // dialogRef.afterClosed().subscribe(result => {
-      //   this.showTemplateRefresh = false;
-      //   setTimeout(() => {
-      //     this.showTemplateRefresh = true;
-      //   }, 100);
-      // });
-    }
+  TemplateList() {
+    // const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    // buttonElement.blur();
+    // const dialogRef = this._matDialog.open(SetupPrescriptionTemplateMaster,
+    //   {
+    //     maxWidth: "100vw",
+    //     maxHeight: '90%',
+    //     width: '90%',
+    //   });
+    // dialogRef.componentInstance.openedFromIPD = true;
+    // dialogRef.afterClosed().subscribe(result => {
+    //   this.showTemplateRefresh = false;
+    //   setTimeout(() => {
+    //     this.showTemplateRefresh = true;
+    //   }, 100);
+    // });
+  }
 
 
- SaveTemplate() {
+  SaveTemplate() {
     if (this.dsItemList.data.length == 0) {
       Swal.fire('Error !', 'Please add prescription in table', 'error');
       return
@@ -810,11 +823,11 @@ dateTimeObj:any
 
   getValidationMessages() {
     return {
-        DoseId: []
+      DoseId: []
 
     };
   }
-  
+
   onClose() {
     this.IsAddFlag = true
     this._matDialog.closeAll();

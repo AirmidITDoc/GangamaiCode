@@ -1,0 +1,51 @@
+<div class="modal-wrapper grid-container">
+
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Specimen Condition Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="specimenForm">
+                <input type="hidden" name="specimenConditionId" formControlName="specimenConditionId">
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <airmid-textbox fxFlex label="Specimen Condition" formControlName="specimenCondition" [value]="data?.specimenCondition"
+                        [formGroup]="specimenForm" [validations]="getValidationMessages().specimenCondition">
+                    </airmid-textbox>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <form [formGroup]="specimenForm">
+
+                <div class="modal-footer-container">
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="specimenForm"
+                        [(ngModel)]="isActive"></app-airmid-slider>
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

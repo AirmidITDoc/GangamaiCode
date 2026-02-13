@@ -168,7 +168,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   gridConfig: gridModel = {
-     permissionCode: permissionCodes.DoctorNote,
+    permissionCode: permissionCodes.DoctorNote,
     apiUrl: "Nursing/DoctorsNotesList",
     columnsList: this.allColumns,
     sortField: "AdmId",
@@ -187,15 +187,15 @@ export class DoctornoteComponent implements OnInit {
 
   initializeGridConfig() {
     permissionCode: permissionCodes.DoctorNote,
-    this.gridConfig = {
-      apiUrl: "Nursing/DoctorsNotesList",
-      columnsList: this.allColumns,
-      sortField: "AdmId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
-      ]
-    }
+      this.gridConfig = {
+        apiUrl: "Nursing/DoctorsNotesList",
+        columnsList: this.allColumns,
+        sortField: "AdmId",
+        sortOrder: 0,
+        filters: [
+          { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
+        ]
+      }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
@@ -235,6 +235,7 @@ export class DoctornoteComponent implements OnInit {
     this.IsAddFlag = false;
   }
 
+  // dont change without asking raksha
   OnAdd() {
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -254,6 +255,7 @@ export class DoctornoteComponent implements OnInit {
     this.myform.get('TemplateId').setValue('');
   }
 
+  // dont change without asking raksha
   onSubmit() {
     // if (!this.vDescription || this.vDescription.trim() === '') {
     //   this.toastr.warning('Please enter template description', 'Warning !', {
@@ -261,6 +263,12 @@ export class DoctornoteComponent implements OnInit {
     //   });
     //   return;
     // }
+    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+      this.toastr.warning('Please select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (this.myNoteform.get('doctorsNotes')?.value === '') {
       this.toastr.warning('Please enter template description', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',

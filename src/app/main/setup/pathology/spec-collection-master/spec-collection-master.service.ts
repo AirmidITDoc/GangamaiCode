@@ -7,7 +7,7 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 @Injectable({
   providedIn: 'root'
 })
-export class SpecimumMasterService {
+export class SpecCollectionMasterService {
 
   currentStatus = 0
   myform: FormGroup;
@@ -23,10 +23,10 @@ export class SpecimumMasterService {
     this.myformSearch = this.createSearchForm();
   }
 
-  createSpecmasterForm(): FormGroup {
+   createSpecmasterForm(): FormGroup {
     return this._formBuilder.group({
-      specimenId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      specimenName: ["",
+      specimenCollectionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      collectionMethod: ["",
         [
           Validators.required,
           this._FormvalidationserviceService.allowEmptyStringValidator()
@@ -49,12 +49,12 @@ export class SpecimumMasterService {
   }
 
   public specMasterSave(Param: any) {
-    if (Param.specimenId) {
-      return this._httpClient.PutData("PathSpecimenMaster/" + Param.specimenId, Param);
-    } else return this._httpClient.PostData("PathSpecimenMaster", Param);
+    if (Param.specimenCollectionId) {
+      return this._httpClient.PutData("PathSpecimenCollectionMaster/" + Param.specimenCollectionId, Param);
+    } else return this._httpClient.PostData("PathSpecimenCollectionMaster", Param);
   }
 
   public deactivateTheStatus(m_data) {
-    return this._httpClient.DeleteData("PathSpecimenMaster?Id=" + m_data.toString());
+    return this._httpClient.DeleteData("PathSpecimenCollectionMaster?Id=" + m_data.toString());
   }
 }
