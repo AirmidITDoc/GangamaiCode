@@ -267,7 +267,8 @@ export class LabSampleCollectionComponent {
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
-            this.grid1.bindGridData();
+            // this.grid1.bindGridData();
+            this.GetSampleCollectiondetail();
         });
     }
 
@@ -281,7 +282,7 @@ export class LabSampleCollectionComponent {
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
-            this.grid1.bindGridData();
+            this.GetSampleCollectiondetail();
         });
     }
 

@@ -1,4 +1,4 @@
-import { DatePipe } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -53,6 +53,7 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
         MatDialogModule,
+        CommonModule
     ],
     providers: [InstructionmasterService, DatePipe]
 })

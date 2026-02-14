@@ -67,7 +67,7 @@ export class LabPatientRegComponent {
   @ViewChild('PatientTypeColorCode') PatientTypeColorCode!: TemplateRef<any>;
   @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
   @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
-    @ViewChild('genderANDage') genderANDage!: TemplateRef<any>;
+  @ViewChild('genderANDage') genderANDage!: TemplateRef<any>;
 
   constructor(
     public _labPatientRegService: LabPatientRegService,
@@ -198,7 +198,7 @@ export class LabPatientRegComponent {
     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 240, type: gridColumnTypes.template },
-    { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.template },
+    { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
     { heading: "Type", key: "patientType1", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "B2B/Crop Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     { heading: "Ref Doctor", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -244,8 +244,9 @@ export class LabPatientRegComponent {
         this.myFilterform.get('LastName').setValue("")
     // if (event == 'RegNo')
     //   this.myFilterform.get('RegNo').setValue("")
-    if (event == 'PBillNo')
+    if (event == 'PBillNo') {
       this.myFilterform.get('PBillNo').setValue("")
+    }
     this.onChangeFirst();
   }
 
@@ -254,6 +255,7 @@ export class LabPatientRegComponent {
     this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
+    this.PBillNo = this.myFilterform.get('PBillNo').value || "%"
     this.getfilterdata();
   }
 
@@ -278,6 +280,7 @@ export class LabPatientRegComponent {
     this.grid.bindGridData();
     // this.GetAppointdetail();
   }
+
   ListView(value) {
     console.log(value)
     if (value.value !== 0)
@@ -954,9 +957,9 @@ export class LabPatientList {
   regTime: any;
   dispatchModeId: any
   emailId: any
-  location:any;
-  remark:any;
-  phlebotomist:any;
+  location: any;
+  remark: any;
+  phlebotomist: any;
 
   constructor(LabPatientList) {
     {

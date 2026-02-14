@@ -98,7 +98,7 @@ export class NewLabtemplateComponent {
       ResultEntry: ['', Validators.required],
       TemplateId: [0],
       suggestionNotes: [''],
-      PathResultDoctorId: ['', Validators.required]
+      PathResultDoctorId: ['',[ Validators.required,_FormvalidationserviceService.notEmptyOrZeroValidator()]]
     });
 
     this.selectChangeService()

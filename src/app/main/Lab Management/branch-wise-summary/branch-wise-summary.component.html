@@ -126,7 +126,8 @@
                         <!-- <button mat-icon-button matTooltip="Print" (click)="viewgetReportPdf(element)">
                             <mat-icon>print</mat-icon>
                         </button> -->
-                        <button mat-icon-button color="warn" matTooltip="Trend">
+                        <button mat-icon-button color="warn" matTooltip="Trend"
+                        (click)="serviceTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 
@@ -140,10 +141,11 @@
 
         <mat-tab label="Category Wise Summary">
             <div>
-                <ng-template #actionButtonTemplate1 let-element>
+                <ng-template #actionButtonTemplate2 let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <button mat-icon-button color="warn" matTooltip="Trend">
+                        <button mat-icon-button color="warn" matTooltip="Trend"
+                        (click)="categoryTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 
@@ -156,10 +158,11 @@
 
         <mat-tab label="Doctor Wise Summary">
             <div>
-                <ng-template #actionButtonTemplate1 let-element>
+                <ng-template #actionButtonTemplate3 let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <button mat-icon-button color="warn" matTooltip="Trend">
+                        <button mat-icon-button color="warn" matTooltip="Trend"
+                        (click)="doctorTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 
@@ -172,10 +175,11 @@
 
         <mat-tab label="B2B/Company Wise Summary">
             <div>
-                <ng-template #actionButtonTemplate1 let-element>
+                <ng-template #actionButtonTemplate4 let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <button mat-icon-button color="warn" matTooltip="Trend">
+                        <button mat-icon-button color="warn" matTooltip="Trend"
+                        (click)="companyTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 

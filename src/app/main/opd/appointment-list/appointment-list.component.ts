@@ -60,15 +60,15 @@ import { NewAppointmentwihBillComponent } from './new-appointmentwih-bill/new-ap
 
 })
 export class AppointmentListComponent implements OnInit {
-    IsAdd: boolean = true ;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    IsEdit: boolean =true ;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
-    IsDelete: boolean = true ;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
-    IsOpdEmr:boolean = true ;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
-    IsBill:boolean = true ;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
-    IsEditRegistration:boolean = true ;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
-    IsGastrology:boolean = true ;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
-    IsCheckIn:boolean = true ;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
-    IsCheckOut:boolean = true ;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
+    IsAdd: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    IsEdit: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Edit);
+    IsDelete: boolean = true;// this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Delete);
+    IsOpdEmr: boolean = true;// this.permissionService.getPermission(permissionCodes.MedicalRecords,permissionType.Add);
+    IsBill: boolean = true;// this.permissionService.getPermission(permissionCodes.Bill,permissionType.Add);
+    IsEditRegistration: boolean = true;// this.permissionService.getPermission(permissionCodes.Registration,permissionType.Edit);
+    IsGastrology: boolean = true;// this.permissionService.getPermission(permissionCodes.GastrologyCasePaper,permissionType.Add);
+    IsCheckIn: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckIn,permissionType.Add);
+    IsCheckOut: boolean = true;// this.permissionService.getPermission(permissionCodes.CheckOut,permissionType.Add);
 
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -361,7 +361,7 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-      onAppointmentwithbill(row: any = null) {
+    onAppointmentwithbill(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
@@ -1138,19 +1138,27 @@ export class AppointmentListComponent implements OnInit {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-        let fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
-        let toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
+        let fromDateControl = "1900-01-01"//this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
+        let toDateControl = "1900-01-01"//this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
 
         let filters: any[] = [];
 
         // Handle date range
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // } else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
         if (fromDateControl && toDateControl) {
-            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
-        } else {
             this.fromDate = "1900-01-01";
             this.toDate = "1900-01-01";
+        } else {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
         }
+
 
         filters.push(
 

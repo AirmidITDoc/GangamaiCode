@@ -223,7 +223,7 @@ export class LabrefundBillComponent {
     return this.formBuilder.group({
       TotalRefundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       RefundBalAmount: [0, [Validators.required]],
-      Remark: [''],
+      Remark: ['',[Validators.required]],
     });
   }
 

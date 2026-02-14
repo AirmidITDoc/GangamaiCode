@@ -315,6 +315,12 @@
                                                         <div fxLayout="row" fxLayoutGap="6px"
                                                             style="flex-wrap: wrap; align-items: center;">
                                                             <button mat-raised-button style="height: 36px;"
+                                                                (click)="getInstrMaster()">
+                                                                <mat-icon
+                                                                    style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
+                                                                Instruction</button>
+
+                                                            <button mat-raised-button style="height: 36px;"
                                                                 (click)="getItemMaster()">
                                                                 <mat-icon
                                                                     style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
@@ -1019,7 +1025,8 @@
                                                                     fxShow.gt-sm>
                                                                     Action </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
-                                                                    <button mat-icon-button matTooltip="Lab Print" (click)="getLabPrint(element)"
+                                                                    <button mat-icon-button matTooltip="Lab Print"
+                                                                        (click)="getLabPrint(element)"
                                                                         [disabled]="!element.isCompleted">
                                                                         <mat-icon>print</mat-icon>
                                                                     </button>
@@ -1104,7 +1111,8 @@
                                                                     fxShow.gt-sm>
                                                                     Action </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element">
-                                                                    <button mat-icon-button matTooltip="Radiology Print" (click)="getRadPrint(element)"
+                                                                    <button mat-icon-button matTooltip="Radiology Print"
+                                                                        (click)="getRadPrint(element)"
                                                                         [disabled]="!element.isCompleted">
                                                                         <mat-icon>print</mat-icon>
                                                                     </button>

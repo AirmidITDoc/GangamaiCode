@@ -10,6 +10,11 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { EmailorSMSHistoryComponent } from '../../emailor-smshistory/emailor-smshistory.component';
+import { ReportDispatchComponent } from '../../report-dispatch/report-dispatch.component';
 
 @Component({
     selector: 'app-lab-reg-bill-deatils',
@@ -30,6 +35,7 @@ export class LabRegBillDeatilsComponent {
     @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
     @ViewChild('DiscGrid', { static: false }) Discgrid: AirmidTableComponent;
     @ViewChild('PayGrid', { static: false }) Paygrid: AirmidTableComponent;
+    @ViewChild('CreditGrid', { static: false }) Creditgrid: AirmidTableComponent;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'icon')!.template = this.icons;
         // this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
@@ -52,14 +58,11 @@ export class LabRegBillDeatilsComponent {
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Charges Date", key: "chargesTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
         {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-
     ];
-
 
     gridConfig: gridModel = {
         apiUrl: "LabPatientRegistration/LabBillDetailList",
@@ -75,7 +78,7 @@ export class LabRegBillDeatilsComponent {
         { heading: "Discount Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Discount Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DisPer", key: "discper", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DisAmt", key: "discamt", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "DisAmt", key: "discamt", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tran MadeBy", key: "madeby", sort: true, align: 'left', emptySign: 'NA' },
         {
@@ -83,7 +86,7 @@ export class LabRegBillDeatilsComponent {
         }
     ];
     gridConfig1: gridModel = {
-        apiUrl: "LabPatientRegistration/LabBillDetailList",
+        apiUrl: "LabPatientRegistration/LabDiscountDetailList",
         columnsList: this.allDisccolumns,
         sortField: "BillNo",
         sortOrder: 0,
@@ -104,7 +107,7 @@ export class LabRegBillDeatilsComponent {
         }
     ];
     gridConfig2: gridModel = {
-        apiUrl: "LabPatientRegistration/LabBillDetailList",
+        apiUrl: "LabPatientRegistration/LabPaymentDetailList",
         columnsList: this.allPaycolumns,
         sortField: "BillNo",
         sortOrder: 0,
@@ -125,7 +128,7 @@ export class LabRegBillDeatilsComponent {
         }
     ];
     gridConfig3: gridModel = {
-        apiUrl: "LabPatientRegistration/LabBillDetailList",
+        apiUrl: "LabPatientRegistration/LabCreditDetailList",
         columnsList: this.allCreditcolumns,
         sortField: "BillNo",
         sortOrder: 0,
@@ -148,10 +151,15 @@ export class LabRegBillDeatilsComponent {
         public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
-        private commonService: PrintserviceService,) { }
+        private commonService: PrintserviceService,
+        private _fuseSidebarService: FuseSidebarService,
+        public _whatsppService: WhatsAppEmailService,) { }
 
     getBilldetail() {
         this.getfilterdata()
+        this.getDiscountfilterdata();
+        this.getCreditfilterdata();
+        this.getPayoutfilterdata();
     }
 
     getfilterdata() {
@@ -167,7 +175,51 @@ export class LabRegBillDeatilsComponent {
         // debugger
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
+    }
 
+    getDiscountfilterdata() {
+        this.gridConfig1 = {
+            apiUrl: "LabPatientRegistration/LabDiscountDetailList",
+            columnsList: this.allDisccolumns,
+            sortField: "BillNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+            ]
+        }
+        // debugger
+        this.Discgrid.gridConfig = this.gridConfig1;
+        this.Discgrid.bindGridData();
+    }
+
+    getPayoutfilterdata() {
+        this.gridConfig2 = {
+            apiUrl: "LabPatientRegistration/LabPaymentDetailList",
+            columnsList: this.allPaycolumns,
+            sortField: "BillNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+            ]
+        }
+        // debugger
+        this.Paygrid.gridConfig = this.gridConfig2;
+        this.Paygrid.bindGridData();
+    }
+
+    getCreditfilterdata() {
+        this.gridConfig3 = {
+            apiUrl: "LabPatientRegistration/LabCreditDetailList",
+            columnsList: this.allCreditcolumns,
+            sortField: "BillNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+            ]
+        }
+        // debugger
+        this.Creditgrid.gridConfig = this.gridConfig3;
+        this.Creditgrid.bindGridData();
     }
 
 
@@ -206,4 +258,64 @@ export class LabRegBillDeatilsComponent {
     onClose() {
         this._matDialog.closeAll()
     }
+
+    getWhatsappshareReport(el) {
+        console.log(el);
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.pathTestID,
+            smsType: "PathResultEntry",
+            patientId: el.regNo
+        })
+    }
+
+    Onemail(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'PathResultEntry'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+     viewgetReportdispatch(element) {
+        console.log(element)
+        const dialogRef = this._matDialog.open(ReportDispatchComponent,
+          {
+            maxWidth: "90vw",
+            maxHeight: '95%',
+            width: '100%',
+            data: element
+    
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.onChangeFirst2()
+        });
+    
+      }
+      
+      viewgetSms(element) {
+        console.log(element)
+        const dialogRef = this._matDialog.open(EmailorSMSHistoryComponent,
+          {
+            maxWidth: "90vw",
+            maxHeight: '115%',
+    
+            width: '100%',
+            data: element
+    
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          // this.onChangeFirst2()
+        });
+      }
+
 }

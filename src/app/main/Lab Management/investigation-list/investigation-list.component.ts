@@ -155,14 +155,14 @@ export class InvestigationListComponent {
       template: this.actionsPatientType
     },
     { heading: "SampleCollection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-    { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA',
       type: gridColumnTypes.template
     },
 
-    { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     // {
     //   heading: "Test Name", key: "serviceNames", align: "right", width: 450, sticky: true, type: gridColumnTypes.template,
     //   template: this.serviceNames
@@ -341,7 +341,8 @@ export class InvestigationListComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
-      this.grid1.bindGridData();
+      // this.grid1.bindGridData();
+      this.GetSampleCollectiondetail();
     });
   }
 
@@ -355,7 +356,8 @@ export class InvestigationListComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
-      this.grid1.bindGridData();
+      // this.grid1.bindGridData();
+      this.GetSampleCollectiondetail();
     });
   }
 
@@ -523,6 +525,7 @@ export class InvestigationListComponent {
   gendername = ''
 
   vStatusSearch: any = "0";
+  vApproStatusSearch: any = "0";
   patientName: 'RK'
   title: 'Reports'
   page: PageNames = PageNames.PATIENT;
@@ -558,7 +561,7 @@ export class InvestigationListComponent {
   // UnitId: any = this._loggedService.currentUserValue.user.unitId;
   // isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
 
-  @ViewChild('Resultgrid', { static: false }) grid2: AirmidTableComponent;
+  @ViewChild('Resultgrid', { static: false }) Resultgrid: AirmidTableComponent;
   @ViewChild('ResultactionButtonTemplate') ResultactionButtonTemplate!: TemplateRef<any>;
 
   // IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
@@ -641,8 +644,8 @@ export class InvestigationListComponent {
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
-    this.grid2.gridConfig = this.ResultgridConfig;
-    this.grid2.bindGridData();
+    this.Resultgrid.gridConfig = this.ResultgridConfig;
+    this.Resultgrid.bindGridData();
   }
 
   getSelectedRow(row: any): void {
@@ -747,8 +750,8 @@ export class InvestigationListComponent {
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
-    this.grid2.gridConfig = this.ResultgridConfig;
-    this.grid2.bindGridData();
+    this.Resultgrid.gridConfig = this.ResultgridConfig;
+    this.Resultgrid.bindGridData();
   }
 
 
@@ -836,7 +839,7 @@ export class InvestigationListComponent {
               }
             });
           dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
+            this.Resultgrid.bindGridData();
             this.getSelectedRow(event);
           });
         }, 100);
@@ -850,11 +853,14 @@ export class InvestigationListComponent {
           maxWidth: "75vw",
           height: '95%',
           width: '96%',
-          data: contact,
+          data: {
+            data: contact,
+            verifyCheck: false
+          }
         });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Pathology Template  Saved ..', result);
+        this.Resultgrid.bindGridData();
       });
       return;
     }
@@ -909,7 +915,7 @@ export class InvestigationListComponent {
             }
           });
         dialogRef.afterClosed().subscribe(result => {
-          this.grid.bindGridData();
+          this.Resultgrid.bindGridData();
           this.getSelectedRow(event);
         });
       }, 100);

@@ -13,18 +13,22 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">+ New Instruction
             </button>
+
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close"
+                (click)="closeDialog()" *ngIf="openedFromOPD">
+                <mat-icon>close</mat-icon>
+            </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig"  class="content">
-           
+        <airmid-table [gridConfig]="gridConfig" class="content">
+
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Instruction Name</mat-label>
                     <input matInput placeholder="Search Instruction  Name" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue=''">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>

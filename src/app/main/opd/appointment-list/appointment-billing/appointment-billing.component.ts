@@ -1137,7 +1137,7 @@ console.log(item)
         this.DepartmentName = this.patientDetail.departmentName
         this.AgeYear = this.patientDetail.ageYear
         this.Doctorname = this.patientDetail.doctorName
-        this.RegNo = this.patientDetail.regNo
+        this.RegNo =Number(this.patientDetail.regNo.split('|')[0].trim());
         this.vOPIPId = this.patientDetail.visitId
         this.vTariffId = this.patientDetail.tariffId;
         this.vhospitalId = this.patientDetail.hospitalId;
@@ -1195,7 +1195,7 @@ console.log(item)
         this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
         this.OpBillForm.get('opdipdid')?.setValue(this.patientDetail?.visitId)
         this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
-        this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo)
+        this.OpBillForm.get('regNo')?.setValue(this.RegNo)
         this.OpBillForm.get('patientName')?.setValue(this.PatientName)
         this.OpBillForm.get('ipdno')?.setValue(this.patientDetail?.opdNo)
         this.OpBillForm.get('ageYear')?.setValue(Number(this.patientDetail?.ageYear) || 0)
@@ -1242,7 +1242,7 @@ console.log(item)
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                     PatientHeaderObj['PatientName'] = this.PatientName;
-                PatientHeaderObj['RegNo'] = this.patientDetail?.regNo || 0;
+                PatientHeaderObj['RegNo'] = this.RegNo || 0;
                 PatientHeaderObj['DoctorName'] = this.Doctorname || '';
                 PatientHeaderObj['CompanyName'] = this.patientDetail?.companyName || '';
                 PatientHeaderObj['DepartmentName'] = this.DepartmentName || '';
@@ -1820,7 +1820,7 @@ console.log(item)
                 this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
                 this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
                 this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
-                this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo)
+                this.OpBillForm.get('regNo')?.setValue(this.RegNo)
                 this.OpBillForm.get('patientName')?.setValue(this.PatientName)
                 this.OpBillForm.get('ipdno')?.setValue(this.patientDetail?.opdNo)
                 this.OpBillForm.get('ageYear')?.setValue(Number(this.patientDetail?.ageYear) || 0)
