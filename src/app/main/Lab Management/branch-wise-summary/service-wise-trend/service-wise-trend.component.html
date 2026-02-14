@@ -1,0 +1,52 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <!-- Modal Header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span class="h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Service Trend
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutGap="3px">
+
+        <!-- dynamicTableHeight -->
+        <div fusePerfectScrollbar
+            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+
+            <div id="contacts" style="height: 280px;">
+
+                <div fxLayout="row" class="p-8 gap-4">
+                    <button mat-raised-button (click)="setFilterType('Day')"
+                        [color]="filterType === 'Day' ? 'primary' : undefined">
+                        Day
+                    </button>
+
+                    <button mat-raised-button (click)="setFilterType('Month')"
+                        [color]="filterType === 'Month' ? 'primary' : undefined">
+                        Month
+                    </button>
+                </div>
+
+
+                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                    <ng-container filters>
+                    </ng-container>
+                </airmid-table>
+            </div>
+
+        </div>
+
+    </div>

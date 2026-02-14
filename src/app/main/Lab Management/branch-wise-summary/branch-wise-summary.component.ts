@@ -19,6 +19,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import Chart, { Color } from 'chart.js/auto';
 import { fuseAnimations } from '@fuse/animations';
 import { element } from 'protractor';
+import { ServiceWiseTrendComponent } from './service-wise-trend/service-wise-trend.component';
+import { CategoryWiseTrendComponent } from './category-wise-trend/category-wise-trend.component';
+import { DoctorWiseTrendComponent } from './doctor-wise-trend/doctor-wise-trend.component';
+import { CompanyWiseTrendComponent } from './company-wise-trend/company-wise-trend.component';
 
 @Component({
   selector: 'app-branch-wise-summary',
@@ -51,13 +55,16 @@ export class BranchWiseSummaryComponent {
   @ViewChild('DoctorGrid', { static: false }) grid3: AirmidTableComponent;
   @ViewChild('b2bGrid', { static: false }) grid4: AirmidTableComponent;
   @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate3') actionButtonTemplate3!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate4') actionButtonTemplate4!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
-    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
-    this.gridConfig3.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
-    this.gridConfig4.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
+    this.gridConfig3.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate3;
+    this.gridConfig4.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate4;
   }
 
   allcolumns = [
@@ -86,19 +93,12 @@ export class BranchWiseSummaryComponent {
   }
 
   constructor(
-    private formBuilder: UntypedFormBuilder,
     public _LabResultListService: LabResultListService,
     public datePipe: DatePipe,
-    private reportDownloadService: ExcelDownloadService,
     public _matDialog: MatDialog,
-    private advanceDataStored: AdvanceDataStored,
-    private accountService: AuthenticationService,
     public toastr: ToastrService,
-    private commonService: PrintserviceService,
     public _WhatsAppEmailService: WhatsAppEmailService,
-    private _fuseSidebarService: FuseSidebarService,
     public _whatsppService: WhatsAppEmailService,
-    private overlay: Overlay,
     private _loggedService: AuthenticationService,
     public permissionService: PagePermissionService,
   ) { }
@@ -159,8 +159,6 @@ export class BranchWiseSummaryComponent {
 
   Clearfilter(event) {
     console.log(event)
-    // if (event == 'RegNoSearch')
-    //   this.myformSearch.get('RegNoSearch').setValue("0")
     this.onChangeFirst();
   }
 
@@ -202,7 +200,7 @@ export class BranchWiseSummaryComponent {
   ];
 
   allServicecolumns = [
-    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 1500 },
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 1200 },
     // { heading: "TestCount", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     // { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Count", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -240,6 +238,18 @@ export class BranchWiseSummaryComponent {
     this.grid1.bindGridData();
   }
 
+  serviceTrend(row: any = null) {
+    const dialogRef = this._matDialog.open(ServiceWiseTrendComponent,
+      {
+        maxWidth: "80vw",
+        maxHeight: '80vh',
+        width: '80%',
+        data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
   // category wise
 
   allCategoryfilters = [
@@ -254,7 +264,7 @@ export class BranchWiseSummaryComponent {
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     {
       heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate1
+      template: this.actionButtonTemplate2
     }  // Assign ng-template to the column
 
   ];
@@ -282,6 +292,18 @@ export class BranchWiseSummaryComponent {
     this.grid2.bindGridData();
   }
 
+  categoryTrend(row: any = null) {
+    const dialogRef = this._matDialog.open(CategoryWiseTrendComponent,
+      {
+        maxWidth: "80vw",
+        maxHeight: '80vh',
+        width: '80%',
+        data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid2.bindGridData();
+    });
+  }
   // doctor wise
 
   alldoctorfilters = [
@@ -296,7 +318,7 @@ export class BranchWiseSummaryComponent {
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     {
       heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate1
+      template: this.actionButtonTemplate3
     }  // Assign ng-template to the column
 
   ];
@@ -324,6 +346,18 @@ export class BranchWiseSummaryComponent {
     this.grid3.bindGridData();
   }
 
+  doctorTrend(row: any = null) {
+    const dialogRef = this._matDialog.open(DoctorWiseTrendComponent,
+      {
+        maxWidth: "80vw",
+        maxHeight: '80vh',
+        width: '80%',
+        data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid2.bindGridData();
+    });
+  }
   // b2b wise
 
   all2b2filters = [
@@ -340,7 +374,7 @@ export class BranchWiseSummaryComponent {
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     {
       heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate1
+      template: this.actionButtonTemplate4
     }  // Assign ng-template to the column
 
   ];
@@ -366,6 +400,19 @@ export class BranchWiseSummaryComponent {
     }
     this.grid4.gridConfig = this.gridConfig4;
     this.grid4.bindGridData();
+  }
+
+  companyTrend(row: any = null) {
+    const dialogRef = this._matDialog.open(CompanyWiseTrendComponent,
+      {
+        maxWidth: "80vw",
+        maxHeight: '80vh',
+        width: '80%',
+        data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid2.bindGridData();
+    });
   }
 
   viewgetReportPdf() { }

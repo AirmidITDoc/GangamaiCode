@@ -56,6 +56,7 @@ export class InstructionmasterComponent implements OnInit {
         filters: this.allfilters
     }
 
+    openedFromOPD = false;
     constructor(public _InstructionService: InstructionmasterService, public _matDialog: MatDialog,
         public toastr: ToastrService, public permissionService: PagePermissionService) { }
 

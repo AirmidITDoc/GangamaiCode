@@ -1,4 +1,4 @@
-import { DatePipe } from "@angular/common";
+import { CommonModule, DatePipe, NgIf } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -50,7 +50,9 @@ const routes: Routes = [
         FuseSharedModule,
         FuseSidebarModule,
         MatDialogModule,
+        CommonModule,
+        NgIf,
     ],
     providers: [DosemasterService, DatePipe]
 })
-export class DosemasterModule {}
+export class DosemasterModule { }

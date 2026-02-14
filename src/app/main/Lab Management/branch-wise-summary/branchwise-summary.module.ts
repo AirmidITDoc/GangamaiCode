@@ -42,6 +42,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { BranchWiseSummaryComponent } from './branch-wise-summary.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ServiceWiseTrendComponent } from './service-wise-trend/service-wise-trend.component';
+import { CategoryWiseTrendComponent } from './category-wise-trend/category-wise-trend.component';
+import { DoctorWiseTrendComponent } from './doctor-wise-trend/doctor-wise-trend.component';
+import { CompanyWiseTrendComponent } from './company-wise-trend/company-wise-trend.component';
 
 
 const routes: Routes = [
@@ -52,7 +56,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [BranchWiseSummaryComponent],
+  declarations: [BranchWiseSummaryComponent, ServiceWiseTrendComponent, CategoryWiseTrendComponent, DoctorWiseTrendComponent, CompanyWiseTrendComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

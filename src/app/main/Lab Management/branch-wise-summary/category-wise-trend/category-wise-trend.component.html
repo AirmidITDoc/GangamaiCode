@@ -1,0 +1,57 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <!-- Modal Header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Category Trend
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutGap="3px">
+
+        <!-- dynamicTableHeight -->
+        <div fusePerfectScrollbar
+            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+
+            <div id="contacts" style="height: 280px;">
+
+
+                <!-- <ng-template #actionButtonTemplate let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                        <button mat-icon-button matTooltip="Print">
+                            <mat-icon>print</mat-icon>
+                        </button>
+
+                        <button mat-icon-button matTooltip="EMail">
+                            <mat-icon>email</mat-icon>
+                        </button>
+
+                        <button mat-icon-button matTooltip="Send message On WhatsApp">
+                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                        </button>
+                    </div>
+                </ng-template> -->
+
+                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                    <ng-container filters>
+                    </ng-container>
+                </airmid-table>
+            </div>
+
+        </div>
+
+    </div>

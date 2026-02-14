@@ -64,7 +64,7 @@
                     <button mat-icon-button (click)="onSave(element)" matTooltip="Edit" *ngIf="IsEdit">
                         <mat-icon>edit</mat-icon>
                     </button>
-                     <button mat-icon-button (click)="onSavedemo(element)" matTooltip="demo">
+                    <button mat-icon-button (click)="onSavedemo(element)" matTooltip="demo">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
@@ -127,8 +127,20 @@
                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
                             [(fromValue)]="gridConfig.filters[3].fieldValue"
-                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                            [(toValue)]="gridConfig.filters[4].fieldValue"
+                            (dateChange)="GetSampleCollectiondetail()">
                         </airmid-datepicker>
+
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="start" placeholder="Start date">
+                                <input matEndDate formControlName="end" placeholder="End date"
+                                    (dateChange)="onChangeFirst()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field> -->
 
                         <mat-form-field appearance="outline">
                             <mat-label>UHID</mat-label>

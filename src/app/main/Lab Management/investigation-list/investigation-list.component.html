@@ -147,7 +147,8 @@
                                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                                         formStartControlName="start" formEndControlName="end"
                                         [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                                        [(toValue)]="gridConfig.filters[4].fieldValue"
+                                        (dateChange)="GetSampleCollectiondetail()">
                                     </airmid-datepicker>
 
                                     <mat-form-field appearance="outline">
@@ -828,7 +829,7 @@
                                                 <div fxFlex="15%" fxLayout="row">
                                                     <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
                                                         (change)="ApprovalonChangeFirst()" fxLayout="column" value="0"
-                                                        class="gap-4" [(ngModel)]="vStatusSearch">
+                                                        class="gap-4">
                                                         <mat-label><b>Status:</b></mat-label>
                                                         <div fxLayout="row">
                                                             <mat-radio-button value='0'>All</mat-radio-button>
