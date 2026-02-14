@@ -462,6 +462,7 @@
                                                         TextField="serviceName"
                                                         [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=1&ServiceName=%'"
                                                         [ReqFullObj]="true"
+                                                        [disableAutoNext]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
 
@@ -502,6 +503,7 @@
                                                         TextField="serviceName"
                                                         [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=2&ServiceName=%'"
                                                         [ReqFullObj]="true"
+                                                        [disableAutoNext]="true"
                                                         (selectionChange)="selectChangeServiceName1($event)">
                                                     </airmid-dropdown>
                                                 </div>

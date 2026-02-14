@@ -18,7 +18,10 @@
         </div>
     </div>
 </mat-form-field> -->
-<mat-form-field [appearance]="appearance" fxFlex class="airmid-dropdown">
+
+
+<!-- this is comment on 14/02/2026 Ambadas -->
+<!-- <mat-form-field [appearance]="appearance" fxFlex class="airmid-dropdown">
     <mat-label>{{label}}</mat-label>
     <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect
         (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value" ariaDescribedby="ValueField"
@@ -34,11 +37,62 @@
         </mat-option>
     </mat-select>
 
-    <!-- Pending... -->
+    
     <span mat-icon-button aria-label="Clear" class="dropdown-close-icon" (click)="clearSelection($event)"
         *ngIf="+value && !readonly">
         <mat-icon>close</mat-icon>
     </span>
+    <mat-error>
+        <ng-container *ngFor="let error of activeErrors">
+            {{ error }}
+        </ng-container>
+    </mat-error>
+</mat-form-field> -->
+
+<!-- Updated by Ambadas on 14/02/2026: Fixed the issue where selecting one dropdown automatically shifts focus to the next dropdown. -->
+<mat-form-field [appearance]="appearance" fxFlex class="airmid-dropdown">
+    <mat-label>{{label}}</mat-label>
+    <!-- Use appFocusNext only if disableAutoNext is false -->
+    <ng-container *ngIf="!disableAutoNext; else noFocusNext">
+        <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect
+            (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value"
+            ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'"
+            [compareWith]="comparer" msInfiniteScroll [multiple]="IsMultiPle" appFocusNext [disableRipple]="readonly"
+            [panelClass]="readonly ? 'readonly-panel' : ''" (click)="onClick($event)">
+            <mat-option>
+                <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
+                    noEntriesFoundLabel="No results found" *ngIf="!readonly"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
+                {{ddl[TextField]}}
+            </mat-option>
+        </mat-select>
+    </ng-container>
+
+    <!-- Template without appFocusNext -->
+    <ng-template #noFocusNext>
+        <mat-select [formControl]="formGroup.controls[formControlName]" placeholder="Search..." #singleSelect
+            (selectionChange)="onDdlChange($event)" [disabled]="disabled" [(ngModel)]="value"
+            ariaDescribedby="ValueField" aria-label="{{ValueField}}" [debounceTime]="300" [threshold]="'10%'"
+            [compareWith]="comparer" msInfiniteScroll [multiple]="IsMultiPle" [disableRipple]="readonly"
+            [panelClass]="readonly ? 'readonly-panel' : ''" (click)="onClick($event)">
+            <mat-option>
+                <ngx-mat-select-search [formControl]="ddlFilterCtrl" placeholderLabel="Search..."
+                    noEntriesFoundLabel="No results found" *ngIf="!readonly"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let ddl of filteredDdls | async" [value]="ddl">
+                {{ddl[TextField]}}
+            </mat-option>
+        </mat-select>
+    </ng-template>
+
+    <!-- Clear icon -->
+    <span mat-icon-button aria-label="Clear" class="dropdown-close-icon" (click)="clearSelection($event)"
+        *ngIf="+value && !readonly">
+        <mat-icon>close</mat-icon>
+    </span>
+
+    <!-- Error display -->
     <mat-error>
         <ng-container *ngFor="let error of activeErrors">
             {{ error }}

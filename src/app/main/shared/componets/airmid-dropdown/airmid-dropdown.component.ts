@@ -42,6 +42,7 @@ export class AirmidDropDownComponent extends BaseFormControlComponent implements
     // Focusstatus=false;
 
     //  @Input() appFocusNext: boolean = false;
+      @Input() disableAutoNext: boolean = false;
     @Input()
     get disabled(): boolean {
         return this._disabled;
