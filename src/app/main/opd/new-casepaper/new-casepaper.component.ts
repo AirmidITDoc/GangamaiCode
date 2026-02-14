@@ -34,6 +34,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { InstructionmasterComponent } from 'app/main/setup/prescription/instructionmaster/instructionmaster.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -1959,6 +1960,27 @@ export class NewCasepaperComponent implements OnInit {
             setTimeout(() => {
                 this.showDoseDropdownRefresh = true;
             }, 100);
+        });
+    }
+    
+    getInstrMaster() {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(InstructionmasterComponent,
+            {
+                maxWidth: "85vw",
+                height: '85%',
+                width: '70%',
+            });
+        dialogRef.componentInstance.openedFromOPD = true;
+        dialogRef.afterClosed().subscribe(result => {
+            //  Force re-render of dropdown to reload internal data
+            // this.showDoseDropdownRefresh = false;
+            // setTimeout(() => {
+            //     this.showDoseDropdownRefresh = true;
+            // }, 100);
         });
     }
 
