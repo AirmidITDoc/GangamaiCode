@@ -80,3 +80,50 @@
         }
     }
 }
+
+/* ===== Compact Mat Tabs ===== */
+
+.mat-mdc-tab-group {
+  --mdc-tab-height: 34px;   /* reduces height */
+}
+
+/* Reduce tab height */
+.mdc-tab {
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 600;
+}
+
+/* Reduce label spacing */
+.mdc-tab__text-label {
+  font-size: 12.5px !important;
+}
+
+/* Reduce header container height */
+.mat-mdc-tab-header {
+  min-height: 34px !important;
+}
+
+/* Remove extra bottom spacing */
+.mat-mdc-tab-body-wrapper {
+  margin-top: 0px !important;
+}
+
+/* Remove default indicator */
+.mdc-tab-indicator {
+  display: none;
+}
+
+/* Hover */
+.mdc-tab:hover {
+  background: #dce1ff;
+}
+
+/* Prevent equal width tabs */
+.custom-compact-tabs .mdc-tab {
+  flex: 0 0 auto !important;
+  min-width: auto !important;
+  padding: 0 18px !important;
+}
