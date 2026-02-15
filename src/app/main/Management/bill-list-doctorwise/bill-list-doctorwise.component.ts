@@ -293,9 +293,11 @@ export class BillListDoctorwiseComponent {
     buttonElement.blur();
 
     const dialogRef = this._matDialog.open(DoctorShareListComponent, {
-      maxWidth: "35vw",
-      height: "75%",
-      width: "100%",
+      width: "950px",
+        maxWidth: "95vw",
+        height: "auto",
+        autoFocus: false,
+        disableClose: false
 
     });
     dialogRef.afterClosed().subscribe(result => {
