@@ -147,6 +147,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.vTariffId = this.patientDetail.tariffId;
             this.vhospitalId = this.patientDetail.hospitalId;
             this.vClassId = this.patientDetail.classId
+            this.RegNo=this.patientDetail.regNo
             this.savebtn = false
             this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
             this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
