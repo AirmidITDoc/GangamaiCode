@@ -236,7 +236,7 @@ export class NewIndentComponent implements OnInit {
     var Param = {
 
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "IndentId",
       "sortOrder": 0,
       "filters": [

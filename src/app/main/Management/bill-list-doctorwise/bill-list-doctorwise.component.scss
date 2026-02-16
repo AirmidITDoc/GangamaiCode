@@ -35,12 +35,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #1976d2;   /* Material primary color */
-  border-radius: 8px;
-  padding: 6px 10px;           /* reduced padding */
-  margin: 10px 0;
-  background-color: #f1f8ff;   /* light background */
-  font-weight: 500;
+  border: 1px solid #1976d2;
+  border-radius: 6px;
+  padding: 2px 6px;
+  margin: 4px 0;           /* reduced margin */
+  background-color: #f5f9ff;
+  font-size: 12px;       /* smaller text */
+  font-weight: 600;
+  min-height: 24px;        /* compact height */
 }
 
 .net-amt-label {
@@ -49,7 +51,7 @@
 }
 
 .net-amt-value {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   color: #1976d2;   /* highlight color */
 }

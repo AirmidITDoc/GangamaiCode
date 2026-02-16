@@ -843,7 +843,7 @@ export class NewCasepaperComponent implements OnInit {
 
         const vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "VisitId",
             "sortOrder": 0,
             "filters": [
@@ -1023,7 +1023,7 @@ export class NewCasepaperComponent implements OnInit {
     listrefresh(contact) {
         var m_data2 = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "VisitId",
             "sortOrder": 0,
             "filters": [
@@ -1157,7 +1157,7 @@ export class NewCasepaperComponent implements OnInit {
         // 
         var m_data2 = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "VisitId",
             "sortOrder": 0,
             "filters": [
@@ -1445,7 +1445,7 @@ export class NewCasepaperComponent implements OnInit {
         if (!iscekDuplicate) {
             var vdata = {
                 "first": 0,
-                "rows": 10,
+                "rows": 9999,
                 "sortField": "Presid",
                 "sortOrder": 0,
                 "filters": [
@@ -1720,7 +1720,7 @@ export class NewCasepaperComponent implements OnInit {
     getnewVisistListDemo(obj) {
         var D_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "VisitId",
             "sortOrder": 0,
             "filters": [
@@ -1750,7 +1750,7 @@ export class NewCasepaperComponent implements OnInit {
     getPrevVisitDiagnosisList(obj) {
         var D_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "RegID",
             "sortOrder": 0,
             "filters": [
@@ -2138,7 +2138,7 @@ export class NewCasepaperComponent implements OnInit {
     getCertificateList() {
         const D_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "VisitedID",
             "sortOrder": 0,
             "filters": [
@@ -2211,7 +2211,7 @@ export class NewCasepaperComponent implements OnInit {
         // debugger
         var D_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "VisitId",
             "sortOrder": 0,
             "filters": [
@@ -2243,7 +2243,7 @@ export class NewCasepaperComponent implements OnInit {
         // debugger
         const D_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "VisitedID",
             "sortOrder": 0,
             "filters": [

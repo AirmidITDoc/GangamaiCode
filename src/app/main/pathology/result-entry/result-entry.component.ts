@@ -317,7 +317,7 @@ export class ResultEntryComponent implements OnInit {
 
         var m_data = {
             "first": 0,
-            "rows": 20,
+            "rows": 9999,
             "sortField": "RegNo",
             "sortOrder": 0,
             "filters": [
@@ -1085,7 +1085,7 @@ export class ResultEntryComponent implements OnInit {
         let data =
         {
             "first": 0,
-            "rows": 150,
+            "rows": 9999,
             "sortField": "PresReId",
             "sortOrder": 0,
             "filters": [

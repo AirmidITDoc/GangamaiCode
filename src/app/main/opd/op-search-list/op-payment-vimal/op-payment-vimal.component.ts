@@ -321,7 +321,7 @@ getselectObjPayMode(obj){
         //Advance Calculation need balAmt
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "AdmissionID",
             "sortOrder": 0,
             "filters": [{"fieldName": "AdmissionID","fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals"}],
@@ -635,7 +635,7 @@ getselectObjPayMode(obj){
         this.dataSource.data = [];
         var vdata = {  
              "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "AdmissionID",
             "sortOrder": 0,
             "filters": [{"fieldName": "AdmissionID","fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals"}],
@@ -671,7 +671,7 @@ getselectObjPayMode(obj){
         if (this.IsAdv) {
             var vdata = {
                 "first": 0,
-                "rows": 10,
+                "rows": 9999,
                 "sortField": "AdmissionID",
                 "sortOrder": 0,
                 "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals" }],

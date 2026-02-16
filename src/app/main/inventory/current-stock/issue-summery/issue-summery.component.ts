@@ -73,7 +73,7 @@ export class IssueSummeryComponent implements OnInit {
   getIssueSummeryList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [
@@ -110,7 +110,7 @@ export class IssueSummeryComponent implements OnInit {
   getIssueSummeryDetailsList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [

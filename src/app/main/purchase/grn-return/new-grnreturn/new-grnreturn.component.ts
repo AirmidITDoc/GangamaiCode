@@ -267,7 +267,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.chargeslist = [];
     var Param = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "GRNID",
       "sortOrder": 0,
       "filters": [
@@ -383,7 +383,7 @@ export class NewGRNReturnComponent implements OnInit {
   getGRNreturnlist() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "GRNReturnId",
       "sortOrder": 0,
       "filters": [

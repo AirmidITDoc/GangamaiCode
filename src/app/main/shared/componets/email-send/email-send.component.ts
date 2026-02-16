@@ -44,6 +44,8 @@ EmailFrom:FormGroup
   ) { }
 
   ngOnInit(): void {
+    debugger
+ 
     this.EmailFrom=this.createPOEmailFrom()
     if (this.data.Obj) {
       console.log(this.data)
@@ -51,6 +53,7 @@ EmailFrom:FormGroup
       this.EmailFrom.patchValue({
        ToMailId: this.registerObj?.emailId || ''
       })
+     this.EmailFrom=this.createPOEmailFrom()
       // if (this.registerObj.PurchaseID) {
       //   this.vPurchaseId = this.registerObj.PurchaseNo;
       //   this.vPurchaseTime = this.registerObj.PurchaseTime;
@@ -93,23 +96,26 @@ EmailFrom:FormGroup
 
 //       } 
     } 
-  } 
+  }  
   createPOEmailFrom() {
+    const unitName = this.accountService.currentUserValue.user?.tLoginUnitDetails?.[0]?.unitName || '';
+    const patientName = this.registerObj?.patientName || '';
+    const regNo = this.registerObj?.regNo || '';
+
     return this._formBuilder.group({
-      ToMailId: ['',[this._formvalidationService.allowEmptyStringValidator()]],
-      Subject: ['AirMid Innovation -',[this._formvalidationService.allowEmptyStringValidator()]],
-      Body: [
-        "Dear Recipient,\n\n" +
-        "Greetings from AirMid Innovation.\n\n" +
-        "Please find the details below for your review. " +
-        "Kindly take the necessary action and feel free to contact us if any clarification is needed.\n\n" +
-        "Regards,\n" +
-        "AirMid Innovation"
-      ],
-      CCName: ['',[this._formvalidationService.allowEmptyStringValidatorOnly()]],
-      bccName: ['',[this._formvalidationService.allowEmptyStringValidatorOnly()]],
-    })
-  } 
+      ToMailId: ['', [this._formvalidationService.allowEmptyStringValidator()]],
+      Subject: [`${patientName} - ${regNo}`, [this._formvalidationService.allowEmptyStringValidator()]],
+    Body: [`Dear Recipient,
+Greetings from ${unitName}.
+Please find the details below for your review. Kindly take the necessary action and feel free to contact us if any clarification is needed.
+
+Regards,
+${unitName}`],
+      CCName: ['', [this._formvalidationService.allowEmptyStringValidatorOnly()]],
+      bccName: ['', [this._formvalidationService.allowEmptyStringValidatorOnly()]]
+    });
+} 
+  
 showCc = false;
 showBcc = false;
 

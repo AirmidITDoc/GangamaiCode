@@ -433,7 +433,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
      let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
   var vdata = {
     "first": 0,
-    "rows": 999,
+    "rows": 9999,
     "sortField": "SalesId",
     "sortOrder": 0,
     "filters": [{ "fieldName": "RegId", "fieldValue": String(this.mRegId), "opType": "Contains" },
@@ -613,7 +613,7 @@ getdataMultiple() {
   let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
   var vdata = {
     "first": 0,
-    "rows": 999,
+    "rows": 9999,
     "sortField": "SalesId",
     "sortOrder": 0,
     "filters": [{ "fieldName": "RegId", "fieldValue": String(this.mRegId), "opType": "Contains" },

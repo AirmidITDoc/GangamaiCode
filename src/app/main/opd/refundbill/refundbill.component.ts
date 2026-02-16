@@ -439,7 +439,7 @@ debugger
   getservicedtailList(row) { 
      var m_data = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "BillNo",
       "sortOrder": 0,
       "filters": [

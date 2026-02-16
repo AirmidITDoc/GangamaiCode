@@ -132,7 +132,7 @@ export class StockAdjustmentComponent implements OnInit {
     getStockList() {
         var Param = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "ItemId",
             "sortOrder": 0,
             "filters": [

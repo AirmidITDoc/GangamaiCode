@@ -496,7 +496,7 @@ export class DischargeSummaryTemplateComponent {
     if (!iscekDuplicate) {
       var vdata = {
         "first": 0,
-        "rows": 10,
+        "rows": 999,
         "sortField": "Presid",
         "sortOrder": 0,
         "filters": [
@@ -608,7 +608,7 @@ export class DischargeSummaryTemplateComponent {
     console.log(AdmissionId)
     var m_data2 = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "AdmissionId",
       "sortOrder": 0,
       "filters": [
@@ -639,7 +639,7 @@ export class DischargeSummaryTemplateComponent {
   getDischargeSummaryData(AdmissionId) {
     var m_data2 = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "AdmissionId",
       "sortOrder": 0,
       "filters": [

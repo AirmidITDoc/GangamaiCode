@@ -318,7 +318,7 @@ getbillllist(){
     this.Itemselectedlist = [];   
     var vdata = { 
     "first": 0,
-    "rows": 200,
+    "rows": 9999,
     "sortField": "SalesId",
     "sortOrder": 0,
     "filters": [ 
