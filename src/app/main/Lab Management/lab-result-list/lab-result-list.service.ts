@@ -47,21 +47,21 @@ export class LabResultListService {
   createBranchSummarySearchForm(): FormGroup {
     return this._formBuilder.group({
       UnitId: [this.accountService.currentUserValue.user.unitId],
-     
+
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       // TestStatusSearch: ['1'],
-    
+
       // CategoryId:0
     });
   }
   createServicerevenuSearchForm(): FormGroup {
     return this._formBuilder.group({
       UnitId: [this.accountService.currentUserValue.user.unitId],
-     
+
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-    
+
     });
   }
   createtemplateForm(): FormGroup {
@@ -196,6 +196,10 @@ export class LabResultListService {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
 
+  public getMultiReportView(Param) {
+    return this._httpClient1.PostData("Report/NewMultiReport", Param);
+  }
+
   public PathPrintResultentryInsert(employee) {
     return this._httpClient1.PostData("Pathology/PathPrintResultentryInsert", employee);
   }
@@ -212,7 +216,7 @@ export class LabResultListService {
     return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
   }
 
-     public getarrovallist(employee) {
+  public getarrovallist(employee) {
     return this._httpClient1.PostData("LabApproval/LabResultCompletedList", employee)
     // return this._httpClient1.PostData("LabPatientRegistration/LabApprovaltList", employee)
   }
@@ -220,5 +224,5 @@ export class LabResultListService {
   public getBillrevenudetailList(param) {
 
     return this._httpClient1.PostData("Branch/UnitBranchWiseRevenueSummary", param)
-}
+  }
 }

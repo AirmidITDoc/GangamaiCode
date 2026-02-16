@@ -1,5 +1,5 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" dynamicTableHeight>
-<!-- <div class="page-layout simple inner-sidebar inner-scroll" style="width:100%;overflow-y: hidden;overflow-x: auto;"> -->
+    <!-- <div class="page-layout simple inner-sidebar inner-scroll" style="width:100%;overflow-y: hidden;overflow-x: auto;"> -->
     <!-- HEADER -->
     <div class="top-header">
         <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
@@ -81,7 +81,8 @@
 
                         </div>
                         <div fxFlex="60%">
-                               <div fxLayout="row" class="gap-4 p-8">
+                            <div fxLayout="row" class="gap-4 p-8" fxLayoutAlign="space-between center">
+                                <div fxLayout="row" class="gap-4">
                                     <div class="net-amt-box">
                                         <span class="net-amt-label">Total Count : </span>
                                         <span class="net-amt-value">{{ TotCount }}</span>
@@ -92,25 +93,33 @@
                                             }}</span>
                                     </div>
                                 </div>
+
                                 <div>
-                                    <ng-template #actionButtonTemplate let-element>
-                                        <div fxLayout="row" fxLayoutAlign="center center">
-
-                                            <button mat-icon-button matTooltip="Print"
-                                                (click)="viewgetReportPdf(element)">
-                                                <mat-icon>print</mat-icon>
-                                            </button>
-
-                                        </div>
-                                    </ng-template>
-
-                                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"
-                                        :ShowButtons="false">
-                                    </airmid-table>
-
+                                    <button class="btn btn-primary btn-with-icon btn-xs" (click)="viewgetReportPdf()">
+                                        <span style="font-size: 16px;">Print Statement</span>
+                                        <span class="btn-icon">
+                                            <mat-icon>print</mat-icon>
+                                        </span>
+                                    </button>
                                 </div>
+                            </div>
+                            <div>
+                                <ng-template #actionButtonTemplate let-element>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
 
-                             
+                                        <button mat-icon-button matTooltip="Print" (click)="viewgetReportPdf()">
+                                            <mat-icon>print</mat-icon>
+                                        </button>
+
+                                    </div>
+                                </ng-template>
+
+                                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                                </airmid-table>
+
+                            </div>
+
+
 
                         </div>
                     </div>
@@ -126,8 +135,7 @@
                         <!-- <button mat-icon-button matTooltip="Print" (click)="viewgetReportPdf(element)">
                             <mat-icon>print</mat-icon>
                         </button> -->
-                        <button mat-icon-button color="warn" matTooltip="Trend"
-                        (click)="serviceTrend(element)">
+                        <button mat-icon-button color="warn" matTooltip="Trend" (click)="serviceTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 
@@ -144,8 +152,7 @@
                 <ng-template #actionButtonTemplate2 let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <button mat-icon-button color="warn" matTooltip="Trend"
-                        (click)="categoryTrend(element)">
+                        <button mat-icon-button color="warn" matTooltip="Trend" (click)="categoryTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 
@@ -161,8 +168,7 @@
                 <ng-template #actionButtonTemplate3 let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <button mat-icon-button color="warn" matTooltip="Trend"
-                        (click)="doctorTrend(element)">
+                        <button mat-icon-button color="warn" matTooltip="Trend" (click)="doctorTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 
@@ -178,8 +184,7 @@
                 <ng-template #actionButtonTemplate4 let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <button mat-icon-button color="warn" matTooltip="Trend"
-                        (click)="companyTrend(element)">
+                        <button mat-icon-button color="warn" matTooltip="Trend" (click)="companyTrend(element)">
                             <mat-icon>trending_up</mat-icon>
                         </button>
 

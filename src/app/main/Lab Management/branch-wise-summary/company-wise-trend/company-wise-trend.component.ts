@@ -21,7 +21,7 @@ import { LabResultListService } from '../../lab-result-list/lab-result-list.serv
 export class CompanyWiseTrendComponent {
   // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   unitId = "0"
-  companyId = "5"
+  companyId = ""
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -51,79 +51,41 @@ export class CompanyWiseTrendComponent {
     public toastr: ToastrService,
     private commonService: PrintserviceService,) { }
 
-  // ngOnInit(): void {
-  //   if (this.data) {
-  //     // debugger
-  //     this.unitId = this.data.unit
-  //     this.fromDate = this.data.fdate
-  //     this.toDate = this.data.tdate
-  //     this.getfilterdata()
-  //   }
-  // }
-  // gridConfig: gridModel = {
-  //   apiUrl: "Branch/BranchWiseCompanySummaryList",
-  //   columnsList: this.allcolumns,
-  //   sortField: "CompanyId",
-  //   sortOrder: 0,
-  //   filters: [
-  //     { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-  //     { fieldName: "CompanyId", fieldValue: String(this.companyId), opType: OperatorComparer.Equals },
-  //     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-  //     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-  //   ]
-  // }
-
-  // getfilterdata() {
-  //   this.gridConfig = {
-  //     apiUrl: "Branch/BranchWiseCompanySummaryList",
-  //     columnsList: this.allcolumns,
-  //     sortField: "CompanyId",
-  //     sortOrder: 0,
-  //     filters: [
-  //       { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-  //       { fieldName: "CompanyId", fieldValue: String(this.companyId), opType: OperatorComparer.Equals },
-  //       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-  //       { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-  //     ]
-  //   }
-  //   // debugger
-  //   this.grid.gridConfig = this.gridConfig;
-  //   this.grid.bindGridData();
-  // }
-
   @ViewChild('grid') grid!: AirmidTableComponent;
 
   gridConfig!: gridModel;
+  filterType: 'Day' | 'Month' = 'Day';
 
   ngOnInit() {
     this.unitId = this.data.unit
     this.fromDate = this.data.fdate
     this.toDate = this.data.tdate
+    this.companyId=this.data.row.companyId
     this.loadGrid(); // initial load
   }
 
   loadGrid() {
+    const monthValue = this.filterType === 'Month' ? 'Months' : 'Day';
     this.gridConfig = {
       apiUrl: "Branch/BranchWiseCompanySummaryList",
       columnsList: this.allcolumns,
       sortField: "CompanyId",
       sortOrder: 0,
       filters: [
-        { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-        { fieldName: "CompanyId", fieldValue: String(this.companyId), opType: OperatorComparer.Equals },
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+        { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Contains },
+        { fieldName: "CompanyId", fieldValue: String(this.companyId), opType: OperatorComparer.Contains },
+        { fieldName: "Month", fieldValue: monthValue, opType: OperatorComparer.Contains },
       ]
     }
+    setTimeout(() => {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    }, 100);
   }
 
-  getfilterdata() {
+  setFilterType(type: 'Day' | 'Month') {
+    this.filterType = type;
     this.loadGrid();
-
-    // wait until ViewChild exists
-    if (this.grid) {
-      this.grid.bindGridData();
-    }
   }
 
   onClose() {

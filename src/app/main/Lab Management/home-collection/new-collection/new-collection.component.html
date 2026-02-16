@@ -9,10 +9,10 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                    <!-- <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="false"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
+                    </div> -->
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
@@ -131,6 +131,29 @@
                                                                 [value]="registerObj?.phlebotomist"
                                                                 [mode]="autocompleteModecity">
                                                             </airmid-dropdown>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="50">
+                                                            <mat-form-field appearance="outline" fxFlex>
+                                                                <mat-label>Collection Date</mat-label>
+                                                                <input matInput [matDatepicker]="picker1"
+                                                                    [min]="minDate" formControlName="collectionDate"
+                                                                    (dateChange)="onChangeDate($event.value)">
+                                                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                                                <mat-datepicker #picker1></mat-datepicker>
+                                                            </mat-form-field>
+                                                        </div>
+
+                                                        <div fxFlex="50">
+                                                            <mat-form-field appearance="outline" fxFlex>
+                                                                <mat-label>Collection Time</mat-label>
+                                                                <input matInput type="time"
+                                                                    formControlName="collectionTime"
+                                                                    (change)="onChangeTime($event)">
+                                                            </mat-form-field>
                                                         </div>
 
                                                     </div>

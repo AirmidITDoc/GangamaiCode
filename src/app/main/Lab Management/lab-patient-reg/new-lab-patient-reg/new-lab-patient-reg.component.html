@@ -159,7 +159,7 @@
                                                         <div fxFlex="50">
                                                             <airmid-dropdown label="City" formControlName="cityId"
                                                                 [formGroup]="myForm" ValueField="cityId"
-                                                                TextField="cityName" [value]="registerObj?.cityId"
+                                                                TextField="cityName" [value]="registerObj?.cityId ?? registerObj?.location"
                                                                 (selectionChange)="onChangecity($event)"
                                                                 ApiUrl="CityMaster/get-cities">
                                                             </airmid-dropdown>

@@ -98,6 +98,11 @@ const appRoutes: Routes = [
         path:"item-company-master",
         loadChildren:()=>
             import("./item-company-master/item-company-master.module").then((m)=> m.ItemCompanyMasterModule),
+    },
+    {
+        path:"item-drugtype-master",
+        loadChildren:()=>
+            import("./item-drug-master/item-drug-master.module").then((m)=> m.ItemDrugMasterModule),
     }
 ];
 

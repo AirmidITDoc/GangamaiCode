@@ -54,6 +54,9 @@ export class LabPatientRegService {
   public getstateId(Id) {
     return this._httpClient.GetData("StateMaster/" + Id);
   }
+   public getcityId(Id) {
+    return this._httpClient.GetData("CityMaster/" + Id);
+  }
   public getLabRegistraionById(Id) {
     return this._httpClient.GetData("LabPatientRegistration/" + Id);
   }
@@ -130,9 +133,16 @@ export class LabPatientRegService {
   public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
     debugger
     return this._httpClient.GetData(apiUrl + inputValue);
-}
+  }
 
-public getRegistraionById(Id) {
-  return this._httpClient.GetData("LabPatientRegistration/" + Id);
-}
+  public getRegistraionById(Id) {
+    return this._httpClient.GetData("LabPatientRegistration/" + Id);
+  }
+
+  public gethomeCollById(Id) {
+    return this._httpClient.GetData("HomeCollection/" + Id);
+  }
+  public getCollectionById(param) {
+    return this._httpClient.PostData("HomeCollection/homeCollectionDetList",param);
+  }
 }

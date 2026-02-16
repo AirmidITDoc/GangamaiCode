@@ -196,19 +196,67 @@ export class NewLabPatientRegComponent {
     this.myForm.get('tariffId').setValue(this.data?.row?.tariffId ?? 1);
     this.myForm.get('companyId').disable() // disable for 1st time when form will open after comp select enable
 
-    if (this.data?.row?.labPatientId) {
-      this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
-        this.registerObj = response;
-        this.myForm.get('doctorId').setValue(this.registerObj.doctorId);
-        this.myForm.get('refDocId').setValue(this.registerObj.refDocId);
-        this.VlabPatRegId = this.registerObj.labPatRegId
-        console.log("retrive Data:", this.registerObj)
-        this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
+    if (this.data.mode == 'add') {
+      if (this.data?.row?.labPatientId) {
+        this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
           this.registerObj = response;
-          console.log("Master Data:", this.registerObj)
-          this.myForm.patchValue(this.registerObj)
+          this.myForm.get('doctorId').setValue(this.registerObj.doctorId);
+          this.myForm.get('refDocId').setValue(this.registerObj.refDocId);
+          this.VlabPatRegId = this.registerObj.labPatRegId
+          console.log("retrive Data:", this.registerObj)
+          this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
+            this.registerObj = response;
+            console.log("Master Data:", this.registerObj)
+            this.myForm.patchValue(this.registerObj)
+          });
         });
-      });
+      }
+    } else if (this.data.mode == 'edit') {
+      if (this.data?.row?.labPatientId) {
+        this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
+          this.registerObj = response;
+          this.myForm.get('doctorId').setValue(this.registerObj.doctorId);
+          this.myForm.get('refDocId').setValue(this.registerObj.refDocId);
+          this.VlabPatRegId = this.registerObj.labPatRegId
+          console.log("retrive Data:", this.registerObj)
+          this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
+            this.registerObj = response;
+            console.log("Master Data:", this.registerObj)
+            this.myForm.patchValue(this.registerObj)
+          });
+        });
+      }
+
+    } else if (this.data.mode == 'home') {
+      if (this.data?.row?.homeCollectionId) {
+        this.regNo = this.data?.row?.homeSeqNo
+        this._labPatientRegService.gethomeCollById(this.data?.row?.homeCollectionId).subscribe((response) => {
+          console.log(response)
+          this.registerObj = response;
+          this.value = response.dateofBirth
+          this.VlabPatRegId = this.registerObj.patRegId
+          this.onChangeDateofBirth(response.dateofBirth)
+          this.regflag = true
+          this.myForm.patchValue({
+            firstName: this.registerObj.firstName.trim(),
+            middleName: this.registerObj.middleName.trim(),
+            LastName: this.registerObj.lastName.trim(),
+            MobileNo: this.registerObj.mobileNo.trim(),
+            address: this.registerObj.address.trim()
+          });
+          this.myForm.get('cityId').setValue(this.registerObj.location);
+          if (this.registerObj.location) {
+            this._labPatientRegService.getcityId(this.registerObj.location).subscribe((Response) => {
+              this.stateId = Response.stateId
+
+              this._labPatientRegService.getstateId(this.stateId).subscribe((Response) => {
+                this.counryId = Response.countryId
+              });
+            });
+          }
+        });
+        this.getCollectionList();
+      }
     }
 
     this.getServiceList();
@@ -742,6 +790,53 @@ export class NewLabPatientRegComponent {
     this.Consessionres = totalDisc > 0;
   }
 
+  FetchList: any = [];
+  getCollectionList() {
+    var param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "HomeCollectionId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "HomeCollectionId",
+          "fieldValue": String(this.data?.row?.homeCollectionId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+
+    this._labPatientRegService.getCollectionById(param).subscribe(Menu => {
+      this.FetchList = Menu.data as ChargesList[];
+
+      let hasPrevDiscount = false;
+      if (Array.isArray(this.FetchList)) {
+        this.FetchList.forEach(item => {
+          item.serviceId = item.testId;
+          item.serviceName = item.serviceName;
+          item.price = item.price;
+          item.totalAmt = item.totalAmount;
+          item.netAmount = item.netAmount;
+          item.DiscPer = item.discPer
+          item.DiscAmt = item.discAmount
+          item.isPathology = item.isPathology ?? item.IsPathology;
+          item.isRadiology = item.isRadiology ?? item.IsRadiology;
+          item.isPackage = item.isPackage ?? item.IsPackage;
+
+          if (item.DiscAmt > 0 || item.DiscPer > 0) {
+            this.isDiscountApplied = true;
+            hasPrevDiscount = true;
+          }
+
+          this.onSaveEntry(item);
+
+        });
+      }
+    });
+
+  }
 
   getPrevList(row: any = null) {
     const dialogRef = this._matDialog.open(PrevlabHistoryComponent,
@@ -869,7 +964,7 @@ export class NewLabPatientRegComponent {
 
 
   onDiscountPerChange(row: ChargesList): void {
-    debugger
+    // debugger
     if (!row) return;
     let discountPer = +row.DiscPer || 0;
     const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
@@ -918,7 +1013,7 @@ export class NewLabPatientRegComponent {
   }
   // Calculation of total amount.
   calculateTotalAmount(): void {
-    debugger
+    // debugger
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
     let totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
@@ -1046,7 +1141,7 @@ export class NewLabPatientRegComponent {
   }
 
   updateCalculation(source: 'PER' | 'LIST' = 'LIST') {
-    debugger
+    // debugger
     const totalAmt = this.chargeList.reduce(
       (sum, item) => sum + (Number(item.Price) || 0),
       0
@@ -1155,7 +1250,7 @@ export class NewLabPatientRegComponent {
   // }
 
   getCellCalculation(element) {
-    debugger
+    // debugger
     const price = Number(element.Price) || 0;
 
     // row-level calculation ONLY
@@ -1227,7 +1322,7 @@ export class NewLabPatientRegComponent {
     //   totalAmount = row.price * 1;
     // }
     const totalAmount = row.price * 1;
-    debugger
+    // debugger
 
     // const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
     // const netAmount = totalAmount - discountAmount;
@@ -1243,7 +1338,7 @@ export class NewLabPatientRegComponent {
 
     const netAmount = totalAmount - discountAmount;
 
-    debugger
+    // debugger
     const newRow = {
       ServiceId: row.serviceId,
       ServiceName: row.serviceName,
@@ -1698,7 +1793,11 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('opdipdid')?.setValue(0)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
     this.OpBillForm.get('regNo')?.setValue(this.regNo)
-    this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
+    if (this.data.mode == 'home') {
+      this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
+    } else {
+      this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
+    }
     this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
     this.OpBillForm.get('ageYear')?.setValue(this.myForm.get('ageYear')?.value || 0)
     this.OpBillForm.get('ageMonth')?.setValue(this.myForm.get('ageMonth')?.value || 0)
@@ -1832,7 +1931,7 @@ export class NewLabPatientRegComponent {
         console.log(this.OpBillForm.value)
         this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
-        debugger
+        // debugger
         this.ModeOfPaymentsArray.clear();
         ModePaymentObj.forEach(item => {
           this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));

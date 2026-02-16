@@ -18,24 +18,31 @@
 
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-            <button mat-icon-button matTooltip="Edit" (click)="onnew(element)">
+            <button mat-icon-button matTooltip="Edit" (click)="onnew(element)"
+                [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
                 <mat-icon>edit</mat-icon>
             </button>
 
-            <!-- <button mat-icon-button matTooltip="Cancel">
-                <mat-icon> cancel </mat-icon>
-            </button> -->
+            <button mat-icon-button matTooltip="Process Bill" (click)="onBillProcess(element)"
+                [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
+                <mat-icon>replay</mat-icon>
+            </button>
 
-            <button mat-icon-button matTooltip="Print">
+            <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
+            [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
+                <mat-icon> cancel </mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Print" [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
                 <mat-icon>print</mat-icon>
             </button>
         </div>
     </ng-template>
 
     <ng-template #stausStart let-element>
-        <div fxLayout="column" fxLayoutAlign="center center" 
-        [ngClass]="element.status > 0 ? 'status-started' : 'status-no'">
-                {{ element.status > 0 ? 'Started' : 'No' }}
+        <div fxLayout="column" fxLayoutAlign="center center"
+            [ngClass]="element.status > 0 ? 'status-started' : 'status-no'">
+            {{ element.status > 0 ? 'Started' : 'No' }}
         </div>
     </ng-template>
 

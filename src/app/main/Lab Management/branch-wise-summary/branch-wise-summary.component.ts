@@ -23,6 +23,7 @@ import { ServiceWiseTrendComponent } from './service-wise-trend/service-wise-tre
 import { CategoryWiseTrendComponent } from './category-wise-trend/category-wise-trend.component';
 import { DoctorWiseTrendComponent } from './doctor-wise-trend/doctor-wise-trend.component';
 import { CompanyWiseTrendComponent } from './company-wise-trend/company-wise-trend.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-branch-wise-summary',
@@ -415,7 +416,42 @@ export class BranchWiseSummaryComponent {
     });
   }
 
-  viewgetReportPdf() { }
+  viewgetReportPdf() {
+    this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+    var vdata = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
+          "opType": "13"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "13"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "13"
+        }
+      ],
+      "mode": "BranchWiseStatement"
+    }
+    this._LabResultListService.getMultiReportView(vdata).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "Statement Viewer"
+        }
+      });
+      matDialog.afterClosed().subscribe(result => { });
+    });
+  }
 
   Billdetaildatasource = new MatTableDataSource<BillRevenuList>();
   paydata = []

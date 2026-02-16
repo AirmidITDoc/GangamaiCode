@@ -960,6 +960,7 @@ export class LabPatientList {
   location: any;
   remark: any;
   phlebotomist: any;
+  patRegId:any;
 
   constructor(LabPatientList) {
     {
@@ -1041,7 +1042,7 @@ export class LabPatientList {
       this.remark = LabPatientList.remark || ''
       this.location = LabPatientList.location || ''
       this.phlebotomist = LabPatientList.phlebotomist || ''
-      // this.location = LabPatientList.location || ''
+      this.patRegId = LabPatientList.patRegId || ''
       // this.location = LabPatientList.location || ''
       // this.location = LabPatientList.location || ''
       // this.location = LabPatientList.location || ''

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
@@ -211,6 +211,34 @@ export class NewCollectionComponent {
     this.getServiceList();
 
     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
+
+    this.setEditValues(this.data)
+  }
+
+  setEditValues(data: any) {
+
+    const collectionDate = data.collectionDate ? new Date(data.collectionDate) : null;
+    let collectionTime = '';
+
+    if (data.collectionTime) {
+      // Case 1: "16-02-2026 01:14:00"
+      if (data.collectionTime.includes(' ')) {
+        collectionTime = data.collectionTime.split(' ')[1]?.slice(0, 5);
+      } else if (data.collectionTime.includes('T')) {
+        // "2026-02-16T00:21:00" → "00:21"
+        collectionTime = data.collectionTime.split('T')[1].slice(0, 5);
+      }
+      // Case 2: "01:14:00"
+      else if (data.collectionTime.includes(':')) {
+        collectionTime = data.collectionTime.slice(0, 5);
+      }
+
+    }
+
+    this.myForm.patchValue({
+      collectionDate,
+      collectionTime
+    });
   }
 
   private _Consessionres = false;
@@ -272,6 +300,9 @@ export class NewCollectionComponent {
           item.netAmount = item.netAmount;
           item.DiscPer = item.discPer
           item.DiscAmt = item.discAmount
+          item.isPathology = item.isPathology ?? item.IsPathology;
+          item.isRadiology = item.isRadiology ?? item.IsRadiology;
+          item.isPackage = item.isPackage ?? item.IsPackage;
 
           if (item.DiscAmt > 0 || item.DiscPer > 0) {
             this.isDiscountApplied = true;
@@ -289,6 +320,13 @@ export class NewCollectionComponent {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+  getCurrentTime(): string {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
 
   CreateMyForm() {
     {
@@ -309,10 +347,10 @@ export class NewCollectionComponent {
         patRegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         remark: [''],
         priority: true, //
-        collectionDate: ['', Validators.required],
-        collectionTime: ['', Validators.required],
-        phlebotomist: 0,
-        location: "0",
+        collectionDate: [new Date()],
+        collectionTime: [this.getCurrentTime(), Validators.required],
+        phlebotomist: [0],
+        location: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         latitude: "0", //
         longitude: "0", //
         radius: "0", //
@@ -424,12 +462,59 @@ export class NewCollectionComponent {
     }
   }
 
-  OnSave() {
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
-    const formattedTime = formattedDate + this.dateTimeObj.time;
+  onChangeDate(value: any) {
+    // debugger;
+    if (value) {
+      const inputDate = new Date(value);
 
-    this.myForm.get('collectionDate').setValue(formattedDate);
-    this.myForm.get('collectionTime').setValue(formattedTime);
+      const dateOfReg = new Date(Date.UTC(
+        inputDate.getFullYear(),
+        inputDate.getMonth(),
+        inputDate.getDate()
+      ));
+
+      // Optional: Emit localized date and time
+      const [datePart, timePart] = dateOfReg
+        .toLocaleString("en-US")
+        .split(',')
+        .map(part => part.trim());
+
+      this.eventEmitForParent(datePart, timePart);
+
+      const isoDateString = dateOfReg.toISOString();
+      this.myForm.get('collectionDate').setValue(isoDateString);
+    }
+  }
+
+  collTime: any;
+  onChangeTime(event: any) {
+    let time = event.target.value;
+    if (time && time.length >= 5) {
+      time = time.substring(0, 5);
+    }
+    console.log("Time changed:", time); // "11:51"
+    this.collTime = time
+    this.myForm.get('collectionTime')?.setValue(time, { emitEvent: false });
+  }
+
+  @Output() dateTimeEventEmitter = new EventEmitter<{}>();
+  eventEmitForParent(actualDate, actualTime) {
+    let localaDateValues = actualDate.split('/');
+    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
+  }
+
+
+  OnSave() {
+    const CollDate = this.datePipe.transform(this.myForm.get('collectionDate')?.value, 'yyyy-MM-dd');
+    const CollTime = this.myForm.get('collectionTime')?.value;
+
+    if (CollDate && CollTime) {
+      const combinedDateTime = new Date(`${CollDate}T${CollTime}`); //`${inDate} ${inTime}`;
+      this.myForm.get('collectionDate')?.setValue(CollDate);
+      this.myForm.get('collectionTime')?.setValue(combinedDateTime);
+    }
+
     this.myForm.get('patRegId').setValue(this.VlabPatRegId ?? 0);
     this.myForm.get('homeCollectionId').setValue(this.vHomeCollId ?? 0);
     this.myForm.get('status')?.setValue(this.myForm.get('status')?.value == true ? 1 : 0)

@@ -66,6 +66,7 @@ export enum permissionCodes {
     TaxMaster = 'TaxMaster',
     TermsofPayment = 'TermsofPayment',
     UnitOfMeasurement = 'UnitOfMeasurement',
+    ItemDrugTypeMaster = 'ItemDrugTypeMaster',
     // TaxMaster = 'TaxMaster',
 
     // Prescription Master

@@ -40,7 +40,7 @@ export class HomeCollectionService {
     return this._httpClient.GetData("StateMaster/" + Id);
   }
   public getCollectionById(param) {
-    return this._httpClient.PostData("HomeCollection/homeCollectionDetList",param);
+    return this._httpClient.PostData("HomeCollection/homeCollectionDetList", param);
   }
   public getLabRegistraionMasterById(Id) {
     return this._httpClient.GetData("LabPatientRegistration/GetLabPatientRegisteredMaster?id=" + Id);
@@ -63,8 +63,11 @@ export class HomeCollectionService {
       return this._httpClient.PutData("HomeCollection/Edit/" + param.homeCollectionId, param)
     } else return this._httpClient.PostData("HomeCollection/Insert", param)
   }
-  
+
   public gethomeCollById(Id) {
     return this._httpClient.GetData("HomeCollection/" + Id);
+  }
+  public OnCancel(param) {
+    return this._httpClient.PostData('HomeCollection/Cancel', param)
   }
 }

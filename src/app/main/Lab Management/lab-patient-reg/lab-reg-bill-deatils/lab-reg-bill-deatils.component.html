@@ -37,7 +37,7 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
 
-                <div id="contacts" style="height: 280px;">
+                <div id="contacts" style="height: 250px;">
 
                     <ng-template #ColorCode let-element>
                         <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
@@ -123,13 +123,13 @@
                     <div class="gridtitle">
                         Test & Services
                     </div>
-                    <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                    <airmid-table [gridConfig]="gridConfig" #billgrid :ShowFilter="false" :ShowButtons="false">
                         <ng-container filters>
                         </ng-container>
                     </airmid-table>
                 </div>
 
-                <div id="contacts" style="height: 250px;margin-top: 20px;">
+                <div id="contacts" style="height: 200px;margin-top: 20px;">
                     <div class="gridtitle">
                         <span>
                             Discount Details
@@ -141,7 +141,7 @@
                     </airmid-table>
                 </div>
 
-                <div id="contacts" style="height: 250px;margin-top: 50px;">
+                <div id="contacts" style="height: 200px;margin-top: 50px;">
                     <div class="gridtitle">
                         Payment Details
                     </div>
@@ -151,7 +151,7 @@
                     </airmid-table>
                 </div>
 
-                <div id="contacts" style="height: 280px;margin-top: 60px;">
+                <div id="contacts" style="height: 200px;margin-top: 60px;">
                     <div class="gridtitle">
                         Credit Details
                     </div>
@@ -171,10 +171,10 @@
     <div class="modal-footer" style="margin-top: 10px;">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
-                <button class="btn btn-primary" color="accent">
+                <button class="btn btn-primary" color="accent" (click)="onPrint()">
                     Path Req
                 </button>
-                <button class="btn btn-primary" color="accent">
+                <button class="btn btn-primary" color="accent" (click)="onPrint()">
                     Non Path Req
                 </button>
 

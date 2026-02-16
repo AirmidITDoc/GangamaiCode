@@ -28,23 +28,17 @@
 
             <div id="contacts" style="height: 280px;">
 
+                <div fxLayout="row" class="p-8 gap-4">
+                    <button mat-raised-button (click)="setFilterType('Day')"
+                        [color]="filterType === 'Day' ? 'primary' : undefined">
+                        Day
+                    </button>
 
-                <!-- <ng-template #actionButtonTemplate let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-
-                        <button mat-icon-button matTooltip="Print">
-                            <mat-icon>print</mat-icon>
-                        </button>
-
-                        <button mat-icon-button matTooltip="EMail">
-                            <mat-icon>email</mat-icon>
-                        </button>
-
-                        <button mat-icon-button matTooltip="Send message On WhatsApp">
-                            <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                        </button>
-                    </div>
-                </ng-template> -->
+                    <button mat-raised-button (click)="setFilterType('Month')"
+                        [color]="filterType === 'Month' ? 'primary' : undefined">
+                        Month
+                    </button>
+                </div>
 
                 <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
                     <ng-container filters>

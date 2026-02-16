@@ -20,7 +20,7 @@ import { LabResultListService } from '../../lab-result-list/lab-result-list.serv
 })
 export class ServiceWiseTrendComponent {
   unitId = "0"
-  serviceId = "902"
+  serviceId = "0"
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -51,48 +51,6 @@ export class ServiceWiseTrendComponent {
     public toastr: ToastrService,
     private commonService: PrintserviceService,) { }
 
-
-  // ngOnInit(): void {
-  //   if (this.data) {
-  //     // debugger
-  //     this.unitId = this.data.unit
-  //     this.fromDate = this.data.fdate
-  //     this.toDate = this.data.tdate
-  //   }
-  //     this.getfilterdata()
-  // }
-
-  // gridConfig: gridModel = {
-  //   apiUrl: "Branch/BranchWiseTestSummaryList",
-  //   columnsList: this.allcolumns,
-  //   sortField: "ServiceId",
-  //   sortOrder: 0,
-  //   filters: [
-  //     { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-  //     { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals },
-  //     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-  //     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-  //   ]
-  // }
-
-  // getfilterdata() {
-  //   this.gridConfig = {
-  //     apiUrl: "Branch/BranchWiseTestSummaryList",
-  //     columnsList: this.allcolumns,
-  //     sortField: "ServiceId",
-  //     sortOrder: 0,
-  //     filters: [
-  //       { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-  //       { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals },
-  //       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-  //       { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-  //     ]
-  //   }
-  //   // debugger
-  //   this.grid.gridConfig = this.gridConfig;
-  //   this.grid.bindGridData();
-  // }
-
   @ViewChild('grid') grid!: AirmidTableComponent;
 
   gridConfig!: gridModel;
@@ -102,55 +60,41 @@ export class ServiceWiseTrendComponent {
     this.unitId = this.data.unit
     this.fromDate = this.data.fdate
     this.toDate = this.data.tdate
+    this.serviceId=this.data.row.serviceId
     this.loadGrid(); // initial load
   }
 
   loadGrid() {
+    const monthValue = this.filterType === 'Month' ? 'Months' : 'Day';
     this.gridConfig = {
       apiUrl: "Branch/BranchWiseTestSummaryList",
       columnsList: this.allcolumns,
       sortField: "ServiceId",
       sortOrder: 0,
       filters: [
-        { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-        { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals },
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+        { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Contains },
+        { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Contains },
+        { fieldName: "Month", fieldValue: monthValue, opType: OperatorComparer.Contains },
       ]
     };
+    setTimeout(() => {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    }, 100);
   }
   setFilterType(type: 'Day' | 'Month') {
     this.filterType = type;
-    // this.getfilterdata();
+    this.loadGrid();
   }
 
-  // loadGrid() {
-  //   this.gridConfig = {
-  //     apiUrl: "Branch/BranchWiseTestSummaryList",
-  //     columnsList: this.allcolumns,
-  //     sortField: "ServiceId",
-  //     sortOrder: 0,
-  //     filters: [
-  //       { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-  //       { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals },
-  //       {
-  //         fieldName: "Type",              // 👈 only this
-  //         fieldValue: this.filterType,    // Day or Month
-  //         opType: OperatorComparer.Equals
-  //       }
-  //     ]
-  //   };
+  // getfilterdata() {
+  //   this.loadGrid();
+
+  //   setTimeout(() => {
+  //     this.grid?.bindGridData();
+  //   });
   // }
 
-
-  getfilterdata() {
-    this.loadGrid();
-
-    // wait until ViewChild exists
-    if (this.grid) {
-      this.grid.bindGridData();
-    }
-  }
 
   onClose() {
     this._matDialog.closeAll()

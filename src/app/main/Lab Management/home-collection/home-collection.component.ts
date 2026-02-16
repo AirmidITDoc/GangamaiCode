@@ -24,6 +24,7 @@ import { ReportDispatchComponent } from '../report-dispatch/report-dispatch.comp
 import { EmailorSMSHistoryComponent } from '../emailor-smshistory/emailor-smshistory.component';
 import { HomeCollectionService } from './home-collection.service';
 import { NewCollectionComponent } from './new-collection/new-collection.component';
+import { NewLabPatientRegComponent } from '../lab-patient-reg/new-lab-patient-reg/new-lab-patient-reg.component';
 
 @Component({
   selector: 'app-home-collection',
@@ -173,6 +174,54 @@ export class HomeCollectionComponent {
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.grid.bindGridData();
       // this.GetAppointdetail();
+    });
+  }
+
+  onBillProcess(row: any = null) {
+    const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
+      {
+        maxWidth: "95vw",
+        height: '95%',
+        width: '90%',
+        data: { mode: 'home', row }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.grid.bindGridData();
+      // this.GetAppointdetail();
+    });
+  }
+
+  OnCancel(data: any) {
+    Swal.fire({
+      title: 'Do you want to cancel Home Collection?',
+      text: "Please provide a reason for cancellation",
+      icon: "warning",
+      // input: 'text',
+      // inputPlaceholder: 'Enter cancellation reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+      // preConfirm: (reason) => {
+      //   if (!reason || reason.trim() === '') {
+      //     Swal.showValidationMessage('Reason is required');
+      //   }
+      //   return reason;
+      // }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          homeCollectionId: data.homeCollectionId,
+          isCancelledBy: this._loggedService.currentUserValue.userId
+        };
+        console.log(submitData);
+        this._homeCollectionService.OnCancel(submitData).subscribe((res) => {
+          this.toastr.success(res.message);
+          this.grid.bindGridData();
+        });
+      }
     });
   }
 }

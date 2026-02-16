@@ -156,7 +156,7 @@ export class AirmidTableComponent implements OnInit {
             'table-row-yellow' : row?.companyId > 0,
 
             // added by raksha on 25/10/25 for cancelled row
-            'table-row-lightRed' : row?.isCancelled == true
+            'table-row-lightRed' : row?.isCancelled || row?.isCancel == true
         }
 
 

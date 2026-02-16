@@ -24,15 +24,16 @@ import { ReportDispatchComponent } from '../../report-dispatch/report-dispatch.c
     animations: fuseAnimations,
 })
 export class LabRegBillDeatilsComponent {
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     BillNo = "0"
     doctorName = ""
+    labId="0"
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
     @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
     @ViewChild('icons') icons!: TemplateRef<any>;
     @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
+    @ViewChild('billgrid', { static: false }) billgrid: AirmidTableComponent;
     @ViewChild('DiscGrid', { static: false }) Discgrid: AirmidTableComponent;
     @ViewChild('PayGrid', { static: false }) Paygrid: AirmidTableComponent;
     @ViewChild('CreditGrid', { static: false }) Creditgrid: AirmidTableComponent;
@@ -44,8 +45,28 @@ export class LabRegBillDeatilsComponent {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
-    allcolumns = [
+    ngOnInit(): void {
+        if (this.data) {
+            this.BillNo = this.data.billNo;
+            this.doctorName = this.data.doctorName;
+            this.labId=this.data.labPatientId
+            this.getfilterdata();
+            this.getDiscountfilterdata();
+            this.getCreditfilterdata();
+            this.getPayoutfilterdata();
+        }
+    }
 
+    constructor(public _labPatientRegService: LabPatientRegService,
+        private _loggedService: AuthenticationService,
+        public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        private commonService: PrintserviceService,
+        private _fuseSidebarService: FuseSidebarService,
+        public _whatsppService: WhatsAppEmailService,) { }
+
+    allcolumns = [
         {
             heading: "-", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
             template: this.ColorCode
@@ -53,6 +74,7 @@ export class LabRegBillDeatilsComponent {
         { heading: "--", key: "icon", align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80, template: this.icons },
         // { heading: "--", key: "isPathology",align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
         // { heading: "--", key: "isRadiology", align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
+        { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -74,94 +96,6 @@ export class LabRegBillDeatilsComponent {
         ]
     }
 
-    allDisccolumns = [
-        { heading: "Discount Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Discount Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DisPer", key: "discper", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DisAmt", key: "discamt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Tran MadeBy", key: "madeby", sort: true, align: 'left', emptySign: 'NA' },
-        {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true
-        }
-    ];
-    gridConfig1: gridModel = {
-        apiUrl: "LabPatientRegistration/LabDiscountDetailList",
-        columnsList: this.allDisccolumns,
-        sortField: "BillNo",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
-        ]
-    }
-
-    allPaycolumns = [
-        { heading: "Tran. Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Tran. Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Amount", key: "amt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Tran MadeBy", key: "madeby", sort: true, align: 'left', emptySign: 'NA' },
-        {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true
-        }
-    ];
-    gridConfig2: gridModel = {
-        apiUrl: "LabPatientRegistration/LabPaymentDetailList",
-        columnsList: this.allPaycolumns,
-        sortField: "BillNo",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
-        ]
-    }
-
-    allCreditcolumns = [
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Tran. Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Amount", key: "amt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Tran MadeBy", key: "madeby", sort: true, align: 'left', emptySign: 'NA' },
-        {
-            heading: "Action", key: "action", align: "right", width: 100, sticky: true
-        }
-    ];
-    gridConfig3: gridModel = {
-        apiUrl: "LabPatientRegistration/LabCreditDetailList",
-        columnsList: this.allCreditcolumns,
-        sortField: "BillNo",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
-        ]
-    }
-
-    ngOnInit(): void {
-        if (this.data) {
-            // debugger
-            this.BillNo = this.data.billNo
-            this.doctorName = this.data.doctorName
-            this.getBilldetail()
-        }
-    }
-
-    constructor(public _labPatientRegService: LabPatientRegService,
-        private _loggedService: AuthenticationService,
-        public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
-        public _matDialog: MatDialog,
-        public toastr: ToastrService,
-        private commonService: PrintserviceService,
-        private _fuseSidebarService: FuseSidebarService,
-        public _whatsppService: WhatsAppEmailService,) { }
-
-    getBilldetail() {
-        this.getfilterdata()
-        this.getDiscountfilterdata();
-        this.getCreditfilterdata();
-        this.getPayoutfilterdata();
-    }
-
     getfilterdata() {
         this.gridConfig = {
             apiUrl: "LabPatientRegistration/LabBillDetailList",
@@ -173,10 +107,29 @@ export class LabRegBillDeatilsComponent {
             ]
         }
         // debugger
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+        setTimeout(() => {
+            this.billgrid.gridConfig = this.gridConfig;
+            this.billgrid.bindGridData();
+        }, 100);
     }
 
+    allDisccolumns = [
+        { heading: "Discount Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Discount Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DisPer", key: "concessionPercentage", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DisAmt", key: "concessionAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Remarks", key: "discComments", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran MadeBy", key: "username", sort: true, align: 'left', emptySign: 'NA' }
+    ];
+    gridConfig1: gridModel = {
+        apiUrl: "LabPatientRegistration/LabDiscountDetailList",
+        columnsList: this.allDisccolumns,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+        ]
+    }
     getDiscountfilterdata() {
         this.gridConfig1 = {
             apiUrl: "LabPatientRegistration/LabDiscountDetailList",
@@ -188,10 +141,28 @@ export class LabRegBillDeatilsComponent {
             ]
         }
         // debugger
-        this.Discgrid.gridConfig = this.gridConfig1;
-        this.Discgrid.bindGridData();
+        setTimeout(() => {
+            this.Discgrid.gridConfig = this.gridConfig1;
+            this.Discgrid.bindGridData();
+        }, 100);
     }
-
+    allPaycolumns = [
+        { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran. Type", key: "payMode", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Amount", key: "payAmount", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran MadeBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' }
+    ];
+    gridConfig2: gridModel = {
+        apiUrl: "LabPatientRegistration/LabPaymentDetailList",
+        columnsList: this.allPaycolumns,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+        ]
+    }
     getPayoutfilterdata() {
         this.gridConfig2 = {
             apiUrl: "LabPatientRegistration/LabPaymentDetailList",
@@ -203,10 +174,29 @@ export class LabRegBillDeatilsComponent {
             ]
         }
         // debugger
-        this.Paygrid.gridConfig = this.gridConfig2;
-        this.Paygrid.bindGridData();
+        setTimeout(() => {
+            this.Paygrid.gridConfig = this.gridConfig2;
+            this.Paygrid.bindGridData();
+        }, 100);
     }
 
+    allCreditcolumns = [
+        { heading: "Credit Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran. Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Remarks", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Tran MadeBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    ];
+    gridConfig3: gridModel = {
+        apiUrl: "LabPatientRegistration/LabCreditDetailList",
+        columnsList: this.allCreditcolumns,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
+        ]
+    }
     getCreditfilterdata() {
         this.gridConfig3 = {
             apiUrl: "LabPatientRegistration/LabCreditDetailList",
@@ -218,10 +208,11 @@ export class LabRegBillDeatilsComponent {
             ]
         }
         // debugger
-        this.Creditgrid.gridConfig = this.gridConfig3;
-        this.Creditgrid.bindGridData();
+        setTimeout(() => {
+            this.Creditgrid.gridConfig = this.gridConfig3;
+            this.Creditgrid.bindGridData();
+        }, 100);
     }
-
 
     viewgetPathologyTestReportPdf(data) {
         const param = {
@@ -259,6 +250,10 @@ export class LabRegBillDeatilsComponent {
         this._matDialog.closeAll()
     }
 
+    onPrint(){        
+      this.commonService.Onprint("OPD_IPD_ID", this.labId, "LabSlipReport");
+    }
+
     getWhatsappshareReport(el) {
         console.log(el);
         this._whatsppService.OnWhatsAppMsgSent({
@@ -282,40 +277,40 @@ export class LabRegBillDeatilsComponent {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
+            this.billgrid.bindGridData();
         });
     }
 
-     viewgetReportdispatch(element) {
+    viewgetReportdispatch(element) {
         console.log(element)
         const dialogRef = this._matDialog.open(ReportDispatchComponent,
-          {
-            maxWidth: "90vw",
-            maxHeight: '95%',
-            width: '100%',
-            data: element
-    
-          });
+            {
+                maxWidth: "90vw",
+                maxHeight: '95%',
+                width: '100%',
+                data: element
+
+            });
         dialogRef.afterClosed().subscribe(result => {
-          // this.onChangeFirst2()
+            // this.onChangeFirst2()
         });
-    
-      }
-      
-      viewgetSms(element) {
+
+    }
+
+    viewgetSms(element) {
         console.log(element)
         const dialogRef = this._matDialog.open(EmailorSMSHistoryComponent,
-          {
-            maxWidth: "90vw",
-            maxHeight: '115%',
-    
-            width: '100%',
-            data: element
-    
-          });
+            {
+                maxWidth: "90vw",
+                maxHeight: '115%',
+
+                width: '100%',
+                data: element
+
+            });
         dialogRef.afterClosed().subscribe(result => {
-          // this.onChangeFirst2()
+            // this.onChangeFirst2()
         });
-      }
+    }
 
 }
