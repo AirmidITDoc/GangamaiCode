@@ -159,11 +159,11 @@
   border-radius: 6px;
   overflow: hidden;
   padding: 0 !important;
-  border: 1px solid #c7d8f0;
+  border: 1px solid #c5cae9;
 }
 
 .panel-header {
-  background: linear-gradient(180deg, #4a8fd4 0%, #3a7bc8 100%);
+  background: linear-gradient(180deg, #5c6bc0 0%, #3949ab 100%);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   padding: 6px 10px;
   font-weight: 700;
@@ -182,11 +182,11 @@
   font-weight: 700;
   font-size: 12px;
   margin-bottom: 2px;
-  color: #1a3d7a;
+  color: #283593;
 }
 
 .accent-subtitle {
-  background: #dbe9ff;
+  background: #e8eaf6;
   padding: 3px 8px;
   border-radius: 3px;
   text-align: center;
@@ -197,8 +197,8 @@
 .section-sub-header {
   font-weight: 700;
   font-size: 12px;
-  background: linear-gradient(180deg, #cfe3fc 0%, #b4d4f7 100%);
-  color: #1a3d7a;
+  background: linear-gradient(180deg, #c5cae9 0%, #9fa8da 100%);
+  color: #283593;
   padding: 4px 8px;
   text-align: center;
   border-radius: 3px;
@@ -233,9 +233,9 @@
 
 .compact-table .mat-mdc-header-cell {
   font-weight: 700 !important;
-  background: #e8f0fb;
-  color: #1a3d7a;
-  border-bottom: 2px solid #b4d4f7;
+  background: #e8eaf6;
+  color: #283593;
+  border-bottom: 2px solid #9fa8da;
 }
 
 .compact-table .mdc-data-table__header-cell,
@@ -250,11 +250,11 @@
 }
 
 .compact-table .mat-mdc-row:nth-child(even) {
-  background-color: #f6f9fe;
+  background-color: #f5f5f9;
 }
 
 .compact-table .mat-mdc-row:hover {
-  background-color: #e3edf9;
+  background-color: #e8eaf6;
 }
 
 .num {
@@ -279,7 +279,7 @@
   min-width: 42px;
   text-align: right;
   font-size: 11px;
-  color: #1a3d7a;
+  color: #283593;
 }
 
 /* ─── Panel Footer (Total Row) ─── */
@@ -288,22 +288,22 @@
   justify-content: space-between;
   padding: 5px 6px;
   margin-top: 4px;
-  border-top: 2px solid #b4d4f7;
+  border-top: 2px solid #9fa8da;
   font-weight: 700;
   font-size: 12px;
-  background: #e8f0fb;
+  background: #e8eaf6;
   border-radius: 0 0 4px 4px;
 }
 
 .footer-value {
-  color: #1a3d7a;
+  color: #283593;
   font-weight: 800;
 }
 
 /* ─── Totals Section (Charges/Receipts) ─── */
 .totals {
   margin-top: 4px;
-  border-top: 2px solid #b4d4f7;
+  border-top: 2px solid #9fa8da;
   padding-top: 4px;
 }
 
@@ -317,13 +317,13 @@
 }
 
 .totals-row:nth-child(odd) {
-  background: #f6f9fe;
+  background: #f5f5f9;
 }
 
 .totals-label {
   font-weight: 700;
   font-size: 12px;
-  color: #1a3d7a;
+  color: #283593;
 }
 
 .totals-num {
@@ -332,14 +332,14 @@
 }
 
 .totals-strong {
-  background: #e8f0fb !important;
-  border-top: 1px solid #b4d4f7;
+  background: #e8eaf6 !important;
+  border-top: 1px solid #9fa8da;
 }
 
 .totals-strong .totals-label,
 .totals-strong .totals-num {
   font-weight: 800;
-  color: #1a3d7a;
+  color: #283593;
 }
 
 /* ─── Two-Column Grid ─── */
@@ -363,21 +363,21 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: linear-gradient(135deg, #e8f0fb 0%, #d4e4f7 100%);
-  border: 1px solid #b4d4f7;
+  background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+  border: 1px solid #9fa8da;
   border-radius: 6px;
 }
 
 .big-total-label {
   font-weight: 700;
   font-size: 14px;
-  color: #1a3d7a;
+  color: #283593;
 }
 
 .big-total-value {
   font-weight: 800;
   font-size: 16px;
-  color: #1565c0;
+  color: #3949ab;
 }
 
 /* ─── Key-Value Pairs ─── */
@@ -403,7 +403,7 @@
 .kv-value {
   text-align: right;
   font-weight: 700;
-  color: #1a3d7a;
+  color: #283593;
   min-width: 60px;
 }
 
@@ -413,16 +413,16 @@
 }
 
 .kv-strong {
-  border-top: 1px solid #b4d4f7;
+  border-top: 1px solid #9fa8da;
   padding-top: 4px;
-  background: #f0f6ff;
+  background: #e8eaf6;
   border-radius: 3px;
 }
 
 /* ─── Collection Grid ─── */
 .collection-grid {
-  background: #fafcff;
-  border: 1px solid #dde8f5;
+  background: #fafbfc;
+  border: 1px solid #c5cae9;
   border-radius: 4px;
   padding: 4px 0;
 }
@@ -432,14 +432,14 @@
 }
 
 .collection-grid .kv:nth-child(odd) {
-  background: #f0f6ff;
+  background: #e8eaf6;
 }
 
 .collection-grid .kv-strong {
-  border-top: 2px solid #b4d4f7;
+  border-top: 2px solid #9fa8da;
   margin-top: 2px;
   padding: 5px 10px;
-  background: #e8f0fb;
+  background: #e8eaf6;
 }
 
 /* ─── No Data ─── */
