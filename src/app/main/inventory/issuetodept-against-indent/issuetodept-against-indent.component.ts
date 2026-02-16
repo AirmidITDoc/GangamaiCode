@@ -146,7 +146,7 @@ export class IssuetodeptAgainstIndentComponent {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "IndentId",
       "sortOrder": 0,
       "filters": [

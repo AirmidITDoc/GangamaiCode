@@ -209,7 +209,7 @@ export class NewAdvanceComponent implements OnInit {
   getAdvanceList(obj) {
     var m_data = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "AdmissionID",
       "sortOrder": 0,
       "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(obj.admissionID), "opType": "Equals" }],

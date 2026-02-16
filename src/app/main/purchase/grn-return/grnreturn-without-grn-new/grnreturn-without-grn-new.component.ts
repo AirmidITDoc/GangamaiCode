@@ -530,7 +530,7 @@ export class GrnreturnWithoutGrnNewComponent {
   getGRNreturnlist() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "GRNReturnId",
       "sortOrder": 0,
       "filters": [

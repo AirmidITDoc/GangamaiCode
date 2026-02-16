@@ -374,7 +374,7 @@ export class DischargeSummaryComponent implements OnInit {
 
     var m_data2 = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "AdmissionId",
       "sortOrder": 0,
       "filters": [
@@ -405,7 +405,7 @@ export class DischargeSummaryComponent implements OnInit {
 
     var m_data2 = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "AdmissionId",
       "sortOrder": 0,
       "filters": [

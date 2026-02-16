@@ -1561,7 +1561,7 @@ if (QtyElement) {
         this.dsDraftList.data = [];
         var m = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ItemId",
             "sortOrder": 0,
             "filters": [
@@ -1585,7 +1585,7 @@ if (QtyElement) {
         this.dsDraftList.data = [];
         var m = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "DSalesId",
             "sortOrder": 0,
             "filters": [
@@ -1830,7 +1830,7 @@ draftextMobilenolist:any=[];
         }
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "ItemId",
             "sortOrder": 0,
             "filters": [{ "fieldName": "DSalesId", "fieldValue": String(contact?.dsalesId), "opType": "Contains" }],
@@ -1859,7 +1859,7 @@ draftextMobilenolist:any=[];
 
         var m_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "ItemId",
             "sortOrder": 0,
             "filters": [
@@ -2035,7 +2035,7 @@ draftextMobilenolist:any=[];
                 this.dsItemNameList1.data.forEach((contact) => { 
                     var m_data = {
                         "first": 0,
-                        "rows": 10,
+                        "rows": 9999,
                         "sortField": "ItemId",
                         "sortOrder": 0,
                         "filters": [
@@ -2093,7 +2093,7 @@ draftextMobilenolist:any=[];
         //Total Credit Amount
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "OP_IP_ID",
             "sortOrder": 0,
             "filters": [{ "fieldName": "OP_IP_ID", "fieldValue": String(admissionID), "opType": "Contains" }],
@@ -2107,7 +2107,7 @@ draftextMobilenolist:any=[];
         //Total advance and advance bal Amount
         var m_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "AdmissionID",
             "sortOrder": 0,
             "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(admissionID), "opType": "Equals" }],

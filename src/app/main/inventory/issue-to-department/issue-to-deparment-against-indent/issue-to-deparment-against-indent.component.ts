@@ -85,7 +85,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     let status = this.IndentFrom.get("Status").value
     var vdata = {
       "first": 0,
-      "rows": 20,
+      "rows": 9999,
       "sortField": "IndentId",
       "sortOrder": 0,
       "filters": [
@@ -147,7 +147,7 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     this.sIsLoading = 'loading-data';
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "IndentId",
       "sortOrder": 0,
       "filters": [

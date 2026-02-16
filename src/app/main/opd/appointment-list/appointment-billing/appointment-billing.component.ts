@@ -186,7 +186,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         })
         let Data = {
             "first": 0,
-            "rows": 100,
+            "rows": 999,
             "sortField": "RequestTranId",
             "sortOrder": 0,
             "filters": [{ "fieldName": "VisitId", "fieldValue": String(this.vOPIPId), "opType": "Equals" }],

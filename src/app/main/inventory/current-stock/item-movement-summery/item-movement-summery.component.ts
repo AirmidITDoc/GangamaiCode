@@ -166,7 +166,7 @@ ngAfterViewInit() {
   getItemMovementSummeryList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [
@@ -210,7 +210,7 @@ ngAfterViewInit() {
   getBatchExpWiseList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [
@@ -250,7 +250,7 @@ ngAfterViewInit() {
   getPueSupplierWiseList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "SalesId",
       "sortOrder": 0,
       "filters": [
@@ -293,7 +293,7 @@ ngAfterViewInit() {
   getSalesList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [

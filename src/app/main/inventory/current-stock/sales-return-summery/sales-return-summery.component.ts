@@ -79,7 +79,7 @@ export class SalesReturnSummeryComponent implements OnInit {
   getSalesReturnSummeryList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "StoreID",
       "sortOrder": 0,
       "filters": [
@@ -112,7 +112,7 @@ export class SalesReturnSummeryComponent implements OnInit {
   getSalesReturnSummeryDetailsList() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "StoreID",
       "sortOrder": 0,
       "filters": [

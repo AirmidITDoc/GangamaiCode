@@ -216,8 +216,8 @@ export class UpdatePurchaseorderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userFormGroup = this._PurchaseOrder.getPurchaseOrderForm();
-    this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
+    // this.userFormGroup = this._PurchaseOrder.getPurchaseOrderForm();
+    // this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
      this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
 
@@ -410,7 +410,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     var Param = {
 
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "purchaseID",
       "sortOrder": 0,
       "filters": [
@@ -478,7 +478,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     var vdata = {
 
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [
@@ -508,7 +508,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
     var data =
     {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [

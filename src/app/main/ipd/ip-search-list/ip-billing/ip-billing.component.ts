@@ -974,7 +974,7 @@ export class IPBillingComponent implements OnInit {
         if (AdmissionId > 0) {
             var vdata = {
                 "first": 0,
-                "rows": 10,
+                "rows": 999,
                 "sortField": "AdmissionID",
                 "sortOrder": 0,
                 "filters": [
@@ -1049,7 +1049,7 @@ export class IPBillingComponent implements OnInit {
         this.dataSource.data = [];
         var vdata = {
             "first": 0,
-            "rows": 200,
+            "rows": 999,
             "sortField": "ServiceId",
             "sortOrder": 0,
             "filters": [
@@ -1630,7 +1630,7 @@ export class IPBillingComponent implements OnInit {
         //424929  this.vOPIPId
         let Data = {
             "first": 0,
-            "rows": 100,
+            "rows": 999,
             "sortField": "Id",
             "sortOrder": 0,
             "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
@@ -1735,7 +1735,7 @@ export class IPBillingComponent implements OnInit {
     getRtrvpackagedetList() {
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ChargesId",
             "sortOrder": 0,
             "filters": [{ "fieldName": "OPD_IPD_Id", "fieldValue": String(this.opD_IPD_Id), "opType": "Equals" }],
@@ -1780,7 +1780,7 @@ export class IPBillingComponent implements OnInit {
     getpackagedetList(obj) {
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ServiceId",
             "sortOrder": 0,
             "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
@@ -1841,7 +1841,7 @@ export class IPBillingComponent implements OnInit {
         // OP_IP_ID: this.selectedAdvanceObj.AdmissionID,
         {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ServiceId",
             "sortOrder": 0,
             "filters": [
