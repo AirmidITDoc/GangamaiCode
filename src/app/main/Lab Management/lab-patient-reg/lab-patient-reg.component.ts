@@ -619,22 +619,22 @@ export class LabPatientRegComponent {
     }).then((result) => {
 
       if (result.isConfirmed) {
-        // this.viewgetOPBillReportPdf(contact, "LabMoneyReceipt");
-        Swal.fire({
-          title: 'More Options',
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'With Header',
-          denyButtonText: 'With Image',
-          showDenyButton: true,
-        }).then(subResult => {
+        this.viewgetOPBillReportPdf(contact, "LabMoneyReceipt");
+        // Swal.fire({
+        //   title: 'More Options',
+        //   icon: 'question',
+        //   showCancelButton: true,
+        //   confirmButtonText: 'With Header',
+        //   denyButtonText: 'With Image',
+        //   showDenyButton: true,
+        // }).then(subResult => {
 
-          if (subResult.isConfirmed) {
-            this.viewgetOPBillReportPdf(contact, 'LabMoneyReceipt');
-          } else if (subResult.isDenied) {
-            this.viewgetOPBillReportPdf1(contact, 'LabMoneyReceiptWithImage');
-          }
-        });
+        //   if (subResult.isConfirmed) {
+        //     this.viewgetOPBillReportPdf(contact, 'LabMoneyReceipt');
+        //   } else if (subResult.isDenied) {
+        //     this.viewgetOPBillReportPdf1(contact, 'LabMoneyReceiptWithImage');
+        //   }
+        // });
       } else if (result.isDenied) {
         this.viewgetOPBillReportPdf(contact, "LabMoneyReceiptWithoutHeader");
       }

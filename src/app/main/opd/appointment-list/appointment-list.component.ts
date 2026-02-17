@@ -1138,26 +1138,29 @@ export class AppointmentListComponent implements OnInit {
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-        let fromDateControl = "1900-01-01"//this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
-        let toDateControl = "1900-01-01"//this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
+        // let fromDateControl = "1900-01-01"
+        // let toDateControl = "1900-01-01"
+        let fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
+        let toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
 
         let filters: any[] = [];
 
         // Handle date range
-        // if (fromDateControl && toDateControl) {
-        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
-        // } else {
-        //     this.fromDate = "1900-01-01";
-        //     this.toDate = "1900-01-01";
-        // }
         if (fromDateControl && toDateControl) {
-            this.fromDate = "1900-01-01";
-            this.toDate = "1900-01-01";
-        } else {
             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
         }
+        //  else {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // }
+        // if (fromDateControl && toDateControl) {
+        //     this.fromDate = "1900-01-01";
+        //     this.toDate = "1900-01-01";
+        // } else {
+        //     this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+        //     this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        // }
 
 
         filters.push(
