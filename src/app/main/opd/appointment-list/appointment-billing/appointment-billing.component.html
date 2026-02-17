@@ -614,43 +614,28 @@
                                                                         [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
                                                                 </mat-table>
                                                             </div>
-                                                            <div class="amt-container py-4">
+                                                            <div class="amt-container py-3">
                                                                 <div class="net-amt-section">
                                                                     <div class="net-amt">
                                                                         <div class="net-amt-box">
-                                                                            <div class="net-amt-label">Company Amt :</div>
-                                                                            <div class="net-amt-value">{{ ExclusionAmt |
-                                                                                currency: currency:'symbol'}}</div>
+                                                                            <span class="net-amt-label">Company Amt :</span>
+                                                                            <span class="net-amt-value">{{ ExclusionAmt | currency: currency:'symbol'}}</span>
                                                                         </div>
                                                                         <div class="net-amt-box">
                                                                             <span class="net-amt-label">Patient Amt :</span>
-                                                                            <span class="net-amt-value">{{ InclusionAmt |
-                                                                                currency: currency:'symbol' }}</span>
+                                                                            <span class="net-amt-value">{{ InclusionAmt | currency: currency:'symbol' }}</span>
                                                                         </div>
-                                
                                                                         <div class="net-amt-box">
                                                                             <span class="net-amt-label">No Of Item:</span>
-                                                                            <span class="net-amt-value">
-                                                                                {{chargeList.length}}</span>
+                                                                            <span class="net-amt-value">{{ chargeList.length }}</span>
                                                                         </div>
                                                                         <div class="net-amt-box">
                                                                             <span class="net-amt-label">Discount Amount :</span>
-                                                                            <span class="net-amt-value">
-                                                                                {{OPFooterForm?.get("concessionAmt")?.value
-                                                                                | currency: currency:'symbol'}}</span>
+                                                                            <span class="net-amt-value">{{ OPFooterForm?.get("concessionAmt")?.value | currency: currency:'symbol' }}</span>
                                                                         </div>
-                                                                        <!-- <div class="net-amt-box">
-                                                                                                                                                                <span class="net-amt-label">Net Amount :</span>
-                                                                                                                                                                <span class="net-amt-value">
-                                                                                                                                                                    {{OPFooterForm?.get("netPayableAmt")?.value |
-                                                                                                                                                                    currency: currency:'symbol':'INR' }}</span>
-                                                                                                                                                            </div> -->
-                                
                                                                         <div class="final-amt-box">
                                                                             <span class="final-amt-label">Net Amt :</span>
-                                                                            <span class="final-amt-value">{{OPFooterForm?.get("netPayableAmt")?.value
-                                                                                | currency: currency:'symbol'
-                                                                                }}</span>
+                                                                            <span class="final-amt-value">{{ OPFooterForm?.get("netPayableAmt")?.value | currency: currency:'symbol' }}</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
