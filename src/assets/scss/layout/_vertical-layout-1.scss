@@ -47,12 +47,15 @@ vertical-layout-1 {
                         padding: 0px;
                     }
                 }
-                // Container 3 (Scrollable)
+                // Container 3 (Scrollable) - full width so dashboards use full screen
                 .container {
                     position: relative;
                     display: flex;
                     flex: 1 1 0%;
                     flex-direction: column;
+                    width: 100%;
+                    max-width: 100%;
+                    min-width: 0;
                     overflow-x: hidden;
                     overflow-y: auto;
                     -webkit-overflow-scrolling: touch;
