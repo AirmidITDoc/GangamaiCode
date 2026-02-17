@@ -966,6 +966,11 @@ export class NewLabPatientRegComponent {
   onDiscountPerChange(row: ChargesList): void {
     // debugger
     if (!row) return;
+
+    if (row.DiscPer == null) {
+      row.DiscPer = 0;
+    }
+
     let discountPer = +row.DiscPer || 0;
     const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
 

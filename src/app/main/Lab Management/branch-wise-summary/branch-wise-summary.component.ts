@@ -242,9 +242,9 @@ export class BranchWiseSummaryComponent {
   serviceTrend(row: any = null) {
     const dialogRef = this._matDialog.open(ServiceWiseTrendComponent,
       {
-        maxWidth: "80vw",
-        maxHeight: '80vh',
-        width: '80%',
+        maxWidth: "90vw",
+        height: '90%',
+        width: '90%',
         data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -296,9 +296,9 @@ export class BranchWiseSummaryComponent {
   categoryTrend(row: any = null) {
     const dialogRef = this._matDialog.open(CategoryWiseTrendComponent,
       {
-        maxWidth: "80vw",
-        maxHeight: '80vh',
-        width: '80%',
+        maxWidth: "90vw",
+        height: '90%',
+        width: '90%',
         data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -350,9 +350,9 @@ export class BranchWiseSummaryComponent {
   doctorTrend(row: any = null) {
     const dialogRef = this._matDialog.open(DoctorWiseTrendComponent,
       {
-        maxWidth: "80vw",
-        maxHeight: '80vh',
-        width: '80%',
+        maxWidth: "90vw",
+        height: '90%',
+        width: '90%',
         data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -406,9 +406,9 @@ export class BranchWiseSummaryComponent {
   companyTrend(row: any = null) {
     const dialogRef = this._matDialog.open(CompanyWiseTrendComponent,
       {
-        maxWidth: "80vw",
-        maxHeight: '80vh',
-        width: '80%',
+        maxWidth: "90vw",
+        height: '90%',
+        width: '90%',
         data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
       });
     dialogRef.afterClosed().subscribe(result => {

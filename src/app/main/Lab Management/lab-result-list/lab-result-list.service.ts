@@ -225,4 +225,17 @@ export class LabResultListService {
 
     return this._httpClient1.PostData("Branch/UnitBranchWiseRevenueSummary", param)
   }
+
+  public getTrendserviceList(param) {
+    return this._httpClient1.PostData("Branch/BranchWiseTestSummaryList", param);
+  }
+  public getTrendcategoryList(param) {
+    return this._httpClient1.PostData("Branch/BranchWiseCategorySummaryList", param);
+  }
+  public getTrenddoctorList(param) {
+    return this._httpClient1.PostData("Branch/BranchWiseDoctorSummaryList", param);
+  }
+  public getTrendcompanyList(param) {
+    return this._httpClient1.PostData("Branch/BranchWiseCompanySummaryList", param);
+  }
 }

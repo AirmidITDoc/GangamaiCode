@@ -216,11 +216,15 @@
                             </button>
                         </mat-form-field>
 
-                        <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
+                        <!-- <airmid-dropdown label="Select RefDoctor Name" formControlName="DoctorID"
                             [(ngModel)]="gridConfig.filters[5].fieldValue" [formGroup]="myFilterform"
                             (selectionChange)="ListView($event)" (keyup)="ListView($event)"
-                            [mode]="autocompleteModedoctor">
-                        </airmid-dropdown>
+                            [mode]="autocompleteModerefdoc">
+                        </airmid-dropdown> -->
+                        <airmid-dropdown label="Ref Doctor Name" formControlName="DoctorID"
+                            [(ngModel)]="gridConfig.filters[5].fieldValue" [formGroup]="myFilterform" TextField="doctorName"
+                            ValueField="doctorId" ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                            (selectionChange)="ListView($event)"></airmid-dropdown>
                     </div>
 
                 </form>

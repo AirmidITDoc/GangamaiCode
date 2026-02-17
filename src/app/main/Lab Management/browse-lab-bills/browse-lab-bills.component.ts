@@ -104,6 +104,7 @@ export class BrowseLabBillsComponent {
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150},
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Total Amount", key: "totalAmt", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount }, // It is just example of apply color based on condition
     { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -117,7 +118,6 @@ export class BrowseLabBillsComponent {
     { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["refundAmount"] > 0 ? Color.RED : "" },
     { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -125,7 +125,7 @@ export class BrowseLabBillsComponent {
     { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    // { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     {
       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
@@ -152,6 +152,7 @@ export class BrowseLabBillsComponent {
     { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

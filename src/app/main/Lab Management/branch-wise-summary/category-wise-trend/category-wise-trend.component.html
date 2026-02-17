@@ -26,6 +26,10 @@
         <div fusePerfectScrollbar
             class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
 
+            <div style="height: 350px;">
+                <canvas id="trendChart"></canvas>
+            </div>
+            
             <div id="contacts" style="height: 280px;">
                 <div fxLayout="row" class="p-8 gap-4">
                     <button mat-raised-button (click)="setFilterType('Day')"

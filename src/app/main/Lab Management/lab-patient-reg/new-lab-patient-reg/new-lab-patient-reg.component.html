@@ -51,7 +51,7 @@
                                     <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
                                         [formGroup]="myForm" [value]="data?.companyId" ValueField="companyId"
                                         TextField="companyName" [validations]="getValidationMessages().companyId"
-                                        ApiUrl="CompanyMaster/CompanyComboList?keywoard="
+                                        ApiUrl="LabPatientRegistration/CompanyComboList?keywoard="
                                         (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
                                 </div>
 
@@ -360,7 +360,7 @@
                                                                         <mat-form-field floatLabel="never"
                                                                             appearance="fill">
                                                                             <input matInput placeholder="Disc Per"
-                                                                                [(ngModel)]="contact.DiscPer" type="text"
+                                                                                [(ngModel)]="contact.DiscPer" type="number"
                                                                                 [min]="0" [max]="100"
                                                                                 (ngModelChange)="onDiscountPerChange(contact)">
                                                                         </mat-form-field>

@@ -10,6 +10,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { LabResultListService } from '../../lab-result-list/lab-result-list.service';
+import { Chart } from 'chart.js';
+import { LabRequest } from '../service-wise-trend/service-wise-trend.component';
 
 @Component({
   selector: 'app-company-wise-trend',
@@ -22,6 +24,7 @@ export class CompanyWiseTrendComponent {
   // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   unitId = "0"
   companyId = ""
+  monthValue: any;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -32,10 +35,10 @@ export class CompanyWiseTrendComponent {
   }
 
   allcolumns = [
-    { heading: "Month", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Month", key: "fullDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Total", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Dicount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "Net", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "Net", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Count", key: "testCount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     // {
     //   heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -60,8 +63,9 @@ export class CompanyWiseTrendComponent {
     this.unitId = this.data.unit
     this.fromDate = this.data.fdate
     this.toDate = this.data.tdate
-    this.companyId=this.data.row.companyId
+    this.companyId = this.data.row.companyId
     this.loadGrid(); // initial load
+    this.getcompanyList();
   }
 
   loadGrid() {
@@ -86,9 +90,108 @@ export class CompanyWiseTrendComponent {
   setFilterType(type: 'Day' | 'Month') {
     this.filterType = type;
     this.loadGrid();
+    this.getcompanyList();
   }
 
   onClose() {
     this._matDialog.closeAll()
   }
+
+  trendData: LabRequest[] = [];
+  trendChart: any;
+
+  getcompanyList() {
+    this.monthValue = this.filterType === 'Month' ? 'Months' : 'Day';
+    var param = {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "CompanyId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.unitId),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "CompanyId",
+          "fieldValue": String(this.companyId),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "Month",
+          "fieldValue": this.monthValue,
+          "opType": "Contains"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+
+    this._LabResultListService.getTrendcompanyList(param).subscribe(Menu => {
+      this.trendData = Menu.data as LabRequest[];
+
+      this.loadTrendChart();
+    });
+
+  }
+
+  loadTrendChart() {
+
+    if (!this.trendData || this.trendData.length === 0) {
+      return;
+    }
+
+    const labels = this.trendData.map(x => x.fullDate);
+    const netAmounts = this.trendData.map(x => x.netAmount);
+
+    // Destroy old chart
+    if (this.trendChart) {
+      this.trendChart.destroy();
+    }
+
+    this.trendChart = new Chart('trendChart', {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Amount',
+            data: netAmounts,
+            fill: true,
+            tension: 0.4,
+            borderWidth: 2,
+            pointRadius: 3,
+            backgroundColor: 'rgba(54,162,235,0.3)',
+            borderColor: '#36A2EB'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: this.filterType === 'Month' ? 'Month' : 'Day'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Amount'
+            }
+          }
+        }
+      }
+    });
+  }
+
 }
