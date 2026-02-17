@@ -1313,7 +1313,7 @@ export class NewAppointmentComponent implements OnInit {
 
             // extra field
             IsNRI: [false],
-            EmailId: ['', [Validators.email]]
+            emailId: ['', [Validators.email]]
 
         });
     }

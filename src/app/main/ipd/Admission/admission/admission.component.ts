@@ -1623,6 +1623,7 @@ export class RegInsert {
   RegDate: Date;
   regDate: Date;
   PatientName: string;
+  emailId: string;
   patientName: string;
   RegTime: Time;
   prefixId: number;

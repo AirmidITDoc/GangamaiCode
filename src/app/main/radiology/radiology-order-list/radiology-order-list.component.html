@@ -220,7 +220,7 @@
                                 <!-- OutSource Lab Name -->
                                 <span *ngIf="element.outSourceLabName; else noOutSourceTpl" [matBadge]="element.tokenNo"
                                     matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
-                                    matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                                    matBadgeSize="small" [matBadgeHidden]="!element.tokenNo" 
                                     (mouseenter)="openPatientDetailsPopover($event, element)"
                                     (mouseleave)="closePatientDetailsPopover()" style="font-size:14px; line-height:18px; position:relative; top:4px;
                                         cursor:pointer; text-decoration:underline; color:#667eea;">

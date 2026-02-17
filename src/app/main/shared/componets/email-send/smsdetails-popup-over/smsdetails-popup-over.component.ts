@@ -36,8 +36,8 @@ export class SMSDetailsPopupOverComponent {
         this.BillNo = this.patientData.grnNumber
       else if (this.patientData.purchaseNo)
         this.BillNo = this.patientData.purchaseNo
-      //  else   if(this.patientData.billNo )
-      //        this.BillNo=this.patientData.billNo 
+       else if(this.patientData.paymentId)
+       this.BillNo=this.patientData.paymentId 
 
 
 
@@ -48,7 +48,7 @@ export class SMSDetailsPopupOverComponent {
 
   loadPatientDetails() {
     this.isLoading = true;
-    this._OPListService.getSMSDetailsById(this.patientData.billNo).subscribe(
+    this._OPListService.getSMSDetailsById(this.BillNo).subscribe(
       (response: any) => {
         this.mailDetails = response;
         console.log(this.mailDetails)

@@ -182,9 +182,9 @@
                               </div> -->
 
                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Email" formControlName="EmailId"
+                                <airmid-textbox label="Email" formControlName="emailId"
                                    [formGroup]="personalFormGroup"
-                                   type="email" 
+                                   type="email"     [value]="registerObj.emailId" 
                                   [validations]="getValidationMessages().EmailId"></airmid-textbox>
                               </div>  
                               <!-- [value]="registerObj.EmailId ?? ''" -->

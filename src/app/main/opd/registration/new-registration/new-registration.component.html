@@ -233,6 +233,13 @@
                                                 </airmid-textbox>
                                             </div> 
 
+                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="Email" 
+                                                        formControlName="emailId" [formGroup]="personalFormGroup" type="email"
+                                                           [value]="registerObj.emailId" 
+                                                            [validations]="getValidationMessages().EmailId"></airmid-textbox>
+                                            </div>
+
                                         </div>
                                         <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="20%">
                                             <div class="photo-capture p-16 border border-radius-4 gap-12"

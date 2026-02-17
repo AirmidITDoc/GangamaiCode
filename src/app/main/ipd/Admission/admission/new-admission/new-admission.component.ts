@@ -1082,7 +1082,10 @@ this.Is9_Digit_National_Id = id === "1";
         { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters" },
         { name: "minLength", Message: "Minimum 10 characters required." },
         { name: "maxLength", Message: "Maximum 15 characters allowed." }
-      ]
+      ],
+      EmailId: [
+                { name: "pattern", Message: "Enter valid Email Address" }
+            ],
     };
   }
   onClear() { }

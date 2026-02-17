@@ -27,6 +27,7 @@ EmailFrom:FormGroup
   vEmailfooter: any;
   isLoading: any;
   vCCName: any;
+  vBillNo:any=0;
   vbccName: any;
   vPurchaseId: any;
   vPurchaseTime: any;
@@ -53,7 +54,49 @@ EmailFrom:FormGroup
       this.EmailFrom.patchValue({
        ToMailId: this.registerObj?.emailId || ''
       })
-     this.EmailFrom=this.createPOEmailFrom()
+      this.EmailFrom=this.createPOEmailFrom()
+      if(this.data?.emailType == 'OPBill'){
+        this.vBillNo = this.registerObj?.billNo || 0
+      }
+      else if(this.data?.emailType == 'OPReceipt'){
+        this.vBillNo = this.registerObj?.paymentId || 0
+      }
+      else if(this.data?.emailType == 'IPBill'){
+        this.vBillNo = this.registerObj?.billNo || 0
+      }
+      else if(this.data?.emailType == 'IPReceipt'){
+        this.vBillNo = this.registerObj?.paymentId || 0
+      }
+      else if(this.data?.emailType == 'IPAdvance'){
+        this.vBillNo = this.registerObj?.advanceId || 0
+      }
+      else if(this.data?.emailType == 'IPAdvanceRefund'){
+        this.vBillNo = this.registerObj?.refundId || 0
+      }
+      else if(this.data?.emailType == 'IPRefundReceipt'){
+        this.vBillNo = this.registerObj?.refundId || 0
+      }
+      else if(this.data?.emailType == 'PathResultEntry'){
+        this.vBillNo = this.registerObj?.pathReportId || 0
+      }
+      else if(this.data?.emailType == 'RadiologyReport'){
+        this.vBillNo = this.registerObj?.radReportId || 0
+      }
+      else if(this.data?.emailType == 'SalesReceipt'){
+        this.vBillNo = this.registerObj?.salesId || 0
+      }
+      else if(this.data?.emailType == 'SalesReturnReceipt'){
+        this.vBillNo = this.registerObj?.salesReturnId || 0
+      }
+      else if(this.data?.emailType == 'GRNReceipt'){
+        this.vBillNo = this.registerObj?.grnid || 0
+      }
+      else if(this.data?.emailType == 'GRNReturnReceipt'){
+        this.vBillNo = this.registerObj?.grnreturnId || 0
+      }
+      // else if(this.data?.emailType == 'SupplierPayReceipt'){
+      //   this.vBillNo = this.registerObj?.grnreturnId || 0
+      // }
       // if (this.registerObj.PurchaseID) {
       //   this.vPurchaseId = this.registerObj.PurchaseNo;
       //   this.vPurchaseTime = this.registerObj.PurchaseTime;
@@ -137,7 +180,7 @@ toggleBcc() {
         cc: formvalues?.CCName ?? "",
         mailSubject: formvalues?.Subject || "",
         mailBody: formvalues?.Body || "",
-        billNo: this.registerObj?.billNo,
+        billNo: this.vBillNo,
         emailType: this.data?.emailType || "",
         patientId: this.registerObj?.regNo || 0
       }).subscribe({next: (response) => { 

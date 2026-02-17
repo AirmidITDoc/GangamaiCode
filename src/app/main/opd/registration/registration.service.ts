@@ -156,6 +156,7 @@ export class RegistrationService {
 
             // extra field
             IsNRI: [false],
+            emailId: ['', [Validators.email]]
         });
 
     }

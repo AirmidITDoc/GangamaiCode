@@ -1060,7 +1060,7 @@ export class NewOPListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType:'OPPaymentReceipt'
+                    emailType:'OPReceipt'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

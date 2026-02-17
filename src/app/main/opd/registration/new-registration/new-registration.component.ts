@@ -424,7 +424,10 @@ export class NewRegistrationComponent implements OnInit {
             ],
             emgContactPersonName: [
                 { name: "maxLength", Message: "Enter only upto 50 chars" },
-                { name: "pattern", Message: "only char allowed." }]
+                { name: "pattern", Message: "only char allowed." }],
+            EmailId: [
+                { name: "pattern", Message: "Enter valid Email Address" }
+            ],
         };
     }
 

@@ -257,6 +257,7 @@ export class RegistrationComponent implements OnInit {
 export class RegInsert {
     RegId: Number;
     regId: Number;
+    emailId: string;
     RegID: Number;
     RegDate: Date;
     regDate: Date;

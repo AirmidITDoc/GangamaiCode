@@ -156,6 +156,7 @@ this.Is9_Digit_National_Id = id === "1";
 
             // extra field
             IsNRI: [false],
+            emailId: ['', [Validators.email]]
         });
     }
     // this.accountService.currentUserValue.user.unitId
