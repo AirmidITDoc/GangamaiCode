@@ -19,6 +19,7 @@ import { PackageDetailsComponent } from './package-details/package-details.compo
 import { ConfigService } from 'app/core/services/config.service';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 import { element } from 'protractor';
+import { UserDetail } from 'app/main/administration/create-user/newcreate-user/newcreate-user.component';
 
 @Component({
     selector: 'app-appointment-billing',
@@ -161,6 +162,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.setupFormListener();
         this.startCountdown();
         this.getdraftlist();
+        this.getAccessDetail()
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
@@ -386,6 +388,30 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     getFixedDecimal(value: number) {
         return Number(value.toFixed(2));
     }
+    getUserAccesDetList:any=[];
+      getAccessDetail() {
+        // debugger
+        var SelectQuery = {
+          "first": 0,
+          "rows": 999,
+          "sortField": "AccessValueId",
+          "sortOrder": 0,
+          "filters": [
+            {
+              "fieldName": "LoginId",
+              "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
+              "opType": "Equals"
+            }
+          ],
+          "exportType": "JSON",
+          "columns": []
+        }
+        this._AppointmentlistService.getAccessDetailList(SelectQuery).subscribe(response => {
+          this.getUserAccesDetList = response.data as UserDetail[];
+          console.log("get Access data:", this.getUserAccesDetList) 
+        });
+      }
+    
     // Form creation Pending section
     createSearchForm() {
         return this.formBuilder.group({
