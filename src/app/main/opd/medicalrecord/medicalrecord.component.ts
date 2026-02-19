@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
@@ -24,6 +24,9 @@ import { ConfigService } from 'app/core/services/config.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { GastrologyEmrComponent } from '../gastrology-emr/gastrology-emr.component';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { PatientDetailsPopoverComponent } from '../appointment-list/patient-details-popover/patient-details-popover.component';
+import { ComponentPortal } from '@angular/cdk/portal';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -74,6 +77,7 @@ export class MedicalrecordComponent implements OnInit {
         private formBuilder: FormBuilder,
         public _ConfigService: ConfigService, public permissionService: PagePermissionService,
         public toastr: ToastrService, public datePipe: DatePipe,
+         private overlay: Overlay, 
     ) { }
 
     ngOnInit(): void {
@@ -94,13 +98,14 @@ export class MedicalrecordComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+       this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
 
     }
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
-
+    @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allfilters = [
@@ -120,11 +125,11 @@ export class MedicalrecordComponent implements OnInit {
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300,type: gridColumnTypes.template },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: 22 },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
@@ -579,6 +584,119 @@ export class MedicalrecordComponent implements OnInit {
                 { name: "required", Message: "Doctor Name is required" }
             ]
         };
+    }
+    private overlayRef: OverlayRef | null = null;
+    private patientOverlayRef: OverlayRef | null = null; 
+    private hoverTimeout: any = null;
+    private patientCloseTimeout: any = null;
+    private doctorCloseTimeout: any = null;
+        openPatientDetailsPopover(event: MouseEvent, patientData: any) {
+            event.stopPropagation();
+    
+            // Clear any existing timeout
+            if (this.hoverTimeout) {
+                clearTimeout(this.hoverTimeout);
+            }
+    
+            // Add small delay to prevent flickering
+            this.hoverTimeout = setTimeout(() => {
+                // Close any existing patient popover
+                if (this.patientOverlayRef) {
+                    this.patientOverlayRef.dispose();
+                    this.patientOverlayRef = null;
+                }
+    
+                const positionStrategy = this.overlay.position()
+                    .flexibleConnectedTo(event.target as HTMLElement)
+                    .withPositions([
+                        {
+                            originX: 'start',
+                            originY: 'bottom',
+                            overlayX: 'start',
+                            overlayY: 'top',
+                        },
+                        {
+                            originX: 'start',
+                            originY: 'top',
+                            overlayX: 'start',
+                            overlayY: 'bottom',
+                        },
+                        {
+                            originX: 'end',
+                            originY: 'center',
+                            overlayX: 'start',
+                            overlayY: 'center',
+                        },
+                        {
+                            originX: 'start',
+                            originY: 'center',
+                            overlayX: 'end',
+                            overlayY: 'center',
+                        }
+                    ]);
+    
+                this.patientOverlayRef = this.overlay.create({
+                    positionStrategy,
+                    scrollStrategy: this.overlay.scrollStrategies.close(),
+                    hasBackdrop: false,
+                });
+    
+                const portal = new ComponentPortal(PatientDetailsPopoverComponent);
+                const componentRef: ComponentRef<PatientDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
+                componentRef.instance.patientData = patientData;
+    
+                // Handle mouse events on the overlay element
+                const overlayElement = this.patientOverlayRef.overlayElement;
+                overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+                overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+            }, 300); // 300ms delay before showing popover
+        }
+    
+        closePatientDetailsPopover() {
+            // Clear timeout if popover hasn't opened yet
+            if (this.hoverTimeout) {
+                clearTimeout(this.hoverTimeout);
+                this.hoverTimeout = null;
+            }
+    
+            // Clear any existing close timeout
+            if (this.patientCloseTimeout) {
+                clearTimeout(this.patientCloseTimeout);
+            }
+    
+            // Add delay before closing to allow moving mouse to popover
+            this.patientCloseTimeout = setTimeout(() => {
+                if (this.patientOverlayRef) {
+                    this.patientOverlayRef.dispose();
+                    this.patientOverlayRef = null;
+                }
+            }, 200);
+        }
+
+            keepPatientPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+            this.patientCloseTimeout = null;
+        }
+    }
+
+        ngOnDestroy() {
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+        }
+        if (this.patientOverlayRef) {
+            this.patientOverlayRef.dispose();
+        } 
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
+        }
     }
 }
 

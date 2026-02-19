@@ -1,46 +1,40 @@
 <div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight> 
-     <mat-toolbar class="top-header accent" fxLayoutAlign="space-between">
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent" fxLayoutAlign="space-between">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
             <button mat-icon-button class="sidebar-toggle ">
                 <mat-icon>menu</mat-icon>
             </button>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Prescription List
+                  Prescription List
             </span>
-        </div> 
-              <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+        </div>
+        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
                 <mat-icon>close</mat-icon>
               </button>  
-    </mat-toolbar> 
+    </mat-toolbar>
 
-      <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"  >
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
        <ng-template #actionButtonTemplateType let-element>
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-                <!-- <mat-icon *ngIf="element.isClosed == true" matTooltip="Close"
-                            class="pill blue-600 s-16">circle</mat-icon>
-                        <mat-icon *ngIf="element.isClosed == false" matTooltip="Pending"
-                            class="pill red-600 s-16">circle</mat-icon> &nbsp; -->
-        
+            <div fxLayout="row" fxLayoutAlign="space-between center">  
                 <mat-icon *ngIf="element.patientType == 'IP'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
                 <mat-icon *ngIf="element.patientType == 'OP'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
                 &nbsp;
         
                 <mat-icon *ngIf="element.isClosed" matTooltip="isClosed" style="color: green;">check_circle</mat-icon>
                 <mat-icon *ngIf="!element.isClosed" matTooltip="Pending"
-                    style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+                 style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
             </div>
         </ng-template>
-
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <button mat-icon-button matTooltip="Print">
                     <mat-icon>print</mat-icon>
                 </button>
             </div>
-        </ng-template>
-        <airmid-table [gridConfig]="gridConfig" class="content"  #grid  (onSelectRow)="getSelectedRow($event)">
+        </ng-template> 
+         <airmid-table [gridConfig]="gridConfig" class="content h-100-p"  #grid  (onSelectRow)="getSelectedRow($event)">
             <ng-container filters>
                 <form [formGroup]="PrescriptionFrom" fxLayout="column">
             
@@ -56,6 +50,12 @@
             
                     <airmid-textbox fxFlex label="RegNo" [formGroup]="PrescriptionFrom" formControlName="RegNo"
                         (keyup)="ChangeeFilter()"></airmid-textbox>
+
+                     <airmid-textbox fxFlex label="First Name" [formGroup]="PrescriptionFrom" formControlName="F_Name"
+                        (keyup)="ChangeeFilter()"></airmid-textbox>
+
+                     <airmid-textbox fxFlex label="Last Name" [formGroup]="PrescriptionFrom" formControlName="L_Name"
+                        (keyup)="ChangeeFilter()"></airmid-textbox>
             
                     <mat-radio-group name="StatusType" formControlName="StatusType" value="0" style="padding-top: 8px;"
                         (change)="ChangeeFilter()">
@@ -64,9 +64,7 @@
                         </mat-radio-button>
                         <mat-radio-button value="1" class="mr-sm-12">Close
                         </mat-radio-button>
-                    </mat-radio-group>
-            
-            
+                    </mat-radio-group> 
                     <div fxLayout="row" fxLayoutAlign="start">
                         <span><b>Help</b>:</span> &nbsp;
                         <div style="color: green" fxLayout="row"  class="gap-8">
@@ -76,31 +74,22 @@
                         <div style="color: orange" fxLayout="row" class="gap-8">
                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                             <span class="orange-600-fg">OP</span>
-                        </div>
-                        <!-- <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                            <span class="orange-600-fg">Pending</span>
-                        </div>
-                        <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                            <span class="blue-600-fg">Close</span>
-                        </div> -->
-            
+                        </div> 
                     </div>
                 </form>
             </ng-container>
         </airmid-table>
-    </div> 
+    </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
         <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
         </airmid-table>
-    </div> 
+    </div>
 
-    <div class="modal-footer" fxLayoutAlign="end">
-        <div class="modal-footer-buttons" style="padding: 0px 10px 2px 10px;">
-            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>&nbsp;
-            <button class="btn btn-primary" (click)="GetPrescrpList ()">Save</button>
+    <div class="modal-footer">
+        <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px" style="padding-right: 10px;">
+            <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
+            <button class="btn btn-primary" (click)="GetPrescrpList()">Save</button>
         </div>
     </div>
-</div> 
+</div>

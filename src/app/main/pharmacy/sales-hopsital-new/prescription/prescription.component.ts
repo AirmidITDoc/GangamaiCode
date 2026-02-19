@@ -27,6 +27,8 @@ PrescriptionFrom:FormGroup;
   IsStatus: any = 0;
   StoreId: any = 0;
   Reg_No: any = 0;
+  f_name: any = '%';
+  l_name: any = '%';
 
   @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent; 
@@ -72,7 +74,9 @@ PrescriptionFrom:FormGroup;
     sortOrder: 0,
     filters: [
       { fieldName: "FromDate", fieldValue: String(this.FormDate), opType: OperatorComparer.Equals },
-      { fieldName: "ToDate", fieldValue: String(this.ToDate), opType: OperatorComparer.Equals },
+      { fieldName: "ToDate", fieldValue: String(this.f_name), opType: OperatorComparer.Equals },
+      { fieldName: "F_Name", fieldValue:  String(this.f_name), opType: OperatorComparer.Equals },
+      { fieldName: "L_Name", fieldValue:  String(this.l_name), opType: OperatorComparer.Equals },
       { fieldName: "IsStatus", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "StoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -102,7 +106,8 @@ PrescriptionFrom:FormGroup;
         StatusType:['0'],
         PreNo:'',
         IsActive: '',
-        
+        F_Name:'',
+        L_Name:''
       });
     }
   getSelectedRow(Obj) { 
@@ -133,6 +138,8 @@ PrescriptionFrom:FormGroup;
     this.IsStatus = this.PrescriptionFrom.get('StatusType').value || 0
     this.StoreId = this._loggedService.currentUserValue.user.storeId || 0
     this.Reg_No = this.PrescriptionFrom.get('RegNo').value || 0
+    this.f_name =  this.PrescriptionFrom.get('F_Name').value + "%" || '%'
+    this.l_name =  this.PrescriptionFrom.get('L_Name').value + "%" || '%'
 
     this.getHeaderDate();
   }
@@ -145,6 +152,8 @@ PrescriptionFrom:FormGroup;
       filters: [
         { fieldName: "FromDate", fieldValue: String(this.FormDate), opType: OperatorComparer.Equals },
         { fieldName: "ToDate", fieldValue: String(this.ToDate), opType: OperatorComparer.Equals },
+        { fieldName: "F_Name", fieldValue:  String(this.f_name), opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue:  String(this.l_name), opType: OperatorComparer.Equals },
         { fieldName: "IsStatus", fieldValue: String(this.IsStatus), opType: OperatorComparer.Equals },
         { fieldName: "StoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: String(this.Reg_No), opType: OperatorComparer.Equals },

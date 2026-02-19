@@ -102,6 +102,16 @@
             </div>
         </ng-template>
 
+                <ng-template #patientNameWithBadgeTemplate let-element>
+            <!-- Patient Name with Token Badge and Hover Popover -->
+            <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                (mouseenter)="openPatientDetailsPopover($event, element)" (mouseleave)="closePatientDetailsPopover()"
+                style="font-size: 14px; line-height: 18px; position: relative; top: 4px; cursor: pointer; text-decoration: underline; color: #667eea;">
+                {{ element.patientName }}
+            </span>
+        </ng-template>
+
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 

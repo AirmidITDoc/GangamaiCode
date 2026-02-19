@@ -21,6 +21,9 @@ export class AppointmentBillService {
     public getBillingServiceList(param) {
         return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", param)
     }
+       public getAccessDetailList(param){
+    return this._httpClient1.PostData("LoginManager/loginAccessDetailsList",param)
+  }
 
     public InsertOPBillingCredit(param) {
         return this._httpClient1.PostData("OPBill/OPCreditBillingInsert", param)

@@ -69,7 +69,8 @@ export class SampleCollectionComponent implements OnInit {
             heading: "-", key: "action1", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.statusbtnTemplate
         },
-        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
+        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "", key: "pathTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
         // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
