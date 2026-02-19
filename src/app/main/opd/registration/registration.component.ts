@@ -376,7 +376,7 @@ adharCardNo: any;
             this.PrefixID = RegInsert.PrefixID || 0;
             this.PrefixID = RegInsert.PrefixID || 0;
             this.firstName = RegInsert.firstName || '';
-            this.middleName = RegInsert.middleName || '%';
+            this.middleName = RegInsert.middleName || '';
             this.lastName = RegInsert.lastName || '';
             this.FirstName = RegInsert.FirstName || '';
             this.MiddleName = RegInsert.MiddleName || '';
@@ -384,7 +384,7 @@ adharCardNo: any;
             this.Address = RegInsert.Address || '';
             this.RegNo = RegInsert.RegNo || '';
             this.regNo = RegInsert.regNo || '';
-            this.City = RegInsert.City || 'SS';
+            this.City = RegInsert.City || '';
             this.PinNo = RegInsert.PinNo || '';
             this.dateOfBirth = RegInsert.dateOfBirth || this.currentDate;
             this.dateofBirth = RegInsert.dateofBirth || this.currentDate;
@@ -460,7 +460,8 @@ adharCardNo: any;
             this.BillNo = RegInsert.BillNo || 0
             this.BillTime = RegInsert.BillTime || ''
             this.PatientType = RegInsert.PatientType || ''
-        this.adharCardNo = RegInsert.adharCardNo || ''
+              this.adharCardNo = RegInsert.adharCardNo || ''
+             this.address = RegInsert.address || ''
 
             
         }

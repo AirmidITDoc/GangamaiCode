@@ -36,7 +36,7 @@ export class CurrentStockService {
       start:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       end:[(new Date()).toISOString(),this._FormvalidationserviceService.validDateValidator()],
       StoreId:[this.accountService.currentUserValue.user.storeId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      ItemCategory:['%'],
+      ItemCategory:[''],
       IsDeleted:['2']
     });
   }

@@ -33,6 +33,7 @@ import { PathologyDashboardComponent } from './pathology-dashboard/pathology-das
 import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
 import { LabFinancialDashboardComponent } from './lab-financial-dashboard/lab-financial-dashboard.component';
 import { FinancialDashboardComponent } from './financial-dashboard/financial-dashboard.component';
+import { NewFinacialdashboardComponent } from './new-finacialdashboard/new-finacialdashboard.component';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -49,6 +50,7 @@ import { FinancialDashboardComponent } from './financial-dashboard/financial-das
         CashlessDashboardComponent,
         LabFinancialDashboardComponent,
         FinancialDashboardComponent,
+        NewFinacialdashboardComponent,
         // FinancetestComponent
     ],
     imports: [

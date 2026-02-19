@@ -10,6 +10,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 import { LabFinancialDashboardComponent } from './lab-financial-dashboard/lab-financial-dashboard.component';
 import { FinancialDashboardComponent } from './financial-dashboard/financial-dashboard.component';
+import { NewFinacialdashboardComponent } from './new-finacialdashboard/new-finacialdashboard.component';
 
 const routes: Routes = [
   {
@@ -50,7 +51,7 @@ const routes: Routes = [
   },
   {
     path: 'Financial-dashboard',
-    component: FinancialDashboardComponent
+    component: NewFinacialdashboardComponent
   }
   ,
   {

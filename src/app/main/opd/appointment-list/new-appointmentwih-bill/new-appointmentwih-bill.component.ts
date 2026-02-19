@@ -336,8 +336,18 @@ export class NewAppointmentwihBillComponent {
 
       // extra field
       IsNRI: [false],
-
       photo: "",
+      City: '',
+      PinNo: '',
+      Age: '',
+      PhoneNo: '',
+      MaritalStatusId: 0,
+      IsCharity: false,
+      ReligionId: 0,
+      AreaId: 0,
+      IsSeniorCitizen: false,
+      PanCardNo: "",
+      EmailId: '',
 
 
       // extra fields
@@ -668,20 +678,20 @@ export class NewAppointmentwihBillComponent {
     var mode = "Company"
     if (value.text != "Self") {
       this._AppointmentlistService.getMaster(mode, 1);
-      this.myForm.get('companyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+      this.VisitFormGroup.get('CompanyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
       this.isCompanySelected = true;
-      this.myForm.get('companyId').enable()
+      this.VisitFormGroup.get('CompanyId').enable()
       this.patienttype = 2;
       this.OPFooterForm.get('paymentType').setValue('CreditPay')
 
     } else if (value.text == "Self") {
       this.isCompanySelected = false;      
-      this.myForm.get('companyId').disable()
-      this.myForm.get('companyId').clearValidators();
-      this.myForm.get('companyId').updateValueAndValidity();
+      this.VisitFormGroup.get('CompanyId').disable()
+      this.VisitFormGroup.get('CompanyId').clearValidators();
+      this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
       this.patienttype = 1;
       this.OPFooterForm.get('paymentType').setValue('CashPay')
-      this.myForm.get('companyId').setValue(0);
+      this.VisitFormGroup.get('CompanyId').setValue(0);
       this.myForm.get('tariffId').setValue(1);
       this.isTariffSelect = false //tariff not readonly
     }
@@ -1182,7 +1192,8 @@ export class NewAppointmentwihBillComponent {
     }
   }
   Patientnewold: any = 1;
-  onChangeReg1(event) {
+ onChangeReg1(event) {
+    debugger
     if (event.value === 'registration') {
       this.myForm.reset();
       this.myForm.get('RegId').reset();
@@ -1190,58 +1201,38 @@ export class NewAppointmentwihBillComponent {
       this.isRegSearchDisabled = false;
       this.Patientnewold = 1;
 
-      // Instead of reassigning, update controls one by one
-      // const newPersonalForm = this.CreateAppointmentForm();
-      // this.resetFilteredOptions();
-      // Object.keys(newPersonalForm.controls).forEach(key => {
-      //   if (this.myForm.contains(key)) {
-      //     this.myForm.setControl(key, newPersonalForm.get(key));
+      // const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
+      // Object.keys(newVisitForm.controls).forEach(key => {
+      //   if (this.VisitFormGroup.contains(key)) {
+      //     this.VisitFormGroup.setControl(key, newVisitForm.get(key));
       //   } else {
-      //     this.myForm.addControl(key, newPersonalForm.get(key));
+      //     this.VisitFormGroup.addControl(key, newVisitForm.get(key));
       //   }
       // });
 
-      const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
-      Object.keys(newVisitForm.controls).forEach(key => {
-        if (this.VisitFormGroup.contains(key)) {
-          this.VisitFormGroup.setControl(key, newVisitForm.get(key));
-        } else {
-          this.VisitFormGroup.addControl(key, newVisitForm.get(key));
-        }
-      });
-
-      this.myForm.markAllAsTouched();
-      this.VisitFormGroup.markAllAsTouched();
-
+      // this.myForm.markAllAsTouched();
+      // this.VisitFormGroup.markAllAsTouched();
+ 
       this.Regflag = false;
       this.IsPhoneAppflag = true;
 
     } else if (event.value === 'registrered') {
 
-      this.myForm.get('RegId').enable();
+      // this.myForm.get('RegId').enable();
       this.searchFormGroup.get('RegId').enable();
       this.searchFormGroup.get('RegId').reset();
-      this.myForm.reset();
+      // this.myForm.reset();
       this.Patientnewold = 2;
 
-      // const newPersonalForm = this.crea();
-      // this.resetFilteredOptions();
-      // Object.keys(newPersonalForm.controls).forEach(key => {
-      //   if (this.myForm.contains(key)) {
-      //     this.myForm.setControl(key, newPersonalForm.get(key));
+
+      // const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
+      // Object.keys(newVisitForm.controls).forEach(key => {
+      //   if (this.VisitFormGroup.contains(key)) {
+      //     this.VisitFormGroup.setControl(key, newVisitForm.get(key));
       //   } else {
-      //     this.myForm.addControl(key, newPersonalForm.get(key));
+      //     this.VisitFormGroup.addControl(key, newVisitForm.get(key));
       //   }
       // });
-
-      const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
-      Object.keys(newVisitForm.controls).forEach(key => {
-        if (this.VisitFormGroup.contains(key)) {
-          this.VisitFormGroup.setControl(key, newVisitForm.get(key));
-        } else {
-          this.VisitFormGroup.addControl(key, newVisitForm.get(key));
-        }
-      });
 
       this.myForm.markAllAsTouched();
       this.VisitFormGroup.markAllAsTouched();
@@ -1251,6 +1242,7 @@ export class NewAppointmentwihBillComponent {
       this.isRegSearchDisabled = true;
     }
   }
+
 
   selectChangeConcession(event) {
     this.ConcessionId = event.value
@@ -1866,7 +1858,7 @@ export class NewAppointmentwihBillComponent {
           PatientHeaderObj['DepartmentName'] = this.departmentname;
           PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
           PatientHeaderObj['Age'] = this.ageYear;
-          PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
+          PatientHeaderObj['NetPayAmount'] = Math.round(this.myForm.get('netPayableAmt').value);
           const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
               maxWidth: "80vw",

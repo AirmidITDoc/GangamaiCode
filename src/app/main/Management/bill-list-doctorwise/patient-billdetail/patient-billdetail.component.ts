@@ -167,7 +167,7 @@ export class PatientBilldetailComponent {
 
 
   getCellCalculation(item: ItemNameList) {
-    
+    console.log(item)
     setTimeout(() => {
 
       item.hospitalAmt = (Number(item.netAmount) - Number(item.docAmt)).toFixed(2); // just in case

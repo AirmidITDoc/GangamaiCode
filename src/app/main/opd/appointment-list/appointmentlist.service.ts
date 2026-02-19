@@ -50,6 +50,8 @@ export class AppointmentlistService {
             IsDeletedSearch: ["2"],
         });
     }
+
+    
     createPesonalForm() {
         return this._formBuilder.group({
             RegId: [0],

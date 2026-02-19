@@ -98,25 +98,29 @@
                         </ng-container>
 
 
-                        <ng-container matColumnDef="DocPer">
+                        <!-- <ng-container matColumnDef="DocPer">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                 class="w-100">DocPer</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                 <mat-form-field appearance="fill">
                                     <input matInput type="number" OnlyNumber [id]="'docPer' + index" [min]="0" />
-                                </mat-form-field>
-                            </mat-cell>
-                        </ng-container>
-                        <!-- <ng-container matColumnDef="DocAmt">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                class="w-100">DocAmt</mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <mat-form-field appearance="fill">
-                                    <input matInput [(ngModel)]="contact.docAmt" type="number" OnlyNumber
-                                        [id]="'docAmt' + index" [min]="0" />
+                                    <span> {{contact.docServicePer}}</span>
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container> -->
+                        <ng-container matColumnDef="DocPer">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                class="w-100">DocPer</mat-header-cell>
+                            <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-form-field appearance="fill">
+                                    <input matInput [(ngModel)]="contact.docServicePer" type="text "
+                                        (keyup)="getCellCalculation(contact)" min="0" max="100" name="tableQty"
+                                        OnlyNumber (keypress)="keyPressDigitsOnly($event)" />
+                                </mat-form-field>
+                            </mat-cell>
+                        </ng-container>
+
+
                         <ng-container matColumnDef="DocAmt">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                 class="w-100">DocAmt</mat-header-cell>

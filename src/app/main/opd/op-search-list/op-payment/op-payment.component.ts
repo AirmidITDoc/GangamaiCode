@@ -590,7 +590,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['supPayId'] = 0;
       this.Paymentobj['supPayDate'] = formattedDate
       this.Paymentobj['supPayTime'] = formattedTime
-      this.Paymentobj['grnId'] = this.advanceData.GRNID;
+      this.Paymentobj['grnId'] = this.advanceData.GRNID || 0;
       this.Paymentobj['CashPayAmt'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
       this.Paymentobj['cardPayAmt'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
       this.Paymentobj['cardPayDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
