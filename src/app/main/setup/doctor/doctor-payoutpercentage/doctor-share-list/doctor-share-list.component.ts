@@ -85,8 +85,7 @@ export class DoctorShareListComponent {
             this.Doctorshare.get('serviceId').setValue(this.data.serviceId);
             this.Doctorshare.get('classId').setValue(this.data.classId)
              this.Doctorshare.get('servicePercentage').setValue(this.data.servicePercentage);
-            this.Doctorshare.get('serviceAmount').setValue(this.data.serviceAmount)
-        
+            this.Doctorshare.get('serviceAmount').setValue(this.data.serviceAmount) 
         
             if (this.data.servicePercentage > 0) {
               this.Doctorshare.get('docShrType').setValue('P');
@@ -330,4 +329,14 @@ export class DoctorShareListComponent {
       return false;
     }
   }
+         // it allowed only Digit 
+       keyPressDigitsOnly(event) {
+           var inp = String.fromCharCode(event.keyCode);
+           if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+               return true;
+           } else {
+               event.preventDefault();
+               return false;
+           }
+       }
 }

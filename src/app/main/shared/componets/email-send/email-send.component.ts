@@ -94,6 +94,9 @@ EmailFrom:FormGroup
       else if(this.data?.emailType == 'GRNReturnReceipt'){
         this.vBillNo = this.registerObj?.grnreturnId || 0
       }
+      else if(this.data?.emailType == 'PurchaseReport'){
+        this.vBillNo = this.registerObj?.purchaseID || 0
+      }
       // else if(this.data?.emailType == 'SupplierPayReceipt'){
       //   this.vBillNo = this.registerObj?.grnreturnId || 0
       // }

@@ -1425,7 +1425,7 @@ export class SalesHospitalKenyaComponent {
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                     PatientHeaderObj['PatientName'] = this.PatientName || '';
                 PatientHeaderObj['RegNo'] = this.RegNo || 0;
-                PatientHeaderObj['DoctorName'] = this.Patientdetails?.doctorName || '';
+                PatientHeaderObj['DoctorName'] = this.DoctorName || '';
                 if (formValue.opIpType == '1') {
                     PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.ipdNo || 0;
                 } else {
@@ -1738,7 +1738,7 @@ export class SalesHospitalKenyaComponent {
             this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
         } else {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
-            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
+            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.DoctorName || '')
         }
         this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {
