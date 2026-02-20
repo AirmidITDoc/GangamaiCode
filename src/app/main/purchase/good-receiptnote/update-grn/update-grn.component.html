@@ -537,24 +537,27 @@
             <mat-expansion-panel [expanded]="isExpanded">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: 15px;">Total Amount Summary </mat-panel-title>
-                <div class="summary-container" >
-                  <div class="net-amt-box">
-                    <span class="net-amt-label">No Of Item:</span>
-                    <span class="net-amt-value">  {{dsItemNameList.data.length}}</span>
-                  </div>
-                  <div class="net-amt-box">
-                    <span class="net-amt-label">Total Amount :</span>
-                    <span class="net-amt-value">  {{getTotalAmount() | currency: currency:'symbol' }}</span>
-                  </div> 
-
-                  <div class="net-amt-box">
-                    <span class="net-amt-label">Vat Amt :</span>
-                    <span class="net-amt-value">{{ getIGSTAmt() | currency: currency:'symbol' }}</span>
-                  </div>
-                  <div class="final-amt-box">
-                    <span class="final-amt-label">Net Amt :</span>
-                    <span class="final-amt-value">{{getNetAmount() | currency: currency:'symbol'
-                      }}</span>
+                <div class="net-amt-section">
+                  <div class="net-amt">
+              
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">No Of Item:</span>
+                      <span class="net-amt-value"> {{dsItemNameList.data.length}}</span>
+                    </div>
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">Total Amount :</span>
+                      <span class="net-amt-value"> {{getTotalAmount() | currency: currency:'symbol' }}</span>
+                    </div>
+              
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">Vat Amt :</span>
+                      <span class="net-amt-value">{{ getIGSTAmt() | currency: currency:'symbol' }}</span>
+                    </div>
+                    <div class="final-amt-box">
+                      <span class="final-amt-label">Net Amt :</span>
+                      <span class="final-amt-value">{{getNetAmount() | currency: currency:'symbol'
+                        }}</span>
+                    </div>
                   </div>
                 </div>
               </mat-expansion-panel-header>

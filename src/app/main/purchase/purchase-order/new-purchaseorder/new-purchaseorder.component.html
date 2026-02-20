@@ -429,49 +429,51 @@
                         <mat-expansion-panel>
                             <mat-expansion-panel-header>
                                 <mat-panel-title style="font-size: 15px;">Total Amount Summary </mat-panel-title>
-                                <div class="summary-container">
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">No Of Item:</span>
-                                        <span class="net-amt-value">{{dsItemNameList.data.length}}</span>
-                                    </div>
-
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">CGSTAmt:</span>
-                                        <span class="net-amt-value">{{ getCGSTAmt() | currency: currency:'symbol'}}</span>
-                                    </div>
-
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">SGSTAmt:</span>
-                                        <span class="net-amt-value">{{ getSGSTAmt() | currency: currency:'symbol'}}</span>
-                                    </div>
-
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">IGSTAmt</span>
-                                        <span class="net-amt-value">{{ getIGSTAmt() | currency: currency:'symbol'}}</span>
-                                    </div>
-
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">Total Amt:</span>
-                                        <span class="net-amt-value">{{getTotalAmt(dsItemNameList.data)
-                                            | currency: currency:'symbol'}}</span>
-                                    </div>
-
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">Disc Amt:</span>
-                                        <span class="net-amt-value">{{getTotalDisc(dsItemNameList.data)
-                                            | currency: currency:'symbol'}}</span>
-                                    </div>
-
-                                    <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">GST Amt:</span>
-                                        <span class="net-amt-value">{{getTotalGST(dsItemNameList.data)
-                                            | currency: currency:'symbol'}}</span>
-                                    </div>
-
-                                    <div class="final-amt-box">
-                                        <span class="final-amt-label">Net Amt :</span>
-                                        <span class="final-amt-value">{{getTotalNet(dsItemNameList.data)
-                                            | currency: currency:'symbol'}}</span>
+                                <div class="net-amt-section">
+                                    <div class="net-amt">
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-mat-label">No Of Item:</span>
+                                            <span class="net-amt-value">{{dsItemNameList.data.length}}</span>
+                                        </div>
+                                
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-mat-label">CGSTAmt:</span>
+                                            <span class="net-amt-value">{{ getCGSTAmt() | currency: currency:'symbol'}}</span>
+                                        </div>
+                                
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-mat-label">SGSTAmt:</span>
+                                            <span class="net-amt-value">{{ getSGSTAmt() | currency: currency:'symbol'}}</span>
+                                        </div>
+                                
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-mat-label">IGSTAmt</span>
+                                            <span class="net-amt-value">{{ getIGSTAmt() | currency: currency:'symbol'}}</span>
+                                        </div>
+                                
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-mat-label">Total Amt:</span>
+                                            <span class="net-amt-value">{{getTotalAmt(dsItemNameList.data)
+                                                | currency: currency:'symbol'}}</span>
+                                        </div>
+                                
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-mat-label">Disc Amt:</span>
+                                            <span class="net-amt-value">{{getTotalDisc(dsItemNameList.data)
+                                                | currency: currency:'symbol'}}</span>
+                                        </div>
+                                
+                                        <div class="net-amt-box">
+                                            <span class="net-amt-mat-label">GST Amt:</span>
+                                            <span class="net-amt-value">{{getTotalGST(dsItemNameList.data)
+                                                | currency: currency:'symbol'}}</span>
+                                        </div>
+                                
+                                        <div class="final-amt-box">
+                                            <span class="final-amt-label">Net Amt :</span>
+                                            <span class="final-amt-value">{{getTotalNet(dsItemNameList.data)
+                                                | currency: currency:'symbol'}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </mat-expansion-panel-header>

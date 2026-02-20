@@ -212,7 +212,7 @@ export class NewPrescriptionComponent implements OnInit {
     this.vdoseId = Number(obj.doseName) ?? 0;
     this.day = obj.doseDay;
     this.vInstruction = obj.instruction ?? '';
-    this.vQty = obj.balanceQty;
+    this.vQty = 0 //obj.balanceQty;
     this.ItemForm.get('ItemId').setValue(obj);
     debugger
     if (this.vdoseId > 0) {

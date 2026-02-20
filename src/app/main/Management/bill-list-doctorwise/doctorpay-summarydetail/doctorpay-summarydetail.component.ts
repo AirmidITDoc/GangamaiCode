@@ -125,13 +125,13 @@ export class DoctorpaySummarydetailComponent {
 
     var vdata = {
       "first": 0,
-      "rows": 200,
+      "rows": 999,
       "sortField": "DoctorId",
       "sortOrder": 0,
       "filters": [
         {
           "fieldName": "DoctorId",
-          "fieldValue": "1",//String(this.DoctorId),
+          "fieldValue": String(this.DoctorId),
           "opType": "Equals"
         },
         {

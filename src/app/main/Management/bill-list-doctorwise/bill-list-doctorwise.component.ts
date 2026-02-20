@@ -328,9 +328,9 @@ export class BillListDoctorwiseComponent {
 
     const dialogRef = this._matDialog.open(PatientBilldetailComponent,
       {
-        maxWidth: "89vw",
-        height: '750px',
-        width: '100%',
+        maxWidth: '90vw',
+        height: '700px',
+        width: '100%', 
         data: {
           obj: element,
           doctorId: this.DoctorId1
@@ -346,7 +346,7 @@ export class BillListDoctorwiseComponent {
     const dialogRef = this._matDialog.open(DoctorpaySummarydetailComponent,
       {
         maxWidth: "90vw",
-        height: '690px',
+        height: '700px',
         width: '100%',
         data: {
           obj: element,
