@@ -44,7 +44,8 @@ export class PatientBilldetailComponent {
     'HospitalAmt',
   ]
 
-
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   Billdetaildatasource = new MatTableDataSource<BillListForDocShrList>();
   @ViewChild('drawer') public drawer: MatDrawer;
 
@@ -85,7 +86,7 @@ export class PatientBilldetailComponent {
   getBilldetailList() {
     var vdata = {
       "first": 0,
-      "rows": 200,
+      "rows": 999,
       "sortField": "DoctorId",
       "sortOrder": 0,
       "filters": [
@@ -106,6 +107,8 @@ export class PatientBilldetailComponent {
     console.log(vdata)
     this._DoctorShareService.getBilldetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
+    this.Billdetaildatasource.sort = this.sort
+    this.Billdetaildatasource.paginator = this.paginator
       console.log(this.Billdetaildatasource.data)
       if (this.Billdetaildatasource.data.length > 0)
         this.getsumdetail()

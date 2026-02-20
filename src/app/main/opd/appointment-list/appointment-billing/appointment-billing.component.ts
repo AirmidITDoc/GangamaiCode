@@ -388,7 +388,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     getFixedDecimal(value: number) {
         return Number(value.toFixed(2));
     }
-    getUserAccesDetList:any=[];
+    UserDicPerLimit:any=0;
       getAccessDetail() {
         // debugger
         var SelectQuery = {
@@ -407,8 +407,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
           "columns": []
         }
         this._AppointmentlistService.getAccessDetailList(SelectQuery).subscribe(response => {
-          this.getUserAccesDetList = response.data as UserDetail[];
-          console.log("get Access data:", this.getUserAccesDetList) 
+          const getUserAccesDetList = response.data as UserDetail[];
+          console.log("get Access data:", getUserAccesDetList)
+          
+           const discountData = response.data.find(x => x.accessValueName === 'IsDiscount'); 
+            console.log(discountData)
+            if(discountData?.accessValue){
+                this.UserDicPerLimit = discountData?.accessInputValue || 0
+            }
         });
       }
     
@@ -1050,9 +1056,23 @@ console.log(item)
         this.calculateTotalAmount();
     }
     updateTotalDiscountAmt(): void {
+  debugger
         if (this.isUpdating) return; // Stop recursion
         this.isUpdating = true;
-        const totalDiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
+        // const DiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
+        // if (this.UserDicPerLimit > 0) {
+        //     if (DiscountPer > this.UserDicPerLimit) {
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Discount Limit Exceeded',
+        //             text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+        //             confirmButtonColor: '#d33'
+        //         });  
+        //         return; 
+        //     }
+        // } 
+
+        const totalDiscountPer = +this.OPFooterForm.get("totalDiscountPer").value; 
         if (totalDiscountPer == 0)
             this.OPFooterForm.get("concessionReasonId").setValue(0)
         if (totalDiscountPer < 0 || totalDiscountPer > 100) {

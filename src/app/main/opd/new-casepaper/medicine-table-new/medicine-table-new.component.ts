@@ -120,7 +120,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     }
 
     get itemApiUrlFull(): string {
-        return this.itemApiUrl || `ItemMaster/GetItemListForPrescription?StoreId=${this.storeId}&ItemName=`;
+       // return this.itemApiUrl || `ItemMaster/GetItemListForPrescription?StoreId=${this.storeId}&ItemName=`;
+        return this.itemApiUrl || `ItemMaster/GetItemListForPrescriptionSearch?StoreId=${this.storeId}&ItemName=`;
     }
 
     // Public method to set data from parent

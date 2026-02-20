@@ -1,72 +1,356 @@
-.painmeasurement {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-  } 
-  .vertical-line {
-    width: 1px;
-    height: 15px;
-    background-color: black;
-    margin: 0;
-    position: relative;
-  }
-  
-  // .custom-slider .mat-slider-thumb {
-  //   background: linear-gradient(to left, rgb(114, 236, 77), rgb(207, 243, 109),rgb(243, 203, 109),);
-  // }
- 
-  .mat-slider.mat-slider-horizontal .mat-slider-wrapper {
-    top: 18px;
-  }
-  .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
-    height: 12px;
-    border-radius: 5px; 
-  }
-  .mat-slider.mat-slider-horizontal .mat-slider-track-background,
-  .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
-    height: 100%;
-  }
-  .mat-slider.mat-slider-horizontal .mat-slider-track-fill {
-    background-color: blue;
-    background: linear-gradient(to right, rgb(114, 236, 77), rgb(238, 210, 96),rgb(238, 125, 77),);
-  }
-  .mat-accent .mat-slider-thumb {
-    height: 30px;
-    width: 30px;
-    background-color: white;
-    border: solid 2px gray;
-    bottom: -20px;
-    right: -20px;
-  }
-  .mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
-    background-color: white;
-  }
+// ============================================================
+// Clinical Care Chart - Component Styles
+// ============================================================
 
+// --- Icon Toolbar ---
+.icon-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 
-
-  .example-container {
-    width: 500px;
-    height: 300px;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-  }
-  
-  .example-sidenav-content { 
-    height: 100%;
+  .icon-toolbar-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #eef2ff;
+    border: 1px solid #dce1f7;
+
+    &:hover {
+      background-color: #3f51b5;
+      border-color: #3f51b5;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(63, 81, 181, 0.3);
+
+      .mat-icon {
+        color: #fff !important;
+      }
+    }
+
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: #3f51b5;
+      transition: color 0.2s ease;
+    }
   }
-  
-  // .example-sidenav {
-  //   padding: 20px;
-  // }
-  
+}
+
+// --- Patient Info Override ---
+.patient-sub {
+  padding: 4px 0;
+
+  .patient-info-row {
+    gap: 4px;
+  }
+}
+
+// --- Assessment Tables ---
+.assessment-table-container {
+  overflow: auto;
+  min-height: 60px;
+  max-height: 200px;
+}
+
+// --- Pain Measurement Scale ---
+.pain-scale-section {
+  padding: 10px 0;
+
+  h1 {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+  }
+}
+
+.pain-scale-bar {
+  background-color: #555;
+  height: 2px;
+  margin-right: 46px;
+}
+
+.pain-scale-numbers {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 30px;
+  padding: 0 2px;
+
+  .pain-number {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .vertical-line {
+      width: 1px;
+      height: 12px;
+      background-color: #555;
+      margin: 0;
+    }
+
+    span:last-child {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+  }
+}
+
+.pain-scale-emojis {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+  padding: 6px 0;
+
+  .pain-emoji {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+
+    span {
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+      text-align: center;
+      color: #555;
+    }
+
+    img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+}
+
+.pain-slider-container {
+  margin-right: 30px;
+  padding: 0 4px;
+
+  .mat-slider {
+    width: 100%;
+  }
+}
+
+.pain-level-display {
+  padding: 6px 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3f51b5;
+}
+
+// --- Slider Styles ---
+.mat-slider.mat-slider-horizontal .mat-slider-wrapper {
+  top: 18px;
+}
+
+.mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {
+  height: 12px;
+  border-radius: 5px;
+}
+
+.mat-slider.mat-slider-horizontal .mat-slider-track-background,
+.mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  height: 100%;
+}
+
+.mat-slider.mat-slider-horizontal .mat-slider-track-fill {
+  background-color: blue;
+  background: linear-gradient(to right,
+      rgb(114, 236, 77),
+      rgb(238, 210, 96),
+      rgb(238, 125, 77));
+}
+
+.mat-accent .mat-slider-thumb {
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border: solid 2px gray;
+  bottom: -20px;
+  right: -20px;
+}
+
+.mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb {
+  background-color: white;
+}
+
+// --- Sidebar ---
+.sidebar-drawer {
+  width: 340px;
+  background-color: #eef5f5;
+  overflow: hidden !important;
+}
+
+.sidebar-content {
+  overflow: hidden !important;
+
+  // Remove space between form fields (Ward Name + Patient Name)
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-form-field {
+    margin-bottom: 0 !important;
+  }
+
+  // Pagination in one line
+  .mat-mdc-paginator {
+    .mat-mdc-paginator-container {
+      flex-wrap: nowrap !important;
+      justify-content: center;
+      padding: 0 4px;
+      min-height: 40px;
+    }
+
+    .mat-mdc-paginator-range-label {
+      white-space: nowrap;
+      font-size: 11px;
+      margin: 0 4px;
+    }
+
+    .mat-mdc-paginator-page-size {
+      margin-right: 4px;
+
+      .mat-mdc-paginator-page-size-label {
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .mat-mdc-paginator-page-size-select {
+        width: 56px !important;
+      }
+    }
+
+    .mat-mdc-paginator-range-actions {
+      gap: 0;
+
+      .mat-mdc-icon-button {
+        width: 28px;
+        height: 28px;
+        padding: 2px;
+      }
+    }
+  }
+}
+
+.example-sidenav-content {
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  overflow: hidden !important;
+}
+
+// --- Table Container ---
 .table-container {
   max-height: 400px;
   overflow-y: auto;
   overflow-x: auto;
 }
- 
 
- 
-  
+// --- Card & Tab Spacing Overrides ---
+.mat-card {
+  margin-bottom: 4px;
+}
+
+.mat-tab-body-content {
+  padding: 2px 0 !important;
+}
+
+// --- Tab Structure Compact ---
+.tab-container {
+  padding: 0 !important;
+}
+
+.tab-body {
+  padding: 0 !important;
+}
+
+.tab-box {
+  padding: 0 !important;
+}
+
+.tab-content {
+  padding: 0 !important;
+
+  .mat-mdc-card {
+    padding: 6px 8px !important;
+    margin: 0 !important;
+  }
+}
+
+.tab-footer {
+  padding: 4px 8px !important;
+
+  .tab-footer-action {
+    padding: 0 !important;
+  }
+}
+
+// --- Form Field Compact (all tabs) ---
+.dynamic-table-wrapper {
+
+  // Remove subscript/hint area below every input
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
+
+  // Small gap between form field rows (prevent touching)
+  .mat-mdc-form-field {
+    margin-bottom: 4px !important;
+  }
+
+  // Compact outline form field infix
+  .mat-mdc-form-field-infix {
+    padding-top: 8px !important;
+    padding-bottom: 4px !important;
+    min-height: 36px !important;
+  }
+
+  // Reduce mat-card padding inside tabs
+  .mat-mdc-card {
+    padding: 6px 8px !important;
+  }
+
+  // Tighten row gaps
+  [fxLayoutGap="6px"],
+  [fxLayoutGap="10px"] {
+    gap: 4px !important;
+  }
+}
+
+// --- Table header compact ---
+.table-header {
+  padding: 4px 8px;
+  margin-bottom: 2px;
+}
+
+// --- airmid-table compact ---
+.airmid-table-container {
+  padding: 0 !important;
+
+  .center {
+    padding: 4px !important;
+  }
+}
+
+// --- Top header compact ---
+.top-header-info {
+  padding: 4px 0 !important;
+
+  .top-header-title {
+    .h2 {
+      font-size: 14px !important;
+    }
+  }
+}

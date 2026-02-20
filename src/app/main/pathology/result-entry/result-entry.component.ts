@@ -119,7 +119,7 @@ export class ResultEntryComponent implements OnInit {
     UnitId: any = this.accountService.currentUserValue.user.unitId;
     isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
-    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
+    IsEdit: boolean = true ; ///this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;

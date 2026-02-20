@@ -685,34 +685,36 @@
             <mat-expansion-panel [expanded]="isExpanded">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: 15px;">Total Amount Summary </mat-panel-title>
-                <div class="summary-container" >
-                  <div class="net-amt-box">
-                    <span class="net-amt-label">No Of Item:</span>
-                    <span class="net-amt-value">  {{dsItemNameList.data.length}}</span>
-                  </div>
-                  <div class="net-amt-box">
-                    <span class="net-amt-label">Total Amount :</span>
-                    <span class="net-amt-value">  {{getTotalAmount() | currency:'INR' }}</span>
-                  </div>
-                  <div class="net-amt-box">
-                    <div class="net-amt-label">CGST Amt :</div>
-                    <div class="net-amt-value">{{ getCGSTAmt() | currency : 'INR':'symbol':'1.2-2' }}</div>
-                  </div>
-                  <div class="net-amt-box">
-                    <span class="net-amt-label">SGST Amt :</span>
-                    <span class="net-amt-value">{{ getSGSTAmt() | currency : 'INR' }}</span>
-                  </div>
-                  <div class="net-amt-box">
-                    <span class="net-amt-label">IGST Amt :</span>
-                    <span class="net-amt-value">{{ getIGSTAmt() | currency : 'INR' }}</span>
-                  </div>
-                  <div class="final-amt-box">
-                    <span class="final-amt-label">Net Amt :</span>
-                    <span class="final-amt-value">{{getNetAmount() | currency : 'INR'
-                      }}</span>
+                <div class="net-amt-section">
+                  <div class="net-amt">
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">No Of Item:</span>
+                      <span class="net-amt-value"> {{dsItemNameList.data.length}}</span>
+                    </div>
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">Total Amount :</span>
+                      <span class="net-amt-value"> {{getTotalAmount() | currency:'INR' }}</span>
+                    </div>
+                    <div class="net-amt-box">
+                      <div class="net-amt-label">CGST Amt :</div>
+                      <div class="net-amt-value">{{ getCGSTAmt() | currency : 'INR':'symbol':'1.2-2' }}</div>
+                    </div>
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">SGST Amt :</span>
+                      <span class="net-amt-value">{{ getSGSTAmt() | currency : 'INR' }}</span>
+                    </div>
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">IGST Amt :</span>
+                      <span class="net-amt-value">{{ getIGSTAmt() | currency : 'INR' }}</span>
+                    </div>
+                    <div class="final-amt-box">
+                      <span class="final-amt-label">Net Amt :</span>
+                      <span class="final-amt-value">{{getNetAmount() | currency : 'INR'
+                        }}</span>
+                    </div>
                   </div>
                 </div>
-              </mat-expansion-panel-header>
+                </mat-expansion-panel-header>
               <form [formGroup]="_GRNList.GRNFinalForm">
                 <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
 
