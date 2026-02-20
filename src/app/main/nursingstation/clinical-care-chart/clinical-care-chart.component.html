@@ -1,4 +1,4 @@
-<div class="simple page-layout inner-scroll inner-sidebar left-sidebar">
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar resize-form-fields">
   <mat-toolbar style="width: 100%; justify-content: space-between; height: 50px">
     <div fxLayout="row" fxLayoutAlign="start center">
       <button mat-icon-button class="sidebar-toggle" (click)="drawer.toggle()">
@@ -16,8 +16,7 @@
           <mat-card>
             <mat-card-content>
               <div class="patient-sub">
-                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                  fxLayoutAlign="space-between center">
+                <div class="patient-info-row patient-info-1-111" fxLayout="row" fxLayoutAlign="space-between center">
                   <div class="patient-col">
                     <span class="patient-col-key">Patient Name</span>
                     <span>:</span>
@@ -36,7 +35,7 @@
                   <div class="patient-col">
                     <span class="patient-col-key">Age</span>
                     <span>:</span>
-                    <span class="patient-col-value">{{ vAgeYear }}Y|{{ vAgeMonth }}|M|{{ vAgeDay }}D</span>
+                    <span class="patient-col-value">{{ vAgeYear }}Y|{{ vAgeMonth }}M|{{ vAgeDay }}D</span>
                   </div>
                 </div>
               </div>
@@ -46,40 +45,34 @@
           <!-- icon part -->
           <mat-card>
             <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
-              <div fxLayout="row" fxLayoutGap="10px">
-                <div>
-                  <img width="25px" height="10px" src="assets/images/logos/Bed_Transfer.png" style="padding-top: 5px"
-                    (click)="getbedTransfer()" matTooltip="Bed Transfer" />
-                </div>
-                <div>
-                  <img width="25px" height="10px" src="assets/images/logos/LabRequest.png" style="padding-top: 5px"
-                    (click)="getLabRequest()" matTooltip="Lab Request" />
-                </div>
-                <div>
-                  <img width="25px" height="10px" src="assets/images/logos/dischargesummary.jpeg"
-                    style="padding-top: 5px" (click)="getDischargeSummary()" matTooltip="Discharge Summary" />
-                </div>
-                <div>
-                  <img width="25px" height="10px" src="assets/images/logos/discharge.jpeg" style="padding-top: 5px"
-                    (click)="getPriscription()" matTooltip="IP Prescription" />
-                </div>
-                <div>
-                  <img width="25" height="10px" src="assets/images/logos/DoctorNote.png" (click)="getDoctornote()"
-                    style="padding-top: 5px" matTooltip="Doctor Note" />
-                </div>
-                <div>
-                  <img width="25" height="10px" src="assets/images/logos/NursingNote.png" (click)="getNursingnote()"
-                    style="padding-top: 5px" matTooltip="Nuesing Note" />
-                </div>
+              <div class="icon-toolbar">
+                <button mat-icon-button class="icon-toolbar-btn" (click)="getbedTransfer()" matTooltip="Bed Transfer">
+                  <mat-icon>hotel</mat-icon>
+                </button>
+                <button mat-icon-button class="icon-toolbar-btn" (click)="getLabRequest()" matTooltip="Lab Request">
+                  <mat-icon>local_hospital</mat-icon>
+                </button>
+                <button mat-icon-button class="icon-toolbar-btn" (click)="getDischargeSummary()"
+                  matTooltip="Discharge Summary">
+                  <mat-icon>assignment</mat-icon>
+                </button>
+                <button mat-icon-button class="icon-toolbar-btn" (click)="getPriscription()"
+                  matTooltip="IP Prescription">
+                  <mat-icon>local_pharmacy</mat-icon>
+                </button>
+                <button mat-icon-button class="icon-toolbar-btn" (click)="getDoctornote()" matTooltip="Doctor Note">
+                  <mat-icon>create</mat-icon>
+                </button>
+                <button mat-icon-button class="icon-toolbar-btn" (click)="getNursingnote()" matTooltip="Nursing Note">
+                  <mat-icon>note_add</mat-icon>
+                </button>
               </div>
 
-              <div *ngIf="isShowPrintButtons">
-                <button class="btn btn-primary">Clinical Print</button>
-                <button class="btn btn-primary" style="margin-left: 5px;">NursingNote Print</button>
+              <div *ngIf="isShowPrintButtons" class="button-row-group">
+                <button class="btn btn-primary btn-xs">Clinical Print</button>
+                <button class="btn btn-primary btn-xs">NursingNote Print</button>
               </div>
             </mat-card-content>
-
-
           </mat-card>
 
           <mat-card class="p-12 overflow-auto" fxFlex>
@@ -100,7 +93,7 @@
                               </div>
                             </div>
                             <mat-table class="table2" matSort [dataSource]="dsPainsAssessment"
-                              [@animateStagger]="{value:'50'}" style="overflow:auto;height:80px;">
+                              [@animateStagger]="{value:'50'}" class="assessment-table-container">
 
                               <ng-container matColumnDef="givendate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -258,104 +251,61 @@
                         </div>
                       </div>
 
-                      <!-- smile part -->
-                      <mat-card class="h-150px" fxFlex>
+                      <!-- Pain Measurement Scale -->
+                      <mat-card fxFlex>
                         <mat-card-content>
-                          <div fxFlex.gt-sm="100%">
-                            <div fxLayout="column" fxLayoutAling="center">
-                              <h1 style="text-align: center">Pain Measurement Scale</h1>
-                              <div fxFlex="2px" style="background-color: black; margin-right: 46px"></div>
+                          <div class="pain-scale-section">
+                            <div fxLayout="column">
+                              <h1>Pain Measurement Scale</h1>
+                              <div class="pain-scale-bar"></div>
 
-                              <!-- smile icons measure -->
-                              <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 30px">
-                                <div fxLayout="column">
+                              <!-- Scale Numbers -->
+                              <div class="pain-scale-numbers">
+                                <div class="pain-number" *ngFor="let n of [0,1,2,3,4,5,6,7,8,9,10]">
                                   <span class="vertical-line"></span>
-                                  <span>0</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>1</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>2</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>3</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>4</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>5</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>6</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>7</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>8</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span>9</span>
-                                </div>
-                                <div fxLayout="column">
-                                  <span class="vertical-line"></span>
-                                  <span style="margin-right: 5px">10</span>
+                                  <span>{{ n }}</span>
                                 </div>
                               </div>
 
-                              <!-- smile icons -->
-                              <div fxLayout="row" fxLayoutAlign="space-between" style="margin-right: 10px">
-                                <div fxLayout="column">
-                                  <span style="margin-right: 5px; margin-left: 0px">No Pain</span>
-                                  <img width="45" height="15px" src="assets/images/logos/61.png"
-                                    style="margin: 0px 5px 0px 0px" matTooltip="No Pain" />
+                              <!-- Emoji Labels -->
+                              <div class="pain-scale-emojis">
+                                <div class="pain-emoji">
+                                  <span>No Pain</span>
+                                  <img src="assets/images/logos/61.png" matTooltip="No Pain" alt="No Pain" />
                                 </div>
-                                <div fxLayout="column">
-                                  <span style="margin: 0px 15px 0px 15px">Mild Pain</span>
-                                  <img width="45" height="15px" src="assets/images/logos/5.jpeg"
-                                    style="margin: 0px 15px 0px 15px" matTooltip="Mild Pain" />
+                                <div class="pain-emoji">
+                                  <span>Mild Pain</span>
+                                  <img src="assets/images/logos/5.jpeg" matTooltip="Mild Pain" alt="Mild Pain" />
                                 </div>
-                                <div fxLayout="column">
-                                  <span style="margin-right: 12px">Moderate Pain</span>
-                                  <img width="45" height="15px" src="assets/images/logos/4.jpeg"
-                                    style="margin: 0px 15px 0px 15px" matTooltip="Moderate Pain" />
+                                <div class="pain-emoji">
+                                  <span>Moderate Pain</span>
+                                  <img src="assets/images/logos/4.jpeg" matTooltip="Moderate Pain"
+                                    alt="Moderate Pain" />
                                 </div>
-                                <div fxLayout="column">
-                                  <span style="margin-right: 5px">Severe Pain</span>
-                                  <img width="45" height="15px" src="assets/images/logos/3.jpeg"
-                                    style="margin-right: 10px" matTooltip="Severe Pain" />
+                                <div class="pain-emoji">
+                                  <span>Severe Pain</span>
+                                  <img src="assets/images/logos/3.jpeg" matTooltip="Severe Pain" alt="Severe Pain" />
                                 </div>
-                                <div fxLayout="column">
-                                  <span style="margin-right: 0px">Very Server Pain</span>
-                                  <img width="45" height="15px" src="assets/images/logos/2.jpeg"
-                                    style="margin: 0px 15px 0px 15px" matTooltip="Very Server Pain" />
+                                <div class="pain-emoji">
+                                  <span>Very Severe Pain</span>
+                                  <img src="assets/images/logos/2.jpeg" matTooltip="Very Severe Pain"
+                                    alt="Very Severe Pain" />
                                 </div>
-                                <div fxLayout="column">
+                                <div class="pain-emoji">
                                   <span>Worst Pain</span>
-                                  <img width="45" height="15px" src="assets/images/logos/1.jpeg"
-                                    style="padding-top: 0px" matTooltip="Worst Pain" />
+                                  <img src="assets/images/logos/1.jpeg" matTooltip="Worst Pain" alt="Worst Pain" />
                                 </div>
                               </div>
 
-                              <div style="margin-right: 30px">
+                              <!-- Slider -->
+                              <div class="pain-slider-container">
                                 <mat-slider class="custom-slider" min="0" max="10" step="1" tickInterval="1"
                                   style="width: 100%;">
                                   <input matSliderThumb [(ngModel)]="painLevel" (valueChange)="onSliderChange($event)">
                                 </mat-slider>
                               </div>
 
-                              <div style="padding: 5px; font-size: 25px;">
+                              <div class="pain-level-display">
                                 Selected Pain Level: {{ selectedPainLevel }}
                                 <span [innerHTML]="getEmoji(selectedPainLevel)"></span>
                               </div>
@@ -1905,8 +1855,7 @@
       </form>
     </div>
 
-    <mat-drawer #drawer class="example-sidenav" mode="side" opened
-      style="margin-left: 0px; width: 350px; background-color: rgb(238, 245, 245)">
+    <mat-drawer #drawer class="example-sidenav sidebar-drawer" mode="side" opened>
       <div class="sidebar-content px-12 pt-12 h-100-p grey-100-bg">
         <form [formGroup]="_ClinicalcareService.MyForm" class="h-100-p">
           <div fxFlexFill fxLayout="column" fxLayoutGap="4px">
@@ -1977,8 +1926,8 @@
               <mat-paginator #wardpaginator [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="10"
                 showFirstLastButtons></mat-paginator> -->
 
-              <airmid-table [gridConfig]="gridConfig5" class="content" #grid5 [ShowFilter]="false" [ShowButtons]="false"
-                (onSelectRow)="getpatientDet($event)">
+              <airmid-table [gridConfig]="gridConfig5" class="content mt-4" #grid5 [ShowFilter]="false"
+                [ShowButtons]="false" (onSelectRow)="getpatientDet($event)">
               </airmid-table>
             </mat-card>
           </div>
