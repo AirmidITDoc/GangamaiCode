@@ -475,7 +475,7 @@ export class NewIssueTodeptComponent {
       issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchNo: [element.BatchNo],
-      batchExpDate: [(new Date()).toISOString().split('T')[0]],
+      batchExpDate: [element.BatchExpDate],
       issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
       perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
       LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
