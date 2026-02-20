@@ -61,8 +61,28 @@
                     </mat-card>
                 </div>
             </div>
+
+
             <div fusePerfectScrollbar>
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                OP Payment
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigOPBillCashcouner" #OPPaymentGrid :ShowFilter="false"
+                        :ShowButtons="true">
+
+                    </airmid-table>
+                </div>
+                <!-- <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
@@ -72,8 +92,8 @@
                         </div>
                     </div>
 
-                </div>
-                <div id="contacts" style="height: 300px;overflow: auto;">
+                </div> -->
+                <!-- <div id="contacts" style="height: 300px;overflow: auto;">
                     <ng-template #OPBillstatus let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
@@ -89,27 +109,44 @@
                     </airmid-table>
                 </div>
 
-                <div fusePerfectScrollbar>
-                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
-                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
-                        <div class="top-header-info">
-                            <div class="top-header-title">
-                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                    OP Bill Detail Wise
-                                </span>
-                            </div>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                OP Bill Detail Wise
+                            </span>
                         </div>
-
                     </div>
-                    <div id="contacts" style="height: 300px;overflow: auto;">
 
-                        <airmid-table [gridConfig]="gridConfigOpbilldetail" :ShowButtons="true" :ShowFilter="false"
-                            #OPBildetailsGrid>
-
-                        </airmid-table>
-                    </div>
                 </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
 
+                    <airmid-table [gridConfig]="gridConfigOpbilldetail" :ShowButtons="true" :ShowFilter="false"
+                        #OPBildetailsGrid>
+
+                    </airmid-table>
+                </div> -->
+
+
+                <div fusePerfectScrollbar class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                OP Refund
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigOpRefund" #OPrefundGrid :ShowFilter="false"
+                        :ShowButtons="true">
+
+                    </airmid-table>
+                </div>
             </div>
 
         </mat-tab>
@@ -183,6 +220,26 @@
                         <div class="top-header-info">
                             <div class="top-header-title">
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Payment
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-table [gridConfig]="gridConfigIPbillCashcounter" ShowButtons="true" :ShowFilter="false"
+                            #IPPaymentGrid>
+
+                        </airmid-table>
+                    </div>
+                </div>
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                                     IP Bill Patient Wise
                                 </span>
                             </div>
@@ -207,6 +264,8 @@
                     </div>
                 </div>
 
+
+
                 <div fusePerfectScrollbar>
                     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
                         fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
@@ -226,7 +285,219 @@
                         </airmid-table>
                     </div>
                 </div>
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Refund
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-table [gridConfig]="gridConfigIPRefundBillPay" ShowButtons="true" :ShowFilter="false"
+                            #IPRefundGrid>
+
+                        </airmid-table>
+                    </div>
+                </div>
             </div>
+        </mat-tab>
+
+
+        <!-- //Advance -->
+        <mat-tab label="IP Advance Tally">
+            <div fxLayout="column" class="gap-4 h-10-p">
+                <div class="modal-card-container" style="padding: 10px;">
+                    <mat-card>
+                        <form [formGroup]="myFilterAdvanceform">
+                            <div class="patient-search">
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+                                        <!-- (dateChange)="onChangeOPBill()" -->
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Enter a date range</mat-label>
+                                            <mat-date-range-input [rangePicker]="Pickera">
+                                                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                                <input matEndDate formControlName="enddate" placeholder="End date">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="Pickera"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #Pickera></mat-date-range-picker>
+                                        </mat-form-field>
+
+
+                                        <div class="action-buttons" style="padding: 10px;">
+
+                                            <button mat-raised-button class="search-button"
+                                                (click)="onChangeIPAdvance()" matTooltip="search">
+                                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                            </button>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </mat-card>
+                </div>
+            </div>
+
+
+            <div fusePerfectScrollbar>
+                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                IP Advance 
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigIPAdvance" #IPAdvanceGrid :ShowFilter="false"
+                        :ShowButtons="true">
+
+
+                    </airmid-table>
+                </div>
+                <div fusePerfectScrollbar class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                IP Advance Refund
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigIAdvRefund" #IPAdvRefundGrid :ShowFilter="false"
+                        :ShowButtons="true">
+
+
+                    </airmid-table>
+                </div>
+
+
+            </div>
+
+        </mat-tab>
+
+        <!-- //pharmacy? -->
+        <mat-tab label="Pharmacy Tally">
+            <div fxLayout="column" class="gap-4 h-5-p">
+                <div class="modal-card-container" style="padding: 10px;">
+                    <mat-card>
+                        <form [formGroup]="myFiltersalesform">
+                            <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+
+                                <!-- <airmid-dropdown label="To Store Name" formControlName="StoreId" fxFlex="30%"
+                                [formGroup]="myFiltersalesform" [validations]="getValidationMessages().StoreId"
+                                [mode]="autocompletestore" (input)="selectChangeStore($event)">
+                            </airmid-dropdown> -->
+
+
+                                <mat-form-field appearance="outline" fxFlex="20%">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="Picker2">
+                                        <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="Picker2"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #Picker2></mat-date-range-picker>
+                                </mat-form-field>
+
+
+                                <div class="action-buttons" style="padding: 10px;">
+                                    <!-- <button mat-raised-button (click)="onClear()" class="clear-button"
+                                                matTooltip="close">
+                                                <mat-icon class="cleariconbutton">close</mat-icon>
+                                            </button>&nbsp; -->
+                                    <button mat-raised-button class="search-button" (click)="onChangePharmacy()"
+                                        matTooltip="search">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </mat-card>
+                </div>
+            </div>
+            <div fusePerfectScrollbar>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Pharmacy Sales Payment List
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                    <airmid-table [gridConfig]="gridConfigPharSales" :ShowButtons="true" :ShowFilter="false" #SalesGrid>
+
+                    </airmid-table>
+                </div>
+            </div>
+
+            <div fusePerfectScrollbar>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Pharmacy Sales Detail
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigSalesdetail" :ShowButtons="true" :ShowFilter="false"
+                        #SalesdetailGrid>
+
+                    </airmid-table>
+                </div>
+            </div>
+
+            <div fusePerfectScrollbar>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Pharmacy Sales Return
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigSalesReturn" :ShowButtons="true" :ShowFilter="false"
+                        #salereturn>
+
+                    </airmid-table>
+                </div>
+            </div>
+
+
         </mat-tab>
     </mat-tab-group>
 </div>
