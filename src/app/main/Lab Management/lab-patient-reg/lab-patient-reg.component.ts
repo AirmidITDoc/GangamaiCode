@@ -184,16 +184,6 @@ export class LabPatientRegComponent {
   }
 
   allcolumns = [
-    {
-      heading: "", key: "colorPad", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 120,
-      template: this.ColorCode
-    },
-    // { heading: "Status", key: "statua", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-    { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    {
-      heading: "Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 120,
-      template: this.PatientTypeColorCode
-    },
     { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -208,15 +198,25 @@ export class LabPatientRegComponent {
     { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Paid Amt", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },    
-    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },    
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     // { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     // { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     // { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     // { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Tran-DateTime", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     {
-      heading: "Action", key: "action", align: "right", width: 210, sticky: true, type: gridColumnTypes.template,
+      heading: "Payment Status", key: "colorPad", align: 'right', type: gridColumnTypes.template, width: 120,
+      template: this.ColorCode
+    },
+    { heading: "", key: "balanceAmt1", align: 'right', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    {
+      heading: "Type", key: "patientType", align: 'right', type: gridColumnTypes.template, width: 120,
+      template: this.PatientTypeColorCode
+    },
+    {
+      heading: "Action", key: "action", align: "right", width: 210, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
     }
   ]
@@ -965,7 +965,7 @@ export class LabPatientList {
   location: any;
   remark: any;
   phlebotomist: any;
-  patRegId:any;
+  patRegId: any;
 
   constructor(LabPatientList) {
     {

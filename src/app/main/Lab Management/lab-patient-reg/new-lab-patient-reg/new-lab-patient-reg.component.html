@@ -159,7 +159,8 @@
                                                         <div fxFlex="50">
                                                             <airmid-dropdown label="City" formControlName="cityId"
                                                                 [formGroup]="myForm" ValueField="cityId"
-                                                                TextField="cityName" [value]="registerObj?.cityId ?? registerObj?.location"
+                                                                TextField="cityName"
+                                                                [value]="registerObj?.cityId ?? registerObj?.location"
                                                                 (selectionChange)="onChangecity($event)"
                                                                 ApiUrl="CityMaster/get-cities">
                                                             </airmid-dropdown>
@@ -215,7 +216,7 @@
                                                         [formGroup]="abhaForm"></airmid-textbox>
                                                 </div>
 
-                                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
                                                     <mat-radio-group formControlName="nameFormat" fxLayout="row"
                                                         fxLayoutGap="10px">
                                                         <mat-radio-button value="F_M_L">F_M_L Name</mat-radio-button>
@@ -250,45 +251,50 @@
 
                                     <form [formGroup]="myForm">
                                         <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm"
-                                            formControlName="ServiceId" placeholderText="Enter Service Name"
-                                            fxFlex ApiUrl="{{ApiURL}}"
-                                            (selectionChange)="getSelectedserviceObj($event)"
-                                            TextField="formattedText"
-                                            ValueField="serviceId"></airmid-autocomplete>
+                                            formControlName="ServiceId" placeholderText="Enter Service Name" fxFlex="50%"
+                                            ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
+                                            TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
                                     </form>
                                 </div>
 
                                 <!-- Zone 2: Flexible Middle - Table -->
                                 <div class="billing-middle-zone" [dynamicTableHeight]="120">
                                     <div class="airmid-table-container resize-form-fields">
-                                        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
-                                            class="lab-modern-tabs" style="width: 100%; height: 100%;">
-                                            
+                                        <!-- <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
+                                            class="lab-modern-tabs" style="width: 100%; height: 100%;"> -->
+                                        <mat-tab-group mat-align-tabs="start" mat-stretch-tabs="false" animationDuration="0ms"
+                                            class="lab-modern-tabs" [(selectedIndex)]="selectedTabIndex">
+
                                             <!-- Charges List Tab -->
                                             <mat-tab label="Charges List">
                                                 <mat-table #table1 matSort [dataSource]="dstable1"
-                                                    [@animateStagger]="{ value: '50' }"
-                                                    class="lab-modern-table">
+                                                    [@animateStagger]="{ value: '50' }" class="lab-modern-table">
 
                                                     <!-- Status Column -->
                                                     <ng-container matColumnDef="Status" sticky>
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120 lab-status-col">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                            class="w-120 lab-status-col">
                                                             <span class="header-text">Status</span>
                                                         </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" class="w-120 lab-status-cell">
+                                                        <mat-cell *matCellDef="let contact"
+                                                            class="w-120 lab-status-cell">
                                                             <div class="status-icons">
-                                                                <div *ngIf="contact.IsRadiology == 1" class="status-badge radiology-badge"
+                                                                <div *ngIf="contact.IsRadiology == 1"
+                                                                    class="status-badge radiology-badge"
                                                                     matTooltip="Radiology">
                                                                     <img width="16px" height="16px"
                                                                         src="/assets/images/logos/radiology.png">
                                                                 </div>
-                                                                <div *ngIf="contact.IsPathology == 1" class="status-badge pathology-badge"
+                                                                <div *ngIf="contact.IsPathology == 1"
+                                                                    class="status-badge pathology-badge"
                                                                     matTooltip="Pathology">
                                                                     <img width="16px" height="16px"
                                                                         src="/assets/images/logos/pathology.png">
                                                                 </div>
-                                                                <div *ngIf="contact.IsPackage == 1" class="status-badge package-badge"
-                                                                    matTooltip="Package Edit" (click)="getPacakgeDetail(contact)">
+                                                                <div *ngIf="contact.IsPackage == 1"
+                                                                    class="status-badge package-badge"
+                                                                    matTooltip="Package Edit"
+                                                                    (click)="getPacakgeDetail(contact)">
                                                                     <img width="16px" height="16px"
                                                                         src="/assets/images/logos/package.png">
                                                                 </div>
@@ -298,11 +304,13 @@
 
                                                     <!-- Service Name Column -->
                                                     <ng-container matColumnDef="ServiceName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                            class="w-300">
                                                             <span class="header-text">Service Name</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-300">
-                                                            <span class="service-name-text" [matTooltip]="contact.ServiceName">
+                                                            <span class="service-name-text"
+                                                                [matTooltip]="contact.ServiceName">
                                                                 {{contact.ServiceName}}
                                                             </span>
                                                         </mat-cell>
@@ -310,17 +318,17 @@
 
                                                     <!-- Doctor Name Column -->
                                                     <ng-container matColumnDef="DoctorName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                            class="w-300">
                                                             <span class="header-text">Doctor</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-300">
                                                             <ng-container *ngIf="showDoctorDropdown(contact)">
-                                                                <mat-form-field appearance="outline" class="compact-select"
-                                                                    floatLabel="never">
+                                                                <mat-form-field appearance="outline"
+                                                                    class="compact-select" floatLabel="never">
                                                                     <mat-select placeholder="Select Doctor"
                                                                         [(ngModel)]="contact.DoctorId"
-                                                                        [ngModelOptions]="{ standalone: true }"
-                                                                        required
+                                                                        [ngModelOptions]="{ standalone: true }" required
                                                                         (selectionChange)="getdocdetail($event, contact)">
                                                                         <mat-option *ngFor="let option of doctorOptions"
                                                                             [value]="option.value || option.Value">
@@ -334,7 +342,8 @@
 
                                                     <!-- Urgent Column -->
                                                     <ng-container matColumnDef="Urgent">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-70">
                                                             <span class="header-text">Urgent</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70">
@@ -346,7 +355,8 @@
 
                                                     <!-- Price Column -->
                                                     <ng-container matColumnDef="Price">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-100">
                                                             <span class="header-text">Price</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
@@ -364,7 +374,8 @@
                                                             <span class="header-text">Disc %</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-100">
-                                                            <mat-form-field floatLabel="never" appearance="fill" class="compact-input">
+                                                            <mat-form-field floatLabel="never" appearance="fill"
+                                                                class="compact-input">
                                                                 <input matInput placeholder="0"
                                                                     [(ngModel)]="contact.DiscPer" type="number"
                                                                     [min]="0" [max]="100"
@@ -379,7 +390,8 @@
                                                             <span class="header-text">Disc Amt</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-100">
-                                                            <mat-form-field floatLabel="never" appearance="fill" class="compact-input">
+                                                            <mat-form-field floatLabel="never" appearance="fill"
+                                                                class="compact-input">
                                                                 <input matInput placeholder="0"
                                                                     [(ngModel)]="contact.DiscAmt" type="number"
                                                                     [min]="0" [max]="contact.TotalAmt"
@@ -390,10 +402,10 @@
 
                                                     <!-- Net Amount Column -->
                                                     <ng-container matColumnDef="NetAmount">
-                                                        <mat-header-cell *matHeaderCellDef class="w-100">
+                                                        <mat-header-cell *matHeaderCellDef class="w-150">
                                                             <span class="header-text">Net Amt</span>
                                                         </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" class="w-100">
+                                                        <mat-cell *matCellDef="let contact" class="w-150">
                                                             <span class="net-amount-text">
                                                                 {{ (contact.NetAmount || 0) | currency:'INR':'symbol' }}
                                                             </span>
@@ -431,8 +443,7 @@
                                                     <mat-row
                                                         *matRowDef="let contact; columns: displayedServiceselected; let i = index"
                                                         class="lab-table-row" tabindex="999"
-                                                        [@animate]="{ value: '*', params: { y: '100%' } }"
-                                                        appHighlight>
+                                                        [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight>
                                                     </mat-row>
 
                                                 </mat-table>
@@ -441,22 +452,25 @@
                                             <!-- Package List Tab -->
                                             <mat-tab label="Package List">
                                                 <mat-table #table1 matSort [dataSource]="dsPackageList"
-                                                    [@animateStagger]="{ value: '50' }"
-                                                    class="lab-modern-table">
+                                                    [@animateStagger]="{ value: '50' }" class="lab-modern-table">
 
                                                     <!-- Status Column -->
                                                     <ng-container matColumnDef="IsCheck" sticky>
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-90 lab-status-col">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                            class="w-90 lab-status-col">
                                                             <span class="header-text">Status</span>
                                                         </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" class="w-90 lab-status-cell">
+                                                        <mat-cell *matCellDef="let contact"
+                                                            class="w-90 lab-status-cell">
                                                             <div class="status-icons">
-                                                                <div *ngIf="contact.isRadiology == 1" class="status-badge radiology-badge"
+                                                                <div *ngIf="contact.isRadiology == 1"
+                                                                    class="status-badge radiology-badge"
                                                                     matTooltip="Radiology">
                                                                     <img width="16px" height="16px"
                                                                         src="assets/images/logos/radiology.png">
                                                                 </div>
-                                                                <div *ngIf="contact.isPathology == 1" class="status-badge pathology-badge"
+                                                                <div *ngIf="contact.isPathology == 1"
+                                                                    class="status-badge pathology-badge"
                                                                     matTooltip="Pathology">
                                                                     <img width="16px" height="16px"
                                                                         src="assets/images/logos/pathology.png">
@@ -467,11 +481,12 @@
 
                                                     <!-- Package Name Column -->
                                                     <ng-container matColumnDef="ServiceNamePackage">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-250">
                                                             <span class="header-text">Package Name</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
-                                                            <span class="package-name-text" 
+                                                            <span class="package-name-text"
                                                                 [matTooltip]="contact.pacakgeServiceName">
                                                                 {{contact.pacakgeServiceName}}
                                                             </span>
@@ -480,11 +495,13 @@
 
                                                     <!-- Service Name Column -->
                                                     <ng-container matColumnDef="ServiceName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                            class="w-350">
                                                             <span class="header-text">Service Name</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-350">
-                                                            <span class="service-name-text" [matTooltip]="contact.serviceName">
+                                                            <span class="service-name-text"
+                                                                [matTooltip]="contact.serviceName">
                                                                 {{contact.serviceName}}
                                                             </span>
                                                         </mat-cell>
@@ -492,17 +509,17 @@
 
                                                     <!-- Doctor Name Column -->
                                                     <ng-container matColumnDef="DoctorName">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                            class="w-350">
                                                             <span class="header-text">Doctor Name</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-350">
                                                             <ng-container *ngIf="showDoctorDropdown(contact)">
-                                                                <mat-form-field appearance="outline" class="compact-select"
-                                                                    floatLabel="never">
+                                                                <mat-form-field appearance="outline"
+                                                                    class="compact-select" floatLabel="never">
                                                                     <mat-select placeholder="Select Doctor"
                                                                         [(ngModel)]="contact.DoctorId"
-                                                                        [ngModelOptions]="{ standalone: true }"
-                                                                        required
+                                                                        [ngModelOptions]="{ standalone: true }" required
                                                                         (selectionChange)="getdocdetail($event, contact)">
                                                                         <mat-option *ngFor="let option of doctorOptions"
                                                                             [value]="option.value || option.Value">
@@ -516,7 +533,8 @@
 
                                                     <!-- Price Column -->
                                                     <ng-container matColumnDef="Price">
-                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-250">
                                                             <span class="header-text">Price</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-350">
@@ -531,8 +549,7 @@
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" class="w-80 action-cell">
                                                             <div class="action-buttons">
-                                                                <button mat-icon-button color="warn" 
-                                                                    matTooltip="Delete"
+                                                                <button mat-icon-button color="warn" matTooltip="Delete"
                                                                     class="action-btn delete-btn"
                                                                     (click)="deleteTableRow(contact)">
                                                                     <mat-icon>delete_outline</mat-icon>
@@ -548,8 +565,7 @@
                                                     <mat-row
                                                         *matRowDef="let contact; columns: displayedColumnspackage; let i = index"
                                                         class="lab-table-row" tabindex="999"
-                                                        [@animate]="{ value: '*', params: { y: '100%' } }"
-                                                        appHighlight>
+                                                        [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight>
                                                     </mat-row>
 
                                                 </mat-table>
@@ -563,40 +579,35 @@
                                     <form [formGroup]="myForm">
                                         <div fxLayout="row" fxLayoutGap="6px" class="billing-summary-row">
                                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                <airmid-textbox label="Total Amount"
-                                                    formControlName="totalAmt" [formGroup]="myForm"
-                                                    [type]="'number'" [readonly]="true">
+                                                <airmid-textbox label="Total Amount" formControlName="totalAmt"
+                                                    [formGroup]="myForm" [type]="'number'" [readonly]="true">
                                                 </airmid-textbox>
                                             </div>
                                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                <airmid-textbox label="Discount %"
-                                                    formControlName="totalDiscountPer" [formGroup]="myForm"
-                                                    [min]="0" [max]="100" [readonly]="isDiscountApplied"
-                                                    [type]="'number'"
+                                                <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
+                                                    [formGroup]="myForm" [min]="0" [max]="100"
+                                                    [readonly]="isDiscountApplied" [type]="'number'"
                                                     (valueChange)="updateCalculation('PER')">
                                                 </airmid-textbox>
                                             </div>
                                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                <airmid-textbox label="Discount Amount"
-                                                    formControlName="discountAmt" [formGroup]="myForm"
-                                                    [min]="0" [max]="100" [type]="'number'"
+                                                <airmid-textbox label="Discount Amount" formControlName="discountAmt"
+                                                    [formGroup]="myForm" [min]="0" [max]="100" [type]="'number'"
                                                     [readonly]="isDiscountApplied"
                                                     (valueChange)="updateFromDiscountAmt()">
                                                 </airmid-textbox>
                                             </div>
                                             <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                <airmid-textbox label="Total Net Amount"
-                                                    formControlName="netPayableAmt" [formGroup]="myForm"
-                                                    [type]="'number'" [readonly]="true">
+                                                <airmid-textbox label="Total Net Amount" formControlName="netPayableAmt"
+                                                    [formGroup]="myForm" [type]="'number'" [readonly]="true">
                                                 </airmid-textbox>
                                             </div>
 
                                             <!--     *ngIf="myForm.get('totalDiscountPer')?.value > 0" -->
-                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
-                                                *ngIf="Consessionres">
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Consessionres">
                                                 <airmid-dropdown label="Concession Reason"
-                                                    formControlName="concessionReasonId"
-                                                    [formGroup]="myForm" [mode]="autocompleteModeConcession"
+                                                    formControlName="concessionReasonId" [formGroup]="myForm"
+                                                    [mode]="autocompleteModeConcession"
                                                     (selectionChange)="selectChangeConcession($event)">
                                                 </airmid-dropdown>
                                             </div>

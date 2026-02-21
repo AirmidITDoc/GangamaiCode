@@ -66,6 +66,7 @@ export class BrowseLabBillsComponent {
   rregNo: any = "0"
   rl_name: any = ""
   rPBillNo: any = "%"
+  rrefundNo = "0"
   rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   OpSettlementForm: FormGroup
@@ -102,7 +103,7 @@ export class BrowseLabBillsComponent {
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150},
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Total Amount", key: "totalAmt", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount }, // It is just example of apply color based on condition
@@ -161,6 +162,7 @@ export class BrowseLabBillsComponent {
     { heading: "CardPay", key: "cardAmount", sort: true, align: "center", type: gridColumnTypes.amount },
     { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "OnlinePay", key: "onlineAmount", sort: true, align: "center", type: gridColumnTypes.amount },
+    { heading: "Transaction Type", key: "transactionLabel", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -181,17 +183,19 @@ export class BrowseLabBillsComponent {
     { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+    { fieldName: "RefundNo", fieldValue: "0", opType: OperatorComparer.Contains },
+    { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
   ]
 
   allOPRefundColumns = [
-    { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
+    { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', type: 8 },
+    { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150 },
     { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Bill Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -270,6 +274,19 @@ export class BrowseLabBillsComponent {
 
     this.menuActions.push("Bill Print-Package Info");
     this.menuActions.push("Bill Print");
+  }
+
+  isActionEnabled(element: any): boolean {
+    return (
+      (element.patientType === 'Self' && element.isVerifySign === true) ||
+      (element.patientType !== 'Self' && element.isVerifySign === false)
+    );
+  }
+
+  getVerificationTooltip(element: any): string {
+    return this.isActionEnabled(element)
+      ? ''
+      : 'Verification is pending';
   }
 
   ListViewUnit1(value) {
@@ -603,7 +620,6 @@ export class BrowseLabBillsComponent {
     this.onChangeOPBill();
   }
 
-
   CompanyId1 = 0
   ListView1(value) {
     console.log(value)
@@ -615,6 +631,16 @@ export class BrowseLabBillsComponent {
     this.onChangeOPPayment();
   }
 
+  CompanyId2 = 0
+  ListView2(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.CompanyId2 = value.value
+    else
+      this.CompanyId2 = 0
+
+    this.onChangeOPRefund();
+  }
 
   onChangeOPPayment() {
     this.pfromDate = this.datePipe.transform(this.myFilterpayform.get('fromDate').value, "yyyy-MM-dd")
@@ -649,8 +675,6 @@ export class BrowseLabBillsComponent {
 
     this.grid1.gridConfig = { ...this.gridConfig1 }; // Use a new object reference
     this.grid1.bindGridData(); // Only refresh the OPPayment grid
-
-
   }
 
   ClearfilterOPpayment(event) {
@@ -678,6 +702,8 @@ export class BrowseLabBillsComponent {
     this.rl_name = this.myFilterrefundform.get('LastName').value + "%"
     this.rregNo = this.myFilterrefundform.get('RegNo').value || "0"
     this.UnitId = this.myFilterrefundform.get('UnitId').value || "0"
+    this.rrefundNo = this.myFilterrefundform.get('RefundNo').value || "0"
+    this.CompanyId2 = this.myFilterrefundform.get('CompanyId').value || "0"
     this.getfilterdataOPRefund();
   }
 
@@ -693,7 +719,9 @@ export class BrowseLabBillsComponent {
         { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals },
-        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "RefundNo", fieldValue: this.rrefundNo, opType: OperatorComparer.Contains },
+        { fieldName: "CompanyId", fieldValue: this.CompanyId2, opType: OperatorComparer.Equals },
       ]
     }
     this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference
@@ -710,6 +738,8 @@ export class BrowseLabBillsComponent {
         this.myFilterrefundform.get('LastName').setValue("")
     if (event == 'RegNo')
       this.myFilterrefundform.get('RegNo').setValue("")
+    if (event == 'RefundNo')
+      this.myFilterrefundform.get('RefundNo').setValue("")
 
     this.onChangeOPRefund();
   }

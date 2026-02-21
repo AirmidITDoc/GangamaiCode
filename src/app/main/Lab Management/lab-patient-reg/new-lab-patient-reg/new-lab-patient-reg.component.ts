@@ -46,7 +46,7 @@ export class NewLabPatientRegComponent {
   OPFooterForm: FormGroup
   TPaymentForm: FormGroup
 
-  screenFromString = 'Common-form';
+  screenFromString = 'ExternalLab-form';
   registerObj = new LabPatientList({});
   companyDet = new LabPatientList({});
   CityName = ""
@@ -1350,10 +1350,10 @@ export class NewLabPatientRegComponent {
       Price: row.price ?? 0,
       Qty: 1,
       TotalAmt: totalAmount || 0,
-      // DiscPer: row.DiscPer ?? 0,
-      // DiscAmt: row.DiscAmt ?? 0,
-      DiscPer: discountPer,
-      DiscAmt: discountAmount,
+      // DiscPer: discountPer,
+      // DiscAmt: discountAmount,
+      DiscPer: 0,
+      DiscAmt: 0,
       // DiscAmt: discountAmount || row.DiscAmt,
       NetAmount: netAmount || 0,
       ClassName: 1,//this.className || '-',
@@ -1377,6 +1377,13 @@ export class NewLabPatientRegComponent {
     newCharge.DiscPer = newCharge.DiscPer || 0;
     this.chargeList.push(newCharge);
     this.dstable1.data = this.chargeList;
+
+    // 🔁 Auto-switch tab based on package
+    if ((row.isPackage ?? row.IsPackage) == 1) {
+      this.selectedTabIndex = 1; // Package List tab
+    } else {
+      this.selectedTabIndex = 0; // Charges List tab
+    }
 
     this.updateCalculation(row);
 

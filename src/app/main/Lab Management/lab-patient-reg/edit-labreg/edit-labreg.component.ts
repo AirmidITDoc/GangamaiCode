@@ -41,7 +41,7 @@ export class EditLabregComponent {
   autocompleteModecamp: string = "CampMaster";
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeConcession: string = "Concession";
-  screenFromString = 'Common-form';
+  screenFromString = 'ExternalLab-form';
 
   VlabPatRegId: any;
   dateTimeObj: any;
