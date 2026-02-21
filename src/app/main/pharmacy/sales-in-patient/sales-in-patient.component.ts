@@ -25,6 +25,7 @@ import { Subscription } from 'rxjs';
 import { ConfigService } from 'app/core/services/config.service';
 import { SalesbatchpopupComponent } from '../sales-hospital-kenya/salesbatchpopup/salesbatchpopup.component';
 import { SalesHospitalKenyaService } from '../sales-hospital-kenya/sales-hospital-kenya.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-sales-in-patient',
@@ -167,7 +168,8 @@ export class SalesInPatientComponent implements OnInit {
          public _RequestforlabtestService: RequestforlabtestService,
          public toastr: ToastrService,
          private _FormvalidationserviceService: FormvalidationserviceService,
-         public _ConfigService:ConfigService
+         public _ConfigService:ConfigService,
+            public commonService:PrintserviceService
      ) { }
  
      ngOnInit(): void {
@@ -1406,6 +1408,7 @@ export class SalesInPatientComponent implements OnInit {
              this._salesService.InsertSalesDraftBill(this.PharmaSalesDraftForm.value).subscribe((response) => {
                  this.onClose()
                  this.getDraftorderList();
+                 this.viewgetsalesDraftReportPdf(response);
              });
          }
          else {
@@ -1433,7 +1436,9 @@ export class SalesInPatientComponent implements OnInit {
              }
          }
      }
- 
+     viewgetsalesDraftReportPdf(element){
+    this.commonService.Onprint("DSalesId", element, "OpDraftPharmacyReceipt");
+    } 
      onAddDraftList(contact) { 
          debugger
          console.log(contact)

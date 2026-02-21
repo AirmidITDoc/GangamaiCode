@@ -31,7 +31,8 @@
                     </div>
 
                     <!-- Item Entry and Table Section -->
-                    <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                    <div class="modal-card-container"  fxLayout="column" class="gap-8 h-100-p">
+                    <div class="dynamic-table-wrapper" fxFlex>
                         <div class="airmid-table-container">
                             <mat-table #table matSort [dataSource]="Billdetaildatasource"
                                 [@animateStagger]="{ value: '50' }" class="airmid-table table3" style="overflow: auto;">
@@ -57,14 +58,14 @@
                                     </td>
                                 </ng-container>
 
-                                <ng-container matColumnDef="addChargeDrName">
+                                <!-- <ng-container matColumnDef="addChargeDrName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                         Doctor Name
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         <span> {{contact.addChargeDrName}}</span>
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="Price">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -84,19 +85,21 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="patientName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
                                         Patient Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                                        matTooltip="{{contact.patientName}}">
                                         <span> {{contact.patientName}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="serviceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
                                         Service Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                                        matTooltip="{{contact.serviceName}}">
                                         <span> {{contact.serviceName}}</span>
                                     </mat-cell>
                                 </ng-container>
@@ -169,9 +172,13 @@
                                 <mat-footer-row *matFooterRowDef="['noData']"
                                     [ngClass]="{ hide: !(Billdetaildatasource != null && Billdetaildatasource.data.length == 0) }"></mat-footer-row>
                             </mat-table>
-                        </div>
+                        </div> 
                     </div>
-                    <div class="modal-card-container">
+                    <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25"
+                                    showFirstLastButtons>
+                    </mat-paginator>
+                    </div>
+                    <!-- <div class="modal-card-container">
                         <div class="amt-container py-3">
                             <div class="net-amt-section mb-2 mt-16">
                                 <div class="net-amt">
@@ -197,18 +204,45 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="modal-footer">
-            <div class="footer-navigation-container">
-                <div class="modal-footer-buttons">
+            <div class="footer-navigation-container"  fxLayoutAlign="space-between">
+                 <div class="amt-container py-3">
+                            <div class="net-amt-section mb-2 mt-16">
+                                <div class="net-amt">
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">No of Items :</span>
+                                        <span class="net-amt-value">{{ count }}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">Total Net :</span>
+                                        <span class="net-amt-value">{{ TotNetamt | currency : 'INR' }}</span>
+                                    </div>
+                                    <div class="final-amt-box">
+                                        <span class="final-amt-label">Doctor Amt :</span>
+                                        <span class="final-amt-value">{{ TotDocAmt | currency :'INR' }}</span>
+                                    </div>
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">Hospiatl Amt :</span>
+                                        <span class="net-amt-value">{{ TothospitalAmt | currency : 'INR'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                <div>
+                <div class="modal-footer-buttons">  
                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     <button class="btn btn-primary" (click)="Save()">Process Pay</button>
                 </div>
+                </div> 
             </div>
         </div>
     </div>

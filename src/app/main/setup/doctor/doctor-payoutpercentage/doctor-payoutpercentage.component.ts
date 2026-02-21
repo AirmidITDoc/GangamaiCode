@@ -46,18 +46,16 @@ export class DoctorPayoutpercentageComponent {
 
   allColumns = [
 
-    { heading: "", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
-    { heading: "", key: "shrTypeSerOrGrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
-    { heading: "Share Type", key: "docShrTypeS", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:70 },
+   // { heading: "", key: "shrTypeSerOrGrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Share Type", key: "docShrTypeS", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Share%", key: "servicePercentage", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "ShareAmt", key: "serviceAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount  },
-
     {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]

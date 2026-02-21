@@ -702,6 +702,9 @@
                   <ng-container matColumnDef="DraftClose" stickyEnd>
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-50"></mat-header-cell>
                     <mat-cell *matCellDef="let row" fxShow.gt-sm class="w-50">
+                        <button mat-icon-button matTooltip="Print Draft Bill" (click)="viewgetsalesDraftReportPdf(row.dsalesId)">
+                        <mat-icon> print</mat-icon>
+                      </button>
                       <mat-icon matTooltip="Cancel" (click)="DraftbillCancel(row)">cancel</mat-icon>
                     </mat-cell>
                   </ng-container>

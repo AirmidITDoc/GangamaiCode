@@ -38,7 +38,7 @@ export class PatientBilldetailComponent {
     'TotalAmt',
     'ConcessionAmount',
     'NetAmount',
-    'DoctorName',
+    //'DoctorName',
     'DocPer',
     'DocAmt',
     'HospitalAmt',

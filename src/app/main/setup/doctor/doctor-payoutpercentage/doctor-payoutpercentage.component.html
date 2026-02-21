@@ -18,16 +18,21 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <ng-template #actionsTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
+            <div fxLayout="row" fxLayoutAlign="center center"> 
                 <mat-icon *ngIf="element.op_IP_Type=='0'" title="OP" class="pill green-600 s-16">circle</mat-icon>
                 <mat-icon *ngIf="element.op_IP_Type=='1'" title="IP" class="pill orange-600 s-16">circle
-                </mat-icon>
+                </mat-icon>&nbsp; 
 
+                 <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
+                    <img width="30px" height="30px" src="assets/images/logos/doctorservice.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.shrTypeSerOrGrp == 2" title="Group">
+                    <img width="30px" height="30px" src="assets/images/logos/doctorpakage.png">
+                </mat-icon>
             </div>
         </ng-template>
 
-        <ng-template #actionsTemplate1 let-element>
+        <!-- <ng-template #actionsTemplate1 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
                 <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
@@ -38,7 +43,7 @@
                 </mat-icon>
 
             </div>
-        </ng-template>
+        </ng-template> -->
 
 
           <ng-template #actionButtonTemplate let-element>
