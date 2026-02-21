@@ -35,13 +35,14 @@ export class DoctorPayoutpercentageComponent {
   autocompleteModeDoctor: string = "ConDoctor";
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>; 
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'op_IP_Type')!.template = this.actionsTemplate;
+      this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'shrTypeSerOrGrp')!.template = this.actionsTemplate1;
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  
   }
 
   allColumns = [
