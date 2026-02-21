@@ -34,7 +34,7 @@ import { LabPatientRegService } from '../lab-patient-reg/lab-patient-reg.service
 })
 export class LabrefundBillComponent {
 
-  screenFromString = 'Common-form';
+  screenFromString = 'ExternalLab-form';
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModeunit: string = "Hospital";
   searchFormGroup: FormGroup;

@@ -2,9 +2,9 @@
 
     <ng-template #actionsTemplate1 let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon *ngIf="element.patientType=='1'" matTooltip="Patient Category Self">account_box
+            <mat-icon *ngIf="element.patientType=='Self'" matTooltip="Patient Category Self">account_box
             </mat-icon>
-            <mat-icon *ngIf="!element.patientType=='1'" matTooltip="Patient Category other">business
+            <mat-icon *ngIf="!element.patientType=='Self'" matTooltip="Patient Category other">business
             </mat-icon>
         </div>
 
@@ -43,39 +43,54 @@
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
 
-            <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
+            <!-- <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
                 *ngIf="element.companyId !=0 && element.balanceAmt !=0 ">
                 <mat-icon>remove_red_eye</mat-icon>
-            </button>
+            </button> -->
 
-            <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
-                <mat-icon>print</mat-icon>
-            </button>
+            <span [matTooltip]="getVerificationTooltip(element)" matTooltipPosition="above">
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)"
+                    [disabled]="!isActionEnabled(element)">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </span>
 
-            <button mat-icon-button [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
-                matTooltipPosition="right" (click)="Onemail(element)"
-                (mouseenter)="openEmailDetailsPopover($event, element)" (mouseleave)="closeEmailDetailsPopover()"
-                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                <mat-icon>email</mat-icon>
-            </button>
+            <span [matTooltip]="getVerificationTooltip(element)" matTooltipPosition="above">
+                <button mat-icon-button
+                    [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                    matTooltipPosition="right" (click)="Onemail(element)"
+                    (mouseenter)="openEmailDetailsPopover($event, element)" (mouseleave)="closeEmailDetailsPopover()"
+                    style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;"
+                    [disabled]="!isActionEnabled(element)">
+                    <mat-icon>email</mat-icon>
+                </button>
+            </span>
 
-            <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
-                <mat-icon>message</mat-icon>
-            </button>
+            <span [matTooltip]="getVerificationTooltip(element)" matTooltipPosition="above">
+                <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)"
+                    [disabled]="!isActionEnabled(element)">
+                    <mat-icon>message</mat-icon>
+                </button>
+            </span>
 
-            <button mat-icon-button
-                [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
-                matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
-                (mouseenter)="openWhatsappDetailsPopover($event, element)" (mouseleave)="closeWhatsappDetailsPopover()"
-                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
-            </button>
+            <span [matTooltip]="getVerificationTooltip(element)" matTooltipPosition="above">
+                <button mat-icon-button
+                    [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                    matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                    (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                    (mouseleave)="closeWhatsappDetailsPopover()"
+                    style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;"
+                    [disabled]="!isActionEnabled(element)">
+                    <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                </button>
+            </span>
 
-
-            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                (click)="$event.stopPropagation();">
-                <mat-icon class="secondary-text">more_vert</mat-icon>
-            </button>
+            <span [matTooltip]="getVerificationTooltip(element)" matTooltipPosition="above">
+                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                    (click)="$event.stopPropagation();" [disabled]="!isActionEnabled(element)">
+                    <mat-icon class="secondary-text">more_vert</mat-icon>
+                </button>
+            </span>
             <mat-menu #moreMenu="matMenu">
                 <ng-container *ngFor="let m of menuActions, let n of menuActions">
                     <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
@@ -106,10 +121,10 @@
                     <airmid-table [gridConfig]="gridConfig" class="content" #opBillGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterbillform">
-                                <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                                    [readonly]="!isSuperAdmin" (selectionChange)="ListViewUnit1($event)"
-                                    [(ngModel)]="gridConfig.filters[7].fieldValue"
-                                    [formGroup]="myFilterbillform" [mode]="autocompleteModeunit"></airmid-dropdown>
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
+                                    (selectionChange)="ListViewUnit1($event)"
+                                    [(ngModel)]="gridConfig.filters[7].fieldValue" [formGroup]="myFilterbillform"
+                                    [mode]="autocompleteModeunit"></airmid-dropdown>
 
                                 <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
@@ -208,10 +223,10 @@
                         <ng-container filters>
 
                             <form [formGroup]="myFilterpayform">
-                                <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                                    [readonly]="!isSuperAdmin" (selectionChange)="ListViewUnit2($event)"
-                                    [(ngModel)]="gridConfig1.filters[8].fieldValue"
-                                    [formGroup]="myFilterpayform" [mode]="autocompleteModeunit"></airmid-dropdown>
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
+                                    (selectionChange)="ListViewUnit2($event)"
+                                    [(ngModel)]="gridConfig1.filters[8].fieldValue" [formGroup]="myFilterpayform"
+                                    [mode]="autocompleteModeunit"></airmid-dropdown>
 
                                 <airmid-datepicker [formGroup]="myFilterpayform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
@@ -262,7 +277,6 @@
                                     </button>
                                 </mat-form-field>
 
-
                                 <mat-form-field appearance="outline">
                                     <mat-label>ReceiptNo</mat-label>
                                     <input matInput placeholder="Search ReceiptNo" autocomplete="off"
@@ -278,7 +292,6 @@
                                     [formGroup]="myFilterpayform" [(ngModel)]="gridConfig1.filters[7].fieldValue"
                                     (selectionChange)="ListView1($event)"
                                     [mode]="autocompleteModecompany1"></airmid-dropdown>
-
 
                             </form>
                         </ng-container>
@@ -322,10 +335,10 @@
                     <airmid-table [gridConfig]="gridConfig2" class="content" #opRefundGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterrefundform">
-                                <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                                    [readonly]="!isSuperAdmin" (selectionChange)="ListViewUnit3($event)"
-                                    [(ngModel)]="gridConfig2.filters[5].fieldValue"
-                                    [formGroup]="myFilterrefundform" [mode]="autocompleteModeunit"></airmid-dropdown>
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
+                                    (selectionChange)="ListViewUnit3($event)"
+                                    [(ngModel)]="gridConfig2.filters[5].fieldValue" [formGroup]="myFilterrefundform"
+                                    [mode]="autocompleteModeunit"></airmid-dropdown>
 
                                 <airmid-datepicker [formGroup]="myFilterrefundform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
@@ -343,7 +356,6 @@
                                     </button>
                                 </mat-form-field>
 
-
                                 <mat-form-field appearance="outline">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
@@ -355,7 +367,6 @@
                                     </button>
                                 </mat-form-field>
 
-
                                 <mat-form-field appearance="outline">
                                     <mat-label>UHID</mat-label>
                                     <input matInput placeholder="Search UHID" autocomplete="off"
@@ -366,6 +377,22 @@
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>RefundNo</mat-label>
+                                    <input matInput placeholder="Search RefundNo" autocomplete="off"
+                                        [formGroup]="myFilterrefundform" formControlName="RefundNo"
+                                        (keypress)="keyPressAlphanumeric($event)" (input)="onChangeOPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPRefund('RefundNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <airmid-dropdown label="Company Name" formControlName="CompanyId"
+                                    [formGroup]="myFilterrefundform" [(ngModel)]="gridConfig2.filters[7].fieldValue"
+                                    (selectionChange)="ListView1($event)"
+                                    [mode]="autocompleteModecompany1"></airmid-dropdown>
 
                             </form>
                         </ng-container>

@@ -118,14 +118,16 @@
                                                     </div>
 
                                                     <div fxLayout="row" fxLayoutGap="4px">
-                                                        <div fxFlex="50">
+                                                        <div fxFlex="100">
                                                             <airmid-dropdown label="Location" formControlName="location"
                                                                 [formGroup]="myForm" [value]="registerObj?.location"
                                                                 [mode]="autocompleteModecity">
                                                             </airmid-dropdown>
                                                         </div>
+                                                    </div>
 
-                                                        <div fxFlex="50">
+                                                     <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="100">
                                                             <airmid-dropdown label="Phlebotomist"
                                                                 formControlName="phlebotomist" [formGroup]="myForm"
                                                                 [value]="registerObj?.phlebotomist"

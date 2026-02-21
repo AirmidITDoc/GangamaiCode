@@ -10,7 +10,7 @@ export class CommonDateComponent implements OnInit {
 
     @Input('screenFrom') screenFromString = '';
     @Output() dateTimeEventEmitter = new EventEmitter<{}>();
-    @Input() isDisableFuture:boolean=false;
+    @Input() isDisableFuture: boolean = false;
     dateForm: FormGroup;
     public now: Date = new Date();
     currentDate: any;
@@ -41,6 +41,8 @@ export class CommonDateComponent implements OnInit {
             }
         }, 1);
     }
+
+    minDateTime: Date | null = null;
 
     ngOnInit() {
         this.dateForm = this.formBuilder.group({
@@ -92,30 +94,36 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'Phone Appointment Time';
             this.isDatePckrDisabled = false;
         }
-         else if (this.screenFromString == 'Pharmacy-form') {
+        else if (this.screenFromString == 'Pharmacy-form') {
             this.dateLabel = 'Pharmacy Date';
             this.timeLabel = 'Pharmacy Time';
             this.isDatePckrDisabled = false;
         }
-         else if (this.screenFromString == 'OPDEMR') {
+        else if (this.screenFromString == 'OPDEMR') {
             this.dateLabel = 'Date';
             this.timeLabel = 'Time';
             this.isDatePckrDisabled = true;
         }
-         else if (this.screenFromString == 'Emergency') {
+        else if (this.screenFromString == 'Emergency') {
             this.dateLabel = 'Emergency Date';
             this.timeLabel = 'Emergency Time';
             this.isDatePckrDisabled = false;
         }
-         else if (this.screenFromString == 'WorkOrder') {
+        else if (this.screenFromString == 'WorkOrder') {
             this.dateLabel = 'WorkOrder Date';
             this.timeLabel = 'WorkOrder Time';
             this.isDatePckrDisabled = false;
         }
-          else if (this.screenFromString == 'grn-form') {
+        else if (this.screenFromString == 'grn-form') {
             this.dateLabel = 'GRN Date';
             this.timeLabel = 'GRN Time';
             this.isDatePckrDisabled = false;
+        }
+        else if (this.screenFromString == 'ExternalLab-form') {
+            this.dateLabel = 'Date';
+            this.timeLabel = 'Time';
+            this.isDatePckrDisabled = false;
+            this.minDateTime = new Date(); // used to disable prev date & time
         }
         else if (this.screenFromString == 'Common-form') {
             this.dateLabel = 'Date';
@@ -131,7 +139,7 @@ export class CommonDateComponent implements OnInit {
         }, 2);
     }
     myFilter = (d: Date | null): boolean => {
-        return this.isDisableFuture? d<=new Date():true;
+        return this.isDisableFuture ? d <= new Date() : true;
     };
     onChangeDate(value) {
         if (value) {

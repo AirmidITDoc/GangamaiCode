@@ -59,7 +59,7 @@ export class NewLabresultEntryComponent {
 
   selectedAdvanceObj1: SampleDetailObj;
   selectedAdvanceObj2: AdmissionPersonl;
-  screenFromString = 'Common-form';
+  screenFromString = 'ExternalLab-form';
   hasSelectedContacts: boolean;
   advanceData: any;
   dataSource = new MatTableDataSource<Pthologyresult>();
