@@ -135,6 +135,128 @@
                             </mat-card> 
     
                     </div> 
+
+
+                    <!-- <div class="modal-card-container"  fxLayout="column" class="gap-8 h-100-p">
+                    <div class="dynamic-table-wrapper" fxFlex>
+                        <div class="airmid-table-container">
+                            <mat-table #table matSort [dataSource]="dataSource"
+                                [@animateStagger]="{ value: '50' }" class="airmid-table table3" style="overflow: auto;"> 
+
+                                <ng-container matColumnDef="Status">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-icon *ngIf="element.op_IP_Type=='0'" title="OP" class="pill green-600 s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.op_IP_Type=='1'" title="IP" class="pill orange-600 s-16">circle
+                                        </mat-icon>&nbsp;
+                                
+                                        <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
+                                            <img width="30px" height="30px" src="assets/images/logos/doctorservice.png">
+                                        </mat-icon>
+                                        <mat-icon *ngIf="element.shrTypeSerOrGrp == 2" title="Group">
+                                            <img width="30px" height="30px" src="assets/images/logos/doctorpakage.png">
+                                        </mat-icon>
+                                    </mat-cell>
+                                </ng-container> 
+
+                                <ng-container matColumnDef="ServiceName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                        Service Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                                        matTooltip="{{contact.serviceName}}">
+                                        <span> {{contact.serviceName}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ClassName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                        Class Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                                        matTooltip="{{contact.className}}">
+                                        <span> {{contact.className}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                  <ng-container matColumnDef="DoctorName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                        Doctor Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                                        matTooltip="{{contact.doctorName}}">
+                                        <span> {{contact.doctorName}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ShareType">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Share Type
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.docShrTypeS}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="SharePer">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                      Share %
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.servicePercentage}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="ShareAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                      Share Amt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.serviceAmount | currency : 'INR'}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Action">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                       Action
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <button mat-icon-button (click)="onEdit(element)" style="color:black;">
+                    <mat-icon title="Edit Menu">edit</mat-icon>
+                </button>
+                                    </mat-cell>
+                                </ng-container> 
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        loading data...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <span>No Data Found</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns; let i = index"
+                                    tabindex="999" class="contact" [@animate]="{ value: '*', params: { y: '100%' } }"
+                                    appHighlight></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{ hide: !(dataSource != null && dataSource.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
+                        </div> 
+                    </div>
+                    <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25"
+                                    showFirstLastButtons>
+                    </mat-paginator>
+                    </div> -->
                 </div> 
             </div>
         </form>

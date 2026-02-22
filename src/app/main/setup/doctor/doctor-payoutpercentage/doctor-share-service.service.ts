@@ -78,5 +78,8 @@ export class DoctorShareServiceService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("CurrencyMaster?Id=" + m_data.toString());
     }
+        public getDocSharelist(m_data) {
+        return this._httpClient.PostData("DoctorPAy/DoctorshareListbyName" , m_data);
+    }
 
   }

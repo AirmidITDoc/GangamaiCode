@@ -10,6 +10,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { fuseAnimations } from '@fuse/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-doctorpay-summarydetail',
@@ -32,7 +34,7 @@ export class DoctorpaySummarydetailComponent {
 
   displayedColumns: string[] = [
     'select',
-    'addChargeDrName',
+    //'addChargeDrName',
     'pBillNo',
     'patientName',
     'serviceName',
@@ -46,6 +48,8 @@ export class DoctorpaySummarydetailComponent {
 
   Billdetaildatasource = new MatTableDataSource<BillListForDocShrList>();
   @ViewChild('drawer') public drawer: MatDrawer;
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
   dataSource = new MatTableDataSource<BillListForDocShrList>();
   dsAdditionalPay = new MatTableDataSource<BillListForDocShrList>();
@@ -94,8 +98,8 @@ export class DoctorpaySummarydetailComponent {
       processDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
 
       netAmount: [this.TotNetamt, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      doctorAmount: [this.TotDocAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      hospitalAmount: [this.TothospitalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      doctorAmount: [this.TotDocAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      hospitalAmount: [this.TothospitalAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       tdsamount: [0],
      
       createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
@@ -153,6 +157,8 @@ export class DoctorpaySummarydetailComponent {
     debugger
     this._DoctorShareService.getSummarydetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
+      this.Billdetaildatasource.sort = this.sort
+    this.Billdetaildatasource.paginator = this.paginator
       console.log(this.Billdetaildatasource.data)
       if (this.Billdetaildatasource.data.length > 0) {
         debugger

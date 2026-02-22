@@ -75,6 +75,7 @@ export class ConfigSettingParams {
      IsDischargeSummaryTemplate:any;
      Is9_Digit_NationalId:any;
      CurrencyValue:any;
+     OpBillSetCash:any;
 OPDNo:any;
 IsOPBillPrint:any;
 PrintAfterRegistration:any;
@@ -198,6 +199,7 @@ IsMaterialAccept:any;
         this.InterimBillA5Print=ConfigSettingParams.InterimBillA5Print; 
         this.Is9_Digit_NationalId=ConfigSettingParams.Is9_Digit_NationalId;
         this.CurrencyValue=ConfigSettingParams.CurrencyValue;
+        this.OpBillSetCash=ConfigSettingParams.OpBillSetCash;
 
 this.OPDNo=ConfigSettingParams.OPDNo;
 this.IsOPBillPrint=ConfigSettingParams.IsOPBillPrint;

@@ -1,23 +1,23 @@
-<div class="modal-page page-layout inner-scroll"   >
+<div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Patient Bill Detail Doctor Wise
-                    List</span>
-            </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Patient Bill Detail Doctor Wise
+                        List</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
 
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                            <mat-icon>close</mat-icon>
-                        </button>
+                        <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
         <div class="modal-body" fusePerfectScrollbar>
@@ -25,187 +25,212 @@
                 <div fxLayout="column" class="gap-8 h-100-p">
                     <div class="modal-card-container">
                         <mat-card style="padding: 10px;">
-                            <span style="font-weight: bold;color: rgb(7, 57, 85);font-size: large;">Doctor Name :-{{doctorName}}
+                            <span style="font-weight: bold;color: rgb(7, 57, 85);font-size: large;">Doctor Name
+                                :-{{doctorName}}
                                 |
                                 BillNo :-{{pBillNo}}</span>
                         </mat-card>
                     </div>
-        
-                    <div class="modal-card-container dynamic-table-wrapper" fxFlex>
-                        <div class="airmid-table-container"> 
-                                <mat-table #table matSort [dataSource]="Billdetaildatasource"
-                                    [@animateStagger]="{ value: '50' }" class="airmid-table table3" style="overflow: auto;">
-                                    <ng-container matColumnDef="serviceName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Service Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.serviceName}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="Price">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Price
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.price}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="Qty">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.qty || '-'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="TotalAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Total Amt
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.totalAmt}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="ConcessionAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Disc Amt
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.concessionAmount}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="NetAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Net Amt
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.netAmount}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="DoctorName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Doctor Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <span> {{contact.addChargeDrName}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="DocPer">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Doctor
-                                            %</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field floatLabel="never" class="compact-field">
-                                                <input matInput [(ngModel)]="contact.docServicePer" type="text "
-                                                    (keyup)="getCellCalculation(contact)" min="0" max="100" name="tableQty"
-                                                    OnlyNumber (keypress)="keyPressDigitsOnly($event)" />
-                                            </mat-form-field>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="DocAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Doctor
-                                            Amt</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field floatLabel="never" class="compact-field">
-                                                <input matInput [(ngModel)]="contact.docAmt" type="text" OnlyNumber
-                                                    [id]="'DocAmt' + index" (ngModelChange)="getCellCalculation(contact)"
-                                                    [min]="0" type="number" />
-                                            </mat-form-field>
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="HospitalAmt">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Hospital Amt</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.hospitalAmt | number:'1.2-2'}}
-                                        </mat-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="loading">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            loading data...
-                                        </mat-footer-cell>
-                                    </ng-container>
-        
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            <span>No Data Found</span>
-                                        </mat-footer-cell>
-                                    </ng-container>
-        
-        
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns; let i = index" tabindex="999"
-                                        class="contact" [@animate]="{ value: '*', params: { y: '100%' } }"
-                                        appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{ hide: !(Billdetaildatasource != null && Billdetaildatasource.data.length == 0) }"></mat-footer-row>
-                                </mat-table>
-                                <!-- <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25"
-                                    showFirstLastButtons>
-                                </mat-paginator> -->
-                               
+
+                    <div class="modal-card-container" fxLayout="column" class="gap-8 h-100-p">
+                    <div class="dynamic-table-wrapper" fxFlex>
+                        <div class="airmid-table-container">
+                            <mat-table #table matSort [dataSource]="Billdetaildatasource" [@animateStagger]="{ value: '50' }"
+                                class="airmid-table table3" style="overflow: auto;">
+                                <ng-container matColumnDef="serviceName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                        Service Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250" matTooltip="{{contact.serviceName}}">
+                                        <span> {{contact.serviceName}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="Price">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Price
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.price}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="Qty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.qty || '-'}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="TotalAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Total Amt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.totalAmt}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="ConcessionAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Disc Amt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.concessionAmount}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="NetAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Net Amt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.netAmount}}</span>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <!-- <ng-container matColumnDef="DoctorName">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                                            Doctor Name
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                                            <span> {{contact.addChargeDrName}}</span>
+                                                        </mat-cell>
+                                                    </ng-container> -->
+                    
+                                <ng-container matColumnDef="DocPer">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Doctor
+                                        %</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field floatLabel="never" class="compact-field">
+                                            <input matInput [(ngModel)]="contact.docServicePer" type="text "
+                                                (keyup)="getCellCalculation(contact)" min="0" max="100" name="tableQty" OnlyNumber
+                                                (keypress)="keyPressDigitsOnly($event)" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="DocAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Doctor
+                                        Amt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field floatLabel="never" class="compact-field">
+                                            <input matInput [(ngModel)]="contact.docAmt" type="text" OnlyNumber [id]="'DocAmt' + index"
+                                                (ngModelChange)="getCellCalculation(contact)" [min]="0" type="number" />
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="HospitalAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Hospital Amt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.hospitalAmt | number:'1.2-2'}}
+                                    </mat-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="loading">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        loading data...
+                                    </mat-footer-cell>
+                                </ng-container>
+                    
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <span>No Data Found</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+                    
+                    
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns; let i = index" tabindex="999" class="contact"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{ hide: !(Billdetaildatasource != null && Billdetaildatasource.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
                         </div>
                     </div>
-                    <div class="modal-card-container">
- <div class="amt-container py-3">
-                                    <div class="net-amt-section mb-2 mt-16">
-                                        <div class="net-amt">
-        
-                                            <div class="net-amt-box">
-                                                <span class="net-amt-label">No of Items :</span>
-                                                <span class="net-amt-value">{{ count }}</span>
-                                            </div>
-                                            <div class="net-amt-box">
-                                                <div class="net-amt-label">Total Amt :</div>
-                                                <div class="net-amt-value">{{ TotAmt | currency : 'INR':'symbol':'1.2-2' }}
-                                                </div>
-                                            </div>
-                                            <div class="net-amt-box">
-                                                <span class="net-amt-label">Concession Amt :</span>
-                                                <span class="net-amt-value">{{ TotconAmt | currency : 'INR' }}</span>
-                                            </div>
-                                            <div class="net-amt-box">
-                                                <span class="net-amt-label">Total Net :</span>
-                                                <span class="net-amt-value">{{ TotNetamt | currency : 'INR' }}</span>
-                                            </div>
-                                            <div class="net-amt-box">
-                                                <span class="net-amt-label">Doctor Amt :</span>
-                                                <span class="net-amt-value">{{ TotDocAmt | currency :'INR' }}</span>
-                                            </div>
-                                            <div class="final-amt-box">
-                                                <span class="final-amt-label">Hospiatl Amt :</span>
-                                                <span class="final-amt-value">{{ TothospitalAmt | currency : 'INR'}}</span>
-                                            </div>
+                    
+                    <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25" showFirstLastButtons>
+                    </mat-paginator>
+                    </div>
+                    <!-- <div class="modal-card-container">
+                        <div class="amt-container py-3">
+                            <div class="net-amt-section mb-2 mt-16">
+                                <div class="net-amt">
+
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">No of Items :</span>
+                                        <span class="net-amt-value">{{ count }}</span>
+                                    </div>
+                                    <div class="net-amt-box">
+                                        <div class="net-amt-label">Total Amt :</div>
+                                        <div class="net-amt-value">{{ TotAmt | currency : 'INR':'symbol':'1.2-2' }}
                                         </div>
                                     </div>
-                                </div> 
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">Concession Amt :</span>
+                                        <span class="net-amt-value">{{ TotconAmt | currency : 'INR' }}</span>
+                                    </div>
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">Total Net :</span>
+                                        <span class="net-amt-value">{{ TotNetamt | currency : 'INR' }}</span>
+                                    </div>
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-label">Doctor Amt :</span>
+                                        <span class="net-amt-value">{{ TotDocAmt | currency :'INR' }}</span>
+                                    </div>
+                                    <div class="final-amt-box">
+                                        <span class="final-amt-label">Hospiatl Amt :</span>
+                                        <span class="final-amt-value">{{ TothospitalAmt | currency : 'INR'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="modal-footer">
+            <div class="footer-navigation-container" fxLayoutAlign="space-between">
+                <div class="amt-container py-3">
+                    <div class="net-amt-section mb-2 mt-16">
+                        <div class="net-amt">
+
+                            <div class="net-amt-box">
+                                <span class="net-amt-label">No of Items :</span>
+                                <span class="net-amt-value">{{ count }}</span>
+                            </div>
+
+                            <div class="net-amt-box">
+                                <span class="net-amt-label">Total Net :</span>
+                                <span class="net-amt-value">{{ TotNetamt | currency : 'INR' }}</span>
+                            </div>
+                            <div class="final-amt-box">
+                                <span class="final-amt-label">Doctor Amt :</span>
+                                <span class="final-amt-value">{{ TotDocAmt | currency :'INR' }}</span>
+                            </div>
+
+                            <div class="net-amt-box">
+                                <span class="net-amt-label">Hospiatl Amt :</span>
+                                <span class="net-amt-value">{{ TothospitalAmt | currency : 'INR'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="modal-footer-buttons">
+                        <!-- <button type="button" class="btn btn-primary" (click)="calculateshare()">Calculate Share
+                    </button> -->
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="Save()">Save</button>
                     </div>
                 </div>
             </div>
         </div>
-            <!-- Footer -->
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-
-            <div class="modal-footer-buttons">
-                <!-- <button type="button" class="btn btn-primary" (click)="calculateshare()">Calculate Share
-                </button> -->
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="Save()">Save</button>
-            </div>
-        </div>
-    </div>
     </div>
 </div>

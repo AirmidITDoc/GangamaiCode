@@ -717,7 +717,7 @@
 
                                   <button class="btn btn-primary" (click)="onSaveDraftBill()" *ngIf="Draftchk">DraftBill</button>
 
-                                  <button class="btn btn-primary" (click)="onSave($event)">Save(F9)</button>
+                                  <button class="btn btn-primary" (click)="onSave($event)"   [disabled]="saveflag">Save(F9)</button>
                                   <button class="btn btn-danger-outline" (click)="onClose()"
                                     (keydown.enter)="onF6Reset($event)">Reset</button>
                                 </div>

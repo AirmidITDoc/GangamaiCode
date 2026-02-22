@@ -40,7 +40,7 @@ export class NewCollectionComponent {
   myForm: FormGroup
   ServiceDetform: FormGroup
 
-  screenFromString = 'Common-form';
+  screenFromString = 'ExternalLab-form';
   registerObj = new LabPatientList({});
   CityName = ""
   vTariffId: any = 1;

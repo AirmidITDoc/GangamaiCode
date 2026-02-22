@@ -35,7 +35,7 @@ export class NewRadResultTemplateComponent {
   reportPrintObj: RadiologyPrint;
   regobj: RadiologyPatienInsert;
   vTemplateDesc: any = "";
-  screenFromString = 'Common-form';
+  screenFromString = 'ExternalLab-form';
   isresultdrSelected: boolean = false;
   templatelist: any = [];
   Doctorlist: any = [];

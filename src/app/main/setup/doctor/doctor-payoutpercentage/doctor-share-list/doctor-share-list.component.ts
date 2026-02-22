@@ -25,6 +25,16 @@ import { DoctorShareServiceService } from '../doctor-share-service.service';
       animations: fuseAnimations,
 })
 export class DoctorShareListComponent {
+  displayedColumns: string[] = [ 
+    'Status', 
+    'ServiceName',
+    'ClassName',
+    'DoctorName',
+    'ShareType',
+    'SharePer',
+    'ShareAmt',
+    'Action' 
+  ]
 
   DoctorListfilteredOptions: Observable<string[]>;
   DoctorNamefilteredOptions: Observable<string[]>;
@@ -87,6 +97,7 @@ export class DoctorShareListComponent {
              this.Doctorshare.get('servicePercentage').setValue(this.data.servicePercentage);
             this.Doctorshare.get('serviceAmount').setValue(this.data.serviceAmount) 
         
+             this.getDocSharelist(this.data.doctorId);
             if (this.data.servicePercentage > 0) {
               this.Doctorshare.get('docShrType').setValue('P');
               this.vServicePerc = this.data.servicePercentage;
@@ -104,9 +115,41 @@ export class DoctorShareListComponent {
             } else {
               this.Doctorshare.get('shrTypeSerOrGrp').setValue('2');
             }
+            
        }
+     
   }
-
+ 
+  getDocSharelist(doctorId) {
+    const sharetype = this.Doctorshare.get('shrTypeSerOrGrp')?.value || 0
+    var vdata = {
+      "first": 0,
+      "rows": 999,
+      "sortField": "DoctorShareId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "DoctorId",
+          "fieldValue": String(doctorId),//"228677",//
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ShrTypeSerOrGrp",
+          "fieldValue": String(sharetype),
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    console.log(vdata)
+    this._DoctorShareService.getDocSharelist(vdata).subscribe(data => {
+      this.dataSource.data = data.data as BillListForDocShrList[]
+    this.dataSource.sort = this.sort
+    this.dataSource.paginator = this.paginator
+      console.log(this.dataSource.data) 
+    })
+  }
  
   selectChangeClass(obj: any) {
     this.classid = obj.value
@@ -114,6 +157,7 @@ export class DoctorShareListComponent {
 
   selectChangeDoctor(obj: any) {
     this.doctorId = obj.value
+     this.getDocSharelist(this.doctorId);
   }
 
   selectChangeService(obj: any) {

@@ -63,7 +63,7 @@ export class SalesHospitalNewComponent implements OnInit {
     dsDraftList = new MatTableDataSource<DraftSale>();
     dsBalAvaListStore = new MatTableDataSource<BalAvaListStore>();
     dsItemNameList1 = new MatTableDataSource<IndentList>();
-
+  saveflag: boolean = true
 
 
     // Patient Related 
@@ -567,6 +567,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemFormreset(); 
         this.saleSelectedDatasource.data = [];
          this.Itemchargeslist = [];
+         this.saveflag = false;
     }
    
     onItemChange(event: SalesItemModel): void { 
@@ -980,6 +981,7 @@ if (QtyElement) {
                 ItemIdElement.focus();
             }
         }
+         this.saveflag = false;
     }
     ItemFormreset() {
         this._salesService.ItemSearchGroup.patchValue({
@@ -1031,6 +1033,7 @@ if (QtyElement) {
         this.TotalAdvanceAmt = 0;
         this.TotalBalanceAmt = 0;
         this.TotalCreditAmt = 0;
+         this.saveflag = true;
     }
     deleteTableRow(event, element) {
         let index = this.Itemchargeslist.indexOf(element);
@@ -1233,6 +1236,7 @@ if (QtyElement) {
                 return;
             }
         }
+        this.saveflag = true;
         let opIpType = formValue?.opIpType || 0
         this.PharmaSalesForm.get('sales.date').setValue(formattedDate)
         this.PharmaSalesForm.get('sales.time').setValue(FormattedDateTime)
@@ -1377,6 +1381,7 @@ if (QtyElement) {
                 this.toastr.warning('Please select Credit Reason ', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
+                 this.saveflag = false;
                 return;
             }  
                 this.PharmaSalesForm.get('sales.creditReason').setValue(formValue.CredirReasonName)
@@ -1753,6 +1758,7 @@ draftextMobilenolist:any=[];
     onAddDraftList(contact) { 
         debugger
         console.log(contact)
+         this.saveflag = false;
         this.DraftID = contact.dsalesId;
         this.saleSelectedDatasource.data = []; 
         this.Itemchargeslist = [];
@@ -2014,6 +2020,7 @@ draftextMobilenolist:any=[];
                 this.DoctorName = result[0]?.DoctorName;
                 this.ItemSubform.get('regId').setValue(result[0]?.RegId);
 
+                 this.saveflag = false;
                 if (result[0]?.IPMedID > 0) {
                     this.IPDNocheck = true;
                     this.OPDNoCheck = false;

@@ -36,7 +36,7 @@ export class ReportDispatchComponent {
   UnitId = this._accountService.currentUserValue.user.unitId
   DueAmt = 0
   ModeId = "0"
-  screenFromString = 'Common-form';
+  screenFromString = 'ExternalLab-form';
 
 
   @ViewChild('ReportGrid', { static: false }) repogrid: AirmidTableComponent;

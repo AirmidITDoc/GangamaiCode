@@ -159,10 +159,10 @@
                         </div>
                     </ng-template>
 
-                    <ng-template #editablePatientName let-row let-rowIndex="rowIndex">
-                        <div *ngIf="!row.isEditing">
+                    <ng-template #editablePatientName let-row>
+                        <div *ngIf="!row.isEditing" >
                             {{ row.patientName || 'NA' }}
-                            <!-- <mat-icon (click)="editPatientName(row)" matTooltip="Edit" >edit</mat-icon>  -->
+                            <mat-icon *ngIf="row.oP_IP_Type ==2" (click)="editPatientName(row)" matTooltip="Edit" >edit</mat-icon> 
                         </div>
                         <div *ngIf="row.isEditing">
                             <mat-form-field floatLabel="never">

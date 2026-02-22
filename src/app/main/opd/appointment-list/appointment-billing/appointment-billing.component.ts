@@ -93,6 +93,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     serviceSelct = false
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     currency: any = '';
+    SetCashbydefault:boolean = false
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
@@ -172,6 +173,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
+
+
+        //this is for set bydefault cash 
+        debugger
+        const [setCashBydefaultId, setCashBydefault] = this._ConfigService.configParams.OpBillSetCash.split(":");
+        this.SetCashbydefault = setCashBydefaultId === "1"; 
+
+        this.OPFooterForm = this.CreateOPFooter();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -441,13 +450,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     //Footer Form
     CreateOPFooter() {
+        debugger
+        const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay"  ; 
         return this.formBuilder.group({
             totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            paymentType: ['CreditPay'],
+            paymentType: [paymentType],
             GovrnApprovAmt: [0],
             mpesaMobile: ['' ],
             UpiNo: [0]

@@ -90,6 +90,7 @@ export class HomeCollectionComponent {
     { heading: "Area", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Phlebotomist", key: "phlebotomist", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "PT", key: "priority", type: gridColumnTypes.status, align: "center" },
+    { heading: "Tran-DateTime", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     {
       heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate

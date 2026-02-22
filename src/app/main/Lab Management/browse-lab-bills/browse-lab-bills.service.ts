@@ -63,7 +63,8 @@ export class BrowseLabBillsService {
       enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       PBillNo: '',
       RegNo: '',
-      ReceiptNo: '',     
+      RefundNo: '',  
+      CompanyId: 0,      
       UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
