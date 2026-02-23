@@ -19,10 +19,10 @@
         </div>
     </div>
 
-    <div class="modal-body">
-        <form [formGroup]="Doctorshare" class="form-container">
-            <div class="modal-body-container">
-                <div fxLayout="column" class="gap-8" fxFlex>
+    <div class="modal-body" fusePerfectScrollbar>  
+          <form [formGroup]="Doctorshare" class="form-container"> 
+            <div class="modal-body-container"> 
+                <div fxLayout="column"  class="gap-8 h-100-p">
                     <div class="modal-card-container">
                         <!-- Type Selection Section -->
                         <div class="selection-section">
@@ -59,7 +59,7 @@
                     </div>
     
                     <div class="modal-card-container">
-                        <div fxLayout="column"  >
+                        <div fxLayout="row"  fxLayoutGap="4px">
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                 <airmid-dropdown label="Select Doctor Name" formControlName="doctorId"
                                     [value]="data?.DoctorID" [formGroup]="Doctorshare"
@@ -95,10 +95,10 @@
                     </div>
     
                     <div class="modal-card-container">
-                         <mat-card class="share-card"> 
-                      <div fxLayout="column" fxLayoutGap="6px">
-                           
-                                <div class="share-type-container">
+                        <mat-card class="share-card">
+                            <div fxLayout="row" fxLayoutGap="10px">
+                    
+                                <div class="share-type-container" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 12px;">
                                     <label class="share-label" style="font-weight: bold;">Doctor Share :</label>&nbsp;
                                     <mat-radio-group formControlName="docShrType" class="share-radio-group">
                                         <mat-radio-button value="P" class="share-radio-button">
@@ -109,44 +109,41 @@
                                         </mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-    
+                    
                                 <!-- Percentage Input -->
                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Doctorshare.get('docShrType').value=='P'">
                                     <mat-form-field appearance="outline" class="value-input" fxFlex>
                                         <mat-label>Percentage Value</mat-label>
                                         <input name="Percentage" formControlName="servicePercentage" matInput type="text"
-                                            [(ngModel)]="vServicePerc" (keypress)="keyPressDigitsOnly($event)"
-                                            placeholder="0">
+                                            [(ngModel)]="vServicePerc" (keypress)="keyPressDigitsOnly($event)" placeholder="0">
                                         <span matSuffix>%</span>
                                     </mat-form-field>
                                 </div>
-    
+                    
                                 <!-- Amount Input -->
                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Doctorshare.get('docShrType').value=='A'">
                                     <mat-form-field appearance="outline" class="value-input" fxFlex>
                                         <mat-label>Amount Value</mat-label>
-                                        <input name="Amount" formControlName="serviceAmount" matInput type="text"
-                                            [(ngModel)]="vServiceAmt" (keypress)="keyPressDigitsOnly($event)"
-                                            placeholder="0">
+                                        <input name="Amount" formControlName="serviceAmount" matInput type="text" [(ngModel)]="vServiceAmt"
+                                            (keypress)="keyPressDigitsOnly($event)" placeholder="0">
                                         <span matPrefix>₹&nbsp;</span>
                                     </mat-form-field>
                                 </div>
-                                </div> 
-                            </mat-card> 
-    
-                    </div> 
+                            </div>
+                        </mat-card> 
+                    </div>
 
 
-                    <!-- <div class="modal-card-container"  fxLayout="column" class="gap-8 h-100-p">
-                    <div class="dynamic-table-wrapper" fxFlex>
+                    <div class="modal-card-container"  fxLayout="column"   class="gap-8 h-100-p" >
+                      <div class="dynamic-table-wrapper" >
                         <div class="airmid-table-container">
                             <mat-table #table matSort [dataSource]="dataSource"
                                 [@animateStagger]="{ value: '50' }" class="airmid-table table3" style="overflow: auto;"> 
 
                                 <ng-container matColumnDef="Status">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">
                                         <mat-icon *ngIf="element.op_IP_Type=='0'" title="OP" class="pill green-600 s-16">circle</mat-icon>
                                         <mat-icon *ngIf="element.op_IP_Type=='1'" title="IP" class="pill orange-600 s-16">circle
                                         </mat-icon>&nbsp;
@@ -181,52 +178,52 @@
                                 </ng-container>
 
                                   <ng-container matColumnDef="DoctorName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">
                                         Doctor Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220"
                                         matTooltip="{{contact.doctorName}}">
                                         <span> {{contact.doctorName}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="ShareType">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
                                         Share Type
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
                                         <span> {{contact.docShrTypeS}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="SharePer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
                                       Share %
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <span> {{contact.servicePercentage}}</span>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
+                                        <span> {{contact.servicePercentage || '0'}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="ShareAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
                                       Share Amt
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <span> {{contact.serviceAmount | currency : 'INR'}}</span>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
+                                        <span> {{(contact.serviceAmount || '0') | currency : 'INR'}}</span>
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="Action">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <!-- <ng-container matColumnDef="Action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
                                        Action
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        <button mat-icon-button (click)="onEdit(element)" style="color:black;">
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
+                                        <button mat-icon-button (click)="onEdit(contact)" style="color:black;">
                     <mat-icon title="Edit Menu">edit</mat-icon>
                 </button>
                                     </mat-cell>
-                                </ng-container> 
+                                </ng-container>  -->
 
                                 <ng-container matColumnDef="loading">
                                     <mat-footer-cell *matFooterCellDef colspan="6">
@@ -238,8 +235,7 @@
                                     <mat-footer-cell *matFooterCellDef colspan="6">
                                         <span>No Data Found</span>
                                     </mat-footer-cell>
-                                </ng-container>
-
+                                </ng-container> 
 
                                 <mat-header-row class="accent"
                                     *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
@@ -256,10 +252,10 @@
                     <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25"
                                     showFirstLastButtons>
                     </mat-paginator>
-                    </div> -->
+                    </div>
                 </div> 
-            </div>
-        </form>
+            </div> 
+        </form> 
     </div>
 
 

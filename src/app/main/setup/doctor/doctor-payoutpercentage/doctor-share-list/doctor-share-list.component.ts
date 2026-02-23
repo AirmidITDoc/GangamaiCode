@@ -33,7 +33,7 @@ export class DoctorShareListComponent {
     'ShareType',
     'SharePer',
     'ShareAmt',
-    'Action' 
+   // 'Action' 
   ]
 
   DoctorListfilteredOptions: Observable<string[]>;

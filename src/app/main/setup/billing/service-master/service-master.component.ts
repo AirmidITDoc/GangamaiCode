@@ -173,8 +173,8 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
             {
                 maxWidth: "95vw",
                 maxHeight: '95vh',
-                height: '95%',
-                width: '70%',
+                height: '96%',
+                width: '80%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
