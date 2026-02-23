@@ -133,10 +133,11 @@
                             <ng-template #actionButtonTemplate let-element>
                                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                                    <button mat-icon-button matTooltip="Edit" (click)="onSave(element)"
-                                        [style.visibility]="element.isVerified==false ? 'visible' : 'hidden'">
+                                    <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
                                         <mat-icon title="Edit">edit</mat-icon>
                                     </button>
+                                    <!-- 
+                                        [style.visibility]="element.isVerified==false ? 'visible' : 'hidden'" -->
 
                                     <span [matTooltip]="element.isVerified == false
                                                     ? 'Verification is Pending'

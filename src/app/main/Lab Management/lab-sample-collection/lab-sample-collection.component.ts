@@ -28,6 +28,7 @@ import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-co
 export class LabSampleCollectionComponent {
     myformSearch: FormGroup;
     autocompleteModeunit: string = "Hospital";
+    autocompleteModecompany: string = "Company";
     isShowDetailTable: boolean = false;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -35,7 +36,9 @@ export class LabSampleCollectionComponent {
     f_name: any = "%"
     regNo: any = "0"
     l_name: any = "%"
-    status: any = "0"
+    status: any = "2"
+    vCompanyId: any = "0"
+    VPBillNo = "%"
     // Ptype: any = "5"
     Vtotalcount = 0
     VCompletedcount = 0
@@ -61,8 +64,6 @@ export class LabSampleCollectionComponent {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsPatientType;
     }
 
-
-
     allcolumns = [
         {
             heading: "-", key: "action1", align: "right", sticky: true, type: gridColumnTypes.template,
@@ -73,7 +74,7 @@ export class LabSampleCollectionComponent {
             template: this.actionsPatientType
         },
         { heading: "Date-Time", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-        { heading: "SampleCollection DateTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "SampleCollection DateTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
@@ -99,7 +100,9 @@ export class LabSampleCollectionComponent {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
         ]
     }
@@ -115,6 +118,17 @@ export class LabSampleCollectionComponent {
         this.myformSearch = this._SampleCollectionService.createSearchForm()
         this.GetSampleCollectiondetail()
     }
+
+    ListViewcompany(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.vCompanyId = value.value
+        else
+            this.vCompanyId = 0
+
+        this.onChangeFirst();
+    }
+
     ListView1(value) {
         console.log(value)
         if (value.value !== 0)
@@ -134,6 +148,8 @@ export class LabSampleCollectionComponent {
         this.l_name = this.myformSearch.get('LastName').value + "%"
         this.regNo = this.myformSearch.get('RegNo').value || "0"
         this.status = this.myformSearch.get('StatusSearch').value
+        this.VPBillNo = this.myformSearch.get('PBillNo').value || "%"
+        this.vCompanyId = this.myformSearch.get('CompanyId').value || "0"
         // this.Ptype = this.myformSearch.get('PatientTypeSearch').value
         this.getfilterdata();
     }
@@ -152,13 +168,14 @@ export class LabSampleCollectionComponent {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "CompanyId", fieldValue: String(this.vCompanyId), opType: OperatorComparer.Equals },
+                { fieldName: "PBillNo", fieldValue: String(this.VPBillNo), opType: OperatorComparer.StartsWith },
                 { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
         this.GetSampleCollectiondetail()
-
     }
 
     GetSampleCollectiondetail() {
@@ -193,7 +210,6 @@ export class LabSampleCollectionComponent {
                 "fieldValue": String(this.regNo),
                 "opType": "Equals"
             },
-
             {
                 "fieldName": "From_Dt",
                 "fieldValue": this.fromDate,
@@ -208,6 +224,16 @@ export class LabSampleCollectionComponent {
                 "fieldName": "IsCompleted",
                 "fieldValue": String(this.status),
                 "opType": "Equals"
+            },
+            {
+                "fieldName": "CompanyId",
+                "fieldValue": String(this.vCompanyId),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "PBillNo",
+                "fieldValue": String(this.VPBillNo),
+                "opType": "Contains"
             },
             {
                 "fieldName": "UnitId",
@@ -254,6 +280,8 @@ export class LabSampleCollectionComponent {
                 this.myformSearch.get('LastName').setValue("")
         if (event == 'RegNo')
             this.myformSearch.get('RegNo').setValue("0")
+        if (event == 'PBillNo')
+            this.myformSearch.get('PBillNo').setValue("")
 
         this.onChangeFirst();
     }
@@ -332,36 +360,46 @@ export class LabSampleCollectionComponent {
 
     }
 
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
 }
 
 export class SampleList {
-  VADate: Date;
-  VATime: Date;
-  PathTestID: Number;
-  ServiceName: String;
-  IsSampleCollection: boolean;
-  isSampleCollection: any;
-  SampleCollectionTime: Date;
-  PathReportID: any;
-  SampleNo: any;
-  RegNo: any;
-  pathReportID: any;
-  sampleNo: any;
-  isApprovedByCamp: any;
+    VADate: Date;
+    VATime: Date;
+    PathTestID: Number;
+    ServiceName: String;
+    IsSampleCollection: boolean;
+    isSampleCollection: any;
+    SampleCollectionTime: Date;
+    PathReportID: any;
+    SampleNo: any;
+    RegNo: any;
+    pathReportID: any;
+    sampleNo: any;
+    isApprovedByCamp: any;
 
-  constructor(SampleList) {
-    this.VADate = SampleList.VADate || '';
-    this.VATime = SampleList.VATime || '';
-    this.PathTestID = SampleList.PathTestID || 0;
-    this.ServiceName = SampleList.ServiceName || '';
-    this.IsSampleCollection = SampleList.IsSampleCollection || 0;
-    this.isSampleCollection = SampleList.isSampleCollection || 0;
-    this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
-    this.PathReportID = SampleList.PathReportID || 0;
-    this.SampleNo = SampleList.SampleNo || 0;
-    this.RegNo = SampleList.RegNo || 0;
-    this.pathReportID = SampleList.pathReportID || 0;
-    this.sampleNo = SampleList.sampleNo || 0;
-    this.isApprovedByCamp = SampleList.isApprovedByCamp || 0;
-  }
+    constructor(SampleList) {
+        this.VADate = SampleList.VADate || '';
+        this.VATime = SampleList.VATime || '';
+        this.PathTestID = SampleList.PathTestID || 0;
+        this.ServiceName = SampleList.ServiceName || '';
+        this.IsSampleCollection = SampleList.IsSampleCollection || 0;
+        this.isSampleCollection = SampleList.isSampleCollection || 0;
+        this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
+        this.PathReportID = SampleList.PathReportID || 0;
+        this.SampleNo = SampleList.SampleNo || 0;
+        this.RegNo = SampleList.RegNo || 0;
+        this.pathReportID = SampleList.pathReportID || 0;
+        this.sampleNo = SampleList.sampleNo || 0;
+        this.isApprovedByCamp = SampleList.isApprovedByCamp || 0;
+    }
 }

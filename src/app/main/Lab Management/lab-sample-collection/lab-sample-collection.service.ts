@@ -34,12 +34,14 @@ export class LabSampleCollectionService {
       // BillNo:[''],
       // BillDate:[''],
       PatientTypeSearch: ['5'],
-      StatusSearch: ['0'],
+      StatusSearch: ['2'],
       Istype: ['2'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       TestStatusSearch: ['1'],
+      PBillNo: '',
+      CompanyId: 0,
       UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
