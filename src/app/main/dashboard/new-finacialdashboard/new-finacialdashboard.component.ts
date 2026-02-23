@@ -321,7 +321,7 @@ Insuranceds= new MatTableDataSource<Insurance>();
       console.log(this.consultantCharges.data)
 
 
-      this.pharmacyop.data = this.Financedata.pharmacyOPDPatientSale;
+      this.pharmacyop.data = this.Financedata.pharmacySaleOP;
       this.pharmacyip.data = this.Financedata.pharmacySaleIP;
 
       console.log(this.Financedata.pharmacySaleOP)

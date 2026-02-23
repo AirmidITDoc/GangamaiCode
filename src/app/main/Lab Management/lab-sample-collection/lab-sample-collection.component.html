@@ -61,7 +61,7 @@
 
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button (click)="onSave(element)" matTooltip="Edit" *ngIf="IsEdit">
+                    <button mat-icon-button (click)="onSave(element)" matTooltip="Edit">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button (click)="onSavedemo(element)" matTooltip="demo">
@@ -85,12 +85,12 @@
                     </div> -->
 
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon *ngIf="element.isSampleCollection == 'True'" title="Sample Collected"
+                        <mat-icon *ngIf="element.isSampleCollection == true" title="Sample Collected"
                             style="background-color: rgb(69, 181, 16);">
                             <img width="50px" height="50px" src="assets/images/logos/samplecoll1.png">
                         </mat-icon>
 
-                        <mat-icon *ngIf="element.isSampleCollection !== 'True'" title="Sample Not Collected"
+                        <mat-icon *ngIf="element.isSampleCollection == false" title="Sample Not Collected"
                             style="background-color: rgb(232, 127, 52);">
                             <img width="50px" height="50px" src="assets/images/logos/samplenotcoll.jpg">
                         </mat-icon>
@@ -127,8 +127,7 @@
                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
                             [(fromValue)]="gridConfig.filters[3].fieldValue"
-                            [(toValue)]="gridConfig.filters[4].fieldValue"
-                            (dateChange)="GetSampleCollectiondetail()">
+                            [(toValue)]="gridConfig.filters[4].fieldValue" (dateChange)="GetSampleCollectiondetail()">
                         </airmid-datepicker>
 
                         <!-- <mat-form-field appearance="outline">
@@ -169,14 +168,30 @@
                             </button>
                         </mat-form-field>
 
+                        <mat-form-field appearance="outline">
+                            <mat-label>PBillNo</mat-label>
+                            <input matInput placeholder="Search PBillNo" autocomplete="off"
+                                [formGroup]="myformSearch" formControlName="PBillNo"
+                                (keypress)="keyPressAlphanumeric($event)" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear"
+                                (click)=" Clearfilter('PBillNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="myformSearch"
+                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListViewcompany($event)"
+                            [mode]="autocompleteModecompany"></airmid-dropdown>
+
                         <div fxLayout="column" fxLayoutAlign="start start">
 
-                            <div fxFlex fxLayout="row">
-                                <mat-radio-group name="StatusSearch" fxLayout="row" [formGroup]="myformSearch"
+                            <div fxFlex fxLayout="column">
+                                <mat-radio-group name="StatusSearch" fxLayout="column" [formGroup]="myformSearch"
                                     formControlName="StatusSearch" (change)="onChangeFirst()" style="padding: 6px;"
                                     class="gap-4">
                                     <mat-label>Status:</mat-label>
-                                    <div fxLayout="row">
+                                    <div fxLayout="column">
+                                        <mat-radio-button value='2'>All</mat-radio-button>
                                         <mat-radio-button value='0'>Pending</mat-radio-button>
                                         <mat-radio-button value='1'>Completed</mat-radio-button>
                                     </div>
