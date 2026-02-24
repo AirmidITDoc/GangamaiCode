@@ -254,6 +254,54 @@ export class NewLabresultEntryComponent {
     }
   }
 
+  // onResultUp(data) {
+
+  //   let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+  //   for (let i = 0; i < items.length; i++) {
+  //     let formula = items[i].Formula;
+  //     let formulas = this.getShortNames(formula);
+  //     formulas.forEach(e => {
+  //       let itm = this.dataSource.data.find(x => x.ParameterShortName == e);
+  //       if (itm)
+  //         formula = formula.replace("{{" + e + "}}", itm.ResultValue)
+  //     });
+  //     items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
+  //     if (!isNaN(items[i].ResultValue))
+  //       items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
+  //   }
+
+  //   // ---- FLAG LOGIC (NEW & FIXED) ----
+  //   data.ParaBoldFlag = '';
+  //   data.ParaFlagIcon = '';
+  //   data.ParaFlagClass = '';
+
+  //   if (data.ParaIsNumeric || data.PIsNumeric) {
+
+  //     const value = parseFloat(data.ResultValue);
+  //     const min = parseFloat(data.MinValue);
+  //     const max = parseFloat(data.MaxValue);
+
+  //     if (!isNaN(value) && !isNaN(min) && !isNaN(max)) {
+
+  //       if (value < min) {
+  //         data.ParaBoldFlag = 'L';
+  //         data.ParaFlagIcon = 'arrow_downward';
+  //         data.ParaFlagClass = 'flag-low';
+
+  //       } else if (value > max) {
+  //         data.ParaBoldFlag = 'H';
+  //         data.ParaFlagIcon = 'arrow_upward';
+  //         data.ParaFlagClass = 'flag-high';
+
+  //       } else {
+  //         data.ParaBoldFlag = 'N';
+  //         data.ParaFlagIcon = 'check_circle';
+  //         data.ParaFlagClass = 'flag-normal';
+  //       }
+  //     }
+  //   }
+  // }
+
   boldstatus = 0;
 
   editflag(contact) {

@@ -233,6 +233,13 @@
                             [(ngModel)]="gridConfig.filters[5].fieldValue" [formGroup]="myFilterform"
                             TextField="doctorName" ValueField="doctorId" ApiUrl="Doctor/RefdoctorComboList?keywoard="
                             (selectionChange)="ListView($event)"></airmid-dropdown>
+
+                        <airmid-dropdown label="B2B / Company Name" formControlName="CompanyId" [formGroup]="myFilterform"
+                            [(ngModel)]="gridConfig.filters[7].fieldValue" (selectionChange)="ListViewcompany($event)"
+                            ValueField="companyId" TextField="companyName"
+                            ApiUrl="LabPatientRegistration/CompanyComboList?keywoard="
+                            [mode]="autocompleteModecompany"></airmid-dropdown>
+
                     </div>
 
                 </form>

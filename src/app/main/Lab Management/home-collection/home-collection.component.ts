@@ -9,22 +9,13 @@ import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest'
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { PatientDetailsPopoverComponent } from 'app/main/opd/appointment-list/patient-details-popover/patient-details-popover.component';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { DoctorDetailsPopoverComponent } from 'app/main/opd/appointment-list/doctor-details-popover/doctor-details-popover.component';
-import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { ReportDispatchComponent } from '../report-dispatch/report-dispatch.component';
-import { EmailorSMSHistoryComponent } from '../emailor-smshistory/emailor-smshistory.component';
 import { HomeCollectionService } from './home-collection.service';
 import { NewCollectionComponent } from './new-collection/new-collection.component';
 import { NewLabPatientRegComponent } from '../lab-patient-reg/new-lab-patient-reg/new-lab-patient-reg.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-collection',
@@ -61,7 +52,7 @@ export class HomeCollectionComponent {
     public toastr: ToastrService,
     public formBuilder: UntypedFormBuilder,
     public _FormvalidationserviceService: FormvalidationserviceService,
-    public permissionService: PagePermissionService,
+    public permissionService: PagePermissionService, private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -166,7 +157,7 @@ export class HomeCollectionComponent {
     const dialogRef = this._matDialog.open(NewCollectionComponent,
       {
         maxWidth: "95vw",
-        maxHeight: '95%',
+        height: '95%',
         width: '90%',
         data: row
       });
@@ -187,6 +178,10 @@ export class HomeCollectionComponent {
         data: { mode: 'home', row }
       });
     dialogRef.afterClosed().subscribe(result => {
+      debugger
+      if (result == 'home') {
+        this.router.navigate(['/LabManagement/lab-patientreg']);
+      }
       this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.grid.bindGridData();
@@ -199,23 +194,24 @@ export class HomeCollectionComponent {
       title: 'Do you want to cancel Home Collection?',
       text: "Please provide a reason for cancellation",
       icon: "warning",
-      // input: 'text',
-      // inputPlaceholder: 'Enter cancellation reason...',
+      input: 'text',
+      inputPlaceholder: 'Enter cancellation reason...',
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!",
-      // preConfirm: (reason) => {
-      //   if (!reason || reason.trim() === '') {
-      //     Swal.showValidationMessage('Reason is required');
-      //   }
-      //   return reason;
-      // }
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
     }).then((result) => {
       if (result.isConfirmed) {
         let submitData = {
           homeCollectionId: data.homeCollectionId,
-          isCancelledBy: this._loggedService.currentUserValue.userId
+          isCancelledBy: this._loggedService.currentUserValue.userId,
+          cancelReason: result.value
         };
         console.log(submitData);
         this._homeCollectionService.OnCancel(submitData).subscribe((res) => {

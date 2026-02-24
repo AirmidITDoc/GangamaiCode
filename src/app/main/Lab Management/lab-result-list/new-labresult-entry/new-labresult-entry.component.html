@@ -247,10 +247,24 @@
                                 <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-form-field appearance="fill">
                                         <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag">
-                                        <!-- (keyup)="editflag()" -->
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
+                            <!-- <ng-container matColumnDef="Flag">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-80 border-right">
+                                    Flag
+                                </mat-header-cell>
+
+                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                    <span *ngIf="contact.ParaBoldFlag" class="flag" [ngClass]="contact.ParaFlagClass">
+
+                                        <mat-icon>{{ contact.ParaFlagIcon }}</mat-icon>
+                                        {{ contact.ParaBoldFlag }}
+
+                                    </span>
+                                </mat-cell>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="NormalRange">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
