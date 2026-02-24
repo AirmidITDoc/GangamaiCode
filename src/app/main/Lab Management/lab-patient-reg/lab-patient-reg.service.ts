@@ -30,6 +30,7 @@ export class LabPatientRegService {
       LastName: [''],
       PBillNo: [''],
       DoctorID: [''],
+      CompanyId: 0,
       UnitId: [this.accountService.currentUserValue.user.unitId]
     })
   }

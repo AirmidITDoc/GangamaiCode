@@ -59,14 +59,31 @@
                 </div>
             </ng-template>
 
+            <ng-template #genderANDage let-element>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+
+                    <span class="patient-link"
+                        matTooltip="{{ element.genderName }} • {{ element.ageYear }}y {{ element.ageMonth }}m {{ element.ageDay }}d"
+                        matTooltipPosition="above">
+
+                        {{ element.genderName }}
+                        <span *ngIf="element.ageYear"> • {{ element.ageYear }}y</span>
+                        <span *ngIf="element.ageMonth"> {{ element.ageMonth }}m</span>
+                        <span *ngIf="element.ageDay"> {{ element.ageDay }}d</span>
+
+                    </span>
+
+                </div>
+            </ng-template>
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button (click)="onSave(element)" matTooltip="Edit">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="onSavedemo(element)" matTooltip="demo">
+                    <!-- <button mat-icon-button (click)="onSavedemo(element)" matTooltip="demo">
                         <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
                     <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
                         <mat-icon>pages</mat-icon>
                     </button>
@@ -76,27 +93,38 @@
             <ng-template #statusbtnTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
 
-                    <!-- <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon *ngIf="!element.companyName" matTooltip="Patient Category Self">account_box
-                        </mat-icon>
-
-                        <mat-icon *ngIf="element.companyName" matTooltip="Patient Category Company">business
-                        </mat-icon>
-                    </div> -->
-
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon *ngIf="element.isSampleCollection == true" title="Sample Collected"
+                        <mat-icon *ngIf="element.isSampleCollection == true" matTooltip="Sample Collected"
                             style="background-color: rgb(69, 181, 16);">
                             <img width="50px" height="50px" src="assets/images/logos/samplecoll1.png">
                         </mat-icon>
 
-                        <mat-icon *ngIf="element.isSampleCollection == false" title="Sample Not Collected"
+                        <mat-icon *ngIf="element.isSampleCollection == false" matTooltip="Sample Not Collected"
                             style="background-color: rgb(232, 127, 52);">
                             <img width="50px" height="50px" src="assets/images/logos/samplenotcoll.jpg">
                         </mat-icon>
                     </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon *ngIf="element.patientType=='Self'" matTooltip="Patient Category Self">account_box
+                        </mat-icon>
+                        <mat-icon *ngIf="element.patientType=='Company'" matTooltip="Patient Category Company">business
+                        </mat-icon>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon *ngIf="element.isPathOutSource === 1" matTooltip="Pathology Outsourced">
+                            local_hospital
+                        </mat-icon>
+
+                        <!-- <mat-icon *ngIf="element.isRadOutSource === 1" matTooltip="Radiology Outsourced">
+                            medical_services
+                        </mat-icon> -->
+                    </div>
+
                 </div>
             </ng-template>
+
             <ng-template #serviceNames let-element>
                 <mat-chip-set class="example-chip" cdkDropList cdkDropListOrientation="horizontal"
                     (cdkDropListDropped)="drop($event)">
@@ -105,6 +133,38 @@
                         {{service}}
                     </mat-chip>
                 </mat-chip-set>
+            </ng-template>
+
+            <ng-template #outSourceLabName let-element>
+                <ng-container *ngIf="element.outSourceLabName; else noOutSource">
+                    <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after"
+                        matBadgeOverlap="false" matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                        (mouseenter)="openPatientDetailsPopover($event, element)"
+                        (mouseleave)="closePatientDetailsPopover()" style="font-size:14px; line-height:18px; cursor:pointer;
+                                                            text-decoration:underline; color:#667eea;">
+                        {{ element.outSourceLabName }}
+                    </span>
+
+                    <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
+                        (click)="Editoutsoucedata(element)" matTooltip="Edit OutSource Data">
+                        <mat-icon style="color:#ff5722;">edit</mat-icon>
+                    </button>
+                </ng-container>
+
+                <ng-template #noOutSource>
+                    <span [matTooltip]="element.isSampleCollection === 'False'
+                                                        ? 'Please complete sample collection first'
+                                                        : ''">
+
+                        <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
+                            [disabled]="element.isSampleCollection === 'False'"
+                            (click)="element.isSampleCollection !== 'False' && Editoutsoucedata(element)">
+
+                            <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
+                        </button>
+
+                    </span>
+                </ng-template>
             </ng-template>
 
             <ng-template #actionsPatientType let-element>
@@ -170,11 +230,10 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>PBillNo</mat-label>
-                            <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                [formGroup]="myformSearch" formControlName="PBillNo"
-                                (keypress)="keyPressAlphanumeric($event)" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear"
-                                (click)=" Clearfilter('PBillNo')">
+                            <input matInput placeholder="Search PBillNo" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="PBillNo" (keypress)="keyPressAlphanumeric($event)"
+                                (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)=" Clearfilter('PBillNo')">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>

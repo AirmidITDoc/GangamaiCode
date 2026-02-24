@@ -44,6 +44,7 @@ export class LabPatientRegComponent {
   Status: any = "0";
   PBillNo: any = "%";
   DoctorId: any = "0";
+  vCompanyId: any = "0";
   UnitId: any = this._loggedService.currentUserValue.user.unitId;
   isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
   vbalanceamt: any;
@@ -51,6 +52,7 @@ export class LabPatientRegComponent {
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModerefdoc: string = "RefDoctor";
   autocompleteModeunit: string = "Hospital";
+  autocompleteModecompany: string = "Company";
   page: PageNames = PageNames.LABPATIENT;
   OpSettlementForm: FormGroup
 
@@ -83,11 +85,13 @@ export class LabPatientRegComponent {
     public permissionService: PagePermissionService,
   ) { }
 
+  isLabSettlement: any;
   ngOnInit(): void {
     this.myFilterform = this._labPatientRegService.CreateSearchGroup();
     this.OpSettlementForm = this.CreateOPSettlementForm();
 
     // this.GetlabAppointdetail();
+    // this.isLabSettlement = this._loggedService.currentUserValue.user.isGrnverify
   }
 
   CreateOPSettlementForm() {
@@ -229,6 +233,7 @@ export class LabPatientRegComponent {
     { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+    { fieldName: "CompanyId", fieldValue: String(this.vCompanyId), opType: OperatorComparer.Equals },
   ]
 
   gridConfig: gridModel = {
@@ -261,6 +266,7 @@ export class LabPatientRegComponent {
     this.f_name = this.myFilterform.get('FirstName').value + "%"
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.PBillNo = this.myFilterform.get('PBillNo').value || "%"
+    this.vCompanyId = this.myFilterform.get('CompanyId').value || "0"
     this.getfilterdata();
   }
 
@@ -279,6 +285,7 @@ export class LabPatientRegComponent {
         { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
         { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "CompanyId", fieldValue: String(this.vCompanyId), opType: OperatorComparer.Equals },
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -302,6 +309,16 @@ export class LabPatientRegComponent {
       this.UnitId = value.value
     else
       this.UnitId = 0
+
+    this.onChangeFirst();
+  }
+
+  ListViewcompany(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.vCompanyId = value.companyId
+    else
+      this.vCompanyId = 0
 
     this.onChangeFirst();
   }
@@ -966,6 +983,7 @@ export class LabPatientList {
   remark: any;
   phlebotomist: any;
   patRegId: any;
+  patientType: any;
 
   constructor(LabPatientList) {
     {
@@ -1048,7 +1066,7 @@ export class LabPatientList {
       this.location = LabPatientList.location || ''
       this.phlebotomist = LabPatientList.phlebotomist || ''
       this.patRegId = LabPatientList.patRegId || ''
-      // this.location = LabPatientList.location || ''
+      this.patientType = LabPatientList.patientType || ''
       // this.location = LabPatientList.location || ''
       // this.location = LabPatientList.location || ''
     }
