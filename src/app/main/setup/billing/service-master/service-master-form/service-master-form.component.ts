@@ -35,6 +35,7 @@ export class ServiceMasterFormComponent implements OnInit {
     butDisabled: boolean = false;
     msg: any;
     emg_amt: any;
+    vTariffId:any=0;
     emg_per: any;
     DSServicedetailList = new MatTableDataSource<Servicedetail>();
     // vServiceName: any;
@@ -85,6 +86,7 @@ export class ServiceMasterFormComponent implements OnInit {
             console.log(this.data)
             this.registerObj = this.data;
             this.ServiceId = this.registerObj.serviceId;
+             this.vTariffId  = this.registerObj.tariffId;
             this.IsCreaditDoc = this.registerObj.creditedtoDoctor
             this.emg_amt = this.registerObj.emgAmt
             this.emg_per = this.registerObj.emgPer
@@ -187,8 +189,8 @@ export class ServiceMasterFormComponent implements OnInit {
     }
     createserviceDetails(item: any = {}): FormGroup {
         return this._formBuilder.group({
-            serviceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceDetailId: [item?.serviceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item?.serviceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [this.tariffId || item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -209,11 +211,8 @@ debugger
                 "sortField": "ServiceDetailId",
                 "sortOrder": 0,
                 "filters": [
-                    {
-                        "fieldName": "ServiceId",
-                        "fieldValue": String(this.ServiceId),
-                        "opType": "Equals"
-                    }
+                    {  "fieldName": "ServiceId", "fieldValue": String(this.ServiceId), "opType": "Equals" },
+                     { "fieldName": "TariffId", "fieldValue": String(this.vTariffId), "opType": "Equals" }
                 ],
                 "Columns": [],
                 "exportType": "JSON"
@@ -378,7 +377,7 @@ debugger
         // this.serviceForm.get("isApplicableFor")?.setValue(this.serviceForm.get("opipType")?.value);
 
         console.log("FormValue", this.serviceForm.value)
-        this._serviceMasterService.serviceMasterInsert(this.serviceForm.value).subscribe((response) => {
+        this._serviceMasterService.serviceMasterInsert(this.serviceForm.value,this.vTariffId).subscribe((response) => {
             this.onClear(true);
             this.onClose();
         })

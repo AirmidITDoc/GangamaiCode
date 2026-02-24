@@ -76,6 +76,7 @@ export class ConfigSettingParams {
      Is9_Digit_NationalId:any;
      CurrencyValue:any;
      OpBillSetCash:any;
+     IsAddAutoCharges:any;
 OPDNo:any;
 IsOPBillPrint:any;
 PrintAfterRegistration:any;

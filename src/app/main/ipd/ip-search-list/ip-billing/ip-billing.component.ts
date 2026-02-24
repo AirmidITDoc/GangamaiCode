@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
@@ -177,6 +177,7 @@ export class IPBillingComponent implements OnInit {
     isDoctor: boolean = false;
     Admincharge: boolean = true;
     isFilteredDateDisabled: boolean = false;
+    IsAddAutoCharges: boolean = false;
     ConcessionShow: boolean = false;
     BillDiscperFlag: boolean = false;
     isOpen: boolean = false; // Sidebar starts open  
@@ -262,8 +263,16 @@ export class IPBillingComponent implements OnInit {
         const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
         const [ids, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = ids === "1";
+
+        // AutoCharges add Config
+        const IsAutoCharges = this?._ConfigService?.configParams?.IsAddAutoCharges || "";
+        const [IsAutoChargesid, IsAutoChargesval] = IsAutoCharges.includes(":") ? IsAutoCharges.split(":") : [null, null];
+        this.IsAddAutoCharges = IsAutoChargesid === "1";
+
         if (!this.Is9_Digit_National_Id) {
-            this.AddBedCharge();
+            if(this.IsAddAutoCharges){
+             this.AddBedCharge();
+            } 
         }
 
         if (this.selectedAdvanceObj.isDischarged) {
@@ -512,6 +521,7 @@ export class IPBillingComponent implements OnInit {
             TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             GovrnApprovAmt: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             mpesaMobile: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+            IsPathRadBill: [false]
         });
     }
     //IP Draft Bill form
@@ -1357,7 +1367,7 @@ export class IPBillingComponent implements OnInit {
         this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value || 0)
         this.IPBillMyForm.get('bill.govtApprovedAmt')?.setValue(this.IpbillFooterform.get('GovrnApprovAmt')?.value || 0)
 
-
+           const [Is9_Digit_NationalId, value] = this._ConfigService.configParams.Is9_Digit_NationalId.split(":");
         if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
             if (this.IpbillFooterform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
                 this.IPBillMyForm.get('bill.paidAmt')?.setValue(0)
@@ -1373,8 +1383,14 @@ export class IPBillingComponent implements OnInit {
 
                 console.log(this.IPBillMyForm.value);
                 this._IpSearchListService.InsertIPBillingCredit(this.IPBillMyForm.value).subscribe(response => {
-                    this.viewgetBillReportPdf(response);
-                    this._matDialog.closeAll();
+                  
+                if (Is9_Digit_NationalId == 1) {
+                  this.viewgetBillReportPdf(response);
+                }
+                else{
+                this.viewgetBillBillGroupWiseReportPdf(response);
+                }  
+                this._matDialog.closeAll();
                 });
             }
             else if (this.IpbillFooterform.get('MPesa')?.value) {
@@ -1450,8 +1466,13 @@ export class IPBillingComponent implements OnInit {
                         console.log("form values", this.IPBillMyForm.value)
 
                         this._IpSearchListService.InsertIPBilling(this.IPBillMyForm.value).subscribe(response => {
-                            this._matDialog.closeAll();
+                           if (Is9_Digit_NationalId == 1) {
                             this.viewgetBillReportPdf(response);
+                            }
+                            else{
+                           this.viewgetBillBillGroupWiseReportPdf(response);
+                             }
+                            this._matDialog.closeAll(); 
                             // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
                         });
                     }
@@ -1981,6 +2002,10 @@ export class IPBillingComponent implements OnInit {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");
     }
 
+    viewgetBillBillGroupWiseReportPdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+    }
+
     viewgetAdvanceReceiptReportPdf(data) {
         this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IpAdvanceReceipt");
     }
@@ -2052,7 +2077,13 @@ export class IPBillingComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
         });
     }
-
+    @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) { 
+        if (event.altKey && event.key.toLowerCase() === 'a') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.onSaveAddCharges();
+        }
+    }
     OnSaveEditedValue(element) {
         if (element.qty == 0) {
             element.qty = 1;
@@ -2567,6 +2598,19 @@ export class IPBillingComponent implements OnInit {
         }
 
         console.log('Edit cancelled');
+    }
+
+     getHospitalBills(event) {
+        debugger
+        if (event.checked == true) {
+            const filterlist = this.dataSource.data.filter(item=> item.isPathology != 1 && item.isRadiology != 1)
+            this.dataSource.data = filterlist
+            this.chargeslist =  this.dataSource.data
+            this.getNetAmtSum()
+            this.getbillbalamt();
+        } else { 
+            this.getChargesList();
+        }
     }
 }
 
