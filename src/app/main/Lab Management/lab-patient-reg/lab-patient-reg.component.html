@@ -120,7 +120,7 @@
                 <mat-icon>print</mat-icon>
             </button>
 
-            <span [matTooltip]="(!element.IsAllPathServicesVerified && !element.IsAllRadServicesVerified)
+            <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified)
                             ? 'Reports are not verified yet' : '' " matTooltipPosition="above">
                 <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)"
                     [disabled]="!element.isAllPathServicesVerified && !element.isAllRadServicesVerified">
@@ -128,7 +128,7 @@
                 </button>
             </span>
 
-            <span [matTooltip]="(!element.IsAllPathServicesVerified && !element.IsAllRadServicesVerified)
+            <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified)
                             ? 'Reports are not verified yet' : '' " matTooltipPosition="above">
                 <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)"
                     [disabled]="!element.isAllPathServicesVerified && !element.isAllRadServicesVerified">
