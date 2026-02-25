@@ -129,8 +129,36 @@ export class OutsourceDetailsComponent {
     this.LabName = e.text
   }
 
+  private parseToDate(value: any): Date | null {
+    if (!value) return null;
+
+    // Already Date
+    if (value instanceof Date) {
+      return value;
+    }
+
+    // ISO format
+    if (typeof value === 'string' && value.includes('T')) {
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    // dd-MM-yyyy HH:mm:ss
+    if (typeof value === 'string' && value.includes('-') && value.includes(':')) {
+      const [datePart, timePart] = value.split(' ');
+      const [day, month, year] = datePart.split('-').map(Number);
+      const [hh, mm, ss] = timePart.split(':').map(Number);
+
+      const d = new Date(year, month - 1, day, hh, mm, ss || 0);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    return null;
+  }
+
   getLocalDateTimeForInput(dateValue: string): string {
-    const d = new Date(dateValue);
+    const d = this.parseToDate(dateValue);
+    if (!d) return '';
 
     const pad = (n: number) => n.toString().padStart(2, '0');
 
@@ -138,12 +166,30 @@ export class OutsourceDetailsComponent {
       `${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 
-  getLocalDateTimeString(date: Date): string {
+  getLocalDateTimeString(dateValue: any): string {
+    const d = this.parseToDate(dateValue);
+    if (!d) return '';
+
     const pad = (n: number) => n.toString().padStart(2, '0');
 
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T` +
-      `${pad(date.getHours())}:${pad(date.getMinutes())}:00`;
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T` +
+      `${pad(d.getHours())}:${pad(d.getMinutes())}:00`;
   }
+  // getLocalDateTimeForInput(dateValue: string): string {
+  //   const d = new Date(dateValue);
+
+  //   const pad = (n: number) => n.toString().padStart(2, '0');
+
+  //   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T` +
+  //     `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  // }
+
+  // getLocalDateTimeString(date: Date): string {
+  //   const pad = (n: number) => n.toString().padStart(2, '0');
+
+  //   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T` +
+  //     `${pad(date.getHours())}:${pad(date.getMinutes())}:00`;
+  // }
 
   finalDateTime: any;
   finalDateTime1: any;

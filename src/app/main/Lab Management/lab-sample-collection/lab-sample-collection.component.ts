@@ -67,7 +67,7 @@ export class LabSampleCollectionComponent {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action1')!.template = this.statusbtnTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'serviceNames')!.template = this.serviceNames;
-        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsPatientType;
+        // this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsPatientType;
         this.gridConfig.columnsList.find(col => col.key === 'genderName')!.template = this.genderANDage;
         this.gridConfig.columnsList.find(col => col.key === 'outSourceLabName')!.template = this.outSourceLabName;
     }
