@@ -351,6 +351,10 @@ export class BillListForDocShrList {
   CompanyName: string;
   IsBillShrHold: boolean;
   GroupName: any;
+  op_IP_Type:any;
+    serviceId:any;
+      classId:any;
+        doctorId:any; 
   constructor(BillListForDocShrList) {
 
     this.PatientName = BillListForDocShrList.PatientName;
@@ -364,6 +368,11 @@ export class BillListForDocShrList {
     this.CompanyName = BillListForDocShrList.CompanyName;
     this.IsBillShrHold = BillListForDocShrList.IsBillShrHold || 0;
     this.GroupName = BillListForDocShrList.GroupName || '';
+      this.op_IP_Type = BillListForDocShrList.op_IP_Type || 0;
+        this.serviceId = BillListForDocShrList.serviceId || 0;
+          this.classId = BillListForDocShrList.classId || 0;
+            this.doctorId = BillListForDocShrList.doctorId || 0;
+
   }
 }
 

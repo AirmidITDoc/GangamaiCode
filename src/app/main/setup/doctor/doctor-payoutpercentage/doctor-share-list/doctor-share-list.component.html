@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div class="modal-body" fusePerfectScrollbar>  
+    <div class="modal-body" >  
           <form [formGroup]="Doctorshare" class="form-container"> 
             <div class="modal-body-container"> 
                 <div fxLayout="column"  class="gap-8 h-100-p">
@@ -134,7 +134,7 @@
                     </div>
 
 
-                    <div class="modal-card-container"  fxLayout="column"   class="gap-8 h-100-p" >
+                    <div class="modal-card-container"  fxLayout="column"   class="gap-8 h-100-p" fusePerfectScrollbar>
                       <div class="dynamic-table-wrapper" >
                         <div class="airmid-table-container">
                             <mat-table #table matSort [dataSource]="dataSource"
@@ -214,16 +214,16 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <!-- <ng-container matColumnDef="Action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
+                                <ng-container matColumnDef="Action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header  >
                                        Action
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
-                                        <button mat-icon-button (click)="onEdit(contact)" style="color:black;">
-                    <mat-icon title="Edit Menu">edit</mat-icon>
-                </button>
+                                    <mat-cell *matCellDef="let contact"  > 
+                                        <button mat-icon-button (click)="OnEdit(contact)" matTooltip="Edit Details">
+                                            <mat-icon title="Edit Menu">edit</mat-icon>
+                                        </button>
                                     </mat-cell>
-                                </ng-container>  -->
+                                </ng-container> 
 
                                 <ng-container matColumnDef="loading">
                                     <mat-footer-cell *matFooterCellDef colspan="6">

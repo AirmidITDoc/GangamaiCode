@@ -16,6 +16,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { DoctorShareServiceService } from '../doctor-share-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-doctor-share-list',
@@ -33,7 +34,7 @@ export class DoctorShareListComponent {
     'ShareType',
     'SharePer',
     'ShareAmt',
-   // 'Action' 
+    'Action' 
   ]
 
   DoctorListfilteredOptions: Observable<string[]>;
@@ -204,17 +205,18 @@ export class DoctorShareListComponent {
     debugger
     console.log(contact)
 
-    this.doctorShareId = contact.doctorShareId;
-    this.ServiceName = contact.serviceName;
-    this.classid = contact.classId
-    this.doctorId = contact.doctorId
-    this.serviceId = contact.serviceId
+    this.doctorShareId = contact?.doctorShareId || 0;
+    this.ServiceName = contact?.serviceName || 0;
+    this.classid = contact?.classId || 0;
+    this.doctorId = contact?.doctorId || 0;
+    this.serviceId = contact?.serviceId || 0;
 
-    this.Doctorshare.get('doctorId').setValue(contact.doctorId);
-    this.Doctorshare.get('serviceId').setValue(contact.serviceId);
-    this.Doctorshare.get('classId').setValue(contact.classId)
-
-
+    this.Doctorshare.get('doctorId').setValue(contact?.doctorId  || 0);
+    this.Doctorshare.get('serviceId').setValue(contact?.serviceId  || 0);
+    this.Doctorshare.get('classId').setValue(contact?.classId  || 0)  
+    this.Doctorshare.get('servicePercentage').setValue(contact?.servicePercentage  || 0);
+    this.Doctorshare.get('serviceAmount').setValue(contact?.serviceAmount  || 0) 
+         
     // this.getServiceListCombobox();
     if (contact.servicePercentage > 0) {
       this.Doctorshare.get('docShrType').setValue('P');
@@ -240,6 +242,27 @@ export class DoctorShareListComponent {
 
   OnSave() {
     debugger
+    const formValue = this.Doctorshare.value  
+    if(!this.doctorShareId){
+    if (this.dataSource.data.length) {
+      const isCheckFlag = this.dataSource.data.some(item =>
+        item.op_IP_Type == formValue?.opIpType &&
+        item.serviceId == formValue?.serviceId &&
+        item.doctorId == formValue?.doctorId &&
+        item.classId == formValue?.classId
+      );
+      if (isCheckFlag) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Warning!',
+         text: 'This service with the selected doctor and class has already been added. Please check details.',
+          confirmButtonText: 'OK'
+        });
+        return;
+      } 
+    }
+  }
+
     if (this.Doctorshare.get('shrTypeSerOrGrp').value == '1') {
 
       if (this.Doctorshare.get('serviceId').value ==0) {
