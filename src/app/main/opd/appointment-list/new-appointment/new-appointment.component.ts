@@ -854,7 +854,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     OnsaveNewRegister() {
-
+debugger
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         this.VisitFormGroup.get("patientOldNew").setValue(this.Patientnewold)

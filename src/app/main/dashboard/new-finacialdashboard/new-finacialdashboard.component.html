@@ -94,6 +94,11 @@
                 <!-- Charges -->
                 <mat-card class="panel mat-elevation-z2">
                     <div class="panel-header">Charges</div>
+                     <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
+                            <mat-icon>trending_up</mat-icon>
+                        </button>
+
+                     
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
                             <table mat-table [dataSource]="charges" class="compact-table">
@@ -124,7 +129,7 @@
                         <div class="totals">
                             <div class="totals-row">
                                 <div class="totals-label">Total Amount</div>
-                                <div class="totals-num">{{ chargesTotalIp}}</div>
+                                <div class="totals-num" style="padding-left: 50px;">{{ chargesTotalIp}}</div>
                                 <div class="totals-num">{{ chargesTotalOp}}</div>
                             </div>
                             <div class="totals-row">
@@ -316,7 +321,7 @@
                                 </div>
                                 <div class="kv kv-strong">
                                     <div class="totals-label">Total</div>
-                                    <div class="kv-value">{{ collectionTotal}}</div>
+                                    <div class="kv-value" style="padding-left: 480px;">{{ collectionTotal}}</div>
                                 </div>
                             </div>
                         </div>
@@ -397,6 +402,12 @@
                                 Retail Sales</div>
                             <table mat-table [dataSource]="pharmacyop" class="compact-table">
 
+                                  <!-- <ng-container matColumnDef="Total Sales">
+                                    <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Type Of Sales
+                                    </th>
+                                    <td mat-cell *matCellDef="let r"> {{ r.opTotalLandedAmount }} </td>
+                                </ng-container> -->
+
                                 <ng-container matColumnDef="Total Sales">
                                     <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Total Sales
                                     </th>
@@ -438,10 +449,15 @@
                                 <tr mat-header-row *matHeaderRowDef="pharmacyopsalesColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: pharmacyopsalesColumns;"></tr>
                             </table>
-                            <div class="panel-footer">
-                                <div  class="totals-label">Total</div>
-                                <div class="footer-value">{{ opippharmacyTotal }}</div>
+                               <div class="panel-footer">
+                                
+                                <div  class="totals-label">Total </div>
+                                <div class="footer-value" style="padding-left: 220px;">{{ opippharmacyTotal }}</div>
+
+                                 <!-- <div  class="totals-label">Total Profit</div> -->
+                                <div class="footer-value">{{ opippharmacyTotalprofit }}</div>
                             </div>
+                           
                         </div>
                     </div>
                 </mat-card>
@@ -461,7 +477,7 @@
                                 </ng-container>
                                 <ng-container matColumnDef="Unpaid Ip Charges">
                                     <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
-                                        Unpaid Ip Charges </th>
+                                        Unpaid IP Charges </th>
                                     <td mat-cell *matCellDef="let r" class="num"> {{ r.opNetAmount }} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="Adequecy Advance">

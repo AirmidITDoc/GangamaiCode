@@ -27,6 +27,7 @@ import { PackageDetailsComponent } from '../appointment-billing/package-details/
 import { LabRequest } from 'app/main/Lab Management/lab-patient-reg/lab-patient-reg.component';
 import { MatSelectChange } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-new-appointmentwith-bill',
@@ -133,7 +134,7 @@ abhaForm: FormGroup
   selectedPatient: any;
   selectedMobile: any;
   statusMessage: string = 'Processing...';
-
+vhealthCardNo:any
   vOPIPId = 0
   regNo = 0;
   PatientName: any;
@@ -175,6 +176,10 @@ abhaForm: FormGroup
   className = "OPD";
   PacakgeList: any = [];
  doctorOptions: any[] = [];
+ HealthCardExpDate: any;
+  isExpanded1 = false; // Defaults to closed
+    isExpanded3 = false;
+vUPINO: any = ""
 
   displayedServiceColumns: string[] = [
     'ServiceName',
@@ -203,7 +208,7 @@ abhaForm: FormGroup
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
   @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-  toastrService: any;
+  
 
   constructor(public _AppointmentlistService: AppointmentlistService,
     public _matDialog: MatDialog,
@@ -220,8 +225,8 @@ abhaForm: FormGroup
     private router: Router, private apiCaller: ApiCaller,
     private location: Location
   ) {
-    this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.tariffId + "&ClassId=" + this.classId + "&ServiceName="
-    // Check if opened as modal or as standalone page
+     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+ // Check if opened as modal or as standalone page
     this.isModal = !!this.dialogRef;
   }
 
@@ -246,8 +251,8 @@ this.loadDropdownOptions();
     // this.OPFooterForm = this.CreateOPFooter();
     // this.getServiceList();
 
-    console.log(this.hospitalconfigservice.HospitalconfigParams)
-    console.log(this._ConfigService.configParams)
+    // console.log(this.hospitalconfigservice.HospitalconfigParams)
+    // console.log(this._ConfigService.configParams)
 
     this.setupFormListener();
     // this.startCountdown();
@@ -292,11 +297,11 @@ this.loadDropdownOptions();
 
   // Method to close all modals or navigate back
   closeAllOrNavigateBack(): void {
-    if (this.isModal) {
-      this._matDialog.closeAll();
-    } else {
+    // if (this.isModal) {
+    //   this._matDialog.closeAll();
+    // } else {
       this.router.navigate(['/opd/appointment']);
-    }
+    // }
   }
 
   createFinalFormView() {
@@ -416,14 +421,14 @@ this.loadDropdownOptions();
       areaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       cityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       City: [this.CityName],
-      StateId: [this.stateId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      CountryId: [this.counryId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      stateId: [this.stateId],//, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      countryId: [this.countryId],// [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       IsCharity: false,
       IsSeniorCitizen: false,
       AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
       // updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-      RegDate: ['', Validators.required],
-      RegTime: ['', Validators.required],
+      RegDate: [ this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
+      RegTime: [ this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'), Validators.required],
       Photo: [''],
       PinNo: [''],
 
@@ -461,16 +466,19 @@ this.loadDropdownOptions();
       // extra field
       IsNRI: [false],
 
-      
+      unitId:[this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+    
       photo: "",
       doctorId:0,
       ServiceId:0,
       patientType:0,
       patientTypeId:1,
-      companyId:0,
+      // companyId:0,
       refDocId:0,
       Comments:'',
-      emailId: ['', [Validators.email]]
+      emailId: ['', [Validators.email]],
+      PhoneNo:'',
+      IsPathRad:0
     })
   }
 
@@ -485,7 +493,8 @@ this.loadDropdownOptions();
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       paymentType: ['CashPay'],
-      UPINO:''
+      UPINO:'',
+      discountAmt:0
     })
   }
   createTotalChargeForm(): FormGroup {
@@ -688,44 +697,45 @@ this.loadDropdownOptions();
   }
 
   
-  getServiceList() {
-    let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
-    let IsPathRad = this.myForm.get("IsPathRad").value || "1"
-    var param = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "ServiceId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "ServiceName",
-          "fieldValue": ServiceName,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "TariffId",
-          "fieldValue": String(this.vTariffId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "IsPathRad",
-          "fieldValue": String(IsPathRad),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "ClassId",
-          "fieldValue": String(this.vClassId),
-          "opType": "Equals"
-        }
-      ],
-      "Columns": [],
-      "exportType": "JSON"
-    }
+  // getServiceList() {
+  //   let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
+  //   // let IsPathRad = this.myForm.get("IsPathRad").value || "1"
+  //   var param = {
+  //     "first": 0,
+  //     "rows": 10,
+  //     "sortField": "ServiceId",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "ServiceName",
+  //         "fieldValue": ServiceName,
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "TariffId",
+  //         "fieldValue": String(this.vTariffId),
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "IsPathRad",
+  //         "fieldValue": String(IsPathRad),
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "ClassId",
+  //         "fieldValue": String(this.vClassId),
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "Columns": [],
+  //     "exportType": "JSON"
+  //   }
 
 
-  }
+  // }
  getSelectedserviceObj(obj) {
-    console.log(obj)
+  debugger
+    // console.log(obj)
     this.SrvcName1 = obj.serviceName;
     this.serviceId = obj.serviceId;
     this.vQty = 1;
@@ -780,7 +790,7 @@ this.loadDropdownOptions();
   // }
  
    onSaveEntry(row) {
-     // 
+  debugger
      let doctorid = 0;
      const formValue = this.myForm.value
  
@@ -789,7 +799,7 @@ this.loadDropdownOptions();
        this.onAddCharges(row)
      }
      else {
-       this.toastrService.warning('Selected Item already added in the list ', 'Warning !', {
+       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
          toastClass: 'tostr-tost custom-toast-warning',
        });
        return;
@@ -886,24 +896,65 @@ this.loadDropdownOptions();
    }
  
    total = 0
-   // getCellCalculation(element) {
- 
-   //   const total = this.dstable1.data.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
-   //   const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
-   //   // this.myForm.get('discountAmt').value
-   //   const discountAmt = (total * discPer) / 100;
-   //   const netAmt = total - discountAmt;
-   //   element.TotalAmt = total
-   //   element.DiscPer = 0,
-   //     element.DiscAmt = discountAmt | 0,
-   //     element.NetAmount = netAmt,
- 
-   //     this.myForm.patchValue({
-   //       totalAmt: total,
-   //       discountAmt: discountAmt,
-   //       netPayableAmt: netAmt
-   //     });
-   // }
+    urgentStatus: boolean = false;
+  onUrgentToggleChange(event: any, contact: any) {
+    this.urgentStatus = event.checked;
+    // optionally do recalculation or other logic
+    console.log(contact);
+  }
+  onDiscountPerChange(row: ChargesList): void {
+    // debugger
+    if (!row) return;
+
+    if (row.DiscPer == null) {
+      row.DiscPer = 0;
+    }
+
+    let discountPer = +row.DiscPer || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountPer < 0 || discountPer > 100) {
+      discountPer = 0; // Reset if out of range
+      row.DiscPer = 0;
+      this.toastr.error("Enter discount % between 0-100");
+    }
+
+    this.Consessionres = true
+    if (discountPer == 0) {
+      this.Consessionres = false
+      this.OPFooterForm.get("concessionReasonId").setValue(0)
+    }
+
+    row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - row.DiscAmt;
+
+    this.calculateTotalAmount();
+  }
+
+  onDiscountAmtChange(row: ChargesList): void {
+    if (!row) return;
+    let discountAmt = +row.DiscAmt || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountAmt < 0 || discountAmt > totalAmount) {
+      row.DiscAmt = 0;
+      discountAmt = 0;
+      this.toastr.error("Discount must be between 0 and the total amount.");
+    }
+
+    this.Consessionres = true
+    if (discountAmt == 0) {
+      this.Consessionres = false
+      this.OPFooterForm.get("concessionReasonId").setValue(0)
+    }
+    row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - discountAmt;
+
+    this.calculateTotalAmount();
+    this.updateCalculation();
+  }
  
    getCellCalculation(element) {
      // 
@@ -947,29 +998,35 @@ this.loadDropdownOptions();
      }, { emitEvent: false });
    }
  
- 
-   showDoctorDropdown(row: any): boolean {
+  showDoctorDropdown(row: any): boolean {
     return row && row.creditedtoDoctor === true;
   }
-
    
    isRowDiscountApplied = false;
+   Doctorflag=false
    onAddCharges(row): void {
       const isPackage = (row.isPackage ?? row.IsPackage) == 1;
   
       if (row.isPathology !== undefined || row.IsPathology !== undefined) {
         this.IsPathology = row.isPathology ?? row.IsPathology;
         this.IsRadiology = row.isRadiology ?? row.IsRadiology;
-      } else {
-        if (this.myForm.get("IsPathRad")?.value == '1') {
-          this.IsPathology = true;
-          this.IsRadiology = false;
-        } else {
-          this.IsRadiology = true;
-          this.IsPathology = false;
-        }
       }
-  
+      //  else {
+      //   if (this.myForm.get("IsPathRad")?.value == '1') {
+      //     this.IsPathology = true;
+      //     this.IsRadiology = false;
+      //   } else {
+      //     this.IsRadiology = true;
+      //     this.IsPathology = false;
+      //   }
+      // }
+
+      if(row.creditedtoDoctor)
+        // this.showDoctorDropdown(row)
+      this.Doctorflag=true
+      else
+         this.Doctorflag=false
+       
       const formValue = this.myForm.value;
       // var totalAmount;
       // if (row.PackageId == 0 || row.PackageId > 0) {
@@ -994,8 +1051,9 @@ this.loadDropdownOptions();
   
       const netAmount = totalAmount - discountAmount;
   
-      // 
+      //  === true
       debugger
+     
       const newRow = {
         ServiceId: row.serviceId,
         ServiceName: row.serviceName,
@@ -1009,7 +1067,7 @@ this.loadDropdownOptions();
         // DiscAmt: discountAmount || row.DiscAmt,
         NetAmount: netAmount || 0,
         ClassName: 1,//this.className || '-',
-        creditedtoDoctor: row.creditedtoDoctor === true,
+        creditedtoDoctor:  row.creditedtoDoctor === true,
         DoctorId: row.DoctorId || 0,
         DoctorName: row.DoctorName || '-',
         ChargesAddedName: this.accountService.currentUserValue.userName,
@@ -1130,7 +1188,7 @@ this.loadDropdownOptions();
        this.servicedoctorname = ''
        this.serivcedoctorId = 0
      }
-     this.toastrService.success('Record Deleted Successfully.', 'Deleted !', {
+     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
        toastClass: 'tostr-tost custom-toast-success',
      });
    }
@@ -1159,7 +1217,7 @@ this.loadDropdownOptions();
   //   });
   // }
 stateId=0
-counryId=0
+countryId=0
      onChangecity(e) {
 
         this.CityName = e.cityName
@@ -1168,7 +1226,7 @@ counryId=0
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             // console.log(Response)
             // this.ddlCountry.SetSelection(Response.countryId);
-            this.counryId = Response.countryId
+            this.countryId = Response.countryId
             console.log(Response.countryId)
         });
     }
@@ -1182,13 +1240,13 @@ counryId=0
 
   departmentId = 0
   selectChangedepartment(obj: any) {
-    console.log(obj)
+    // console.log(obj)
     this.departmentId = obj.value
     this.departmentname = obj.text
 
     if (obj.value) {
       this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-        console.log(data)
+        // console.log(data)
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
       });
@@ -1243,65 +1301,91 @@ counryId=0
     }
   }
 
-  BillSave() {
-    Swal.fire({
-      title: 'Confirm Save',
-      text: 'Are you sure you want to save this Appointment Bill?',
-      icon: 'warning', // or 'question'
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6', // Blue
-      cancelButtonColor: '#d33',     // Red
-      confirmButtonText: 'Yes, save it!',
-      cancelButtonText: 'No, cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log(this.myForm.value)
 
-        const now = new Date();
-        const formattedDate = this.datePipe.transform(now, "yyyy-MM-dd");
-        const formattedTime = this.datePipe.transform(now, 'yyyy-MM-dd HH:mm:ss');
-        // const formattedTime = formattedDate + this.dateTimeObj.time;
-
-        this.myForm.get('RegDate').setValue(formattedDate);
-        this.myForm.get('RegTime').setValue(formattedTime);
-
-        if (!this.myForm.invalid)
-          this.OnSave();
-        else {
-          let invalidFields = [];
-
-          this.myForm.get('StateId').setValue(this.stateId)
-          this.myForm.get('CountryId').setValue(this.counryId)
-           this.myForm.get('City').setValue(this.CityName)
-
-
-          if (this.myForm.invalid) {
-            for (const controlName in this.myForm.controls) {
-              const control = this.myForm.get(controlName);
-
-              if (control instanceof FormGroup || control instanceof FormArray) {
-                for (const nestedKey in control.controls) {
-                  if (control.get(nestedKey)?.invalid) {
-                    invalidFields.push(`Appointment Bill Data : ${controlName}.${nestedKey}`);
+   BillSave() {
+  
+      // if (this.mode === 'edit') {
+      //   Swal.fire({
+      //     title: 'Confirm Save',
+      //     text: 'Are you sure you want to update registration?',
+      //     icon: 'warning', // or 'question'
+      //     showCancelButton: true,
+      //     confirmButtonColor: '#3085d6', // Blue
+      //     cancelButtonColor: '#d33',     // Red
+      //     confirmButtonText: 'Yes, save it!',
+      //     cancelButtonText: 'No, cancel'
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //      const formValue = { ...this.myForm.value };
+      //       const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
+      //         'paymentType', 'servicedoctorId'];
+      //       controlsToRemove.forEach(key => delete formValue[key]);
+      //       console.log(formValue)
+      //       this._labPatientRegService.labPatientSave(formValue).subscribe((response) => {
+      //         this._matDialog.closeAll();
+      //       });
+      //       console.log("Api pending")
+      //       return;
+      //     }
+      //   });
+      // } else {
+        Swal.fire({
+          title: 'Confirm Save',
+          text: 'Are you sure you want to save this OP Bill?',
+          icon: 'warning', // or 'question'
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6', // Blue
+          cancelButtonColor: '#d33',     // Red
+          confirmButtonText: 'Yes, save it!',
+          cancelButtonText: 'No, cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log(this.myForm.value)
+            debugger
+            let priceflag = this.dstable1.data.filter(row => row.Price == 0 || row.Price == '');
+  
+            if (priceflag.length) {
+              this.toastr.warning('Please Enter Price For Service', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+              });
+              return;
+            }
+            debugger
+            this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
+            this.myForm.get('stateId').setValue(this.stateId)
+            this.myForm.get('countryId').setValue(String(this.countryId))
+            if (!this.myForm.invalid)
+              this.OnSave();
+  
+            else {
+              let invalidFields = [];
+              if (this.myForm.invalid) {
+                for (const controlName in this.myForm.controls) {
+                  const control = this.myForm.get(controlName);
+  
+                  if (control instanceof FormGroup || control instanceof FormArray) {
+                    for (const nestedKey in control.controls) {
+                      if (control.get(nestedKey)?.invalid) {
+                        invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
+                      }
+                    }
+                  } else if (control?.invalid) {
+                    invalidFields.push(`OP Bill From: ${controlName}`);
                   }
                 }
-              } else if (control?.invalid) {
-                invalidFields.push(`Appointment Bill From: ${controlName}`);
+              }
+              if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                  this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                  );
+                });
+                return
               }
             }
           }
-          if (invalidFields.length > 0) {
-            invalidFields.forEach(field => {
-              this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-              );
-            });
-            return
-          }
-        }
-
-      }
-    });
-  }
+        });
+      // }
+    }
   OnSave() {
 
     console.log(this.myForm.getRawValue())
@@ -1384,16 +1468,17 @@ counryId=0
     console.log(formValue)
     console.log("form values", this.OpBillForm.value)
 
-
+    // this.VisitFormGroup.get('ConsultantDocId').setValue(this.myForm.get('doctorId').value || 0)
     this.AppointmentBillfinalform.get("appRegistrationBills").setValue(formValue)
     this.AppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
 
 
     console.log("form values", this.AppointmentBillfinalform.value)
     // form vali??
-    // if (!this.myForm.invalid && !this.VisitFormGroup.invalid) {
+    
+    if (!this.myForm.invalid && !this.VisitFormGroup.invalid) {
 
-      if (this.isCompanySelected && this.myForm.get('companyId').value == 0) {
+      if (this.isCompanySelected && this.VisitFormGroup.get('companyId').value == 0) {
         this.toastr.warning('Please select valid Company ', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
@@ -1401,14 +1486,14 @@ counryId=0
       }
       
       if (this.searchFormGroup.get('regRadio').value == "registration") {
-debugger
+
         //
         // if (this.OpBillForm.invalid) {
 
           this.ChargeddetailsArray.clear();
           this.BillDetailsArray.clear();
 
-          this.dsChargeList.data.forEach(item => {
+          this.dstable1.data.forEach(item => {
             this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
             this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
 
@@ -1516,12 +1601,13 @@ debugger
       }
       // Reg Patient
       else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-        if (this.OpBillForm.invalid) {
+        debugger
+        // if (this.OpBillForm.invalid) {
 
           this.ChargeddetailsArray.clear();
           this.BillDetailsArray.clear();
 
-          this.dsChargeList.data.forEach(item => {
+          this.dstable1.data.forEach(item => {
             this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
             this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
 
@@ -1615,52 +1701,52 @@ debugger
               this.savebtn = true
             });
           }
-        }
-        else {
-          let invalidFields = [];
-          if (this.OpBillForm.invalid) {
-            for (const controlName in this.OpBillForm.controls) {
-              const control = this.OpBillForm.get(controlName);
+        // }
+        // else {
+        //   let invalidFields = [];
+        //   if (this.OpBillForm.invalid) {
+        //     for (const controlName in this.OpBillForm.controls) {
+        //       const control = this.OpBillForm.get(controlName);
 
-              if (control instanceof FormGroup || control instanceof FormArray) {
-                for (const nestedKey in control.controls) {
-                  if (control.get(nestedKey)?.invalid) {
-                    invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
-                  }
-                }
-              } else if (control?.invalid) {
-                invalidFields.push(`OpBill From: ${controlName}`);
-              }
-            }
-          }
-          if (invalidFields.length > 0) {
-            invalidFields.forEach(field => {
-              this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-              );
-            });
-            return
-          }
-        }
+        //       if (control instanceof FormGroup || control instanceof FormArray) {
+        //         for (const nestedKey in control.controls) {
+        //           if (control.get(nestedKey)?.invalid) {
+        //             invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
+        //           }
+        //         }
+        //       } else if (control?.invalid) {
+        //         invalidFields.push(`OpBill From: ${controlName}`);
+        //       }
+        //     }
+        //   }
+        //   if (invalidFields.length > 0) {
+        //     invalidFields.forEach(field => {
+        //       this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+        //       );
+        //     });
+        //     return
+        //   }
+        // }
       }
 
 
       //form valid
-    // } else {
-    //   let invalidFields = [];
-    //   if (this.myForm.invalid) {
-    //     for (const controlName in this.myForm.controls) {
-    //       if (this.myForm.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
-    //     }
-    //   }
-    //   if (this.VisitFormGroup.invalid) {
-    //     for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-    //   }
+    } else {
+      let invalidFields = [];
+      if (this.myForm.invalid) {
+        for (const controlName in this.myForm.controls) {
+          if (this.myForm.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+        }
+      }
+      if (this.VisitFormGroup.invalid) {
+        for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+      }
 
-    //   if (invalidFields.length > 0) {
-    //     invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-    //   }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
 
-    // }
+    }
   }
 
   getPacakgeDetail(contact) {
@@ -1809,7 +1895,7 @@ debugger
       this.chargeForm.get("discountAmount").setValue(0);
       this.chargeForm.get("discountPer").setValue(0);
       this.isUpdating = false;
-      this.toastrService.error("Enter discount % between 0-100");
+      this.toastr.error("Enter discount % between 0-100");
       return;
     }
     let percentage = perControl.value;
@@ -1839,7 +1925,7 @@ debugger
       this.chargeForm.get("discountAmount").setValue(0);
       this.chargeForm.get("discountPer").setValue(0);
       this.isUpdating = false;
-      this.toastrService.error("Discount must be between 0 and the total amount.");
+      this.toastr.error("Discount must be between 0 and the total amount.");
       return;
     }
     // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
@@ -2009,18 +2095,23 @@ debugger
   getSelectedObj(obj) {
     // 
     if (this.data?.FormName == 'Registration-Page') {
-      // this.PatientName = obj.firstName + ' ' + obj.lastName;
+      
       this.PatientName = obj.patientName
 
-      // this.RegId = obj.regId;
-      // this.VisitFlagDisp = true;
       if ((this.RegId ?? 0) > 0) {
+        
+        this.VisitFormGroup.get('regId').setValue(this.RegId)
         console.log(obj)
         setTimeout(() => {
           this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
             this.registerObj = response;
+            console.log(response)
             this.value = response.dateofBirth
             this.vRegNo = response.regno
+            this.RegId = response.regId
+            
+            this.stateId= this.registerObj.stateId
+             this.countryId= this.registerObj.countryId
             this.onChangeDateofBirth(response.dateofBirth)
             console.log(response)
             this.getLastDepartmetnNameList(this.registerObj)
@@ -2030,6 +2121,8 @@ debugger
               lastName: this.registerObj.lastName.trim(),
               mobileNo: this.registerObj.mobileNo.trim(),
               address: this.registerObj.address.trim(),
+              stateId: this.registerObj.stateId,
+              countryId: this.registerObj.countryId,
               // DateOfBirth:this.registerObj.dateofBirth,
               emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
               emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -2062,7 +2155,7 @@ debugger
         console.log(obj)
         setTimeout(() => {
           this.searchFormGroup.get('regRadio')?.setValue('registrered');
-          this.onChangeReg({ value: 'registrered' });
+          this.onChangeReg1({ value: 'registrered' });
           this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
             this.registerObj = response;
             console.log(response)
@@ -2162,6 +2255,47 @@ debugger
     });
   }
 
+    onChangeReg(event) {
+      if (event.value == 'onlinepay') {
+        this.onlineflag = true;
+        this.OPFooterForm.get('UPINO').setValidators([Validators.required]);
+        this.OPFooterForm.get('UPINO').enable();
+      } else {
+        this.onlineflag = false;
+        this.OPFooterForm.get('UPINO').reset();
+        this.OPFooterForm.get('UPINO').clearValidators();
+        this.OPFooterForm.get('UPINO').updateValueAndValidity();
+      }
+    }
+  
+ onChangeReg1(event) {
+    debugger
+    if (event.value === 'registration') {
+      this.myForm.reset();
+      this.myForm.get('RegId').reset();
+      this.searchFormGroup.get('RegId').disable();
+      this.isRegSearchDisabled = false;
+      this.Patientnewold = 1;
+
+      this.Regflag = false;
+      this.IsPhoneAppflag = true;
+
+    } else if (event.value === 'registrered') {
+
+      // this.myForm.get('RegId').enable();
+      this.searchFormGroup.get('RegId').enable();
+      this.searchFormGroup.get('RegId').reset();
+      // this.myForm.reset();
+      this.Patientnewold = 2;
+
+      this.myForm.markAllAsTouched();
+      this.VisitFormGroup.markAllAsTouched();
+
+      this.Regflag = true;
+      this.IsPhoneAppflag = false;
+      this.isRegSearchDisabled = true;
+    }
+  }
   resetform(): void {
     this.chargeForm.reset({
       serviceName: "a",
@@ -2176,88 +2310,20 @@ debugger
     });
     this.doctorName = '';
   }
-  onChangeReg(event) {
-    if (event.value === 'registration') {
-      this.myForm.reset();
-      this.myForm.get('RegId').reset();
-      this.searchFormGroup.get('RegId').disable();
-      this.isRegSearchDisabled = false;
-      this.Patientnewold = 1;
-
-      // Instead of reassigning, update controls one by one
-      const newPersonalForm = this.CreateAppointmentForm();
-      this.resetFilteredOptions();
-      Object.keys(newPersonalForm.controls).forEach(key => {
-        if (this.myForm.contains(key)) {
-          this.myForm.setControl(key, newPersonalForm.get(key));
-        } else {
-          this.myForm.addControl(key, newPersonalForm.get(key));
-        }
-      });
-
-      const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
-      Object.keys(newVisitForm.controls).forEach(key => {
-        if (this.VisitFormGroup.contains(key)) {
-          this.VisitFormGroup.setControl(key, newVisitForm.get(key));
-        } else {
-          this.VisitFormGroup.addControl(key, newVisitForm.get(key));
-        }
-      });
-
-      this.myForm.markAllAsTouched();
-      this.VisitFormGroup.markAllAsTouched();
-
-      this.Regflag = false;
-      this.IsPhoneAppflag = true;
-
-    } else if (event.value === 'registrered') {
-
-      this.myForm.get('RegId').enable();
-      this.searchFormGroup.get('RegId').enable();
-      this.searchFormGroup.get('RegId').reset();
-      this.myForm.reset();
-      this.Patientnewold = 2;
-
-      const newPersonalForm = this.CreateAppointmentForm();
-      this.resetFilteredOptions();
-      Object.keys(newPersonalForm.controls).forEach(key => {
-        if (this.myForm.contains(key)) {
-          this.myForm.setControl(key, newPersonalForm.get(key));
-        } else {
-          this.myForm.addControl(key, newPersonalForm.get(key));
-        }
-      });
-
-      const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
-      Object.keys(newVisitForm.controls).forEach(key => {
-        if (this.VisitFormGroup.contains(key)) {
-          this.VisitFormGroup.setControl(key, newVisitForm.get(key));
-        } else {
-          this.VisitFormGroup.addControl(key, newVisitForm.get(key));
-        }
-      });
-
-      this.myForm.markAllAsTouched();
-      this.VisitFormGroup.markAllAsTouched();
-
-      this.Regflag = true;
-      this.IsPhoneAppflag = false;
-      this.isRegSearchDisabled = true;
-    }
-  }
+ 
   onChangePatient(value) {
 
     var mode = "Company"
     if (value.text != "Self") {
       this._AppointmentlistService.getMaster(mode, 1);
-      this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
+      this.VisitFormGroup.get('companyId').setValidators([Validators.required]);
       this.isCompanySelected = true;
       this.patienttype = 2;
     } else if (value.text == "Self") {
       this.isCompanySelected = false;
-      this.VisitFormGroup.get('CompanyId').clearValidators();
+      this.VisitFormGroup.get('companyId').clearValidators();
       this.VisitFormGroup.get('SubCompanyId').clearValidators();
-      this.VisitFormGroup.get('CompanyId').updateValueAndValidity();
+      this.VisitFormGroup.get('companyId').updateValueAndValidity();
       this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
       this.patienttype = 1;
     }
@@ -2413,7 +2479,8 @@ debugger
       ReferByName:[],
       location:[],
       adharCardNo:[],
-      MaritalStatusId:[]
+      MaritalStatusId:[],
+      companyId:[]
     }
   }
   aadharRaw = '';
@@ -2437,24 +2504,6 @@ debugger
     this.myForm.reset();
     this.closeOrNavigateBack();
   }
-
-  // Delete charge from list
-  // deleteCharge(index: number, contact: any): void {
-  //   if (index >= 0 && index < this.chargeList.length) {
-  //     this.chargeList.splice(index, 1);
-  //     this.dsChargeList.data = this.chargeList;
-  //     this.calculateTotalAmount();
-
-  //     if (this.chargeList.length === 0) {
-  //       this.isDiscountApplied = false;
-  //       this.Consessionres = false;
-  //     }
-
-  //     this.toastr.success('Service removed successfully.', 'Removed!', {
-  //       toastClass: 'tostr-tost custom-toast-success',
-  //     });
-  //   }
-  // }
 
   // Get service from service table popup
   getService(contact: any): void {
@@ -2556,9 +2605,33 @@ debugger
             this.handleInputChange(changedField);
         }, 300); // 300ms debounce
     }
+
+     rawDate1: Date | string = '1900-01-01';
+        rawDate2: Date | string = '1900-01-01';
+        rawDate3: Date | string = '1900-01-01';
+    
+        onVisaDateChange(event: MatDatepickerInputEvent<Date>) {
+            console.log('Visa date selected:', event.value);
+            this.rawDate1 = event.value || '1900-01-01';
+        }
+
+     onValidityDateChange(event: MatDatepickerInputEvent<Date>) {
+           console.log('Validity date selected:', event.value);
+           this.rawDate2 = event.value || '1900-01-01';
+           if (this.rawDate1 instanceof Date && this.rawDate2 instanceof Date && this.rawDate1 > this.rawDate2) {
+               this.toastr.warning('Visa Issue Date cannot be greater than Visa Validity Date.', 'Warning!', {
+                   toastClass: 'tostr-tost custom-toast-warning',
+               });
+               this.myForm.get('medTourismVisaValidityDate')?.setValue('');
+               return;
+           }
+       }
+   
+       onEntryDateChange(event: MatDatepickerInputEvent<Date>) {
+           console.log('Entry date selected:', event.value);
+           this.rawDate3 = event.value || '1900-01-01';
+       }
    
 
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"
-
-

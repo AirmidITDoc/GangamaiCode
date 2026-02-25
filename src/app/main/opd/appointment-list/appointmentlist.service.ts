@@ -132,8 +132,8 @@ export class AppointmentlistService {
             ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             TariffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            CompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+             SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             isCancelledBy: 0,
@@ -150,9 +150,10 @@ export class AppointmentlistService {
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
             visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            policyNumber: [0],
-            policyLimit: [0],
-            policyValidateDate: [(new Date()).toISOString()],
+            // policyNumber: [0],
+            // policyLimit: [0],
+            // policyValidateDate: [(new Date()).toISOString()],
+            patientTypeId:1
         });
     }
 

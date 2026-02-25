@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { WordCount } from 'ckeditor5';
 import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ServiceGraphComponent } from './service-graph/service-graph.component';
 
 
 
@@ -49,7 +51,7 @@ export class NewFinacialdashboardComponent {
   constructor(
     public _dashboardServices: DashboardService,
     public _accountServices: AuthenticationService,
-    private router: Router,
+    private router: Router,    public _matDialog: MatDialog,
     public datePipe: DatePipe,
 
   ) { }
@@ -61,7 +63,7 @@ export class NewFinacialdashboardComponent {
   TodayDischargeCount: any;
   TodaySelf: any;
   TodayOther: any;
-
+opippharmacyTotalprofit: any;
   opippharmacyTotal: any;
 
   wardHeadCount = new MatTableDataSource<WardCount>();
@@ -220,19 +222,29 @@ Insuranceds= new MatTableDataSource<Insurance>();
   get pharmacyiptotal(): number {
     return this.pharmacyip.data.reduce((sum, r) => sum + r.ipNetAmount, 0);
   }
+
+ get pharmacyoptotalprofit(): number {
+    return this.pharmacyop.data.reduce((sum, r) => sum + r.oPprofitamount, 0);
+  }
+
+  get pharmacyiptotalprofit(): number {
+    return this.pharmacyip.data.reduce((sum, r) => sum + r.iPprofitamount, 0);
+  }
+
+
   // billingTotalCharges=0
   get billingTotalCharges(): number {
     return this.receiptSummaryTotal;
   }
 
   get receiptSummaryTotal(): number {
-    return this.receipt.data.reduce((sum, r) => sum + (r.receipt || 0), 0);
+    return this.receiptSummary.reduce((sum, r) => sum + (r.amount || 0), 0);
   }
 
   // receiptSummaryTotal=0
-  get receiptamount(): number {
-    return this.receipt.data.reduce((sum, r) => sum + (r.receipt || 0), 0);
-  }
+  // get receiptamount(): number {
+  //   return this.receipt.data.reduce((sum, r) => sum + (r.receipt || 0), 0);
+  // }
 
 
   get modeSummaryTotal(): number {
@@ -255,7 +267,7 @@ Insuranceds= new MatTableDataSource<Insurance>();
 
 
   getwardpatientList() {
-    debugger
+    
     var vadat = {
       "UnitId": this.UnitId,
       'FromDate':this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
@@ -294,13 +306,15 @@ Insuranceds= new MatTableDataSource<Insurance>();
         this.patientTypes[0].ip = this.Financedata.financialIPExistingPatientCount[0]['ipNewPatientCount']
         this.patientTypes[1].ip = this.Financedata.financialIPExistingPatientCount[0]['ipExistingPatientCount']
       }
-      debugger
+      
 
       if (this.Financedata.receiptOPIP) {
+        console.log()
         this.receiptSummary[0].amount = this.Financedata.receiptOPIP[0]['receipt']
         this.receiptSummary[1].amount = this.Financedata.advanceOPIP[0]['advance']
         this.receiptSummary[2].amount = this.Financedata.refundOPIP[0]['refund']
         this.receiptSummary[3].amount = this.Financedata.pharmacyReturn[0]['return1']
+
       }
 
 
@@ -327,8 +341,10 @@ Insuranceds= new MatTableDataSource<Insurance>();
       console.log(this.Financedata.pharmacySaleOP)
       console.log(this.Financedata.pharmacySaleIP)
 
-      this.opippharmacyTotal=this.pharmacyiptotal + this.pharmacyoptotal
+      this.opippharmacyTotal=(this.pharmacyiptotal + this.pharmacyoptotal).toFixed(2)
 
+
+      this.opippharmacyTotalprofit=(this.pharmacyoptotalprofit + this.pharmacyiptotalprofit).toFixed(2)
       this.finalOutstanding.data = this.Financedata.financialOutStandingOPIP;
 
       // this.finalOutstanding.data = this.Financedata.financialOutStandingOPIP;
@@ -341,6 +357,20 @@ Insuranceds= new MatTableDataSource<Insurance>();
 
   }
 
+
+
+    serviceTrend() {
+      const dialogRef = this._matDialog.open(ServiceGraphComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        // this.grid.bindGridData();
+      });
+    }
 }
 
 
