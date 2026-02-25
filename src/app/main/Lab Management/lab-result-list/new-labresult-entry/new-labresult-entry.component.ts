@@ -46,7 +46,7 @@ export class NewLabresultEntryComponent {
     'ResultValue',
     'Flag',
     'NormalRange',
-    'Formula'
+    // 'Formula'
   ];
 
   isLoading: string = '';
@@ -223,37 +223,6 @@ export class NewLabresultEntryComponent {
     return Keys;
   }
 
-  onResultUp(data) {
-
-    let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
-    for (let i = 0; i < items.length; i++) {
-      let formula = items[i].Formula;
-      let formulas = this.getShortNames(formula);
-      formulas.forEach(e => {
-        let itm = this.dataSource.data.find(x => x.ParameterShortName == e);
-        if (itm)
-          formula = formula.replace("{{" + e + "}}", itm.ResultValue)
-      });
-      items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
-      if (!isNaN(items[i].ResultValue))
-        items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
-    }
-
-    data.ParaBoldFlag = '';
-    if (data.ParaIsNumeric || data.PIsNumeric) {
-
-      let a = parseFloat(data.ResultValue);
-      let b = parseFloat(data.MinValue);
-      let c = parseFloat(data.MaxValue);
-
-      if (b != null && c != null && a != null) {
-        if (a < b || a > c) {
-          data.ParaBoldFlag = 'B';
-        }
-      }
-    }
-  }
-
   // onResultUp(data) {
 
   //   let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
@@ -270,37 +239,64 @@ export class NewLabresultEntryComponent {
   //       items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
   //   }
 
-  //   // ---- FLAG LOGIC (NEW & FIXED) ----
   //   data.ParaBoldFlag = '';
-  //   data.ParaFlagIcon = '';
-  //   data.ParaFlagClass = '';
-
   //   if (data.ParaIsNumeric || data.PIsNumeric) {
 
-  //     const value = parseFloat(data.ResultValue);
-  //     const min = parseFloat(data.MinValue);
-  //     const max = parseFloat(data.MaxValue);
+  //     let a = parseFloat(data.ResultValue);
+  //     let b = parseFloat(data.MinValue);
+  //     let c = parseFloat(data.MaxValue);
 
-  //     if (!isNaN(value) && !isNaN(min) && !isNaN(max)) {
-
-  //       if (value < min) {
-  //         data.ParaBoldFlag = 'L';
-  //         data.ParaFlagIcon = 'arrow_downward';
-  //         data.ParaFlagClass = 'flag-low';
-
-  //       } else if (value > max) {
-  //         data.ParaBoldFlag = 'H';
-  //         data.ParaFlagIcon = 'arrow_upward';
-  //         data.ParaFlagClass = 'flag-high';
-
-  //       } else {
-  //         data.ParaBoldFlag = 'N';
-  //         data.ParaFlagIcon = 'check_circle';
-  //         data.ParaFlagClass = 'flag-normal';
+  //     if (b != null && c != null && a != null) {
+  //       if (a < b || a > c) {
+  //         data.ParaBoldFlag = 'B';
   //       }
   //     }
   //   }
   // }
+
+  onlyB(contact: any) {
+    if (contact.ParaBoldFlag) {
+      contact.ParaBoldFlag = contact.ParaBoldFlag.toUpperCase() === 'B' ? 'B' : '';
+    }
+  }
+
+  onResultUp(data) {
+
+    let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+    for (let i = 0; i < items.length; i++) {
+      let formula = items[i].Formula;
+      let formulas = this.getShortNames(formula);
+      formulas.forEach(e => {
+        let itm = this.dataSource.data.find(x => x.ParameterShortName == e);
+        if (itm)
+          formula = formula.replace("{{" + e + "}}", itm.ResultValue)
+      });
+      items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
+      if (!isNaN(items[i].ResultValue))
+        items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
+    }
+
+    // ---- FLAG LOGIC (NEW & FIXED) ----
+    data.ParaBoldFlag = '';
+    data.RangeStatus = ''; // 'low' | 'high' | ''
+
+    if (data.ParaIsNumeric || data.PIsNumeric) {
+      let a = parseFloat(data.ResultValue);
+      let b = parseFloat(data.MinValue);
+      let c = parseFloat(data.MaxValue);
+
+      if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
+        if (a < b) {
+          data.ParaBoldFlag = 'B';
+          data.RangeStatus = 'low';
+        }
+        else if (a > c) {
+          data.ParaBoldFlag = 'B';
+          data.RangeStatus = 'high';
+        }
+      }
+    }
+  }
 
   boldstatus = 0;
 
@@ -410,6 +406,11 @@ export class NewLabresultEntryComponent {
       this.dataSource.data = Visit as Pthologyresult[];
       console.log(this.dataSource.data)
       // this.Pthologyresult = Visit as Pthologyresult[];
+      // background color change
+      this.dataSource.data.forEach(item => {
+        this.applyRangeStatus(item);
+      });
+
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
@@ -424,6 +425,30 @@ export class NewLabresultEntryComponent {
         this.sIsLoading = '';
       });
 
+  }
+
+  applyRangeStatus(data: any) {
+
+    data.ParaBoldFlag = '';
+    data.RangeStatus = ''; // 'low' | 'high' | ''
+
+    if (data.ParaIsNumeric || data.PIsNumeric) {
+
+      let a = parseFloat(data.ResultValue);
+      let b = parseFloat(data.MinValue);
+      let c = parseFloat(data.MaxValue);
+
+      if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
+        if (a < b) {
+          data.ParaBoldFlag = 'B';
+          data.RangeStatus = 'low';
+        }
+        else if (a > c) {
+          data.ParaBoldFlag = 'B';
+          data.RangeStatus = 'high';
+        }
+      }
+    }
   }
 
   getResultListLab(obj, rbj) {
@@ -755,7 +780,7 @@ export class NewLabresultEntryComponent {
       unitId: [item.UnitId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       normalRange: [item.NormalRange || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       printOrder: [this.pathologyResultArray.length + 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      pisNumeric: [item.ParaIsNumeric || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pisNumeric: [item.ParaIsNumeric || item.PIsNumeric, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdipdid: [item.OPD_IPD_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opdipdtype: [4, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       categoryName: [item.CategoryName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -764,7 +789,7 @@ export class NewLabresultEntryComponent {
       parameterName: [item.ParameterName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       unitName: [item.UnitName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       patientName: [this.selectedAdvanceObj2.patientName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      regNo: [this.selectedAdvanceObj2.regNo || '321', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      regNo: [this.selectedAdvanceObj2.labRequestNo || '321', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       sampleId: [item.SampleID || "", [this._FormvalidationserviceService.onlyNumberValidator()]],
       paraBoldFlag: [item.ParaBoldFlag || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       minValue: [parseFloat(item.MinValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -879,7 +904,7 @@ export class PthologyresultInsert {
   ParameterName: any;
   UnitName: String;
   PatientName: any;
-  RegNo: any;
+  labRequestNo: any;
   SampleID: any;
 
   constructor(pathologyInsertReportObj) {
@@ -900,7 +925,7 @@ export class PthologyresultInsert {
     this.ParameterName = pathologyInsertReportObj.ParameterName || '';
     this.UnitName = pathologyInsertReportObj.UnitName || '';
     this.PatientName = pathologyInsertReportObj.PatientName || '';
-    this.RegNo = pathologyInsertReportObj.RegNo || '0';
+    this.labRequestNo = pathologyInsertReportObj.labRequestNo || '0';
     this.SampleID = pathologyInsertReportObj.SampleID || 0;
 
   }

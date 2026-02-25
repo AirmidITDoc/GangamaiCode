@@ -113,7 +113,7 @@
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon *ngIf="element.isPathOutSource === 1" matTooltip="Pathology Outsourced">
+                        <mat-icon *ngIf="element.isPathOutSource == '1'" matTooltip="Pathology Outsourced">
                             local_hospital
                         </mat-icon>
 
@@ -145,20 +145,20 @@
                         {{ element.outSourceLabName }}
                     </span>
 
-                    <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
+                    <button mat-icon-button *ngIf="element.isPathOutSource == '1'"
                         (click)="Editoutsoucedata(element)" matTooltip="Edit OutSource Data">
                         <mat-icon style="color:#ff5722;">edit</mat-icon>
                     </button>
                 </ng-container>
 
                 <ng-template #noOutSource>
-                    <span [matTooltip]="element.isSampleCollection === 'False'
+                    <span [matTooltip]="element.isSampleCollection == false
                                                         ? 'Please complete sample collection first'
                                                         : ''">
 
-                        <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
-                            [disabled]="element.isSampleCollection === 'False'"
-                            (click)="element.isSampleCollection !== 'False' && Editoutsoucedata(element)">
+                        <button mat-icon-button *ngIf="element.isPathOutSource == '1'"
+                            [disabled]="element.isSampleCollection == false"
+                            (click)="element.isSampleCollection !== false && Editoutsoucedata(element)">
 
                             <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
                         </button>
