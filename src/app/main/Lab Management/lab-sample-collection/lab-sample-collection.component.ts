@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation, ComponentRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from "@angular/material/dialog";
@@ -17,6 +17,10 @@ import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sam
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { LabsampleCollFormComponent } from './labsample-coll-form/labsample-coll-form.component';
 import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-coll-old-method.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
+import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
 
 @Component({
     selector: 'app-lab-sample-collection',
@@ -28,6 +32,7 @@ import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-co
 export class LabSampleCollectionComponent {
     myformSearch: FormGroup;
     autocompleteModeunit: string = "Hospital";
+    autocompleteModecompany: string = "Company";
     isShowDetailTable: boolean = false;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -35,7 +40,9 @@ export class LabSampleCollectionComponent {
     f_name: any = "%"
     regNo: any = "0"
     l_name: any = "%"
-    status: any = "0"
+    status: any = "2"
+    vCompanyId: any = "0"
+    VPBillNo = "%"
     // Ptype: any = "5"
     Vtotalcount = 0
     VCompletedcount = 0
@@ -53,34 +60,41 @@ export class LabSampleCollectionComponent {
     @ViewChild('statusbtnTemplate') statusbtnTemplate!: TemplateRef<any>;
     @ViewChild('serviceNames') serviceNames!: TemplateRef<any>;
     @ViewChild('actionsPatientType') actionsPatientType!: TemplateRef<any>;
+    @ViewChild('genderANDage') genderANDage!: TemplateRef<any>;
+    @ViewChild('outSourceLabName') outSourceLabName!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action1')!.template = this.statusbtnTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'serviceNames')!.template = this.serviceNames;
-        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsPatientType;
+        // this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsPatientType;
+        this.gridConfig.columnsList.find(col => col.key === 'genderName')!.template = this.genderANDage;
+        this.gridConfig.columnsList.find(col => col.key === 'outSourceLabName')!.template = this.outSourceLabName;
     }
-
-
 
     allcolumns = [
         {
             heading: "-", key: "action1", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.statusbtnTemplate
         },
-        {
-            heading: "Patient Type", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-            template: this.actionsPatientType
-        },
+        // {
+        //     heading: "Patient Type", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
+        //     template: this.actionsPatientType
+        // },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date-Time", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-        { heading: "SampleCollection DateTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
-        { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "SampleCollection DateTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
-        { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         {
-            heading: "Test Name", key: "serviceNames", align: "right", width: 450, sticky: true, type: gridColumnTypes.template,
+            heading: "Test Name", key: "serviceNames", sort: true, align: "left", width: 450, type: gridColumnTypes.template,
+            template: this.serviceNames
+        },
+        {
+            heading: "OutSource Name", key: "outSourceLabName", sort: true, align: "left", emptySign: 'NA', width: 200, type: gridColumnTypes.template,
             template: this.serviceNames
         },
         {
@@ -99,7 +113,9 @@ export class LabSampleCollectionComponent {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
         ]
     }
@@ -109,12 +125,24 @@ export class LabSampleCollectionComponent {
         public datePipe: DatePipe,
         public toastr: ToastrService,
         private _loggedService: AuthenticationService,
-        public permissionService: PagePermissionService,) { }
+        public permissionService: PagePermissionService,
+        private overlay: Overlay,) { }
 
     ngOnInit(): void {
         this.myformSearch = this._SampleCollectionService.createSearchForm()
         this.GetSampleCollectiondetail()
     }
+
+    ListViewcompany(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.vCompanyId = value.value
+        else
+            this.vCompanyId = 0
+
+        this.onChangeFirst();
+    }
+
     ListView1(value) {
         console.log(value)
         if (value.value !== 0)
@@ -134,6 +162,8 @@ export class LabSampleCollectionComponent {
         this.l_name = this.myformSearch.get('LastName').value + "%"
         this.regNo = this.myformSearch.get('RegNo').value || "0"
         this.status = this.myformSearch.get('StatusSearch').value
+        this.VPBillNo = this.myformSearch.get('PBillNo').value || "%"
+        this.vCompanyId = this.myformSearch.get('CompanyId').value || "0"
         // this.Ptype = this.myformSearch.get('PatientTypeSearch').value
         this.getfilterdata();
     }
@@ -152,13 +182,14 @@ export class LabSampleCollectionComponent {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "CompanyId", fieldValue: String(this.vCompanyId), opType: OperatorComparer.Equals },
+                { fieldName: "PBillNo", fieldValue: String(this.VPBillNo), opType: OperatorComparer.StartsWith },
                 { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
         this.GetSampleCollectiondetail()
-
     }
 
     GetSampleCollectiondetail() {
@@ -193,7 +224,6 @@ export class LabSampleCollectionComponent {
                 "fieldValue": String(this.regNo),
                 "opType": "Equals"
             },
-
             {
                 "fieldName": "From_Dt",
                 "fieldValue": this.fromDate,
@@ -208,6 +238,16 @@ export class LabSampleCollectionComponent {
                 "fieldName": "IsCompleted",
                 "fieldValue": String(this.status),
                 "opType": "Equals"
+            },
+            {
+                "fieldName": "CompanyId",
+                "fieldValue": String(this.vCompanyId),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "PBillNo",
+                "fieldValue": String(this.VPBillNo),
+                "opType": "Contains"
             },
             {
                 "fieldName": "UnitId",
@@ -254,6 +294,8 @@ export class LabSampleCollectionComponent {
                 this.myformSearch.get('LastName').setValue("")
         if (event == 'RegNo')
             this.myformSearch.get('RegNo').setValue("0")
+        if (event == 'PBillNo')
+            this.myformSearch.get('PBillNo').setValue("")
 
         this.onChangeFirst();
     }
@@ -332,36 +374,160 @@ export class LabSampleCollectionComponent {
 
     }
 
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    // ////////////// outsource popup //////////////////////
+    // private overlayRef: OverlayRef | null = null;
+    private patientOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private outSourceCloseTimeout: any = null;
+
+    openPatientDetailsPopover(event: MouseEvent, outSourceData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.patientOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(OutsourceDetailsPopoverComponent);
+            const componentRef: ComponentRef<OutsourceDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
+            componentRef.instance.outSourceData = outSourceData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.patientOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+
+    closePatientDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.outSourceCloseTimeout) {
+            clearTimeout(this.outSourceCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.outSourceCloseTimeout = setTimeout(() => {
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepPatientPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.outSourceCloseTimeout) {
+            clearTimeout(this.outSourceCloseTimeout);
+            this.outSourceCloseTimeout = null;
+        }
+    }
+
+    Editoutsoucedata(row) {
+        console.log(row)
+        const dialogRef1 = this._matDialog.open(OutsourceDetailsComponent,
+            {
+                maxWidth: "80vw",
+                // height: '60vh',
+                // width: '100%',
+                width: "45%",
+                height: "60%",
+                data: row
+            });
+
+        dialogRef1.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
 }
 
 export class SampleList {
-  VADate: Date;
-  VATime: Date;
-  PathTestID: Number;
-  ServiceName: String;
-  IsSampleCollection: boolean;
-  isSampleCollection: any;
-  SampleCollectionTime: Date;
-  PathReportID: any;
-  SampleNo: any;
-  RegNo: any;
-  pathReportID: any;
-  sampleNo: any;
-  isApprovedByCamp: any;
+    VADate: Date;
+    VATime: Date;
+    PathTestID: Number;
+    ServiceName: String;
+    IsSampleCollection: boolean;
+    isSampleCollection: any;
+    SampleCollectionTime: Date;
+    PathReportID: any;
+    SampleNo: any;
+    RegNo: any;
+    pathReportID: any;
+    sampleNo: any;
+    isApprovedByCamp: any;
 
-  constructor(SampleList) {
-    this.VADate = SampleList.VADate || '';
-    this.VATime = SampleList.VATime || '';
-    this.PathTestID = SampleList.PathTestID || 0;
-    this.ServiceName = SampleList.ServiceName || '';
-    this.IsSampleCollection = SampleList.IsSampleCollection || 0;
-    this.isSampleCollection = SampleList.isSampleCollection || 0;
-    this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
-    this.PathReportID = SampleList.PathReportID || 0;
-    this.SampleNo = SampleList.SampleNo || 0;
-    this.RegNo = SampleList.RegNo || 0;
-    this.pathReportID = SampleList.pathReportID || 0;
-    this.sampleNo = SampleList.sampleNo || 0;
-    this.isApprovedByCamp = SampleList.isApprovedByCamp || 0;
-  }
+    constructor(SampleList) {
+        this.VADate = SampleList.VADate || '';
+        this.VATime = SampleList.VATime || '';
+        this.PathTestID = SampleList.PathTestID || 0;
+        this.ServiceName = SampleList.ServiceName || '';
+        this.IsSampleCollection = SampleList.IsSampleCollection || 0;
+        this.isSampleCollection = SampleList.isSampleCollection || 0;
+        this.SampleCollectionTime = SampleList.SampleCollectionTime || '';
+        this.PathReportID = SampleList.PathReportID || 0;
+        this.SampleNo = SampleList.SampleNo || 0;
+        this.RegNo = SampleList.RegNo || 0;
+        this.pathReportID = SampleList.pathReportID || 0;
+        this.sampleNo = SampleList.sampleNo || 0;
+        this.isApprovedByCamp = SampleList.isApprovedByCamp || 0;
+    }
 }

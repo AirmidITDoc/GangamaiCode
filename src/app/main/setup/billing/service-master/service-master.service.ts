@@ -147,9 +147,9 @@ export class ServiceMasterService {
         return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
     }
 
-    public serviceMasterInsert(Param: any) {
+    public serviceMasterInsert(Param: any,tariffId:any) {
         if (Param.serviceId) {
-            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId, Param);
+            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId +"/"+ tariffId, Param);
         } else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
     }
 

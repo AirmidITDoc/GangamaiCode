@@ -1,0 +1,52 @@
+.flag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+}
+
+.flag-low {
+  color: #1976d2; /* blue */
+}
+
+.flag-high {
+  color: #d32f2f; /* red */
+}
+
+.flag-normal {
+  color: #2e7d32; /* green */
+}
+
+//  cell background color
+.low-range {
+  background-color: #fff3cd; /* yellow */
+}
+
+.high-range {
+  background-color: #f8d7da; /* red */
+}
+
+// indicator
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.legend-box {
+  width: 25px;
+  height: 25px;
+  border-radius: 3px;
+}
+
+.low-box {
+  background-color: #fff3cd; /* yellow */
+  border: 1px solid #856404;
+}
+
+.high-box {
+  background-color: #f8d7da; /* red */
+  border: 1px solid #721c24;
+}

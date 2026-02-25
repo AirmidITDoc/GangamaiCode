@@ -120,13 +120,21 @@
                 <mat-icon>print</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)">
-                <mat-icon>local_shipping</mat-icon>
-            </button>
+            <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified)
+                            ? 'Reports are not verified yet' : '' " matTooltipPosition="above">
+                <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)"
+                    [disabled]="!element.isAllPathServicesVerified && !element.isAllRadServicesVerified">
+                    <mat-icon>local_shipping</mat-icon>
+                </button>
+            </span>
 
-            <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)">
-                <mat-icon>sms</mat-icon>
-            </button>
+            <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified)
+                            ? 'Reports are not verified yet' : '' " matTooltipPosition="above">
+                <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)"
+                    [disabled]="!element.isAllPathServicesVerified && !element.isAllRadServicesVerified">
+                    <mat-icon>sms</mat-icon>
+                </button>
+            </span>
             <!-- <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
                 (click)="$event.stopPropagation();">
                 <mat-icon>more_vert</mat-icon>
@@ -222,9 +230,16 @@
                             [mode]="autocompleteModerefdoc">
                         </airmid-dropdown> -->
                         <airmid-dropdown label="Ref Doctor Name" formControlName="DoctorID"
-                            [(ngModel)]="gridConfig.filters[5].fieldValue" [formGroup]="myFilterform" TextField="doctorName"
-                            ValueField="doctorId" ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                            [(ngModel)]="gridConfig.filters[5].fieldValue" [formGroup]="myFilterform"
+                            TextField="doctorName" ValueField="doctorId" ApiUrl="Doctor/RefdoctorComboList?keywoard="
                             (selectionChange)="ListView($event)"></airmid-dropdown>
+
+                        <airmid-dropdown label="B2B / Company Name" formControlName="CompanyId" [formGroup]="myFilterform"
+                            [(ngModel)]="gridConfig.filters[7].fieldValue" (selectionChange)="ListViewcompany($event)"
+                            ValueField="companyId" TextField="companyName"
+                            ApiUrl="LabPatientRegistration/CompanyComboList?keywoard="
+                            [mode]="autocompleteModecompany"></airmid-dropdown>
+
                     </div>
 
                 </form>

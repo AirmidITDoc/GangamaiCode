@@ -110,11 +110,11 @@ export class MediforeTallyListComponent {
         { heading: "Adv used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
 
         { heading: "PrintBillNo", key: "printBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Govt CompanyName", key: "govtCompanyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Govt RefNo", key: "govtRefNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Govt CompanyName", key: "govtCompanyName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
+        { heading: "Govt RefNo", key: "govtRefNo", sort: true, align: 'left', emptySign: 'NA' , width: 200 },
         { heading: "Govt Appr.Amt", key: "govtApprovedAmt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Compnay Name", key: "compnayCompanyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Comp RefNo", key: "compRefNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Compnay Name", key: "compnayCompanyName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
+        { heading: "Comp RefNo", key: "compRefNo", sort: true, align: 'left', emptySign: 'NA', width: 200  },
         { heading: "Company Appr.Amt", key: "companyApprovedAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
 
 
@@ -150,93 +150,79 @@ export class MediforeTallyListComponent {
     //
     allOBillcashcounterfilters = [
         { fieldName: "Fromdate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-
+        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals } 
     ];
 
     allOPbillcashcountercolumns = [
-        { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "OP_ReceiptNo", key: "oP_ReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "OPDNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA' },
-
-        { heading: "PatitentName", key: "patitentName", sort: true, align: 'left', emptySign: 'NA' },
-
-        { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Receipt No", key: "oP_ReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "OPD No", key: "opdNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patitent Name", key: "patitentName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+        { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        // { heading: "NEFT Amount", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Neft Amt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Adv used Amount", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-
-    ];
-
+        { heading: "Tds Pay", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Wf Pay", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Adv used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA',width: 200  }
+    ]; 
 
     allOPRefundfilters = [
         { fieldName: "Fromdate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-
-    ];
-
+        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals } 
+    ]; 
 
     allOPRefundColumns = [
         { heading: "Lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "OP_RefundPaymentNo", key: "oP_RefundPaymentNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-
-        { heading: "PatitentName", key: "patitentName", sort: true, align: 'left', emptySign: 'NA' },
-
-        { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Refund PaymentNo", key: "oP_RefundPaymentNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' }, 
+        { heading: "Patitent Name", key: "patitentName", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
+        { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Neft Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "TdsAmount", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "WfAmount", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-
-        { heading: "TransactionType", key: "transactionType", sort: true, align: 'left', emptySign: 'NA' },
-
-        { heading: "Adv used Amount", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-
+        { heading: "Tds Amt", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Wf Amt", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },  
+         { heading: "Adv used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
     ]
     //IP
     allIPbillfilters = [
         { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
-        { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
-
+        { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.Equals } 
     ];
 
 
     allIpBillColumns = [
         { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-
         { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "Bill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         // { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-
         { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Paid Amt", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
         { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "PrintBillNo", key: "printBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Govt CompanyName", key: "govtCompanyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Govt RefNo", key: "govtRefNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PrintBillNo", key: "printBillNo", sort: true, align: 'left', emptySign: 'NA', width: 160  },
+        { heading: "Govt CompanyName", key: "govtCompanyName", sort: true, align: 'left', emptySign: 'NA' , width: 200  },
+        { heading: "Govt RefNo", key: "govtRefNo", sort: true, align: 'left', emptySign: 'NA'  , width: 200  },
         // { heading: "Govt Appr.Amt", key: "govtApprovedAmt", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Compnay Name", key: "compnayCompanyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Comp RefNo", key: "compRefNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Compnay Name", key: "compnayCompanyName", sort: true, align: 'left', emptySign: 'NA' , width: 200   },
+        { heading: "Comp RefNo", key: "compRefNo", sort: true, align: 'left', emptySign: 'NA'  , width: 200  },
         { heading: "Company Appr.Amt", key: "companyApprovedAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-
     ]
 
 
@@ -249,16 +235,11 @@ export class MediforeTallyListComponent {
 
     allIpBilldetailColumns = [
 
-        { heading: "Label", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Admission ID", key: "admissionId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
+        { heading: "Label", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 150 }, 
         { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-
-        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 90, type: 6 },
-
-        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
         { heading: "chargesTotalAmt", key: "chargesTotalAmt", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
@@ -273,23 +254,25 @@ export class MediforeTallyListComponent {
     ];
 
     allIpBillcashcountercolumns = [
-
-        { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+         { heading: "Label", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IP_ReceiptNo", key: "iP_ReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
-
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Net Amount", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        // { heading: "NEFT Amount", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Online Amount", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Adv used Amount", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
+        { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cash Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cheque Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Card Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Neft Amt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Online Amt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Tds Amt", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Wf Amt", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Adv used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     ];
 
 
@@ -300,26 +283,21 @@ export class MediforeTallyListComponent {
     ];
 
     allIpBillRefundcolumns = [
-        { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA' , width: 90},
-
-        { heading: "IPRefundPaymentNo", key: "iP_RefundPaymentNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-
-
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-        { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' , width: 90},
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' , width:200},
-
-       { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Online Amount", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Adv used Amount", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-         { heading: "TdsAmount", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "WfAmount", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA' , width: 150},
+        { heading: "PaymentNo", key: "iP_RefundPaymentNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+         { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' , width: 90},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' , width:200},
+        { heading: "Cash Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cheque Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Card Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Neft Amt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Online Amt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Adv used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Tds Amt", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Wf Amt", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount } 
 
     ];
     allIPAdvancefilters = [
@@ -329,25 +307,21 @@ export class MediforeTallyListComponent {
     ];
 
     allIpAdvancecolumns = [
-        { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-        { heading: "Lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "Lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 150 }, 
         { heading: "IP_Adv_ReceiptNo", key: "iP_Adv_ReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
-        { heading: "Adv Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Online Amount", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Adv used Amount", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "TdsAmount", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "WfAmount", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-
-
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 }, 
+        //{ heading: "Adv Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cash Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cheque Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Card Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Neft Amt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Online Amt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Adv used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Tds Amt", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Wf Amt", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }  
     ];
 
     allAdvReturnfilters = [
@@ -357,25 +331,21 @@ export class MediforeTallyListComponent {
     ];
 
     allAdvReturncolumns = [
-        { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "IP_RefundAdvNo", key: "iP_RefundAdvNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patitentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         //    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Online Amount", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Adv used Amount", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "TdsAmount", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "WfAmount", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-
-
+        { heading: "Cash Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cheque Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Card Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Neft Amt", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Online Amt", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Adv used Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Tds Amt", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Wf Amt", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount } 
     ];
 
     //
@@ -386,24 +356,19 @@ export class MediforeTallyListComponent {
 
     allPharmacySalescolumns = [
 
-        { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "OPIPDNo", key: "opdipno", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "OPIPD No", key: "opdipno", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
-        { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-        { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-        { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-        { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Online Amount", key: "onlinePayment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "MPaisa Amount", key: "mPaisa", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Cash Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Online Amt", key: "onlinePayment", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "MPaisa Amt", key: "mPaisa", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
 
         // { heading: "Debit", key: "debit", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "Credit", key: "credit", sort: true, align: 'left', emptySign: 'NA' },
@@ -417,38 +382,34 @@ export class MediforeTallyListComponent {
     ];
 
     allPharmacysalesdetailcolumns = [
-        { heading: "ChargesDate", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "SalesType", key: "salesType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        { heading: "SalesNo", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "OPIPDNo", key: "opipno", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Bill Date", key: "billdate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Sales Type", key: "salesType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "OPIPD No", key: "opipno", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "ChargesTotalAmt", key: "chargesTotalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-        { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-        { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
-        { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
+        { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount } 
     ];
 
 
     allPharreturnColumns = [
-        { heading: "ChargesDate", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "ReturnType", key: "returnType", sort: true, align: 'left', emptySign: 'NA' },
-
+        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Bill Date", key: "billdate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Return Type", key: "returnType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SalesReturnNo", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "OPIPDNo", key: "opipno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "OPIPD No", key: "opipno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "UnitMRP", key: "unitMRP", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "ChargesTotalAmt", key: "chargesTotalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
 
     ]
@@ -538,8 +499,8 @@ export class MediforeTallyListComponent {
         filters: this.allIPBillRefundfilters
     }
 
-    gridConfigIPAdvance: gridModel = {
-
+    gridConfigIPAdvance: gridModel = { 
+          permissionCode: permissionCodes.TallyInterface,
         apiUrl: "Tally/TallyIPAdvancePaymentListMediforte",
         columnsList: this.allIpAdvancecolumns,
         sortField: "UnitId",

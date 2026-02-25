@@ -45,11 +45,41 @@ export class OutsourceDetailsPopoverComponent {
     // );
   }
 
+  // formatDate(date: any): string {
+  //   if (!date) return 'N/A';
+
+  //   try {
+  //     return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm') || 'N/A';
+  //   } catch {
+  //     return 'N/A';
+  //   }
+  // }
+
   formatDate(date: any): string {
     if (!date) return 'N/A';
 
     try {
-      return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm') || 'N/A';
+      let parsedDate: Date;
+
+      // ISO format → works directly
+      if (typeof date === 'string' && date.includes('T')) {
+        parsedDate = new Date(date);
+      }
+      // dd-MM-yyyy HH:mm:ss → manual parse
+      else if (typeof date === 'string' && date.includes('-')) {
+        const [d, t] = date.split(' ');
+        const [day, month, year] = d.split('-').map(Number);
+        const [hour, min, sec] = t.split(':').map(Number);
+
+        parsedDate = new Date(year, month - 1, day, hour, min, sec);
+      }
+      // Date object
+      else {
+        parsedDate = new Date(date);
+      }
+
+      return this.datePipe.transform(parsedDate, 'dd/MM/yyyy HH:mm') || 'N/A';
+
     } catch {
       return 'N/A';
     }

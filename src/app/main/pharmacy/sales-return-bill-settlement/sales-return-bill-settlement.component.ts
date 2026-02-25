@@ -23,6 +23,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { element } from 'protractor';
 import { ConfigService } from 'app/core/services/config.service';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -635,30 +636,100 @@ vNetAmount: any = 0;
 vBalanceAmount: any = 0;
 vPaidAmount: any = 0;
 SelectedList: any = [];
-tableElementChecked(event, element) {
-  debugger
+// tableElementChecked(event, element) {
+//   debugger
+//   if (event.checked) {
+//     this.SelectedList.push(element)
+//     this.vNetAmount += Math.round(+element.netAmount)
+//     this.vPaidAmount += Math.round(+element.paidAmount)
+//     this.vBalanceAmount += Math.round(+element.balanceAmount)
+//   }
+//   else {
+//     let index = this.SelectedList.indexOf(element);
+//     if (index >= 0) {
+//       this.SelectedList.splice(index, 1);
+//     }
+//     this.vNetAmount -= Math.round(+element.netAmount)
+//     this.vPaidAmount -= Math.round(+element.paidAmount)
+//     this.vBalanceAmount -= Math.round(+element.balanceAmount)
+//   }
+//   console.log(this.SelectedList)
+//   this.MutliSettlemForm.patchValue({
+//     FinalNetAmt: this.vNetAmount,
+//     FinalPaidAmt: this.vPaidAmount,
+//     FinalBalanceAmt: this.vBalanceAmount,
+//   })
+// } 
+tableElementChecked(event, element) { 
   if (event.checked) {
-    this.SelectedList.push(element)
-    this.vNetAmount += Math.round(+element.netAmount)
-    this.vPaidAmount += Math.round(+element.paidAmount)
-    this.vBalanceAmount += Math.round(+element.balanceAmount)
-  }
-  else {
-    let index = this.SelectedList.indexOf(element);
-    if (index >= 0) {
+    this.selection.select(element); 
+    // ✅ Add to SelectedList if not already added
+    if (!this.SelectedList.includes(element)) {
+      this.SelectedList.push(element);
+    } 
+  } else {
+    this.selection.deselect(element); 
+    // ✅ Remove from SelectedList
+    const index = this.SelectedList.indexOf(element);
+    if (index > -1) {
       this.SelectedList.splice(index, 1);
     }
-    this.vNetAmount -= Math.round(+element.netAmount)
-    this.vPaidAmount -= Math.round(+element.paidAmount)
-    this.vBalanceAmount -= Math.round(+element.balanceAmount)
+  } 
+  this.calculateTotals(this.selection.selected);
+}
+  selection = new SelectionModel<PaidItemList>(true, []);  
+masterToggle() {
+  const selectableRows = this.dssalesbillListMultiple.data;
+
+  if (this.isAllSelected()) {
+    this.selection.clear();
+    this.SelectedList = [];   // ✅ Clear list
+  } else {
+    this.selection.clear();
+    this.SelectedList = [];   // ✅ Reset first
+
+    selectableRows.forEach(row => {
+      this.selection.select(row);
+      this.SelectedList.push(row);   // ✅ Add all
+    });
   }
-  console.log(this.SelectedList)
+
+  this.calculateTotals(this.selection.selected);
+}
+
+  isAllSelected() {
+      debugger
+    const selectableRows = this.dssalesbillListMultiple.data 
+    const numSelected = this.selection.selected.length;
+    const numRows = selectableRows.length; 
+    return numRows > 0 && numSelected === numRows;
+  }
+
+  isSomeSelected() {
+      debugger
+       const selectableRows = this.dssalesbillListMultiple.data 
+      return this.selection.selected.length > 0 &&
+      this.selection.selected.length < selectableRows.length;
+  }
+
+  calculateTotals(selectedRows) {
+  this.vNetAmount = 0;
+  this.vPaidAmount = 0;
+  this.vBalanceAmount = 0;
+
+  selectedRows.forEach(element => {
+    this.vNetAmount += Math.round(+element.netAmount);
+    this.vPaidAmount += Math.round(+element.paidAmount);
+    this.vBalanceAmount += Math.round(+element.balanceAmount);
+  });
+
   this.MutliSettlemForm.patchValue({
     FinalNetAmt: this.vNetAmount,
     FinalPaidAmt: this.vPaidAmount,
     FinalBalanceAmt: this.vBalanceAmount,
-  })
+  });
 }
+ 
 BalanceAm1: any = 0;
 UsedAmt1: any = 0;
 MultiplePaySave() {

@@ -170,9 +170,9 @@ export class LabResultListComponent {
   }
 
   allcolumns = [
-    { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Test Date", key: "dot", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -1766,7 +1766,7 @@ export class AdmissionPersonl {
   serviceId: any;
   pathReportID: any;
   opdipdId: any;
-
+labRequestNo:any;
   /**
 * Constructor
 *
@@ -2000,6 +2000,7 @@ export class AdmissionPersonl {
       this.serviceId = AdmissionPersonl.serviceId || 0
       this.pathReportID = AdmissionPersonl.pathReportID || 0
       this.opdipdId = AdmissionPersonl.opdipdId || 0
+      this.labRequestNo = AdmissionPersonl.labRequestNo || 0
     }
   }
 }

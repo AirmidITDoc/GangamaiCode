@@ -101,6 +101,7 @@ export class InvestigationListComponent {
   ///////////////// Sample Collection //////////////////////
   myformSearch: FormGroup;
   autocompleteModeunit: string = "Hospital";
+  autocompleteModecompany: string = "Company";
   isShowDetailTable: boolean = false;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -108,7 +109,9 @@ export class InvestigationListComponent {
   f_name: any = "%"
   regNo: any = "0"
   l_name: any = "%"
-  status: any = "0"
+  status: any = "2"
+  vCompanyId: any = "0"
+  VPBillNo = "%"
   // Ptype: any = "5"
   Vtotalcount = 0
   VCompletedcount = 0
@@ -183,7 +186,9 @@ export class InvestigationListComponent {
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "IsCompleted", fieldValue: "2", opType: OperatorComparer.Equals },
+      { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
     ]
   }
@@ -225,6 +230,8 @@ export class InvestigationListComponent {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+        { fieldName: "CompanyId", fieldValue: String(this.vCompanyId), opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: String(this.VPBillNo), opType: OperatorComparer.StartsWith },
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
@@ -283,6 +290,16 @@ export class InvestigationListComponent {
         "opType": "Equals"
       },
       {
+        "fieldName": "CompanyId",
+        "fieldValue": String(this.vCompanyId),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "PBillNo",
+        "fieldValue": String(this.VPBillNo),
+        "opType": "Contains"
+      },
+      {
         "fieldName": "UnitId",
         "fieldValue": String(this.UnitId),
         "opType": "Equals"
@@ -327,6 +344,16 @@ export class InvestigationListComponent {
         this.myformSearch.get('LastName').setValue("")
     if (event == 'RegNo')
       this.myformSearch.get('RegNo').setValue("0")
+
+    this.onChangeFirst();
+  }
+
+  ListViewcompany(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.vCompanyId = value.value
+    else
+      this.vCompanyId = 0
 
     this.onChangeFirst();
   }

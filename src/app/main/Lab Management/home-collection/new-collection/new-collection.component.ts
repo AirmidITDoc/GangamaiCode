@@ -358,6 +358,7 @@ export class NewCollectionComponent {
         isCancelledBy: 0,
         isCancelledDate: "1900-01-01",
         status: 1,
+        patientType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         tHomeCollectionServiceDetails: this._formbuilder.array([]),
 
         // extra fields
@@ -1123,6 +1124,23 @@ export class NewCollectionComponent {
     this.updateCalculation();
   }
 
+  private syncFooterDiscountWithRows() {
+    const hasAnyDiscountedRow = this.dstable1.data.some(
+      (row: any) =>
+        Number(row.DiscPer) > 0 || Number(row.DiscAmt) > 0
+    );
+
+    if (!hasAnyDiscountedRow) {
+      this.myForm.patchValue({
+        totalDiscountPer: 0,
+        discountAmt: 0
+      }, { emitEvent: false });
+
+      this.isDiscountApplied = false;
+      this.Consessionres = false;
+    }
+  }
+
   deleteTableRow(element) {
     this.chargeslist = this.dstable1.data;
     let index = this.chargeslist.indexOf(element);
@@ -1131,6 +1149,8 @@ export class NewCollectionComponent {
       this.dstable1.data = [];
       this.dstable1.data = this.chargeslist;
 
+      this.syncFooterDiscountWithRows();
+      
       if (this.chargeslist.length === 0) {
         this.myForm.patchValue({
           totalAmt: 0,

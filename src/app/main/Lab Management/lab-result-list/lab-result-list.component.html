@@ -139,7 +139,7 @@
                                         <ng-template #actionButtonTemplate let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
                                                 <button mat-icon-button matTooltip="Sample Collection"
-                                                    (click)="onSampleCollSave(element)" *ngIf="IsEdit">
+                                                    (click)="onSampleCollSave(element)">
                                                     <mat-icon>description</mat-icon>
                                                 </button>
 
@@ -372,7 +372,7 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                             <ng-container matColumnDef="outSourceLabName">
+                                            <ng-container matColumnDef="outSourceLabName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                     OutSource Name
                                                 </mat-header-cell>
@@ -389,7 +389,8 @@
                                                             {{ element.outSourceLabName }}
                                                         </span>
 
-                                                        <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
+                                                        <button mat-icon-button
+                                                            *ngIf="element.isPathOutSource == 'True'"
                                                             (click)="Editoutsoucedata(element)"
                                                             matTooltip="Edit OutSource Data">
                                                             <mat-icon style="color:#ff5722;">edit</mat-icon>
@@ -401,7 +402,8 @@
                                                         ? 'Please complete sample collection first'
                                                         : ''">
 
-                                                            <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
+                                                            <button mat-icon-button
+                                                                *ngIf="element.isPathOutSource == 'True'"
                                                                 [disabled]="element.isSampleCollection === 'False'"
                                                                 (click)="element.isSampleCollection !== 'False' && Editoutsoucedata(element)">
 
@@ -422,7 +424,7 @@
                                                     ? 'Please complete sample collection first'
                                                     : 'Edit Result Entry'">
                                                         <button mat-icon-button
-                                                           [style.visibility]="(contact.isTemplateTest == 0 && contact.isVerifySign == false) ? 'visible' : 'hidden'"
+                                                            [style.visibility]="(contact.isTemplateTest == 0 && contact.isVerifySign == false) ? 'visible' : 'hidden'"
                                                             matTooltip="Edit Result Entry"
                                                             [disabled]="contact.isSampleCollection === 'False'"
                                                             (click)="chkresultentryEdit(contact,true)">
@@ -446,43 +448,48 @@
                                                         [title]="contact.patientName + ' Report'"></airmid-fileupload-icon>
 
                                                     <button mat-icon-button (click)="Cancleresult(contact)"
-                                                        matTooltip="Cancel Result" [style.visibility]="contact.isVerifySign == false ? 'visible' : 'hidden'">
+                                                        matTooltip="Cancel Result"
+                                                        [style.visibility]="contact.isVerifySign == false ? 'visible' : 'hidden'">
                                                         <mat-icon color="warn">cancel</mat-icon>
                                                     </button>
 
-                                                    <span [matTooltip]="contact.isVerifySign === false
-                                                    ? 'Verification is Pending'
-                                                    : ''">
+                                                    <span
+                                                        [matTooltip]=" contact.isVerifySign === false ? 'Verification is pending'
+                                                            : contact.paymentCompleted == 0 ? 'Payment is pending' : '' "
+                                                        matTooltipPosition="above">
                                                         <button mat-icon-button (click)="getPrint(contact)"
-                                                            matTooltip="Result Print" [style.visibility]="contact.isCompleted ? 'visible' : 'hidden'"
-                                                            [disabled]="contact.isVerifySign === false">
+                                                            matTooltip="Result Print"
+                                                            [style.visibility]="contact.isCompleted ? 'visible' : 'hidden'"
+                                                            [disabled]="contact.isVerifySign === false || contact.paymentCompleted == 0">
                                                             <mat-icon>print</mat-icon>
                                                         </button>
                                                     </span>
 
-                                                    <span [matTooltip]="contact.isVerifySign === false
-                                                    ? 'Verification is Pending'
-                                                    : ''">
+                                                    <span
+                                                        [matTooltip]=" contact.isVerifySign === false ? 'Verification is pending'
+                                                            : contact.paymentCompleted == 0 ? 'Payment is pending' : '' "
+                                                        matTooltipPosition="above">
                                                         <button mat-icon-button
-                                                            [disabled]="contact.isVerifySign === false"
-                                                            [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
-                                                            matTooltipPosition="right" (click)="Onemail(element)"
-                                                            (mouseenter)="openEmailDetailsPopover($event, element)"
+                                                            [disabled]="contact.isVerifySign === false || contact.paymentCompleted == 0"
+                                                            [matTooltip]="'We send the mail on your registered MailID : ' + contact?.emailId"
+                                                            matTooltipPosition="right" (click)="Onemail(contact)"
+                                                            (mouseenter)="openEmailDetailsPopover($event, contact)"
                                                             (mouseleave)="closeEmailDetailsPopover()"
                                                             style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
                                                             <mat-icon>email</mat-icon>
                                                         </button>
                                                     </span>
 
-                                                    <span [matTooltip]="contact.isVerifySign === false
-                                                    ? 'Verification is Pending'
-                                                    : ''">
+                                                    <span
+                                                        [matTooltip]=" contact.isVerifySign === false ? 'Verification is pending'
+                                                            : contact.paymentCompleted == 0 ? 'Payment is pending' : '' "
+                                                        matTooltipPosition="above">
                                                         <button mat-icon-button
-                                                            [disabled]="contact.isVerifySign === false"
-                                                            [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                                            [disabled]="contact.isVerifySign === false || contact.paymentCompleted == 0"
+                                                            [matTooltip]="'We send the message on your registered WhatsApp number: ' + contact?.mobileNo"
                                                             matTooltipPosition="right"
-                                                            (click)="getWhatsappshareReport(element)"
-                                                            (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                                            (click)="getWhatsappshareReport(contact)"
+                                                            (mouseenter)="openWhatsappDetailsPopover($event, contact)"
                                                             (mouseleave)="closeWhatsappDetailsPopover()"
                                                             style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
                                                             <img width="20" height="20"

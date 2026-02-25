@@ -48,7 +48,7 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.regNo}}</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj2.labRequestNo}}</span>
                                             </div>
 
                                         </div>
@@ -100,7 +100,18 @@
 
                                 <span class="h1">Patient Information</span>
 
-                                <div class="gap-4">
+                                <div class="gap-4" fxLayout="row">
+
+                                    <div class="legend-item">
+                                        <span class="legend-box low-box"></span>
+                                        <span style="font-size: 16px;">Low (Below Normal)</span>
+                                    </div>
+
+                                    <div class="legend-item">
+                                        <span class="legend-box high-box"></span>
+                                        <span style="font-size: 16px;">High (Above Normal)</span>
+                                    </div>
+
                                     <button mat-raised-button color="primary" (click)="onUpload()"
                                         style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
                                         Upload
@@ -125,7 +136,8 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.regNo}}</span>
+                                                <span
+                                                    class="patient-col-value">{{selectedAdvanceObj2.labRequestNo}}</span>
                                             </div>
 
                                         </div>
@@ -213,13 +225,17 @@
                                     Result
                                 </mat-header-cell>
 
-                                <mat-cell *matCellDef="let contact" class="border-right">
+                                <mat-cell *matCellDef="let contact" class="border-right" [ngClass]="{
+                                        'low-range': contact.RangeStatus === 'low',
+                                        'high-range': contact.RangeStatus === 'high'
+                                    }">
 
                                     <mat-form-field appearance="fill" *ngIf="!contact.IsHelpShown" style="width: 100%;">
                                         <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
                                             (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                             [(ngModel)]="contact.ResultValue">
                                     </mat-form-field>
+
                                     <mat-form-field appearance="fill" *ngIf="contact.IsHelpShown" style="width:100%">
                                         <input type="text" matInput id="helpText_{{contact.ParameterId}}"
                                             (keyup)="filterHelp($event, contact)" [matAutocomplete]="auto">
@@ -239,15 +255,14 @@
                                 </mat-cell>
                             </ng-container>
 
-
                             <ng-container matColumnDef="Flag">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                    class="w-80 border-right">Flag
+                                    class="w-80 border-right">Bold
                                 </mat-header-cell>
                                 <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
                                     <mat-form-field appearance="fill">
-                                        <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag">
-                                        <!-- (keyup)="editflag()" -->
+                                        <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag"
+                                            (input)="onlyB(contact)">
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
@@ -262,7 +277,7 @@
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="Formula">
+                            <!-- <ng-container matColumnDef="Formula">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                     class="border-right">
                                     Formula
@@ -270,7 +285,7 @@
                                 <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
                                     {{contact?.Formula}}
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">

@@ -2075,7 +2075,7 @@ export class SalesHospitalKenyaComponent {
                     this.OP_IPType = 0;
                 }
                 const companyId = result[0]?.companyId;
-                if (companyId) {
+                if (!companyId) {
                     this.PatientTypeId = 1
                 } else {
                     this.PatientTypeId = 0

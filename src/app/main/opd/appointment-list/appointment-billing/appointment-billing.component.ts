@@ -160,7 +160,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.dsPackageList = new MatTableDataSource(this.packageList);
         this.dsServiceList = new MatTableDataSource(this.serviceList);
 
-        this.setupFormListener();
+        
         this.startCountdown();
         this.getdraftlist();
         this.getAccessDetail()
@@ -181,6 +181,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.SetCashbydefault = setCashBydefaultId === "1"; 
 
         this.OPFooterForm = this.CreateOPFooter();
+        this.setupFormListener();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -1070,18 +1071,20 @@ console.log(item)
   debugger
         if (this.isUpdating) return; // Stop recursion
         this.isUpdating = true;
-        // const DiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
-        // if (this.UserDicPerLimit > 0) {
-        //     if (DiscountPer > this.UserDicPerLimit) {
-        //         Swal.fire({
-        //             icon: 'warning',
-        //             title: 'Discount Limit Exceeded',
-        //             text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
-        //             confirmButtonColor: '#d33'
-        //         });  
-        //         return; 
-        //     }
-        // } 
+        const DiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
+        if (this.UserDicPerLimit > 0) {
+            if (DiscountPer > this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+                    confirmButtonColor: '#d33'
+                });  
+                    this.OPFooterForm.get("totalDiscountPer").setValue(this.UserDicPerLimit);
+                    this.isUpdating = false;
+             //   return; 
+            }
+        } 
 
         const totalDiscountPer = +this.OPFooterForm.get("totalDiscountPer").value; 
         if (totalDiscountPer == 0)

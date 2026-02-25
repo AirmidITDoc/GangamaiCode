@@ -66,7 +66,7 @@ export class LabrefundBillComponent {
   ];
   @ViewChild('grid') grid: AirmidTableComponent;
   allColumns1 = [
-    { heading: "Bill Date", key: "bilDate", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Bill Date", key: "bilDate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
     { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
@@ -223,7 +223,7 @@ export class LabrefundBillComponent {
     return this.formBuilder.group({
       TotalRefundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       RefundBalAmount: [0, [Validators.required]],
-      Remark: ['',[Validators.required]],
+      Remark: ['', [Validators.required]],
     });
   }
 
@@ -416,6 +416,18 @@ export class LabrefundBillComponent {
   }
   onEdit(row) {
     console.log(row);
+
+    if (Number(row.paidAmt) == 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Refund Not Allowed',
+        text: 'Refund can’t be done. Payment is in credit or pending.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33'
+      });
+      return;
+    }
+
     var datePipe = new DatePipe("en-US");
     this.billNo = row.billNo;
     this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)

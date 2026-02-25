@@ -340,8 +340,7 @@
                                        
                                     </div>
                                 </div>
-                            </div>
-
+                            </div> 
                         </form>
                     </mat-card>
                 </div>
@@ -362,12 +361,14 @@
                 </div>
                 <div id="contacts" style="height: 300px;overflow: auto;">
 
-                    <airmid-table [gridConfig]="gridConfigIPAdvance" #IPAdvanceGrid :ShowFilter="false"
-                        :ShowButtons="true">
+                    <!-- <airmid-table [gridConfig]="gridConfigIPAdvance" #IPAdvanceGrid :ShowFilter="false"  :ShowButtons="true"> 
+                    </airmid-table> -->
 
-
+                     <airmid-table [gridConfig]="gridConfigIPAdvance" #IPAdvanceGrid :ShowFilter="false"
+                        :ShowButtons="true">  
                     </airmid-table>
-                </div>
+                </div> 
+
                 <div fusePerfectScrollbar class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
@@ -379,12 +380,9 @@
                     </div>
 
                 </div>
-                <div id="contacts" style="height: 300px;overflow: auto;">
-
+                <div id="contacts" style="height: 300px;overflow: auto;">  
                     <airmid-table [gridConfig]="gridConfigIAdvRefund" #IPAdvRefundGrid :ShowFilter="false"
-                        :ShowButtons="true">
-
-
+                        :ShowButtons="true">  
                     </airmid-table>
                 </div>
 

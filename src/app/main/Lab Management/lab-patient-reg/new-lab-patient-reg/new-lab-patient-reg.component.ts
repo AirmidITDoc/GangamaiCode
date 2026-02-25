@@ -245,6 +245,7 @@ export class NewLabPatientRegComponent {
             address: this.registerObj.address.trim()
           });
           this.myForm.get('cityId').setValue(this.registerObj.location);
+          this.myForm.get('patientType').setValue(this.registerObj.patientType);
           if (this.registerObj.location) {
             this._labPatientRegService.getcityId(this.registerObj.location).subscribe((Response) => {
               this.stateId = Response.stateId
@@ -863,8 +864,10 @@ export class NewLabPatientRegComponent {
           item.isPackage = item.isPackage ?? item.IsPackage;
           item.DoctorId = item.DoctorId;
           item.DoctorName = item.DoctorName;
-          item.DiscPer = item.ConcessionPercentage
-          item.DiscAmt = item.ConcessionAmount
+          // item.DiscPer = item.ConcessionPercentage
+          // item.DiscAmt = item.ConcessionAmount
+          item.DiscPer = 0
+          item.DiscAmt = 0
           item.creditedtoDoctor = (item.DoctorId > 0);
 
           if (item.DiscAmt > 0 || item.DiscPer > 0) {
@@ -1562,13 +1565,33 @@ export class NewLabPatientRegComponent {
     });
   }
 
+  private syncFooterDiscountWithRows() {
+    const hasAnyDiscountedRow = this.dstable1.data.some(
+      (row: any) =>
+        Number(row.DiscPer) > 0 || Number(row.DiscAmt) > 0
+    );
+
+    if (!hasAnyDiscountedRow) {
+      this.myForm.patchValue({
+        totalDiscountPer: 0,
+        discountAmt: 0
+      }, { emitEvent: false });
+
+      this.isDiscountApplied = false;
+      this.Consessionres = false;
+    }
+  }
+
   deleteTableRow(element) {
+    debugger
     this.chargeslist = this.dstable1.data;
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dstable1.data = [];
       this.dstable1.data = this.chargeslist;
+
+      this.syncFooterDiscountWithRows();
 
       if (this.chargeslist.length === 0) {
         this.myForm.patchValue({
@@ -1908,7 +1931,8 @@ export class NewLabPatientRegComponent {
             console.log(this.LabBillfinalform.value)
             this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
               this.viewgetOPBillReportPdf(response)
-              this._matDialog.closeAll();
+              // this._matDialog.closeAll();
+              this.dialogRef.close('home');
               this.savebtn = true
             });
           }
@@ -1957,7 +1981,8 @@ export class NewLabPatientRegComponent {
           console.log(response)
           // debugger
           this.viewgetOPBillReportPdf(response)
-          this._matDialog.closeAll();
+          // this._matDialog.closeAll();
+          this.dialogRef.close('home');
           this.savebtn = true
           // this.resetform();
         });
@@ -1975,7 +2000,8 @@ export class NewLabPatientRegComponent {
 
         this._labPatientRegService.InsertlabregCredit(this.LabBillfinalform.value).subscribe(response => {
           // this.viewgetOPBillReportPdf(response)
-          this._matDialog.closeAll();
+          // this._matDialog.closeAll();
+          this.dialogRef.close('home');
           this.savebtn = true
         });
       }
@@ -2029,7 +2055,8 @@ export class NewLabPatientRegComponent {
           console.log(response)
           // debugger
           this.viewgetOPBillReportPdf(response)
-          this._matDialog.closeAll();
+          // this._matDialog.closeAll();
+          this.dialogRef.close('home');
           this.savebtn = true
           // this.resetform();
         });

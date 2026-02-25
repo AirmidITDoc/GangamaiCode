@@ -1647,7 +1647,7 @@ export class SalesInPatientComponent implements OnInit {
                  this.DoctorName = result[0]?.DoctorName;
                  this.ItemSubform.get('regId').setValue(result[0]?.RegId);
                  const companyId = result[0]?.companyId;
-                 if(companyId){
+                 if(!companyId){
                     this.PatientTypeId=1
                  }else{
                     this.PatientTypeId=0
