@@ -1,12 +1,19 @@
 <div class="simple page-layout inner-scroll inner-sidebar left-sidebar resize-form-fields">
   <mat-toolbar style="width: 100%; justify-content: space-between; height: 50px">
+    <!-- Left: menu + title -->
     <div fxLayout="row" fxLayoutAlign="start center">
-      <button mat-icon-button class="sidebar-toggle" (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
+      <button class="patient-list-toggle-btn" (click)="drawer.toggle()" [class.is-open]="drawer.opened"
+        matTooltip="Toggle Patient List" matTooltipPosition="below">
+        <mat-icon class="toggle-icon">people_alt</mat-icon>
+        <span class="toggle-label">Patient List</span>
+        <mat-icon class="toggle-arrow">{{ drawer.opened ? 'chevron_left' : 'chevron_right' }}</mat-icon>
       </button>
-      <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"
+      <span class="logo-text h1 ml-8" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"
         style="color: white">Clinical Care Chart</span>
     </div>
+
+    <!-- Right: patient list toggle pill -->
+
   </mat-toolbar>
   <mat-drawer-container autosize fxFlex>
     <div class="example-sidenav-content">
