@@ -62,11 +62,13 @@
   .mat-mdc-form-field-subscript-wrapper {
     display: none !important;
   }
+
   .mat-mdc-form-field-infix {
     padding-top: 6px !important;
     padding-bottom: 6px !important;
     min-height: 34px !important;
   }
+
   .mat-mdc-text-field-wrapper {
     padding: 0 8px !important;
   }
@@ -130,12 +132,15 @@
 .card-registration {
   border-left-color: #009688;
 }
+
 .card-sales {
   border-left-color: #4CAF50;
 }
+
 .card-tests {
   border-left-color: #2196F3;
 }
+
 .card-business {
   border-left-color: #3949ab;
 }
@@ -157,10 +162,21 @@
   }
 }
 
-.bg-teal { background: linear-gradient(135deg, #009688, #26a69a); }
-.bg-green { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
-.bg-blue { background: linear-gradient(135deg, #2196F3, #42A5F5); }
-.bg-indigo { background: linear-gradient(135deg, #3949ab, #5c6bc0); }
+.bg-teal {
+  background: linear-gradient(135deg, #009688, #26a69a);
+}
+
+.bg-green {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+}
+
+.bg-blue {
+  background: linear-gradient(135deg, #2196F3, #42A5F5);
+}
+
+.bg-indigo {
+  background: linear-gradient(135deg, #3949ab, #5c6bc0);
+}
 
 .card-info {
   display: flex;

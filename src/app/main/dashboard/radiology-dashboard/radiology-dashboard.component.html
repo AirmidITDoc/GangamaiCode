@@ -1,4 +1,5 @@
-<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll" fxLayout="column">
+<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll radiology-dashboard-wrapper"
+    fxLayout="column">
     <!-- HEADER -->
     <div class="top-header accent">
         <div class="top-header-info">
@@ -8,27 +9,13 @@
                 <span>Radiology & Pathology Dashboard</span>
             </div>
         </div>
-        <!-- <div class="date-filter-container">
-            <form [formGroup]="dateFilterForm">
-                <mat-form-field fxFlex>
-                    <mat-label>Date Range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate class="date-range-input" formControlName="start" placeholder="Start date">
-                        <input matEndDate class="date-range-input" formControlName="end" placeholder="End date" (dateChange)="onDateRangeChanged()">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
-            </form>
-        </div> -->
-        <div class="date-filter-container">
-            <mat-form-field class="date-range-field">
-                <mat-label>Date Range</mat-label>
-                <mat-date-range-input appearance="outline" [rangePicker]="rangePicker">
-                    <input matStartDate class="date-range-input" [(ngModel)]="fromDate" placeholder="Start date"
+        <div class="date-filter-container resize-form-fields">
+            <mat-form-field appearance="outline">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="rangePicker">
+                    <input matStartDate [(ngModel)]="fromDate" placeholder="Start date" readonly>
+                    <input matEndDate [(ngModel)]="toDate" (dateChange)="onDateRangeChanged()" placeholder="End date"
                         readonly>
-                    <input matEndDate class="date-range-input" [(ngModel)]="toDate" (dateChange)="onDateRangeChanged()"
-                        placeholder="End date" readonly>
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
                 <mat-date-range-picker #rangePicker></mat-date-range-picker>
