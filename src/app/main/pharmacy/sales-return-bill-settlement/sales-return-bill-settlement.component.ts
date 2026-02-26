@@ -697,16 +697,14 @@ masterToggle() {
   this.calculateTotals(this.selection.selected);
 }
 
-  isAllSelected() {
-      debugger
+  isAllSelected() { 
     const selectableRows = this.dssalesbillListMultiple.data 
     const numSelected = this.selection.selected.length;
     const numRows = selectableRows.length; 
     return numRows > 0 && numSelected === numRows;
   }
 
-  isSomeSelected() {
-      debugger
+  isSomeSelected() { 
        const selectableRows = this.dssalesbillListMultiple.data 
       return this.selection.selected.length > 0 &&
       this.selection.selected.length < selectableRows.length;
@@ -895,10 +893,9 @@ getDiscFinalBill(contact) {
       }
     });
   dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed - Insert Action', result);
-    if (result)
-      this.getdata();
-    // this.grid.bindGridData();
+    console.log('The dialog was closed - Insert Action', result); 
+     // this.getdata();
+     this.grid.bindGridData();
   });
 }
 getValidationMessages() {

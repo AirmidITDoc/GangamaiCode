@@ -26,6 +26,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { SalesbatchpopupComponent } from '../sales-hospital-kenya/salesbatchpopup/salesbatchpopup.component';
 import { SalesHospitalKenyaService } from '../sales-hospital-kenya/sales-hospital-kenya.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
 
 @Component({
   selector: 'app-sales-in-patient',
@@ -176,6 +177,7 @@ export class SalesInPatientComponent implements OnInit {
          this.getSalesFooterform();
          this.getStoredet();
          this.getDraftorderList();
+         this.getAccessDetail();
  
          this.PharmaSalesForm = this.CreatePharmasalesform();
          this.PharmaSalesDraftForm = this.CreatePharmasalesDraftform();
@@ -939,7 +941,20 @@ export class SalesInPatientComponent implements OnInit {
          });
      }
      getFinalDiscperAmt() { 
-         const formValues = this.ItemSubform.getRawValue();
+         const formValues = this.ItemSubform.getRawValue(); 
+         
+                     if (this.UserDicPerLimit > 0) {
+                     let Disc = formValues.FinalDiscPer || 0;
+                       if (+Disc > +this.UserDicPerLimit) {
+                         Swal.fire({
+                           icon: 'warning',
+                           title: 'Discount Limit Exceeded',
+                           text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+                           confirmButtonColor: '#d33'
+                         });
+                         this.ItemSubform.get("FinalDiscPer").setValue(this.UserDicPerLimit);
+                       }
+                     }  
          let Disc = formValues.FinalDiscPer || 0; 
          let NetAmount = formValues.netAmount;
          let FinalDiscAmt = ''; 
@@ -1646,7 +1661,7 @@ export class SalesInPatientComponent implements OnInit {
                  this.OP_IP_Id = result[0]?.AdmissionID;
                  this.DoctorName = result[0]?.DoctorName;
                  this.ItemSubform.get('regId').setValue(result[0]?.RegId);
-                 const companyId = result[0]?.companyId;
+                 const companyId = result[0]?.companyId || 0;
                  if(!companyId){
                     this.PatientTypeId=1
                  }else{
@@ -2217,6 +2232,35 @@ export class SalesInPatientComponent implements OnInit {
          CredirReasonName:event.text
         })
      }
+                UserDicPerLimit: any = 0;
+               getAccessDetail() {
+                   // debugger
+                   var SelectQuery = {
+                       "first": 0,
+                       "rows": 999,
+                       "sortField": "AccessValueId",
+                       "sortOrder": 0,
+                       "filters": [
+                           {
+                               "fieldName": "LoginId",
+                               "fieldValue": String(this._loggedService.currentUserValue.userId), //"30091",
+                               "opType": "Equals"
+                           }
+                       ],
+                       "exportType": "JSON",
+                       "columns": []
+                   }
+                   this._salesService.getAccessDetailList(SelectQuery).subscribe(response => {
+                       const getUserAccesDetList = response.data as UserDetail[];
+                       console.log("get Access data:", getUserAccesDetList)
+           
+                       const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+                       console.log(discountData)
+                       if (discountData?.accessValue) {
+                           this.UserDicPerLimit = discountData?.accessInputValue || 0
+                       }
+                   });
+               }
      // it allowed only Digit 
      keyPressDigitsOnly(event) {
          var inp = String.fromCharCode(event.keyCode);

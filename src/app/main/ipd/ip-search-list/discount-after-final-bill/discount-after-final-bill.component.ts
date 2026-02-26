@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-discount-after-final-bill',
@@ -66,6 +68,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     } 
      this.MyFrom = this.CreateMyForm();
      this.saveform = this.CreatesaveMyForm();  
+     this.getAccessDetail();
   }
   CreateMyForm():FormGroup{
     return this.formBuilder.group({
@@ -102,6 +105,18 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     let CompanyDiscPer = this.MyFrom.get('CompanyDiscper').value || 0;
 
     if(DiscPer2){
+      if (this.UserDicPerLimit > 0) { 
+        if (+DiscPer2 > +this.UserDicPerLimit) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Discount Limit Exceeded',
+            text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+            confirmButtonColor: '#d33'
+          });
+          this.MyFrom.get("DiscountPer2").setValue(this.UserDicPerLimit);
+           DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
+        }
+      }   
       if(DiscPer2 > 100){
         this.toastr.warning('Please enter discount % less than 100 and greater than 0', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -120,6 +135,20 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     }
 
     if(CompanyDiscPer){
+
+      if (this.UserDicPerLimit > 0) {
+        if (+CompanyDiscPer > +this.UserDicPerLimit) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Discount Limit Exceeded',
+            text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+            confirmButtonColor: '#d33'
+          });
+          this.MyFrom.get("CompanyDiscper").setValue(this.UserDicPerLimit);
+           CompanyDiscPer = this.MyFrom.get('CompanyDiscper').value || 0;
+        }
+      }  
+
       if(CompanyDiscPer > 100){
         this.toastr.warning('Please enter discount % less than 100 and greater than 0', 'warning !', {
           toastClass: 'tostr-tost custom-toast-error',
@@ -147,7 +176,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     let DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0;
     let CompanyDiscAmt = this.MyFrom.get('CompanyDiscAmt').value || 0;
     let DiscPer2;
-    let CompanyDiscPer;
+    let CompanyDiscPer; 
 
     if (DiscAmt2) {
       if (DiscAmt2 > this.vFinalNetAmt) {
@@ -248,6 +277,35 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     this.dialogRef.close();
     this.MyFrom.reset();
   }
+      UserDicPerLimit: any = 0;
+    getAccessDetail() {
+        // debugger
+        var SelectQuery = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "AccessValueId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "LoginId",
+                    "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        this._IpSearchListService.getAccessDetailList(SelectQuery).subscribe(response => {
+            const getUserAccesDetList = response.data as UserDetail[];
+            console.log("get Access data:", getUserAccesDetList)
+
+            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+            console.log(discountData)
+            if (discountData?.accessValue) {
+                this.UserDicPerLimit = discountData?.accessInputValue || 0
+            }
+        });
+    }
   keyPressCharater(event){
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {

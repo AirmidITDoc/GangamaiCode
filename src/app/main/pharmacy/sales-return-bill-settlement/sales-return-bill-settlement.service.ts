@@ -51,4 +51,7 @@ export class SalesReturnBillSettlementService {
      public ApplyglobleDisc(employee) {  
     return this._httpClient1.PostData("paymentpharmacy/PhBillGlobalDiscount", employee)
   }
+       public getAccessDetailList(param){
+    return this._httpClient1.PostData("LoginManager/loginAccessDetailsList",param)
+  }
 }

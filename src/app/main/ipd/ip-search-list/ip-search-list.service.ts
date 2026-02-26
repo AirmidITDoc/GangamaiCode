@@ -1102,6 +1102,9 @@ export class IPSearchListService {
         public getmPesaTranscationlist(param) {
         return this._httpClient1.PostData("MPesa/List", param)
     } 
+     public getAccessDetailList(param){
+    return this._httpClient1.PostData("LoginManager/loginAccessDetailsList",param)
+  }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

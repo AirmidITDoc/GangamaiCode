@@ -25,6 +25,7 @@ import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 import { ConfigService } from 'app/core/services/config.service';
 import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
 
 @Component({
     selector: 'app-sales-bill-kenya',
@@ -219,6 +220,8 @@ export class SalesHospitalKenyaComponent {
         const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
+
+        this.getAccessDetail();
     }
     ngOnDestroy() {
         this.ItemFormreset();
@@ -1123,7 +1126,22 @@ export class SalesHospitalKenyaComponent {
         });
     }
     getFinalDiscperAmt() {
-        const formValues = this.ItemSubform.getRawValue();
+   const formValues = this.ItemSubform.getRawValue();
+
+            if (this.UserDicPerLimit > 0) {
+            let Disc = formValues.FinalDiscPer || 0;
+              if (+Disc > +this.UserDicPerLimit) {
+                Swal.fire({
+                  icon: 'warning',
+                  title: 'Discount Limit Exceeded',
+                  text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+                  confirmButtonColor: '#d33'
+                });
+                this.ItemSubform.get("FinalDiscPer").setValue(this.UserDicPerLimit);
+              }
+            }  
+
+     
         let Disc = formValues.FinalDiscPer || 0;
         let NetAmount = formValues.netAmount;
         let FinalDiscAmt = '';
@@ -2074,7 +2092,7 @@ export class SalesHospitalKenyaComponent {
                     this.vSelectedOption = '0';
                     this.OP_IPType = 0;
                 }
-                const companyId = result[0]?.companyId;
+                const companyId = result[0]?.companyId || 0;
                 if (!companyId) {
                     this.PatientTypeId = 1
                 } else {
@@ -2720,6 +2738,36 @@ export class SalesHospitalKenyaComponent {
             return false;
         }
     }
+
+           UserDicPerLimit: any = 0;
+          getAccessDetail() {
+              // debugger
+              var SelectQuery = {
+                  "first": 0,
+                  "rows": 999,
+                  "sortField": "AccessValueId",
+                  "sortOrder": 0,
+                  "filters": [
+                      {
+                          "fieldName": "LoginId",
+                          "fieldValue": String(this._loggedService.currentUserValue.userId), //"30091",
+                          "opType": "Equals"
+                      }
+                  ],
+                  "exportType": "JSON",
+                  "columns": []
+              }
+              this._salesService.getAccessDetailList(SelectQuery).subscribe(response => {
+                  const getUserAccesDetList = response.data as UserDetail[];
+                  console.log("get Access data:", getUserAccesDetList)
+      
+                  const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+                  console.log(discountData)
+                  if (discountData?.accessValue) {
+                      this.UserDicPerLimit = discountData?.accessInputValue || 0
+                  }
+              });
+          }
 }
 
 export class IndentList {
