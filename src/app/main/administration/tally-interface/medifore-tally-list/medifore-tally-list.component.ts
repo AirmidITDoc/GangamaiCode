@@ -95,7 +95,7 @@ export class MediforeTallyListComponent {
     allOPbillcolumns = [
         { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
 
-        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Bill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -134,11 +134,11 @@ export class MediforeTallyListComponent {
         { heading: "Label", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Admission ID", key: "admissionId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
         { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
 
-        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 90, type: 6 },
+        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 90},
 
         { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
@@ -154,7 +154,7 @@ export class MediforeTallyListComponent {
     ];
 
     allOPbillcashcountercolumns = [
-        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Receipt No", key: "oP_ReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -180,7 +180,7 @@ export class MediforeTallyListComponent {
 
     allOPRefundColumns = [
         { heading: "Lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Refund PaymentNo", key: "oP_RefundPaymentNo", sort: true, align: 'left', emptySign: 'NA' },
          { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -206,7 +206,7 @@ export class MediforeTallyListComponent {
 
     allIpBillColumns = [
         { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 130 },
          { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -236,9 +236,9 @@ export class MediforeTallyListComponent {
     allIpBilldetailColumns = [
 
         { heading: "Label", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 150 }, 
-        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 90, type: 6 },
+        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 90 },
         { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
@@ -255,7 +255,7 @@ export class MediforeTallyListComponent {
 
     allIpBillcashcountercolumns = [
          { heading: "Label", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120},
         { heading: "Bill No", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IP_ReceiptNo", key: "iP_ReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -283,7 +283,7 @@ export class MediforeTallyListComponent {
     ];
 
     allIpBillRefundcolumns = [
-        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "lbl", key: "lbl", sort: true, align: 'left', emptySign: 'NA' , width: 150},
         { heading: "PaymentNo", key: "iP_RefundPaymentNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
@@ -382,8 +382,8 @@ export class MediforeTallyListComponent {
     ];
 
     allPharmacysalesdetailcolumns = [
-        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "Bill Date", key: "billdate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Bill Date", key: "billdate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Sales Type", key: "salesType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -400,8 +400,8 @@ export class MediforeTallyListComponent {
 
 
     allPharreturnColumns = [
-        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "Bill Date", key: "billdate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+        { heading: "Charges Date", key: "chargesDate", sort: true, align: 'left', emptySign: 'NA', width: 120},
+        { heading: "Bill Date", key: "billdate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Return Type", key: "returnType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SalesReturnNo", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Reg No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
