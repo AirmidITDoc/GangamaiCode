@@ -42,6 +42,8 @@ export class EditLabsampledateComponent {
     this.date = now.toISOString().slice(0, 16);
   }
 
+  minDateTime!: string;
+
   ngOnInit(): void {
     if (this.data.Obj) {
       this.registerObj = this.data.Obj;
@@ -50,7 +52,36 @@ export class EditLabsampledateComponent {
       this.sampleNo = this.registerObj.sampleNo.split(' ')[0]
       this.sampleform = this.createsampleForm()
     }
+    this.setMinDateTime();
+    this.validateDateTime();
 
+  }
+
+  setMinDateTime() {
+    const now = new Date();
+
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+
+    this.minDateTime = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+  }
+
+  validateDateTime() {
+    this.sampleform.get('SampleCollectionTime')?.valueChanges.subscribe(value => {
+      if (!value) return;
+
+      const selected = new Date(value);
+      const now = new Date();
+
+      if (selected < now) {
+        this.sampleform.get('SampleCollectionTime')?.setErrors({ pastDate: true });
+      } else {
+        this.sampleform.get('SampleCollectionTime')?.setErrors(null);
+      }
+    });
   }
 
   createsampleForm() {
@@ -63,6 +94,13 @@ export class EditLabsampledateComponent {
   }
 
   onSubmit() {
+    if (this.sampleform.get('SampleCollectionTime')?.hasError('pastDate')) {
+      this.toastr.warning(
+        'Date & time must be current or future.',
+        'Warning'
+      );
+      return;
+    }
     console.log(this.sampleform.value);
     this._SampleCollectionService.SampleEditdate(this.sampleform.value).subscribe(response => {
       this._matDialog.closeAll();

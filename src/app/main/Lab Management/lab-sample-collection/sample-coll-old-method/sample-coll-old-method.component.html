@@ -103,10 +103,14 @@
 
                                 <ng-container matColumnDef="select">
                                     <th mat-header-cell *matHeaderCellDef>
-                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                        <mat-checkbox (change)="masterToggle()" [checked]="isAllSelected()"
+                                            [indeterminate]="isSomeSelected()"
+                                            [disabled]="areAllRowsDisabled()">
+                                        </mat-checkbox>
+                                        <!-- <mat-checkbox (change)="$event ? masterToggle() : null"
                                             [checked]="selection.hasValue()"
                                             [indeterminate]="selection.hasValue() && !isAllSelected()">
-                                        </mat-checkbox>
+                                        </mat-checkbox> -->
                                     </th>
 
                                     <td mat-cell *matCellDef="let contact">

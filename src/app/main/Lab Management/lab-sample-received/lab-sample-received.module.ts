@@ -40,21 +40,17 @@ import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
-import { LabSampleCollectionComponent } from './lab-sample-collection.component';
-import { LabsampleCollFormComponent } from './labsample-coll-form/labsample-coll-form.component';
-import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-coll-old-method.component';
-import { EditLabsampledateComponent } from './edit-labsampledate/edit-labsampledate.component';
-import { LabsampleNewFromComponent } from './labsample-new-from/labsample-new-from.component';
+import { LabSampleReceivedComponent } from './lab-sample-received.component';
 
 const routes: Routes = [
   {
     path: '**',
-    component: LabSampleCollectionComponent
+    component: LabSampleReceivedComponent
   },
 ];
 
 @NgModule({
-  declarations: [LabSampleCollectionComponent, LabsampleCollFormComponent, SampleCollOldMethodComponent,EditLabsampledateComponent, LabsampleNewFromComponent],
+  declarations: [LabSampleReceivedComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -105,4 +101,4 @@ const routes: Routes = [
     DatePipe,
   ]
 })
-export class LabSampleCollectionModule { }
+export class LabSampleReceivedModule { }

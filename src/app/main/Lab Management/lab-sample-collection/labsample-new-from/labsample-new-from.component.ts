@@ -33,14 +33,15 @@ function formatDate(rawDate: string): string {
 
   return '';
 }
+
 @Component({
-  selector: 'app-sample-coll-old-method',
-  templateUrl: './sample-coll-old-method.component.html',
-  styleUrls: ['./sample-coll-old-method.component.scss'],
+  selector: 'app-labsample-new-from',
+  templateUrl: './labsample-new-from.component.html',
+  styleUrls: ['./labsample-new-from.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class SampleCollOldMethodComponent {
+export class LabsampleNewFromComponent {
   interimArray: any = [];
   samplelist: any = [];
   date: any;
@@ -48,11 +49,12 @@ export class SampleCollOldMethodComponent {
   Currentdate: any;
   displayedColumns: string[] = [
     'select',
-    'ServiceName',
+    'testName',
+    'container',
     'SampleCollectionTime',
-    'sampleNo',
     'editSampleCollectionTime',
-    'approval'
+    'sampleNo',
+    // 'approval'
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
@@ -76,7 +78,7 @@ export class SampleCollOldMethodComponent {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<SampleCollOldMethodComponent>,
+    private dialogRef: MatDialogRef<LabsampleNewFromComponent>,
     public dialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     private _fuseSidebarService: FuseSidebarService,
@@ -105,6 +107,7 @@ export class SampleCollOldMethodComponent {
     }
     else {
       this.regObj = this.data
+      this.getSampledetailListLab(this.regObj);
     }
   }
 
@@ -125,48 +128,48 @@ export class SampleCollOldMethodComponent {
 
   }
 
-  getSampledetailListLab(row) {
-    // debugger
+  // getSampledetailListLab(row) {
+  //   // debugger
 
-    let formattedDate = formatDate(row.pathDate);
+  //   let formattedDate = formatDate(row.pathDate);
 
-    console.log(formattedDate);
+  //   console.log(formattedDate);
 
-    var m_data = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "PathTestID",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "BillNo",
-          "fieldValue": String(row.billNo),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "BillDate",
-          "fieldValue": formattedDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "OP_IP_Type",
-          "fieldValue": "4",
-          "opType": "Equals"
-        }
-      ],
-      "Columns": [],
-      "exportType": "JSON"
-    }
+  //   var m_data = {
+  //     "first": 0,
+  //     "rows": 10,
+  //     "sortField": "PathTestID",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "BillNo",
+  //         "fieldValue": String(row.billNo),
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "BillDate",
+  //         "fieldValue": formattedDate,
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "OP_IP_Type",
+  //         "fieldValue": "4",
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "Columns": [],
+  //     "exportType": "JSON"
+  //   }
 
-    console.log(m_data);
-    this._SampleService.getSampleDetailsListLab(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit.data as SampleList[];
-      console.log(this.dataSource.data)
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-    });
-  }
+  //   console.log(m_data);
+  //   this._SampleService.getSampleDetailsListLab(m_data).subscribe(Visit => {
+  //     this.dataSource.data = Visit.data as SampleList[];
+  //     console.log(this.dataSource.data)
+  //     this.dataSource.sort = this.sort;
+  //     this.dataSource.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //   });
+  // }
 
   vSamplecollFormInsert(): FormGroup {
     return this.formBuilder.group({
@@ -175,10 +178,11 @@ export class SampleCollOldMethodComponent {
     });
   }
 
+  // 2. FormArray Group for Refund Detail
   createSampleDetail(item: any = {}): FormGroup {
     return this.formBuilder.group({
       PathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900', [Validators.required]],
+      sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || new Date(), [Validators.required]],
       IsSampleCollection: [true],
       SampleNo: [item.sampleNo || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       sampleCollectedBy: this.accountService.currentUserValue.userId
@@ -188,6 +192,7 @@ export class SampleCollOldMethodComponent {
   get refundDetailsArray(): FormArray {
     return this.vSampleCollFormGroup.get('pathlogySampleCollection') as FormArray;
   }
+
 
   onSave() {
 
@@ -241,6 +246,13 @@ export class SampleCollOldMethodComponent {
   //   }
   //   return false; // Self patient → always enabled
   // }
+  rowCheckboxChange(row: SampleList) {
+    this.selection.toggle(row);
+  }
+  getSelectableRowsForTable(specimenColorName: string): SampleList[] {
+    return this.getFirstPatientForDate(specimenColorName)
+      .filter(row => !this.isCheckboxDisabled(row));
+  }
 
   isCheckboxDisabled(row: any): boolean {
     return row.isSampleCollection === true;
@@ -251,40 +263,64 @@ export class SampleCollOldMethodComponent {
       : true;
   }
   selection = new SelectionModel<SampleList>(true, []);
-  masterToggle() {
+  masterToggle(specimenColorName: string) {
+    const selectableRows = this.getSelectableRowsForTable(specimenColorName);
 
-    const selectableRows = this.dataSource.data.filter(
-      row => !this.isCheckboxDisabled(row)
-    );
-
-    if (this.isAllSelected()) {
-      this.selection.clear();
+    if (this.isAllSelected(specimenColorName)) {
+      selectableRows.forEach(row => this.selection.deselect(row));
     } else {
       selectableRows.forEach(row => this.selection.select(row));
     }
-
-    console.log(this.selection.selected);
   }
+  isAllSelected(specimenColorName: string): boolean {
+    const selectableRows = this.getSelectableRowsForTable(specimenColorName);
 
-  isAllSelected() {
-    const selectableRows = this.dataSource.data.filter(
-      row => !this.isCheckboxDisabled(row)
-    );
-
-    const numSelected = this.selection.selected.length;
-    const numRows = selectableRows.length;
-
-    return numRows > 0 && numSelected === numRows;
+    return selectableRows.length > 0 &&
+      selectableRows.every(row => this.selection.isSelected(row));
   }
+  isSomeSelected(specimenColorName: string): boolean {
+    const selectableRows = this.getSelectableRowsForTable(specimenColorName);
 
-  isSomeSelected() {
-    const selectableRows = this.dataSource.data.filter(
-      row => !this.isCheckboxDisabled(row)
-    );
+    const selectedCount = selectableRows.filter(row =>
+      this.selection.isSelected(row)
+    ).length;
 
-    return this.selection.selected.length > 0 &&
-      this.selection.selected.length < selectableRows.length;
+    return selectedCount > 0 && selectedCount < selectableRows.length;
   }
+  // masterToggle() {
+
+  //   const selectableRows = this.dataSource.data.filter(
+  //     row => !this.isCheckboxDisabled(row)
+  //   );
+
+  //   if (this.isAllSelected()) {
+  //     this.selection.clear();
+  //   } else {
+  //     selectableRows.forEach(row => this.selection.select(row));
+  //   }
+
+  //   console.log(this.selection.selected);
+  // }
+
+  // isAllSelected() {
+  //   const selectableRows = this.dataSource.data.filter(
+  //     row => !this.isCheckboxDisabled(row)
+  //   );
+
+  //   const numSelected = this.selection.selected.length;
+  //   const numRows = selectableRows.length;
+
+  //   return numRows > 0 && numSelected === numRows;
+  // }
+
+  // isSomeSelected() {
+  //   const selectableRows = this.dataSource.data.filter(
+  //     row => !this.isCheckboxDisabled(row)
+  //   );
+
+  //   return this.selection.selected.length > 0 &&
+  //     this.selection.selected.length < selectableRows.length;
+  // }
 
   EditSampleDate(contact) {
     console.log(contact)
@@ -303,7 +339,6 @@ export class SampleCollOldMethodComponent {
     });
   }
 
-
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -313,7 +348,72 @@ export class SampleCollOldMethodComponent {
   onClose() {
     this.dialogRef.close();
   }
+
+  ///////////// new method ////////////////
+  uniqueSpecimen: any[] = [];
+  getSampledetailListLab(row) {
+    // debugger
+
+    let formattedDate = formatDate(row.pathDate);
+
+    console.log(formattedDate);
+
+    var m_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "PathTestID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "BillNo",
+          "fieldValue": String(row.billNo),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "BillDate",
+          "fieldValue": formattedDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OP_IP_Type",
+          "fieldValue": "4",
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+
+    console.log(m_data);
+    this._SampleService.getSampleDetailsListLab(m_data).subscribe(Visit => {
+      this.dataSource.data = Visit.data as SampleList[];
+      console.log(this.dataSource.data)
+      this.extractUniqueSpecimen();
+    });
+  }
+
+  extractUniqueSpecimen() {
+    const uniqueMap = new Map();
+
+    this.dataSource.data.forEach(patient => {
+      if (!uniqueMap.has(patient.specimenColorName)) {
+        uniqueMap.set(patient.specimenColorName, {
+          color: patient.specimenColorName?.replace(/\s+/g, '').toLowerCase(),// this is for color show 
+          type: patient.specimenTypeName,
+          noofContainer: patient.noofContainer,
+          specimenColor: patient.specimenColorName,
+        });
+      }
+    });
+
+    this.uniqueSpecimen = Array.from(uniqueMap.values());
+  }
+  getFirstPatientForDate(specimenColorName: string) {
+    return this.dataSource.data.filter(patient => patient.specimenColorName === specimenColorName); //
+  }
 }
+
+
 export class SampleList {
   VADate: Date;
   VATime: Date;
@@ -328,6 +428,10 @@ export class SampleList {
   pathReportID: any;
   sampleNo: any;
   isApprovedByCamp: any;
+  specimenColorName: any;
+  specimenTypeName: any;
+  noofContainer: any;
+  specimenTypeId:any;
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -343,5 +447,9 @@ export class SampleList {
     this.pathReportID = SampleList.pathReportID || 0;
     this.sampleNo = SampleList.sampleNo || 0;
     this.isApprovedByCamp = SampleList.isApprovedByCamp || 0;
+    this.specimenColorName = SampleList.specimenColorName || '';
+    this.specimenTypeName = SampleList.specimenTypeName || '';
+    this.noofContainer = SampleList.noofContainer || 0
+    this.specimenTypeId = SampleList.specimenTypeId || '';
   }
 }
