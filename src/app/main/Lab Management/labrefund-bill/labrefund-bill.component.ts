@@ -145,6 +145,10 @@ export class LabrefundBillComponent {
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        isApproval: false,
+        approvedBy: 0,
+        approvalDatetime: "1900-01-01",
+        comment: ""
       }),
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details
