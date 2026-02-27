@@ -132,7 +132,7 @@ export class AppointmentlistService {
             ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             TariffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            CompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
