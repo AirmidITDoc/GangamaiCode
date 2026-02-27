@@ -4,7 +4,7 @@
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
                 <mat-icon>menu</mat-icon>
             </button>
-            
+
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
                 Lab Sample Collection Date Adjustment -{{registerObj.visit_Adm_ID}} | {{registerObj.patientType}}
             </span>
@@ -41,12 +41,22 @@
 
                             <div fxLayout="row" fxLayoutGap="4px" style="margin-top: 10px;">
 
-                                <mat-form-field appearance="outline" fxFlex="40%">
+                                <!-- <mat-form-field appearance="outline" fxFlex="40%">
                                     <mat-label>Collection Date / Time</mat-label>
                                     <input matInput type="datetime-local" placeholder="date" [value]="date"
                                         [(ngModel)]="date" (change)="date=$event.target.value"
                                         formControlName="SampleCollectionTime" />
 
+                                </mat-form-field> -->
+                                <mat-form-field appearance="outline" fxFlex="40%">
+                                    <mat-label>Collection Date / Time</mat-label>
+
+                                    <input matInput type="datetime-local" formControlName="SampleCollectionTime"
+                                        [min]="minDateTime" />
+
+                                    <mat-error *ngIf="sampleform.get('SampleCollectionTime')?.hasError('pastDate')">
+                                        Date & time must be current or future
+                                    </mat-error>
                                 </mat-form-field>
 
                             </div>
