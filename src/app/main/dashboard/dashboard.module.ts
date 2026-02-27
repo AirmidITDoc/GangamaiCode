@@ -35,6 +35,13 @@ import { LabFinancialDashboardComponent } from './lab-financial-dashboard/lab-fi
 import { FinancialDashboardComponent } from './financial-dashboard/financial-dashboard.component';
 import { NewFinacialdashboardComponent } from './new-finacialdashboard/new-finacialdashboard.component';
 import { ServiceGraphComponent } from './new-finacialdashboard/service-graph/service-graph.component';
+import { DrwisecollectionComponent } from './new-finacialdashboard/drwisecollection/drwisecollection.component';
+import { OPIPCollectiongraphComponent } from './new-finacialdashboard/opipcollectiongraph/opipcollectiongraph.component';
+import { PharCollecionGraphComponent } from './new-finacialdashboard/phar-collecion-graph/phar-collecion-graph.component';
+import { VisitDatagraphComponent } from './new-finacialdashboard/visit-datagraph/visit-datagraph.component';
+import { BillingSummarygraphComponent } from './new-finacialdashboard/billing-summarygraph/billing-summarygraph.component';
+import { BedstausgraphComponent } from './new-finacialdashboard/bedstausgraph/bedstausgraph.component';
+import { ServiceReceiptGraphComponent } from './new-finacialdashboard/service-receipt-graph/service-receipt-graph.component';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -53,6 +60,13 @@ import { ServiceGraphComponent } from './new-finacialdashboard/service-graph/ser
         FinancialDashboardComponent,
         NewFinacialdashboardComponent,
         ServiceGraphComponent,
+        DrwisecollectionComponent,
+        OPIPCollectiongraphComponent,
+        PharCollecionGraphComponent,
+        VisitDatagraphComponent,
+        BillingSummarygraphComponent,
+        BedstausgraphComponent,
+        ServiceReceiptGraphComponent,
         // FinancetestComponent
     ],
     imports: [
