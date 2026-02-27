@@ -183,7 +183,7 @@
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Temp</mat-label>
                                         <input matInput formControlName="temp" placeholder="Temp" [maxLength]="10"
-                                            OnlyNumber id="tempField" (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vTemp"
+                                            OnlyNumber id="tempField" (keypress)="keyPressDigitDecimalOnly($event)" [(ngModel)]="vTemp"
                                             [style.color]="getVitalColorClass('Temp', vTemp)"
                                             [style.fontWeight]="'500'">
                                         <span matSuffix style="font-size: x-large;">|</span>
