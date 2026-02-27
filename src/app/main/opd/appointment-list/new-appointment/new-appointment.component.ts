@@ -443,7 +443,11 @@ export class NewAppointmentComponent implements OnInit {
             this.VisitFormGroup.get('SubCompanyId').updateValueAndValidity();
             this.VisitFormGroup.get('policyNumber').clearValidators();
             this.VisitFormGroup.get('policyNumber').updateValueAndValidity();
-            this.patienttype = 1;
+            this.VisitFormGroup.get('CompanyId').reset(0);
+            this.VisitFormGroup.get('SubCompanyId').reset(0);
+            this.VisitFormGroup.get('policyNumber').reset('');
+            this.VisitFormGroup.get('policyLimit').reset(0); 
+            this.patienttype = 1; 
         }
     }
 

@@ -219,7 +219,7 @@
                                                         <input matInput formControlName="Temp" placeholder="Temp"
                                                             id="tempField" [maxLength]="10" OnlyNumber
                                                             (keydown)="onEnter($event, 'bloodField')"
-                                                            (keypress)="keyPressCharater($event)" [(ngModel)]="vTemp"
+                                                            (keypress)="keyPressDigitDecimalOnly($event)" [(ngModel)]="vTemp"
                                                             [style.color]="getVitalColorClass('Temp', vTemp)"
                                                             [style.fontWeight]="'500'">
                                                         <span matSuffix style="font-size: x-large;">|</span>
@@ -662,7 +662,7 @@
 
                         <!-- new visit info -->
                         <mat-tab label="Visit History">
-                            <ng-template mat-tab-label> Visit History </ng-template>
+                            <ng-template mat-tab-label> Previous History </ng-template>
                             <div class="center p-12">
                                 <div fxlayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
 
