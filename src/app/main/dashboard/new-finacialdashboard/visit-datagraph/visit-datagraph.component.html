@@ -1,0 +1,77 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <!-- Modal Header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span class="h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                   Patient Visit Trend
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutGap="3px">
+
+        <!-- dynamicTableHeight -->
+        <div fusePerfectScrollbar
+            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+
+          <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                    <!-- Tests by Modality Bar Chart -->
+                    <div fxFlex="calc(30% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Type Of Visit Count</h3>
+                                    <!-- <p class="chart-subtitle">Distribution of tests performed</p> -->
+                                </div>
+                                <div style="height: 350px;">
+                                    <canvas id="modalityChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+
+                    <div fxFlex="calc(30% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">OP Referral Type</h3>
+                                    <!-- <p class="chart-subtitle">Distribution of tests performed</p> -->
+                                </div>
+                                <div style="height: 350px;">
+                                    <canvas id="modalityChart1"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                      <div fxFlex="calc(30% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">IP Referral Type</h3>
+                                    <!-- <p class="chart-subtitle">Distribution of tests performed</p> -->
+                                </div>
+                                <div style="height: 350px;">
+                                    <canvas id="modalityChart2"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+          </div>
+          
+        </div>
+
+    </div>

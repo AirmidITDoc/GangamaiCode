@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -10,17 +9,16 @@ import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from '../../dashboard.service';
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-service-graph',
-    templateUrl: './service-graph.component.html',
-    styleUrls: ['./service-graph.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+    selector: 'app-opipcollectiongraph',
+    templateUrl: './opipcollectiongraph.component.html',
+    styleUrls: ['./opipcollectiongraph.component.scss']
 })
-export class ServiceGraphComponent {
+export class OPIPCollectiongraphComponent {
     unitId = 1
-   
+
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -32,7 +30,11 @@ export class ServiceGraphComponent {
         public toastr: ToastrService,
         private commonService: PrintserviceService,) { }
 
-   
+    @ViewChild('grid') grid!: AirmidTableComponent;
+
+    gridConfig!: gridModel;
+    filterType: 'Day' | 'Month' = 'Day';
+
     ngOnInit() {
         this.unitId = this.data.unit
 
@@ -40,6 +42,10 @@ export class ServiceGraphComponent {
     }
 
 
+    setFilterType(type: 'Day' | 'Month') {
+        this.filterType = type;
+        this.getServiceList();
+    }
     public modalityChart: any;
     public modalityChart1: any;
     onClose() {
@@ -47,6 +53,7 @@ export class ServiceGraphComponent {
     }
 
     trendData: Servicecharge[] = [];
+    trendData1: Servicecharge[] = [];
     trendChart: any;
     Financedata: any
 
@@ -61,7 +68,7 @@ export class ServiceGraphComponent {
     getServiceList() {
         debugger
 
-        this.fromDate =this.data.fdate// this.datePipe.transform(this.data.fdate.toISOString(), "yyyy-MM-dd")
+        this.fromDate = this.data.fdate// this.datePipe.transform(this.data.fdate.toISOString(), "yyyy-MM-dd")
         this.toDate = this.data.tdate//this.datePipe.transform(this.data.tdate.toISOString(), "yyyy-MM-dd")
         var vadat = {
             "UnitId": this.unitId,
@@ -70,27 +77,29 @@ export class ServiceGraphComponent {
         }
         this._dashboardServices.getwardCoutList(vadat).subscribe((data: any) => {
             this.Financedata = data
-            this.trendData = this.Financedata.serviceCharges
+            this.trendData = this.Financedata.groupWiseCollectionOP
+            this.trendData1 = this.Financedata.groupWiseCollectionIP
 
-            console.log(this.Financedata)
-            if (this.trendData){
+            if (this.trendData) {
 
                 this.modalityData = [
                     ...this.modalityData,
                     ...this.trendData.map(item => ({
 
-                        modality: item.serviceName,
-                        opcount: item.opCollection
+                        modality: item.groupName,
+                        opcount: item.totalAmount
                     }))
                 ];
-            this.modalityData1 = [
-                ...this.modalityData1,
-                ...this.trendData.map(item => ({
-                    modality: item.serviceName,
-                    opcount: item.ipCollection
-                }))
-            ];
-         }
+            }
+            if (this.trendData1) {
+                this.modalityData1 = [
+                    ...this.modalityData1,
+                    ...this.trendData1.map(item => ({
+                        modality: item.groupName,
+                        opcount: item.totalAmount
+                    }))
+                ];
+            }
             console.log(this.modalityData)
 
             this.modalityChart = this.getModalityBarChart();
@@ -108,7 +117,7 @@ export class ServiceGraphComponent {
                 labels: this.modalityData.map(d => d.modality),
                 datasets: [
                     {
-                        label: 'Service Name',
+                        label: 'Group Name',
                         data: this.modalityData.map(d => d.opcount),
                         backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
                         borderRadius: 6
@@ -144,7 +153,7 @@ export class ServiceGraphComponent {
                 labels: this.modalityData1.map(d => d.modality),
                 datasets: [
                     {
-                        label: 'Number of Tests',
+                        label: 'Group Name',
                         data: this.modalityData1.map(d => d.opcount),
                         backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
                         borderRadius: 6
@@ -175,22 +184,11 @@ export class ServiceGraphComponent {
 
 }
 export class Servicecharge {
-    serviceName: any;
-    opTotalAMT: any;
-    opDiscount: any;
-    opCollection: any;
-    ipTotalAMT: any;
-    ipDiscount: any;
-    ipCollection: any;
+    groupName: any;
+    totalAmount: any;
 
     constructor(test: any) {
-        this.serviceName = test.serviceName || '';
-        this.opTotalAMT = test.opTotalAMT || 0;
-        this.opDiscount = test.opDiscount || '';
-        this.opCollection = test.opCollection || 0;
-        this.ipTotalAMT = test.ipTotalAMT || '';
-        this.ipDiscount = test.ipDiscount || 0;
-        this.ipCollection = test.ipCollection || '';
-
+        this.groupName = test.groupName || '';
+        this.totalAmount = test.totalAmount || 0;
     }
 }

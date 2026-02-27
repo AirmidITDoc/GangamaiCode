@@ -12,14 +12,15 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-    selector: 'app-service-graph',
-    templateUrl: './service-graph.component.html',
-    styleUrls: ['./service-graph.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-service-receipt-graph',
+  templateUrl: './service-receipt-graph.component.html',
+  styleUrls: ['./service-receipt-graph.component.scss'],
+      encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
-export class ServiceGraphComponent {
-    unitId = 1
+export class ServiceReceiptGraphComponent {
+
+  unitId = 1
    
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -32,7 +33,6 @@ export class ServiceGraphComponent {
         public toastr: ToastrService,
         private commonService: PrintserviceService,) { }
 
-   
     ngOnInit() {
         this.unitId = this.data.unit
 
@@ -61,8 +61,8 @@ export class ServiceGraphComponent {
     getServiceList() {
         debugger
 
-        this.fromDate =this.data.fdate// this.datePipe.transform(this.data.fdate.toISOString(), "yyyy-MM-dd")
-        this.toDate = this.data.tdate//this.datePipe.transform(this.data.tdate.toISOString(), "yyyy-MM-dd")
+        this.fromDate =this.data.fdate
+        this.toDate = this.data.tdate
         var vadat = {
             "UnitId": this.unitId,
             'FromDate': this.fromDate,
@@ -70,7 +70,7 @@ export class ServiceGraphComponent {
         }
         this._dashboardServices.getwardCoutList(vadat).subscribe((data: any) => {
             this.Financedata = data
-            this.trendData = this.Financedata.serviceCharges
+            this.trendData = this.Financedata.receiptPayment
 
             console.log(this.Financedata)
             if (this.trendData){

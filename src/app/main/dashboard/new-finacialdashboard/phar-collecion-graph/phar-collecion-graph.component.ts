@@ -12,14 +12,12 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-    selector: 'app-service-graph',
-    templateUrl: './service-graph.component.html',
-    styleUrls: ['./service-graph.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-phar-collecion-graph',
+  templateUrl: './phar-collecion-graph.component.html',
+  styleUrls: ['./phar-collecion-graph.component.scss']
 })
-export class ServiceGraphComponent {
-    unitId = 1
+export class PharCollecionGraphComponent {
+ unitId = 1
    
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -47,6 +45,7 @@ export class ServiceGraphComponent {
     }
 
     trendData: Servicecharge[] = [];
+    trendData1: Servicecharge[] = [];
     trendChart: any;
     Financedata: any
 
@@ -61,8 +60,8 @@ export class ServiceGraphComponent {
     getServiceList() {
         debugger
 
-        this.fromDate =this.data.fdate// this.datePipe.transform(this.data.fdate.toISOString(), "yyyy-MM-dd")
-        this.toDate = this.data.tdate//this.datePipe.transform(this.data.tdate.toISOString(), "yyyy-MM-dd")
+        this.fromDate =this.data.fdate
+        this.toDate = this.data.tdate
         var vadat = {
             "UnitId": this.unitId,
             'FromDate': this.fromDate,
@@ -70,35 +69,37 @@ export class ServiceGraphComponent {
         }
         this._dashboardServices.getwardCoutList(vadat).subscribe((data: any) => {
             this.Financedata = data
-            this.trendData = this.Financedata.serviceCharges
-
-            console.log(this.Financedata)
+            this.trendData = this.Financedata.pharmacySaleOP
+            this.trendData1 = this.Financedata.pharmacySaleIP
+          
             if (this.trendData){
 
                 this.modalityData = [
                     ...this.modalityData,
                     ...this.trendData.map(item => ({
 
-                        modality: item.serviceName,
-                        opcount: item.opCollection
+                        modality: item.opNetAmount,
+                        opcount: item.oPprofitamount
                     }))
                 ];
+            }
+             if (this.trendData1){
             this.modalityData1 = [
                 ...this.modalityData1,
-                ...this.trendData.map(item => ({
-                    modality: item.serviceName,
-                    opcount: item.ipCollection
+                ...this.trendData1.map(item => ({
+                    modality: item.ipNetAmount,
+                    opcount: item.iPprofitamount
                 }))
             ];
          }
-            console.log(this.modalityData)
-
+          
             this.modalityChart = this.getModalityBarChart();
             this.modalityChart1 = this.getModalityBarChart1();
 
         });
 
     }
+   
 
     // Tests by Modality Bar Chart
     getModalityBarChart() {
@@ -108,9 +109,9 @@ export class ServiceGraphComponent {
                 labels: this.modalityData.map(d => d.modality),
                 datasets: [
                     {
-                        label: 'Service Name',
+                        label: 'Pharmacy OP Sales Profit',
                         data: this.modalityData.map(d => d.opcount),
-                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+                        backgroundColor: ['#e9ac1b','#9661db',  '#28af28', '#70c7bd', '#ff5a8a'],
                         borderRadius: 6
                     }
                 ]
@@ -144,9 +145,9 @@ export class ServiceGraphComponent {
                 labels: this.modalityData1.map(d => d.modality),
                 datasets: [
                     {
-                        label: 'Number of Tests',
+                        label: 'Pharmacy IP Sales Profit',
                         data: this.modalityData1.map(d => d.opcount),
-                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+                        backgroundColor: [ '#e9ac1b','#9661db', '#28af28', '#70c7bd', '#ff5a8a'],
                         borderRadius: 6
                     }
                 ]
@@ -174,23 +175,20 @@ export class ServiceGraphComponent {
     }
 
 }
+
+ 
 export class Servicecharge {
-    serviceName: any;
-    opTotalAMT: any;
-    opDiscount: any;
-    opCollection: any;
-    ipTotalAMT: any;
-    ipDiscount: any;
-    ipCollection: any;
+    opNetAmount: any;
+    oPprofitamount: any;
+    ipNetAmount: any;
+    iPprofitamount: any;
+
 
     constructor(test: any) {
-        this.serviceName = test.serviceName || '';
-        this.opTotalAMT = test.opTotalAMT || 0;
-        this.opDiscount = test.opDiscount || '';
-        this.opCollection = test.opCollection || 0;
-        this.ipTotalAMT = test.ipTotalAMT || '';
-        this.ipDiscount = test.ipDiscount || 0;
-        this.ipCollection = test.ipCollection || '';
-
+        this.opNetAmount = test.opNetAmount || '';
+        this.oPprofitamount = test.oPprofitamount || 0;
+        this.ipNetAmount = test.ipNetAmount || '';
+        this.iPprofitamount = test.iPprofitamount || 0;
+     
     }
 }

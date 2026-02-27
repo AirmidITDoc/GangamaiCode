@@ -12,17 +12,16 @@ import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-    selector: 'app-service-graph',
-    templateUrl: './service-graph.component.html',
-    styleUrls: ['./service-graph.component.scss'],
+    selector: 'app-drwisecollection',
+    templateUrl: './drwisecollection.component.html',
+    styleUrls: ['./drwisecollection.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-export class ServiceGraphComponent {
-    unitId = 1
-   
+export class DrwisecollectionComponent {
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
 
     constructor(
         public _dashboardServices: DashboardService,
@@ -32,14 +31,22 @@ export class ServiceGraphComponent {
         public toastr: ToastrService,
         private commonService: PrintserviceService,) { }
 
-   
+    @ViewChild('grid') grid!: AirmidTableComponent;
+
+    gridConfig!: gridModel;
+    unitId = 0
+    
     ngOnInit() {
         this.unitId = this.data.unit
-
+       
         this.getServiceList();
     }
 
 
+    setFilterType(type: 'Day' | 'Month') {
+
+        this.getServiceList();
+    }
     public modalityChart: any;
     public modalityChart1: any;
     onClose() {
@@ -47,10 +54,13 @@ export class ServiceGraphComponent {
     }
 
     trendData: Servicecharge[] = [];
+     trendData1: Servicecharge[] = [];
     trendChart: any;
     Financedata: any
 
-
+    // modalityData: { modality: string; opcount: number }[] = [
+    //     { modality: 'X-Ray', opcount: 45 }
+    // ];
     modalityData = [
         { modality: '', opcount: 0 }
     ];
@@ -58,84 +68,88 @@ export class ServiceGraphComponent {
     modalityData1 = [
         { modality: '', opcount: 0 }
     ];
+    public chargeList: modilitydata[] = [];
     getServiceList() {
         debugger
-
-        this.fromDate =this.data.fdate// this.datePipe.transform(this.data.fdate.toISOString(), "yyyy-MM-dd")
-        this.toDate = this.data.tdate//this.datePipe.transform(this.data.tdate.toISOString(), "yyyy-MM-dd")
         var vadat = {
             "UnitId": this.unitId,
-            'FromDate': this.fromDate,
-            'ToDate': this.toDate
+            'FromDate': this.data.fdate,
+            'ToDate': this.data.tdate
         }
         this._dashboardServices.getwardCoutList(vadat).subscribe((data: any) => {
             this.Financedata = data
-            this.trendData = this.Financedata.serviceCharges
+            this.trendData = this.Financedata.doctorWiseTotalBusiness
+            this.trendData1 = this.Financedata.doctorWisePatientCount
 
-            console.log(this.Financedata)
-            if (this.trendData){
+            console.log(this.trendData)
+            if (this.trendData) {
 
                 this.modalityData = [
                     ...this.modalityData,
                     ...this.trendData.map(item => ({
 
-                        modality: item.serviceName,
-                        opcount: item.opCollection
+                        modality: item.doctorName,
+                        opcount: item.totalBusiness
                     }))
                 ];
-            this.modalityData1 = [
-                ...this.modalityData1,
-                ...this.trendData.map(item => ({
-                    modality: item.serviceName,
-                    opcount: item.ipCollection
-                }))
-            ];
-         }
+            }
+            if (this.trendData1) {
+                debugger
+                 this.modalityData1 = [
+                    ...this.modalityData1,
+                    ...this.trendData1.map(item => ({
+
+                        modality: item.doctorName,
+                        opcount: item.patientCount
+                    }))
+                ];
+
+            }
+
             console.log(this.modalityData)
-
-            this.modalityChart = this.getModalityBarChart();
-            this.modalityChart1 = this.getModalityBarChart1();
-
-        });
-
-    }
+            
+            // if (this.modalityData)
+                  this.modalityChart = this.getModalityBarChart();
+                  this.modalityChart1 = this.getModalityBarChart1();
+ });
+        }
 
     // Tests by Modality Bar Chart
     getModalityBarChart() {
-        return new Chart('modalityChart', {
-            type: 'bar',
-            data: {
-                labels: this.modalityData.map(d => d.modality),
-                datasets: [
-                    {
-                        label: 'Service Name',
-                        data: this.modalityData.map(d => d.opcount),
-                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
-                        borderRadius: 6
-                    }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            font: { size: 11 }
+            return new Chart('modalityChart', {
+                type: 'bar',
+                data: {
+                    labels: this.modalityData.map(d => d.modality),
+                    datasets: [
+                        {
+                            label: 'Dr.Name',
+                            data: this.modalityData.map(d => d.opcount),
+                            backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+                            borderRadius: 6
                         }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
                     },
-                    x: {
-                        ticks: {
-                            font: { size: 11 }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: { size: 11 }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: 11 }
+                            }
                         }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
 
     getModalityBarChart1() {
         return new Chart('modalityChart1', {
@@ -175,22 +189,29 @@ export class ServiceGraphComponent {
 
 }
 export class Servicecharge {
-    serviceName: any;
-    opTotalAMT: any;
-    opDiscount: any;
+    totalBusiness: any;
+    doctorName: any;
     opCollection: any;
-    ipTotalAMT: any;
-    ipDiscount: any;
-    ipCollection: any;
+    patientCount: any;
 
     constructor(test: any) {
-        this.serviceName = test.serviceName || '';
-        this.opTotalAMT = test.opTotalAMT || 0;
-        this.opDiscount = test.opDiscount || '';
-        this.opCollection = test.opCollection || 0;
-        this.ipTotalAMT = test.ipTotalAMT || '';
-        this.ipDiscount = test.ipDiscount || 0;
-        this.ipCollection = test.ipCollection || '';
+        this.totalBusiness = test.totalBusiness || 0;
+        this.doctorName = test.doctorName || '';
+         this.opCollection = test.opCollection || 0;
+        this.patientCount = test.patientCount || 0;
 
     }
 }
+export class modilitydata {
+    modality: any;
+    opcount: any;
+
+
+    constructor(test: any) {
+        this.modality = test.modality || '';
+        this.opcount = test.opcount || 0;
+
+
+    }
+}
+

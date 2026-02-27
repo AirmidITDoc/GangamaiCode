@@ -10,16 +10,26 @@ import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from '../../dashboard.service';
 import { fuseAnimations } from '@fuse/animations';
 import { MatTableDataSource } from '@angular/material/table';
+type CollectionRow = {
+  mode: string;
+  amount: number;
+};
+type ReceiptSummaryRow = {
+  label: string;
+  amount: number;
+
+};
 
 @Component({
-    selector: 'app-service-graph',
-    templateUrl: './service-graph.component.html',
-    styleUrls: ['./service-graph.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-billing-summarygraph',
+  templateUrl: './billing-summarygraph.component.html',
+  styleUrls: ['./billing-summarygraph.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
-export class ServiceGraphComponent {
-    unitId = 1
+export class BillingSummarygraphComponent {
+
+ unitId = 1
    
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -32,7 +42,11 @@ export class ServiceGraphComponent {
         public toastr: ToastrService,
         private commonService: PrintserviceService,) { }
 
-   
+    @ViewChild('grid') grid!: AirmidTableComponent;
+
+    gridConfig!: gridModel;
+    filterType: 'Day' | 'Month' = 'Day';
+
     ngOnInit() {
         this.unitId = this.data.unit
 
@@ -47,17 +61,31 @@ export class ServiceGraphComponent {
     }
 
     trendData: Servicecharge[] = [];
-    trendChart: any;
     Financedata: any
 
 
     modalityData = [
-        { modality: '', opcount: 0 }
+        { modality: 'X-Ray', opcount: 0 }
     ];
 
     modalityData1 = [
-        { modality: '', opcount: 0 }
+        { modality: 'X-Ray', opcount: 0 }
     ];
+
+      collection: CollectionRow[] = [
+    { mode: 'Cash', amount: 0 },
+    { mode: 'Cheque', amount: 0 },
+    { mode: 'Card', amount: 0 },
+    { mode: 'EFT', amount: 0 },
+    { mode: 'ECS', amount: 0 },
+  ];
+
+  receiptSummary: ReceiptSummaryRow[] = [
+    { label: 'Receipt', amount: 0 },
+    { label: 'Advance', amount: 0 },
+    { label: 'Return', amount: 0 },
+    { label: 'Refund', amount: 0 },
+  ];
     getServiceList() {
         debugger
 
@@ -70,24 +98,43 @@ export class ServiceGraphComponent {
         }
         this._dashboardServices.getwardCoutList(vadat).subscribe((data: any) => {
             this.Financedata = data
-            this.trendData = this.Financedata.serviceCharges
+            this.trendData = this.Financedata.billSummary
+
+            if (this.Financedata.billSummary) {
+        this.collection[0].amount = this.Financedata.billSummary[0]['cash']
+        this.collection[1].amount = this.Financedata.billSummary[0]['cheque']
+        //  this.collection[2].amount =this.Financedata.billSummary[0]['neft']
+        this.collection[2].amount = this.Financedata.billSummary[0]['cardPay']
+        this.collection[3].amount = this.Financedata.billSummary[0]['upi']
+      }
+
+      
+      if (this.Financedata.receiptOPIP) {
+        console.log()
+        this.receiptSummary[0].amount = this.Financedata.receiptOPIP[0]['receipt']
+        this.receiptSummary[1].amount = this.Financedata.advanceOPIP[0]['advance']
+        this.receiptSummary[2].amount = this.Financedata.refundOPIP[0]['refund']
+        this.receiptSummary[3].amount = this.Financedata.pharmacyReturn[0]['return1']
+
+      }
+
 
             console.log(this.Financedata)
             if (this.trendData){
 
                 this.modalityData = [
                     ...this.modalityData,
-                    ...this.trendData.map(item => ({
+                    ...this.collection.map(item => ({
 
-                        modality: item.serviceName,
-                        opcount: item.opCollection
+                        modality: item.mode,
+                        opcount: item.amount
                     }))
                 ];
             this.modalityData1 = [
                 ...this.modalityData1,
-                ...this.trendData.map(item => ({
-                    modality: item.serviceName,
-                    opcount: item.ipCollection
+                ...this.receiptSummary.map(item => ({
+                    modality: item.label,
+                    opcount: item.amount
                 }))
             ];
          }

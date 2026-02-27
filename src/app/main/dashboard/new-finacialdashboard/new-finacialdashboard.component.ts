@@ -9,6 +9,13 @@ import { WordCount } from 'ckeditor5';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceGraphComponent } from './service-graph/service-graph.component';
+import { DrwisecollectionComponent } from './drwisecollection/drwisecollection.component';
+import { OPIPCollectiongraphComponent } from './opipcollectiongraph/opipcollectiongraph.component';
+import { PharCollecionGraphComponent } from './phar-collecion-graph/phar-collecion-graph.component';
+import { VisitDatagraphComponent } from './visit-datagraph/visit-datagraph.component';
+import { BedstausgraphComponent } from './bedstausgraph/bedstausgraph.component';
+import { BillingSummarygraphComponent } from './billing-summarygraph/billing-summarygraph.component';
+import { ServiceReceiptGraphComponent } from './service-receipt-graph/service-receipt-graph.component';
 
 
 
@@ -43,8 +50,13 @@ type CollectionRow = {
 })
 export class NewFinacialdashboardComponent {
 
-    fromDate: Date = new Date(2026, 0, 27);
-  toDate: Date = new Date(2026, 0, 27);
+  //   fromDate: Date = new Date(2026, 0, 27);
+  // toDate: Date = new Date(2026, 0, 27);
+
+   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+
   myFilterform:FormGroup
   username = ''
   UnitId: any = this._accountServices.currentUserValue.user.unitId;
@@ -72,7 +84,10 @@ opippharmacyTotalprofit: any;
   opVisits = new MatTableDataSource<Visitdata>();
   referrals = new MatTableDataSource<referralsWise>();
   Billingsummary = new MatTableDataSource<Billingsummarydata>();
+   OPcollection = new MatTableDataSource<Billingsummarydata>();
+   IPcollection = new MatTableDataSource<Billingsummarydata>();
   consultantCharges = new MatTableDataSource<consultantChargesdata>();
+  drallCollection = new MatTableDataSource<consultantChargesdata>();
   packages = new MatTableDataSource<packagesdata>();
   finOPIPPayment = new MatTableDataSource<Servicecharge>();
   receipts = new MatTableDataSource<Servicecharge>();
@@ -110,6 +125,9 @@ Insuranceds= new MatTableDataSource<Insurance>();
   pharmacyopsalesColumns: string[] = ['Total Sales', 'Toal Cost', 'Profit'];
   chargesColumns: string[] = ['serviceName', 'ip', 'op'];
   receiptsColumns: string[] = ['serviceName', 'ip', 'op'];
+  IpCollColumns: string[] = ['groupName', 'totalAmount'];
+OpCollColumns: string[] = ['groupName', 'totalAmount'];
+
 
   opVisitColumns: string[] = ['typeOfVisit', 'patients'];
 
@@ -155,8 +173,8 @@ Insuranceds= new MatTableDataSource<Insurance>();
   // ];
 
 
-  consultantChargeColumns: string[] = ['consultantName', 'patients', 'charges'];
-
+  consultantChargeColumns: string[] = ['consultantName', 'patients', 'charges','doctorShare'];
+  DrcollectionColumns: string[] = ['consultantName', 'patients', 'charges'];
   packageColumns: string[] = ['packageName', 'patients'];
   // packages: PackageDetailRow[] = [];
 
@@ -255,6 +273,24 @@ Insuranceds= new MatTableDataSource<Insurance>();
     return this.collection.reduce((sum, r) => sum + (r.amount || 0), 0);
   }
 
+   get drcollTotal(): number {
+    return this.drallCollection.data.reduce((sum, r) => sum + (r.totalBusiness || 0), 0);
+  }
+
+     get optotalcollecion(): number {
+    return this.OPcollection.data.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
+  }
+
+     get iptotalcollecion(): number {
+    return this.IPcollection.data.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
+  }
+
+  get totalpatientCount(): number {
+    return this.packages.data.reduce((sum, r) => sum + (r.patientCount || 0), 0);
+  }
+
+  
+
   get getcashtotal(): number {
     return this.Billingsummary.data.reduce((sum, r) => sum + (r.cash || 0), 0);
   }
@@ -263,8 +299,21 @@ Insuranceds= new MatTableDataSource<Insurance>();
     return this.Billingsummary.data.reduce((sum, r) => sum + (r.cardPay || 0), 0);
   }
 
-  Financedata: any
 
+get pcount(): number {
+    return this.consultantCharges.data.reduce((sum, r) => sum + (r.patientCount || 0), 0);
+  }
+  
+  get totalcharges(): number {
+    return this.consultantCharges.data.reduce((sum, r) => sum + (r.opCollection || 0), 0);
+  }
+
+  get totalshare(): number {
+    return this.consultantCharges.data.reduce((sum, r) => sum + (r.doctorShare || 0), 0);
+  }
+
+  Financedata: any
+  BillNetAmt=0
 
   getwardpatientList() {
     
@@ -331,6 +380,8 @@ Insuranceds= new MatTableDataSource<Insurance>();
       }
 
 
+      this.BillNetAmt=this.collection[0].amount + this.collection[1].amount -  this.receiptSummary[2].amount - this.receiptSummary[3].amount
+
       this.consultantCharges.data = this.Financedata.doctorWisePatientCount;
       console.log(this.consultantCharges.data)
 
@@ -347,19 +398,44 @@ Insuranceds= new MatTableDataSource<Insurance>();
       this.opippharmacyTotalprofit=(this.pharmacyoptotalprofit + this.pharmacyiptotalprofit).toFixed(2)
       this.finalOutstanding.data = this.Financedata.financialOutStandingOPIP;
 
-      // this.finalOutstanding.data = this.Financedata.financialOutStandingOPIP;
+      //dr
+
+      debugger
+      this.drallCollection.data = this.Financedata.doctorWiseTotalBusiness;
+      this.OPcollection.data = this.Financedata.groupWiseCollectionOP;
+      this.IPcollection.data = this.Financedata.groupWiseCollectionIP;
 
 
-      this.packages.data = this.Financedata.pathologyWorkloads;
+      
+
+      this.packages.data = this.Financedata.packagePatientCount;
       console.log(this.packages.data)
 
     });
 
   }
-
+drcollectionTrend() {
+   this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
+      const dialogRef = this._matDialog.open(DrwisecollectionComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    }
 
 
     serviceTrend() {
+
+       this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
       const dialogRef = this._matDialog.open(ServiceGraphComponent,
         {
           maxWidth: "90vw",
@@ -368,7 +444,110 @@ Insuranceds= new MatTableDataSource<Insurance>();
           data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
         });
       dialogRef.afterClosed().subscribe(result => {
-        // this.grid.bindGridData();
+        
+      });
+    }
+
+     OPIPCollectionTrend() {
+
+       this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
+      const dialogRef = this._matDialog.open(OPIPCollectiongraphComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    }
+    PharCollectionTrend() {
+
+       this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
+      const dialogRef = this._matDialog.open(PharCollecionGraphComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    }
+
+    VisitTrend() {
+
+       this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
+      const dialogRef = this._matDialog.open(VisitDatagraphComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    }
+
+    wardTrend() {
+
+       this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
+      const dialogRef = this._matDialog.open(BedstausgraphComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    }
+
+      BillingTrend() {
+
+       this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
+      const dialogRef = this._matDialog.open(BillingSummarygraphComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
+      });
+    }
+
+
+    
+      ServiceReceiptTrend() {
+
+       this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+      
+      const dialogRef = this._matDialog.open(ServiceReceiptGraphComponent,
+        {
+          maxWidth: "90vw",
+          height: '70%',
+          width: '90%',
+          data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        
       });
     }
 }
@@ -468,6 +647,7 @@ export class Billingsummarydata {
   upi: any;
   usedAdvance: any;
   amount: any
+  totalAmount: any
 
   constructor(Billingsummarydata) {
     {
@@ -479,6 +659,7 @@ export class Billingsummarydata {
       this.upi = Billingsummarydata.upi || 0;
       this.usedAdvance = Billingsummarydata.usedAdvance || 0;
       this.amount = Billingsummarydata.amount || 0;
+      this.totalAmount = Billingsummarydata.totalAmount || 0;
 
     }
   }
@@ -488,7 +669,8 @@ export class consultantChargesdata {
   doctorName: any;
   patientCount: any;
   opCollection: any;
-
+totalBusiness: any;
+doctorShare: any;
 
   constructor(consultantChargesdata) {
     {
@@ -496,6 +678,8 @@ export class consultantChargesdata {
 
       this.patientCount = consultantChargesdata.patientCount || 0;
       this.opCollection = consultantChargesdata.opCollection || 0;
+ this.totalBusiness = consultantChargesdata.totalBusiness || 0;
+this.doctorShare = consultantChargesdata.doctorShare || 0;
 
     }
   }
@@ -505,12 +689,14 @@ export class consultantChargesdata {
 export class packagesdata {
   packageName: any;
   patients: any;
-
+  patientCount: any;
   constructor(packages) {
     {
       this.packageName = packages.packageName || '';
 
       this.patients = packages.patients || 0;
+
+      this.patientCount = packages.patientCount || 0;
 
     }
   }

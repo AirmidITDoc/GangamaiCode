@@ -7,39 +7,21 @@
                 <span>Financial Dashboard</span>
             </div>
         </div>
-          <form [formGroup]="myFilterform">
-        <div class="date-filter-container">
-           
-            <!-- <div class="date-filter">
-                <span class="date-filter-label">From Date</span>
-                <mat-form-field class="date-field" appearance="outline">
-                    <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" placeholder="From Date"
-                         />
-                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #fromPicker></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div class="date-filter">
-                <span class="date-filter-label">To Date</span>
-                <mat-form-field class="date-field" appearance="outline">
-                    <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" placeholder="To Date"  />
-                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #toPicker></mat-datepicker>
-                </mat-form-field>
-            </div> -->
+        <form [formGroup]="myFilterform">
+            <div class="date-filter-container">
 
-                 <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="fromDate" placeholder="Start date">
-                                <input matEndDate formControlName="toDate" placeholder="End date">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
-            <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">Go</button>
-            
-        </div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="fromDate" placeholder="Start date">
+                        <input matEndDate formControlName="toDate" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">Go</button>
+
+            </div>
         </form>
     </div>
     <!-- / HEADER -->
@@ -51,6 +33,10 @@
             <div class="fin-grid fin-grid-top">
                 <!-- Patient Head Count -->
                 <mat-card class="panel mat-elevation-z2">
+                    <button mat-icon-button color="warn" matTooltip="Ward Trend" (click)="wardTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
+
                     <div class="panel-header">Patient Head Count</div>
                     <div class="panel-body">
                         <div class="panel-subtitle">IP</div>
@@ -94,11 +80,11 @@
                 <!-- Charges -->
                 <mat-card class="panel mat-elevation-z2">
                     <div class="panel-header">Charges</div>
-                     <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
-                            <mat-icon>trending_up</mat-icon>
-                        </button>
+                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
 
-                     
+
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
                             <table mat-table [dataSource]="charges" class="compact-table">
@@ -148,6 +134,9 @@
 
                 <!-- Receipts -->
                 <mat-card class="panel mat-elevation-z2">
+                      <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="ServiceReceiptTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
                     <div class="panel-header">Receipts</div>
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
@@ -177,7 +166,7 @@
                         </div>
                         <div class="totals">
                             <div class="totals-row">
-                                <div class="totals-label" >Total Amount</div>
+                                <div class="totals-label">Total Amount</div>
                                 <div class="totals-num">{{ receiptsTotalIp}}</div>
                                 <div class="totals-num">{{ receiptsTotalOp}}</div>
                             </div>
@@ -187,7 +176,7 @@
                                 <div class="totals-num">{{ receiptsDiscountOp}}</div> -->
                             </div>
                             <div class="totals-row totals-strong">
-                                <div class="totals-label" >Net Amount</div>
+                                <div class="totals-label">Net Amount</div>
                                 <div class="totals-num">{{ receiptsNetIp}}</div>
                                 <div class="totals-num">{{ receiptsNetOp}}</div>
                             </div>
@@ -200,6 +189,9 @@
             <div class="fin-grid fin-grid-bottom">
                 <!-- Left: OP Summary -->
                 <mat-card class="panel mat-elevation-z2">
+                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="VisitTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
                     <div class="panel-header">OP</div>
                     <div class="panel-body">
                         <div class="two-col">
@@ -207,23 +199,27 @@
 
                                 <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
                                     Type of Visit</div>
-                                <table mat-table [dataSource]="opVisits" class="compact-table">
-                                    <ng-container matColumnDef="typeOfVisit">
-                                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Type of Visit
-                                        </th>
-                                        <td mat-cell *matCellDef="let r"> {{ r.typeOFVisit }} </td>
-                                    </ng-container>
-                                    <ng-container matColumnDef="patients">
-                                        <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
-                                            Patients </th>
-                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.patientCount }} </td>
-                                    </ng-container>
-                                    <tr mat-header-row *matHeaderRowDef="opVisitColumns"></tr>
-                                    <tr mat-row *matRowDef="let row; columns: opVisitColumns;"></tr>
-                                </table>
-                                <div class="panel-footer">
-                                    <div class="totals-label">Total</div>
-                                    <div class="footer-value">{{ opTotalPatients }}</div>
+                                <div style="height: 250px;overflow-y: auto;">
+                                    <table mat-table [dataSource]="opVisits" class="compact-table">
+                                        <ng-container matColumnDef="typeOfVisit">
+                                            <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Type of
+                                                Visit
+                                            </th>
+                                            <td mat-cell *matCellDef="let r"> {{ r.typeOFVisit }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="patients">
+                                            <th mat-header-cell *matHeaderCellDef class="num"
+                                                style="font-weight: bold;"> #
+                                                Patients </th>
+                                            <td mat-cell *matCellDef="let r" class="num"> {{ r.patientCount }} </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="opVisitColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: opVisitColumns;"></tr>
+                                    </table>
+                                    <div class="panel-footer">
+                                        <div class="totals-label">Total</div>
+                                        <div class="footer-value">{{ opTotalPatients }}</div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -250,26 +246,32 @@
                                     <tr mat-row *matRowDef="let row; columns: patientTypeColumns;"></tr>
                                 </table>
 
-                                <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">Referral List</div>
-                                <table mat-table [dataSource]="referrals" class="compact-table">
-                                    <ng-container matColumnDef="referredBy">
-                                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Referred By
-                                        </th>
-                                        <td mat-cell *matCellDef="let r"> {{ r.refName }} </td>
-                                    </ng-container>
-                                    <ng-container matColumnDef="ipPatients">
-                                        <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
-                                            IP Patients </th>
-                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.ipRefCount }} </td>
-                                    </ng-container>
-                                    <ng-container matColumnDef="opPatients">
-                                        <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
-                                            OP Patients </th>
-                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.opRefCount }} </td>
-                                    </ng-container>
-                                    <tr mat-header-row *matHeaderRowDef="referralColumns"></tr>
-                                    <tr mat-row *matRowDef="let row; columns: referralColumns;"></tr>
-                                </table>
+                                <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
+                                    Referral List</div>
+                                <div style="height: 250px;overflow-y: auto;">
+                                    <table mat-table [dataSource]="referrals" class="compact-table">
+                                        <ng-container matColumnDef="referredBy">
+                                            <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Referred
+                                                By
+                                            </th>
+                                            <td mat-cell *matCellDef="let r"> {{ r.refName }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="ipPatients">
+                                            <th mat-header-cell *matHeaderCellDef class="num"
+                                                style="font-weight: bold;"> #
+                                                IP Patients </th>
+                                            <td mat-cell *matCellDef="let r" class="num"> {{ r.ipRefCount }} </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="opPatients">
+                                            <th mat-header-cell *matHeaderCellDef class="num"
+                                                style="font-weight: bold;"> #
+                                                OP Patients </th>
+                                            <td mat-cell *matCellDef="let r" class="num"> {{ r.opRefCount }} </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="referralColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: referralColumns;"></tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -277,7 +279,9 @@
 
                 <!-- Middle: Billing Summary -->
                 <mat-card class="panel mat-elevation-z2">
-
+                    <button mat-icon-button color="warn" matTooltip="Billing Summary Trend" (click)="BillingTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
                     <div class="panel-header">Billing Summary</div>
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
@@ -308,12 +312,13 @@
                                     </div>
                                     <div class="kv kv-strong">
                                         <div class="kv-label">Net Amt</div>
-                                        <div class="kv-value">{{ modeSummaryTotal}}</div>
+                                        <div class="kv-value">{{ BillNetAmt}}</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">Collection</div>
+                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
+                                Collection</div>
                             <div class="collection">
                                 <div class="kv" *ngFor="let c of collection">
                                     <div class="kv-label">{{ c.mode }}</div>
@@ -321,7 +326,7 @@
                                 </div>
                                 <div class="kv kv-strong">
                                     <div class="totals-label">Total</div>
-                                    <div class="kv-value" style="padding-left: 480px;">{{ collectionTotal}}</div>
+                                    <div class="kv-value" style="padding-left: 510px;">{{ collectionTotal}}</div>
                                 </div>
                             </div>
                         </div>
@@ -330,79 +335,212 @@
 
                 <!-- Right: Consultant + Package -->
                 <div class="right-stack">
-                    <mat-card class="panel mat-elevation-z2">
-                        <div class="panel-header" style="font-weight: bold;">Consultant Charges</div>
-                        <div class="panel-body">
-                            <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
 
-                                <table mat-table [dataSource]="consultantCharges" class="compact-table">
-                                    <ng-container matColumnDef="consultantName">
-                                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Consultant
-                                            Name </th>
-                                        <td mat-cell *matCellDef="let r"> {{ r.doctorName }} </td>
-                                    </ng-container>
-                                    <ng-container matColumnDef="patients">
-                                        <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
-                                            Patients </th>
-                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.patientCount }} </td>
-                                    </ng-container>
-                                    <ng-container matColumnDef="charges">
-                                        <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;">
-                                            Charges </th>
-                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.opCollection}}
-                                        </td>
-                                    </ng-container>
-                                    <tr mat-header-row *matHeaderRowDef="consultantChargeColumns"></tr>
-                                    <tr mat-row *matRowDef="let row; columns: consultantChargeColumns;"></tr>
-                                </table>
-                            </div>
+                    <!-- *ngIf="packages.data.length; else noPackages" -->
+                    <mat-card class="panel mat-elevation-z2">
+                        <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="OPIPCollectionTrend()">
+                            <mat-icon>trending_up</mat-icon>
+                        </button>
+                        <div class="panel-header" style="font-weight: bold;">Collection Details</div>
+                        <div class="panel-body">
+                            <ng-container>
+                                <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
+
+                                    <div
+                                        style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
+                                        OP collection</div>
+                                    <div style="height: 120px; overflow-y: auto;">
+                                        <table mat-table [dataSource]="OPcollection" class="compact-table"
+                                            style="overflow-y: auto;">
+                                            <ng-container matColumnDef="groupName">
+                                                <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> OP
+                                                    Group
+                                                    Wise Collection
+                                                </th>
+                                                <td mat-cell *matCellDef="let r"> {{ r.groupName }} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="totalAmount">
+                                                <th mat-header-cell *matHeaderCellDef class="num"
+                                                    style="font-weight: bold;"> #
+                                                    Total </th>
+                                                <td mat-cell *matCellDef="let r" class="num"> {{ r.totalAmount }} </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="OpCollColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: OpCollColumns;"></tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="totals-label">OP Total</div>
+                                        <div class="footer-value">{{ optotalcollecion }}</div>
+                                    </div>
+
+                                    <div
+                                        style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
+                                        IP collection</div>
+                                    <div style="height: 120px; overflow-y: auto;">
+                                        <table mat-table [dataSource]="IPcollection" class="compact-table">
+                                            <ng-container matColumnDef="groupName">
+                                                <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> IP
+                                                    Group
+                                                    Wise Collection
+                                                </th>
+                                                <td mat-cell *matCellDef="let r"> {{ r.groupName }} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="totalAmount">
+                                                <th mat-header-cell *matHeaderCellDef class="num"
+                                                    style="font-weight: bold;"> #
+                                                    Total </th>
+                                                <td mat-cell *matCellDef="let r" class="num"> {{ r.totalAmount }} </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="IpCollColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: IpCollColumns;"></tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="totals-label">IP Total</div>
+                                        <div class="footer-value">{{ iptotalcollecion }}</div>
+                                    </div>
+
+                                    <div style="height: 120px; overflow-y: auto;">
+                                        <div
+                                            style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
+                                            Package Name</div>
+                                        <table mat-table [dataSource]="packages" class="compact-table">
+                                            <ng-container matColumnDef="packageName">
+                                                <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">
+                                                    Package
+                                                    Name
+                                                </th>
+                                                <td mat-cell *matCellDef="let r"> {{ r.packageName }} </td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="patients">
+                                                <th mat-header-cell *matHeaderCellDef class="num"
+                                                    style="font-weight: bold;"> #
+                                                    patients </th>
+                                                <td mat-cell *matCellDef="let r" class="num"> {{ r.patientCount }} </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="packageColumns"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: packageColumns;"></tr>
+                                        </table>
+
+                                        <div class="panel-footer">
+                                            <div class="totals-label">Package Total</div>
+                                            <div class="footer-value">{{ totalpatientCount }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-template #noPackages>
+                                <div class="no-data">No data</div>
+                            </ng-template>
                         </div>
                     </mat-card>
-
-
                 </div>
             </div>
 
             <!-- //Advance? -->
             <div class="fin-grid fin-grid-bottom">
                 <mat-card class="panel mat-elevation-z2">
-                    <div class="panel-header" style="font-weight: bold;">Package Details</div>
+                    <div class="panel-header" style="font-weight: bold;">Consultant Charges</div>
                     <div class="panel-body">
-                        <ng-container *ngIf="packages.data.length; else noPackages">
-                            <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
+                        <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
 
-                                <table mat-table [dataSource]="packages" class="compact-table">
-                                    <ng-container matColumnDef="packageName">
-                                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Package Name
-                                        </th>
-                                        <td mat-cell *matCellDef="let r"> {{ r.packageName }} </td>
-                                    </ng-container>
-                                    <ng-container matColumnDef="patients">
-                                        <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
-                                            patients </th>
-                                        <td mat-cell *matCellDef="let r" class="num"> {{ r.patients }} </td>
-                                    </ng-container>
-                                    <tr mat-header-row *matHeaderRowDef="packageColumns"></tr>
-                                    <tr mat-row *matRowDef="let row; columns: packageColumns;"></tr>
-                                </table>
+                            <table mat-table [dataSource]="consultantCharges" class="compact-table">
+                                <ng-container matColumnDef="consultantName">
+                                    <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Consultant
+                                        Name </th>
+                                    <td mat-cell *matCellDef="let r"> {{ r.doctorName }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="patients">
+                                    <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
+                                        Patients </th>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.patientCount }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="charges">
+                                    <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;">
+                                        Charges </th>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.opCollection}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="doctorShare">
+                                    <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;">
+                                        DoctorShare </th>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.doctorShare}}
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="consultantChargeColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: consultantChargeColumns;"></tr>
+                            </table>
+                             <div class="panel-footer">
+
+                                <div class="totals-label">Total Count</div>
+                                <div class="footer-value" style="padding-left: 160px;">{{ pcount }}</div>
+                                 <!-- <div class="totals-label">Charges</div> -->
+                                <div class="footer-value" style="padding-left:30px;">{{ totalcharges }}</div>
+                                 <div class="totals-label"> Share</div>
+                                <div class="footer-value">{{ totalshare }}</div>
                             </div>
-                        </ng-container>
-                        <ng-template #noPackages>
-                            <div class="no-data">No data</div>
-                        </ng-template>
+                        </div>
+                    </div>
+                    
+                </mat-card>
+
+
+                <!-- //Dr Bussiness -->
+
+                <mat-card class="panel mat-elevation-z2">
+                    <button mat-icon-button color="warn" matTooltip="Dr Collection Trend" (click)="drcollectionTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
+
+                    <div class="panel-header" style="font-weight: bold;">Dr.Wise Collection</div>
+                    <div class="panel-body">
+                        <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
+
+                            <table mat-table [dataSource]="drallCollection" class="compact-table">
+                                <ng-container matColumnDef="consultantName">
+                                    <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Consultant
+                                        Name </th>
+                                    <td mat-cell *matCellDef="let r"> {{ r.doctorName }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="patients">
+                                    <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
+                                        Patients </th>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.patientCount }} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="charges">
+                                    <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;">
+                                        Total Charges </th>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.totalBusiness}}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="DrcollectionColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: DrcollectionColumns;"></tr>
+                            </table>
+                            <div class="panel-footer">
+
+                                <div class="totals-label">Total Dr.Collection</div>
+                                <div class="footer-value" style="padding-left: 220px;">{{ drcollTotal }}</div>
+                            </div>
+                        </div>
                     </div>
                 </mat-card>
                 <!-- Left: Pharmacy Summary -->
                 <mat-card class="panel mat-elevation-z2">
                     <div class="panel-header">Pharmacy</div>
+                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="PharCollectionTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
 
-                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">Out Patinet
+                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">Out
+                                Patinet
                                 Retail Sales</div>
                             <table mat-table [dataSource]="pharmacyop" class="compact-table">
 
-                                  <!-- <ng-container matColumnDef="Total Sales">
+                                <!-- <ng-container matColumnDef="Total Sales">
                                     <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Type Of Sales
                                     </th>
                                     <td mat-cell *matCellDef="let r"> {{ r.opTotalLandedAmount }} </td>
@@ -411,12 +549,12 @@
                                 <ng-container matColumnDef="Total Sales">
                                     <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Total Sales
                                     </th>
-                                    <td mat-cell *matCellDef="let r"> {{ r.opTotalLandedAmount }} </td>
+                                    <td mat-cell *matCellDef="let r"> {{ r.opNetAmount }} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="Toal Cost">
                                     <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
                                         Total Cost </th>
-                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.opNetAmount }} </td>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.opTotalLandedAmount }} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="Profit">
                                     <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
@@ -426,7 +564,8 @@
                                 <tr mat-header-row *matHeaderRowDef="pharmacyopsalesColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: pharmacyopsalesColumns;"></tr>
                             </table>
-                            <div style="font-weight: bold;background-color: rgb(91, 123, 249);align-items: center;">In Patinet Retail Sales
+                            <div style="font-weight: bold;background-color: rgb(91, 123, 249);align-items: center;">In
+                                Patinet Retail Sales
                             </div>
 
                             <table mat-table [dataSource]="pharmacyip" class="compact-table">
@@ -434,12 +573,12 @@
                                 <ng-container matColumnDef="Total Sales">
                                     <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Total Sales
                                     </th>
-                                    <td mat-cell *matCellDef="let r"> {{ r.ipTotalLandedAmount }} </td>
+                                    <td mat-cell *matCellDef="let r"> {{ r.ipNetAmount }} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="Toal Cost">
                                     <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
                                         Total Cost </th>
-                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.ipNetAmount }} </td>
+                                    <td mat-cell *matCellDef="let r" class="num"> {{ r.ipTotalLandedAmount }} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="Profit">
                                     <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
@@ -449,15 +588,15 @@
                                 <tr mat-header-row *matHeaderRowDef="pharmacyopsalesColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: pharmacyopsalesColumns;"></tr>
                             </table>
-                               <div class="panel-footer">
-                                
-                                <div  class="totals-label">Total </div>
-                                <div class="footer-value" style="padding-left: 220px;">{{ opippharmacyTotal }}</div>
+                            <div class="panel-footer">
 
-                                 <!-- <div  class="totals-label">Total Profit</div> -->
+                                <div class="totals-label">Total </div>
+                                <div class="footer-value" style="padding-left: 200px;">{{ opippharmacyTotal }}</div>
+
+                                <!-- <div  class="totals-label">Profit</div> -->
                                 <div class="footer-value">{{ opippharmacyTotalprofit }}</div>
                             </div>
-                           
+
                         </div>
                     </div>
                 </mat-card>
@@ -488,7 +627,8 @@
                                 <tr mat-header-row *matHeaderRowDef="AdvadequcyColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: AdvadequcyColumns;"></tr>
                             </table>
-                            <div  style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">Outstanding Amount
+                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
+                                Outstanding Amount
                             </div>
 
                             <table mat-table [dataSource]="finalOutstanding" class="compact-table">
@@ -511,7 +651,8 @@
                                 <tr mat-header-row *matHeaderRowDef="AdvoutsandingColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: AdvoutsandingColumns;"></tr>
                             </table>
-                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">Insurance Coverage Adequacy
+                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
+                                Insurance Coverage Adequacy
                             </div>
 
                             <table mat-table [dataSource]="Insuranceds" class="compact-table">
@@ -523,7 +664,7 @@
                                 </ng-container>
                                 <ng-container matColumnDef="Unadjusted Advance">
                                     <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
-                                       Unadjusted Advance</th>
+                                        Unadjusted Advance</th>
                                     <td mat-cell *matCellDef="let r" class="num"> {{ r.ipNetAmount }} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="Unpaid Ip Charges">
@@ -531,7 +672,7 @@
                                         Unpaid Ip Charges </th>
                                     <td mat-cell *matCellDef="let r" class="num"> {{ r.iPprofitamount }} </td>
                                 </ng-container>
-                                 <ng-container matColumnDef="Insurancy Adequecy">
+                                <ng-container matColumnDef="Insurancy Adequecy">
                                     <th mat-header-cell *matHeaderCellDef class="num" style="font-weight: bold;"> #
                                         Insurancy Adequecy </th>
                                     <td mat-cell *matCellDef="let r" class="num"> {{ r.iPprofitamount }} </td>
