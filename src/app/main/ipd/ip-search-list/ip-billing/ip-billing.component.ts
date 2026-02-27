@@ -30,6 +30,7 @@ import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointme
 import { IPUpdatesComponent } from './ipupdates/ipupdates.component';
 import { ActivatedRoute } from '@angular/router';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
 
 @Component({
     selector: 'app-ip-billing',
@@ -313,7 +314,7 @@ export class IPBillingComponent implements OnInit {
         this.currency = CurrencyValue
 
 
-
+  this.getAccessDetail();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -1198,6 +1199,19 @@ export class IPBillingComponent implements OnInit {
     GeneraeRequest() { }
     // Total Bill Disc Per cal 
     CalFinalDiscper() {
+        if (this.UserDicPerLimit > 0) {
+            const discper = this.IpbillFooterform.get("totaldiscPer")?.value;
+            if (+discper > +this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+                    confirmButtonColor: '#d33'
+                });
+                this.IpbillFooterform.get("totaldiscPer").setValue(this.UserDicPerLimit);
+            }
+        }  
+
         let netAmount = this.FinalNetAmt;
         const perControl = this.IpbillFooterform.get("totaldiscPer");
         let discper = perControl.value;
@@ -1205,7 +1219,7 @@ export class IPBillingComponent implements OnInit {
         let AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
         let discountAmt = 0;
         let finalNetAmt
-        let FinalTotalAmt
+        let FinalTotalAmt 
 
         if (!perControl.valid || perControl.value == 0 || perControl.value == '') {
             if (AdminAmt > 0) {
@@ -2611,6 +2625,35 @@ export class IPBillingComponent implements OnInit {
         } else { 
             this.getChargesList();
         }
+    }
+      UserDicPerLimit: any = 0;
+    getAccessDetail() {
+        // debugger
+        var SelectQuery = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "AccessValueId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "LoginId",
+                    "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        this._IpSearchListService.getAccessDetailList(SelectQuery).subscribe(response => {
+            const getUserAccesDetList = response.data as UserDetail[];
+            console.log("get Access data:", getUserAccesDetList)
+
+            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+            console.log(discountData)
+            if (discountData?.accessValue) {
+                this.UserDicPerLimit = discountData?.accessInputValue || 0
+            }
+        });
     }
 }
 

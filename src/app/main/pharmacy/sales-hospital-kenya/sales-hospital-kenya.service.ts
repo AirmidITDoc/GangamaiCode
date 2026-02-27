@@ -197,7 +197,9 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   public getKenyaSalesBatchList(Param){ 
     return this._httpClient1.PostData("Sales/BalqtysalesDraftlistKenya", Param);
   }
-    
+        public getAccessDetailList(param){
+    return this._httpClient1.PostData("LoginManager/loginAccessDetailsList",param)
+  } 
   }
   
 

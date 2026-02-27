@@ -8,7 +8,7 @@
     </div>
     <form [formGroup]="myFilterform" class="header-right  resize-form-fields">
       <mat-form-field appearance="outline" class="date-range-field">
-        <mat-label>Date Range</mat-label>
+        <mat-label>Enter a date range</mat-label>
         <mat-date-range-input [rangePicker]="picker">
           <input matStartDate formControlName="fromDate" placeholder="Start date">
           <input matEndDate formControlName="toDate" placeholder="End date">
@@ -86,17 +86,15 @@
         <div class="section-body branch-body">
           <div class="branch-sub-header">BranchName</div>
           <div class="branch-list">
-            <div class="branch-item"
-                 *ngFor="let b of branches"
-                 [class.active]="b === selectedBranch"
-                 (click)="selectBranch(b)">
+            <div class="branch-item" *ngFor="let b of branches" [class.active]="b === selectedBranch"
+              (click)="selectBranch(b)">
               {{ b }}
             </div>
           </div>
         </div>
       </mat-card>
 
-        <!-- Department Wise Sales -->
+      <!-- Department Wise Sales -->
       <mat-card class="section-card dept-card">
         <div class="section-header accent">
           <mat-icon class="section-icon">bar_chart</mat-icon>
@@ -185,17 +183,9 @@
           <div class="chart-legend">
             <span class="legend-dot"></span> Sales
           </div>
-          <ngx-charts-bar-vertical
-            [results]="dailySalesChartData"
-            [scheme]="chartColorScheme"
-            [xAxis]="true"
-            [yAxis]="true"
-            [showXAxisLabel]="false"
-            [showYAxisLabel]="false"
-            [gradient]="true"
-            [roundDomains]="true"
-            [barPadding]="4"
-            [animations]="true">
+          <ngx-charts-bar-vertical [results]="dailySalesChartData" [scheme]="chartColorScheme" [xAxis]="true"
+            [yAxis]="true" [showXAxisLabel]="false" [showYAxisLabel]="false" [gradient]="true" [roundDomains]="true"
+            [barPadding]="4" [animations]="true">
           </ngx-charts-bar-vertical>
         </div>
       </mat-card>

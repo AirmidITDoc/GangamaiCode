@@ -69,6 +69,10 @@ const appRoutes: Routes = [
     loadChildren: () => import("./lab-sample-collection/lab-sample-collection.module").then((m) => m.LabSampleCollectionModule),
   },
   {
+    path: "lab-sample-received",
+    loadChildren: () => import("./lab-sample-received/lab-sample-received.module").then((m) => m.LabSampleReceivedModule),
+  },
+  {
     path: "lab-result-list",
     loadChildren: () => import("./lab-result-list/lab-result-list.module").then((m) => m.LabResultListModule),
   },

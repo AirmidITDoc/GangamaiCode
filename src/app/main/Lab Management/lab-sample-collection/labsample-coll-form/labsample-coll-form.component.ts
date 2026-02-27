@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -45,6 +45,15 @@ export class LabsampleCollFormComponent {
   regObj: any;
   dataSource = new MatTableDataSource<SampleList>();
   sampleList: SampleList[] = [];
+  testSettingForm: FormGroup;
+  minDate = new Date();
+
+  autocompleteModeSpecimen: string = "PathSpecimenMaster"
+  autocompleteModeSpecimenCon: string = "PathSpecimenConditionMaster"
+  autocompleteModeSpecimenColor: string = "SpecimentColors"
+  autocompleteModeSpecimenContainer: string = "PathSpecimenContainerMaster"
+  autocompleteModeSpecimenCollection: string = "PathSpecimenCollectionMaster"
+  autocompleteModeSpecimenPreser: string = "PathSpecimenPreservativeMaster"
 
   constructor(private formBuilder: UntypedFormBuilder,
     public _SampleService: LabSampleCollectionService,
@@ -53,8 +62,7 @@ export class LabsampleCollFormComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<LabsampleCollFormComponent>,
     public dialog: MatDialog,
-    private advanceDataStored: AdvanceDataStored,
-    private _fuseSidebarService: FuseSidebarService,
+    private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
 
@@ -63,12 +71,96 @@ export class LabsampleCollFormComponent {
   vSampleCollFormGroup: FormGroup
 
   ngOnInit(): void {
+    this.testSettingForm = this.createSettingForm();
     if (this.data) {
       console.log(this.data)
       this.regObj = this.data
       this.getSampledetailListLab(this.regObj);
       return;
     }
+  }
+
+  getCurrentTime(): string {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
+  createSettingForm() {
+    return this._formBuilder.group({
+      specimenTypeId: [0],
+      specimenColor: [0],
+      specimenConditionId: [0],
+      containerTypeId: [0],
+      collectionMethod: [0],
+      // specimenSource: [''],
+      noofContainer: [''],
+      preservationUsed: [0],
+      // transportInstruction: [''],
+
+      isConsentRequired: [false, [Validators.required]],
+      // consentName: [''],
+      consentDetail: [''],
+      barcodeLabel: [''],
+
+      disease: [0],
+      diseasePrecautionNote: [''],
+      isNotifiable: [false],
+      isInfectious: [false],
+
+      isFastingRequired: [false, [Validators.required]],
+      // methodologyId: [0],
+      // reported: [''],
+      testInformationTemplate: ['', [Validators.required]],
+      // unit:[],
+      isApprovedRequired: [false],
+
+      collectionDate: [new Date()],
+      collectionTime: [this.getCurrentTime(), Validators.required],
+    })
+  }
+
+  onChangeDate(value: any) {
+    // debugger;
+    if (value) {
+      const inputDate = new Date(value);
+
+      const dateOfReg = new Date(Date.UTC(
+        inputDate.getFullYear(),
+        inputDate.getMonth(),
+        inputDate.getDate()
+      ));
+
+      // Optional: Emit localized date and time
+      const [datePart, timePart] = dateOfReg
+        .toLocaleString("en-US")
+        .split(',')
+        .map(part => part.trim());
+
+      this.eventEmitForParent(datePart, timePart);
+
+      const isoDateString = dateOfReg.toISOString();
+      this.testSettingForm.get('collectionDate').setValue(isoDateString);
+    }
+  }
+
+  collTime: any;
+  onChangeTime(event: any) {
+    let time = event.target.value;
+    if (time && time.length >= 5) {
+      time = time.substring(0, 5);
+    }
+    console.log("Time changed:", time); // "11:51"
+    this.collTime = time
+    this.testSettingForm.get('collectionTime')?.setValue(time, { emitEvent: false });
+  }
+
+  @Output() dateTimeEventEmitter = new EventEmitter<{}>();
+  eventEmitForParent(actualDate, actualTime) {
+    let localaDateValues = actualDate.split('/');
+    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
   getSampledetailListLab(row) {

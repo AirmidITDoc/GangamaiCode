@@ -17,6 +17,7 @@ import { IPSearchListService } from '../ip-search-list.service';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 import { interval, Subscription, switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
 
 @Component({
   selector: 'app-interim-bill',
@@ -97,6 +98,7 @@ export class InterimBillComponent implements OnInit {
     const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
     this.currency = CurrencyValue 
     this.startCountdown();
+    this.getAccessDetail();
   }
   CreateFooterForm(): FormGroup {
     return this.formBuilder.group({
@@ -263,8 +265,51 @@ export class InterimBillComponent implements OnInit {
       concessionAmt: discountAmount
     });
   }
+        UserDicPerLimit: any = 0;
+      getAccessDetail() {
+          // debugger
+          var SelectQuery = {
+              "first": 0,
+              "rows": 999,
+              "sortField": "AccessValueId",
+              "sortOrder": 0,
+              "filters": [
+                  {
+                      "fieldName": "LoginId",
+                      "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
+                      "opType": "Equals"
+                  }
+              ],
+              "exportType": "JSON",
+              "columns": []
+          }
+          this._IpSearchListService.getAccessDetailList(SelectQuery).subscribe(response => {
+              const getUserAccesDetList = response.data as UserDetail[];
+              console.log("get Access data:", getUserAccesDetList)
+  
+              const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+              console.log(discountData)
+              if (discountData?.accessValue) {
+                  this.UserDicPerLimit = discountData?.accessInputValue || 0
+              }
+          });
+      }
   //Calculate Disc Amt
   calculateDiscPer() {
+
+    if (this.UserDicPerLimit > 0) {
+      const discper = this.InterimFooterForm.get("discPer")?.value;
+      if (+discper > +this.UserDicPerLimit) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Discount Limit Exceeded',
+          text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+          confirmButtonColor: '#d33'
+        });
+        this.InterimFooterForm.get("discPer").setValue(this.UserDicPerLimit);
+      }
+    }  
+
     const perControl = this.InterimFooterForm.get("discPer");
     let finalNetAmt = this.FinalNetAmt
     if (!perControl.valid || perControl.value == 0 || perControl.value == '') {
@@ -274,7 +319,7 @@ export class InterimBillComponent implements OnInit {
         concessionAmt: '',
         NetpayAmount: Math.round(finalNetAmt),
       }, { emitEvent: false });
-      this.toastr.error("Enter Discount % between 0-100");
+      this.toastr.warning("Enter Discount % between 0-100");
       return;
     }
     let percentage = perControl.value;

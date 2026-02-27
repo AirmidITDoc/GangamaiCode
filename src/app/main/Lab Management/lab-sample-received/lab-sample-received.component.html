@@ -1,0 +1,348 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <button mat-icon-button class="sidebar-toggle" style="color: white;">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <button mat-icon-button class="user-icon">
+                        <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                            style="color: white;">account_box
+                        </mat-icon>
+                    </button>
+
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> Sample Recevied
+                        List</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body modal-body-light" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <form [formGroup]="myformSearch">
+                            <div class="patient-search">
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                        <div>
+                                            <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                                [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
+                                                [formGroup]="myformSearch"
+                                                [mode]="autocompleteModeunit"></airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="grnPicker">
+                                                    <input matStartDate formControlName="start"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="end" placeholder="End date"
+                                                        (dateChange)="GetSampleCollectiondetail()">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="grnPicker"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #grnPicker></mat-date-range-picker>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <!-- <div>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>UHID</mat-label>
+                                                <input matInput placeholder="Search UHID" autocomplete="off"
+                                                    [formGroup]="myformSearch" formControlName="RegNo"
+                                                    (input)="onChangeFirst()" />
+                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="Clearfilter('RegNo')">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div> -->
+
+                                        <div>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>First Name</mat-label>
+                                                <input matInput placeholder="Search First Name" autocomplete="off"
+                                                    [formGroup]="myformSearch" formControlName="FirstName"
+                                                    (input)="onChangeFirst()" />
+                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="Clearfilter('FirstName')">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Last Name</mat-label>
+                                                <input matInput placeholder="Search Last Name" autocomplete="off"
+                                                    [formGroup]="myformSearch" formControlName="LastName"
+                                                    (input)="onChangeFirst()" />
+                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="Clearfilter('LastName')">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <!-- <div>
+                                            <mat-form-field appearance="outline" fxFlex="150px">
+                                                <mat-label>PBillNo</mat-label>
+                                                <input matInput placeholder="Search PBillNo" autocomplete="off"
+                                                    [formGroup]="myformSearch" formControlName="PBillNo"
+                                                    (keypress)="keyPressAlphanumeric($event)"
+                                                    (input)="onChangeFirst()" />
+                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)=" Clearfilter('PBillNo')">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div> -->
+
+                                        <div>
+                                            <airmid-dropdown label="Company Name" formControlName="CompanyId"
+                                                [formGroup]="myformSearch" (selectionChange)="ListViewcompany($event)"
+                                                [mode]="autocompleteModecompany"></airmid-dropdown>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutAlign="start start">
+
+                                            <div fxFlex fxLayout="column">
+                                                <mat-radio-group name="StatusSearch" fxLayout="column"
+                                                    [formGroup]="myformSearch" formControlName="StatusSearch"
+                                                    (change)="onChangeFirst()" style="padding: 6px;" class="gap-4">
+                                                    <mat-label>Status:</mat-label>
+                                                    <div fxLayout="row">
+                                                        <mat-radio-button value='2'>All</mat-radio-button>
+                                                        <mat-radio-button value='1'>Recevied</mat-radio-button>
+                                                        <mat-radio-button value='0'>Not</mat-radio-button>
+                                                    </div>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+
+                                        <div class="action-buttons" style="padding: 10px;">
+
+                                            <button mat-raised-button class="search-button" (click)="onChangeFirst()"
+                                                matTooltip="search">
+                                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+                        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
+                            class="airmid-table">
+
+                            <!-- <ng-container matColumnDef="CheckBox">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header >
+                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                        [checked]="selection.hasValue()"
+                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                    </mat-checkbox>
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" required >
+                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                        (change)="$event ? selection.toggle(contact) : null"
+                                        [checked]="selection.isSelected(contact)">
+                                    </mat-checkbox>
+                                </mat-cell>
+                            </ng-container> -->
+                            <ng-container matColumnDef="CheckBox">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <mat-checkbox (change)="masterToggle()" [checked]="isAllSelected()"
+                                        [indeterminate]="isSomeSelected()" [disabled]="areAllRowsDisabled()">
+                                    </mat-checkbox>
+                                </th>
+
+                                <td mat-cell *matCellDef="let contact">
+                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                        (change)="$event ? selection.toggle(contact) : null"
+                                        *ngIf="!contact.isSampleReceivedStatus  else noMLC" [checked]="selection.isSelected(contact)"
+                                        [disabled]="isCheckboxDisabled(contact)">
+                                    </mat-checkbox>
+                                    <ng-template #noMLC>
+                                        <div
+                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                            <span>----</span>
+                                        </div>
+                                    </ng-template>
+                                </td>
+
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="PBillNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                    PBill No</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                    {{contact.pBillNo}}
+                                </mat-cell>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="datetime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Date-Time</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{ contact.pathDate | date:'dd/MM/yyyy - h:mma' }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="samplecollectiondatetime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    SampleCollection DateTime </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{ contact.sampleCollectionTime | date:'dd/MM/yyyy - h:mma' }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="UHID">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    UHID</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    {{contact.labRequestNo}}
+                                </mat-cell>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="patientName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    PatientName</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                    <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after"
+                                        matBadgeOverlap="false" matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                                        (mouseenter)="openDetailsPopover($event, element)"
+                                        (mouseleave)="closeDetailsPopover()"
+                                        style="font-size: 14px; line-height: 18px; position: relative; top: 4px; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                        {{ element.patientName }}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="genderName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    Gender-Age</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    {{contact.genderName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="mobileNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                    Mobile No</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                    {{contact.mobileNo}}
+                                </mat-cell>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="serviceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    ServiceName</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.serviceName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="outSourceLabName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                    OutSource Name
+                                </mat-header-cell>
+
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+
+                                    <ng-container *ngIf="element.outSourceLabName; else noOutSource">
+                                        <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after"
+                                            matBadgeOverlap="false" matBadgeSize="small"
+                                            [matBadgeHidden]="!element.tokenNo"
+                                            (mouseenter)="openPatientDetailsPopover($event, element)"
+                                            (mouseleave)="closePatientDetailsPopover()" style="font-size:14px; line-height:18px; cursor:pointer;
+                                                            text-decoration:underline; color:#667eea;">
+                                            {{ element.outSourceLabName }}
+                                        </span>
+
+                                        <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
+                                            (click)="Editoutsoucedata(element)" matTooltip="Edit OutSource Data">
+                                            <mat-icon style="color:#ff5722;">edit</mat-icon>
+                                        </button>
+                                    </ng-container>
+
+                                    <ng-template #noOutSource>
+                                        <span [matTooltip]="element.isSampleCollection === 'False'
+                                                        ? 'Please complete sample collection first'
+                                                        : ''">
+
+                                            <button mat-icon-button *ngIf="element.isPathOutSource == 'True'"
+                                                [disabled]="element.isSampleCollection === 'False'"
+                                                (click)="element.isSampleCollection !== 'False' && Editoutsoucedata(element)">
+
+                                                <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
+                                            </button>
+
+                                        </span>
+                                    </ng-template>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Recevieddate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Recevied DateTime</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{ contact.sampleReceviedDateTime | date:'dd/MM/yyyy - h:mma' }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ReceviedBy">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    ReceviedBy</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.userName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                    <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent min-width-1000"
+                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-1000"
+                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                        </mat-table>
+
+                    </div>
+
+                    <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                        showFirstLastButtons>
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div fxLayout="row" class="gap-8" fxLayoutAlign="end center">
+                <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
+                <div class="footer-navigation-container">
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                        <button class="btn btn-primary" (click)="OnSave()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

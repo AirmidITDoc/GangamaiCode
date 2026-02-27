@@ -21,6 +21,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
+import { LabsampleNewFromComponent } from './labsample-new-from/labsample-new-from.component';
 
 @Component({
     selector: 'app-lab-sample-collection',
@@ -315,12 +316,26 @@ export class LabSampleCollectionComponent {
         });
     }
 
+    // onSavedemo(row: any = null) {
+    //     let that = this;
+    //     const dialogRef = this._matDialog.open(LabsampleCollFormComponent,
+    //         {
+    //             maxHeight: '80vh',
+    //             width: '80%',
+    //             data: row
+    //         });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         this.grid.bindGridData();
+    //         this.GetSampleCollectiondetail();
+    //     });
+    // }
+
     onSavedemo(row: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(LabsampleCollFormComponent,
+        const dialogRef = this._matDialog.open(LabsampleNewFromComponent,
             {
-                maxHeight: '80vh',
-                width: '80%',
+                height: '85vh',
+                width: '85%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

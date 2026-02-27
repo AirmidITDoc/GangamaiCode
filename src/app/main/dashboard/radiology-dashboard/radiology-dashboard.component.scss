@@ -1,717 +1,703 @@
-// Matching Dashboard Structure
-#dashboard-project {
-    .mat-display-1, .mat-typography .mat-display-1 {
-        letter-spacing: normal;
-        margin: 0 0 64px;
-    }
+// ========== ALL styles scoped under the component root to prevent global leakage ==========
+// This component uses ViewEncapsulation.None, so we MUST scope under a unique wrapper.
 
-    > .sidebar {
-        width: 280px;
-        min-width: 280px;
-        max-width: 280px;
-    }
+.radiology-dashboard-wrapper {
 
-    > .center {
-        > .header {
-            height: 75px;
-            min-height: 75px;
-            max-height: 160px;
+    // Matching Dashboard Structure
+    #dashboard-project {
+
+        .mat-display-1,
+        .mat-typography .mat-display-1 {
+            letter-spacing: normal;
+            margin: 0 0 64px;
         }
 
-        > .content {
-            flex: 1;
-            display: block !important;
+        >.sidebar {
+            width: 280px;
+            min-width: 280px;
+            max-width: 280px;
         }
-    }
-}
 
-// Header Styles
-.date-filter-container {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    height: 100%;
-    justify-content: flex-end;
-    margin-top: 20px;
-}
+        >.center {
+            >.header {
+                height: 75px;
+                min-height: 75px;
+                max-height: 160px;
+            }
 
-.top-header {
-    display: flex;
-    align-items: center;
-    max-height: 70px !important;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 12px 24px;
-    justify-content: space-between;
-}
-
-.top-header-info {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.logo-icon {
-    font-size: 32px !important;
-    width: 32px !important;
-    height: 32px !important;
-    color: white;
-}
-
-.top-header-title {
-    span {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: white;
-        letter-spacing: 0.5px;
-    }
-}
-
-.date-range-input {
-    color: #000000 !important;
-    font-weight: 500;
-}
-
-// Dashboard Container
-.dashboard-container {
-    padding: 12px;
-}
-
-// Gap utility
-.gap-14 {
-    gap: 14px;
-}
-
-// Cards - Base styling
-mat-card {
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-
-    &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    mat-card-content {
-        padding: 16px !important;
-    }
-}
-
-// Dashboard Stat Cards - Matching Daily Dashboard EXACTLY
-.dashboard-stat-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    
-    mat-card-content {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding: 16px !important;
-    }
-}
-
-// Ensure ALL top row cards have EXACT same dimensions
-.dashboard-container:first-of-type {
-    > div {
-        display: flex;
-        
-        .dashboard-stat-card {
-            height: 240px !important;
-            min-height: 240px !important;
-            max-height: 240px !important;
-            width: 100%;
-            
-            mat-card-content {
-                height: 100%;
+            >.content {
+                flex: 1;
+                display: block !important;
             }
         }
     }
-}
 
-// Icon Styles
-.icon-div {
-    padding: 8px;
-    border-radius: 5px;
-    height: 45px;
-    width: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-    }
-}
-
-.icon-1 {
-    background-color: #9661db;
-}
-
-.icon-2 {
-    background-color: #e9ac1b;
-}
-
-.icon-3 {
-    background-color: #28af28;
-}
-
-.icon-4 {
-    background-color: #70c7bd;
-}
-
-// Card sections for consistent layout
-.card-header-section {
-    min-height: 50px;
-    margin-bottom: 4px;
-}
-
-.card-chart-section {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 150px;
-    max-height: 150px;
-    padding: 4px 0;
-    
-    canvas {
-        width: 100% !important;
-        height: 150px !important;
-    }
-}
-
-// Labels
-.labels-div {
-    text-align: end;
-    font-weight: bold;
-    display: flex;
-    flex-flow: column;
-    gap: 10px;
-}
-
-.labels-sm {
-    text-align: end;
-    font-weight: 130;
-    font-size: 10px;
-    display: flex;
-    flex-flow: column;
-    gap: 10px;
-    margin-top: 0px;
-    margin-bottom: 8px;
-}
-
-// Chart Cards
-.chart-card {
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-
-    &:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    // Header Styles
+    .date-filter-container {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        height: 100%;
+        justify-content: flex-end;
     }
 
-    mat-card-content {
-        padding: 20px !important;
+    .top-header {
+        display: flex;
+        align-items: center;
+        max-height: 70px !important;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 12px 24px;
+        justify-content: space-between;
     }
-}
 
-.chart-header {
-    margin-bottom: 16px;
-    text-align: center;
+    .top-header-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
 
-    .chart-title {
+    .logo-icon {
+        font-size: 32px !important;
+        width: 32px !important;
+        height: 32px !important;
+        color: white;
+    }
+
+    .date-range-input {
+        color: #000000 !important;
+        font-weight: 500;
+    }
+
+    // Dashboard Container
+    .dashboard-container {
+        padding: 12px;
+    }
+
+    // Gap utility
+    .gap-14 {
+        gap: 14px;
+    }
+
+    // Cards - Base styling
+    mat-card {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+
+        &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        mat-card-content {
+            padding: 16px !important;
+        }
+    }
+
+    // Dashboard Stat Cards - Matching Daily Dashboard EXACTLY
+    .dashboard-stat-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        mat-card-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 16px !important;
+        }
+    }
+
+    // Ensure ALL top row cards have EXACT same dimensions
+    .dashboard-container:first-of-type {
+        >div {
+            display: flex;
+
+            .dashboard-stat-card {
+                height: 240px !important;
+                min-height: 240px !important;
+                max-height: 240px !important;
+                width: 100%;
+
+                mat-card-content {
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    // Icon Styles
+    .icon-div {
+        padding: 8px;
+        border-radius: 5px;
+        height: 45px;
+        width: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .icon-1 {
+        background-color: #9661db;
+    }
+
+    .icon-2 {
+        background-color: #e9ac1b;
+    }
+
+    .icon-3 {
+        background-color: #28af28;
+    }
+
+    .icon-4 {
+        background-color: #70c7bd;
+    }
+
+    // Card sections for consistent layout
+    .card-header-section {
+        min-height: 50px;
+        margin-bottom: 4px;
+    }
+
+    .card-chart-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 150px;
+        max-height: 150px;
+        padding: 4px 0;
+
+        canvas {
+            width: 100% !important;
+            height: 150px !important;
+        }
+    }
+
+    // Labels
+    .labels-div {
+        text-align: end;
+        font-weight: bold;
+        display: flex;
+        flex-flow: column;
+        gap: 10px;
+    }
+
+    .labels-sm {
+        text-align: end;
+        font-weight: 130;
+        font-size: 10px;
+        display: flex;
+        flex-flow: column;
+        gap: 10px;
+        margin-top: 0px;
+        margin-bottom: 8px;
+    }
+
+    // Chart Cards
+    .chart-card {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+
+        &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        mat-card-content {
+            padding: 20px !important;
+        }
+    }
+
+    .chart-header {
+        margin-bottom: 16px;
+        text-align: center;
+
+        .chart-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #283593;
+            margin: 8px 0;
+            padding: 0;
+        }
+
+        .chart-subtitle {
+            font-size: 12px;
+            color: #6c757d;
+            margin: 0;
+            font-weight: 400;
+        }
+    }
+
+    // Table Styles
+    .table-title {
+        text-align: center;
         font-size: 1.35rem;
         font-weight: 600;
         letter-spacing: 0.5px;
         color: #283593;
-        margin: 8px 0;
+        margin: 16px 0 8px 0;
         padding: 0;
+        width: 100%;
     }
 
-    .chart-subtitle {
-        font-size: 12px;
-        color: #6c757d;
-        margin: 0;
-        font-weight: 400;
-    }
-}
-
-// Table Styles
-.table-title {
-    text-align: center;
-    font-size: 1.35rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: #283593;
-    margin: 16px 0 8px 0;
-    padding: 0;
-    width: 100%;
-}
-
-.table-designed {
-    width: 100%;
-}
-
-.h-200 {
-    max-height: 400px;
-    overflow: auto;
-}
-
-// Status badges
-.status-completed {
-    padding: 4px 12px;
-    border-radius: 12px;
-    background-color: #d4edda;
-    color: #155724;
-    font-weight: 500;
-    font-size: 12px;
-}
-
-.status-pending {
-    padding: 4px 12px;
-    border-radius: 12px;
-    background-color: #fff3cd;
-    color: #856404;
-    font-weight: 500;
-    font-size: 12px;
-}
-
-.status-cancelled {
-    padding: 4px 12px;
-    border-radius: 12px;
-    background-color: #f8d7da;
-    color: #721c24;
-    font-weight: 500;
-    font-size: 12px;
-}
-
-// Equipment Utilization Cards
-.equipment-cards {
-    margin-top: 16px;
-}
-
-.equipment-card {
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
-    transition: all 0.3s ease;
-    background: #ffffff;
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    .table-designed {
+        width: 100%;
     }
 
-    mat-card-content {
-        padding: 16px !important;
-        text-align: center;
+    .h-200 {
+        max-height: 400px;
+        overflow: auto;
     }
 
-    .equipment-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .equipment-percentage {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-
-    .equipment-status {
-        margin-bottom: 8px;
-
-        mat-progress-bar {
-            height: 8px;
-            border-radius: 4px;
-        }
-    }
-
-    .equipment-scans {
-        font-size: 12px;
-        color: #6c757d;
+    // Status badges
+    .status-completed {
+        padding: 4px 12px;
+        border-radius: 12px;
+        background-color: #d4edda;
+        color: #155724;
         font-weight: 500;
-    }
-}
-
-// Equipment card color variations
-.equipment-card-1 {
-    .equipment-percentage {
-        color: #9661db;
-    }
-    ::ng-deep .mat-progress-bar-fill::after {
-        background-color: #9661db !important;
-    }
-}
-
-.equipment-card-2 {
-    .equipment-percentage {
-        color: #e9ac1b;
-    }
-    ::ng-deep .mat-progress-bar-fill::after {
-        background-color: #e9ac1b !important;
-    }
-}
-
-.equipment-card-3 {
-    .equipment-percentage {
-        color: #28af28;
-    }
-    ::ng-deep .mat-progress-bar-fill::after {
-        background-color: #28af28 !important;
-    }
-}
-
-.equipment-card-4 {
-    .equipment-percentage {
-        color: #70c7bd;
-    }
-    ::ng-deep .mat-progress-bar-fill::after {
-        background-color: #70c7bd !important;
-    }
-}
-
-// Hide utility
-.hide {
-    display: none !important;
-}
-
-// Responsive Styles
-@media (max-width: 959px) {
-    .dashboard-container:first-of-type {
-        > div {
-            .dashboard-stat-card {
-                height: 220px !important;
-                min-height: 220px !important;
-                max-height: 220px !important;
-            }
-        }
-    }
-    
-    .card-chart-section {
-        min-height: 130px;
-        max-height: 130px;
-        
-        canvas {
-            height: 130px !important;
-        }
-    }
-    
-    .chart-header {
-        .chart-title {
-            font-size: 16px;
-        }
-
-        .chart-subtitle {
-            font-size: 11px;
-        }
-    }
-
-    .labels-div {
         font-size: 12px;
     }
-}
 
-@media (max-width: 599px) {
-    .dashboard-container:first-of-type {
-        > div {
-            .dashboard-stat-card {
-                height: 200px !important;
-                min-height: 200px !important;
-                max-height: 200px !important;
+    .status-pending {
+        padding: 4px 12px;
+        border-radius: 12px;
+        background-color: #fff3cd;
+        color: #856404;
+        font-weight: 500;
+        font-size: 12px;
+    }
+
+    .status-cancelled {
+        padding: 4px 12px;
+        border-radius: 12px;
+        background-color: #f8d7da;
+        color: #721c24;
+        font-weight: 500;
+        font-size: 12px;
+    }
+
+    // Equipment Utilization Cards
+    .equipment-cards {
+        margin-top: 16px;
+    }
+
+    .equipment-card {
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        background: #ffffff;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        mat-card-content {
+            padding: 16px !important;
+            text-align: center;
+        }
+
+        .equipment-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .equipment-percentage {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .equipment-status {
+            margin-bottom: 8px;
+
+            mat-progress-bar {
+                height: 8px;
+                border-radius: 4px;
             }
         }
-    }
-    
-    .card-chart-section {
-        min-height: 110px;
-        max-height: 110px;
-        
-        canvas {
-            height: 110px !important;
-        }
-    }
-    
-    .icon-div {
-        height: 40px;
-        width: 40px;
-        padding: 8px;
 
-        mat-icon {
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
-        }
-    }
-
-    .labels-div {
-        font-size: 11px;
-    }
-
-    .labels-sm {
-        font-size: 9px;
-    }
-
-    .dashboard-stat-card mat-card-content {
-        padding: 12px !important;
-    }
-
-    .chart-card mat-card-content {
-        padding: 16px !important;
-    }
-
-    .top-header-title span {
-        font-size: 18px !important;
-    }
-
-    .logo-icon {
-        font-size: 24px !important;
-        width: 24px !important;
-        height: 24px !important;
-    }
-}
-
-// Canvas Styles
-canvas {
-    max-width: 100%;
-    height: auto;
-}
-
-// Material Overrides
-.mat-card {
-    padding: 0 !important;
-}
-
-// Scrollbar Styling
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 4px;
-
-    &:hover {
-        background: #a8a8a8;
-    }
-}
-
-// Animation
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-mat-card {
-    animation: fadeIn 0.5s ease-out;
-}
-
-// Utility Classes
-.mt-8 {
-    margin-top: 8px;
-}
-
-.mt-12 {
-    margin-top: 12px;
-}
-
-.mt-16 {
-    margin-top: 16px;
-}
-
-.mb-16 {
-    margin-bottom: 16px;
-}
-
-.p-12 {
-    padding: 12px;
-}
-
-.p-16 {
-    padding: 16px;
-}
-
-.mr-12 {
-    margin-right: 12px;
-}
-
-.m-0 {
-    margin: 0;
-}
-
-// Ensure no horizontal scroll
-.center {
-    overflow-x: hidden !important;
-}
-
-#dashboard-project {
-    overflow-x: hidden !important;
-}
-
-// ========== TAB STYLES ==========
-.dashboard-tabs {
-    margin: 16px 12px 0 12px;
-    background: #ffffff;
-    border-radius: 8px 8px 0 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-
-    ::ng-deep {
-        .mat-tab-header {
-            border-bottom: 2px solid #e9ecef;
-            background: #ffffff;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .mat-tab-label {
-            height: 64px;
-            padding: 0 32px;
-            opacity: 0.6;
+        .equipment-scans {
+            font-size: 12px;
             color: #6c757d;
             font-weight: 500;
-            font-size: 14px;
-            min-width: 160px;
-            transition: all 0.3s ease;
-
-            &:hover {
-                opacity: 0.8;
-                background: rgba(150, 97, 219, 0.05);
-            }
-
-            .tab-icon {
-                margin-right: 12px;
-                font-size: 20px;
-                width: 20px;
-                height: 20px;
-            }
-
-            .tab-label {
-                font-weight: 500;
-                letter-spacing: 0.5px;
-            }
         }
+    }
 
-        .mat-tab-label-active {
-            opacity: 1;
+    // Equipment card color variations
+    .equipment-card-1 {
+        .equipment-percentage {
             color: #9661db;
-            font-weight: 600;
+        }
 
-            .tab-icon {
-                color: #9661db;
+        ::ng-deep .mat-progress-bar-fill::after {
+            background-color: #9661db !important;
+        }
+    }
+
+    .equipment-card-2 {
+        .equipment-percentage {
+            color: #e9ac1b;
+        }
+
+        ::ng-deep .mat-progress-bar-fill::after {
+            background-color: #e9ac1b !important;
+        }
+    }
+
+    .equipment-card-3 {
+        .equipment-percentage {
+            color: #28af28;
+        }
+
+        ::ng-deep .mat-progress-bar-fill::after {
+            background-color: #28af28 !important;
+        }
+    }
+
+    .equipment-card-4 {
+        .equipment-percentage {
+            color: #70c7bd;
+        }
+
+        ::ng-deep .mat-progress-bar-fill::after {
+            background-color: #70c7bd !important;
+        }
+    }
+
+    // Hide utility
+    .hide {
+        display: none !important;
+    }
+
+    // Responsive Styles
+    @media (max-width: 959px) {
+        .dashboard-container:first-of-type {
+            >div {
+                .dashboard-stat-card {
+                    height: 220px !important;
+                    min-height: 220px !important;
+                    max-height: 220px !important;
+                }
             }
         }
 
-        .mat-ink-bar {
-            background-color: #9661db !important;
-            height: 3px;
-            border-radius: 3px 3px 0 0;
+        .card-chart-section {
+            min-height: 130px;
+            max-height: 130px;
+
+            canvas {
+                height: 130px !important;
+            }
         }
 
-        .mat-tab-body-wrapper {
-            padding: 0;
+        .chart-header {
+            .chart-title {
+                font-size: 16px;
+            }
+
+            .chart-subtitle {
+                font-size: 11px;
+            }
         }
 
-        .mat-tab-body-content {
-            overflow: visible !important;
+        .labels-div {
+            font-size: 12px;
         }
     }
+
+    @media (max-width: 599px) {
+        .dashboard-container:first-of-type {
+            >div {
+                .dashboard-stat-card {
+                    height: 200px !important;
+                    min-height: 200px !important;
+                    max-height: 200px !important;
+                }
+            }
+        }
+
+        .card-chart-section {
+            min-height: 110px;
+            max-height: 110px;
+
+            canvas {
+                height: 110px !important;
+            }
+        }
+
+        .icon-div {
+            height: 40px;
+            width: 40px;
+            padding: 8px;
+
+            mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .labels-div {
+            font-size: 11px;
+        }
+
+        .labels-sm {
+            font-size: 9px;
+        }
+
+        .dashboard-stat-card mat-card-content {
+            padding: 12px !important;
+        }
+
+        .chart-card mat-card-content {
+            padding: 16px !important;
+        }
+
+        .top-header-title span {
+            font-size: 18px !important;
+        }
+
+        .logo-icon {
+            font-size: 24px !important;
+            width: 24px !important;
+            height: 24px !important;
+        }
+    }
+
+    // Canvas Styles
+    canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    // Material Overrides
+    .mat-card {
+        padding: 0 !important;
+    }
+
+    // Animation
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    mat-card {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    // Utility Classes
+    .mt-8 {
+        margin-top: 8px;
+    }
+
+    .mt-12 {
+        margin-top: 12px;
+    }
+
+    .mt-16 {
+        margin-top: 16px;
+    }
+
+    .mb-16 {
+        margin-bottom: 16px;
+    }
+
+    .p-12 {
+        padding: 12px;
+    }
+
+    .p-16 {
+        padding: 16px;
+    }
+
+    .mr-12 {
+        margin-right: 12px;
+    }
+
+    .m-0 {
+        margin: 0;
+    }
+
+    // Ensure no horizontal scroll
+    .center {
+        overflow-x: hidden !important;
+    }
+
+    #dashboard-project {
+        overflow-x: hidden !important;
+    }
+
+    // ========== TAB STYLES ==========
+    .dashboard-tabs {
+        margin: 16px 12px 0 12px;
+        background: #ffffff;
+        border-radius: 8px 8px 0 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+        ::ng-deep {
+            .mat-tab-header {
+                border-bottom: 2px solid #e9ecef;
+                background: #ffffff;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .mat-tab-label {
+                height: 64px;
+                padding: 0 32px;
+                opacity: 0.6;
+                color: #6c757d;
+                font-weight: 500;
+                font-size: 14px;
+                min-width: 160px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    opacity: 0.8;
+                    background: rgba(150, 97, 219, 0.05);
+                }
+
+                .tab-icon {
+                    margin-right: 12px;
+                    font-size: 20px;
+                    width: 20px;
+                    height: 20px;
+                }
+
+                .tab-label {
+                    font-weight: 500;
+                    letter-spacing: 0.5px;
+                }
+            }
+
+            .mat-tab-label-active {
+                opacity: 1;
+                color: #9661db;
+                font-weight: 600;
+
+                .tab-icon {
+                    color: #9661db;
+                }
+            }
+
+            .mat-ink-bar {
+                background-color: #9661db !important;
+                height: 3px;
+                border-radius: 3px 3px 0 0;
+            }
+
+            .mat-tab-body-wrapper {
+                padding: 0;
+            }
+
+            .mat-tab-body-content {
+                overflow: visible !important;
+            }
+        }
+    }
+
+    // Sample Collection Statistics Cards
+    .sample-stats-cards {
+        margin-top: 16px;
+    }
+
+    .sample-stat-card {
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        background: #ffffff;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        mat-card-content {
+            padding: 20px !important;
+            text-align: center;
+        }
+
+        .sample-stat-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sample-stat-count {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .sample-stat-percentage {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+    }
+
+    // Sample stat card color variations
+    .sample-stat-card-1 {
+        .sample-stat-count {
+            color: #28af28;
+        }
+    }
+
+    .sample-stat-card-2 {
+        .sample-stat-count {
+            color: #f6c542;
+        }
+    }
+
+    .sample-stat-card-3 {
+        .sample-stat-count {
+            color: #ff5a8a;
+        }
+    }
+
+    // Tab fade animation
+    @keyframes tabFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .mat-tab-body-content {
+        animation: tabFadeIn 0.4s ease-out;
+    }
+
 }
 
-// Sample Collection Statistics Cards
-.sample-stats-cards {
-    margin-top: 16px;
-}
-
-.sample-stat-card {
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
-    transition: all 0.3s ease;
-    background: #ffffff;
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-    }
-
-    mat-card-content {
-        padding: 20px !important;
-        text-align: center;
-    }
-
-    .sample-stat-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .sample-stat-count {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-
-    .sample-stat-percentage {
-        font-size: 12px;
-        color: #6c757d;
-        font-weight: 500;
-    }
-}
-
-// Sample stat card color variations
-.sample-stat-card-1 {
-    .sample-stat-count {
-        color: #28af28;
-    }
-}
-
-.sample-stat-card-2 {
-    .sample-stat-count {
-        color: #f6c542;
-    }
-}
-
-.sample-stat-card-3 {
-    .sample-stat-count {
-        color: #ff5a8a;
-    }
-}
-
-// Tab fade animation
-@keyframes tabFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.mat-tab-body-content {
-    animation: tabFadeIn 0.4s ease-out;
-}
-
+// end .radiology-dashboard-wrapper

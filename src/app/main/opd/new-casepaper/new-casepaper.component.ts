@@ -2544,6 +2544,17 @@ export class NewCasepaperComponent implements OnInit {
         ];
     }
 
+          // it allowed only Digit & decimal
+    keyPressDigitDecimalOnly(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
 }
 
 
