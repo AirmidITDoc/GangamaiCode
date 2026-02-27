@@ -152,8 +152,7 @@ export class AppointmentlistService {
             visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             policyNumber: [0],
             policyLimit: [0],
-            policyValidateDate: [(new Date()).toISOString()],
-            patientTypeId:1
+            policyValidateDate: [(new Date()).toISOString()] 
         });
     }
 
