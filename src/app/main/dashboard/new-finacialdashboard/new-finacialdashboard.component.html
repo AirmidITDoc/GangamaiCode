@@ -80,16 +80,12 @@
 
                 <!-- Charges -->
                 <mat-card class="panel mat-elevation-z2">
+                      <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
+                        <mat-icon>trending_up</mat-icon>
+                    </button>
                     <div class="panel-header">Charges</div>
-                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
-                        <mat-icon>trending_up</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
-                        <mat-icon>trending_up</mat-icon>
-                    </button>
-
-
-
+                  
+                   
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
                             <table mat-table [dataSource]="charges" class="compact-table">
@@ -537,10 +533,11 @@
                 </mat-card>
                 <!-- Left: Pharmacy Summary -->
                 <mat-card class="panel mat-elevation-z2">
-                    <div class="panel-header">Pharmacy</div>
-                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="PharCollectionTrend()">
+                      <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="PharCollectionTrend()">
                         <mat-icon>trending_up</mat-icon>
                     </button>
+                    <div class="panel-header">Pharmacy</div>
+                  
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
 
