@@ -61,6 +61,10 @@ const appRoutes: Routes = [
     loadChildren: () => import("./labrefund-bill/labrefund-bill.module").then((m) => m.LabrefundBillModule),
   },
   {
+    path: "lab-refund-approval",
+    loadChildren: () => import("./refund-approval/refund-approval.module").then((m) => m.RefundApprovalModule),
+  },
+  {
     path: "settlement",
     loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
   },

@@ -37,6 +37,7 @@ import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entr
 import { NewLabresultEntryComponent } from './new-labresult-entry/new-labresult-entry.component';
 import { SampleCollOldMethodComponent } from '../lab-sample-collection/sample-coll-old-method/sample-coll-old-method.component';
 import { NewLabtemplateComponent } from './new-labtemplate/new-labtemplate.component';
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 
 function formatDate(rawDate: string): string {
   if (!rawDate) return '';
@@ -1055,10 +1056,52 @@ export class LabResultListComponent {
       }
     });
   }
-  OnPrintPatientIcard(element) {
-    console.log('Third action clicked for:', element);
-    this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+  // OnPrintPatientIcard(element) {
+  //   console.log('Third action clicked for:', element);
+  //   this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+  // }
+
+  OnPrintPatientIcard(data, serviceName) {
+    const param = {
+      searchFields: [
+        {
+          fieldName: "LabPatientId",
+          fieldValue: String(data.labPatientId),
+          opType: "13"
+        },
+        {
+          fieldName: "ServiceName",
+          fieldValue: String(serviceName ?? "").trim(),
+          opType: "13"
+        },
+        {
+          fieldName: "OPD_IPD_Type",
+          fieldValue: "4",
+          opType: "13"
+        }
+      ],
+      mode: "LabStickerPrint"
+    };
+
+    console.log(param);
+
+    this._SampleService.getReportHtml(param).subscribe(res => {
+      const matDialog = this._matDialog.open(HtmlviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            html: res["html"] as string,
+            title: res["title"]
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+
   }
+
   selection = new SelectionModel<SampleList>(true, []);
 
   getSelectableRows() {
@@ -1766,7 +1809,7 @@ export class AdmissionPersonl {
   serviceId: any;
   pathReportID: any;
   opdipdId: any;
-labRequestNo:any;
+  labRequestNo: any;
   /**
 * Constructor
 *

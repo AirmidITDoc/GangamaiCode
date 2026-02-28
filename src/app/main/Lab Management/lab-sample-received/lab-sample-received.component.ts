@@ -302,7 +302,7 @@ export class LabSampleReceivedComponent {
   createSampleDetail(item: any = {}): FormGroup {
     return this._formbuilder.group({
       pathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sampleReceviedDateTime: [new Date()],
+      sampleReceviedDateTime: [this.getNow()],//new Date()],
       sampleReceviedUserId: this._loggedService.currentUserValue.userId,
       isSampleReceivedStatus: true
     });
@@ -310,6 +310,17 @@ export class LabSampleReceivedComponent {
 
   get receivedDetailsArray(): FormArray {
     return this.vSampleCollFormGroup.get('pathologyLabReport') as FormArray;
+  }
+
+  getNow(): string {
+    const d = new Date();
+    return (
+      d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0') + 'T' +
+      String(d.getHours()).padStart(2, '0') + ':' +
+      String(d.getMinutes()).padStart(2, '0')
+    );
   }
 
   OnSave() {
@@ -322,7 +333,6 @@ export class LabSampleReceivedComponent {
     this.selection.selected.forEach(item => {
       this.receivedDetailsArray.push(this.createSampleDetail(item));
     });
-
     console.log(this.vSampleCollFormGroup.value);
 
     this._SampleCollectionService.UpdateSampleRecived(this.vSampleCollFormGroup.value).subscribe(() => {

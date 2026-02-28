@@ -238,4 +238,7 @@ export class LabResultListService {
   public getTrendcompanyList(param) {
     return this._httpClient1.PostData("Branch/BranchWiseCompanySummaryList", param);
   }
+  public getReportHtml(Param) {
+    return this._httpClient1.PostData("Report/get-report-html", Param);
+  }
 }
