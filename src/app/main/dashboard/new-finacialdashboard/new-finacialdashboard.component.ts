@@ -314,7 +314,7 @@ get pcount(): number {
 
   Financedata: any
   BillNetAmt=0
-
+ModeAmt=0
   getwardpatientList() {
     
     var vadat = {
@@ -378,9 +378,9 @@ get pcount(): number {
         this.collection[2].amount = this.Financedata.billSummary[0]['cardPay']
         this.collection[3].amount = this.Financedata.billSummary[0]['upi']
       }
-
-
-      this.BillNetAmt=this.collection[0].amount + this.collection[1].amount -  this.receiptSummary[2].amount - this.receiptSummary[3].amount
+debugger
+      this.ModeAmt=this.Financedata.billSummary[0]['cash'] + this.Financedata.billSummary[0]['cardPay']
+      this.BillNetAmt=this.receiptSummary[0].amount + this.receiptSummary[1].amount -  this.receiptSummary[2].amount - this.receiptSummary[3].amount
 
       this.consultantCharges.data = this.Financedata.doctorWisePatientCount;
       console.log(this.consultantCharges.data)

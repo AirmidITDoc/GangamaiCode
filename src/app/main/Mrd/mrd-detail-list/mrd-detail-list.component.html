@@ -1,0 +1,86 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Mrd File List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="OnNew()">New Mrd Entry
+            </button>
+
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button mat-icon-button matTooltip="Edit MRD Data" (click)="OnEdit(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                    <mat-icon> print</mat-icon>
+                </button>
+
+            </div>
+        </ng-template>
+
+        <!-- <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed" style="color: rgb(41, 129, 12);">close</mat-icon>
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending"  style="color: brown;">Pending</mat-icon>
+                </div>
+            </ng-template> -->
+
+
+        <ng-template #actionsTemplate1 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <!-- <button mat-icon-button *ngIf="element.isInOut==false" matTooltip="IsOUt" (click)="OnOutFile(element)">
+                    <mat-icon>send</mat-icon>
+                </button> -->
+
+                <button mat-icon-button *ngIf="element.isInOut==false" matTooltip="IsOUt" (click)="OnOutFile(element)">
+                    <img width="20" height="20" src="assets/images/logos/outfile.png">
+                </button>
+
+                <button mat-icon-button *ngIf="element.isInOut==true" matTooltip="IsOUt" (click)="OnInFile(element)">
+                    <img width="20" height="20" src="assets/images/logos/Infile.png">
+                </button>
+
+                <!-- <button mat-icon-button *ngIf="element.isInOut==true" matTooltip="IsOUt" (click)="OnInFile(element)">
+                    <mat-icon>local_hospital</mat-icon>
+                </button> -->
+
+
+
+            </div>
+        </ng-template>
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+
+                    <mat-slide-toggle name="IsInout" (change)="onChangeIsInout($event)" formControlName="IsInout"
+                        [(ngModel)]="IsInout">
+                        IsIn/Out
+                    </mat-slide-toggle>
+
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+
+
+</div>

@@ -303,7 +303,7 @@
                                     </div>
                                     <div class="kv kv-strong">
                                         <div class="kv-label">Net Amt</div>
-                                        <div class="kv-value">{{ receiptSummaryTotal}}</div>
+                                        <div class="kv-value">{{ BillNetAmt}}</div>
                                     </div>
                                 </div>
 
@@ -315,15 +315,14 @@
                                     </div>
                                     <div class="kv kv-strong">
                                         <div class="kv-label">Net Amt</div>
-                                        <div class="kv-value">{{ BillNetAmt}}</div>
+                                        <div class="kv-value">{{ ModeAmt}}</div>
                                     </div>
                                 </div>
                             </div>
 
                             <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
                                 Collection</div>
-                            <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
-                                Collection</div>
+                           
                             <div class="collection">
                                 <div class="kv" *ngFor="let c of collection">
                                     <div class="kv-label">{{ c.mode }}</div>

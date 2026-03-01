@@ -43,13 +43,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NewCertificateVersionComponent } from './new-certificate-version/new-certificate-version.component';
+import { MrdDetailListComponent } from './mrd-detail-list/mrd-detail-list.component';
+import { NewINMrdComponent } from './mrd-detail-list/new-in-mrd/new-in-mrd.component';
+import { NewOutMrdComponent } from './mrd-detail-list/new-out-mrd/new-out-mrd.component';
+import { NewMrdComponent } from './mrd-detail-list/new-mrd/new-mrd.component';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 
 
 const approutes : Routes =[
   {
     path: 'certificates',
-    component: NewCertificateVersionComponent
+    component: MrdDetailListComponent
   },
   // {
   //   path: 'prescription',
@@ -58,7 +63,7 @@ const approutes : Routes =[
 ];
 
 @NgModule({
-  declarations: [NewCertificateVersionComponent, NewCertificateComponent,CertificateComponent, NewCertificateComponent],
+  declarations: [NewCertificateVersionComponent, NewCertificateComponent,CertificateComponent, NewCertificateComponent,MrdDetailListComponent, NewOutMrdComponent,NewINMrdComponent, NewMrdComponent],
   // declarations: [CertificateComponent, NewCertificateComponent],
   imports: [
    RouterModule.forChild(approutes),
@@ -94,11 +99,12 @@ const approutes : Routes =[
           NgxMatSelectSearchModule,
           MatButtonToggleModule,
           MatDialogModule,
-          MatTabsModule
+          MatTabsModule,
+          MatTimepickerModule
   ],
    providers:[MrdService,
     DatePipe,
     {provide: MatDialogRef, useValue: {}},
-    NotificationService]
+    ]
 })
 export class MrdModule { }
