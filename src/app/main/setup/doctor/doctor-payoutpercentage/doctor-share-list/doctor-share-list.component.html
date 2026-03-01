@@ -7,7 +7,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                  
+
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
@@ -19,17 +19,17 @@
         </div>
     </div>
 
-    <div class="modal-body" >  
-          <form [formGroup]="Doctorshare" class="form-container"> 
-            <div class="modal-body-container"> 
-                <div fxLayout="column"  class="gap-8 h-100-p">
+    <div class="modal-body">
+        <form [formGroup]="Doctorshare" class="form-container">
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
                     <div class="modal-card-container">
                         <!-- Type Selection Section -->
                         <div class="selection-section">
                             <mat-card class="type-card" style="padding: 20px;">
                                 <div class="radio-group-container" fxLayout="row" class="gap-12">
                                     <div class="radio-group-wrapper">
-                                        <label class="group-label" style="font-weight: bold;" >Type :</label>&nbsp;
+                                        <label class="group-label" style="font-weight: bold;">Type :</label>&nbsp;
                                         <mat-radio-group formControlName="shrTypeSerOrGrp" class="custom-radio-group">
                                             <mat-radio-button value="1" class="custom-radio-button">
                                                 <span class="radio-label">Service Wise</span>
@@ -39,11 +39,12 @@
                                             </mat-radio-button>
                                         </mat-radio-group>
                                     </div>
-    
+
                                     <mat-divider [vertical]="true" class="vertical-divider"></mat-divider>
-    
+
                                     <div class="radio-group-wrapper">
-                                        <label class="group-label" style="font-weight: bold;">Patient Type :</label>&nbsp;
+                                        <label class="group-label" style="font-weight: bold;">Patient Type
+                                            :</label>&nbsp;
                                         <mat-radio-group formControlName="opIpType" class="custom-radio-group">
                                             <mat-radio-button value="0" class="custom-radio-button">
                                                 <span class="radio-label">OP</span>
@@ -57,48 +58,52 @@
                             </mat-card>
                         </div>
                     </div>
-    
+
                     <div class="modal-card-container">
-                        <div fxLayout="row"  fxLayoutGap="4px">
+                        <div fxLayout="row" fxLayoutGap="4px">
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                 <airmid-dropdown label="Select Doctor Name" formControlName="doctorId"
                                     [value]="data?.DoctorID" [formGroup]="Doctorshare"
                                     (selectionChange)="selectChangeDoctor($event)" [mode]="autocompleteModeDoctor">
                                 </airmid-dropdown>
                             </div>
-    
+
                             <!-- Service Name (Conditional) -->
-                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='1'">
-                                <airmid-dropdown label="Service Name" formControlName="serviceId" [formGroup]="Doctorshare"
-                                    [value]="data?.serviceId" [validations]="getValidationMessages().ServiceID"
-                                    [mode]="autocompleteModeService">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='1'">
+                                <airmid-dropdown label="Service Name" formControlName="serviceId"
+                                    [formGroup]="Doctorshare" [value]="data?.serviceId"
+                                    [validations]="getValidationMessages().ServiceID" [mode]="autocompleteModeService">
                                 </airmid-dropdown>
                             </div>
-    
+
                             <!-- Group Name (Conditional) -->
-                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='2'">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='2'">
                                 <airmid-dropdown label="Select Group Name" formControlName="GroupWise"
                                     [value]="data?.GroupWise" [formGroup]="Doctorshare"
                                     (selectionChange)="selectChangeGroup($event)" [mode]="autocompleteGroupName">
                                 </airmid-dropdown>
                             </div>
-    
+
                             <!-- Class Name -->
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                <airmid-dropdown label="Select Class Name" formControlName="classId" [value]="data?.classId"
-                                    [formGroup]="Doctorshare" (selectionChange)="selectChangeClass($event)"
-                                    [mode]="autocompleteClass" [validations]="getValidationMessages().classId">
+                                <airmid-dropdown label="Select Class Name" formControlName="classId"
+                                    [value]="data?.classId" [formGroup]="Doctorshare"
+                                    (selectionChange)="selectChangeClass($event)" [mode]="autocompleteClass"
+                                    [validations]="getValidationMessages().classId">
                                 </airmid-dropdown>
                             </div>
                         </div>
-    
+
                     </div>
-    
+
                     <div class="modal-card-container">
                         <mat-card class="share-card">
                             <div fxLayout="row" fxLayoutGap="10px">
-                    
-                                <div class="share-type-container" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" style="padding: 12px;">
+
+                                <div class="share-type-container" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                    style="padding: 12px;">
                                     <label class="share-label" style="font-weight: bold;">Doctor Share :</label>&nbsp;
                                     <mat-radio-group formControlName="docShrType" class="share-radio-group">
                                         <mat-radio-button value="P" class="share-radio-button">
@@ -109,153 +114,168 @@
                                         </mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-                    
+
                                 <!-- Percentage Input -->
-                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Doctorshare.get('docShrType').value=='P'">
+                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                    *ngIf="Doctorshare.get('docShrType').value=='P'">
                                     <mat-form-field appearance="outline" class="value-input" fxFlex>
                                         <mat-label>Percentage Value</mat-label>
-                                        <input name="Percentage" formControlName="servicePercentage" matInput type="text"
-                                            [(ngModel)]="vServicePerc" (keypress)="keyPressDigitsOnly($event)" placeholder="0">
-                                        <span matSuffix>%</span>
+                                        <input name="Percentage" formControlName="servicePercentage" matInput
+                                            type="text" [(ngModel)]="vServicePerc"
+                                            (keypress)="keyPressDigitsOnly($event)" placeholder="0">
+                                        <span matSuffix>% &nbsp;</span>
                                     </mat-form-field>
                                 </div>
-                    
+
                                 <!-- Amount Input -->
-                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="Doctorshare.get('docShrType').value=='A'">
+                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                    *ngIf="Doctorshare.get('docShrType').value=='A'">
                                     <mat-form-field appearance="outline" class="value-input" fxFlex>
                                         <mat-label>Amount Value</mat-label>
-                                        <input name="Amount" formControlName="serviceAmount" matInput type="text" [(ngModel)]="vServiceAmt"
-                                            (keypress)="keyPressDigitsOnly($event)" placeholder="0">
-                                        <span matPrefix>₹&nbsp;</span>
+                                        <input name="Amount" formControlName="serviceAmount" matInput type="text"
+                                            [(ngModel)]="vServiceAmt" (keypress)="keyPressDigitsOnly($event)"
+                                            placeholder="0">
+                                        <span matPrefix>₹ &nbsp;</span>
                                     </mat-form-field>
                                 </div>
                             </div>
-                        </mat-card> 
+                        </mat-card>
                     </div>
 
-
-                    <div class="modal-card-container"  fxLayout="column"   class="gap-8 h-100-p" fusePerfectScrollbar>
-                      <div class="dynamic-table-wrapper" >
-                        <div class="airmid-table-container">
-                            <mat-table #table matSort [dataSource]="dataSource"
-                                [@animateStagger]="{ value: '50' }" class="airmid-table table3" style="overflow: auto;"> 
-
-                                <ng-container matColumnDef="Status">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">
-                                        <mat-icon *ngIf="element.op_IP_Type=='0'" title="OP" class="pill green-600 s-16">circle</mat-icon>
-                                        <mat-icon *ngIf="element.op_IP_Type=='1'" title="IP" class="pill orange-600 s-16">circle
-                                        </mat-icon>&nbsp;
-                                
-                                        <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
-                                            <img width="30px" height="30px" src="assets/images/logos/doctorservice.png">
-                                        </mat-icon>
-                                        <mat-icon *ngIf="element.shrTypeSerOrGrp == 2" title="Group">
-                                            <img width="30px" height="30px" src="assets/images/logos/doctorpakage.png">
-                                        </mat-icon>
-                                    </mat-cell>
-                                </ng-container> 
-
-                                <ng-container matColumnDef="ServiceName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
-                                        Service Name
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
-                                        matTooltip="{{contact.serviceName}}">
-                                        <span> {{contact.serviceName}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="ClassName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                        Class Name
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
-                                        matTooltip="{{contact.className}}">
-                                        <span> {{contact.className}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                  <ng-container matColumnDef="DoctorName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">
-                                        Doctor Name
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220"
-                                        matTooltip="{{contact.doctorName}}">
-                                        <span> {{contact.doctorName}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="ShareType">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
-                                        Share Type
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
-                                        <span> {{contact.docShrTypeS}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="SharePer">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
-                                      Share %
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
-                                        <span> {{contact.servicePercentage || '0'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="ShareAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
-                                      Share Amt
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
-                                        <span> {{(contact.serviceAmount || '0') | currency : 'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="Action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header  >
-                                       Action
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact"  > 
-                                        <button mat-icon-button (click)="OnEdit(contact)" matTooltip="Edit Details">
-                                            <mat-icon title="Edit Menu">edit</mat-icon>
-                                        </button>
-                                    </mat-cell>
-                                </ng-container> 
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        loading data...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        <span>No Data Found</span>
-                                    </mat-footer-cell>
-                                </ng-container> 
-
-                                <mat-header-row class="accent"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns; let i = index"
-                                    tabindex="999" class="contact" [@animate]="{ value: '*', params: { y: '100%' } }"
-                                    appHighlight></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{ hide: !(dataSource != null && dataSource.data.length == 0) }"></mat-footer-row>
-                            </mat-table>
-                        </div> 
+                    <div class="modal-footer">
+                        <div class="footer-navigation-container">
+                            <div class="modal-footer-buttons">
+                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                                <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                            </div>
+                        </div>
                     </div>
-                    <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25"
-                                    showFirstLastButtons>
-                    </mat-paginator>
+                   <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto" dynamicTableHeight>
+                        <!-- <div class="dynamic-table-wrapper"> -->
+                            <!-- <div class="airmid-table-container"> -->
+                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
+                                    class="airmid-table table3" style="overflow: auto;">
+
+                                    <ng-container matColumnDef="Status">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-100">
+                                            <mat-icon *ngIf="element.op_IP_Type=='0'" title="OP"
+                                                class="pill green-600 s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="element.op_IP_Type=='1'" title="IP"
+                                                class="pill orange-600 s-16">circle
+                                            </mat-icon>&nbsp;
+
+                                            <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
+                                                <img width="30px" height="30px"
+                                                    src="assets/images/logos/doctorservice.png">
+                                            </mat-icon>
+                                            <mat-icon *ngIf="element.shrTypeSerOrGrp == 2" title="Group">
+                                                <img width="30px" height="30px"
+                                                    src="assets/images/logos/doctorpakage.png">
+                                            </mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ServiceName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                            Service Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                                            matTooltip="{{contact.serviceName}}">
+                                            <span> {{contact.serviceName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ClassName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                            Class Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
+                                            matTooltip="{{contact.className}}">
+                                            <span> {{contact.className}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-220">
+                                            Doctor Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-220"
+                                            matTooltip="{{contact.doctorName}}">
+                                            <span> {{contact.doctorName}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ShareType">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Share Type
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.docShrTypeS}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="SharePer">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Share %
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{contact.servicePercentage || '0'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ShareAmt">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Share Amt
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            <span> {{(contact.serviceAmount || '0') | currency : 'INR'}}</span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <button mat-icon-button (click)="OnEdit(contact)" matTooltip="Edit Details">
+                                                <mat-icon title="Edit Menu">edit</mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <span>No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns; let i = index"
+                                        tabindex="999" class="contact"
+                                        [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{ hide: !(dataSource != null && dataSource.data.length == 0) }"></mat-footer-row>
+                                </mat-table>
+                            <!-- </div> -->
+                        <!-- </div> -->
+                        <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25"
+                            showFirstLastButtons>
+                        </mat-paginator>
                     </div>
-                </div> 
-            </div> 
-        </form> 
+                </div>
+            </div>
+        </form>
     </div>
 
 
@@ -263,7 +283,7 @@
 
 
 
-<!-- <div class="doctor-share-modal">
+    <!-- <div class="doctor-share-modal">
  
    
     <div class="modal-body-modern">
@@ -408,14 +428,7 @@
     </div> -->
 
     <!-- Modal Footer -->
- 
 
-        <div class="modal-footer">
-            <div class="footer-navigation-container">
-                <div class="modal-footer-buttons">
-                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                    <button class="btn btn-primary" (click)="OnSave()">Save</button>
-                </div>
-            </div>
-        </div>
+
+
 </div>

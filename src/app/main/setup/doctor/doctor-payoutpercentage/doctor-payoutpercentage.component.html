@@ -18,12 +18,16 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <ng-template #actionsTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center"> 
-                <mat-icon *ngIf="element.op_IP_Type=='0'" title="OP" class="pill green-600 s-16">circle</mat-icon>
-                <mat-icon *ngIf="element.op_IP_Type=='1'" title="IP" class="pill orange-600 s-16">circle
-                </mat-icon>&nbsp; 
-
-                 <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                                            'Patienttype-vip': element.op_IP_Type == '0',
+                                            'Patienttype-normal' : element.op_IP_Type == '1'
+                                        }">
+                        {{ element.op_IP_Type == '0' ? 'OP' : 'IP' }}
+                    </span>
+                </div>
+                <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
                     <img width="30px" height="30px" src="assets/images/logos/doctorservice.png">
                 </mat-icon>
                 <mat-icon *ngIf="element.shrTypeSerOrGrp == 2" title="Group">
@@ -32,21 +36,21 @@
             </div>
         </ng-template>
 
-        <!-- <ng-template #actionsTemplate1 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
-                    <img width="30px" height="30px" src="assets/images/logos/doctorservice.png">
-                </mat-icon>
-                <mat-icon *ngIf="element.shrTypeSerOrGrp == 2" title="Group">
-                    <img width="30px" height="30px" src="assets/images/logos/doctorpakage.png">
-                </mat-icon>
-
+        <ng-template #PatientTypeColorCode let-element>
+            <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+                <span [ngClass]="{
+                            'Patienttype-vip': element.docShrTypeS == 'P',
+                            'Patienttype-normal' : element.docShrTypeS == 'A'
+                        }">
+                    {{ element.docShrTypeS == 'P' ? 'P - %'
+                    : element.docShrTypeS == 'A' ? 'A - Amount'
+                    : element.docShrTypeS }}
+                </span>
             </div>
-        </ng-template> -->
+        </ng-template>
 
 
-          <ng-template #actionButtonTemplate let-element>
+        <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <button mat-icon-button (click)="onEdit(element)" style="color:black;">
                     <mat-icon title="Edit Menu">edit</mat-icon>
@@ -57,7 +61,7 @@
 
             </div>
         </ng-template>
-        
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="SearchForm">
@@ -67,21 +71,20 @@
                     </airmid-dropdown> -->
 
 
-                     <airmid-dropdown label="Doctor Name" formControlName="DoctorName" [formGroup]="SearchForm"
-                            [(ngModel)]="gridConfig.filters[0].fieldValue"
-                            [mode]="autocompleteModeDoctor" (selectionChange)="ListView($event)"
-                            (keyup)="ListView($event)">
-                        </airmid-dropdown>
+                    <airmid-dropdown label="Doctor Name" formControlName="DoctorName" [formGroup]="SearchForm"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" [mode]="autocompleteModeDoctor"
+                        (selectionChange)="ListView($event)" (keyup)="ListView($event)">
+                    </airmid-dropdown>
 
                     <mat-radio-group formControlName="Type" name="Type" (change)="onChange()">
                         <mat-radio-button value="1">Service Wise</mat-radio-button>
                         <mat-radio-button value="2">Group Wise</mat-radio-button>
                     </mat-radio-group>
 
-                   
+
                 </form>
             </ng-container>
         </airmid-table>
-      
+
     </div>
 </div>
