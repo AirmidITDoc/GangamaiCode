@@ -42,9 +42,9 @@
             <ng-template #iconMlc let-element>
                 <div>
 
-                    <button mat-icon-button *ngIf="element.isMLC==1 && element.isBillGenerated!=1; else noMLC" matTooltip="IsMLC"
-                        (click)="NewMLc(element)">
-                        <mat-icon>edit</mat-icon> 
+                    <button mat-icon-button *ngIf="element.isMLC==1 && element.isBillGenerated!=1; else noMLC"
+                        matTooltip="IsMLC" (click)="NewMLc(element)">
+                        <mat-icon>edit</mat-icon>
                     </button>
                     <ng-template #noMLC>
                         <span>--</span>
@@ -59,7 +59,15 @@
                 </div>
             </ng-template>
 
-          
+            <ng-template #mrdInFileStatus let-element>
+                <span [ngClass]="{
+                'status-not-requested': element.mrdInFileStatus == 0,
+                'status-received': element.mrdInFileStatus > 0
+              }">
+                    {{ element.mrdInFileStatus == 0 ? 'Not Requested' : 'Received' }}
+                </span>
+            </ng-template>
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -77,22 +85,22 @@
                         <mat-icon>
                             <img width="20px" height="6px" src="assets/images/logos/discharge.jpeg"
                                 style="background-color: transparent;">
-                        </mat-icon> 
+                        </mat-icon>
                     </button>
 
-                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)" *ngIf="element.isDischarged"
-                        matTooltip="Discharge Summary Without LetterHead Print">
+                    <button mat-icon-button (click)="printDischargesummaryWithoutletterhead(element)"
+                        *ngIf="element.isDischarged" matTooltip="Discharge Summary Without LetterHead Print">
                         <mat-icon>
                             <img width="10px" height="4px" src="assets/images/logos/withoutLetterHead.png"
                                 style="background-color: transparent;">
-                        </mat-icon> 
-                    </button> 
-                    
+                        </mat-icon>
+                    </button>
+
                     <button mat-icon-button (click)="getfeedback(element)" matTooltip="NewFeedback">
                         <mat-icon style="color: black;">feedback</mat-icon>
                     </button>
 
-<!-- 
+                    <!-- 
                     <button mat-icon-button *ngIf="contact.isInitinatedDischarge=='1'" matTooltip="Discharge Initiated">
                         <mat-icon>
                             <img width="20px" height="6px" src="assets/images/logos/discharge_initiated.png"
@@ -113,84 +121,93 @@
                     </mat-menu>
                 </div>
             </ng-template>
-            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" (afterLoadData)="handleNotificationEvent($event)">
+            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)"
+                (afterLoadData)="handleNotificationEvent($event)">
                 <ng-container filters>
                     <form [formGroup]="myFilterform">
-                 
+
                         <!-- <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
                      -->
                         <mat-form-field appearance="outline">
                             <mat-label>Enter a date range</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="fromDate"
-                                    placeholder="Start date">
-                                <input matEndDate formControlName="enddate"
-                                    placeholder="End date"  (dateChange)="getchangeDate()">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="getchangeDate()">
                             </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix
-                                [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
 
-                    
+
                         <mat-form-field appearance="outline">
-                        <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform" formControlName="RegNo"  (input)="onChangeFirst($event)" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                            <mat-label>UHID No</mat-label>
+                            <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="RegNo" (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                         <mat-label>First Name</mat-label>
-                        <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform" formControlName="FirstName"  (input)="onChangeFirst($event)" />
-                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="FirstName"
+                                (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Middle Name</mat-label>
-                       <input matInput placeholder="Search Middle Name" autocomplete="off" [formGroup]="myFilterform" formControlName="MiddleName"  (input)="onChangeFirst($event)" />
-                       <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MiddleName')">
-                           <mat-icon>close</mat-icon>
-                       </button>
-                   </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Middle Name</mat-label>
+                            <input matInput placeholder="Search Middle Name" autocomplete="off"
+                                [formGroup]="myFilterform" formControlName="MiddleName"
+                                (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MiddleName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
 
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Last Name</mat-label>
-                       <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform" formControlName="LastName"  (input)="onChangeFirst($event)" />
-                       <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
-                           <mat-icon>close</mat-icon>
-                       </button>
-                   </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="LastName" (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
 
-                   <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform" [(ngModel)]="gridConfig.filters[3].fieldValue" [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedeptdoc" >
-                  </airmid-dropdown>
+                        <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
+                            [(ngModel)]="gridConfig.filters[3].fieldValue"
+                            [validations]="getValidationdoctorMessages().searchDoctorId"
+                            [mode]="autocompleteModedeptdoc">
+                        </airmid-dropdown>
 
-                     <mat-form-field appearance="outline">
-                        <mat-label>IPDNo</mat-label>
-                       <input matInput placeholder="Search IPDNo" autocomplete="off" [formGroup]="myFilterform" formControlName="IPDNo"  (input)="onChangeFirst($event)" />
-                       <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('IPDNo')">
-                           <mat-icon>close</mat-icon>
-                       </button>
-                   </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>IPDNo</mat-label>
+                            <input matInput placeholder="Search IPDNo" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="IPDNo" (input)="onChangeFirst($event)" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('IPDNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
 
-                   <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"  [formGroup]="myFilterform" formControlName="IsDischarge"
+                        <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[6].fieldValue"  [formGroup]="myFilterform" formControlName="IsDischarge"
                         fxLayoutAlign="center center" (change)="onChangeFirst()">
                         <mat-radio-button mat-fab value="1">Discharged</mat-radio-button>
                         <mat-radio-button mat-fab value="0">NonDischarged</mat-radio-button>
-                    </mat-radio-group> --> 
+                    </mat-radio-group> -->
 
-                    <mat-slide-toggle name="IsDischarge" (change)="onChangeDiscahrge($event)"
-                    formControlName="IsDischarge" [(ngModel)]="IsDischarge">
-                    IsDischarge
-                      </mat-slide-toggle>
+                        <mat-slide-toggle name="IsDischarge" (change)="onChangeDiscahrge($event)"
+                            formControlName="IsDischarge" [(ngModel)]="IsDischarge">
+                            IsDischarge
+                        </mat-slide-toggle>
 
 
 
-                     <!-- <app-airmid-slider label="Discharged"   formControlName="IsDischarge" [formGroup]="myFilterform" ></app-airmid-slider>  -->
+                        <!-- <app-airmid-slider label="Discharged"   formControlName="IsDischarge" [formGroup]="myFilterform" ></app-airmid-slider>  -->
                     </form>
                 </ng-container>
             </airmid-table>

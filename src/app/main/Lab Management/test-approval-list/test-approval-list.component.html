@@ -120,18 +120,31 @@
                                                 <mat-icon *ngIf="element.isVerifySign==false" matTooltip="NotVerified"
                                                     color="warn">hourglass_empty</mat-icon>
                                             </div>
+
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+
+                                                <mat-icon *ngIf="element.paymentCompleted === 0"
+                                                    matTooltip="Payment Pending" color="warn">
+                                                    payment
+                                                </mat-icon>
+
+                                            </div>
                                         </ng-template>
 
                                         <ng-template #actionButtonTemplate let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
-                                                <button mat-icon-button matTooltip="Verify"
-                                                    [style.visibility]="element.isVerifySign==false ? 'visible' : 'hidden'"
-                                                    (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
+                                                <span
+                                                    [matTooltip]="element.paymentCompleted == 0 ? 'Payment is pending' : '' "
+                                                    matTooltipPosition="above">
+                                                    <button mat-icon-button matTooltip="Verify"
+                                                        [disabled]="element.paymentCompleted == 0"
+                                                        (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
                                                                             ? chkTemplateVerify(element, true) : chkresultentryVerify(element, true)) : null ">
-                                                    <mat-icon>verified_user</mat-icon>
-                                                </button>
+                                                        <mat-icon>verified_user</mat-icon>
+                                                    </button>
+                                                </span>
 
-                                                 <span
+                                                <span
                                                     [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
                                                             : element.paymentCompleted == 0 ? 'Payment is pending' : '' "
                                                     matTooltipPosition="above">
@@ -143,11 +156,12 @@
                                                 </span>
 
 
-                                                 <span
+                                                <span
                                                     [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
                                                             : element.paymentCompleted == 0 ? 'Payment is pending' : '' "
                                                     matTooltipPosition="above">
-                                                    <button mat-icon-button [disabled]="element.isVerifySign === false || element.paymentCompleted == 0"
+                                                    <button mat-icon-button
+                                                        [disabled]="element.isVerifySign === false || element.paymentCompleted == 0"
                                                         [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
                                                         matTooltipPosition="right" (click)="Onemail(element)"
                                                         (mouseenter)="openEmailDetailsPopover($event, element)"
@@ -157,11 +171,12 @@
                                                     </button>
                                                 </span>
 
-                                                 <span
+                                                <span
                                                     [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
                                                             : element.paymentCompleted == 0 ? 'Payment is pending' : '' "
                                                     matTooltipPosition="above">
-                                                    <button mat-icon-button [disabled]="element.isVerifySign === false || element.paymentCompleted == 0"
+                                                    <button mat-icon-button
+                                                        [disabled]="element.isVerifySign === false || element.paymentCompleted == 0"
                                                         [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
                                                         matTooltipPosition="right"
                                                         (click)="getWhatsappshareReport(element)"

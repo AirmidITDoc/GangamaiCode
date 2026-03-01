@@ -50,11 +50,12 @@ export class LabsampleNewFromComponent {
   displayedColumns: string[] = [
     'select',
     'testName',
+    'tat',
     'container',
     'SampleCollectionTime',
     'editSampleCollectionTime',
     'sampleNo',
-    // 'approval'
+    'action'
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
@@ -97,9 +98,11 @@ export class LabsampleNewFromComponent {
     this.date = now.toISOString().slice(0, 16);
   }
 
+  minDateTime: string = '';
   ngOnInit(): void {
     this.vSampleCollFormGroup = this.vSamplecollFormInsert();
 
+    this.minDateTime = this.getNow();
     if (this.data?.type) {
       this.regObj = this.data.row
       this.getSampledetailListLab(this.regObj);
@@ -128,49 +131,6 @@ export class LabsampleNewFromComponent {
 
   }
 
-  // getSampledetailListLab(row) {
-  //   // debugger
-
-  //   let formattedDate = formatDate(row.pathDate);
-
-  //   console.log(formattedDate);
-
-  //   var m_data = {
-  //     "first": 0,
-  //     "rows": 10,
-  //     "sortField": "PathTestID",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       {
-  //         "fieldName": "BillNo",
-  //         "fieldValue": String(row.billNo),
-  //         "opType": "Equals"
-  //       },
-  //       {
-  //         "fieldName": "BillDate",
-  //         "fieldValue": formattedDate,
-  //         "opType": "Equals"
-  //       },
-  //       {
-  //         "fieldName": "OP_IP_Type",
-  //         "fieldValue": "4",
-  //         "opType": "Equals"
-  //       }
-  //     ],
-  //     "Columns": [],
-  //     "exportType": "JSON"
-  //   }
-
-  //   console.log(m_data);
-  //   this._SampleService.getSampleDetailsListLab(m_data).subscribe(Visit => {
-  //     this.dataSource.data = Visit.data as SampleList[];
-  //     console.log(this.dataSource.data)
-  //     this.dataSource.sort = this.sort;
-  //     this.dataSource.paginator = this.paginator;
-  //     this.sIsLoading = '';
-  //   });
-  // }
-
   vSamplecollFormInsert(): FormGroup {
     return this.formBuilder.group({
       pathlogySampleCollection: this.formBuilder.array([])// FormArray for details
@@ -182,7 +142,8 @@ export class LabsampleNewFromComponent {
   createSampleDetail(item: any = {}): FormGroup {
     return this.formBuilder.group({
       PathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || new Date(), [Validators.required]],
+      sampleCollectionTime: [item.sampleCollectionTime, [Validators.required]],
+      // sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || new Date(), [Validators.required]],
       IsSampleCollection: [true],
       SampleNo: [item.sampleNo || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
       sampleCollectedBy: this.accountService.currentUserValue.userId
@@ -239,13 +200,6 @@ export class LabsampleNewFromComponent {
     }
   }
 
-
-  // isCheckboxDisabled(contact: any): boolean {
-  //   if (contact.patientTypeId > 1) {
-  //     return !contact.isApprovedByCamp;
-  //   }
-  //   return false; // Self patient → always enabled
-  // }
   rowCheckboxChange(row: SampleList) {
     this.selection.toggle(row);
   }
@@ -287,40 +241,6 @@ export class LabsampleNewFromComponent {
 
     return selectedCount > 0 && selectedCount < selectableRows.length;
   }
-  // masterToggle() {
-
-  //   const selectableRows = this.dataSource.data.filter(
-  //     row => !this.isCheckboxDisabled(row)
-  //   );
-
-  //   if (this.isAllSelected()) {
-  //     this.selection.clear();
-  //   } else {
-  //     selectableRows.forEach(row => this.selection.select(row));
-  //   }
-
-  //   console.log(this.selection.selected);
-  // }
-
-  // isAllSelected() {
-  //   const selectableRows = this.dataSource.data.filter(
-  //     row => !this.isCheckboxDisabled(row)
-  //   );
-
-  //   const numSelected = this.selection.selected.length;
-  //   const numRows = selectableRows.length;
-
-  //   return numRows > 0 && numSelected === numRows;
-  // }
-
-  // isSomeSelected() {
-  //   const selectableRows = this.dataSource.data.filter(
-  //     row => !this.isCheckboxDisabled(row)
-  //   );
-
-  //   return this.selection.selected.length > 0 &&
-  //     this.selection.selected.length < selectableRows.length;
-  // }
 
   EditSampleDate(contact) {
     console.log(contact)
@@ -351,6 +271,39 @@ export class LabsampleNewFromComponent {
 
   ///////////// new method ////////////////
   uniqueSpecimen: any[] = [];
+  getNow(): string {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  normalizeDateTime(value: any): string {
+    if (!value) return this.getNow();
+
+    // Already correct
+    if (typeof value === 'string' && value.includes('T')) {
+      return value.slice(0, 16);
+    }
+
+    // Convert ANY other date string safely
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return this.getNow();
+
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const h = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+
+    return `${y}-${m}-${day}T${h}:${min}`;
+  }
+
   getSampledetailListLab(row) {
     // debugger
 
@@ -386,8 +339,18 @@ export class LabsampleNewFromComponent {
 
     console.log(m_data);
     this._SampleService.getSampleDetailsListLab(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit.data as SampleList[];
+      // this.dataSource.data = Visit.data as SampleList[];
+      const now = this.getNow();
+      this.dataSource.data = (Visit.data as SampleList[]).map(item => ({
+        ...item,
+        // sampleCollectionTime: item.sampleCollectionTime
+        //   ? item.sampleCollectionTime.slice(0, 16)
+        //   : this.getNow()
+        // sampleCollectionTime: this.normalizeDateTime(item.sampleCollectionTime)
+        sampleCollectionTime: item.sampleCollectionTime || now
+      }));
       console.log(this.dataSource.data)
+
       this.extractUniqueSpecimen();
     });
   }
@@ -431,7 +394,12 @@ export class SampleList {
   specimenColorName: any;
   specimenTypeName: any;
   noofContainer: any;
-  specimenTypeId:any;
+  specimenTypeId: any;
+  sampleCollectionTime: any;
+  isConsentRequired: any;
+  tatday: any;
+  tathour: any;
+  tatmin: any;
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -451,5 +419,10 @@ export class SampleList {
     this.specimenTypeName = SampleList.specimenTypeName || '';
     this.noofContainer = SampleList.noofContainer || 0
     this.specimenTypeId = SampleList.specimenTypeId || '';
+    this.sampleCollectionTime = SampleList.sampleCollectionTime || ''
+    this.isConsentRequired = SampleList.isConsentRequired || ''
+    this.tatday = SampleList.tatday || '';
+    this.tathour = SampleList.tathour || ''
+    this.tatmin = SampleList.tatmin || ''
   }
 }

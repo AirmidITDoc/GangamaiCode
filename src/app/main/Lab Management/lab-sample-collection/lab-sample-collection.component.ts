@@ -84,7 +84,7 @@ export class LabSampleCollectionComponent {
         // },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date-Time", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-        { heading: "SampleCollection DateTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        // { heading: "SampleCollection DateTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },

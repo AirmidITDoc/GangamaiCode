@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -23,6 +23,7 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg/lab-patient-reg.service';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 
 
 @Component({
@@ -65,7 +66,13 @@ export class LabrefundBillComponent {
     'refundAmount'
   ];
   @ViewChild('grid') grid: AirmidTableComponent;
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'paidAmt')!.template = this.Paidstatus;
+  }
+  @ViewChild('Paidstatus') Paidstatus!: TemplateRef<any>;
+
   allColumns1 = [
+    { heading: "Status", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
     { heading: "Bill Date", key: "bilDate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },

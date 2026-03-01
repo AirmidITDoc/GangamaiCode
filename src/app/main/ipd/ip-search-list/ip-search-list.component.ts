@@ -58,6 +58,7 @@ export class IPSearchListComponent implements OnInit {
     @ViewChild('iconPatientCategory') iconPatientCategory!: TemplateRef<any>;
     @ViewChild('iconBillCancle') iconBillCancle!: TemplateRef<any>;
     @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
+    @ViewChild('mrdInFileStatus') mrdInFileStatus!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     ngAfterViewInit() {
@@ -65,6 +66,7 @@ export class IPSearchListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'isBillGenerated')!.template = this.iconBillCancle;
         this.gridConfig.columnsList.find(col => col.key === 'isMLC')!.template = this.iconMlc;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'mrdInFileStatus')!.template = this.mrdInFileStatus;
     }
 
     allcolumns = [
@@ -81,8 +83,8 @@ export class IPSearchListComponent implements OnInit {
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Advance Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Charges Amount", key: "chargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
         { heading: "Payer Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MRD-InFileStatus", key: "mrdInFileStatus", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 150},
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.template, width: 200,
             template: this.actionButtonTemplate  // Assign ng-template to the column
