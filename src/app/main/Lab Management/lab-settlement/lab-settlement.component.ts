@@ -223,6 +223,7 @@ export class LabSettlementComponent {
       }, 100);
     }
     this.GetDetails(obj.value)
+    this.getAccessDetail();
   }
 
   GetDetails(data) {
@@ -237,6 +238,33 @@ export class LabSettlementComponent {
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
+  }
+
+  isSettlement: boolean = false;
+  getAccessDetail() {
+    // debugger
+    var SelectQuery = {
+      "searchFields": [{
+        "fieldName": "LoginId",
+        "fieldValue": String(this.accountService.currentUserValue.userId),
+        "opType": "Equals"
+      }],
+      "mode": "LoginWiseAccessConfigList"
+    }
+    this._labPatientRegService.commonList(SelectQuery).subscribe(response => {
+      // const getUserAccesDetList = response as any[];
+      // console.log("get Access data:", getUserAccesDetList)
+
+      const settlementData = response.find(x => x.AccessValueName === 'IsSettlement');
+      console.log(settlementData)
+      if (settlementData?.AccessValue == true) {
+        this.isSettlement = settlementData?.AccessValue
+        console.log("Show", this.isSettlement)
+      } else {
+        this.isSettlement = false
+        console.log("Hide", this.isSettlement)
+      }
+    });
   }
 
   openPaymentpopup(contact) {

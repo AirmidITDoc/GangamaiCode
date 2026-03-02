@@ -146,4 +146,7 @@ export class LabPatientRegService {
   public getCollectionById(param) {
     return this._httpClient.PostData("HomeCollection/homeCollectionDetList",param);
   }
+   public commonList(Param) {
+    return this._httpClient.PostData("Common", Param);
+  }
 }
