@@ -284,7 +284,7 @@ export class AppointmentlistService {
     }
 
     public getAppointmenttemplateReport(Param: any) {
-        return this._httpClient1.PostData("Report/ViewReport", Param);
+         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
 
     public getRegistraionById(Id) {
@@ -319,7 +319,7 @@ export class AppointmentlistService {
     }
 
     public getReportView(Param) {
-        return this._httpClient1.PostData("Report/ViewReport", Param);
+         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
     public getReportHtml(Param) {
         return this._httpClient1.PostData("Report/get-report-html", Param);
@@ -425,7 +425,7 @@ export class AppointmentlistService {
         if (loader) {
             this._loaderService.show();
         }
-        //return this._httpClient1.PostData("Report/ViewReport", Param);
+        // return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
         return this._httpClient1.PostData("Common", Param)
     }
 

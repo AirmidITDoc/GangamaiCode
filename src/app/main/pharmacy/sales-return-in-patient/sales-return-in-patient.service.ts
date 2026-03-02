@@ -26,7 +26,7 @@ export class SalesReturnInPatientService {
     return this._httpClient1.PostData("SalesReturn/SalesReturnInPatient", employee)
   } 
   public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
 }
 

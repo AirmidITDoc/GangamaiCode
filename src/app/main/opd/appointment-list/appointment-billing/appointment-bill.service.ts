@@ -78,7 +78,7 @@ export class AppointmentBillService {
     if (loader) {
       this._loaderService.show();
     }
-  //return this._httpClient1.PostData("Report/ViewReport", Param);
+  // return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     return this._httpClient1.PostData("Common",Param)
 }
     public getdraftchargeslist(param) {

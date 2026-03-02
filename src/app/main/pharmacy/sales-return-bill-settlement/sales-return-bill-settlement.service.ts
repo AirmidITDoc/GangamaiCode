@@ -43,7 +43,7 @@ export class SalesReturnBillSettlementService {
     return this._httpClient1.PostData("Sales/PhBillDiscountAfter", emp);
   }
        public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
    public SalesBillList(employee) {//m_Rtrv_PatientVisitedListSearch
     return this._httpClient1.PostData("Sales/PharSalesSettlemet", employee)

@@ -28,6 +28,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
 import { ReportDispatchComponent } from '../report-dispatch/report-dispatch.component';
 import { EmailorSMSHistoryComponent } from '../emailor-smshistory/emailor-smshistory.component';
+import { LabTrackingDetailsComponent } from './lab-tracking-details/lab-tracking-details.component';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -90,7 +91,7 @@ export class LabPatientRegComponent {
     this.myFilterform = this._labPatientRegService.CreateSearchGroup();
     this.OpSettlementForm = this.CreateOPSettlementForm();
 
-    // this.GetlabAppointdetail();
+    this.getAccessDetail();
     // this.isLabSettlement = this._loggedService.currentUserValue.user.isGrnverify
   }
 
@@ -220,7 +221,7 @@ export class LabPatientRegComponent {
       template: this.PatientTypeColorCode
     },
     {
-      heading: "Action", key: "action", align: "right", width: 210, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 230, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
     }
   ]
@@ -578,6 +579,21 @@ export class LabPatientRegComponent {
 
   }
 
+  trackingdetail(element) {
+    console.log(element)
+    const dialogRef = this._matDialog.open(LabTrackingDetailsComponent,
+      {
+        maxWidth: "90vw",
+        height: '90%',
+        width: '60%',
+        data: element
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.onChangeFirst2()
+    });
+
+  }
 
   viewgetReportdispatch(element) {
     console.log(element)
@@ -594,6 +610,7 @@ export class LabPatientRegComponent {
     });
 
   }
+
   viewgetSms(element) {
     console.log(element)
     const dialogRef = this._matDialog.open(EmailorSMSHistoryComponent,
@@ -685,6 +702,33 @@ export class LabPatientRegComponent {
         //call 
       }
     })
+  }
+
+  isSettlement: boolean = false;
+  getAccessDetail() {
+    // debugger
+    var SelectQuery = {
+      "searchFields": [{
+        "fieldName": "LoginId",
+        "fieldValue": String(this._loggedService.currentUserValue.userId),
+        "opType": "Equals"
+      }],
+      "mode": "LoginWiseAccessConfigList"
+    }
+    this._labPatientRegService.commonList(SelectQuery).subscribe(response => {
+      // const getUserAccesDetList = response as any[];
+      // console.log("get Access data:", getUserAccesDetList)
+
+      const settlementData = response.find(x => x.AccessValueName === 'IsSettlement');
+      console.log(settlementData)
+      if (settlementData?.AccessValue == true) {
+        this.isSettlement = settlementData?.AccessValue
+         console.log("Show",this.isSettlement)
+      }else{
+        this.isSettlement = false
+         console.log("Hide",this.isSettlement)
+      }
+    });
   }
 
   // Patient & doctor popup

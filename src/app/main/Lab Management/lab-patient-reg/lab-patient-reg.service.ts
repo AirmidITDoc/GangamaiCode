@@ -102,7 +102,7 @@ export class LabPatientRegService {
   }
 
   public getReportView(Param) {
-    return this._httpClient.PostData("Report/ViewReport", Param);
+     return this._httpClient.PostData("Report/ViewReportFromDB", Param);
   }
   public getlabSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
     // debugger
@@ -145,5 +145,8 @@ export class LabPatientRegService {
   }
   public getCollectionById(param) {
     return this._httpClient.PostData("HomeCollection/homeCollectionDetList",param);
+  }
+   public commonList(Param) {
+    return this._httpClient.PostData("Common", Param);
   }
 }

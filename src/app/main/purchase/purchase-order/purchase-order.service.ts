@@ -163,7 +163,12 @@ export class PurchaseOrderService {
   public getSupplierRateList(data) {
     return this._httpClient1.PostData("Purchase/SupplierrateList", data);
   }
-
+  public getPORequisitionHeaderList(data) {
+    return this._httpClient1.PostData("PurchaseRequisition/PurchaseRequisitionHeaderList", data);
+  }
+    public getPORequisitionDetList(data) {
+    return this._httpClient1.PostData("PurchaseRequisition/PurchaseRequisitionDetailList", data);
+  }
   public EmailSendInsert(emp) {
     return this._httpClient.post("WhatsappEmail/EmailSave", emp);
   }

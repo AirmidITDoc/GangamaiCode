@@ -182,7 +182,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
        return this._httpClient1.GetData("Sales/ExternalDoctor-auto-complete?Keyword="+inputValue);
     }
     public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
     // ItemMaster/GetItemListForSalesBatchPop?StoreId=2&ItemId=0
   public getKenyaSalesBatchList(Param){ 

@@ -171,7 +171,7 @@ export class OtPreoperationService {
     return this._httpClient.DeleteData("TransactionConsentMaster?Id=" + m_data.toString());
   }
  public getReportView(Param) {
-        return this._httpClient.PostData("Report/ViewReport", Param);
+         return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
 
 }
