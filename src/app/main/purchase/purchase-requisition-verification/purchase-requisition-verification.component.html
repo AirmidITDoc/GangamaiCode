@@ -2,8 +2,13 @@
     <mat-toolbar class="top-header accent">
         <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-               Purchase Requisition Verification
+                Purchase Requisition Verification
             </span>
+        </div>
+        
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()">New Requisition
+            </button>
         </div>
     </mat-toolbar>
 
@@ -11,16 +16,68 @@
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+             <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed" style="color: rgb(41, 129, 12);">close</mat-icon>
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending"  style="color: brown;">Pending</mat-icon>
+                </div>
+            </ng-template>
+
+
+            <ng-template #actionsTemplate2 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon *ngIf="element.priority==1" matTooltip="Urgent" style="color: red;">report
+                    </mat-icon>
+
+                    
+                    <mat-icon *ngIf="element.priority==0" matTooltip="Normal"
+                        style="color: rgb(19, 126, 13);">report
+                    </mat-icon>
+
+                </div>
+            </ng-template>
+
+            <ng-template #isverifyTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: green;">check_circle</mat-icon>
+                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+                </div>
+            </ng-template>
+         
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <button mat-icon-button (click)="viewgetIpprescriptionreturnReportPdf(element)"
-                        matTooltip="Prescription Retrun Print">
-                        <mat-icon title="Request Print">print</mat-icon>
+                    <button mat-icon-button matTooltip="Edit Requisition" (click)="OnEdit(element)"
+                        *ngIf="!element.isverify">
+                        <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="Prescretruncancle(element)" matTooltip="Prescription ReturnCancel"
-                        *ngIf="element.isclosed==false">
-                        <mat-icon title="Cancel Prescription Return">cancel</mat-icon>
+
+                    <button mat-icon-button matTooltip="Can't Edit Requisition" *ngIf="element.isverify">
+                        <mat-icon>signal_cellular_no_sim</mat-icon>
+                    </button>
+<!-- isInchargeVerify? -->
+                    <button *ngIf="!element.isverify && !element.isCancelled" mat-icon-button
+                        (click)="onVerify(element)">
+                        <mat-icon class="disabled-icon" matTooltip="verify Menu">verified_user</mat-icon>
+                    </button>
+
+                    <!-- <button *ngIf="element.isInchargeVerify" mat-icon-button>
+                        <mat-icon class="disabled-icon" matTooltip="verified"
+                            style="color: green;">check_circle</mat-icon>
+                    </button> -->
+
+                    <button mat-icon-button matTooltip="Print Requisition" (click)="viewgetReportPdf(element)">
+                        <mat-icon> print</mat-icon>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Delete Indent" (click)="deleterequisition(element)"
+                        *ngIf="!element.isverify">
+                        <mat-icon style="color: brown;"> delete</mat-icon>
                     </button>
 
                 </div>
@@ -29,7 +86,9 @@
 
                 <ng-container filters>
                     <form [formGroup]="PurchaseReqVerifyForm" fxLayout="column">
-                        <airmid-datepicker [formGroup]="PurchaseReqVerifyForm" [isRangePicker]="true"
+                        
+
+                       <airmid-datepicker [formGroup]="PurchaseReqVerifyForm" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
                             [(fromValue)]="gridConfig.filters[0].fieldValue"
                             [(toValue)]="gridConfig.filters[1].fieldValue">
@@ -37,17 +96,35 @@
 
                         <airmid-dropdown label="From Store Name" formControlName="FromStoreId"
                             (selectionChange)="fromStoreView($event)" [formGroup]="PurchaseReqVerifyForm"
-                            [mode]="autocompletestore" [(ngModel)]="gridConfig.filters[2].fieldValue">
+                            [mode]="autocompletestore">
                         </airmid-dropdown>
 
                         <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
                             (selectionChange)="toStoreView($event)" [formGroup]="PurchaseReqVerifyForm"
-                            [mode]="autocompletestore" [(ngModel)]="gridConfig.filters[3].fieldValue">
+                            [mode]="autocompletestore">
                         </airmid-dropdown>
 
-                        <mat-slide-toggle name="IsClosed" (change)="onChangeFirst()" formControlName="status">
-                            Pending / Close
-                        </mat-slide-toggle>
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div fxLayout="row" class="gap-4 ">
+                                <span
+                                    style="font-weight: bold;color: rgb(4, 44, 84);padding: 5;font-size: large;">Status
+                                    :</span>
+                                <mat-slide-toggle name="Status" (change)="onChangeFirst()"
+                                    formControlName="Closed" [formGroup]="PurchaseReqVerifyForm">
+                                    Pending / Close
+                                </mat-slide-toggle>
+                            </div>
+                            <div fxLayout="row" class="gap-4 ">
+                                <span
+                                    style="font-weight: bold;color: rgb(4, 44, 84);padding: 5;font-size: large;">Verify
+                                    :</span>
+                                <mat-slide-toggle name="Verify" (change)="onChangeFirst()"
+                                    formControlName="Verify" [formGroup]="PurchaseReqVerifyForm">
+                                    Verify
+                                </mat-slide-toggle>
+                            </div>
+
+                        </div>
 
                     </form>
 

@@ -17,6 +17,8 @@ import { MrdService } from '../../mrd.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { MrdDetailsService } from '../mrd-details.service';
 import { ToastrService } from 'ngx-toastr';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
+
 
 
 @Component({
@@ -29,8 +31,14 @@ import { ToastrService } from 'ngx-toastr';
 export class NewMrdComponent {
   
 NewMrdForm:FormGroup
+searchFormGroup:FormGroup
 dateTimeString: any;
 rmdrecordId=0
+ RegId1 = "0";
+    registerObj = new RegInsert({});
+    PatientName:any
+    OPIPID=0
+    
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
   isDatePckrDisabled: boolean = false;
   isTimeChanged: boolean = false;
@@ -60,6 +68,7 @@ rmdrecordId=0
 
   ngOnInit(): void {
        this.NewMrdForm = this.createMrdForm();
+         this.searchFormGroup = this.createSearchForm();
        if(this.data){
         console.log(this.data)
         this.rmdrecordId=this.data.rmdrecordId
@@ -70,6 +79,12 @@ rmdrecordId=0
 
      }
 
+         createSearchForm() {
+        return this.formBuilder.group({
+            RegId: 0,
+            AppointmentDate: [(new Date()).toISOString()],
+        });
+    }
 
   createMrdForm() {
 
@@ -86,6 +101,24 @@ rmdrecordId=0
     
     });
   }
+
+  
+    getSelectedObj(obj) {
+        console.log(obj)
+        this.RegId1 = obj.regID;
+        this.registerObj = obj;
+        this.OPIPID=   this.registerObj.admissionID
+
+        this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+        // setTimeout(() => {
+        //     this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
+        //         this.registerObj = response;
+        //         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+
+        //     });  
+        // }, 500);                   "
+        // this.GetDetails(this.RegId1)
+    } 
 
   onSubmit() {
     debugger

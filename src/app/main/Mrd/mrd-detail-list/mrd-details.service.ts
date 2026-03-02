@@ -61,5 +61,14 @@ export class MrdDetailsService {
    
   }
   
+  public getRegistraionById(Id) {
+    return this._httpClient.GetData("OutPatient/" + Id);
+  }
+  public getAdmissionById(Id) {
+    return this._httpClient.GetData("Admission/" + Id);
+  }
 
+    public getDischargeId(Id) {
+    return this._httpClient.GetData("DischargeSummary/" + Id);
+  }
 }

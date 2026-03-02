@@ -36,7 +36,7 @@
 
                                     <airmid-dropdown label="To Store Name" formControlName="toStoreId" fxFlex="30%"
                                         [formGroup]="PrequiSaveFrom" [validations]="getValidationMessages().ToStoreId"
-                                        [value]="data?.ToStoreId" [mode]="autocompletestore"   (selectionChange)="selectChangeStore($event)">
+                                        [value]="vToStoreId" [mode]="autocompletestore"   (selectionChange)="selectChangeStore($event)">
                                     </airmid-dropdown>
                                     <!-- [(ngModel)]="status" -->
                                     <!-- <mat-slide-toggle name="IsUrgent" (change)="setpriority($event)"
@@ -148,7 +148,7 @@
                                             </mat-cell>
                                         </ng-container> -->
 
-                                        <ng-container matColumnDef="IndentQuantity">
+                                        <!-- <ng-container matColumnDef="IndentQuantity">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                 class="w-200">Indent Qty</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
@@ -158,7 +158,7 @@
                                                 </mat-form-field>
 
                                             </mat-cell>
-                                        </ng-container>
+                                        </ng-container> -->
 
 
                                         <ng-container matColumnDef="VerifyQuantity">

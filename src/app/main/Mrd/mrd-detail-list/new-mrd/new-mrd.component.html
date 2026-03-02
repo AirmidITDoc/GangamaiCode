@@ -7,10 +7,7 @@
       </div>
       <div class="modal-header-right">
         <div class="comman-date-container">
-          <div class="comman-date">
-            <app-common-date [screenFrom]="screenFromString"
-              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-          </div>
+         
           <div class="close-icon">
             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
               matTooltip="Close">
@@ -25,23 +22,86 @@
   <div class="modal-body" fusePerfectScrollbar>
     <div class="modal-body-container">
       <div fxLayout="column" class="gap-12">
+        <div class="modal-body-container p-12">
+                    <mat-card style="padding: 8px;" *ngIf="rmdrecordId==0">
+                        <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                            <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
 
+
+                                <div fxLayout="row" fxLayoutGap="8px">
+                                  
+                                    <div fxFlex="50%" fxFlex.sm="100%">
+                                        <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
+                                            label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegId"
+                                            fxFlex placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
+                                            ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                            (selectionChange)="getSelectedObj($event)" TextField="formattedText"
+                                            ValueField="regId">
+                                        </airmid-autocomplete>
+                                    </div>
+                                </div>
+
+
+
+                                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                                    <div class="patient-info-container" *ngIf="PatientName">
+                                        <div class="patient-info-box">
+                                            <div class="patient-info-title border-bottom pb-2">
+                                                <span class="h1">Patient Information</span>
+                                            </div>
+                                            <div class="patient-info-box my-8">
+                                                <div class="patient-info-row ">
+
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key ">Patient Name</span>
+                                                        <span>:</span>
+                                                        <span
+                                                            class="patient-col-value">{{registerObj.regNo}}-{{PatientName}}</span>
+                                                    </div>
+                                                    <div class="patient-col gap-1">
+                                                        <span class="patient-col-key ">Age | Gender</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{registerObj?.age}} |
+                                                            {{registerObj?.genderName}}</span>
+                                                    </div>
+
+                                                    <div class="patient-col gap-1">
+                                                        <span class="patient-col-key">IPDNo</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{registerObj?.ipdNo}}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Ward | Bed Name </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{registerObj?.roomName}} |
+                                                            {{registerObj?.bedName}}</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </mat-card>
+                </div>
         <div class="modal-card-container">
-          <mat-card>
+          <mat-card style="padding: 5px;">
             <div fxLayout="column" class="gap-8">
 
               <form [formGroup]="NewMrdForm" style="border: blue">
 
-                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                <div fxLayout="row wrap" fxLayoutGap="8px 8px grid">
                   <input type="hidden" name="rmdrecordId" formControlName="rmdrecordId" [(ngModel)]="rmdrecordId" />
-                  <div fxFlex="48" fxFlex.xs="100" fxFlex.sm="33">
+                  <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
 
                     <airmid-dropdown label="Unit / Branch Name" formControlName="unitId" [readonly]="true"
                       [validations]="getValidationMessages().UnitId" [formGroup]="NewMrdForm"
                       [mode]="autocompleteModeunit"></airmid-dropdown>
                   </div>
 
-                  <div fxFlex="48" fxFlex.xs="100" fxFlex.sm="48">
+                  <div fxFlex="48" fxFlex.xs="100" fxFlex.sm="33">
                     <!-- <mat-form-field appearance="outline" class="timeField" fxFlex>
                       <mat-label>MRD Time</mat-label>
                       <input matTimepicker #t="matTimepicker" mode="12h" formControlName="recievedTime"
@@ -49,7 +109,7 @@
                       <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
                     </mat-form-field> -->
 
-                    <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline" fxFlex="48%">
                       <mat-label>MRD Date / Time</mat-label>
                       <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
                         (change)="date=$event.target.value" formControlName="recievedDate" />
@@ -60,7 +120,7 @@
                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
 
                   <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-                    <airmid-textbox label="OPIPID" formControlName="opipid" [formGroup]="NewMrdForm"
+                    <airmid-textbox label="OPIPID" formControlName="opipid" [formGroup]="NewMrdForm" [value]="OPIPID"
                       [validations]="getValidationMessages().opipid" [maxLength]="15"></airmid-textbox>
                   </div>
 

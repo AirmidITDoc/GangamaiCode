@@ -12,6 +12,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { PurchaseRequisitionVerificationService } from './purchase-requisition-verification.service';
 import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { NewPurchaserequisitionComponent } from './new-purchaserequisition/new-purchaserequisition.component';
 
 
 @Component({
@@ -30,87 +31,122 @@ export class PurchaseRequisitionVerificationComponent {
   @ViewChild('grid1') grid1: AirmidTableComponent;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  fromStore = "0"
-  toStore = "0"
+  FromStore: any = String(this.accountService.currentUserValue.user.storeId);
+  Tostore: any = "0"
+  IsVerify = "0"
   status = "0"
+  IsClosed = "0"
   autocompletestore: string = "Store";
   PurchaseReqVerifyForm: FormGroup;
-
+  PurchaseRequisitionId = "0"
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
+  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+  @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+  @ViewChild('detailactionsTemplate') detailactionsTemplate!: TemplateRef<any>;
+  @ViewChild('isverifyTemplate') isverifyTemplate!: TemplateRef<any>
   ngAfterViewInit() {
-    // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'priority')!.template = this.actionsTemplate2;
+    this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.isverifyTemplate;
+
+
   }
 
   allColumns2 = [
-    { heading: "No", key: "code", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "From Store", key: "fromStore", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "To Store", key: "toStore", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Is Verify", key: "isVerify", sort: true, align: 'left', emptySign: 'NA', width: 300 }
-    // {
-    //   heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
-    //   template: this.actionButtonTemplate
-    // }
+    { heading: "Status", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+    { heading: "Priority", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+    { heading: "Is Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+
+    { heading: "No", key: "purchaseRequisitionNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+    { heading: "Date", key: "purchaseRequisitionTime", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },
+    { heading: "From Store", key: "fromStore", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "To Store", key: "toStore", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+
+    // { heading: "IsIncVerify", key: "isInchargeVerify", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Verify By", key: "isInchargeVerifyName", sort: true, align: 'left', emptySign: 'NA', width: 100},
+    { heading: "Verify Date", key: "isInchargeVerifyDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+
+
+    { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Added By", key: "addedby", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+    {
+      heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate
+    }
 
   ]
 
-  allFilters2 = [
-    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "fromStore", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "toStore", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "status", fieldValue: "0", opType: OperatorComparer.Equals }
-  ]
+  allFilters2 = [{ fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+  { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
 
+  { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
+  { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
+  { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
+  { fieldName: "IsClosed", fieldValue: this.IsClosed, opType: OperatorComparer.Equals }
+  ]
+  gridConfig: gridModel = {
+    apiUrl: "PurchaseRequisition/PurchaseRequisitionHeaderList",
+    columnsList: this.allColumns2,
+    sortField: "PurchaseRequisitionId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+      { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
+      { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
+      { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
+      { fieldName: "IsClosed", fieldValue: this.IsClosed, opType: OperatorComparer.Equals }]
+  }
   constructor(public _PurchasereqVerifyService: PurchaseRequisitionVerificationService, public _matDialog: MatDialog,
-    public toastr: ToastrService,private accountService: AuthenticationService,
+    public toastr: ToastrService, private accountService: AuthenticationService,
     private commonService: PrintserviceService,
     public datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.PurchaseReqVerifyForm = this._PurchasereqVerifyService.SearchFilterForm();
-    this.PurchaseReqVerifyForm.get('FromStoreId').setValue(this.accountService.currentUserValue.user.storeId);
+    // this.PurchaseReqVerifyForm.get('FromStoreId').setValue(this.accountService.currentUserValue.user.storeId);
   }
 
-  gridConfig: gridModel = {
-    apiUrl: "",
-    columnsList: this.allColumns2,
-    sortField: "RegNo",
-    sortOrder: 0,
-    filters: [
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "fromStore", fieldValue: this.fromStore, opType: OperatorComparer.Equals },
-      { fieldName: "toStore", fieldValue: this.toStore, opType: OperatorComparer.Equals },
-      { fieldName: "status", fieldValue: this.status, opType: OperatorComparer.Equals }
-    ]
-  }
+
 
   onChangeFirst() {
-    this.isShowDetailTable = false;
-    if (this.PurchaseReqVerifyForm.get('status').value == true) {
-      this.status = "1"
+
+    if (this.PurchaseReqVerifyForm.get('Verify').value == true) {
+      this.IsVerify = "1"
     } else {
-      this.status = "0"
+      this.IsVerify = "0"
     }
+
+    if (this.PurchaseReqVerifyForm.get('Closed').value == true) {
+      this.IsClosed = "1"
+    } else {
+      this.IsClosed = "0"
+    }
+    debugger
+    this.isShowDetailTable = false;
+    this.fromDate = this.datePipe.transform(this.PurchaseReqVerifyForm.get('startdate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.PurchaseReqVerifyForm.get('enddate').value, "yyyy-MM-dd")
+    this.FromStore = this.PurchaseReqVerifyForm.get("FromStoreId").value || this.FromStore
+    this.Tostore = this.PurchaseReqVerifyForm.get("ToStoreId").value || this.Tostore
     this.getfilterdata();
   }
 
   getfilterdata() {
     this.gridConfig = {
-      apiUrl: "",
+      apiUrl: "PurchaseRequisition/PurchaseRequisitionHeaderList",
       columnsList: this.allColumns2,
-      sortField: "RegNo",
+      sortField: "PurchaseRequisitionId",
       sortOrder: 0,
       filters: [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "fromStore", fieldValue: this.fromStore, opType: OperatorComparer.Equals },
-        { fieldName: "toStore", fieldValue: this.toStore, opType: OperatorComparer.Equals },
-        { fieldName: "status", fieldValue: this.status, opType: OperatorComparer.Equals }
-      ]
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "FromStoreId", fieldValue: this.FromStore, opType: OperatorComparer.Equals },
+        { fieldName: "ToStoreId", fieldValue: this.Tostore, opType: OperatorComparer.Equals },
+        { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
+        { fieldName: "IsClosed", fieldValue: this.IsClosed, opType: OperatorComparer.Equals }]
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
@@ -118,33 +154,33 @@ export class PurchaseRequisitionVerificationComponent {
 
   fromStoreView(value) {
     if (value.value !== 0)
-      this.fromStore = value.value
+      this.FromStore = value.value
     else
-      this.fromStore = "0"
-    // this.onChangeFirst();
+      this.FromStore = "0"
+    this.onChangeFirst();
   }
 
   toStoreView(value) {
     if (value.value !== 0)
-      this.toStore = value.value
+      this.Tostore = value.value
     else
-      this.toStore = "0"
-    // this.onChangeFirst();
+      this.Tostore = "0"
+    this.onChangeFirst();
   }
 
   GetDetails2(data) {
     // debugger
     this.gridConfig1 = {
-      apiUrl: "",
+      apiUrl: "PurchaseRequisition/PurchaseRequisitionDetailList",
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Bal Qty", key: "balqty", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Bal Qty", key: "balqty", sort: true, align: 'left', emptySign: 'NA' },
       ],
-      sortField: "PresReId",
+      sortField: "PurchaseRequisitionId",
       sortOrder: 0,
       filters: [
-        { fieldName: "PresReId", fieldValue: String(data.presReId), opType: OperatorComparer.Equals }
+        { fieldName: "PurchaseRequisitionId", fieldValue: String(data.purchaseRequisitionId), opType: OperatorComparer.Equals }
       ]
     }
     this.isShowDetailTable = true;
@@ -152,4 +188,87 @@ export class PurchaseRequisitionVerificationComponent {
     this.grid1.bindGridData();
   }
 
+
+
+  onSave(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(NewPurchaserequisitionComponent,
+      {
+        maxWidth: "87vw",
+        height: '85%',
+        width: '96%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      that.grid.bindGridData();
+      this.isShowDetailTable = false;
+
+    });
+  }
+
+  OnEdit(contact) {
+    console.log(contact)
+
+    const dialogRef = this._matDialog.open(NewPurchaserequisitionComponent,
+      {
+        maxWidth: "90vw",
+        height: '650px',
+        width: '90%',
+        data: {
+          Obj: contact,
+          // chkNewGRN: this.chkNewGRN
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.isShowDetailTable = true;
+      this.grid.bindGridData();
+    });
+
+  }
+
+  deleterequisition(row) {
+    debugger
+    Swal.fire({
+      title: 'Do you want to cancel the Requisition?',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        var data = {
+          "purchaseRequisitionId": row.purchaseRequisitionId,
+          "isCancelledBy": this.accountService.currentUserValue.userId
+        }
+        this._PurchasereqVerifyService.RequisiionCancle(data).subscribe((response: any) => {
+          // this.grid.bindGridData();
+        });
+      }
+    });
+  }
+  onVerify(row) {
+    debugger
+    let submitData = {
+      "purchaseRequisitionId": row.purchaseRequisitionId,
+      "isInchargeVerifyId": this.accountService.currentUserValue.userId
+
+    };
+    this._PurchasereqVerifyService.getVerifyRequisiion(submitData).subscribe(response => {
+      // this.commonService.Onprint("PurchaseRequisitionId", row.purchaseRequisitionId, "IndentwiseReport");
+      this.onChangeFirst();
+
+    });
+  }
+
+
+  viewgetReportPdf(contact) {
+    this.commonService.Onprint("PurchaseRequisitionId", contact.purchaseRequisitionId, "IndentwiseReport");
+  }
+
+  // viewgetIndentVerifyReportPdf(contact) {
+  //   this.commonService.Onprint("IndentId", contact, "IndentWiseReport");
+  // }
 }

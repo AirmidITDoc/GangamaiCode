@@ -17,6 +17,9 @@ import { MrdService } from '../../mrd.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { MrdDetailsService } from '../mrd-details.service';
 import { ToastrService } from 'ngx-toastr';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
+import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 
 
 @Component({
@@ -37,8 +40,8 @@ rmdrecordId=0
   timeflag = 0;
    screenFromString = 'Common-form';
   date: string;
-
-  
+ registerObj = new AdmissionPersonlModel({});
+  opipid=0
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _MrdService: MrdDetailsService,
     public formBuilder: UntypedFormBuilder,
@@ -55,14 +58,13 @@ rmdrecordId=0
   ngOnInit(): void {
        this.NewInMrdForm = this.createINMrdForm();
        if(this.data){
+        debugger
         this.rmdrecordId=this.data.rmdrecordId
-        this.NewInMrdForm.patchValue(this.data)
+        this.opipid=this.data.opipid
+        // this.NewInMrdForm.patchValue(this.data)
+        this.registerObj=this.data
        }
-      setInterval(() => {
-      this.now = new Date();
-      this.dateTimeString = this.now.toLocaleString("en-US").split(',');
-   
-    }, 1);
+  
 
      }
 
@@ -70,18 +72,19 @@ rmdrecordId=0
   createINMrdForm() {
   return this.formBuilder.group({
       outFileId: 0,
-      opipid: ['', Validators.required],
-      outNo: ['', Validators.required],
-      givenUserId:[''],
-      personName:[''],
+      opipid: [this.opipid, Validators.required],
+      // outNo: ['', Validators.required],
+      // givenUserId:[''],
+      // personName:[''],
 
-      outDate: [(new Date()).toISOString()],
-      outTime: [(new Date()).toISOString()],
-      outReason:[''],
-      inNo:[''],
+      // outDate: [(new Date()).toISOString()],
+      // outTime: [(new Date()).toISOString()],
+      // outReason:[''],
+    
+      // inNo:[''],
       inDate: [(new Date()).toISOString()],
       inTime: [(new Date()).toISOString()],
-      returnUserId: [this.accountService.currentUserValue.user.user],
+      returnUserId: this.accountService.currentUserValue.userId,
       returnPersonName: [''],
       inReason: [false, Validators.required],
 
@@ -92,26 +95,13 @@ rmdrecordId=0
   onSubmit() {
     debugger
 
-    let selectedDate = this.datePipe.transform(this.NewInMrdForm.get('outDate')?.value, 'yyyy-MM-dd');
-    let timeValue = this.NewInMrdForm.get('outTime')?.value;
-    let time = new Date(timeValue);
+    // this.NewInMrdForm.get('opipid').setValue(this.opipid)
+    this.NewInMrdForm.get('inDate').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, 'yyyy-MM-dd'))
+    this.NewInMrdForm.get('inTime').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, "MM-dd-yyyy hh:mm"))
 
-    // extract hours and minutes
-    let hours = time.getHours();
-    let minutes = time.getMinutes();
-
-    // combine reportingDate + reportingTime
-    let combinedDateTime = new Date(
-      selectedDate + 'T' + this.pad(hours) + ':' + this.pad(minutes) + ':00'
-    );
-
-    this.NewInMrdForm.get('outDate').setValue(this.datePipe.transform(this.NewInMrdForm.get('outDate').value, 'yyyy-MM-dd'))
-    this.NewInMrdForm.get('outTime').setValue(combinedDateTime)
-
-    // this.NewInMrdForm.get('admissionId').setValue(this.EmgId ?? this.AdmissionId)
     if (!this.NewInMrdForm.invalid) {
       console.log(this.NewInMrdForm.value)
-      this._MrdService.MrdOutFileUpdate(this.NewInMrdForm.value).subscribe((response) => {
+      this._MrdService.MrdINFileUpdate(this.NewInMrdForm.value).subscribe((response) => {
 
         this._matDialog.closeAll();
       });
@@ -170,40 +160,6 @@ rmdrecordId=0
 
 
 
-  public now: Date = new Date();
-  onChangeDate(value) {
-    if (value) {
-      const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this.NewInMrdForm.get('recievedDate').value.toLocaleString("en-US").split(',');
-      this.eventEmitForParent(splitDate[0], splitTime[1]);
-    }
-  }
-
-  onChangeTime(event) {
-    this.timeflag = 1
-    if (event) {
-
-      let selectedDate = new Date(this.NewInMrdForm.get('recievedTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this.NewInMrdForm.get('recievedTime').value.toLocaleString("en-US").split(',');
-      this.isTimeChanged = true;
-      // this.phdatetime = splitTime[1]
-      // console.log(this.phdatetime)
-      this.eventEmitForParent(splitDate[0], splitTime[1]);
-    }
-  }
-
-  eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
-    this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
-  }
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj ==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
   onClose() {
     this.dialogRef.close();
    }

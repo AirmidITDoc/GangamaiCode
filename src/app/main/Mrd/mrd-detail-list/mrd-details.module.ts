@@ -52,7 +52,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    
+    MrdDetailListComponent, NewOutMrdComponent,NewINMrdComponent, NewMrdComponent
   ],
   imports: [
     RouterModule.forChild(routes),

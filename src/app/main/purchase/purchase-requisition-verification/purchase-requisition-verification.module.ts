@@ -36,6 +36,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PurchaseRequisitionVerificationComponent } from './purchase-requisition-verification.component';
+import { NewPurchaserequisitionComponent } from './new-purchaserequisition/new-purchaserequisition.component';
 
 const routes: Routes = [
   {
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PurchaseRequisitionVerificationComponent],
+    declarations: [PurchaseRequisitionVerificationComponent, NewPurchaserequisitionComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

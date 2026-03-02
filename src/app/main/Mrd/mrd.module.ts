@@ -54,7 +54,7 @@ import { MatTimepickerModule } from 'mat-timepicker';
 const approutes : Routes =[
   {
     path: 'certificates',
-    component: MrdDetailListComponent
+    component: NewCertificateVersionComponent
   },
   // {
   //   path: 'prescription',
@@ -63,7 +63,7 @@ const approutes : Routes =[
 ];
 
 @NgModule({
-  declarations: [NewCertificateVersionComponent, NewCertificateComponent,CertificateComponent, NewCertificateComponent,MrdDetailListComponent, NewOutMrdComponent,NewINMrdComponent, NewMrdComponent],
+  declarations: [NewCertificateVersionComponent, NewCertificateComponent,CertificateComponent, NewCertificateComponent],
   // declarations: [CertificateComponent, NewCertificateComponent],
   imports: [
    RouterModule.forChild(approutes),

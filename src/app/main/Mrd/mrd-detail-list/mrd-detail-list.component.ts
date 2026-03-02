@@ -75,7 +75,7 @@ export class MrdDetailListComponent {
         { heading: "Out Reason", key: "outReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "In No", key: "inNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Return PersonName", key: "returnPersonName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "In Reason", key: "netPayableAinReasonmt", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "In Reason", key: "inReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Location", key: "location", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 100 },
        
@@ -85,6 +85,10 @@ export class MrdDetailListComponent {
         }
 
     ];
+
+
+
+
     IsInOut = "0"
     gridConfig: gridModel = {
         apiUrl: "MRDFile/MRDFileReceivedList",
@@ -106,8 +110,8 @@ export class MrdDetailListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewMrdComponent,
             {
-                maxWidth: "55vw",
-                height: '55%',
+                maxWidth: "65vw",
+                height: '65%',
                 width: '90%',
                 data: row
 
@@ -123,8 +127,8 @@ export class MrdDetailListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewMrdComponent,
             {
-                maxWidth: "55vw",
-                height: '55%',
+                maxWidth: "65vw",
+                height: '65%',
                 width: '90%',
                 data: row
 
@@ -141,8 +145,8 @@ export class MrdDetailListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewINMrdComponent,
             {
-                maxWidth: "65vw",
-                height: '65%',
+                   maxWidth: "75vw",
+                height: '78%',
                 width: '90%',
                 data: row
 
@@ -159,8 +163,8 @@ export class MrdDetailListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewOutMrdComponent,
             {
-                maxWidth: "65vw",
-                height: '65%',
+                maxWidth: "75vw",
+                height: '78%',
                 width: '90%',
                 data: row
 
