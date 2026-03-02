@@ -43,15 +43,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NewCertificateVersionComponent } from './new-certificate-version/new-certificate-version.component';
-import { MrdDetailListComponent } from './mrd-detail-list/mrd-detail-list.component';
-import { NewINMrdComponent } from './mrd-detail-list/new-in-mrd/new-in-mrd.component';
-import { NewOutMrdComponent } from './mrd-detail-list/new-out-mrd/new-out-mrd.component';
-import { NewMrdComponent } from './mrd-detail-list/new-mrd/new-mrd.component';
 import { MatTimepickerModule } from 'mat-timepicker';
 
 
 
-const approutes : Routes =[
+const approutes: Routes = [
   {
     path: 'certificates',
     component: NewCertificateVersionComponent
@@ -63,48 +59,48 @@ const approutes : Routes =[
 ];
 
 @NgModule({
-  declarations: [NewCertificateVersionComponent, NewCertificateComponent,CertificateComponent, NewCertificateComponent],
+  declarations: [NewCertificateVersionComponent, NewCertificateComponent, CertificateComponent, NewCertificateComponent],
   // declarations: [CertificateComponent, NewCertificateComponent],
   imports: [
-   RouterModule.forChild(approutes),
-          //  MatTableExporterModule,
-          MatChipsModule,
-          MatButtonModule,
-          MatCheckboxModule,
-          MatDatepickerModule,
-          MatFormFieldModule,
-          MatIconModule,
-          MatInputModule,
-          MatMenuModule,
-          MatRippleModule,
-          MatTableModule,
-          MatToolbarModule,
-          MatPaginatorModule,
-          MatSortModule,
-          MatSelectModule,
-          MatRadioModule,
-          MatSnackBarModule,
-          FuseSharedModule,
-          FuseConfirmDialogModule,
-          FuseSidebarModule,
-          CommonModule,
-          MatExpansionModule,
-          MatCardModule,
-          MatSlideToggleModule,
-          MatListModule,
-          MatStepperModule,
-          MatAutocompleteModule,
-          MatProgressSpinnerModule,
-          SharedModule,
-          NgxMatSelectSearchModule,
-          MatButtonToggleModule,
-          MatDialogModule,
-          MatTabsModule,
-          MatTimepickerModule
+    RouterModule.forChild(approutes),
+    //  MatTableExporterModule,
+    MatChipsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    CommonModule,
+    MatExpansionModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatListModule,
+    MatStepperModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+    NgxMatSelectSearchModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatTabsModule,
+    MatTimepickerModule
   ],
-   providers:[MrdService,
+  providers: [MrdService,
     DatePipe,
-    {provide: MatDialogRef, useValue: {}},
-    ]
+    { provide: MatDialogRef, useValue: {} },
+  ]
 })
 export class MrdModule { }

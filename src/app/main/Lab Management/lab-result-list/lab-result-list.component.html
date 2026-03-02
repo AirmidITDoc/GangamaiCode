@@ -127,62 +127,97 @@
 
                         </div>
 
-                        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                            dynamicTableHeight>
+                        <div
+                            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
 
                             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                                <mat-card>
-                                    <div id="contacts"
-                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                <mat-card style="display: flex; flex-direction: column; padding: 0;">
+                                    <div class="airmid-table-container margin-top-paginator"
+                                        style="overflow: auto; display: flex; flex-direction: column;">
 
-                                        <ng-template #actionButtonTemplate let-element>
-                                            <div fxLayout="row" fxLayoutAlign="center center">
-                                                <!-- <button mat-icon-button matTooltip="Sample Collection"
-                                                    (click)="onSampleCollSave(element)">
-                                                    <mat-icon>description</mat-icon>
-                                                </button> -->
+                                        <table mat-table [dataSource]="dataSourceParent" multiTemplateDataRows
+                                            class="airmid-table patient-table accordion-parent-table"
+                                            style="width: 100%;">
+                                            <!-- Test Date Column -->
+                                            <ng-container matColumnDef="dot">
+                                                <th mat-header-cell *matHeaderCellDef> Test Date </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.dot | date:
+                                                    dateType.MEDIUM_DATE}} </td>
+                                            </ng-container>
 
-                                                <button mat-icon-button matTooltip="Patient Details Sticker"
-                                                    (click)="OnPrintPatientIcard(element)">
-                                                    <mat-icon>pages</mat-icon>
-                                                </button>
+                                            <!-- UHID -->
+                                            <ng-container matColumnDef="labRequestNo">
+                                                <th mat-header-cell *matHeaderCellDef> UHID </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.labRequestNo}} </td>
+                                            </ng-container>
 
-                                            </div>
-                                        </ng-template>
+                                            <!-- Patient Name -->
+                                            <ng-container matColumnDef="patientName">
+                                                <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.patientName}} </td>
+                                            </ng-container>
 
-                                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"
-                                            :ShowButtons="false" (onSelectRow)="getSelectedRow($event)">
-                                        </airmid-table>
+                                            <!-- Age | Gender -->
+                                            <ng-container matColumnDef="genderName">
+                                                <th mat-header-cell *matHeaderCellDef> Age | Gender </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.genderName}} </td>
+                                            </ng-container>
 
-                                    </div>
-                                </mat-card>
+                                            <!-- Unit Name -->
+                                            <ng-container matColumnDef="hospitalName">
+                                                <th mat-header-cell *matHeaderCellDef> Unit Name </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.hospitalName}} </td>
+                                            </ng-container>
 
-                                <mat-card style="margin-top:5px; padding:5px;">
-                                    <div id="contacts"
-                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                            <!-- PBill No -->
+                                            <ng-container matColumnDef="pBillNo">
+                                                <th mat-header-cell *matHeaderCellDef> PBill No </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.pBillNo}} </td>
+                                            </ng-container>
 
-                                        <div style="height: 30px;">
-                                            <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
-                                                Result Entry
-                                            </button>
+                                            <!-- Doctor Name -->
+                                            <ng-container matColumnDef="doctorName">
+                                                <th mat-header-cell *matHeaderCellDef> Doctor Name </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.doctorName}} </td>
+                                            </ng-container>
 
-                                            <button mat-raised-button (click)="Printresultentry()"
-                                                style="margin-left: 5px;" *ngIf="selection.selected.length>0">
-                                                Print Result
-                                            </button>
+                                            <!-- Action -->
+                                            <ng-container matColumnDef="action" stickyEnd>
+                                                <th mat-header-cell *matHeaderCellDef> Action </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                                        <button mat-icon-button matTooltip="Patient Details Sticker"
+                                                            (click)="OnPrintPatientIcard(element); $event.stopPropagation()">
+                                                            <mat-icon>pages</mat-icon>
+                                                        </button>
+                                                        <!-- Expansion Toggle -->
+                                                        <button mat-icon-button aria-label="expand row"
+                                                            (click)="toggleRow(element); $event.stopPropagation()">
+                                                            <mat-icon
+                                                                *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                                                            <mat-icon
+                                                                *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
 
-                                            <button mat-raised-button (click)="Printresultentrywithheader(contact)"
-                                                *ngIf="selection.selected.length>0" style="margin-left: 5px;">
-                                                Print With Header
-                                            </button>
+                                            <!-- Expanded Content Column -->
+                                            <ng-container matColumnDef="expandedDetail">
+                                                <td mat-cell *matCellDef="let element"
+                                                    [attr.colspan]="parentColumns.length" style="padding: 0;">
+                                                    <div class="example-element-detail"
+                                                        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+                                                        style="overflow: hidden; display: flex; flex-direction: column; width: 100%;">
+                                                        <div *ngIf="element == expandedElement"
+                                                            style="padding: 2px 8px 0; background: #f9f9f9;">
 
-                                        </div>
+                                                            <mat-table class="child-accordion-table" matSort
+                                                                [dataSource]="dataSource1"
+                                                                [@animateStagger]="{ value: '50' }">
 
-                                        <mat-table class="airmid-table patient-table" matSort [dataSource]="dataSource1"
-                                            [@animateStagger]="{ value: '50' }">
-
-                                            <ng-container matColumnDef="select">
+                                                                <ng-container matColumnDef="select">
                                                 <th mat-header-cell *matHeaderCellDef>
                                                     <!-- <mat-checkbox (change)="$event ? masterToggle() : null"
                                                         [checked]="selection.hasValue()"
@@ -418,7 +453,22 @@
 
                                             <ng-container matColumnDef="action" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-250">
-                                                    Action</mat-header-cell>
+                                                    <div class="accordion-action-bar">
+                                                        <button mat-raised-button color="primary" class="btn-xs"
+                                                            (click)="chkresultentry(selection.selected,true)">
+                                                            Result Entry
+                                                        </button>
+                                                        <button mat-raised-button (click)="Printresultentry()"
+                                                            class="btn-xs" *ngIf="selection.selected.length>0">
+                                                            Print Result
+                                                        </button>
+                                                        <button mat-raised-button
+                                                            (click)="Printresultentrywithheader(contact)"
+                                                            *ngIf="selection.selected.length>0" class="btn-xs">
+                                                            Print With Header
+                                                        </button>
+                                                    </div>
+                                                </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" class="w-250">
                                                     <span [matTooltip]="contact.isSampleCollection === 'False'
                                                     ? 'Please complete sample collection first'
@@ -524,23 +574,40 @@
                                                 [ngClass]="contact.isCompleted == '1' ? 'Pathtest-Completed-Status' : ''"
                                                 [@animate]="{value:'*',params:{y:'100%'}}">
                                             </mat-row>
-                                            <mat-footer-row *matFooterRowDef="['loading']"
-                                                [ngClass]="{'hide':dataSource1!=null}">
-                                            </mat-footer-row>
-                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
-                                            </mat-footer-row>
-                                        </mat-table>
-                                        <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
-                                            showFirstLastButtons></mat-paginator>
+                                            <div *ngIf="dataSource1?.data?.length === 0"
+                                                style="padding: 16px; text-align: center; color: #666;">
+                                                No tests found for this lab request.
+                                            </div>
+                                            </mat-table>
+                                            <mat-paginator *ngIf="dataSource1?.data?.length > 10"
+                                                [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                                showFirstLastButtons></mat-paginator>
                                     </div>
-                                </mat-card>
                             </div>
+                            </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="parentColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let element; columns: parentColumns;"
+                                class="example-element-row element"
+                                [class.example-expanded-row]="expandedElement === element" (click)="toggleRow(element)"
+                                style="cursor: pointer;">
+                            </tr>
+                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"
+                                style="height: 0;"></tr>
+                            </table>
+
+                            <mat-paginator #parentPaginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                [length]="parentResultsLength" (page)="bindParentGridData()" showFirstLastButtons
+                                style="margin-top: auto;"></mat-paginator>
                         </div>
-                    </div>
-                </form>
-            </div>
         </mat-card>
     </div>
+</div>
+</div>
+</form>
+</div>
+</mat-card>
+</div>
 
 </div>

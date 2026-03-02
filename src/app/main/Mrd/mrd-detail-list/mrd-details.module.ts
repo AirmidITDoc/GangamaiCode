@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -52,7 +52,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    MrdDetailListComponent, NewOutMrdComponent,NewINMrdComponent, NewMrdComponent
+    MrdDetailListComponent, NewOutMrdComponent, NewINMrdComponent, NewMrdComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -75,6 +75,7 @@ const routes: Routes = [
     FuseConfirmDialogModule,
     FuseSidebarModule,
     MatProgressSpinnerModule,
+    FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     SharedModule,

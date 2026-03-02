@@ -8,8 +8,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridModel, OperatorComparer, gridRequest, gridResponseType } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes, DATE_TYPES } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -38,6 +38,8 @@ import { NewLabresultEntryComponent } from './new-labresult-entry/new-labresult-
 import { SampleCollOldMethodComponent } from '../lab-sample-collection/sample-coll-old-method/sample-coll-old-method.component';
 import { NewLabtemplateComponent } from './new-labtemplate/new-labtemplate.component';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
 
 function formatDate(rawDate: string): string {
   if (!rawDate) return '';
@@ -62,7 +64,14 @@ function formatDate(rawDate: string): string {
   templateUrl: './lab-result-list.component.html',
   styleUrls: ['./lab-result-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  animations: [
+    ...fuseAnimations,
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class LabResultListComponent {
   SpinLoading: boolean = false;
@@ -129,12 +138,19 @@ export class LabResultListComponent {
   page: PageNames = PageNames.PATIENT;
   pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
 
+  parentColumns: string[] = ['dot', 'labRequestNo', 'patientName', 'genderName', 'hospitalName', 'pBillNo', 'doctorName', 'action'];
+  columnsToDisplayWithExpand = [...this.parentColumns];
+  expandedElement: any | null = null;
+  parentResultsLength = 0;
+  dateType = DATE_TYPES;
+
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('childPaginator') paginator: MatPaginator;
+  @ViewChild('parentPaginator') parentPaginator: MatPaginator;
 
   dataSource = new MatTableDataSource<PatientList>();
   dataSource1 = new MatTableDataSource<SampleList>();
-  // resultSource = new MatTableDataSource<SampleList>();
+  dataSourceParent = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) PathTestpaginator: MatPaginator;
 
@@ -227,6 +243,7 @@ export class LabResultListComponent {
     this.fromDate = this.myformSearch.get("start").value || "";
     this.toDate = this.myformSearch.get("end").value || "";
     this.GetResultdetail();
+    this.bindParentGridData();
   }
 
   ListView1(value) {
@@ -269,8 +286,11 @@ export class LabResultListComponent {
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    if (this.grid) {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    }
+    this.bindParentGridData();
   }
 
   getSelectedRow(row: any): void {
@@ -375,8 +395,37 @@ export class LabResultListComponent {
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    if (this.grid) {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    }
+    this.bindParentGridData();
+  }
+
+  bindParentGridData() {
+    let gridDataRequest: gridRequest = {
+      sortField: this.gridConfig.sortField,
+      sortOrder: this.gridConfig.sortOrder,
+      filters: this.gridConfig.filters,
+      columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+      first: (this.parentPaginator?.pageIndex ?? 0),
+      rows: (this.parentPaginator?.pageSize ?? 25),
+      exportType: gridResponseType.JSON
+    };
+
+    this._SampleService.getresultenterylist(gridDataRequest).subscribe((data: any) => {
+      this.dataSourceParent.data = data.data as [];
+      this.parentResultsLength = data["recordsFiltered"];
+    });
+  }
+
+  toggleRow(element: any) {
+    if (this.expandedElement === element) {
+      this.expandedElement = null;
+    } else {
+      this.expandedElement = element;
+      this.getSelectedRow(element);
+    }
   }
 
 
