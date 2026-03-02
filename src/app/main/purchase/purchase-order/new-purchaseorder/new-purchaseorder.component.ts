@@ -20,6 +20,7 @@ import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseOrderService } from '../purchase-order.service';
 import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from './types';
 import { ConfigService } from 'app/core/services/config.service';
+import { PurchaseRequisitionlistComponent } from './purchase-requisitionlist/purchase-requisitionlist.component';
 // import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
 
 @Component({
@@ -1257,7 +1258,17 @@ export class NewPurchaseorderComponent {
   }
   onKeydown(e, data) { }
 
-
+  getPurchaseRequisition() { 
+      const dialogRef = this._matDialog.open(PurchaseRequisitionlistComponent,
+        {
+          maxWidth: "100%",
+          height: '90%',
+          width: '90%' 
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result); 
+      }); 
+  }
 }
 export class LastThreeItemList {
   ItemID: any;
