@@ -171,7 +171,7 @@ export class ResultEntryService {
   }
 
   public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
 
   public PathPrintResultentryInsert(employee) {

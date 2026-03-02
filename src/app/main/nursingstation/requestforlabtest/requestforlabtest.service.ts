@@ -38,7 +38,7 @@ export class RequestforlabtestService {
     return this._httpClient1.PostData("PathlogySampleCollection/PathRadServiceList", param);
   }
   public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
   public PathPrintResultentryInsert(employee) {
     return this._httpClient1.PostData("Pathology/PathPrintResultentryInsert", employee);

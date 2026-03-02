@@ -45,6 +45,6 @@ export class OtConsentsService {
   }
 
    public getReportView(Param) {
-        return this._httpClient.PostData("Report/ViewReport", Param);
+         return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
 }

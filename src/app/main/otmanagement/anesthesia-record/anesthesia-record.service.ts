@@ -38,7 +38,7 @@ export class AnesthesiaRecordService {
 
 
     public getReportView(Param) {
-        return this._httpClient.PostData("Report/ViewReport", Param);
+         return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
 
   public InsertOTAnesthesia(Param) {

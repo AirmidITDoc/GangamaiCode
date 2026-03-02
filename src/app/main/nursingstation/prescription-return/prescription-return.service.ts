@@ -115,7 +115,7 @@ public deactivateTheStatus(m_data) {
   return this._httpClient1.PostData("PhoneApp", m_data);
 }
   public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
   getPrscretbyId(companyId: any) {
         return this._httpClient1.GetData("CompanyMaster/" + companyId);

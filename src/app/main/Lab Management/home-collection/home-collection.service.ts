@@ -49,7 +49,7 @@ export class HomeCollectionService {
     return this._httpClient.PostData("PathlogySampleCollection/PathRadServiceList", param);
   }
   public getReportView(Param) {
-    return this._httpClient.PostData("Report/ViewReport", Param);
+     return this._httpClient.PostData("Report/ViewReportFromDB", Param);
   }
   public getlabSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
     // debugger

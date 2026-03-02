@@ -357,7 +357,7 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     public getReportView(Param) {
-        return this._httpClient1.PostData("Report/ViewReport", Param);
+         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
 
     public getCompanyById(Id) {

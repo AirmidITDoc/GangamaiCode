@@ -56,6 +56,6 @@ export class SupplierPaymentStatusService {
     return this._httpClient1.PostData("SupplierPayment/Insert", param);
   }
   public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
 }

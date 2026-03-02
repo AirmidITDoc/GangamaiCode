@@ -1085,7 +1085,7 @@ export class IPSearchListService {
     return this._httpClient1.GetData("Admission/BedList?RoomId=" + RoomId)
   }
   public getReportView(Param) {
-    return this._httpClient1.PostData("Report/ViewReport", Param);
+     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
   public getTempPrescriptionList(param) {
     return this._httpClient1.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList", param)
