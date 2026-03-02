@@ -1,0 +1,135 @@
+// .tracker-container {
+//   max-width: 500px;
+//   margin: 20px auto;
+// }
+
+// .tracker-step {
+//   display: flex;
+//   align-items: flex-start;
+//   position: relative;
+//   padding-bottom: 25px;
+// }
+
+// .tracker-step::before {
+//   content: '';
+//   position: absolute;
+//   left: 14px;
+//   top: 30px;
+//   height: 100%;
+//   width: 2px;
+//   background: #ccc;
+// }
+
+// .tracker-step:last-child::before {
+//   display: none;
+// }
+
+// .circle {
+//   width: 30px;
+//   height: 30px;
+//   border-radius: 50%;
+//   background: #ccc;
+//   color: #fff;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-weight: bold;
+//   margin-right: 15px;
+// }
+
+// .tracker-step.completed .circle {
+//   background: #28a745;
+// }
+
+// .tracker-step.active .circle {
+//   background: #007bff;
+// }
+
+// .content h4 {
+//   margin: 0;
+//   font-size: 16px;
+// }
+
+// .content p {
+//   margin: 4px 0 0;
+//   font-size: 13px;
+//   color: #666;
+// }
+
+.timeline-container {
+    position: relative;
+    width: 90%;
+    margin: 30px auto;
+}
+
+/* Vertical Line */
+.timeline-line {
+    position: absolute;
+    left: 40px;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: #cfd8dc;
+}
+
+/* Each Row */
+.timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+/* Icon on Line */
+.timeline-icon {
+    position: absolute;
+    left: 26px;
+    top: 20px;
+    background: #1aa3a3;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+/* Card */
+.timeline-card {
+    margin-left: 80px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    width: 450px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    align-items: center;
+    font-weight: bold;
+}
+
+.header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 15px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.time {
+    font-size: 12px;
+    color: #777;
+}
+
+.body p {
+    margin: 4px 0;
+    font-size: 15px;
+}

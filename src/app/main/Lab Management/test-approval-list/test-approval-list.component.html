@@ -138,6 +138,7 @@
                                                     matTooltipPosition="above">
                                                     <button mat-icon-button matTooltip="Verify"
                                                         [disabled]="element.paymentCompleted == 0"
+                                                        [style.visibility]="element.isVerifySign == false ? 'visible' : 'hidden'"
                                                         (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
                                                                             ? chkTemplateVerify(element, true) : chkresultentryVerify(element, true)) : null ">
                                                         <mat-icon>verified_user</mat-icon>

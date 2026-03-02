@@ -1,0 +1,76 @@
+<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight>
+    <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Tracking List
+            </span>
+        </div>
+
+        <div fxLayout="row" fxLayoutALign="end start">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <!-- <div class="tracker-container">
+        <div class="tracker-step" *ngFor="let step of trackerList; let i = index"
+            [class.completed]="i < trackerList.length - 1" [class.active]="i === trackerList.length - 1">
+            <div class="circle">
+                <span *ngIf="i < trackerList.length - 1">✔</span>
+                <span *ngIf="i === trackerList.length - 1">{{ i + 1 }}</span>
+            </div>
+
+            <div class="content">
+                <h4>{{ step.Lbl }}</h4>
+                <p>
+                    {{ step.RegDate | date:'dd MMM yyyy' }} <br>
+                    {{ step.RegTime | date:'hh:mm a' }}
+                </p>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="content">
+
+        <div class="center p-12" fxFlexAlign="start center">
+            <div class="timeline-container">
+                <!-- Center Line -->
+                <div class="timeline-line"></div>
+
+                <div class="timeline-item" *ngFor="let item of trackerList; let i = index">
+                    <!-- ICON ON LINE -->
+                    <div class="timeline-icon">
+                        ✔
+                    </div>
+
+                    <!-- CARD -->
+                    <div class="timeline-card">
+                        <div class="title">
+                            <h3>{{item.Lbl}}</h3>
+                        </div>
+                        <div class="header">
+                            <!-- <img src="assets/user.png" class="avatar" /> -->
+                             <mat-icon class="avatar">person</mat-icon>
+                            <div>
+                                <b>{{ item.UserName }}</b>
+                                <div class="time">{{ item.RegTime | date:'dd/MM/yyyy hh:mm a'}}</div>
+                            </div>
+                        </div>
+
+                        <div class="body">
+                            <p><b>Patient:</b> {{ item.PatientName }}</p>
+                            <!-- <p><b>Category</b> {{ item.category }}</p>
+                            <p><b>SubCategory</b> {{ item.subCategory }}</p> -->
+                            <p><b>Current:</b> {{ item.CurrentTask }}</p>
+                            <p><b>Modified:</b> {{ item.Modified }}</p>
+                            <p><b>Remarks:</b> {{ item.Comments || '-' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
