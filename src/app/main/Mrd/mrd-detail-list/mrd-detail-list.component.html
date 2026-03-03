@@ -47,11 +47,11 @@
                     <mat-icon>send</mat-icon>
                 </button> -->
 
-                <button mat-icon-button *ngIf="element.isInOut==false" matTooltip="IsOUt" (click)="OnOutFile(element)">
+                <button mat-icon-button *ngIf="element.isInOut==false" matTooltip="File OUt Process" (click)="OnOutFile(element)">
                     <img width="20" height="20" src="assets/images/logos/outfile.png">
                 </button>
 
-                <button mat-icon-button *ngIf="element.isInOut==true" matTooltip="IsOUt" (click)="OnInFile(element)">
+                <button mat-icon-button *ngIf="element.isInOut==true" matTooltip="File In Process" (click)="OnInFile(element)">
                     <img width="20" height="20" src="assets/images/logos/Infile.png">
                 </button>
 

@@ -1,18 +1,21 @@
-<div class="modal-wrapper grid-container">
-
-    <div class="modal-header accent">
+<div class="modal-wrapper grid-container labpatientMain resize-form-fields">
+    <!-- Modal header -->
+    <div class="modal-header accent labpatientHeader">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                    <mat-icon>menu</mat-icon>
-                </button>
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Estimate Details </span>
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                    Estimated Details
+                </span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-
+                    <!-- <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div> -->
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -22,45 +25,41 @@
     </div>
 
     <div class="content" style="overflow: auto;">
-        <div class="center p-5 pb-5" style="border-radius: 4px;">
-            <div class="modal-card-container">
+        <!-- <div class="center p-5 pb-5" style="border-radius: 4px;"> -->
 
-                <div fxFlexFill fxLayout="column" fxLayoutGap="2px">
-                    <mat-card>
-                        <div class="main-content overflow-auto ml-2" fxLayout="row" fxLayoutAlign="start stretch">
-                            <div style="width:45%;">
-<!-- 
+            <div fxFlexFill fxLayout="column" fxLayoutGap="2px">
+                <div class="main-content overflow-auto ml-2" fxLayout="row" fxLayoutAlign="start stretch">
+                    <div style="width:44%;">
+                        <!-- 
                                 <mat-card-content> -->
-                                    <mat-card style="padding: 2px;">
-                                    <div class="personal-panel">
-                                        <div class="detail-header"
+                        <mat-card style="padding: 2px;">
+                            <div class="personal-panel">
+                                <!-- <div class="detail-header"
                                             style="background-color:#3949ab;font-size: large;color: antiquewhite;font-weight: bold;padding: 10px;">
                                             Patient Details
-                                        </div>
-                                        <div style="padding-top: 5px;">
-                                            <form [formGroup]="estimateform">
-                                                <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="4px">
+                                        </div> -->
+                                <div style="padding-top: 5px;">
+                                    <form [formGroup]="estimateform">
+                                        <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="4px">
 
-                                                    <div fxLayout="row" fxLayoutGap="4px">
-                                                        <div fxFlex="49%">
-                                                            <airmid-dropdown label="Unit / Branch Name"
-                                                                formControlName="unitId"
-                                                                [validations]="getValidationMessages().UnitId"
-                                                                [formGroup]="estimateform"
-                                                                [mode]="autocompleteModeunit"></airmid-dropdown>
-                                                        </div>
-                                                        <div fxFlex="49%">
-                                                            <airmid-dropdown label="Doctor Name"
-                                                                formControlName="doctorId" [formGroup]="estimateform"
-                                                                [mode]="autocompleteModedoctor">
-                                                            </airmid-dropdown>
-                                                        </div>
-                                                   
-                                                    </div>
+                                            <div fxLayout="row" fxLayoutGap="4px">
+                                                <div fxFlex="49%">
+                                                    <airmid-dropdown label="Unit / Branch Name" formControlName="unitId"
+                                                        [validations]="getValidationMessages().UnitId"
+                                                        [formGroup]="estimateform"
+                                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="49%">
+                                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                                        [formGroup]="estimateform" [mode]="autocompleteModedoctor">
+                                                    </airmid-dropdown>
+                                                </div>
 
-                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                            </div>
 
-                                                        <!-- <div fxFlex="33%">
+                                            <div fxLayout="row" fxLayoutGap="4px">
+
+                                                <!-- <div fxFlex="33%">
                                                                             <airmid-dropdown label="Prefix" formControlName="prefixId"
                                                                                 [formGroup]="estimateform" ValueField="prefixId"
                                                                                 TextField="prefixName" [value]="registerObj?.prefixId"
@@ -75,10 +74,10 @@
                                                                                 [readonly]="true" [mode]="autocompleteModegender">
                                                                             </airmid-dropdown>
                                                                         </div> -->
-                                                        <div fxFlex="49%">
+                                                <div fxFlex="49%">
 
 
-                                                            <!-- <airmid-textbox label="MobileNo"
+                                                    <!-- <airmid-textbox label="MobileNo"
                                                                         formControlName="mobileNo"
                                                                         [validations]="getValidationMessages().mobileNo"
                                                                         (keypress)="keyPressAlphanumeric($event)"
@@ -87,34 +86,31 @@
                                                                         (valueChange)="handleInputChangeDebounced('mobileNo')">
                                                                     </airmid-textbox> -->
 
-                                                            <airmid-textbox label="MobileNo" formControlName="mobileNo"
-                                                                [validations]="getValidationMessages().mobileNo"
-                                                                (keypress)="keyPressAlphanumeric($event)"
-                                                                [formGroup]="estimateform" [maxLength]="10"
-                                                                [value]="registerObj?.mobileNo">
-                                                            </airmid-textbox>
-                                                        </div>
-                                                        <div fxFlex="49%">
+                                                    <airmid-textbox label="MobileNo" formControlName="mobileNo"
+                                                        [validations]="getValidationMessages().mobileNo"
+                                                        (keypress)="keyPressAlphanumeric($event)"
+                                                        [formGroup]="estimateform" [maxLength]="10"
+                                                        [value]="registerObj?.mobileNo">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="49%">
 
 
-                                                            <airmid-textbox label="Patient Name"
-                                                                formControlName="patientName"
-                                                                [value]="registerObj.firstName"
-                                                                [formGroup]="estimateform"
-                                                                [validations]="getValidationMessages().firstName"
-                                                                [maxLength]="100"></airmid-textbox>
-                                                        </div>
-                                                    </div>
-                                                    <div fxLayout="row" fxLayoutGap="4px">
-                                                        <div fxFlex="95">
-                                                            <app-airmid-dateofbirth [formGroup]="estimateform"
-                                                                dateStyle="Year"
-                                                                formControlName="DateOfBirth"></app-airmid-dateofbirth>
-                                                        </div>
-                                                    </div>
-                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                    <airmid-textbox label="Patient Name" formControlName="patientName"
+                                                        [value]="registerObj.firstName" [formGroup]="estimateform"
+                                                        [validations]="getValidationMessages().firstName"
+                                                        [maxLength]="100"></airmid-textbox>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px">
+                                                <div fxFlex="95">
+                                                    <app-airmid-dateofbirth [formGroup]="estimateform" dateStyle="Year"
+                                                        formControlName="DateOfBirth"></app-airmid-dateofbirth>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutGap="4px">
 
-                                                        <!-- <div fxFlex="33%">
+                                                <!-- <div fxFlex="33%">
                                                                             <airmid-textbox label="MobileNo" formControlName="mobileNo"
                                                                                 [validations]="getValidationMessages().mobileNo"
                                                                                 (keypress)="keyPressAlphanumeric($event)"
@@ -122,30 +118,30 @@
                                                                                 [value]="registerObj?.mobileNo">
                                                                             </airmid-textbox>
                                                                         </div> -->
-                                                        <div fxFlex="49">
-                                                            <airmid-dropdown label="City" formControlName="cityId"
-                                                                [formGroup]="estimateform" ValueField="cityId"
-                                                                TextField="cityName" [value]="registerObj?.cityId"
-                                                                (selectionChange)="onChangecity($event)"
-                                                                ApiUrl="CityMaster/get-cities">
-                                                            </airmid-dropdown>
-                                                        </div>
-                                                        <div fxFlex="49">
-                                                            <airmid-textbox label="EmailId" formControlName="emailId"
-                                                                [validations]="getValidationMessages().EmailId"
-                                                                [formGroup]="estimateform">
-                                                            </airmid-textbox>
-                                                        </div>
-                                                        <!-- <div fxFlex="33">
+                                                <div fxFlex="49">
+                                                    <airmid-dropdown label="City" formControlName="cityId"
+                                                        [formGroup]="estimateform" ValueField="cityId"
+                                                        TextField="cityName" [value]="registerObj?.cityId"
+                                                        (selectionChange)="onChangecity($event)"
+                                                        ApiUrl="CityMaster/get-cities">
+                                                    </airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="49">
+                                                    <airmid-textbox label="EmailId" formControlName="emailId"
+                                                        [validations]="getValidationMessages().EmailId"
+                                                        [formGroup]="estimateform">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <!-- <div fxFlex="33">
                                                                             <airmid-textbox label="ReferByName"
                                                                                 formControlName="ReferByName"
                                                                                 [validations]="getValidationMessages().ReferByName"
                                                                                 [formGroup]="estimateform">
                                                                             </airmid-textbox>
                                                                         </div> -->
-                                                    </div>
+                                            </div>
 
-                                                    <!-- <div fxLayout="row" fxLayoutGap="4px">
+                                            <!-- <div fxLayout="row" fxLayoutGap="4px">
                                                                         <div fxFlex="50">
                                                                             <airmid-textbox label="Address" formControlName="address"
                                                                                 [validations]="getValidationMessages().address"
@@ -163,56 +159,53 @@
                                                                     </div> -->
 
 
-                                                    <div fxLayout="row" fxLayoutGap="4px">
-                                                        <div fxFlex="49%">
-                                                            <airmid-dropdown label="B2B / Company Name"
-                                                                formControlName="companyId" [formGroup]="estimateform"
-                                                                [validations]="getValidationMessages().companyId"
-                                                                [mode]="autocompleteModecompany"
-                                                                (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
-                                                        </div>
-                                                        <div fxFlex="49%">
-                                                            <airmid-textbox label="Comments" formControlName="comments"
-                                                                [validations]="getValidationMessages().Comments"
-                                                                [formGroup]="estimateform">
-                                                            </airmid-textbox>
-                                                        </div>
-                                                        <!-- <div fxFlex="33%">
+                                            <div fxLayout="row" fxLayoutGap="4px">
+                                                <div fxFlex="49%">
+                                                    <airmid-dropdown label="B2B / Company Name"
+                                                        formControlName="companyId" [formGroup]="estimateform"
+                                                        [validations]="getValidationMessages().companyId"
+                                                        [mode]="autocompleteModecompany"
+                                                        (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="49%">
+                                                    <airmid-textbox label="Comments" formControlName="comments"
+                                                        [validations]="getValidationMessages().Comments"
+                                                        [formGroup]="estimateform">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <!-- <div fxFlex="33%">
                                                                             <airmid-textbox label="EmailId" formControlName="emailId"
                                                                                 [validations]="getValidationMessages().EmailId"
                                                                                 [formGroup]="estimateform">
                                                                             </airmid-textbox>
                                                                         </div> -->
-                                                    </div>
+                                            </div>
 
-                                                </div>
-                                            </form>
                                         </div>
-
-                                    </div>
-                                    </mat-card>
-                                <!-- </mat-card-content> -->
+                                    </form>
+                                </div>
 
                             </div>
-                            <div fxFlex="55%">
-                                <div>
-                                    <mat-card style="padding: 2px;">
-                                        <!-- <mat-card-content> -->
-                                            <div style="background-color: #3949ab;font-size: large;color: antiquewhite;font-weight: bold;padding: 10px;">
-                                                Bill Details
-                                            </div>
-                                            <div>
-                                                <div style="padding-top:5px;" fxFlex="60%">
-                                                    <form [formGroup]="estimateform">
-                                                        <airmid-autocomplete label="Enter Service Name"
-                                                            [formGroup]="estimateform" formControlName="ServiceId"
-                                                            placeholderText="Enter Service Name" fxFlex
-                                                            ApiUrl="{{ApiURL}}"
-                                                            (selectionChange)="getSelectedserviceObj($event)"
-                                                            TextField="formattedText"
-                                                            ValueField="serviceId"></airmid-autocomplete>
+                        </mat-card>
+                        <!-- </mat-card-content> -->
 
-                                                        <!-- <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
+                    </div>
+                    <div fxFlex="54%">
+
+                        <mat-card style="padding: 2px;">
+                            <!-- <mat-card-content> -->
+                            <!-- <div style="background-color: #3949ab;font-size: large;color: antiquewhite;font-weight: bold;padding: 10px;">
+                                                Bill Details
+                                            </div> -->
+                            <div>
+                                <div style="padding-top:5px;" fxFlex="60%">
+                                    <form [formGroup]="estimateform">
+                                        <airmid-autocomplete label="Enter Service Name" [formGroup]="estimateform"
+                                            formControlName="ServiceId" placeholderText="Enter Service Name" fxFlex
+                                            ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
+                                            TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
+
+                                        <!-- <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
                                                         <div class="mt-2">
                                                             <button type="button" (click)="onAddCharges()"
                                                                 class="btn btn-primary btn-with-icon py-8"
@@ -223,26 +216,25 @@
                                                             </button>
                                                         </div>
                                                     </div> -->
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div fxLayout="column">
-                                                <div fxLayout="row" fxLayoutGap="2px">
-                                                    <div fxFlex="100%" class="airmid-table-container">
-                                                        <mat-card>
-                                                            <mat-table #table1 matSort [dataSource]="dstable1"
-                                                                [@animateStagger]="{ value: '50' }"
-                                                                class="airmid-table table h-220">
+                                    </form>
+                                </div>
+                            </div>
+                            <div fxLayout="column">
+                                <div fxLayout="row" fxLayoutGap="2px">
+                                    <div fxFlex="100%" class="airmid-table-container">
+                                        <mat-card>
+                                            <mat-table #table1 matSort [dataSource]="dstable1"
+                                                [@animateStagger]="{ value: '50' }" class="airmid-table table h-220">
 
-                                                                <ng-container matColumnDef="ServiceName">
-                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                        class="w-300">Service
-                                                                        Name</mat-header-cell>
-                                                                    <mat-cell *matCellDef="let contact"
-                                                                        class="w-300">{{contact.ServiceName}}</mat-cell>
-                                                                </ng-container>
+                                                <ng-container matColumnDef="ServiceName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                        class="w-300">Service
+                                                        Name</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact"
+                                                        class="w-300">{{contact.ServiceName}}</mat-cell>
+                                                </ng-container>
 
-                                                                <!-- <ng-container matColumnDef="DoctorName">
+                                                <!-- <ng-container matColumnDef="DoctorName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
                                                                     -
                                                                 </mat-header-cell>
@@ -266,7 +258,7 @@
                                                                 </mat-cell>
                                                             </ng-container> -->
 
-                                                                <!-- <ng-container matColumnDef="Urgent">
+                                                <!-- <ng-container matColumnDef="Urgent">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                                     class="w-70">
                                                                     -
@@ -277,101 +269,87 @@
                                                                 </mat-cell>
                                                             </ng-container> -->
 
-                                                                <ng-container matColumnDef="Price">
-                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                        fxShow.gt-sm
-                                                                        class="w-100">Price</mat-header-cell>
-                                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                        class="w-100">
-                                                                        <mat-form-field appearance="fill">
-                                                                            <input matInput [(ngModel)]="contact.Price"
-                                                                                type="text" [id]="'Price' + index"
-                                                                                [min]="0"
-                                                                                (ngModelChange)="getCellCalculation(contact)"
-                                                                                type="number" />
-                                                                        </mat-form-field>
-                                                                    </mat-cell>
-                                                                </ng-container>
+                                                <ng-container matColumnDef="Price">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                        class="w-100">Price</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                        <mat-form-field appearance="fill">
+                                                            <input matInput [(ngModel)]="contact.Price" type="text"
+                                                                [id]="'Price' + index" [min]="0"
+                                                                (ngModelChange)="getCellCalculation(contact)"
+                                                                type="number" />
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                                <ng-container matColumnDef="DiscountAmount">
-                                                                    <mat-header-cell *matHeaderCellDef
-                                                                        class="w-100">Disc
-                                                                        Amt</mat-header-cell>
-                                                                    <mat-cell *matCellDef="let contact" class="w-100">
-                                                                        <mat-form-field floatLabel="never"
-                                                                            appearance="fill">
-                                                                            <input matInput placeholder="Disc Amt"
-                                                                                [(ngModel)]="contact.DiscAmt"
-                                                                                type="text" [min]="0"
-                                                                                [max]="contact.TotalAmt"
-                                                                                (ngModelChange)="onDiscountAmtChange(contact)">
-                                                                        </mat-form-field>
-                                                                    </mat-cell>
-                                                                </ng-container>
+                                                <ng-container matColumnDef="DiscountAmount">
+                                                    <mat-header-cell *matHeaderCellDef class="w-100">Disc
+                                                        Amt</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" class="w-100">
+                                                        <mat-form-field floatLabel="never" appearance="fill">
+                                                            <input matInput placeholder="Disc Amt"
+                                                                [(ngModel)]="contact.DiscAmt" type="text" [min]="0"
+                                                                [max]="contact.TotalAmt"
+                                                                (ngModelChange)="onDiscountAmtChange(contact)">
+                                                        </mat-form-field>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                                <ng-container matColumnDef="NetAmount">
-                                                                    <mat-header-cell *matHeaderCellDef>Net
-                                                                        Amt</mat-header-cell>
-                                                                    <mat-cell *matCellDef="let contact"><span
-                                                                            class="text-overflow">
-                                                                            {{(contact.NetAmount || 0) | currency:
-                                                                            currency:'symbol'}}
-                                                                        </span></mat-cell>
-                                                                </ng-container>
+                                                <ng-container matColumnDef="NetAmount">
+                                                    <mat-header-cell *matHeaderCellDef>Net
+                                                        Amt</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact"><span class="text-overflow">
+                                                            {{(contact.NetAmount || 0) | currency:
+                                                            currency:'symbol'}}
+                                                        </span></mat-cell>
+                                                </ng-container>
 
-                                                                <ng-container matColumnDef="buttons" stickyEnd>
-                                                                    <mat-header-cell *matHeaderCellDef
-                                                                        class="w-100">Action</mat-header-cell>
-                                                                    <mat-cell *matCellDef="let contact" class="w-100">
-                                                                        <button mat-icon-button color="warn"
-                                                                            (click)="deleteTableRow($event ,contact)"><mat-icon>delete_outline</mat-icon></button>
+                                                <ng-container matColumnDef="buttons" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef
+                                                        class="w-100">Action</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" class="w-100">
+                                                        <button mat-icon-button color="warn"
+                                                            (click)="deleteTableRow($event ,contact)"><mat-icon>delete_outline</mat-icon></button>
 
-                                                                    </mat-cell>
-                                                                </ng-container>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                                                <mat-header-row class="accent h-35"
-                                                                    *matHeaderRowDef="displayedServiceselected; sticky: true"></mat-header-row>
-                                                                <mat-row
-                                                                    *matRowDef="let contact; columns: displayedServiceselected; let i = index"
-                                                                    tabindex="999" class="h-32"
-                                                                    [@animate]="{ value: '*', params: { y: '100%' } }"
-                                                                    appHighlight></mat-row>
+                                                <mat-header-row class="accent h-35"
+                                                    *matHeaderRowDef="displayedServiceselected; sticky: true"></mat-header-row>
+                                                <mat-row
+                                                    *matRowDef="let contact; columns: displayedServiceselected; let i = index"
+                                                    tabindex="999" class="h-32"
+                                                    [@animate]="{ value: '*', params: { y: '100%' } }"
+                                                    appHighlight></mat-row>
 
-                                                            </mat-table>
-                                                        </mat-card>
+                                            </mat-table>
+                                        </mat-card>
 
-                                                        <form [formGroup]="estimateform">
-                                                            <div fxLayout="row" fxLayoutGap="6px"
-                                                                style="padding: 10px;">
-                                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                    <airmid-textbox label="Total Amount"
-                                                                        formControlName="totalAmount"
-                                                                        [formGroup]="estimateform" [type]="'number'"
-                                                                        [readonly]="true">
-                                                                    </airmid-textbox>
-                                                                </div>
-                                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                    <airmid-textbox label="Discount %"
-                                                                        formControlName="totalDiscountPer"
-                                                                        [formGroup]="estimateform" [min]="0" [max]="100"
-                                                                        [type]="'text'"
-                                                                        (valueChange)="updateCalculation()">
-                                                                    </airmid-textbox>
-                                                                </div>
-                                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                    <airmid-textbox label="Discount Amount"
-                                                                        formControlName="discAmount"
-                                                                        [formGroup]="estimateform" [readonly]="true">
-                                                                    </airmid-textbox>
-                                                                </div>
-                                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                                    <airmid-textbox label="Total Net Amount"
-                                                                        formControlName="netAmount"
-                                                                        [formGroup]="estimateform" [type]="'number'"
-                                                                        [readonly]="true">
-                                                                    </airmid-textbox>
-                                                                </div>
-                                                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                        <form [formGroup]="estimateform">
+                                            <div fxLayout="row" fxLayoutGap="6px" style="padding: 10px;">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <airmid-textbox label="Total Amount" formControlName="totalAmount"
+                                                        [formGroup]="estimateform" [type]="'number'" [readonly]="true">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <airmid-textbox label="Discount %"
+                                                        formControlName="totalDiscountPer" [formGroup]="estimateform"
+                                                        [min]="0" [max]="100" [type]="'text'"
+                                                        (valueChange)="updateCalculation()">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <airmid-textbox label="Discount Amount" formControlName="discAmount"
+                                                        [formGroup]="estimateform" [readonly]="true">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <airmid-textbox label="Total Net Amount" formControlName="netAmount"
+                                                        [formGroup]="estimateform" [type]="'number'" [readonly]="true">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
                                                                                 *ngIf="estimateform.get('totalDiscountPer')?.value > 0">
                                                                                 <airmid-dropdown label="Concession Reason"
                                                                                     formControlName="concessionReasonId"
@@ -380,128 +358,119 @@
                                                                                     (selectionChange)="selectChangeConcession($event)">
                                                                                 </airmid-dropdown>
                                                                             </div> -->
-                                                            </div>
-
-                                                        </form>
-                                                    </div>
-                                                </div>
                                             </div>
-                                        <!-- </mat-card-content> -->
-                                    </mat-card>
 
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div fxLayoutAlign="end" style="padding-right:25px;">
-                            <div  fxLayout="row">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary" (click)="onSave()"
-                                    [disabled]="!chargeList.length">Save</button>
-                            </div>
-                        </div>
-                    </mat-card>
-                    <div>
-                        <mat-card>
-                            <form [formGroup]="myformSearch" class="mat-error-fix">
-                                <div fxLayout="column" style="padding-top:5px ;">
-                                    <div class="layout-card-container" style="height: 60px;padding-left: 10px;">
-
-                                        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
-                                            <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
-
-
-                                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
-                                                        formStartControlName="fromDate" formEndControlName="enddate"
-                                                        [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                                        [(toValue)]="gridConfig.filters[1].fieldValue">
-                                                    </airmid-datepicker>
-                                                </div>
-
-
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>Patient Name</mat-label>
-                                                        <input matInput placeholder="Search Patient Name"
-                                                            autocomplete="off" [formGroup]="myformSearch"
-                                                            formControlName="PatientName" (input)="onChangeOPBill()" />
-                                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                                            (click)="Clearfilter('FirstNameSearch')">
-                                                            <mat-icon>close</mat-icon>
-                                                        </button>
-                                                    </mat-form-field>
-                                                </div>
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
-
-                                                    <mat-form-field appearance="outline" fxFlex>
-                                                        <mat-label>MobileNo</mat-label>
-                                                        <input matInput placeholder="Search MobileNo" autocomplete="off"
-                                                            [formGroup]="myformSearch" formControlName="MobileNo"
-                                                            (input)="onChangeOPBill()" />
-                                                        <button matSuffix mat-icon-button aria-label="Clear"
-                                                            (click)="Clearfilter('MobileNo')">
-                                                            <mat-icon>close</mat-icon>
-                                                        </button>
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
-
-                                                    <airmid-dropdown label="Company Name" formControlName="CompanyId"
-                                                        [formGroup]="myformSearch" (selectionChange)="ListView($event)"
-                                                        [mode]="autocompleteModecompany"></airmid-dropdown>
-                                                </div>
-
-                                                <div class="action-button-container">
-                                                    <div class="button-row-group">
-                                                        <button class="btn btn-danger-outline btn-xs"
-                                                            (click)="onClear()">clear</button>
-                                                        <button class="btn btn-primary btn-with-icon btn-xs"
-                                                            (click)="onChangeOPBill()">
-                                                            <span>Search</span>
-                                                            <span class="btn-icon">
-                                                                <mat-icon>search</mat-icon>
-                                                            </span>
-                                                        </button>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        </form>
                                     </div>
-
-
                                 </div>
-                            </form>
+                            </div>
+                            <!-- </mat-card-content> -->
                         </mat-card>
-                        <div>
-                            <div style="height: 270px; overflow:auto;">
-
-                                <ng-template #actionButtonTemplate let-element>
-                                    <div fxLayout="row" fxLayoutAlign="center center">
-
-                                        <button mat-icon-button matTooltip="Print"
-                                            (click)="viewgetEsimatePBillReportPdf1(element)">
-                                            <mat-icon>print</mat-icon>
-                                        </button>
-
-
-                                    </div>
-                                </ng-template>
-                                <airmid-table [gridConfig]="gridConfig" #EBillGrid :ShowFilter="false"
-                                    :ShowButtons="false">
-                                </airmid-table>
-                            </div>
-                        </div>
 
                     </div>
 
                 </div>
+                <div fxLayoutAlign="end" style="padding-right:20px;">
+                    <div fxLayout="row">
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                        <button class="btn btn-primary" (click)="onSave()" [disabled]="!chargeList.length">Save</button>
+                    </div>
+                </div>
+
+                <div>
+
+                    <form [formGroup]="myformSearch">
+                        <div fxLayout="column" style="padding-top:5px ;">
+
+                            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
+                                <div fxLayout="row wrap"  fxLayoutGap="5px 0px grid">
+
+                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                            formStartControlName="fromDate" formEndControlName="enddate"
+                                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                                        </airmid-datepicker>
+                                    </div>
+
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Patient Name</mat-label>
+                                            <input matInput placeholder="Search Patient Name" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="PatientName"
+                                                (input)="onChangeOPBill()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('FirstNameSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>MobileNo</mat-label>
+                                            <input matInput placeholder="Search MobileNo" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="MobileNo"
+                                                (input)="onChangeOPBill()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('MobileNo')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                        <airmid-dropdown label="Company Name" formControlName="CompanyId"
+                                            [formGroup]="myformSearch" (selectionChange)="ListView($event)"
+                                            [mode]="autocompleteModecompany"></airmid-dropdown>
+                                    </div>
+
+                                    <div class="action-button-container">
+                                        <div class="button-row-group">
+                                            <button class="btn btn-danger-outline btn-xs"
+                                                (click)="onClear()">clear</button>
+                                            <button class="btn btn-primary btn-with-icon btn-xs"
+                                                (click)="onChangeOPBill()">
+                                                <span>Search</span>
+                                                <span class="btn-icon">
+                                                    <mat-icon>search</mat-icon>
+                                                </span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <div>
+                        <div style="height: 200px; overflow-y:auto;" fxFlex="97%">
+
+                            <ng-template #actionButtonTemplate let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+
+                                    <button mat-icon-button matTooltip="Print"
+                                        (click)="viewgetEsimatePBillReportPdf1(element)">
+                                        <mat-icon>print</mat-icon>
+                                    </button>
+
+
+                                </div>
+                            </ng-template>
+                            <airmid-table [gridConfig]="gridConfig" #EBillGrid :ShowFilter="false" :ShowButtons="false">
+                            </airmid-table>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
-        </div>
+            
+        
     </div>
 
 

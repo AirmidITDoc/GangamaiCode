@@ -1,196 +1,231 @@
-<div class="modal-wrapper grid-container">
-  <!-- Modal header -->
-  <div class="modal-header accent">
-    <div class="modal-header-content">
-      <div class="modal-header-title">
-        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">New MRD Entry</span>
-      </div>
-      <div class="modal-header-right">
-        <div class="comman-date-container">
-         
-          <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-              matTooltip="Close">
-              <mat-icon>close</mat-icon>
-            </button>
+<div class="modal-wrapper grid-container labpatientMain resize-form-fields">
+  <div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+      <div class="modal-header-content">
+        <div class="modal-header-title">
+          <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New MRD File Details</span>
+        </div>
+        <div class="modal-header-right">
+          <div class="comman-date-container">
+
+            <div class="close-icon">
+              <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Modal body -->
-  <div class="modal-body" fusePerfectScrollbar>
-    <div class="modal-body-container">
-      <div fxLayout="column" class="gap-12">
-        <div class="modal-body-container p-12">
-                    <mat-card style="padding: 8px;" *ngIf="rmdrecordId==0">
-                        <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
-                            <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
 
 
-                                <div fxLayout="row" fxLayoutGap="8px">
-                                  
-                                    <div fxFlex="50%" fxFlex.sm="100%">
-                                        <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
-                                            label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegId"
-                                            fxFlex placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
-                                            ApiUrl="Admission/Dischargesearch-patient?Keyword="
-                                            (selectionChange)="getSelectedObj($event)" TextField="formattedText"
-                                            ValueField="regId">
-                                        </airmid-autocomplete>
-                                    </div>
-                                </div>
+    <div class="modal-body">
+      <div class="modal-body-container">
+        <div fxLayout="row">
+          <div fxFlex="30%" fxFlex.sm="100%" fxFlex.xs="100%" class="table-left">
+            <mat-card style="padding-top: 10px;padding-bottom: 10px;">
+              <div style="font-size: large;font-weight: bold;color: rgb(8, 52, 113);">Selected Patient Details </div>
 
+              <div class="patient-info-row patient-info-1-60 pt-8" fxLayout="row" fxLayoutAlign="space-between">
 
-
-                                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                                    <div class="patient-info-container" *ngIf="PatientName">
-                                        <div class="patient-info-box">
-                                            <div class="patient-info-title border-bottom pb-2">
-                                                <span class="h1">Patient Information</span>
-                                            </div>
-                                            <div class="patient-info-box my-8">
-                                                <div class="patient-info-row ">
-
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key ">Patient Name</span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{registerObj.regNo}}-{{PatientName}}</span>
-                                                    </div>
-                                                    <div class="patient-col gap-1">
-                                                        <span class="patient-col-key ">Age | Gender</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.age}} |
-                                                            {{registerObj?.genderName}}</span>
-                                                    </div>
-
-                                                    <div class="patient-col gap-1">
-                                                        <span class="patient-col-key">IPDNo</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.ipdNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Ward | Bed Name </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.roomName}} |
-                                                            {{registerObj?.bedName}}</span>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </mat-card>
-                </div>
-        <div class="modal-card-container">
-          <mat-card style="padding: 5px;">
-            <div fxLayout="column" class="gap-8">
-
-              <form [formGroup]="NewMrdForm" style="border: blue">
-
-                <div fxLayout="row wrap" fxLayoutGap="8px 8px grid">
-                  <input type="hidden" name="rmdrecordId" formControlName="rmdrecordId" [(ngModel)]="rmdrecordId" />
-                  <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-
-                    <airmid-dropdown label="Unit / Branch Name" formControlName="unitId" [readonly]="true"
-                      [validations]="getValidationMessages().UnitId" [formGroup]="NewMrdForm"
-                      [mode]="autocompleteModeunit"></airmid-dropdown>
+                <div fxLayout="column" fxLayoutGap="6px">
+                  <div class="patient-col">
+                    <span class="patient-col-key">UHID No
+                    </span>
+                    <span>:</span>
+                    <span class="patient-col-value">{{registerObj.regNo}}</span>
+                  </div>
+                  <div class="patient-col">
+                    <span class="patient-col-key">Patient Name
+                    </span>
+                    <span>:</span>
+                    <span class="patient-col-value">{{registerObj.patientName}}</span>
                   </div>
 
-                  <div fxFlex="48" fxFlex.xs="100" fxFlex.sm="33">
-                    <!-- <mat-form-field appearance="outline" class="timeField" fxFlex>
-                      <mat-label>MRD Time</mat-label>
-                      <input matTimepicker #t="matTimepicker" mode="12h" formControlName="recievedTime"
-                        (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled" />
-                      <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                    </mat-form-field> -->
-
-                    <mat-form-field appearance="outline" fxFlex="48%">
-                      <mat-label>MRD Date / Time</mat-label>
-                      <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
-                        (change)="date=$event.target.value" formControlName="recievedDate" />
-
-                    </mat-form-field>
+                  <div class="patient-col">
+                    <span class="patient-col-key">Age </span>
+                    <span>:</span>
+                    <span class="patient-col-value">
+                      {{registerObj.ageYear}}Y|{{registerObj.ageMonth}}M|{{registerObj.ageDay}}
+                      D | {{registerObj.genderName}}</span>
                   </div>
-                </div>
-                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-
-                  <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-                    <airmid-textbox label="OPIPID" formControlName="opipid" [formGroup]="NewMrdForm" [value]="OPIPID"
-                      [validations]="getValidationMessages().opipid" [maxLength]="15"></airmid-textbox>
+                  <div class="patient-col">
+                    <span class="patient-col-key">IPD No </span>
+                    <span>:</span>
+                    <span class="patient-col-value">{{registerObj.ipdno}} </span>
                   </div>
 
-                  <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-                    <airmid-textbox label="MRDNO" formControlName="mrdno" [formGroup]="NewMrdForm"
-                      [validations]="getValidationMessages().mrdno" [maxLength]="15"></airmid-textbox>
+                  <div class="patient-col">
+                    <span class="patient-col-key">DOA | Time</span>
+                    <span>:</span>
+                    <span class="patient-col-value">{{registerObj.admissionTime | date:'dd-MM-yyyy, hh:mm a'
+                      }}</span>
                   </div>
 
-                  <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33">
-                    <airmid-textbox label="Location" formControlName="location" [formGroup]="NewMrdForm"
-                      [validations]="getValidationMessages().location" [maxLength]="15"></airmid-textbox>
+                  <div class="patient-col">
+                    <span class="patient-col-key">Doctor Name</span>
+                    <span>:</span>
+                    <span class="patient-col-value">{{registerObj.doctorname}}</span>
                   </div>
 
-                  <!-- <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="33"> -->
-                  <!-- <mat-form-field appearance="outline" class="dateField" fxFlex>
-                      <mat-label>MLC Date</mat-label>
-                      <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="recievedDate"
-                        (dateChange)="onChangeDate($event.value)" />
-                      <mat-datepicker-toggle matSuffix [for]="picker1"
-                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
-                      <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field> -->
-                  <!-- </div> -->
-
-
-
-                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                    <!-- <airmid-textbox label="authorityName" formControlName="authorityName"
-                      [value]="registerObj.authorityName" [formGroup]="NewMrdForm"
-                      [validations]="getValidationMessages().authorityName" [maxLength]="50"></airmid-textbox> -->
-                  </div>
-
-                  <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                    <airmid-textbox label="buckleNo" formControlName="buckleNo" [value]="registerObj.buckleNo"
-                      [formGroup]="NewMrdForm" [validations]="getValidationMessages().buckleNo"
-                      [maxLength]="7"></airmid-textbox>
-                  </div>
-
-                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                    <airmid-textbox label="policeStation" formControlName="policeStation"
-                      [value]="registerObj.policeStation" [formGroup]="NewMrdForm"
-                      [validations]="getValidationMessages().policeStation" [maxLength]="50"></airmid-textbox>
-                  </div> -->
                 </div>
 
-                <!-- <div fxLayoutGap="5px" fxlayout="column">
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Detail Given</mat-label>
-                    <textarea matInput name="Given" formControlName="detailGiven" cols="200" rows="5"
-                      [(ngModel)]="DetailGiven"></textarea>
-                  </mat-form-field>
+               
+              </div>
+            </mat-card>
 
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Remark</mat-label>
-                    <textarea matInput name="Remark" formControlName="remark" cols="200" rows="5"
-                      [(ngModel)]="Remark"></textarea>
-                  </mat-form-field>
-                </div> -->
-              </form>
+            <div fxLayout="column" class="gap-8 h-100-p" style="padding-top: 30px;">
+              <mat-card fxLayout="column">
+                <div>
+                  <form [formGroup]="NewMrdForm" style="border: blue">
+
+                    <div fxLayout="row wrap" fxLayoutGap="8px 8px grid">
+                      <input type="hidden" name="rmdrecordId" formControlName="rmdrecordId" [(ngModel)]="rmdrecordId" />
+                      <div fxFlex="90" fxFlex.xs="100" fxFlex.sm="33">
+
+                        <airmid-dropdown label="Unit / Branch Name" formControlName="unitId" [readonly]="true"
+                          [validations]="getValidationMessages().UnitId" [formGroup]="NewMrdForm"
+                          [mode]="autocompleteModeunit"></airmid-dropdown>
+                      </div>
+                    </div>
+
+                    <div fxLayout="row wrap" fxLayoutGap="8px 8px grid">
+                      <div fxFlex="90" fxFlex.xs="100" fxFlex.sm="33">
+
+                        <mat-form-field appearance="outline" fxFlex="100">
+                          <mat-label>MRD Date / Time</mat-label>
+                          <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                            (change)="date=$event.target.value" formControlName="recievedDate" />
+
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                      <div fxFlex="90" fxFlex.xs="100" fxFlex.sm="33">
+                        <airmid-textbox label="Location" formControlName="location" [formGroup]="NewMrdForm"
+                          [validations]="getValidationMessages().location" [maxLength]="15"></airmid-textbox>
+                      </div>
+
+
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                      <div fxFlex="90" fxFlex.xs="100" fxFlex.sm="33">
+                        <airmid-textbox label="Comments" formControlName="comments" [formGroup]="NewMrdForm"
+                          [validations]="getValidationMessages().comments" [maxLength]="200"></airmid-textbox>
+                      </div>
+
+
+                    </div>
+
+
+                  </form>
+                </div>
+
+
+              </mat-card>
             </div>
-          </mat-card>
+          </div>
+
+          <div fxFlex="70%" fxFlex.sm="100%" fxFlex.xs="100%">
+            <mat-card fxLayout="column" style="padding: 10px;">
+              <form [formGroup]="myFilterform">
+                <!-- <div class="top-form-row"> -->
+                <div fxLayout="row" fxLayoutGap="2px">
+
+                  <mat-form-field appearance="outline" fxFlex="26%">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                      <input matStartDate formControlName="fromDate" placeholder="Start date">
+                      <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="getchangeDate()">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                  </mat-form-field>
+
+
+                  <mat-form-field appearance="outline" fxFlex="10%">
+                    <mat-label>UHID No</mat-label>
+                    <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
+                      formControlName="RegNo" (input)="onChangeFirst()" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="Search First Name" autocomplete="off" [formGroup]="myFilterform"
+                      formControlName="FirstName" (input)="onChangeFirst()" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Middle Name</mat-label>
+                    <input matInput placeholder="Search Middle Name" autocomplete="off" [formGroup]="myFilterform"
+                      formControlName="MiddleName" (input)="onChangeFirst()" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('MiddleName')">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myFilterform"
+                      formControlName="LastName" (input)="onChangeFirst()" />
+                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+
+                  <!-- <airmid-dropdown label="Doctor Name" formControlName="searchDoctorId" [formGroup]="myFilterform"
+                    [(ngModel)]="gridConfig.filters[3].fieldValue"
+                    [validations]="getValidationMessages().searchDoctorId" [mode]="autocompleteModedeptdoc">
+                  </airmid-dropdown> -->
+
+
+                  <!-- <button mat-raised-button class="clearbutton" matTooltip="close">
+                    <mat-icon class="cleariconbutton" style="padding-top: 5px;">close</mat-icon>
+                  </button>&nbsp; -->
+
+                  <button mat-raised-button class="searchButton" (click)="onChangeFirst()" matTooltip="search"
+                    style="padding-top: 5px;">
+                    <mat-icon class="searchiconbutton">search</mat-icon>
+                  </button>
+
+                </div>
+                <div fxLayout="row" style="height: 480px;overflow-y: auto;">
+                  <ng-template #mrdInFileStatus let-element>
+                    <span
+                      [ngClass]="{'status-not-requested': element.mrdInFileStatus == 0,'status-received': element.mrdInFileStatus > 0 }">
+                      {{ element.mrdInFileStatus == 0 ? 'Not Requested' : 'Received' }}
+                    </span>
+                  </ng-template>
+                  <airmid-table [gridConfig]="gridConfig" #DischargeGrid :ShowFilter="false" :ShowButtons="false"
+                    (onSelectRow)="getSelectedRow($event)">
+
+                  </airmid-table>
+                </div>
+
+                <!-- </div> -->
+              </form>
+            </mat-card>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <div class="footer-navigation-container">
-      <div class="modal-footer-buttons">
-        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+    <!-- Footer -->
+    <div class="modal-footer">
+      <div class="footer-navigation-container">
+
+        <div class="modal-footer-buttons">
+          <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+          <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+        </div>
       </div>
     </div>
   </div>

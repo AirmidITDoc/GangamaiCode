@@ -1,81 +1,887 @@
-.hover-row {
-  transition: background-color 0.3s ease;
+// ── Expansion panel body ──
+::ng-deep .mat-expansion-panel-body {
+  padding: 8px 12px 8px !important;
 }
 
-.hover-row:hover {
-  background-color: #ebe7e7;
-  cursor: pointer;
+.mat-expansion-panel-body {
+  padding: 0 12px 8px;
 }
-.icon-alert {
-  color: red;
+
+// ── Modal structure ──
+.labpatientMain {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
-.icon-normal {
-  color: gray;
+
+.modal-body {
+  padding: 4px 8px !important;
 }
-.info-badge-top {
-  .dashboard-card {
-    min-width: 140px;
-    border-radius: 12px;
-    padding: 4px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    color: black; //#fff;
-    position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    height: 100%;
-    .card-label {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-    .card-value {
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 2px;
-    }
-    .card-icon {
-      position: absolute;
-      right: 12px;
-      bottom: 10px;
-      font-size: 28px;
-      opacity: 0.7;
-    }
-    // &.registrations {
-    //   background: #e1f0d1;
-    // }
-    &.admissions {
-      background: #d9edf4;
-    }
-    &.admissions-split {
-      background: #f2d28a;
-    }
-    &.bills {
-      background: #c9c79c;
-    }
-    &.discharge {
-      background: #a5d1c7;
-    }
-    &.opipconvert {
-      background: #f7f1a3;
-    }
-    // &.waiting {
-    //   background: #e9b8d8;
-    // }
-    & .card-value div {
-      font-size: 13px;
+
+// Top form row (Unit, PatientType, etc.)
+.top-form-row {
+  flex-shrink: 0;
+  padding: 2px 0 0;
+
+  > form {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mat-mdc-form-field,
+  .mat-form-field {
+    margin-bottom: 0 !important;
+  }
+
+  .mat-form-field-wrapper,
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
     }
   }
 
+  [class*="subscript-wrapper"],
+  [class*="bottom-align"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 
-.optoip-action {
+.main-content {
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.modal-footer {
+  padding-bottom: 0 !important;
+}
+
+.labpatientHeader {
+  flex-shrink: 0;
+  background: #f5f5f5;
+
+  .modal-header-content {
+    padding: 4px 12px !important;
+    max-height: 50px !important;
+  }
+}
+
+.labpatientMiddle {
+  flex: 1;
+  overflow: hidden !important;
+  padding: 4px 8px;
+  background: #fff;
+  min-height: 0;
+
+  .modal-body-container {
+    height: 100%;
+  }
+
+  ::ng-deep .mat-drawer-content {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+} 
+
+// ── Left panel: Personal details ──
+.left-panel {
+  width: 40%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+}
+
+// ── Right side billing section ──
+.detail-container {
+  overflow: hidden;
+  height: 100%;
+}
+
+// 3-zone flex layout for billing section
+.billing-flex-layout {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
-.optoip-action span {
-  font-size: 14px;     /* adjust to match icon */
-  margin-left: 4px;    /* space between icon & O */
-  font-weight: bold;   /* make it visible */
+// Zone 1: Sticky top - Service name input
+.billing-top-zone {
+  flex-shrink: 0;
+  padding: 0 !important;
+  margin: 5px 0 0 0 !important;
+  background: #fff;
+  z-index: 3;
+
+  > form,
+  > div {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  airmid-autocomplete {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  // Target form field itself and all internal wrappers
+  .mat-mdc-form-field,
+  .mat-form-field {
+    margin-bottom: 0 !important;
+  }
+
+  .mat-form-field-wrapper,
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  // Kill subscript / bottom-align completely
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+
+  // Also catch any [class*="subscript"], [class*="bottom-align"]
+  [class*="subscript-wrapper"],
+  [class*="bottom-align"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+// Zone 2: Flexible middle - Table area
+.billing-middle-zone {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0; // important for flex child scrolling
+
+  .airmid-table-container {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  // Remove any top spacing from tab group
+  .mat-mdc-tab-group,
+  .mat-tab-group {
+    margin-top: 0 !important;
+  }
+
+  .mat-mdc-tab-header,
+  .mat-tab-header {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+// Zone 3: Sticky bottom - Totals row
+.billing-bottom-zone {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 6px 8px 10px;
+  z-index: 3;
+}
+
+.labpatientfooter {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 6px 10px;
+  text-align: right;
+  position: sticky;
+  bottom: 0;
+}
+
+// Billing summary row
+.billing-summary-row {
+  background-color: #fff;
+}
+
+.labpatientbtn {
+  margin-left: 8px;
+}
+
+// ── Overlay / popup ──
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.popup {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.close-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 16px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.close-btn:hover {
+  background: #e60000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+#popupOverlay:target {
+  display: flex;
+}
+
+.ellipsis {
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+// ── Global form field spacing resets ──
+::ng-deep .mat-form-field-wrapper,
+::ng-deep .mat-mdc-form-field-wrapper {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper,
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 0 !important;
+  min-height: unset !important;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align,
+::ng-deep .mat-form-field-bottom-align {
+  height: 0 !important;
+  min-height: 0 !important;
+
+  &::before {
+    height: 0 !important;
+    display: none !important;
+  }
+}
+
+// ── Expansion panel header compact ──
+::ng-deep .mat-expansion-panel-header {
+  padding: 0 12px !important;
+  min-height: 40px !important;
+  height: 40px !important;
+}
+
+::ng-deep .mat-expansion-panel-header.mat-expanded {
+  min-height: 40px !important;
+  height: 40px !important;
+}
+
+// ── Personal panel: hide subscript wrappers ──
+.personal-panel {
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+}
+
+// ══════════════════════════════════════════
+// Dense form field wrapper
+// ══════════════════════════════════════════
+// Now uses the shared global class "resize-form-fields".
+// Just add class="resize-form-fields" to the container div in the HTML.
+// If you need component-specific overrides, nest them here:
+// .lab-patient-reg-wrapper { /* custom overrides */ }
+
+// ══════════════════════════════════════════
+// MODERN LAB TABLE DESIGN - LIGHT THEME
+// ══════════════════════════════════════════
+
+// Modern Tabs Styling
+::ng-deep .lab-modern-tabs {
+  .mat-mdc-tab-header,
+  .mat-tab-header {
+    border-bottom: 2px solid #c5cae9;
+    background: #fafafa;
+  }
+
+  .mat-mdc-tab,
+  .mat-tab-label {
+    min-width: 140px !important;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    color: #546e7a;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+
+    &.mat-mdc-tab-active,
+    &.mat-tab-label-active {
+      opacity: 1;
+      font-weight: 600;
+      color: #3f51b5;
+    }
+  }
+
+  .mat-mdc-tab-body-wrapper,
+  .mat-tab-body-wrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .mat-mdc-tab-body,
+  .mat-tab-body {
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-tab-body-content,
+  .mat-tab-body-content {
+    height: 100%;
+    overflow: auto !important;
+  }
+}
+
+// Modern Table Styling
+.lab-modern-table {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(63, 81, 181, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #c5cae9;
+
+  // Header Row Styling
+  .lab-table-header {
+    background: #3f51b5 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    border-bottom: 2px solid #303f9f;
+
+    .mat-header-cell,
+    .mat-mdc-header-cell {
+      color: #ffffff !important;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 8px 10px !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+
+      &:last-child {
+        border-right: none;
+      }
+
+      .header-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+      }
+
+      .mat-sort-header-arrow {
+        color: #ffffff !important;
+      }
+    }
+  }
+
+  // Data Row Styling
+  .lab-table-row {
+    height: 48px !important;
+    min-height: 48px !important;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #e8eaf6;
+
+    &:hover {
+      background-color: #e8eaf6 !important;
+      box-shadow: 0 2px 6px rgba(63, 81, 181, 0.12);
+      transform: translateY(-1px);
+    }
+
+    &:nth-child(even) {
+      background-color: #f5f5f7;
+    }
+
+    &:nth-child(odd) {
+      background-color: #ffffff;
+    }
+
+    .mat-cell,
+    .mat-mdc-cell {
+      padding: 7px 10px !important;
+      font-size: 13px;
+      color: #424242;
+      border-right: 1px solid #e8eaf6;
+      vertical-align: middle;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  // Status Column
+  .lab-status-col {
+    text-align: center;
+  }
+
+  .lab-status-cell {
+    .status-icons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background: #ffffff;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 2px solid;
+
+      &:hover {
+        transform: scale(1.12);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      img {
+        object-fit: contain;
+      }
+    }
+
+    .radiology-badge {
+      background: #e8eaf6;
+      border-color: #7986cb;
+      padding: 4px;
+
+      &:hover {
+        background: #c5cae9;
+        border-color: #5c6bc0;
+      }
+    }
+
+    .pathology-badge {
+      background: #fce4ec;
+      border-color: #f06292;
+      padding: 4px;
+
+      &:hover {
+        background: #f8bbd0;
+        border-color: #ec407a;
+      }
+    }
+
+    .package-badge {
+      background: #e0f7fa;
+      border-color: #4dd0e1;
+      padding: 4px;
+
+      &:hover {
+        background: #b2ebf2;
+        border-color: #26c6da;
+      }
+    }
+  }
+
+  // Service Name Styling
+  .service-name-text,
+  .package-name-text {
+    font-weight: 500;
+    color: #303f9f;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  // Price & Net Amount
+  .price-text,
+  .net-amount-text {
+    font-weight: 600;
+    color: #2e7d32;
+    font-size: 13px;
+    background: #e8f5e9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  // Compact Form Fields in Table
+  .compact-input,
+  .compact-select {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }
+    width: 100%;
+
+    ::ng-deep .mat-mdc-form-field-wrapper,
+    ::ng-deep .mat-form-field-wrapper {
+      padding-bottom: 0 !important;
+      margin: 0 !important;
+      height: 32px !important;
+    }
+
+    ::ng-deep .mat-mdc-text-field-wrapper,
+    ::ng-deep .mat-form-field-flex {
+      height: 32px !important;
+      min-height: 32px !important;
+      max-height: 32px !important;
+      padding: 0 8px !important;
+      background-color: #ffffff;
+      border-radius: 4px;
+      border: 1.5px solid #c5cae9;
+      transition: all 0.2s ease;
+      align-items: center;
+
+      &:hover {
+        border-color: #7986cb;
+        background-color: #fafbff;
+      }
+
+      &:focus-within {
+        border-color: #3f51b5;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.08);
+      }
+    }
+
+    ::ng-deep .mat-mdc-form-field-infix,
+    ::ng-deep .mat-form-field-infix {
+      padding: 0 !important;
+      height: 28px !important;
+      min-height: 28px !important;
+      max-height: 28px !important;
+      border: none !important;
+      display: flex;
+      align-items: center;
+    }
+
+    ::ng-deep input {
+      font-size: 12px !important;
+      color: #424242 !important;
+      padding: 0 !important;
+      height: 28px !important;
+      line-height: 28px !important;
+      font-weight: 500;
+    }
+
+    ::ng-deep .mat-mdc-select,
+    ::ng-deep .mat-select {
+      font-size: 12px !important;
+      color: #424242 !important;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+
+    ::ng-deep .mat-mdc-select-trigger,
+    ::ng-deep .mat-select-trigger {
+      display: flex;
+      align-items: center;
+      height: 28px !important;
+    }
+
+    ::ng-deep .mat-mdc-select-value,
+    ::ng-deep .mat-select-value {
+      padding: 0 !important;
+      line-height: 28px !important;
+      height: 28px !important;
+      display: flex;
+      align-items: center;
+    }
+
+    ::ng-deep .mat-mdc-select-placeholder {
+      line-height: 28px !important;
+    }
+
+    ::ng-deep .mat-mdc-select-arrow-wrapper,
+    ::ng-deep .mat-select-arrow-wrapper {
+      transform: translateY(0) !important;
+      display: flex;
+      align-items: center;
+      height: 28px !important;
+    }
+
+    ::ng-deep .mat-mdc-select-arrow,
+    ::ng-deep .mat-select-arrow {
+      color: #3f51b5 !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper,
+    ::ng-deep .mat-form-field-subscript-wrapper {
+      display: none !important;
+      height: 0 !important;
+      min-height: 0 !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field-bottom-align,
+    ::ng-deep .mat-form-field-bottom-align {
+      display: none !important;
+      height: 0 !important;
+      min-height: 0 !important;
+    }
+
+    ::ng-deep .mdc-notched-outline,
+    ::ng-deep .mat-form-field-outline {
+      display: none !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field-focus-overlay {
+      display: none !important;
+    }
+
+    ::ng-deep .mdc-line-ripple {
+      display: none !important;
+    }
+  }
+
+  // Compact Toggle
+  .compact-toggle {
+    ::ng-deep .mdc-switch,
+    ::ng-deep .mat-slide-toggle-bar {
+      height: 20px !important;
+      width: 36px !important;
+      background-color: #cfd8dc !important;
+    }
+
+    ::ng-deep .mdc-switch__thumb,
+    ::ng-deep .mat-slide-toggle-thumb {
+      height: 16px !important;
+      width: 16px !important;
+      background-color: #ffffff !important;
+    }
+
+    ::ng-deep .mat-mdc-slide-toggle.mat-checked,
+    ::ng-deep .mat-slide-toggle.mat-checked {
+      .mdc-switch,
+      .mat-slide-toggle-bar {
+        background-color: #66bb6a !important;
+      }
+    }
+  }
+
+  // Action Column
+  .action-col {
+    text-align: center !important;
+  }
+
+  .action-cell {
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .action-btn {
+      width: 30px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+      transition: all 0.2s ease;
+      border-radius: 5px;
+
+      ::ng-deep .mat-mdc-button-touch-target,
+      ::ng-deep .mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      mat-icon {
+        font-size: 18px !important;
+        width: 18px !important;
+        height: 18px !important;
+        line-height: 18px !important;
+      }
+
+      &:hover {
+        transform: scale(1.12);
+      }
+    }
+
+    .consent-btn {
+      &:hover {
+        background-color: #c5cae9 !important;
+      }
+    }
+
+    .info-btn {
+      &:hover {
+        background-color: #fff9c4 !important;
+      }
+    }
+
+    .delete-btn {
+      padding-right: 25px !important;
+      &:hover {
+        background-color: #ffcdd2 !important;
+      }
+    }
+  }
+}
+
+// Scrollbar Styling for Table
+.billing-middle-zone {
+  ::ng-deep .mat-mdc-tab-body-content,
+  ::ng-deep .mat-tab-body-content {
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #e8eaf6;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #7986cb;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #5c6bc0;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1366px) {
+  .lab-modern-table {
+    .mat-cell,
+    .mat-mdc-cell,
+    .mat-header-cell,
+    .mat-mdc-header-cell {
+      font-size: 12px !important;
+      padding: 4px 8px !important;
+    }
+
+    .lab-table-row {
+      height: 36px !important;
+      min-height: 36px !important;
+    }
+  }
+}
+.status-not-requested {
+  background-color: #ffebee;   /* light red */
+  color: #c62828;              /* dark red text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status-received {
+  background-color: #e8f5e9;   /* light green */
+  color: #2e7d32;              /* dark green text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
 }

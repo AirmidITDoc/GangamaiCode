@@ -13,6 +13,7 @@ import { PurchaseRequisitionVerificationService } from './purchase-requisition-v
 import { FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NewPurchaserequisitionComponent } from './new-purchaserequisition/new-purchaserequisition.component';
+import { PurchaseRequisitionlistComponent } from '../purchase-order/new-purchaseorder/purchase-requisitionlist/purchase-requisitionlist.component';
 
 
 @Component({
@@ -188,13 +189,24 @@ export class PurchaseRequisitionVerificationComponent {
     this.grid1.bindGridData();
   }
 
+  getPurchaseRequisition() { 
+      const dialogRef = this._matDialog.open(PurchaseRequisitionlistComponent,
+        {
+          maxWidth: "100%",
+          height: '90%',
+          width: '95%' 
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result); 
+      }); 
+  }
 
 
   onSave(row: any = null) {
     let that = this;
     const dialogRef = this._matDialog.open(NewPurchaserequisitionComponent,
       {
-        maxWidth: "87vw",
+        maxWidth: "90vw",
         height: '85%',
         width: '96%',
         data: row
