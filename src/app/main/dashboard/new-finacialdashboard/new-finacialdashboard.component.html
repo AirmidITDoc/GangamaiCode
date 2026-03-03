@@ -80,12 +80,12 @@
 
                 <!-- Charges -->
                 <mat-card class="panel mat-elevation-z2">
-                      <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
+                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="serviceTrend()">
                         <mat-icon>trending_up</mat-icon>
                     </button>
                     <div class="panel-header">Charges</div>
-                  
-                   
+
+
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
                             <table mat-table [dataSource]="charges" class="compact-table">
@@ -168,7 +168,7 @@
                         <div class="totals">
                             <div class="totals-row">
                                 <div class="totals-label">Total Amount</div>
-                                <div class="totals-label">Total Amount</div>
+                                <!-- <div class="totals-label">Total Amount</div> -->
                                 <div class="totals-num">{{ receiptsTotalIp}}</div>
                                 <div class="totals-num">{{ receiptsTotalOp}}</div>
                             </div>
@@ -179,7 +179,7 @@
                             </div>
                             <div class="totals-row totals-strong">
                                 <div class="totals-label">Net Amount</div>
-                                <div class="totals-label">Net Amount</div>
+                                <!-- <div class="totals-label">Net Amount</div> -->
                                 <div class="totals-num">{{ receiptsNetIp}}</div>
                                 <div class="totals-num">{{ receiptsNetOp}}</div>
                             </div>
@@ -202,7 +202,7 @@
 
                                 <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
                                     Type of Visit</div>
-                                <div style="height: 250px;overflow-y: auto;">
+                                <div style="height: 150px;overflow-y: auto;">
                                     <table mat-table [dataSource]="opVisits" class="compact-table">
                                         <ng-container matColumnDef="typeOfVisit">
                                             <th mat-header-cell *matHeaderCellDef style="font-weight: bold;"> Type of
@@ -224,9 +224,7 @@
                                         <div class="footer-value">{{ opTotalPatients }}</div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div>
                                 <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
                                     Type of Patient</div>
                                 <table mat-table [dataSource]="patientTypes" class="compact-table">
@@ -248,6 +246,10 @@
                                     <tr mat-header-row *matHeaderRowDef="patientTypeColumns"></tr>
                                     <tr mat-row *matRowDef="let row; columns: patientTypeColumns;"></tr>
                                 </table>
+                            </div>
+
+                            <div>
+
 
                                 <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
                                     Referral List</div>
@@ -322,7 +324,7 @@
 
                             <div style="font-weight: bold;background-color:rgb(91, 123, 249);align-items: center;">
                                 Collection</div>
-                           
+
                             <div class="collection">
                                 <div class="kv" *ngFor="let c of collection">
                                     <div class="kv-label">{{ c.mode }}</div>
@@ -532,11 +534,11 @@
                 </mat-card>
                 <!-- Left: Pharmacy Summary -->
                 <mat-card class="panel mat-elevation-z2">
-                      <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="PharCollectionTrend()">
+                    <button mat-icon-button color="warn" matTooltip="OPIP Trend" (click)="PharCollectionTrend()">
                         <mat-icon>trending_up</mat-icon>
                     </button>
                     <div class="panel-header">Pharmacy</div>
-                  
+
                     <div class="panel-body">
                         <div style="height: 350px;overflow-x: auto;overflow-y: auto;">
 

@@ -250,10 +250,12 @@ OpCollColumns: string[] = ['groupName', 'totalAmount'];
   }
 
 
-  // billingTotalCharges=0
-  get billingTotalCharges(): number {
-    return this.receiptSummaryTotal;
-  }
+  billingTotalCharges=0
+  // get billingTotalCharges(): number {
+  //   return this.receiptSummaryTotal;
+  // }
+
+  
 
   get receiptSummaryTotal(): number {
     return this.receiptSummary.reduce((sum, r) => sum + (r.amount || 0), 0);
@@ -331,6 +333,9 @@ ModeAmt=0
 
       this.charges.data = this.Financedata.serviceCharges
       console.log(this.charges.data)
+
+
+      this.billingTotalCharges=this.chargesNetIp + this.chargesNetOp
 
       this.receipts.data = this.Financedata.receiptPayment;
       console.log(this.receipts.data)
