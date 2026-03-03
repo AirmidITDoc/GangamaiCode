@@ -34,6 +34,12 @@ export class StoreUnitComponent implements OnInit {
             this.Stores = ctx.Stores;
             this.Units = ctx.Units;
         }
+        this.itemForm.patchValue({
+            storeId:this.storeId || 0,
+            storeName:this.Stores || '',
+            unitId: this.unitId || 0,
+            unitName: this.Units || ''
+        })
     }
     onChange(value, type) {
         if (type == 'Store') {
