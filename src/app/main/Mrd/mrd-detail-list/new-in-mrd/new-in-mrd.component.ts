@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -46,7 +47,7 @@ rmdrecordId=0
     public _MrdService: MrdDetailsService,
     public formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any, private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,   public toastr: ToastrService,
     public dialogRef: MatDialogRef<NewINMrdComponent>,
@@ -64,7 +65,9 @@ rmdrecordId=0
         // this.NewInMrdForm.patchValue(this.data)
         this.registerObj=this.data
        }
-  
+    var now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    this.date = now.toISOString().slice(0, 16);
 
      }
 
@@ -72,7 +75,7 @@ rmdrecordId=0
   createINMrdForm() {
   return this.formBuilder.group({
       outFileId: 0,
-      opipid: [this.opipid, Validators.required],
+      opipid: [this.opipid, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       // outNo: ['', Validators.required],
       // givenUserId:[''],
       // personName:[''],
@@ -85,7 +88,7 @@ rmdrecordId=0
       inDate: [(new Date()).toISOString()],
       inTime: [(new Date()).toISOString()],
       returnUserId: this.accountService.currentUserValue.userId,
-      returnPersonName: [''],
+      returnPersonName: ['', [Validators.required]],
       inReason: [false, Validators.required],
 
     
@@ -95,9 +98,9 @@ rmdrecordId=0
   onSubmit() {
     debugger
 
-    // this.NewInMrdForm.get('opipid').setValue(this.opipid)
+    this.NewInMrdForm.get('opipid').setValue(this.opipid)
     this.NewInMrdForm.get('inDate').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, 'yyyy-MM-dd'))
-    this.NewInMrdForm.get('inTime').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, "MM-dd-yyyy hh:mm"))
+    this.NewInMrdForm.get('inTime').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, "yyyy-MM-dd hh:mm"))
 
     if (!this.NewInMrdForm.invalid) {
       console.log(this.NewInMrdForm.value)

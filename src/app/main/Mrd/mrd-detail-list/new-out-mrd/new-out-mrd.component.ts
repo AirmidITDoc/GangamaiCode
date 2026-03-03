@@ -19,6 +19,7 @@ import { MrdDetailsService } from '../mrd-details.service';
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class NewOutMrdComponent {
     public _MrdService: MrdDetailsService,
     public formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any, private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored, public toastr: ToastrService,
     public dialogRef: MatDialogRef<NewOutMrdComponent>,
@@ -62,14 +63,14 @@ export class NewOutMrdComponent {
   }
 
 
-  opipid=0
+  opipid = 0
   ngOnInit(): void {
     this.NewOutMrdForm = this.createOutMrdForm();
     if (this.data) {
       debugger
       this.rmdrecordId = this.data.rmdrecordId
-       this.opipid=this.data.opipid
-      this.registerObj=this.data
+      this.opipid = this.data.opipid
+      this.registerObj = this.data
     }
 
   }
@@ -79,16 +80,16 @@ export class NewOutMrdComponent {
 
     return this.formBuilder.group({
       outFileId: 0,
-      opipid: ['', Validators.required],
+      opipid: [this.opipid, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       // outNo: [''],
-        givenUserId:this.accountService.currentUserValue.userId,
-     
-       personName: [''],
+      givenUserId: this.accountService.currentUserValue.userId,
+
+      personName:  ['', [Validators.required]],
 
       outDate: [(new Date()).toISOString()],
       outTime: ['', [Validators.required]],
-      outReason: [''],
-       CreatedBy:this.accountService.currentUserValue.userId,
+      outReason:  ['', [Validators.required]],
+      CreatedBy: this.accountService.currentUserValue.userId,
       // inNo: [''],
       // inDate: [(new Date()).toISOString()],
       // inTime: ['', [Validators.required]],
@@ -102,7 +103,7 @@ export class NewOutMrdComponent {
   onSubmit() {
     debugger
 
-     this.NewOutMrdForm.get('outDate').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, 'yyyy-MM-dd'))
+    this.NewOutMrdForm.get('outDate').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, 'yyyy-MM-dd'))
     this.NewOutMrdForm.get('outTime').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, "yyyy-MM-dd hh:mm"))
 
 
@@ -188,7 +189,7 @@ export class NewOutMrdComponent {
   //     let splitDate = selectedDate.toLocaleString("en-US").split(',');
   //     let splitTime = this.NewOutMrdForm.get('outTime').value.toLocaleString("en-US").split(',');
   //     this.isTimeChanged = true;
-    
+
   //     this.eventEmitForParent(splitDate[0], splitTime[1]);
   //   }
   // }

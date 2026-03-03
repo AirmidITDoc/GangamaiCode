@@ -4,7 +4,7 @@ import { LabPatientRegService } from '../lab-patient-reg.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { LabPatientList } from '../lab-patient-reg.component';
@@ -31,6 +31,7 @@ export class EstimateForPatientComponent {
     registerObj = new LabPatientList({});
     ApiURL: any = '';
     myFilterbillform: FormGroup;
+      screenFromString = 'ExternalLab-form';
     // All dropdown modes 
     // autocompleteModepatienttype: string = "PatientType";
     autocompleteModegender: string = "Gender";
@@ -77,6 +78,7 @@ export class EstimateForPatientComponent {
         public _matDialog: MatDialog, private commonService: PrintserviceService,
         public datePipe: DatePipe,
         public toastrService: ToastrService,
+         public dialogRef: MatDialogRef<EstimateForPatientComponent>,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private accountService: AuthenticationService,
         public _formbuilder: UntypedFormBuilder, private formBuilder: FormBuilder,
@@ -441,10 +443,15 @@ debugger
 
         // }
     }
+dateTimeObj:any
+      getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
 
-    onClose() {
 
-    }
+   onClose() {
+        this.dialogRef.close();
+  }
     UnitId: any = this.accountService.currentUserValue.user.unitId;
     // 
     filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {

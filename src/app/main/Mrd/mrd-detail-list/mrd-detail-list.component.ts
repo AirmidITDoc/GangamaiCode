@@ -64,23 +64,28 @@ export class MrdDetailListComponent {
 
     allcolumns = [
         { heading: "IsInOut", key: "isInOut", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-        { heading: "MRD No", key: "mrdno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      
-        { heading: "Recieved Time", key: "recievedTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
-        { heading: "OpIp Id", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Person Name", key: "personName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "MRD No", key: "mrdno", sort: true, align: 'left', emptySign: 'NA', width: 80 },
 
-        { heading: "Out FileId", key: "outFileId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Out Time", key: "outTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Out Reason", key: "outReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "In No", key: "inNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Return PersonName", key: "returnPersonName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "In Reason", key: "inReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Recieved Time", key: "recievedTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
+        // { heading: "OpIp Id", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Person Name", key: "personName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+        { heading: "InFile Info", key: "inFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+
+        { heading: "OutFile Info", key: "outFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+
+
+
+        // { heading: "Out FileId", key: "outFileId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Out Time", key: "outTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "Out Reason", key: "outReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        // { heading: "In No", key: "inNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Return PersonName", key: "returnPersonName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "In Reason", key: "inReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Location", key: "location", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-       
+        { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
         {
-            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
@@ -110,9 +115,9 @@ export class MrdDetailListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewMrdComponent,
             {
-                maxWidth: "65vw",
-                height: '65%',
-                width: '90%',
+                 maxWidth: "95vw",
+                height: '90%',
+                width: '95%',
                 data: row
 
             });
@@ -127,9 +132,9 @@ export class MrdDetailListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewMrdComponent,
             {
-                maxWidth: "65vw",
-                height: '65%',
-                width: '90%',
+                maxWidth: "95vw",
+                height: '85%',
+                width: '100%',
                 data: row
 
             });
@@ -145,8 +150,8 @@ export class MrdDetailListComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewINMrdComponent,
             {
-                   maxWidth: "75vw",
-                height: '78%',
+                maxWidth: "75vw",
+                height: '65%',
                 width: '90%',
                 data: row
 
@@ -164,7 +169,7 @@ export class MrdDetailListComponent {
         const dialogRef = this._matDialog.open(NewOutMrdComponent,
             {
                 maxWidth: "75vw",
-                height: '78%',
+                height: '65%',
                 width: '90%',
                 data: row
 

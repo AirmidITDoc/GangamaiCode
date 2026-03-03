@@ -28,39 +28,41 @@
                             <from [formGroup]="PrequiSaveFrom">
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                     <!-- [value]="data?.FromStoreId" -->
-                                    <airmid-dropdown label="From Store Name" formControlName="fromStoreId" fxFlex="30%"
+                                    <!-- <airmid-dropdown label="From Store Name" formControlName="fromStoreId" fxFlex="30%"
                                         [formGroup]="PrequiSaveFrom" [validations]="getValidationMessages().FromStoreId"
                                          [mode]="autocompletestore" >
-                                        <!--  (selectionChange)="selectChangeStore($event)" -->
+                                         (selectionChange)="selectChangeStore($event)"
+                                    </airmid-dropdown> -->
+                                    <!-- (selectionChange)="onChange($event,'Store')" -->
+                                    <airmid-dropdown label="Store" formControlName="fromStoreId"
+                                        [formGroup]="PrequiSaveFrom" [validations]="getValidationMessages().storeId"
+                                        [value]="storeId" [options]="Stores" TextField="storeName" ValueField="storeId"
+                                        fxFlex="30%">
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="To Store Name" formControlName="toStoreId" fxFlex="30%"
                                         [formGroup]="PrequiSaveFrom" [validations]="getValidationMessages().ToStoreId"
-                                        [value]="vToStoreId" [mode]="autocompletestore"   (selectionChange)="selectChangeStore($event)">
+                                        [value]="vToStoreId" [mode]="autocompletestore"
+                                        (selectionChange)="selectChangeStore($event)">
                                     </airmid-dropdown>
-                                    <!-- [(ngModel)]="status" -->
-                                    <!-- <mat-slide-toggle name="IsUrgent" (change)="setpriority($event)"
-                                        formControlName="priority" style="font-weight: bolder;padding: 10px;">
-                                        Urgent
-                                    </mat-slide-toggle> -->
+
                                 </div>
                             </from>
 
-                            
+
                             <form [formGroup]="PrequiItemSaveFrom">
-                                <div  fxLayout="row" fxLayoutGap="8px">
-                                    <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="PrequiItemSaveFrom"
-                                        formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
+                                <div fxLayout="row" fxLayoutGap="8px">
+                                    <airmid-autocomplete label="Item Name (enter 2 char)"
+                                        [formGroup]="PrequiItemSaveFrom" formControlName="ItemName"
+                                        placeholderText="Item Name (enter 2 char)"
                                         [ApiUrl]="'ItemMaster/search-GetItemListForIndent?StoreId=' + vstoreId + '&ItemName='"
-                                        
-                                        fxFlex="38%"
-                                        (selectionChange)="getSelectedItem($event)" TextField="itemName"
+                                        fxFlex="38%" (selectionChange)="getSelectedItem($event)" TextField="itemName"
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
                                     <airmid-textbox fxFlex="6%" label="Qty" formControlName="Qty"
                                         (keypress)="keyPressAlphanumeric($event)" [formGroup]="PrequiItemSaveFrom"
                                         [validations]="getValidationMessages().Qty" [maxLength]="10">
-                                    </airmid-textbox> 
+                                    </airmid-textbox>
 
                                     <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
                                         <button class="btn btn-primary" (click)="onAdd()">
@@ -70,14 +72,14 @@
 
                                     <!-- <div class="vertical" fxLayoutGap="8px"> -->
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="48%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="48%">
                                             <mat-label>Search by Item Kit</mat-label>
                                             <mat-select ngModel disabled>
                                                 <mat-option>Search by Item Kit</mat-option>
                                             </mat-select>
                                         </mat-form-field> -->
 
-                                                    <!-- <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="PrequiItemSaveFrom"
+                                    <!-- <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="PrequiItemSaveFrom"
                                                         formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
                                                         fxFlex="38%" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
                                                         (selectionChange)="getSelectedItem($event)" TextField="formattedText"
@@ -85,21 +87,21 @@
                                                         (onClearSelection)="resetFormItem()"></airmid-autocomplete> -->
 
 
-                                        <!-- <mat-form-field appearance="outline" fxFlex="8%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="8%">
                                             <mat-label>Qty</mat-label>
                                             <input name="Qty" formControlName="Qty" matInput [(ngModel)]="Qty">
                                         </mat-form-field>&nbsp;&nbsp; -->
 
-                                                    <!-- <airmid-textbox fxFlex="6%" label="Qty" formControlName="Qty"
+                                    <!-- <airmid-textbox fxFlex="6%" label="Qty" formControlName="Qty"
                                                         (keypress)="keyPressAlphanumeric($event)" [formGroup]="PrequiItemSaveFrom"
                                                         [validations]="getValidationMessages().Qty" [maxLength]="10">
                                                     </airmid-textbox> -->
 
-                                        <!-- <div>
+                                    <!-- <div>
                                             <button mat-raised-button (click)="onAdd()">Add</button>
                                         </div> -->
 
-                                                    <!-- <div matTooltip="Select All Value to enable this button!!"
+                                    <!-- <div matTooltip="Select All Value to enable this button!!"
                                                         style="padding: 2px;">
                                                         <button class="btn btn-primary" (click)="onAdd()">
                                                             <mat-icon>add</mat-icon>
@@ -122,7 +124,8 @@
                                         class="airmid-table ">
 
                                         <ng-container matColumnDef="ItemID">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-200">
                                                 Item Code</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 {{contact.ItemID}}
@@ -167,7 +170,8 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                                                 <mat-form-field appearance="fill">
                                                     <input matInput type="number" OnlyNumber [(ngModel)]="contact.Qty"
-                                                        (input)="getCellCalculation(contact,contact.VerifyQuantity,2)" [min]="0"/>
+                                                        (input)="getCellCalculation(contact,contact.VerifyQuantity,2)"
+                                                        [min]="0" />
                                                 </mat-form-field>
 
                                             </mat-cell>

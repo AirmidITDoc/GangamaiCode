@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { GRNItemResponseType } from '../../good-receiptnote/new-grn/types';
 import { fuseAnimations } from '@fuse/animations';
+import { StoreUnitContextService } from 'app/main/shared/services/storeunit-context.service';
 
 @Component({
   selector: 'app-new-purchaserequisition',
@@ -30,6 +31,8 @@ export class NewPurchaserequisitionComponent {
     'VerifyQuantity',
     'Action'
   ];
+
+    Stores = [];
 
   vsaveflag: boolean = true;
     showAutocomplete = false;
@@ -61,7 +64,7 @@ export class NewPurchaserequisitionComponent {
 
   constructor(
     public _PurchaseRequisitionVerificationService: PurchaseRequisitionVerificationService,
-    public _matDialog: MatDialog,
+    public _matDialog: MatDialog,private contextSvc: StoreUnitContextService,
     public datePipe: DatePipe,
     private _formBuilder: UntypedFormBuilder,
     private commonService: PrintserviceService,
@@ -106,7 +109,13 @@ export class NewPurchaserequisitionComponent {
       }
       this.getupdateList(this.registerObj.purchaseRequisitionId);
     }
-
+ const ctx = this.contextSvc.getContext();
+        if (ctx) {
+            this.storeId = ctx.storeId;
+            // this.unitId = ctx.unitId;
+            this.Stores = ctx.Stores;
+            // this.Units = ctx.Units;
+        }
   }
   get PrequidetailArray(): FormArray {
     return this.PrequiSaveFrom.get('tPurchaseRequisitionDetails') as FormArray;
@@ -365,25 +374,7 @@ export class NewPurchaserequisitionComponent {
       contact.VatAmount = 0;
       contact.LandedRateandedTotal = 0;
     }
-    // else {
-    //   if (contact.Qty > 0) {
-    //     contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
-    //     contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
-    //     this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
-    //     contact.IssueBalQty = (this.Indbalqty)
-
-    //     if (contact.IssueBalQty == 0)
-    //       contact.IsClosed = true
-    //     else
-    //       contact.IsClosed = false
-    //   }
-    //   else {
-    //     contact.Qty = 0;
-    //     contact.Qty = '';
-    //     contact.VatAmount = 0;
-    //     contact.LandedRateandedTotal = 0;
-    //   }
-    // }
+   
 
   }
 
@@ -408,6 +399,11 @@ export class NewPurchaserequisitionComponent {
 
       ],
       Qtykit: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Qty is required" },
+
+      ],
+      storeId: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Qty is required" },
 

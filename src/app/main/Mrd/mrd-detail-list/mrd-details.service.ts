@@ -25,14 +25,34 @@ export class MrdDetailsService {
   }
 
 
-
-    filterForm(): FormGroup {
+  filterForm(): FormGroup {
       return this._formBuilder.group({
   
         IsInout:0,
         fromDate: [(new Date()).toISOString()],
         enddate: [(new Date()).toISOString()]
   
+      });
+    }
+  
+
+
+    filterdischargeForm(): FormGroup {
+      return this._formBuilder.group({
+    RegNo: '',
+      IPDNo: '',
+      FirstName: ['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      MiddleName: ['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      LastName: ['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      MobileNo: ['', [Validators.pattern("^[0-9]*$"), Validators.minLength(10), Validators.maxLength(10),]],
+      searchDoctorId: '0',
+      DoctorName: '',
+      IsDischarge: [0],
+      WardId: '0',
+      RoomName: '',
+      fromDate: [new Date()],
+      enddate: [new Date()],
+      DischargeId: [''],
       });
     }
   
