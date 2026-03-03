@@ -9,7 +9,8 @@ import { PurchaseOrderService } from 'app/main/purchase/purchase-order/purchase-
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { WhatsAppEmailService } from '../../services/whats-app-email.service';
-import { FormvalidationserviceService } from '../../services/formvalidationservice.service';
+import { FormvalidationserviceService } from '../../services/formvalidationservice.service'; 
+import { ResultEntryService } from 'app/main/pathology/result-entry/result-entry.service';
 
 @Component({
   selector: 'app-email-send',
@@ -41,7 +42,8 @@ EmailFrom:FormGroup
     public toastr: ToastrService,
     public _whatsppService:WhatsAppEmailService,
     private accountService: AuthenticationService,
-    public _formvalidationService:FormvalidationserviceService
+    public _formvalidationService:FormvalidationserviceService,
+    public _SampleService:ResultEntryService
   ) { }
 
   ngOnInit(): void {
@@ -77,7 +79,15 @@ EmailFrom:FormGroup
         this.vBillNo = this.registerObj?.refundId || 0
       }
       else if(this.data?.emailType == 'PathResultEntry'){
-        this.vBillNo = this.registerObj?.pathReportId || 0
+        this.vBillNo = this.registerObj?.pathReportId || 0 
+        let pathologyDelete = [];  
+        pathologyDelete.push({ pathReportId:  this.vBillNo }); 
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        }; 
+        console.log(submitData); 
+            this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => { 
+        });   
       }
       else if(this.data?.emailType == 'RadiologyReport'){
         this.vBillNo = this.registerObj?.radReportId || 0

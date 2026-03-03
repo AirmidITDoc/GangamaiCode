@@ -22,6 +22,7 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { PrescriptionComponent } from './prescription/prescription.component'; 
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
 import { SubstitutesComponent } from './substitutes/substitutes.component';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
 
 @Component({
     selector: 'app-sales-hospital',
@@ -204,6 +205,7 @@ export class SalesHospitalNewComponent implements OnInit {
         } else {
             this.vCondition = true;
         }
+    this.getAccessDetail();
     }
     ngOnDestroy() {
         this.ItemFormreset();
@@ -222,7 +224,7 @@ export class SalesHospitalNewComponent implements OnInit {
             totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -253,7 +255,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1103,6 +1105,19 @@ if (QtyElement) {
     }
     getFinalDiscperAmt() { 
         const formValues = this.ItemSubform.getRawValue();
+        if (this.UserDicPerLimit > 0) {
+            let Disc = formValues.FinalDiscPer || 0;
+            if (+Disc > +this.UserDicPerLimit) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+                    confirmButtonColor: '#d33'
+                });
+                this.ItemSubform.get("FinalDiscPer").setValue(this.UserDicPerLimit);
+            }
+        }  
+
         let Disc = formValues.FinalDiscPer || 0; 
         let NetAmount = formValues.netAmount;
         let FinalDiscAmt = ''; 
@@ -2673,6 +2688,36 @@ draftextMobilenolist:any=[];
             return false;
         }
     } 
+
+               UserDicPerLimit: any = 0;
+              getAccessDetail() {
+                  // debugger
+                  var SelectQuery = {
+                      "first": 0,
+                      "rows": 999,
+                      "sortField": "AccessValueId",
+                      "sortOrder": 0,
+                      "filters": [
+                          {
+                              "fieldName": "LoginId",
+                              "fieldValue": String(this._loggedService.currentUserValue.userId), //"30091",
+                              "opType": "Equals"
+                          }
+                      ],
+                      "exportType": "JSON",
+                      "columns": []
+                  }
+                  this._salesService.getAccessDetailList(SelectQuery).subscribe(response => {
+                      const getUserAccesDetList = response.data as UserDetail[];
+                      console.log("get Access data:", getUserAccesDetList)
+          
+                      const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+                      console.log(discountData)
+                      if (discountData?.accessValue) {
+                          this.UserDicPerLimit = discountData?.accessInputValue || 0
+                      }
+                  });
+              }
 }
 
 export class IndentList {

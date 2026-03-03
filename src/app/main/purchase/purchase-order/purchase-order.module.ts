@@ -38,6 +38,7 @@ import { EmailComponent } from './email/email.component';
 import { NewPurchaseorderComponent } from './new-purchaseorder/new-purchaseorder.component';
 import { PurchaseOrderComponent } from './purchase-order.component';
 import { PurchaseRequisitionlistComponent } from './new-purchaseorder/purchase-requisitionlist/purchase-requisitionlist.component';
+import { PurchaseRequisitionComponent } from './purchase-requisition/purchase-requisition.component';
 
 
 
@@ -50,11 +51,11 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        PurchaseOrderComponent,
-        
+        PurchaseOrderComponent, 
         EmailComponent,
         NewPurchaseorderComponent,
-        PurchaseRequisitionlistComponent
+        PurchaseRequisitionlistComponent,
+        PurchaseRequisitionComponent
     ],
     imports: [
         CommonModule,

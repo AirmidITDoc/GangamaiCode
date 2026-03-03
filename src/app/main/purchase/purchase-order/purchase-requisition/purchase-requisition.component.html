@@ -1,4 +1,271 @@
-<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
+<div class="modal-page page-layout inner-scroll"   >
+    <div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Purchase Requisition</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="row" class="gap-8 h-100-p">
+                    <div fxFlex="40%" fxFlex.sm="50%" fxFlex.xs="100%" class="table-left">
+                        
+                        <div fxLayout="column" class="gap-8 h-100-p">
+                            <mat-card fxLayout="column" class="gap-8 h-100-p">
+                                <div class="modal-card-container">
+                                    <form [formGroup]="userFormGroup" fxLayout="row" fxLayoutGap="4px">
+                                    
+                                        <airmid-datepicker [formGroup]="userFormGroup" [isRangePicker]="true" formStartControlName="startdate"
+                                            formEndControlName="enddate">
+                                        </airmid-datepicker> 
+
+                                        <airmid-dropdown label="To Store Name" formControlName="ToStoreId" (selectionChange)="toStoreView($event)"
+                                            [formGroup]="userFormGroup" [mode]="autocompletestore">
+                                        </airmid-dropdown> 
+
+                                                                            <!-- <div fxLayout="column" fxLayoutGap="6px" style="padding:0 15px 0 15px;">
+                                                                                <div fxLayout="row" class="gap-4 ">
+                                                                                    <span style="font-weight: bold;color: rgb(4, 44, 84);padding: 5;font-size: large;">Status :</span>
+                                                                                    <mat-slide-toggle name="Status" formControlName="status" [formGroup]="userFormGroup">
+                                                                                        Pending / Close
+                                                                                    </mat-slide-toggle>
+                                                                                </div>
+                                                                            
+                                                                                <div fxLayout="row" class="gap-4 ">
+                                                                                    <span style="font-weight: bold;color: rgb(4, 44, 84);padding: 5;font-size: large;">Verify :</span>
+                                                                                    <mat-slide-toggle name="Verify" formControlName="Verify" [formGroup]="userFormGroup" >
+                                                                                        Verify
+                                                                                    </mat-slide-toggle>
+                                                                                </div>
+                                                                            </div> -->
+                                       
+                                    
+                                        <div style="padding: 10px;">
+                                            <button class="btn btn-primary btn-with-icon btn-xs" >
+                                                <span>Search</span>
+                                            </button>
+                                        </div>
+                                    
+                                    </form>
+                                </div>
+                            
+                                <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                                    <div class="airmid-table-container">
+                                        <mat-table #table matSort [dataSource]="dsPORequisitionHeader" [@animateStagger]="{ value: '50' }"
+                                            class="airmid-table table3" style="overflow: auto;">
+
+                                             <ng-container matColumnDef="isVerify">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                                 
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                    <mat-icon *ngIf="contact.isclosed=='1';" matTooltip="Is Closed" style="color: rgb(41, 129, 12);">close</mat-icon>
+                                                    <mat-icon *ngIf="!contact.isclosed=='1';" matTooltip="Pending" style="color: brown;">Pending</mat-icon> 
+                                                
+                                                    <mat-icon *ngIf="contact.isverify=='1';" matTooltip="Is Verify" style="color: green;">check_circle</mat-icon>
+                                                    <mat-icon *ngIf="!contact.isverify=='1';" matTooltip="Is Verify Pending"
+                                                        style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+                                                </mat-cell>
+                                            </ng-container> 
+
+                                            <ng-container matColumnDef="Date">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                                    Date
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                                    <span> {{contact.purchaseRequisitionDate | date:'yyyy-MM-dd'}}-{{contact.purchaseRequisitionTime | date:'hh:mm a'}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                              <ng-container matColumnDef="purchaseRequisitionNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                                  PO Req.No
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                    <span> {{contact.purchaseRequisitionNo}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="fromStore">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                                   From Store
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150"
+                                                matTooltip="{{contact.fromStore}}">
+                                                    <span> {{contact.fromStore}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="toStore">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
+                                                    To Store
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180"
+                                                  matTooltip="{{contact.toStore}}">
+                                                    <span> {{contact.toStore}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            
+                                            <ng-container matColumnDef="comments">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-230">
+                                                   Comments
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230"
+                                                  matTooltip="{{contact.comments}}">
+                                                    <span> {{contact.comments}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="addedby">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                                   Added by
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160"
+                                                  matTooltip="{{contact.addedby}}">
+                                                    <span> {{contact.addedby}}</span>
+                                                </mat-cell>
+                                            </ng-container> 
+
+                                            <ng-container matColumnDef="isInchargeVerifyDate" StickyEnd>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                                IsVerify Date
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                                    <span> {{contact.isInchargeVerifyDate | date:'yyyy-MM-dd'}}</span>
+                                                </mat-cell>
+                                            </ng-container> 
+                            
+                                            <ng-container matColumnDef="loading">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    loading data...
+                                                </mat-footer-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    <span>No Data Found</span>
+                                                </mat-footer-cell>
+                                            </ng-container> 
+                            
+                                            <mat-header-row class="accent min-width-1400" *matHeaderRowDef="displayedColumnsPOReqHeader; sticky: true"></mat-header-row>
+                                            <mat-row *matRowDef="let contact; columns: displayedColumnsPOReqHeader; let i = index" (click)="getPOReqDetList(contact)"
+                                                class="contact min-width-1400" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight tabindex="999"></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{ hide: !(dsPORequisitionHeader != null && dsPORequisitionHeader.data.length == 0) }"></mat-footer-row>
+                                        </mat-table>
+                                    </div> 
+                                </div>
+                                <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25" showFirstLastButtons>
+                                </mat-paginator> 
+                            </mat-card>
+                        </div> 
+                    </div> 
+
+                    <div fxFlex="60%" fxFlex.sm="50%" fxFlex.xs="100%" class="table-left">
+                        <mat-card fxLayout="column" class="gap-8 h-100-p">
+                            <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                                <div class="airmid-table-container">
+                                    <mat-table #table matSort [dataSource]="dsPoReqitemlist" [@animateStagger]="{ value: '50' }"
+                                        class="airmid-table table3" style="overflow: auto;">
+                                        <ng-container matColumnDef="IemName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Item Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <span> {{contact.itemName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <!-- <ng-container matColumnDef="Price">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                Price
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <span> {{contact.price}}</span>
+                                            </mat-cell>
+                                        </ng-container> -->
+                        
+                                        <ng-container matColumnDef="Qty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <span> {{contact.qty || '-'}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Action">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                 <mat-icon>delete_outline</mat-icon>
+                                                 </button> 
+                                            </mat-cell>
+                                        </ng-container>
+                         
+                                        <ng-container matColumnDef="loading">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                loading data...
+                                            </mat-footer-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                <span>No Data Found</span>
+                                            </mat-footer-cell>
+                                        </ng-container>
+                        
+                        
+                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumnspo; sticky: true"></mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumnspo; let i = index" tabindex="999"
+                                            class="contact" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{ hide: !(dsPoReqitemlist != null && dsPoReqitemlist.data.length == 0) }"></mat-footer-row>
+                                    </mat-table>
+                                </div>
+                            </div>
+                            <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25" showFirstLastButtons>
+                            </mat-paginator>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- Footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+
+            <div class="modal-footer-buttons">
+                <!-- <button type="button" class="btn btn-primary" (click)="calculateshare()">Calculate Share
+                </button> -->
+                <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                <button class="btn btn-primary" (click)="OnSave()">Save</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+ 
+<!-- <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
     <mat-toolbar class="accent" style="height:50px; justify-content: space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -67,19 +334,7 @@
                                     <airmid-textbox fxFlex="10%" label="Email" formControlName="Email"
                                         [(ngModel)]="vEmail" [formGroup]="userFormGroup"
                                         [readonly]="true"></airmid-textbox>
-
-                                    <!-- <mat-form-field appearance="outline" fxFlex="12%">
-                                        <mat-label>-- Select Status3 --</mat-label>
-                                        <mat-select formControlName="Status3" name="Status3" required
-                                            (selectionChange)="finalCalculation()" #gsttype
-                                            (keydown)="onEnterGSTType($event)">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of GSTTypeList" [value]="m">
-                                                {{m.Name}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                     -->
+ 
                                     <airmid-dropdown fxFlex="12%" label="Select GST Type" formControlName="GSTType"
                                         ValueField="text" [formGroup]="userFormGroup"
                                         [validations]="getValidationMessages().GSTType"
@@ -89,7 +344,7 @@
                                 <div fxLayout="row" class="gap-4">
                                     <input type="hidden" name="PurchaseId" [(ngModel)]="vPurchaseId"
                                         formControlName="PurchaseId" />
-                                    <!-- <input type="hidden" name="poBalQty" [(ngModel)]="vpoBalQty" formControlName="poBalQty" /> -->
+                                  
                                     <airmid-textbox fxFlex="10%" label="HSNcode" formControlName="HSNcode"
                                         [(ngModel)]="vHSNcode" [formGroup]="userFormGroup"
                                         [readonly]="true"></airmid-textbox>
@@ -174,7 +429,7 @@
 
                                     <div
                                         [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
-                                        <!-- Temporary disabled false [disabled]="!userFormGroup.valid" -->
+                                    
                                         <button type="button" class="btn btn-primary btn-with-icon py-8"
                                             (click)="onAdd()" #addbutton id="btnAdd">
                                             <mat-icon>add</mat-icon>
@@ -220,25 +475,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                                 {{contact.UOM}}
                                             </mat-cell>
-                                        </ng-container>
-                                      
-                                        <!-- <ng-container matColumnDef="MRP">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                fxShow.gt-sm>MRP(Strip)</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
-                                                <mat-form-field appearance="fill">
-                                                    <input matInput [(ngModel)]="contact.MRP"
-                                                        (input)="getCellCalculation(contact)" type="number" OnlyNumber
-                                                        [id]="'MRP' + index" autocomplete="off"
-                                                        [disabled]="contact.IsVerifiedUserId > 0"
-                                                        (keydown.arrowdown)="setFocus('MRP' + (index + 1))"
-                                                        (keydown.arrowup)="setFocus('MRP' + (index - 1))"
-                                                        (keypress)="keyPressCharater($event)" [min]="0" />
-                                                </mat-form-field>
-                                                {{contact.MRP  | number:'1.2-2' }}
-                                            </mat-cell>
-                                        </ng-container> -->
-
+                                        </ng-container> 
                                         <ng-container matColumnDef="Rate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                 fxShow.gt-sm>Rate</mat-header-cell>
@@ -317,41 +554,7 @@
                                                 {{contact.CGSTAmount | number:'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
-
-
-                                        <!-- <ng-container matColumnDef="CGST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                CGST(%)</mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                                <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.CGSTPer" step="0.1" type="text"
-                                                        OnlyNumber autocomplete="off"
-                                                        (keyup)="getCellCalculation(contact,contact.CGSTPer)"
-                                                        (keypress)="keyPressCharater($event)">
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="CGSTAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                CGST Amt</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.CGSTAmt | number:'1.2-2'}}
-                                            </mat-cell>
-                                        </ng-container>-->
-
-                                        <!-- <ng-container matColumnDef="SGST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                SGST(%)</mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                                <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.SGST" step="0.1" type="text"
-                                                        OnlyNumber autocomplete="off"
-                                                        (keyup)="getCellCalculation(contact,contact.SGST)"
-                                                        (keypress)="keyPressCharater($event)">
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
+ 
 
                                         <ng-container matColumnDef="SGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -376,19 +579,7 @@
                                                 {{contact.SGSTAmt | number:'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
-
-                                        <!-- <ng-container matColumnDef="IGST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                IGST(%)</mat-header-cell>
-                                            <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                                <mat-form-field appearance="legacy">
-                                                    <input matInput [(ngModel)]="contact.IGST" step="0.1" type="text"
-                                                        OnlyNumber autocomplete="off"
-                                                        (keyup)="getCellCalculation(contact,contact.IGST)"
-                                                        (keypress)="keyPressCharater($event)">
-                                                </mat-form-field>
-                                            </mat-cell>
-                                        </ng-container> -->
+ 
 
                                         <ng-container matColumnDef="IGST">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -535,22 +726,7 @@
                                             {{contact.rate | currency:'INR':'symbol-narrow':'0.2'}}
                                         </mat-cell>
                                     </ng-container>
-                                    <!-- 
-                                <ng-container matColumnDef="discpercentage">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        Disc</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.discpercentage}}%
-                                    </mat-cell>
-                                </ng-container> -->
-                                    <!-- 
-                                <ng-container matColumnDef="DiscAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        DiscAmt</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.DiscAmount}}
-                                    </mat-cell>
-                                </ng-container> -->
+                                   
 
                                     <ng-container matColumnDef="vatPercentage">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -611,9 +787,7 @@
                                     <span class="net-amt-mat-label" style="font-weight:bold;margin-left:20px;">Net
                                         Amt:
                                     </span>&nbsp;
-                                    <!-- <span class="net-amt-value"
-                                        style="margin-left:10px;font-weight:bolder;color: blue;">{{getTotalNet(dsItemNameList.data)
-                                        | currency:'INR'}}</span> -->
+                                  
                                 </div>
                                 <div fxLayout="row" fxLayoutGap="4px">
 
@@ -697,4 +871,4 @@
 
 
     </div>
-</div>
+</div> -->

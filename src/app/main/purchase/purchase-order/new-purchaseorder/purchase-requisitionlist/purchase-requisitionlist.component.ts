@@ -51,6 +51,7 @@ export class PurchaseRequisitionlistComponent implements OnInit {
   fromStore = this.accountService.currentUserValue.user.storeId 
   toStore = "0"
   status = "0"
+   Verify = "0"
   chargeslist:any=[];
 
 
@@ -85,7 +86,9 @@ export class PurchaseRequisitionlistComponent implements OnInit {
       FromStoreId: [this.accountService.currentUserValue.user.storeId],
       ToStoreId: [0],
       status: [0],
-       Verify: [{ value: true, disabled: true }]
+       Verify: [{ value: true 
+        //, disabled: true
+         }]
     })
   }
 
@@ -109,6 +112,11 @@ export class PurchaseRequisitionlistComponent implements OnInit {
     } else {
       this.status = "0"
     }
+    if (this.userFormGroup.get('Verify').value == true) {
+      this.Verify = "1"
+    } else {
+      this.Verify = "0"
+    }
     this.fromDate = this.datePipe.transform(this.userFormGroup.get('startdate').value,'yyyy-MM-dd') || '1900-01-01',
     this.toDate =  this.datePipe.transform(this.userFormGroup.get('enddate').value,'yyyy-MM-dd') || '1900-01-01',
     this.fromStore = this.accountService.currentUserValue.user.storeId 
@@ -125,7 +133,7 @@ export class PurchaseRequisitionlistComponent implements OnInit {
       { "fieldName": "To_Dt", "fieldValue": String(this.toDate), "opType": "Equals" },
       { "fieldName": "FromStoreId", "fieldValue": String(this.fromStore), "opType": "Equals" },
       { "fieldName": "ToStoreId", "fieldValue": String(this.toStore), "opType": "Equals" },
-      { "fieldName": "IsVerify", "fieldValue": String(this.status), "opType": "Equals" },
+      { "fieldName": "IsVerify", "fieldValue": String(this.Verify), "opType": "Equals" },
       { "fieldName": "IsClosed", "fieldValue": String(this.status), "opType": "Equals" }
       ],
       "exportType": "JSON",

@@ -21,6 +21,7 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { Subscription } from 'rxjs';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PurchaseRequisitionComponent } from './purchase-requisition/purchase-requisition.component';
 
 
 @Component({
@@ -239,6 +240,21 @@ IsPoverify=0;
         maxWidth: "100%",
         height: '98%',
         width: '98%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+      this.isShowDetailTable = false
+    });
+  }
+    //Add New Purchase
+  AddPRtoPurchase(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(PurchaseRequisitionComponent,
+      {
+        maxWidth: "100%",
+        height: '94%',
+        width: '94%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {

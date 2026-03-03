@@ -188,5 +188,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   public getKenyaSalesBatchList(Param){ 
     return this._httpClient1.GetData("ItemMaster/search-GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId+"&PatientTypeId="+Param.PatientTypeId); 
   }
+  public getAccessDetailList(param){
+    return this._httpClient1.PostData("LoginManager/loginAccessDetailsList",param)
+  } 
   }
   
