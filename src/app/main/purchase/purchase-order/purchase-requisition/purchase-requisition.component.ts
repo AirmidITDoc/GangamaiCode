@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
@@ -20,16 +20,55 @@ import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseFormModel } from './types';
 
 @Component({
-  selector: 'app-update-purchaseorder',
-  templateUrl: './update-purchaseorder.component.html',
-  styleUrls: ['./update-purchaseorder.component.scss'],
+  selector: 'app-purchase-requisition',
+  templateUrl: './purchase-requisition.component.html',
+  styleUrls: ['./purchase-requisition.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class UpdatePurchaseorderComponent implements OnInit {
+export class  PurchaseRequisitionComponent implements OnInit {
+   displayedColumnspo: string[] = [ 
+    'IemName', 
+    //'Price',
+    'Qty',
+    'Action'
+  ]
+    displayedColumnsPOReqHeader: string[] = [ 
+    'isVerify', 
+    'Date', 
+    'purchaseRequisitionNo',
+    'fromStore',
+    'toStore', 
+    'addedby', 
+    'isInchargeVerifyDate',
+    'comments'
+  ]
+    displayedColumnsPoReqDet: string[] = [ 
+    'itemName', 
+    //'Price',
+    'Qty'
+  
+    //'BalQty', 
+  ]
   userFormGroup: FormGroup;
-  FinalPurchaseform: FormGroup;
   autocompletestore: string = "Store";
+  fromDate =  this.datePipe.transform(new Date(), "yyyy-MM-dd");
+  toDate =  this.datePipe.transform(new Date(), "yyyy-MM-dd");
+  fromStore = this.accountService.currentUserValue.user.storeId 
+  toStore = "0"
+  status = "0"
+  chargeslist:any=[];
+
+
+    dsPoReqitemlist = new MatTableDataSource<ItemNameList>();
+    dsPORequisitionHeader = new MatTableDataSource<PurchaseItemList>();
+    dsPORequisitiondet = new MatTableDataSource<PurchaseItemList>();
+
+
+
+
+     
+  FinalPurchaseform: FormGroup; 
   autocompleteSupplier: string = "SupplierMaster"
   autocompleteModeGSTType: string = "GstCalcType";
   autocompletepaymentterm: string = "TermofPayment";
@@ -37,41 +76,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
 
   vsaveflag: boolean = true;
-  displayedColumns2 = [
-    // 'ItemID',
-    'ItemName',
    
-    'Qty',
-    'UOM',
-    // 'MRP',
-    'Rate',
-    'DefRate',
-    'TotalAmount',
-    'DiscPer',
-    'DiscAmount',
-    'CGST',
-    'CGSTAmount',
-    'SGST',
-    'SGSTAmount',
-    'IGST',
-    'IGSTAmount',
-    // 'GST',
-    'GSTAmount',
-    'NetAmount',
-    'Specification',
-    'Action',
-  ];
-  displayedColumns3 = [
-
-    'supplierName',
-    'receiveQty',
-    'freeQty',
-    'mrp',
-    'rate',
-    // 'discpercentage',
-    // 'DiscAmount',
-    'vatPercentage'
-  ]
 
   sIsLoading: string = '';
   isLoading = true;
@@ -90,8 +95,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
   filteredOptions: any;
   ItemnameList = [];
   showAutocomplete = false;
-  noOptionFound: boolean = false;
-  chargeslist: any = [];
+  noOptionFound: boolean = false; 
   optionsMarital: any[] = [];
   optionsPayment: any[] = [];
   optionsItemName: any[] = [];
@@ -208,15 +212,15 @@ export class UpdatePurchaseorderComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-
-    public dialogRef: MatDialogRef<UpdatePurchaseorderComponent>,
+public _FormBuilder:FormBuilder,
+    public dialogRef: MatDialogRef<PurchaseRequisitionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
-    // this.userFormGroup = this._PurchaseOrder.getPurchaseOrderForm();
+     this.userFormGroup = this.SearchFilterForm();
     // this.FinalPurchaseform = this._PurchaseOrder.getPurchaseOrderFinalForm()
      this.userFormGroup.markAllAsTouched();
     this.FinalPurchaseform.markAllAsTouched();
@@ -235,7 +239,23 @@ export class UpdatePurchaseorderComponent implements OnInit {
     }
 
   }
-
+  SearchFilterForm(): FormGroup {
+    return this._FormBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      FromStoreId: [this.accountService.currentUserValue.user.storeId],
+      ToStoreId: [0],
+      status: [0],
+       Verify: [{ value: true, disabled: true }]
+    })
+  }
+  
+  toStoreView(value) {
+    if (value.value !== 0)
+      this.toStore = value.value
+    else
+      this.toStore = "0" 
+  }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -1187,7 +1207,7 @@ export class UpdatePurchaseorderComponent implements OnInit {
 
   }
   onEdit(contact) {
-    const dialogRef = this._matDialog.open(UpdatePurchaseorderComponent,
+    const dialogRef = this._matDialog.open(PurchaseRequisitionComponent,
       {
         maxWidth: "100%",
         height: '95%',
