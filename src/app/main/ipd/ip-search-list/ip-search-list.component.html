@@ -68,6 +68,28 @@
                 </span>
             </ng-template>
 
+            <ng-template #isAnaesthetistPaidStatus let-element>
+                 <span [ngClass]="{
+                'status-not-requested': element.isAnaesthetistPaid == 0,
+                'status-received': element.isAnaesthetistPaid > 0
+              }">
+                    {{ element.isAnaesthetistPaid == 0 ? 'Pending' : 'Paid' }}
+                </span>
+
+                    <!-- <button mat-icon-button  *ngIf="element.isAnaesthetistPaid ==1"   matTooltip="Anaesthetist Paid">
+                        <mat-icon>
+                            <img width="30px" height="15px" src="assets/images/logos/IsPaid.png"
+                                style="background:-moz-linear-gradient(00,9,22);">
+                        </mat-icon>
+                    </button>
+
+                     <button mat-icon-button  *ngIf="element.isAnaesthetistPaid ==0"   matTooltip="Anaesthetist Payment Pending">
+                        <mat-icon   class="active-icon red-500 s-16">
+                            hourglass_empty
+                        </mat-icon> 
+                    </button>   -->
+            </ng-template>
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 

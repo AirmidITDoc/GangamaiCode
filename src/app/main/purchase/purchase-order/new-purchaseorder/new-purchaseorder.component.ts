@@ -168,10 +168,12 @@ export class NewPurchaseorderComponent {
     'ItemName',
     'UOM',
     'Qty',
+    'FreeQty',
     'MRP',
     'Rate',
     'DefRate',
-    'TotalAmount',
+    'TotalAmount', 
+    'TotalQty',
     'DiscPer',
     'DiscAmount',
     'CGSTPer',
@@ -298,6 +300,7 @@ export class NewPurchaseorderComponent {
       ItemName: ['', [Validators.required,]],
       ConversionFactor: [''],
       Qty: ['', [Validators.required, Validators.min(1)]],
+      FreeQty: ['', [Validators.required, Validators.min(1)]],
       UOM: [''],
       Rate: ['', [Validators.required, Validators.min(1)]],
       HSNcode: [''],
@@ -424,6 +427,7 @@ export class NewPurchaseorderComponent {
       itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       uomid: [item.UOM || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      freeQty: [item.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       rate: [item.Rate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalAmount: [item.TotalAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discAmount: [item.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -439,7 +443,7 @@ export class NewPurchaseorderComponent {
       sgstamt: [item.SGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       igstper: [item.IGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       igstamt: [item.IGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-
+      totalQty:[item.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       defRate: [item.DefRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       vendDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
@@ -481,16 +485,19 @@ export class NewPurchaseorderComponent {
       const formValues = this.userFormGroup.getRawValue() as PurchaseFormModel;
       console.log(formValues)
 
+      const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
+
       if (formValues.ItemName) {
         const newItem = new ItemNameList({
           ...formValues,
           ItemName: formValues.ItemName.itemName,
-          // TotalQty: formValues.Qty,
+          TotalQty: totalQty,
           ItemId: formValues.ItemName.itemId,
           UOM: this.UmoId,// formValues.UOMId || 0,
           UOMID: this.UmoId,//formValues.UOMId || 0,
           Rate: formValues.Rate,
           Qty: formValues.Qty || 0,
+          FreeQty: formValues.FreeQty || 0,
           TotalAmount: formValues.TotalAmount || 0,
           DiscPer: formValues.Disc || 0,
           DiscAmount: formValues.DiscAmount || 0,
@@ -1129,6 +1136,7 @@ export class NewPurchaseorderComponent {
       Qty: [
 
       ],
+       FreeQty: [],
       CGST: [],
       IGST: []
     };
@@ -1194,6 +1202,7 @@ export class NewPurchaseorderComponent {
         element.ItemName = element.itemName,
           element.ItemId = element.itemId,
           element.Qty = element.qty,
+          element.FreeQty = element.freeQty || 0
           element.Rate = element.rate,
           element.TotalAmount = element.totalAmount,
           element.DiscAmount = element.discAmount,
@@ -1205,7 +1214,7 @@ export class NewPurchaseorderComponent {
           element.GSTAmt = element.vatAmount,
           element.NetAmount = element.grandTotalAmount,
           element.MRP = element.mrp
-        element.CGSTPer = element.cgstPer,
+           element.CGSTPer = element.cgstPer,
           element.CGSTAmount = element.cgstAmt,
           element.SGSTPer = element.sgstPer,
           element.SGSTAmount = element.sgstAmt,
@@ -1214,6 +1223,7 @@ export class NewPurchaseorderComponent {
         element.DefRate = element.defRate,
           element.Specification = element.specification
         element.UOM = element.uomid
+        element.TotalQty = element.totalQty
       });
     });
     console.log(this.dsItemNameList)

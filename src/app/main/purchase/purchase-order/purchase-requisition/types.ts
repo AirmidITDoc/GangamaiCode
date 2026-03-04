@@ -29,7 +29,7 @@ export interface PurchaseFormModel {
 
   // Quantity Details
   Qty: number;
-  // FreeQty: number;
+  FreeQty: number;
   // FinalTotalQty: number;
   Specification: string;
 

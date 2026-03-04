@@ -108,6 +108,8 @@ IsPoverify=0;
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, sticky: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Qty", key: "qty", sort: true, sticky: true, align: 'left', emptySign: 'NA' },
+        { heading: "Free Qty", key: "freeQty", sort: true, sticky: true, align: 'left', emptySign: 'NA' },
+        { heading: "Total Qty", key: "totalQty", sort: true, sticky: true, align: 'left', emptySign: 'NA' },
         { heading: "MRP", key: "mrp", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "DiscPer", key: "discPer", sort: true, align: 'left', emptySign: 'NA' },
@@ -524,6 +526,8 @@ export class ItemNameList {
   ItemId: any;
   ItemName: string;
   Qty: number;
+  freeQty: number;
+  FreeQty: number;
   UOM: number;
   Rate: any;
   TotalAmount: any;
@@ -592,7 +596,7 @@ export class ItemNameList {
   CGST: any;
   SGST: any;
   IGST: any;
-
+totalQty:any;
   purDetId: any;
   itemName: any;
   qty: any;
@@ -640,6 +644,8 @@ export class ItemNameList {
       this.UOM = ItemNameList.UOM || 0;
       this.Rate = ItemNameList.Rate || 0;
       this.TotalAmount = ItemNameList.TotalAmount || 0;
+      this.freeQty = ItemNameList.freeQty || 0;
+      this.FreeQty = ItemNameList.FreeQty || 0;
       this.Dis = ItemNameList.Dis || 0;
       this.Disc = ItemNameList.Disc || 0;
       this.DiscAmount = ItemNameList.DiscAmount || 0;
@@ -687,7 +693,7 @@ export class ItemNameList {
       this.SGST = ItemNameList.SGST || 0;
       this.IGST = ItemNameList.IGST || 0;
       this.DiscPer = ItemNameList.DiscPer || 0;
-
+      this.TotalQty = ItemNameList.TotalQty || 0;
       this.purDetId = ItemNameList.purDetId || 0;
       this.itemName = ItemNameList.itemName || "";
       this.qty = ItemNameList.qty || 0;

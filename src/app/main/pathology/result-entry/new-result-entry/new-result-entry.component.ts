@@ -68,6 +68,7 @@ export class NewResultEntryComponent {
 
     configDoc: any;
     sIsLoading: string = '';
+    AgeType:any='YEAR'
 
     currentDate: Date = new Date();
     autocompleteModeDoctor: string = "ConDoctor";
@@ -162,13 +163,18 @@ export class NewResultEntryComponent {
             });
 
 
-            if (this.selectedAdvanceObj2.ageYear)
+            if (this.selectedAdvanceObj2.ageYear){
                 this.FinalAge = this.selectedAdvanceObj2.ageYear.trim();
-            if (this.selectedAdvanceObj2.ageMonth && this.FinalAge == 0)
+                this.AgeType  = 'YEAR'
+            } 
+            if (this.selectedAdvanceObj2.ageMonth && this.FinalAge == 0){
                 this.FinalAge = this.selectedAdvanceObj2.ageMonth.trim();
-            if (this.selectedAdvanceObj2.ageDay && this.FinalAge == 0)
+                 this.AgeType  = 'MONTH'
+            } 
+            if (this.selectedAdvanceObj2.ageDay && this.FinalAge == 0){
                 this.FinalAge = this.selectedAdvanceObj2.ageDay.trim();
-
+                 this.AgeType  = 'DAY'
+            } 
         }
 
         if (this.Iscompleted == 0) {
@@ -446,6 +452,11 @@ export class NewResultEntryComponent {
                     "fieldName": "MaxAge",
                     "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
+                },
+                 {
+                    "fieldName": "AgeType",
+                    "fieldValue": String(this.AgeType),
+                    "opType": "Equals"
                 }
             ],
             "mode": "PathologyResultEntryIP"
@@ -503,7 +514,13 @@ export class NewResultEntryComponent {
                     "fieldName": "MaxAge",
                     "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
+                },
+                 {
+                    "fieldName": "AgeType",
+                    "fieldValue": String(this.AgeType),
+                    "opType": "Equals"
                 }
+            
             ],
             "mode": "PathologyResultEntryOP"
         }
@@ -563,6 +580,11 @@ export class NewResultEntryComponent {
                 {
                     "fieldName": "MaxAge",
                     "fieldValue": String(this.FinalAge),
+                    "opType": "Equals"
+                },
+                 {
+                    "fieldName": "AgeType",
+                    "fieldValue": String(this.AgeType),
                     "opType": "Equals"
                 }
             ],
@@ -740,6 +762,11 @@ export class NewResultEntryComponent {
                         "fieldName": "SampleNo",
                         "fieldValue": String(this.sampleNo),
                         "opType": "Equals"
+                    },
+                    {
+                    "fieldName": "AgeType",
+                    "fieldValue": String(this.AgeType),
+                    "opType": "Equals"
                     }
                 ],
                 "mode": "PathologyResultEntryOPMachine"
@@ -800,7 +827,12 @@ export class NewResultEntryComponent {
                         "fieldName": "SampleNo",
                         "fieldValue": String(this.sampleNo),
                         "opType": "Equals"
-                    }
+                    },
+                 {
+                    "fieldName": "AgeType",
+                    "fieldValue": String(this.AgeType),
+                    "opType": "Equals"
+                }
                 ],
                 "mode": "PathologyResultEntryIPMachine"
             }
@@ -857,7 +889,12 @@ export class NewResultEntryComponent {
                         "fieldName": "SampleNo",
                         "fieldValue": String(this.sampleNo),
                         "opType": "Equals"
-                    }
+                    },
+                 {
+                    "fieldName": "AgeType",
+                    "fieldValue": String(this.AgeType),
+                    "opType": "Equals"
+                }
                 ],
                 "mode": "PathologyResultEntryLabMachine"
             }

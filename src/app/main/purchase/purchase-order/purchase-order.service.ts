@@ -26,7 +26,7 @@ export class PurchaseOrderService {
   SgstPercentage = 0
   normalizeValues(obj: ItemNameList | PurchaseFormModel): GSTCalculationResult {
 
-    const finalTotalQty = Number(obj.Qty || 0);
+    const finalTotalQty = Number(obj.Qty || 0) + Number(obj.FreeQty || 0);
     const values = {
       totalAmount: Number(obj.TotalAmount || 0),
       discAmount: Number(obj.DiscAmount || 0),
@@ -238,7 +238,7 @@ export class PurchaseOrderService {
 
   public calculateBasicValues(contact: ItemNameList): void {
     //debugger
-    contact.TotalQty = (Number(contact.Qty || 0)) * Number(contact.ConversionFactor || 1);
+    contact.TotalQty =  (Number(contact.Qty || 0) + Number(contact.FreeQty || 0)) * Number(contact.ConversionFactor || 1);
     this.calculateCellTotalAmount(contact);
     const discountAmount = ((Number(contact.TotalAmount || 0) * Number(contact.DiscPer || 0)) / 100).toFixed(4);
     contact.DiscAmount = discountAmount;
@@ -360,6 +360,11 @@ export class PurchaseOrderService {
     if (+item.Qty < 0) {
       this.showToast('Quantity should be greater than 0', ToastType.WARNING);
       item.Qty = 0;
+      return false;
+    }
+    if (+item.FreeQty < 0) {
+      this.showToast('Free Quantity should be greater than 0', ToastType.WARNING);
+      item.FreeQty = 0;
       return false;
     }
     if (+item.ConversionFactor < 1) {
