@@ -1,10 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
-import { Color, gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { Color, gridModel, gridRequest, gridResponseType, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
@@ -18,10 +18,8 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { InvestigationListService } from './investigation-list.service';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
-import { LabsampleCollFormComponent } from '../lab-sample-collection/labsample-coll-form/labsample-coll-form.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
 import { PatientList, SampleDetailObj, SampleList } from 'app/main/pathology/result-entry/result-entry.component';
@@ -41,6 +39,10 @@ import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entr
 import { TestsPopupComponent } from './tests-popup/tests-popup.component';
 import { NewLabtemplateComponent } from '../lab-result-list/new-labtemplate/new-labtemplate.component';
 import { SampleCollOldMethodComponent } from '../lab-sample-collection/sample-coll-old-method/sample-coll-old-method.component';
+import { LabsampleNewFromComponent } from '../lab-sample-collection/labsample-new-from/labsample-new-from.component';
+import { LabTrackingDetailsComponent } from '../lab-patient-reg/lab-tracking-details/lab-tracking-details.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { PatientDetailsPopoverComponent } from 'app/main/opd/appointment-list/patient-details-popover/patient-details-popover.component';
 
 function formatDate(rawDate: string): string {
   if (!rawDate) return '';
@@ -65,7 +67,15 @@ function formatDate(rawDate: string): string {
   templateUrl: './investigation-list.component.html',
   styleUrls: ['./investigation-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  // animations: fuseAnimations,
+  animations: [
+    ...fuseAnimations,
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 
 export class InvestigationListComponent {
@@ -84,18 +94,41 @@ export class InvestigationListComponent {
   ngOnInit(): void {
     this.myformSearch = this._InvestListService.createSearchForm()
     this.GetSampleCollectiondetail()
+    this.bindSampleParentGridData();
+    this.isSuperAdmin = this.accountService.currentUserValue.user.isAdminMultiview;
+
+    ////////// Sample Recevied    
+    this.ReceviedformSearch = this._InvestListService.createReceiveSearchForm();
+    this.ReceFormGroup = this.RecevicedFormInsert();
+
+    this.ReceviedfromDate = this.ReceviedformSearch.get("start").value || "";
+    this.ReceviedtoDate = this.ReceviedformSearch.get("end").value || "";
+    this.GetSampleRecevicedetail();
 
     ////////// Result Entry
     this.ResultmyformSearch = this._InvestListService.ResultcreateSearchForm()
     this.ResultfromDate = this.ResultmyformSearch.get("start").value || "";
     this.ResulttoDate = this.ResultmyformSearch.get("end").value || "";
     this.GetResultdetail();
+    this.bindParentGridData();
 
     ///////// Approval
     this.ApprovalmyformSearch = this._InvestListService.ApprovalcreateSearchForm()
     this.ApprovalfromDate = this.ApprovalmyformSearch.get("start").value || "";
     this.ApprovaltoDate = this.ApprovalmyformSearch.get("end").value || "";
     this.GetApprovaldetail();
+
+    ///////// Print
+    this.PrintmyformSearch = this._InvestListService.PrintcreateSearchForm()
+    this.PrintfromDate = this.PrintmyformSearch.get("start").value || "";
+    this.PrinttoDate = this.PrintmyformSearch.get("end").value || "";
+    this.reportlogFormGroup = this.createReportlogForm();
+
+    ///////// Print completed
+    this.PrintCompletedmyformSearch = this._InvestListService.printCompletedSearchForm()
+    this.PrintCompletedfromDate = this.PrintCompletedmyformSearch.get("start").value || "";
+    this.PrintCompletedtoDate = this.PrintCompletedmyformSearch.get("end").value || "";
+
   }
 
   ///////////////// Sample Collection //////////////////////
@@ -120,7 +153,7 @@ export class InvestigationListComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
   UnitId: any = this.accountService.currentUserValue.user.unitId;
-  isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
+  isSuperAdmin: any = 0;
 
   // IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
 
@@ -145,6 +178,7 @@ export class InvestigationListComponent {
 
     // Approval
     this.ApprovalgridConfig.columnsList.find(col => col.key === 'Approvalaction')!.template = this.ApprovalactionButtonTemplate;
+    this.PrintgridConfig.columnsList.find(col => col.key === 'Printaction')!.template = this.printactionButtonTemplate;
     this.ApprovalgridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.isCompletedstatus;
   }
 
@@ -203,7 +237,7 @@ export class InvestigationListComponent {
     // this.onChangeFirst();
   }
 
-  onChangeFirst() {
+  onChangeFirst(row: any = null) {
     // debugger
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
@@ -211,7 +245,9 @@ export class InvestigationListComponent {
     this.f_name = this.myformSearch.get('FirstName').value + "%"
     this.l_name = this.myformSearch.get('LastName').value + "%"
     this.regNo = this.myformSearch.get('RegNo').value || "0"
-    this.status = this.myformSearch.get('StatusSearch').value
+    this.status = this.myformSearch.get('SampleStatusSearch').value
+    this.VPBillNo = this.myformSearch.get('PBillNo').value || "%"
+    this.vCompanyId = this.myformSearch.get('CompanyId').value || "0"
     // this.Ptype = this.myformSearch.get('PatientTypeSearch').value
     this.getfilterdata();
   }
@@ -235,10 +271,12 @@ export class InvestigationListComponent {
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    setTimeout(() => {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    }, 100);
     this.GetSampleCollectiondetail()
-
+    this.bindSampleParentGridData();
   }
 
   GetSampleCollectiondetail() {
@@ -342,8 +380,14 @@ export class InvestigationListComponent {
     else
       if (event == 'LastName')
         this.myformSearch.get('LastName').setValue("")
-    if (event == 'RegNo')
-      this.myformSearch.get('RegNo').setValue("0")
+    if (event == 'RegNo') {
+      this.myformSearch.get('RegNo').setValue("")
+      this.regNo = 0
+    }
+    if (event == 'PBillNo') {
+      this.myformSearch.get('PBillNo').setValue("")
+      this.VPBillNo = '%'
+    }
 
     this.onChangeFirst();
   }
@@ -358,6 +402,112 @@ export class InvestigationListComponent {
     this.onChangeFirst();
   }
 
+  dataSourceSampleParent = new MatTableDataSource<any>();
+  sampleDetailDS = new MatTableDataSource<SampleList>();
+
+  parentSampleColumns: string[] = ['status', 'pathDate', 'labRequestNo', 'patientName', 'cm', 'pBillNo', 'action'];
+  parentSampleDetColumns: string[] = ['status', 'color', 'serviceName', 'tat', 'sampleNo', 'action'];
+  columnsToDisplayWithSampleExpand = [...this.parentSampleColumns];
+  expandedSampleElement: any | null = null;
+  parentSampleLength = 0;
+  @ViewChild('parentSamplePaginator') parentSamplePaginator: MatPaginator;
+
+  bindSampleParentGridData() {
+    let gridDataRequest: gridRequest = {
+      sortField: this.gridConfig.sortField,
+      sortOrder: this.gridConfig.sortOrder,
+      filters: this.gridConfig.filters,
+      columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+      first: (this.parentSamplePaginator?.pageIndex ?? 0),
+      rows: (this.parentSamplePaginator?.pageSize ?? 25),
+      exportType: gridResponseType.JSON
+    };
+
+    this._InvestListService.getSampleDetlist(gridDataRequest).subscribe((data: any) => {
+      this.dataSourceSampleParent.data = data.data as [];
+      this.parentSampleLength = data["recordsFiltered"];
+    });
+  }
+
+  toggleSampleRow(element: any) {
+    if (this.expandedSampleElement === element) {
+      this.expandedSampleElement = null;
+    } else {
+      this.expandedSampleElement = element;
+      this.getSampleSelectedRow(element);
+    }
+  }
+
+  getSpecimenColor(contact: any): string {
+    if (!contact?.specimenColorName) {
+      return '#ccc';
+    }
+    return contact.specimenColorName.replace(/\s+/g, '').toLowerCase();
+  }
+
+  getSampleSelectedRow(row: any): void {
+    console.log("Selected row : ", row);
+
+    this.dataSource1.data = [];
+    this.selection.clear();
+
+    this.reportPrintObj = row
+    this.reportPrintObj["DOA"] = row.pathDate
+
+    this.PatientName = row.patientName;
+    this.OPD_IPD = row.oP_IP_No
+    this.Age = row.ageYear
+    this.PatientType = row.patientType
+    this.Mobileno = row.mobileNo
+    this.SBillNo = row.billNo;
+    this.SOPIPtype = row.opdipdtype;
+
+    this.getSampledetailList(row);
+  }
+
+  getSampledetailList(row) {
+    this.sampleDetailDS.data = [];
+    let formattedDate = formatDate(row.pathDate);
+    // let formattedDate = `${day}`
+
+    console.log(formattedDate);
+
+    var m_data = {
+      "first": 0,
+      "rows": 20,
+      "sortField": "BillNo",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "BillNo",
+          "fieldValue": String(row.billNo),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "BillDate",
+          "fieldValue": formattedDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OP_IP_Type",
+          "fieldValue": "4",
+          "opType": "Equals"
+        },
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+
+    console.log(m_data);
+    this._InvestListService.PathSampleDetailList(m_data).subscribe(Visit => {
+      this.sampleDetailDS.data = Visit.data as SampleList[];
+      console.log("ResultList:", this.sampleDetailDS.data)
+      this.sampleDetailDS.sort = this.sort;
+      this.sampleDetailDS.paginator = this.paginator;
+
+    });
+  }
+
   onSave(row: any = null) {
     let that = this;
     const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
@@ -370,34 +520,32 @@ export class InvestigationListComponent {
       this.grid.bindGridData();
       // this.grid1.bindGridData();
       this.GetSampleCollectiondetail();
+      this.getSampledetailList(row);
     });
   }
 
   onSavedemo(row: any = null) {
     let that = this;
-    const dialogRef = this._matDialog.open(LabsampleCollFormComponent,
+    const dialogRef = this._matDialog.open(LabsampleNewFromComponent,
       {
-        maxHeight: '80vh',
-        width: '80%',
+        height: '85vh',
+        width: '85%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
-      // this.grid1.bindGridData();
       this.GetSampleCollectiondetail();
+      this.getSampledetailList(row);
     });
   }
 
-  // OnPrintPatientIcard(element) {
-  //   this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
-  // }
-
   OnPrintPatientIcard(data, serviceName) {
+    const labId = data.visit_Adm_ID ?? data.labPatientId
     const param = {
       searchFields: [
         {
           fieldName: "LabPatientId",
-          fieldValue: String(data.labPatientId),
+          fieldValue: String(labId),
           opType: "13"
         },
         {
@@ -429,6 +577,23 @@ export class InvestigationListComponent {
         });
       matDialog.afterClosed().subscribe(result => {
       });
+    });
+
+  }
+
+  trackingdetail(element) {
+    console.log(element)
+    const dialogRef = this._matDialog.open(LabTrackingDetailsComponent,
+      {
+        maxWidth: "90vw",
+        height: '90%',
+        width: '60%',
+        data: element
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+      this.GetSampleCollectiondetail();
     });
 
   }
@@ -493,7 +658,343 @@ export class InvestigationListComponent {
     });
   }
 
-  //////////////// Result Entry ////////////////////
+
+  ///////////////// Sample Recevied  //////////////////////
+  ReceviedformSearch: FormGroup;
+  ReceFormGroup: FormGroup;
+
+  ReceviedfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  ReceviedtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  Receviedf_name: any = "%"
+  Receviedl_name: any = "%"
+  Receviedstatus: any = "2"
+  ReceviedCompanyId: any = "0"
+  ReceviedregNo: any = "0"
+  ReceviedPBillNo = "%"
+  ReceviedUnitId: any = this.accountService.currentUserValue.user.unitId;
+  RecevieddataSource = new MatTableDataSource<ReceSampleList>();
+
+  RecevieddisplayedColumns = [
+    'CheckBox',
+    'datetime',
+    'samplecollectiondatetime',
+    'patientName',
+    'serviceName',
+    'outSourceLabName',
+    'Recevieddate',
+    'ReceviedBy',
+  ];
+
+  ReceviedListViewcompany(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.ReceviedCompanyId = value.value
+    else
+      this.ReceviedCompanyId = 0
+
+    this.ReceviedonChangeFirst()
+  }
+
+  ReceviedListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.ReceviedUnitId = value.value
+    else
+      this.ReceviedUnitId = 0
+
+    this.ReceviedonChangeFirst();
+  }
+
+  ReceviedonChangeFirst(row: any = null) {
+    // debugger
+    this.ReceviedfromDate = this.datePipe.transform(this.ReceviedformSearch.get('start').value, "yyyy-MM-dd")
+    this.ReceviedtoDate = this.datePipe.transform(this.ReceviedformSearch.get('end').value, "yyyy-MM-dd")
+    this.Receviedf_name = this.ReceviedformSearch.get('FirstName').value + "%"
+    this.Receviedl_name = this.ReceviedformSearch.get('LastName').value + "%"
+    this.ReceviedregNo = this.ReceviedformSearch.get('RegNo').value || "0"
+    this.Receviedstatus = this.ReceviedformSearch.get('ReceiveStatusSearch').value
+    this.ReceviedPBillNo = this.ReceviedformSearch.get('PBillNo').value || "%"
+    this.ReceviedCompanyId = this.ReceviedformSearch.get('CompanyId').value || "0"
+    this.GetSampleRecevicedetail();
+  }
+
+  ReceviedClearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+      this.ReceviedformSearch.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.ReceviedformSearch.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this.ReceviedformSearch.get('RegNo').setValue("0")
+    if (event == 'PBillNo')
+      this.ReceviedformSearch.get('PBillNo').setValue("")
+
+    this.ReceviedonChangeFirst();
+  }
+
+  Receviedselection = new SelectionModel<ReceSampleList>(true, []);
+  SelectedList: any = [];
+  isCheckboxDisabled(row: any): boolean {
+    return row.isSampleReceivedStatus === true;
+  }
+  areAllRowsDisabled(): boolean {
+    return this.RecevieddataSource?.data?.length
+      ? this.RecevieddataSource.data.every(row => this.isCheckboxDisabled(row))
+      : true;
+  }
+  ReceviedmasterToggle() {
+    if (this.ReceviedisAllSelected()) {
+      this.Receviedselection.clear();
+    } else {
+      this.RecevieddataSource.data
+        .filter(row => !row.isSampleReceivedStatus) // ✅ only remaining 3
+        .forEach(row => this.Receviedselection.select(row));
+    }
+  }
+  ReceviedisAllSelected() {
+    const selectableRows = this.RecevieddataSource.data.filter(
+      row => !row.isSampleReceivedStatus
+    );
+
+    return this.Receviedselection.selected.length === selectableRows.length;
+  }
+  ReceviedisSomeSelected() {
+    return this.Receviedselection.selected.length > 0 && !this.ReceviedisAllSelected();
+  }
+
+  GetSampleRecevicedetail() {
+
+    // let fromDateControl = this.datePipe.transform(this.ReceviedformSearch.get('start').value, "yyyy-MM-dd");
+    // let toDateControl = this.datePipe.transform(this.ReceviedformSearch.get('end').value, "yyyy-MM-dd");
+    // debugger
+    let filters: any[] = [];
+
+    // Handle date range
+    // if (fromDateControl && toDateControl) {
+    //   this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+    //   this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+    // }
+    filters.push(
+      {
+        "fieldName": "F_Name",
+        "fieldValue": String(this.Receviedf_name),
+        "opType": "StartsWith"
+      },
+      {
+        "fieldName": "L_Name",
+        "fieldValue": String(this.Receviedl_name),
+        "opType": "StartsWith"
+      },
+      {
+        "fieldName": "Reg_No",
+        "fieldValue": String(this.ReceviedregNo),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "From_Dt",
+        "fieldValue": this.ReceviedfromDate,
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "To_Dt",
+        "fieldValue": this.ReceviedtoDate,
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "IsReceived",
+        "fieldValue": String(this.Receviedstatus),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "PBillNo",
+        "fieldValue": String(this.ReceviedPBillNo),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "CompanyId",
+        "fieldValue": String(this.ReceviedCompanyId),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "UnitId",
+        "fieldValue": String(this.ReceviedUnitId),
+        "opType": "Equals"
+      }
+    );
+
+    let data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "LabPatientId",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    console.log(data)
+    this._InvestListService.getSampleRecivedlist(data).subscribe((response) => {
+      this.RecevieddataSource.data = response.data;
+      console.log("RecevieddataSource:", this.RecevieddataSource.data)
+    });
+  }
+
+  RecevicedFormInsert(): FormGroup {
+    return this.formBuilder.group({
+      pathologyLabReport: this.formBuilder.array([])// FormArray for details
+    });
+  }
+
+  createReceviedDetail(item: any = {}): FormGroup {
+    return this.formBuilder.group({
+      pathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sampleReceviedDateTime: [this.getNow()],//new Date()],
+      sampleReceviedUserId: this.accountService.currentUserValue.userId,
+      isSampleReceivedStatus: true
+    });
+  }
+
+  get receivedDetailsArray(): FormArray {
+    return this.ReceFormGroup.get('pathologyLabReport') as FormArray;
+  }
+
+  getNow(): string {
+    const d = new Date();
+    return (
+      d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0') + 'T' +
+      String(d.getHours()).padStart(2, '0') + ':' +
+      String(d.getMinutes()).padStart(2, '0')
+    );
+  }
+
+  OnSave() {
+    if (this.Receviedselection.selected.length === 0) {
+      Swal.fire('Error!', 'Please select sample data', 'error');
+      return;
+    }
+    debugger
+    this.receivedDetailsArray.clear();
+    this.Receviedselection.selected.forEach(item => {
+      this.receivedDetailsArray.push(this.createReceviedDetail(item));
+    });
+    console.log(this.ReceFormGroup.value);
+
+    this._InvestListService.UpdateSampleRecived(this.ReceFormGroup.value).subscribe(() => {
+      // this._matDialog.closeAll();
+      this.GetSampleRecevicedetail();
+    });
+  }
+  OnReset() {
+    // this.getSupplierList();
+    this.SelectedList = [];
+    this.Receviedselection.clear();
+    this.ReceviedformSearch.reset({
+      ReceiveStatusSearch: "2",
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      UnitId: [this.accountService.currentUserValue.user.unitId]
+    });
+  }
+
+  // Patient popup
+
+  private patOverlayRef: OverlayRef | null = null;
+  private PatihoverTimeout: any = null;
+  private RecepatientCloseTimeout: any = null;
+
+  openDetailsPopover(event: MouseEvent, patientData: any) {
+    event.stopPropagation();
+
+    // Clear any existing timeout
+    if (this.PatihoverTimeout) {
+      clearTimeout(this.PatihoverTimeout);
+    }
+
+    // Add small delay to prevent flickering
+    this.PatihoverTimeout = setTimeout(() => {
+      // Close any existing patient popover
+      if (this.patOverlayRef) {
+        this.patOverlayRef.dispose();
+        this.patOverlayRef = null;
+      }
+
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+          {
+            originX: 'end',
+            originY: 'center',
+            overlayX: 'start',
+            overlayY: 'center',
+          },
+          {
+            originX: 'start',
+            originY: 'center',
+            overlayX: 'end',
+            overlayY: 'center',
+          }
+        ]);
+
+      this.patOverlayRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close(),
+        hasBackdrop: false,
+      });
+
+      const portal = new ComponentPortal(PatientDetailsPopoverComponent);
+      const componentRef: ComponentRef<PatientDetailsPopoverComponent> = this.patOverlayRef.attach(portal);
+      componentRef.instance.patientData = patientData;
+
+      // Handle mouse events on the overlay element
+      const overlayElement = this.patOverlayRef.overlayElement;
+      overlayElement.addEventListener('mouseenter', () => this.RecekeepPatientPopoverOpen());
+      overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+    }, 300); // 300ms delay before showing popover
+  }
+
+  closeDetailsPopover() {
+    // Clear timeout if popover hasn't opened yet
+    if (this.PatihoverTimeout) {
+      clearTimeout(this.PatihoverTimeout);
+      this.PatihoverTimeout = null;
+    }
+
+    // Clear any existing close timeout
+    if (this.RecepatientCloseTimeout) {
+      clearTimeout(this.RecepatientCloseTimeout);
+    }
+
+    // Add delay before closing to allow moving mouse to popover
+    this.RecepatientCloseTimeout = setTimeout(() => {
+      if (this.patOverlayRef) {
+        this.patOverlayRef.dispose();
+        this.patOverlayRef = null;
+      }
+    }, 200);
+  }
+
+  RecekeepPatientPopoverOpen() {
+    // Clear close timeout when hovering over popover
+    if (this.outSourceCloseTimeout) {
+      clearTimeout(this.outSourceCloseTimeout);
+      this.outSourceCloseTimeout = null;
+    }
+  }
+  //////////////////////////// Result Entry ////////////////////////////////
   SpinLoading: boolean = false;
   ResultVtotalcount = 0
   ResultVCompletedcount = 0
@@ -573,12 +1074,12 @@ export class InvestigationListComponent {
     // 'IsTemplateTest',
     // 'outSourceStatus',
     // 'isVerifyid',
-    'action1',
+    // 'action1',
     'status',
     'verify',
     'CategoryName',
     'TestName',
-    'SampleCollectionTime',
+    // 'SampleCollectionTime',
     'SampleNo',
     'outSourceLabName',
     'action'
@@ -599,7 +1100,7 @@ export class InvestigationListComponent {
   Resultallcolumns = [
     { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -630,16 +1131,6 @@ export class InvestigationListComponent {
   }
 
 
-  // ListView1(value) {
-  //   console.log(value)
-  //   if (value.value !== 0)
-  //     this.UnitId = value.value
-  //   else
-  //     this.UnitId = 0
-
-  //   // this.onChangeFirst();
-  // }
-
   searchRecords(data) {
     debugger
     this.dataSource1.data = [];
@@ -650,7 +1141,7 @@ export class InvestigationListComponent {
     let toDate = this.ResultmyformSearch.get("end").value || "";
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-    let status = this.ResultmyformSearch.get("StatusSearch").value || "0";
+    let status = this.ResultmyformSearch.get("ResultStatusSearch").value || "0";
 
     this.GetResultdetail()
     // Update the filters dynamically
@@ -671,8 +1162,11 @@ export class InvestigationListComponent {
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
-    this.Resultgrid.gridConfig = this.ResultgridConfig;
-    this.Resultgrid.bindGridData();
+    setTimeout(() => {
+      this.Resultgrid.gridConfig = this.ResultgridConfig;
+      this.Resultgrid.bindGridData();
+    }, 100);
+    this.bindParentGridData();
   }
 
   getSelectedRow(row: any): void {
@@ -693,6 +1187,39 @@ export class InvestigationListComponent {
     this.SOPIPtype = row.opdipdtype;
 
     this.getSampledetailList1(row);
+  }
+
+  @ViewChild('parentPaginator') parentPaginator: MatPaginator;
+  dataSourceParent = new MatTableDataSource<any>();
+  parentColumns: string[] = ['dot', 'labRequestNo', 'patientName', 'genderName', 'hospitalName', 'pBillNo', 'doctorName', 'action'];
+  columnsToDisplayWithExpand = [...this.parentColumns];
+  expandedElement: any | null = null;
+  parentResultsLength = 0;
+
+  bindParentGridData() {
+    let gridDataRequest: gridRequest = {
+      sortField: this.ResultgridConfig.sortField,
+      sortOrder: this.ResultgridConfig.sortOrder,
+      filters: this.ResultgridConfig.filters,
+      columns: this.ResultgridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+      first: (this.parentPaginator?.pageIndex ?? 0),
+      rows: (this.parentPaginator?.pageSize ?? 25),
+      exportType: gridResponseType.JSON
+    };
+
+    this._InvestListService.getresultenterylist(gridDataRequest).subscribe((data: any) => {
+      this.dataSourceParent.data = data.data as [];
+      this.parentResultsLength = data["recordsFiltered"];
+    });
+  }
+
+  toggleRow(element: any) {
+    if (this.expandedElement === element) {
+      this.expandedElement = null;
+    } else {
+      this.expandedElement = element;
+      this.getSelectedRow(element);
+    }
   }
 
   getSampledetailList1(row) {
@@ -753,7 +1280,7 @@ export class InvestigationListComponent {
     this.ResulttoDate = this.datePipe.transform(this.ResultmyformSearch.get('end').value, "yyyy-MM-dd")
     this.Resultf_name = this.ResultmyformSearch.get('FirstNameSearch').value + "%"
     this.Resultl_name = this.ResultmyformSearch.get('LastNameSearch').value + "%"
-    this.Resultstatus = this.ResultmyformSearch.get('StatusSearch').value
+    this.Resultstatus = this.ResultmyformSearch.get('ResultStatusSearch').value
     this.ResultregNo = this.ResultmyformSearch.get('RegNoSearch').value || "0"
 
     this.GetResultdetail();
@@ -761,7 +1288,7 @@ export class InvestigationListComponent {
   }
 
   Resultgetfilterdata() {
-    debugger
+    // debugger
     this.ResultgridConfig = {
       apiUrl: "LabPatientRegistration/LabResultList",
       columnsList: this.Resultallcolumns,
@@ -777,8 +1304,11 @@ export class InvestigationListComponent {
         { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
-    this.Resultgrid.gridConfig = this.ResultgridConfig;
-    this.Resultgrid.bindGridData();
+    setTimeout(() => {
+      this.Resultgrid.gridConfig = this.ResultgridConfig;
+      this.Resultgrid.bindGridData();
+    }, 100);
+    this.bindParentGridData();
   }
 
 
@@ -796,19 +1326,19 @@ export class InvestigationListComponent {
     this.ResultonChangeFirst();
   }
 
-  onSampleCollSave(row: any = null) {
-    const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
-      {
-        // maxWidth: "75vw",
-        maxHeight: '75vh',
-        width: '70%',
-        data: { row: row, type: 'Lab' }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-      this.getSelectedRow(event);
-    });
-  }
+  // onSampleCollSave(row: any = null) {
+  //   const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
+  //     {
+  //       // maxWidth: "75vw",
+  //       maxHeight: '75vh',
+  //       width: '70%',
+  //       data: { row: row, type: 'Lab' }
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.grid.bindGridData();
+  //     this.getSelectedRow(event);
+  //   });
+  // }
 
   chkresultentry(contact, flag) {
     // debugger
@@ -868,6 +1398,7 @@ export class InvestigationListComponent {
           dialogRef.afterClosed().subscribe(result => {
             this.Resultgrid.bindGridData();
             this.getSelectedRow(event);
+            this.bindParentGridData();
           });
         }, 100);
         return;
@@ -882,12 +1413,14 @@ export class InvestigationListComponent {
           width: '96%',
           data: {
             data: contact,
-            verifyCheck: false
+            verifyCheck: false,
+            viewCheck: false,
           }
         });
 
       dialogRef.afterClosed().subscribe(result => {
         this.Resultgrid.bindGridData();
+        this.bindParentGridData();
       });
       return;
     }
@@ -944,6 +1477,7 @@ export class InvestigationListComponent {
         dialogRef.afterClosed().subscribe(result => {
           this.Resultgrid.bindGridData();
           this.getSelectedRow(event);
+          this.bindParentGridData();
         });
       }, 100);
       return;
@@ -1015,6 +1549,7 @@ export class InvestigationListComponent {
   }
 
   viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
+    this.OnPrintReportLogSave('Lab Print', contact) // log save
 
     setTimeout(() => {
       const param = {
@@ -1047,7 +1582,6 @@ export class InvestigationListComponent {
       });
     }, 100);
   }
-
 
   getPrint(contact) {
     console.log(contact)
@@ -1097,10 +1631,44 @@ export class InvestigationListComponent {
   }
 
   CompletdFlag = 1
+  selectedItem: any;
+
+  PrintresultentryTop(row: any = null) {
+    debugger
+    console.log(row);
+    let pathologyDelete = [];
+
+    this.selectedItem = this.selection.selected[0];
+    this.OnPrintReportLogSave('Lab Print', this.selectedItem)  // log save
+
+    this.selection.selected.forEach((element) => {
+      pathologyDelete.push({ pathReportId: element.pathReportID });
+    });
+    if (this.selectedItem.isCompleted)
+      this.CompletdFlag = 1
+    else
+      this.CompletdFlag = 0
+
+    pathologyDelete.push({ pathReportId: this.selectedItem.pathReportID });
+
+    const submitData = {
+      pathPrintResultEntry: pathologyDelete
+    };
+
+    console.log(submitData);
+    if (this.CompletdFlag) {
+      this._InvestListService.PathPrintResultentryInsert(submitData).subscribe(res => {
+        if (res) {
+          this.viewgetPathologyTestReportPdf(row)
+        }
+      });
+    }
+  }
 
   Printresultentry(row: any = null) {
     // debugger
     console.log(row);
+    this.OnPrintReportLogSave('Lab Print', row) // log save
     let pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
@@ -1156,7 +1724,32 @@ export class InvestigationListComponent {
 
   }
 
+  PrintresultentrywithheaderTop(row: any = null) {
+    debugger
+    let pathologyDelete = [];
+
+    this.selectedItem = this.selection.selected[0];
+    this.OnPrintReportLogSave('Lab Print', this.selectedItem) // log save
+
+    this.selection.selected.forEach((element) => {
+      pathologyDelete.push({ pathReportId: element.pathReportID });
+    });
+
+    const submitData = {
+      pathPrintResultEntry: pathologyDelete
+    };
+
+    console.log(submitData);
+
+    this._InvestListService.PathPrintResultentryInsert(submitData).subscribe(res => {
+      if (res) {
+        this.viewgetPathologyTestReportwithheaderPdf(row)
+      }
+    });
+  }
+
   Printresultentrywithheader(row: any = null) {
+    this.OnPrintReportLogSave('Lab Print', row) // log save
     let pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
@@ -1243,6 +1836,7 @@ export class InvestigationListComponent {
       });
 
     dialogRef1.afterClosed().subscribe(result => {
+      this.bindParentGridData();
     });
   }
 
@@ -1438,7 +2032,7 @@ export class InvestigationListComponent {
 
   onClear() {
     this.ResultmyformSearch.get('RegNoSearch').setValue("0");
-    this.ResultmyformSearch.get('StatusSearch').setValue("0");
+    this.ResultmyformSearch.get('ResultStatusSearch').setValue("0");
     this.ResultmyformSearch.get('PatientTypeSearch').setValue("3");
   }
 
@@ -1467,7 +2061,6 @@ export class InvestigationListComponent {
   private whatsappOverlayRef: OverlayRef | null = null;
   private hoverTimeout: any = null;
   private patientCloseTimeout: any = null;
-  private doctorCloseTimeout: any = null;
 
   openEmailDetailsPopover(event: MouseEvent, patientData: any) {
     event.stopPropagation();
@@ -1780,26 +2373,9 @@ export class InvestigationListComponent {
   // vOPIPId = 0;
   Category = '%'
   autocompleteModeCategoryId: string = "PathCategory";
-  // page: PageNames = PageNames.PATIENT;
-  // pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
-
-  // @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  // dataSource = new MatTableDataSource<PatientList>();
-  // dataSource1 = new MatTableDataSource<SampleList>();
-  // resultSource = new MatTableDataSource<SampleList>();
-
-  // UnitId: any = this._loggedService.currentUserValue.user.unitId;
-  // isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
 
   @ViewChild('Approvalgrid', { static: false }) grid3: AirmidTableComponent;
   @ViewChild('ApprovalactionButtonTemplate') ApprovalactionButtonTemplate!: TemplateRef<any>;
-
-  // IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
-
-  // fromdate = this.ApprovalfromDate ? this.datePipe.transform(this.fromDate, 'MM/dd/yyyy') : "";
-  // todate = this.ApprovaltoDate ? this.datePipe.transform(this.toDate, 'MM/dd/yyyy') : "";
 
   Approvalallcolumns = [
 
@@ -1833,13 +2409,12 @@ export class InvestigationListComponent {
   Approvalstatus: any = "0"
   // opipType: any = "3";
   ApprovalonChangeFirst() {
-    this.dataSource1.data = [];
 
     this.ApprovalfromDate = this.datePipe.transform(this.ApprovalmyformSearch.get('start').value, 'MM/dd/yyyy')
     this.ApprovaltoDate = this.datePipe.transform(this.ApprovalmyformSearch.get('end').value, 'MM/dd/yyyy')
     // this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
     // this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
-    this.Approvalstatus = this.ApprovalmyformSearch.get('StatusSearch').value || 0
+    this.Approvalstatus = this.ApprovalmyformSearch.get('ApprovalStatusSearch').value || 0
     // this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
 
     this.GetApprovaldetail();
@@ -1871,15 +2446,15 @@ export class InvestigationListComponent {
 
   ApprovalonClear() {
     this.ApprovalmyformSearch.get('RegNoSearch').setValue("0");
-    this.ApprovalmyformSearch.get('StatusSearch').setValue("0");
+    this.ApprovalmyformSearch.get('ApprovalStatusSearch').setValue("0");
     this.ApprovalmyformSearch.get('PatientTypeSearch').setValue("3");
   }
 
   ApprovaldataSource = new MatTableDataSource<PatientList>();
   GetApprovaldetail() {
 
-    this.ApprovalfromDate = this.datePipe.transform(this.myformSearch.get('start').value, 'MM/dd/yyyy')
-    this.ApprovaltoDate = this.datePipe.transform(this.myformSearch.get('end').value, 'MM/dd/yyyy')
+    this.ApprovalfromDate = this.datePipe.transform(this.ApprovalmyformSearch.get('start').value, 'MM/dd/yyyy')
+    this.ApprovaltoDate = this.datePipe.transform(this.ApprovalmyformSearch.get('end').value, 'MM/dd/yyyy')
     this.ApprovalVtotalcount = 0;
     this.ApprovalVCompletedcount = 0;
     this.ApprovalVpendingcount = 0;
@@ -1979,11 +2554,13 @@ export class InvestigationListComponent {
               RIdData: data,
               patientdata: this.reportPrintObj,
               verifyCheck: true,
+              viewCheck: false,
               sampleNo: contact.sampleNo
             }
           });
         dialogRef.afterClosed().subscribe(result => {
           this.grid3.bindGridData();
+          this.bindParentGridData();
         });
       }, 100);
       return;
@@ -2031,16 +2608,402 @@ export class InvestigationListComponent {
             width: '96%',
             data: {
               data: contact,
-              verifyCheck: true
+              verifyCheck: true,
+              viewCheck: false,
             }
           });
 
         dialogRef.afterClosed().subscribe(result => {
           this.grid3.bindGridData();
+          this.bindParentGridData();
         });
         return;
       }, 100);
       return;
     }
+  }
+
+  //////////// Print List //////////////
+
+  PrintfromDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
+  PrinttoDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
+  @ViewChild('Printgrid', { static: false }) grid4: AirmidTableComponent;
+  @ViewChild('printactionButtonTemplate') printactionButtonTemplate!: TemplateRef<any>;
+  PrintmyformSearch: FormGroup;
+  reportlogFormGroup: FormGroup
+
+  createReportlogForm(): FormGroup {
+    return this.formBuilder.group({
+      logId: [0],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opiptype: [4],
+      logTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      logTypeName: ['', [Validators.required]]
+    });
+  }
+
+  Printallcolumns = [
+
+    { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "SampleCollectionTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    {
+      heading: "Action", key: "Printaction", align: "right", sticky: true, type: gridColumnTypes.template,
+      template: this.printactionButtonTemplate  // Assign ng-template to the column
+    }
+  ];
+
+  PrintgridConfig: gridModel = {
+    // permissionCode: permissionCodes.ExternalInvestigation,
+    apiUrl: "LabApproval/LabResultCompletedList",
+    columnsList: this.Printallcolumns,
+    sortField: "PathTestID",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "From_Dt", fieldValue: this.PrintfromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.PrinttoDate, opType: OperatorComparer.Equals },
+      { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
+      { fieldName: "ApprovalStatus", fieldValue: "2", opType: OperatorComparer.Equals },
+    ]
+  }
+
+  PrintonChangeFirst() {
+    this.PrintfromDate = this.datePipe.transform(this.PrintmyformSearch.get('start').value, 'MM/dd/yyyy')
+    this.PrinttoDate = this.datePipe.transform(this.PrintmyformSearch.get('end').value, 'MM/dd/yyyy')
+
+    this.Printgetfilterdata();
+  }
+
+  Printgetfilterdata() {
+
+    this.PrintgridConfig = {
+      apiUrl: "LabApproval/LabResultCompletedList",
+      columnsList: this.Printallcolumns,
+      sortField: "PathTestID",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "From_Dt", fieldValue: this.PrintfromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.PrinttoDate, opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
+        { fieldName: "ApprovalStatus", fieldValue: "2", opType: OperatorComparer.Equals }
+      ]
+    }
+    this.grid4.gridConfig = this.PrintgridConfig;
+    this.grid4.bindGridData();
+  }
+
+  chkPrintViewResultVerify(contact, flag) {
+    // debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+    this.reportPrintObj = contact
+
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 0) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
+
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+        const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
+          {
+            maxWidth: "96vw",
+            height: "96vh",
+            width: "96%",
+            data: {
+              RIdData: data,
+              patientdata: this.reportPrintObj,
+              verifyCheck: false,
+              viewCheck: true,
+              sampleNo: contact.sampleNo
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+          this.grid3.bindGridData();
+          this.bindParentGridData();
+        });
+      }, 100);
+      return;
+    }
+  }
+
+  chkPrintViewTemplateVerify(contact, flag) {
+    // debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 1) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
+
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+        const dialogRef = this._matDialog.open(NewLabtemplateComponent,
+          {
+            maxWidth: "75vw",
+            height: '95%',
+            width: '96%',
+            data: {
+              data: contact,
+              verifyCheck: false,
+              viewCheck: true,
+            }
+          });
+
+        dialogRef.afterClosed().subscribe(result => {
+          this.grid3.bindGridData();
+          this.bindParentGridData();
+        });
+        return;
+      }, 100);
+      return;
+    }
+  }
+
+  onViewReport(element: any) {
+    // Condition check
+    if (element.isCompleted && !element.isVerifyid) {
+      this.OnPrintReportLogSave('Lab View', element);
+
+      if (element.isTemplateTest == 1) {
+        this.chkPrintViewTemplateVerify(element, true);
+      } else {
+        this.chkPrintViewResultVerify(element, true);
+      }
+    }
+  }
+
+  OnPrintReportLogSave(type: any, data: any) {
+    // debugger
+    const src = Array.isArray(data) ? data[0] : data;
+    const opipid = src?.opdipdId ?? src?.opdIpdId ?? src?.opdipdId;
+    if (type == 'Lab Print') {
+      this.reportlogFormGroup.get('logTypeId').setValue(1);
+      this.reportlogFormGroup.get('logTypeName').setValue('Lab Print');
+    }
+    if (type == 'Lab View') {
+      this.reportlogFormGroup.get('logTypeId').setValue(2);
+      this.reportlogFormGroup.get('logTypeName').setValue('Lab View');
+    }
+    this.reportlogFormGroup.get('opipid').setValue(opipid);
+
+    if (!this.reportlogFormGroup.invalid) {
+      console.log(this.reportlogFormGroup.value);
+
+      this._InvestListService.getReportLog(this.reportlogFormGroup.value).subscribe(() => {
+        // this.GetSampleCollectiondetail();
+      });
+    } else {
+      let invalidFields = [];
+      if (this.reportlogFormGroup.invalid) {
+        for (const controlName in this.reportlogFormGroup.controls) {
+          const control = this.reportlogFormGroup.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Report Data : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`Report Data: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      }
+    }
+  }
+
+  //////////// Print Completed List //////////////
+
+  PrintCompletedmyformSearch: FormGroup;
+  PrintCompletedfromDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
+  PrintCompletedtoDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
+  PrintCompletedf_name: any = "%"
+  PrintCompletedregNo: any = "0"
+  PrintCompletedl_name: any = "%"
+  @ViewChild('PrintCompgrid', { static: false }) grid5: AirmidTableComponent;
+
+  printComallcolumns = [
+    { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA',type:8 },
+    { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "RefDoctor Name", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "SampleCollectionTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', type:8 },
+    // {
+    //   heading: "Action", key: "Approvalaction", align: "right", sticky: true, type: gridColumnTypes.template,
+    //   template: this.ApprovalactionButtonTemplate  // Assign ng-template to the column
+    // }
+  ];
+
+  printComgridConfig: gridModel = {
+    // permissionCode: permissionCodes.ExternalInvestigation,
+    apiUrl: "LabPatientRegistration/LabResultPrintedList",
+    columnsList: this.printComallcolumns,
+    sortField: "LabPatientId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "F_Name ", fieldValue: this.PrintCompletedf_name, opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: this.PrintCompletedl_name, opType: OperatorComparer.StartsWith },
+      { fieldName: "Reg_No", fieldValue: this.PrintCompletedregNo, opType: OperatorComparer.Equals },
+      { fieldName: "From_Dt", fieldValue: this.PrintCompletedfromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.PrintCompletedtoDate, opType: OperatorComparer.Equals },
+    ]
+  }
+
+  printComponChangeFirst() {
+
+    this.PrintCompletedfromDate = this.datePipe.transform(this.PrintCompletedmyformSearch.get('start').value, 'MM/dd/yyyy')
+    this.PrintCompletedtoDate = this.datePipe.transform(this.PrintCompletedmyformSearch.get('end').value, 'MM/dd/yyyy')
+    this.PrintCompletedf_name = this.PrintCompletedmyformSearch.get('FirstNameSearch').value + "%"
+    this.PrintCompletedl_name = this.PrintCompletedmyformSearch.get('LastNameSearch').value + "%"
+    this.PrintCompletedregNo = this.PrintCompletedmyformSearch.get('RegNo').value || "0"
+
+    this.printCompgetfilterdata();
+  }
+
+  printCompgetfilterdata() {
+
+    this.printComgridConfig = {
+      apiUrl: "LabPatientRegistration/LabResultPrintedList",
+      columnsList: this.printComallcolumns,
+      sortField: "LabPatientId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name ", fieldValue: this.PrintCompletedf_name, opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: this.PrintCompletedl_name, opType: OperatorComparer.StartsWith },
+        { fieldName: "Reg_No", fieldValue: this.PrintCompletedregNo, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.PrintCompletedfromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.PrintCompletedtoDate, opType: OperatorComparer.Equals },
+      ]
+    }
+    setTimeout(() => {
+      this.grid5.gridConfig = this.printComgridConfig;
+      this.grid5.bindGridData();
+    }, 100);
+  }
+
+  printComClearfilter(event) {
+    console.log(event)
+    if (event == 'RegNo') {
+      this.PrintCompletedmyformSearch.get('RegNo').setValue("")
+      this.PrintCompletedregNo = "0"
+    }
+
+    if (event == 'FirstNameSearch')
+      this.PrintCompletedmyformSearch.get('FirstNameSearch').setValue("")
+
+    if (event == 'LastNameSearch')
+      this.PrintCompletedmyformSearch.get('LastNameSearch').setValue("")
+
+    this.printComponChangeFirst();
+  }
+}
+
+export class ReceSampleList {
+  VADate: Date;
+  VATime: Date;
+  PathTestID: Number;
+  ServiceName: String;
+  IsSampleCollection: boolean;
+  isSampleCollection: any;
+  SampleCollectionTime: Date;
+  PathReportID: any;
+  SampleNo: any;
+  RegNo: any;
+  pathReportID: any;
+  sampleNo: any;
+  isApprovedByCamp: any;
+  pBillNo: any;
+  pathDate: any;
+  sampleCollectionTime: any;
+  labRequestNo: any;
+  patientName: any;
+  genderName: any;
+  mobileNo: any;
+  serviceName: any;
+  outSourceLabName: any;
+  SampleReceviedDateTime: any;
+  userName: any;
+  isSampleReceivedStatus: any;
+
+  constructor(ReceSampleList) {
+    this.VADate = ReceSampleList.VADate || '';
+    this.VATime = ReceSampleList.VATime || '';
+    this.PathTestID = ReceSampleList.PathTestID || 0;
+    this.ServiceName = ReceSampleList.ServiceName || '';
+    this.IsSampleCollection = ReceSampleList.IsSampleCollection || 0;
+    this.isSampleCollection = ReceSampleList.isSampleCollection || 0;
+    this.SampleCollectionTime = ReceSampleList.SampleCollectionTime || '';
+    this.PathReportID = ReceSampleList.PathReportID || 0;
+    this.SampleNo = ReceSampleList.SampleNo || 0;
+    this.RegNo = ReceSampleList.RegNo || 0;
+    this.pathReportID = ReceSampleList.pathReportID || 0;
+    this.sampleNo = ReceSampleList.sampleNo || 0;
+    this.isApprovedByCamp = ReceSampleList.isApprovedByCamp || 0;
+    this.pBillNo = ReceSampleList.pBillNo || 0;
+    this.pathDate = ReceSampleList.pathDate || 0;
+    this.sampleCollectionTime = ReceSampleList.sampleCollectionTime || 0;
+    this.labRequestNo = ReceSampleList.labRequestNo || 0;
+    this.patientName = ReceSampleList.patientName || 0;
+    this.genderName = ReceSampleList.genderName || 0;
+    this.mobileNo = ReceSampleList.mobileNo || 0;
+    this.serviceName = ReceSampleList.serviceName || 0;
+    this.outSourceLabName = ReceSampleList.outSourceLabName || 0;
+    this.SampleReceviedDateTime = ReceSampleList.SampleReceviedDateTime || 0;
+    this.userName = ReceSampleList.userName || 0;
+    this.isSampleReceivedStatus = ReceSampleList.isSampleReceivedStatus || 0
   }
 }

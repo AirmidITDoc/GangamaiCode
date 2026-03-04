@@ -91,7 +91,7 @@ app-appointment-list {
 .status-completed {
   padding: 2px 12px;
   border-radius: 12px;
-  background-color: #d4edda;
+  background-color: #9feeb2;
   color: #155724;
   font-weight: 500;
   font-size: 12px;
@@ -224,5 +224,15 @@ tr.example-element-row:not(.example-expanded-row):active {
       padding: 0 8px !important;
       font-size: 11px !important;
     }
+  }
+}
+
+/* Fix button font-size for Clear & Search buttons */
+.action-button-container {
+  .btn-xs {
+    font-size: 13px !important;
+    line-height: 30px;
+    min-height: 30px;
+    padding: 0 12px;
   }
 }

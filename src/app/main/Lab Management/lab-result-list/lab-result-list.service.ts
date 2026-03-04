@@ -241,4 +241,7 @@ export class LabResultListService {
   public getReportHtml(Param) {
     return this._httpClient1.PostData("Report/get-report-html", Param);
   }
+  public getReportLog(employee) {
+    return this._httpClient1.PostData("ReportLog", employee)
+  }
 }

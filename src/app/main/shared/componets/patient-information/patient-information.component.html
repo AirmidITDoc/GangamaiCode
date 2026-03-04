@@ -1,0 +1,83 @@
+<div class="patient-info-container">
+    <ng-container *ngIf="patientName || uhidNo || ipdNo; else noPatient">
+        <div class="patient-info-chip" *ngIf="uhidNo">
+            <mat-icon>account_box</mat-icon>
+            <span class="patient-col-key">UHID No:</span>
+            <span class="patient-col-value">{{uhidNo}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="patientName">
+            <mat-icon>person</mat-icon>
+            <span class="patient-col-key">Patient Name:</span>
+            <span class="patient-col-value">{{patientName}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="doctorName">
+            <mat-icon>local_hospital</mat-icon>
+            <span class="patient-col-key">Doctor Name:</span>
+            <span class="patient-col-value">{{doctorName}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="departmentName">
+            <mat-icon>domain</mat-icon>
+            <span class="patient-col-key">Department:</span>
+            <span class="patient-col-value">{{departmentName}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="doa">
+            <mat-icon>event</mat-icon>
+            <span class="patient-col-key">DOA | Time:</span>
+            <span class="patient-col-value">{{doa | date:'dd/MM/yyyy'}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="ipdNo">
+            <mat-icon>assignment</mat-icon>
+            <span class="patient-col-key">IPD No:</span>
+            <span class="patient-col-value">{{ipdNo}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="ageString">
+            <mat-icon>wc</mat-icon>
+            <span class="patient-col-key">Age | Sex:</span>
+            <span class="patient-col-value">{{ageString}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="refDocName">
+            <mat-icon>person_add</mat-icon>
+            <span class="patient-col-key">Ref-Doctor Name:</span>
+            <span class="patient-col-value">{{refDocName}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="wardBedName">
+            <mat-icon>hotel</mat-icon>
+            <span class="patient-col-key">Ward | Bed Name:</span>
+            <span class="patient-col-value">{{wardBedName}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="patientType">
+            <mat-icon>category</mat-icon>
+            <span class="patient-col-key">Patient Type:</span>
+            <span class="patient-col-value">{{patientType}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="tariffName">
+            <mat-icon>receipt</mat-icon>
+            <span class="patient-col-key">Tarrif Name:</span>
+            <span class="patient-col-value">{{tariffName}}</span>
+        </div>
+
+        <div class="patient-info-chip" *ngIf="companyName">
+            <mat-icon>business</mat-icon>
+            <span class="patient-col-key">Company Name:</span>
+            <span class="patient-col-value" style="color: orange;">{{companyName}}</span>
+        </div>
+    </ng-container>
+
+    <ng-template #noPatient>
+        <div style="width: 100%; text-align: center; padding: 4px 0; font-style: italic;">
+            <mat-icon
+                style="vertical-align: middle; margin-right: 6px; font-size: 18px; width: 18px; height: 18px;">info</mat-icon>
+            <span style="font-weight: 500; font-size: 14px;">Please Select a Patient</span>
+        </div>
+    </ng-template>
+</div>
