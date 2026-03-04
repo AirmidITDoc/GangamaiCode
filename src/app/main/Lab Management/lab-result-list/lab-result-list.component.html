@@ -38,7 +38,7 @@
                     </div>
 
                 </div>
-                <form [formGroup]="myformSearch" class="mat-error-fix">
+                <form [formGroup]="myformSearch" class="mat-error-fix resize-form-fields">
                     <div fxLayout="column" style="padding-top:5px ;">
                         <div class="layout-card-container" style="height: 60px;">
 
@@ -100,7 +100,6 @@
                                         <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
                                             (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
                                             [(ngModel)]="vStatusSearch">
-                                            <mat-label><b>Status:</b></mat-label>
                                             <div fxLayout="row">
                                                 <mat-radio-button value='0'>Pending</mat-radio-button>
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
