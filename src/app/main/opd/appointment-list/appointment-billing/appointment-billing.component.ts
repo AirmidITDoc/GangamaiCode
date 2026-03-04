@@ -2435,6 +2435,7 @@ export class ChargesList {
     ConcessionPercentage: any = 0;
     userName: any;
     BalanceAmt: any;
+    Doctorflag: any;
     constructor(ChargesList) {
         this.ChargesId = ChargesList.ChargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
@@ -2488,6 +2489,9 @@ export class ChargesList {
         this.PaymentMode = ChargesList.PaymentMode || 0;
         this.TokenNo = ChargesList.TokenNo || 0;
         this.RefundAmt = ChargesList.RefundAmt || 0;
+          this.Doctorflag = ChargesList.Doctorflag || false;
+
+        
 
     }
 }

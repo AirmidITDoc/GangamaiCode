@@ -79,7 +79,7 @@ const appRoutes: Routes = [
     {
         path: "mrd",
         loadChildren: () =>
-            import("./main/Mrd/mrd.module").then((m) => m.MrdModule),
+            import("./main/Mrd/mrd-routing.module").then((m) => m.MrdRoutingModule),
     },
     {
         path: "nursingstation",
