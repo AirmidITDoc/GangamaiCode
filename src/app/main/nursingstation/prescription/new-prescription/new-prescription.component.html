@@ -7,7 +7,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                    <div class="comman-date">
+                    <div class="comman-date resize-form-fields">
                         <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                     </div>
@@ -25,9 +25,9 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
-                <div fxLayout="column" class="gap-12">
+                <div fxLayout="column" class="gap-0">
                     <!-- Patient Search Section -->
-                    <div class="modal-card-container">
+                    <div class="modal-card-container mb-0 resize-form-fields">
                         <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center">
                             <div class="radio-container">
                                 <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
@@ -47,113 +47,23 @@
                     </div>
 
                     <!-- Patient Info Section -->
-                    <div class="modal-card-container" style="padding: 1px 2px 5px 0px ;">
-                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                                <div class="patient-info-sales my-8">
-                                    <div class="patient-info-title border-bottom pb-2">
-                                        <span class="h1">Patient Information</span>
+                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                <div class="patient-info-sales">
+                                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
                                     </div>
-                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                        fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                fxLayoutAlign="space-between">
-                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">UHID No
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj.regNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Patient Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vPatientName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Doctor Name</span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{registerObj.doctorName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Department</span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{registerObj.departmentName}}</span>
-                                                    </div>
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="6px">
-
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">DOA | Time</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">
-                                                             {{vDOA |date:'dd/MM/YYYY'}}
-                                                             <!-- {{ (vDOA || data.vst_Adm_Date) | date:'dd/MM/yyyy' }} -->
-                                                        </span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">IPD No</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{(registerObj.ipdNo || registerObj.ipdno)}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Age | Sex
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{registerObj.age}}Y|{{registerObj.ageMonth}}M|{{registerObj.ageDay}}D
-                                                            | {{registerObj.genderName}}</span>
-                                                    </div>
-
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Ref-Doctor Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vRefDocName}}</span>
-                                                    </div>
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Ward | Bed Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vRoomName}} |
-                                                            {{vBedName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Patient Type
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vPatientType}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Tarrif Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{vTariffName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Company Name</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value"
-                                                            style="color: orange;">{{vCompanyName}}</span>
-                                                    </div>
-
-                                                    <!-- <div class="patient-col" title={{vCompanyName}}>
-                                                                    <span class="patient-col-key">Company Name</span>
-                                                                    <span>:</span>
-                                                                    <span class="patient-col-value" style="color: orange;" tooltip>
-                                                                        {{ vCompanyName?.split(' ').length > 2 ? vCompanyName.split(' ').slice(0, 2).join(' ') + '...' : vCompanyName }}
-                                                                    </span>
-                                                                </div>    -->
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="registerObj?.regNo"
+                                            [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                            [departmentName]="registerObj?.departmentName" [doa]="vDOA"
+                                            [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                            [refDocName]="vRefDocName"
+                                            [wardBedName]="(vRoomName && vBedName) ? (vRoomName + ' | ' + vBedName) : ''"
+                                            [patientType]="vPatientType" [tariffName]="vTariffName"
+                                            [companyName]="vCompanyName"></app-patient-information>
                                     </div>
                                 </div>
                             </mat-card>
@@ -161,16 +71,17 @@
                     </div>
 
                     <!-- Store and Ward Dropdown -->
-                    <div class="modal-card-container" style="padding:1px 2px 5px 0px ;">
+                    <div class="modal-card-container mt-2" style="padding:1px 2px 5px 0px ;">
                         <mat-card style="padding: 5px;">
-                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8 resize-form-fields"
+                                fxLayoutAlign="start start">
                                 <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="myForm"
                                     [validations]="getValidationMessages().StoreId" [value]="vstoreId" fxFlex="50%"
                                     [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
                                 </airmid-dropdown>
                                 <airmid-dropdown label="Ward Name" formControlName="WardName" [formGroup]="myForm"
-                                    [validations]="getValidationMessages().WardName" [value]="data?.wardId"
-                                    fxFlex="50%" [mode]="autocompleteward">
+                                    [validations]="getValidationMessages().WardName" [value]="data?.wardId" fxFlex="50%"
+                                    [mode]="autocompleteward">
                                 </airmid-dropdown>
                             </div>
                         </mat-card>
@@ -179,10 +90,11 @@
             </form>
 
             <!-- Item Entry and Table Section -->
-            <div class="modal-card-container">
+            <div class="modal-card-container mt-2">
                 <mat-card>
                     <form [formGroup]="ItemForm">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8 resize-form-fields"
+                            fxLayoutAlign="start start">
                             <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required
                                 #itemAutocomplete formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
                                 (onClearSelection)="ItemFromReset()"

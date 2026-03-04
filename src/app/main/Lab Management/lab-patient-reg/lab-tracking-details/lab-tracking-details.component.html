@@ -13,25 +13,24 @@
             </button>
         </div>
     </mat-toolbar>
-
-    <!-- <div class="tracker-container">
-        <div class="tracker-step" *ngFor="let step of trackerList; let i = index"
-            [class.completed]="i < trackerList.length - 1" [class.active]="i === trackerList.length - 1">
-            <div class="circle">
-                <span *ngIf="i < trackerList.length - 1">✔</span>
-                <span *ngIf="i === trackerList.length - 1">{{ i + 1 }}</span>
-            </div>
-
-            <div class="content">
-                <h4>{{ step.Lbl }}</h4>
-                <p>
-                    {{ step.RegDate | date:'dd MMM yyyy' }} <br>
-                    {{ step.RegTime | date:'hh:mm a' }}
-                </p>
-            </div>
+    <div class="modal-card-container mt-0" style="margin-top: -4px;">
+        <div fxFlex.gt-sm="100%" fxFlex>
+            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                <div class="patient-info-sales">
+                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                    </div>
+                    <div class="Ipd-patient-info w-100-p">
+                        <app-patient-information [uhidNo]="registerObj?.labRequestNo"
+                            [patientName]="registerObj?.patientName"
+                            [ageString]="(registerObj?.age !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                            [refDocName]="registerObj?.refDoctorName" [patientType]="registerObj?.patientType">
+                        </app-patient-information>
+                    </div>
+                </div>
+            </mat-card>
         </div>
-    </div> -->
-
+    </div>
     <div class="content">
 
         <div class="center p-12" fxFlexAlign="start center">
@@ -44,33 +43,24 @@
                     <div class="timeline-icon">
                         ✔
                     </div>
-
                     <!-- CARD -->
                     <div class="timeline-card">
                         <div class="title">
                             <h3>{{item.Lbl}}</h3>
                         </div>
                         <div class="header">
-                            <!-- <img src="assets/user.png" class="avatar" /> -->
-                             <mat-icon class="avatar">person</mat-icon>
+                            <mat-icon class="avatar">person</mat-icon>
                             <div>
                                 <b>{{ item.UserName }}</b>
                                 <div class="time">{{ item.RegTime | date:'dd/MM/yyyy hh:mm a'}}</div>
+                                <div class="test-status-block">{{ item.TestStatus }}</div>
                             </div>
-                        </div>
-
-                        <div class="body">
-                            <p><b>Patient:</b> {{ item.PatientName }}</p>
-                            <!-- <p><b>Category</b> {{ item.category }}</p>
-                            <p><b>SubCategory</b> {{ item.subCategory }}</p> -->
-                            <p><b>Current:</b> {{ item.CurrentTask }}</p>
-                            <p><b>Modified:</b> {{ item.Modified }}</p>
-                            <p><b>Remarks:</b> {{ item.Comments || '-' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 </div>

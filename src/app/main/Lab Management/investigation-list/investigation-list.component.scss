@@ -94,7 +94,7 @@
   .status-completed {
     padding: 2px 12px;
     border-radius: 12px;
-    background-color: #d4edda;
+    background-color: #9feeb2;
     color: #155724;
     font-weight: 500;
     font-size: 12px;
@@ -124,6 +124,15 @@
     white-space: pre-line;
   }
 
+.tat-badge {
+  background: #fff3cd;   /* light yellow */
+  color: #856404;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
   .patient-link {
     font-size: 14px;
     line-height: 18px;
@@ -142,3 +151,149 @@
 }
 
 // end .investigation-list-wrapper
+
+
+.multiline-tooltip {
+  white-space: pre-line;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: #f5f5f5;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+/* === Accordion height fix: table takes only required space === */
+
+/* Override the global .airmid-table height:100% for the accordion parent table */
+.airmid-table-container .airmid-table.accordion-parent-table {
+  height: auto !important;
+  min-height: auto !important;
+}
+
+/* Ensure the table container does not stretch to fill viewport */
+.airmid-table-container.margin-top-paginator {
+  height: auto !important;
+  min-height: auto !important;
+  flex: 0 1 auto !important;
+}
+
+/* Scrollable table area with a max-height so it doesn't overflow the page */
+.airmid-table-container.margin-top-paginator .airmid-table.accordion-parent-table {
+  max-height: 65vh;
+  overflow: auto;
+}
+
+/* The expanded detail row should also size to content */
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+/* Compact action bar above the child table */
+.accordion-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+
+  .mat-raised-button,
+  .mat-mdc-raised-button {
+    line-height: 28px !important;
+    min-height: 28px !important;
+    padding: 0 12px !important;
+    font-size: 12px !important;
+  }
+}
+
+.child-accordion-table {
+  width: 100%;
+  height: auto !important;
+  min-height: auto !important;
+
+  .mat-header-cell,
+  .mat-cell,
+  .mat-footer-cell {
+    padding: 0 4px !important;
+  }
+
+  .mat-mdc-header-row {
+    min-height: 34px !important;
+    height: 34px !important;
+  }
+
+  .mat-row,
+  .mat-footer-row {
+    min-height: 36px !important;
+  }
+
+  /* Compact buttons inside the Action header */
+  .accordion-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .mat-raised-button,
+    .mat-mdc-raised-button {
+      line-height: 24px !important;
+      min-height: 24px !important;
+      padding: 0 8px !important;
+      font-size: 11px !important;
+    }
+  }
+}
+
+.teststatus-circle {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.teststatus {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.teststatus.total {
+  background-color: #fbc02d; /* yellow */
+}
+
+.teststatus.completed {
+  background-color: #43a047; /* green */
+}
+
+.teststatus.pending {
+  background-color: #e53935; /* red */
+}
+
+.patient-name {
+  text-align: center;
+}

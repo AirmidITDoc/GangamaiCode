@@ -110,6 +110,11 @@
                                             [validations]="getValidationMessages().Qty" [maxLength]="10" #qtyTextboxRef  [min]="0">
                                         </airmid-textbox>
 
+                                        <airmid-textbox fxFlex="5%" label="FreeQty" formControlName="FreeQty"
+                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
+                                            [validations]="getValidationMessages().FreeQty" [maxLength]="10"   [min]="0">
+                                        </airmid-textbox>
+
 
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
                                             [formGroup]="userFormGroup" placeholder="MRP" type="number"
@@ -214,6 +219,22 @@
                                 </mat-cell>
                             </ng-container>
 
+
+                             <ng-container matColumnDef="FreeQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-100">FreeQty</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                     {{contact.FreeQty}}
+                                </mat-cell>
+                            </ng-container>
+
+                              <ng-container matColumnDef="TotalQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-100">Total Qty</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                     {{contact.TotalQty}}
+                                </mat-cell>
+                            </ng-container> 
 
                             <ng-container matColumnDef="MRP">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"

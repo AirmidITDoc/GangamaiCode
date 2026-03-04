@@ -181,7 +181,7 @@
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
                         <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
-                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
+                            [(ngModel)]="gridConfig.filters[8].fieldValue" (selectionChange)="ListView1($event)"
                             [formGroup]="myformSearch" [mode]="autocompleteModeunit"></airmid-dropdown>
 
                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"

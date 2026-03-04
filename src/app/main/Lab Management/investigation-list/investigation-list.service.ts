@@ -33,7 +33,7 @@ export class InvestigationListService {
       // BillNo:[''],
       // BillDate:[''],
       PatientTypeSearch: ['5'],
-      StatusSearch: ['2'],
+      SampleStatusSearch: ['2'],
       PBillNo: '',
       CompanyId: 0,
       Istype: ['2'],
@@ -52,6 +52,32 @@ export class InvestigationListService {
     return this._httpClient1.PostData("Report/get-report-html", Param);
   }
 
+  /////////// sample receive ////////////
+  createReceiveSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      RegNo: [],
+      FirstName: ['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      ]],
+      LastName: ['', [
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+      ]],
+      ReceiveStatusSearch: ['2'],
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+      PBillNo: '',
+      CompanyId: 0,
+      UnitId: [this.accountService.currentUserValue.user.unitId]
+    });
+  }
+
+  public getSampleRecivedlist(employee) {
+    return this._httpClient1.PostData("LabSampleRecived/LabSampleRecivedList", employee)
+  }
+   public UpdateSampleRecived(employee) {
+    return this._httpClient1.PutData("LabSampleRecived/LabSampleRecivedUpdate", employee);
+  }
+
   // Result entry api ///////////
   ResultmyformSearch: FormGroup;
 
@@ -68,7 +94,7 @@ export class InvestigationListService {
       ]],
 
       PatientTypeSearch: ['3'],
-      StatusSearch: ['0'],
+      ResultStatusSearch: ['0'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
@@ -92,11 +118,39 @@ export class InvestigationListService {
       ]],
 
       PatientTypeSearch: ['3'],
-      StatusSearch: ['0'],
+      ApprovalStatusSearch: ['0'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       TestStatusSearch: ['1'],
+      UnitId: [this.accountService.currentUserValue.user.unitId],
+      // CategoryId:0
+    });
+  }
+
+  ////// Print 
+  PrintcreateSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
+    });
+  }
+
+  ///// Print Completed
+    ////// Approval 
+  printCompletedSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      RegNo: [],
+      FirstNameSearch: ['', [
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z () ]*$')
+      ]],
+      LastNameSearch: ['', [
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z () ]*$')
+      ]],
+      start: [new Date().toISOString()],
+      end: [new Date().toISOString()],
       UnitId: [this.accountService.currentUserValue.user.unitId],
       // CategoryId:0
     });
@@ -117,6 +171,10 @@ export class InvestigationListService {
   }
   public PathResultentryDetailList(employee) {
     return this._httpClient1.PostData("LabPatientRegistration/LabResultDetailsList", employee);
+  }
+
+  public PathSampleDetailList(employee) {
+    return this._httpClient1.PostData("LabPatientRegistration/LabSampleCollectionDetailList", employee);
   }
 
   public PathReportverifyMaster(employee) {
@@ -204,7 +262,7 @@ export class InvestigationListService {
   // }
 
   public getReportView(Param) {
-     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+    return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
 
   public PathPrintResultentryInsert(employee) {
@@ -219,6 +277,10 @@ export class InvestigationListService {
     return this._httpClient1.PostData("LabPatientRegistration/LabResultList", employee)
   }
 
+  public getSampleDetlist(employee) {
+    return this._httpClient1.PostData("LabPatientRegistration/LabSampleCollectionList", employee)
+  }
+
   public gettemplatebyService(ServiceId) {
     return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
   }
@@ -231,5 +293,9 @@ export class InvestigationListService {
   public getBillrevenudetailList(param) {
 
     return this._httpClient1.PostData("Branch/UnitBranchWiseRevenueSummary", param)
+  }
+
+  public getReportLog(employee) {
+    return this._httpClient1.PostData("ReportLog", employee)
   }
 }
