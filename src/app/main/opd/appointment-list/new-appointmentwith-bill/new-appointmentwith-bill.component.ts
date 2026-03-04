@@ -28,6 +28,7 @@ import { LabRequest } from 'app/main/Lab Management/lab-patient-reg/lab-patient-
 import { MatSelectChange } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { PrevlabHistoryComponent } from 'app/main/Lab Management/lab-patient-reg/prevlab-history/prevlab-history.component';
 
 @Component({
   selector: 'app-new-appointmentwith-bill',
@@ -46,10 +47,10 @@ export class NewAppointmentwithBillComponent {
   public displayedPrescriptionColumns =
     ['groupName', 'serviceName', 'classRate', 'userName'];
 
- isExpanded2 = false;
+  isExpanded2 = false;
   onlineflag: boolean = false;
-   mode: any;
-abhaForm: FormGroup
+  mode: any;
+  abhaForm: FormGroup
   myForm: FormGroup
   searchFormGroup: FormGroup
   AppointmentBillfinalform: FormGroup
@@ -134,7 +135,7 @@ abhaForm: FormGroup
   selectedPatient: any;
   selectedMobile: any;
   statusMessage: string = 'Processing...';
-vhealthCardNo:any
+  vhealthCardNo: any
   vOPIPId = 0
   regNo = 0;
   PatientName: any;
@@ -175,11 +176,11 @@ vhealthCardNo:any
   TotalPrice: any = 0;
   className = "OPD";
   PacakgeList: any = [];
- doctorOptions: any[] = [];
- HealthCardExpDate: any;
+  doctorOptions: any[] = [];
+  HealthCardExpDate: any;
   isExpanded1 = false; // Defaults to closed
-    isExpanded3 = false;
-vUPINO: any = ""
+  isExpanded3 = false;
+  vUPINO: any = ""
 
   displayedServiceColumns: string[] = [
     'ServiceName',
@@ -208,7 +209,7 @@ vUPINO: any = ""
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
   @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-  
+
 
   constructor(public _AppointmentlistService: AppointmentlistService,
     public _matDialog: MatDialog,
@@ -225,8 +226,8 @@ vUPINO: any = ""
     private router: Router, private apiCaller: ApiCaller,
     private location: Location
   ) {
-     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
- // Check if opened as modal or as standalone page
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+    // Check if opened as modal or as standalone page
     this.isModal = !!this.dialogRef;
   }
 
@@ -243,11 +244,11 @@ vUPINO: any = ""
     this.OPFooterForm = this.CreateOPFooter();
     this.OPFooterForm.markAllAsTouched();
     this.searchForm = this.createbillSearchForm();
-    this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
+    this.VisitFormGroup = this.createVisitdetailForm();
     this.VisitFormGroup.markAllAsTouched();
-this.loadDropdownOptions();
-    this.abhaForm=this._AppointmentlistService.createAbhadetailForm()
-   
+    this.loadDropdownOptions();
+    this.abhaForm = this._AppointmentlistService.createAbhadetailForm()
+
     // this.OPFooterForm = this.CreateOPFooter();
     // this.getServiceList();
 
@@ -300,7 +301,7 @@ this.loadDropdownOptions();
     // if (this.isModal) {
     //   this._matDialog.closeAll();
     // } else {
-      this.router.navigate(['/opd/appointment']);
+    this.router.navigate(['/opd/appointment']);
     // }
   }
 
@@ -427,8 +428,8 @@ this.loadDropdownOptions();
       IsSeniorCitizen: false,
       AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
       // updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-      RegDate: [ this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
-      RegTime: [ this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'), Validators.required],
+      RegDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), Validators.required],
+      RegTime: [this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'), Validators.required],
       Photo: [''],
       PinNo: [''],
 
@@ -462,27 +463,63 @@ this.loadDropdownOptions();
       medTourismResidentialAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
       medTourismOfficeWorkAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
 
-   
+
       // extra field
       IsNRI: [false],
 
-      unitId:[this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-    
+      unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+
       photo: "",
-      doctorId:0,
-      ServiceId:0,
-      patientType:0,
-      patientTypeId:1,
+      doctorId: 0,
+      ServiceId: 0,
+      patientType: 0,
+      patientTypeId: 1,
       // companyId:0,
-      refDocId:0,
-      Comments:'',
+      refDocId: 0,
+      Comments: '',
       emailId: ['', [Validators.email]],
-      PhoneNo:'',
-      IsPathRad:0
+      PhoneNo: '',
+      IsPathRad: 0
     })
   }
 
+  createVisitdetailForm() {
+    return this._formbuilder.group({
 
+      regId: [this.RegId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      visitDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      visitTime: [(new Date()).toISOString()],
+
+
+      PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      RefDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      TariffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+      updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
+      isCancelledBy: 0,
+      isCancelled: false,
+      isCancelledDate: ['1900-01-01'],
+      ClassId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      DepartmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      patientOldNew: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      firstFollowupVisit: 0,
+      AppPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      campId: [0],
+      followupDate: [(new Date()).toISOString()],
+      crossConsulFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      crossConsultantDrId: 0,
+      visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // policyNumber: [0],
+      // policyLimit: [0],
+      // policyValidateDate: [(new Date()).toISOString()],
+      patientTypeId: 1
+    });
+  }
 
   //Footer Form
   CreateOPFooter() {
@@ -493,8 +530,8 @@ this.loadDropdownOptions();
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       paymentType: ['CashPay'],
-      UPINO:'',
-      discountAmt:0
+      UPINO: '',
+      discountAmt: 0
     })
   }
   createTotalChargeForm(): FormGroup {
@@ -696,7 +733,7 @@ this.loadDropdownOptions();
     }
   }
 
-  
+
   // getServiceList() {
   //   let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
   //   // let IsPathRad = this.myForm.get("IsPathRad").value || "1"
@@ -733,8 +770,8 @@ this.loadDropdownOptions();
 
 
   // }
- getSelectedserviceObj(obj) {
-  debugger
+  getSelectedserviceObj(obj) {
+    debugger
     // console.log(obj)
     this.SrvcName1 = obj.serviceName;
     this.serviceId = obj.serviceId;
@@ -788,115 +825,115 @@ this.loadDropdownOptions();
   //   this.getRtevPackageDetList(obj)
   //   this.calculateTotalAmount();
   // }
- 
-   onSaveEntry(row) {
-  debugger
-     let doctorid = 0;
-     const formValue = this.myForm.value
- 
-     const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
-     if (!isDuplicate) {
-       this.onAddCharges(row)
-     }
-     else {
-       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-         toastClass: 'tostr-tost custom-toast-warning',
-       });
-       return;
-     }
-   }
- 
-   updateCalculation(source: 'PER' | 'LIST' = 'LIST') {
-     // 
-     const totalAmt = this.chargeList.reduce(
-       (sum, item) => sum + (Number(item.Price) || 0),
-       0
-     );
- 
-     let discountAmt = Number(this.OPFooterForm.get('discountAmt')?.value) || 0;
-     let discountPer = Number(this.OPFooterForm.get('totalDiscountPer')?.value) || 0;
- 
-     if (source === 'PER') {
-       // Discount % entered
-       discountAmt = totalAmt > 0
-         ? +(totalAmt * discountPer / 100).toFixed(2)
-         : 0;
- 
-       this.Consessionres = discountPer > 0;
-     }
- 
-     // if (source === 'AMT') {
-     //   // Discount Amount entered
-     //   discountPer = totalAmt > 0
-     //     ? +(discountAmt * 100 / totalAmt).toFixed(2)
-     //     : 0;
-     // }
- 
-     const netAmt = totalAmt - discountAmt;
- 
-     this.OPFooterForm.patchValue({
-       totalAmt: totalAmt,
-       discountAmt: discountAmt,
-       totalDiscountPer: discountPer,
-       netPayableAmt: Math.round(netAmt)
-     }, { emitEvent: false });
-   }
- 
-   // updateCalculation(row: any = null) {
-   //   
-   //   const totalAmt = this.chargeList.reduce(
-   //     (sum, item) => sum + (Number(item.Price) || 0),
-   //     0
-   //   );
- 
-   //   const discountAmt = this.chargeList.reduce(
-   //     (sum, item) => sum + (Number(item.DiscAmt) || 0),
-   //     0
-   //   );
- 
-   //   const netAmt = this.chargeList.reduce(
-   //     (sum, item) => sum + (Number(item.NetAmount) || 0),
-   //     0
-   //   );
- 
-   //   // const discPer = totalAmt > 0
-   //   //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
-   //   //   : 0;
-   //   // const discPer = this.chargeList.reduce(
-   //   //   (sum, item) => sum + (Number(item.DiscPer) || 0),
-   //   //   0
-   //   // );
- 
-   //   this.myForm.patchValue({
-   //     totalAmt: totalAmt,
-   //     discountAmt: discountAmt,
-   //     // totalDiscountPer: discPer,
-   //     netPayableAmt: Math.round(netAmt)
-   //   }, { emitEvent: false });
-   // }
- 
-   updateFromDiscountAmt() {
-     const total = this.chargeList.reduce(
-       (sum, item) => sum + (parseFloat(item.Price.toString()) || 0),
-       0
-     );
- 
-     const discountAmt = Number(this.OPFooterForm.get('discountAmt')?.value) || 0;
- 
-     this.Consessionres = discountAmt > 0;
- 
-     const discPer = total > 0 ? (discountAmt * 100) / total : 0;
-     const netAmt = Math.round(total - discountAmt);
- 
-     this.OPFooterForm.patchValue({
-       totalAmt: total,
-       totalDiscountPer: discPer,
-       netPayableAmt: netAmt
-     }, { emitEvent: false });
-   }
- 
-   total = 0
-    urgentStatus: boolean = false;
+
+  onSaveEntry(row) {
+    debugger
+    let doctorid = 0;
+    const formValue = this.myForm.value
+
+    const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
+    if (!isDuplicate) {
+      this.onAddCharges(row)
+    }
+    else {
+      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+  }
+
+  updateCalculation(source: 'PER' | 'LIST' = 'LIST') {
+    // 
+    const totalAmt = this.chargeList.reduce(
+      (sum, item) => sum + (Number(item.Price) || 0),
+      0
+    );
+
+    let discountAmt = Number(this.OPFooterForm.get('discountAmt')?.value) || 0;
+    let discountPer = Number(this.OPFooterForm.get('totalDiscountPer')?.value) || 0;
+
+    if (source === 'PER') {
+      // Discount % entered
+      discountAmt = totalAmt > 0
+        ? +(totalAmt * discountPer / 100).toFixed(2)
+        : 0;
+
+      this.Consessionres = discountPer > 0;
+    }
+
+    // if (source === 'AMT') {
+    //   // Discount Amount entered
+    //   discountPer = totalAmt > 0
+    //     ? +(discountAmt * 100 / totalAmt).toFixed(2)
+    //     : 0;
+    // }
+
+    const netAmt = totalAmt - discountAmt;
+
+    this.OPFooterForm.patchValue({
+      totalAmt: totalAmt,
+      discountAmt: discountAmt,
+      totalDiscountPer: discountPer,
+      netPayableAmt: Math.round(netAmt)
+    }, { emitEvent: false });
+  }
+
+  // updateCalculation(row: any = null) {
+  //   
+  //   const totalAmt = this.chargeList.reduce(
+  //     (sum, item) => sum + (Number(item.Price) || 0),
+  //     0
+  //   );
+
+  //   const discountAmt = this.chargeList.reduce(
+  //     (sum, item) => sum + (Number(item.DiscAmt) || 0),
+  //     0
+  //   );
+
+  //   const netAmt = this.chargeList.reduce(
+  //     (sum, item) => sum + (Number(item.NetAmount) || 0),
+  //     0
+  //   );
+
+  //   // const discPer = totalAmt > 0
+  //   //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
+  //   //   : 0;
+  //   // const discPer = this.chargeList.reduce(
+  //   //   (sum, item) => sum + (Number(item.DiscPer) || 0),
+  //   //   0
+  //   // );
+
+  //   this.myForm.patchValue({
+  //     totalAmt: totalAmt,
+  //     discountAmt: discountAmt,
+  //     // totalDiscountPer: discPer,
+  //     netPayableAmt: Math.round(netAmt)
+  //   }, { emitEvent: false });
+  // }
+
+  updateFromDiscountAmt() {
+    const total = this.chargeList.reduce(
+      (sum, item) => sum + (parseFloat(item.Price.toString()) || 0),
+      0
+    );
+
+    const discountAmt = Number(this.OPFooterForm.get('discountAmt')?.value) || 0;
+
+    this.Consessionres = discountAmt > 0;
+
+    const discPer = total > 0 ? (discountAmt * 100) / total : 0;
+    const netAmt = Math.round(total - discountAmt);
+
+    this.OPFooterForm.patchValue({
+      totalAmt: total,
+      totalDiscountPer: discPer,
+      netPayableAmt: netAmt
+    }, { emitEvent: false });
+  }
+
+  total = 0
+  urgentStatus: boolean = false;
   onUrgentToggleChange(event: any, contact: any) {
     this.urgentStatus = event.checked;
     // optionally do recalculation or other logic
@@ -955,252 +992,252 @@ this.loadDropdownOptions();
     this.calculateTotalAmount();
     this.updateCalculation();
   }
- 
-   getCellCalculation(element) {
-     // 
-     const price = Number(element.Price) || 0;
- 
-     // row-level calculation ONLY
-     element.TotalAmt = price;
-     element.DiscPer = element.DiscPer || 0;
-     element.DiscAmt = +(price * element.DiscPer / 100).toFixed(2);
-     element.NetAmount = price - element.DiscAmt;
- 
-     // update footer separately
-     this.updateFooterTotals();
-   }
-   updateFooterTotals() {
- 
-     const totalAmt = this.dstable1.data.reduce(
-       (sum, item) => sum + (Number(item.TotalAmt) || 0),
-       0
-     );
- 
-     const discountAmt = this.dstable1.data.reduce(
-       (sum, item) => sum + (Number(item.DiscAmt) || 0),
-       0
-     );
- 
-     const netAmt = this.dstable1.data.reduce(
-       (sum, item) => sum + (Number(item.NetAmount) || 0),
-       0
-     );
- 
-     // const discPer = totalAmt > 0
-     //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
-     //   : 0;
- 
-     this.OPFooterForm.patchValue({
-       totalAmt: totalAmt,
-       discountAmt: discountAmt,
-       // totalDiscountPer: discPer,
-       netPayableAmt: Math.round(netAmt)
-     }, { emitEvent: false });
-   }
- 
+
+  getCellCalculation(element) {
+    // 
+    const price = Number(element.Price) || 0;
+
+    // row-level calculation ONLY
+    element.TotalAmt = price;
+    element.DiscPer = element.DiscPer || 0;
+    element.DiscAmt = +(price * element.DiscPer / 100).toFixed(2);
+    element.NetAmount = price - element.DiscAmt;
+
+    // update footer separately
+    this.updateFooterTotals();
+  }
+  updateFooterTotals() {
+
+    const totalAmt = this.dstable1.data.reduce(
+      (sum, item) => sum + (Number(item.TotalAmt) || 0),
+      0
+    );
+
+    const discountAmt = this.dstable1.data.reduce(
+      (sum, item) => sum + (Number(item.DiscAmt) || 0),
+      0
+    );
+
+    const netAmt = this.dstable1.data.reduce(
+      (sum, item) => sum + (Number(item.NetAmount) || 0),
+      0
+    );
+
+    // const discPer = totalAmt > 0
+    //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
+    //   : 0;
+
+    this.OPFooterForm.patchValue({
+      totalAmt: totalAmt,
+      discountAmt: discountAmt,
+      // totalDiscountPer: discPer,
+      netPayableAmt: Math.round(netAmt)
+    }, { emitEvent: false });
+  }
+
   showDoctorDropdown(row: any): boolean {
     return row && row.creditedtoDoctor === true;
   }
-   
-   isRowDiscountApplied = false;
-   Doctorflag=false
-   onAddCharges(row): void {
-      const isPackage = (row.isPackage ?? row.IsPackage) == 1;
-  
-      if (row.isPathology !== undefined || row.IsPathology !== undefined) {
-        this.IsPathology = row.isPathology ?? row.IsPathology;
-        this.IsRadiology = row.isRadiology ?? row.IsRadiology;
-      }
-      //  else {
-      //   if (this.myForm.get("IsPathRad")?.value == '1') {
-      //     this.IsPathology = true;
-      //     this.IsRadiology = false;
-      //   } else {
-      //     this.IsRadiology = true;
-      //     this.IsPathology = false;
-      //   }
-      // }
 
-      if(row.creditedtoDoctor)
-        // this.showDoctorDropdown(row)
-      this.Doctorflag=true
-      else
-         this.Doctorflag=false
-       
-      const formValue = this.myForm.value;
-      // var totalAmount;
-      // if (row.PackageId == 0 || row.PackageId > 0) {
-      //   totalAmount = row.NetAmount * 1;
-      // } else {
-      //   totalAmount = row.price * 1;
-      // }
-      const totalAmount = row.price * 1;
-      // 
-  
-      // const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
-      // const netAmount = totalAmount - discountAmount;
-  
-      let discountAmount = 0;
-      let discountPer = 0;
-  
-      // 🔐 Apply discount ONLY if this row itself has discount (prev data)
-      if (row.DiscAmt > 0 || row.DiscPer > 0) {
-        discountAmount = row.DiscAmt || 0;
-        discountPer = row.DiscPer || 0;
-      }
-  
-      const netAmount = totalAmount - discountAmount;
-  
-      //  === true
-      debugger
-     
-      const newRow = {
-        ServiceId: row.serviceId,
-        ServiceName: row.serviceName,
-        Price: row.price ?? 0,
-        Qty: 1,
-        TotalAmt: totalAmount || 0,
-        // DiscPer: row.DiscPer ?? 0,
-        // DiscAmt: row.DiscAmt ?? 0,
-        DiscPer: discountPer,
-        DiscAmt: discountAmount,
-        // DiscAmt: discountAmount || row.DiscAmt,
-        NetAmount: netAmount || 0,
-        ClassName: 1,//this.className || '-',
-        creditedtoDoctor:  row.creditedtoDoctor === true,
-        DoctorId: row.DoctorId || 0,
-        DoctorName: row.DoctorName || '-',
-        ChargesAddedName: this.accountService.currentUserValue.userName,
-        IsPathology: row.isPathology == 1 ? true : false,
-        IsRadiology: row.isRadiology == 1 ? true : false,
-        IsPackage: row.isPackage,
-        serviceCode: 0,//formValue.serviceName.companyCode, 
-        isInclusionExclusion: true,//formValue.serviceName.isInclusionOrExclusion
-      };
-      if (!this.isDiscountApplied && discountAmount > 0) {
-        this.isDiscountApplied = true;
-        this.Consessionres = true
-      }
-  
-      const newCharge = new ChargesList(newRow);
-      newCharge.DiscAmt = newCharge.DiscAmt || 0;
-      newCharge.DiscPer = newCharge.DiscPer || 0;
-      this.chargeList.push(newCharge);
-      this.dstable1.data = this.chargeList;
-  
-      this.updateCalculation(row);
-  
-  
-      if (row.PackageId == undefined) {
-        this.getRtevPackageDetList(row)
-      }
+  isRowDiscountApplied = false;
+  Doctorflag = false
+  onAddCharges(row): void {
+    const isPackage = (row.isPackage ?? row.IsPackage) == 1;
+
+    if (row.isPathology !== undefined || row.IsPathology !== undefined) {
+      this.IsPathology = row.isPathology ?? row.IsPathology;
+      this.IsRadiology = row.isRadiology ?? row.IsRadiology;
     }
- 
-   addCopyToPackageTable(row) {
-     // prevent duplicates
-     if (this.PacakgeList.some(p => p.PackageServiceId === (row.ServiceId ?? row.serviceId))) {
-       return;
-     }
- 
-     this.PacakgeList.push({
-       serviceId: row.packageServiceId ?? row.serviceId,
-       serviceName: row.serviceName,
-       price: row.price || 0,
-       Qty: 1,
-       TotalAmt: (row.price * 1) || 0,
-       ConcessionPercentage: 0,
-       DiscAmt: 0,
-       NetAmount: (row.price * 1) || 0,
-       packageId: row.PackageId ?? row.packageId,
-       PackageServiceId: row.ServiceId ?? row.serviceId,
-       doctorId: row.DoctorId ?? 0,
-       doctorName: row.DoctorName ?? '',
-       isPathology: row.isPathology,
-       isRadiology: row.isRadiology,
-       pacakgeServiceName: row.pacakgeServiceName,
-     });
- 
-     this.dsPackageList.data = [...this.PacakgeList];
-   }
- 
-  
-   getRtevPackageDetList(obj) {
-     var vdata =
-     {
-       "first": 0,
-       "rows": 10,
-       "sortField": "ServiceId",
-       "sortOrder": 0,
-       "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
-       "exportType": "JSON",
-       "columns": []
-     }
-     //console.log(vdata)
-     this._AppointmentlistService.getRtevPackageDetList(vdata).subscribe(data => {
-       // 
-       this.dsPackageList.data = data.data as ChargesList[];
-       this.dsPackageList.data.forEach(element => {
-         this.PacakgeList.push(
-           {
-             serviceId: element.packageServiceId,
-             serviceName: element.serviceName,
-             price: element.price || 0,
-             Qty: 1,
-             TotalAmt: (element.price * 1) || 0,
-             ConcessionPercentage: 0,
-             DiscAmt: 0,
-             NetAmount: (element.price * 1) || 0,
-             isPathology: element.isPathology,
-             isRadiology: element.isRadiology,
-             packageId: element.packageId,
-             PackageServiceId: element.serviceId,
-             pacakgeServiceName: element.pacakgeServiceName,
-             doctorName: element.doctorName,
-             doctorId: element.doctorId
-           })
-       })
-       this.dsPackageList.data = this.PacakgeList
-     });
-   }
- 
-  
-   servicedoctorname: any;
-    serivcedoctorId: any;
-   deleteTableRow(element) {
-     this.chargeslist = this.dstable1.data;
-     let index = this.chargeslist.indexOf(element);
-     if (index >= 0) {
-       this.chargeslist.splice(index, 1);
-       this.dstable1.data = [];
-       this.dstable1.data = this.chargeslist;
- 
-       if (this.chargeslist.length === 0) {
-         this.myForm.patchValue({
-           totalAmt: 0,
-           totalDiscountPer: 0,
-           discountAmt: 0,
-           netPayableAmt: 0
-         });
-         this.isDiscountApplied = false;
-       } else {
-         this.updateCalculation();
-       }
-       this.servicedoctorname = ''
-       this.serivcedoctorId = 0
-     }
-     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-       toastClass: 'tostr-tost custom-toast-success',
-     });
-   }
-   vRefDocId=0
-   vRefDocName=''
-   onChangeRefdoc(value) {
+    //  else {
+    //   if (this.myForm.get("IsPathRad")?.value == '1') {
+    //     this.IsPathology = true;
+    //     this.IsRadiology = false;
+    //   } else {
+    //     this.IsRadiology = true;
+    //     this.IsPathology = false;
+    //   }
+    // }
+
+    if (row.creditedtoDoctor)
+      row.Doctorflag = true
+    else
+      row.Doctorflag = false
+
+    const formValue = this.myForm.value;
+    // var totalAmount;
+    // if (row.PackageId == 0 || row.PackageId > 0) {
+    //   totalAmount = row.NetAmount * 1;
+    // } else {
+    //   totalAmount = row.price * 1;
+    // }
+    const totalAmount = row.price * 1;
+    // 
+
+    // const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
+    // const netAmount = totalAmount - discountAmount;
+
+    let discountAmount = 0;
+    let discountPer = 0;
+
+    // 🔐 Apply discount ONLY if this row itself has discount (prev data)
+    if (row.DiscAmt > 0 || row.DiscPer > 0) {
+      discountAmount = row.DiscAmt || 0;
+      discountPer = row.DiscPer || 0;
+    }
+
+    const netAmount = totalAmount - discountAmount;
+
+    //  === true
+    debugger
+
+    const newRow = {
+      ServiceId: row.serviceId,
+      ServiceName: row.serviceName,
+      Price: row.price ?? 0,
+      Qty: 1,
+      TotalAmt: totalAmount || 0,
+      // DiscPer: row.DiscPer ?? 0,
+      // DiscAmt: row.DiscAmt ?? 0,
+      DiscPer: discountPer,
+      DiscAmt: discountAmount,
+      // DiscAmt: discountAmount || row.DiscAmt,
+      NetAmount: netAmount || 0,
+      ClassName: 1,//this.className || '-',
+      creditedtoDoctor: row.creditedtoDoctor === true,
+      DoctorId: row.DoctorId || 0,
+      DoctorName: row.DoctorName || '-',
+      ChargesAddedName: this.accountService.currentUserValue.userName,
+      IsPathology: row.isPathology == 1 ? true : false,
+      IsRadiology: row.isRadiology == 1 ? true : false,
+      IsPackage: row.isPackage,
+      serviceCode: 0,//formValue.serviceName.companyCode, 
+      isInclusionExclusion: true,//formValue.serviceName.isInclusionOrExclusion
+      Doctorflag:row.creditedtoDoctor// == true ? true : false,// row.creditedtoDoctor ? true : false
+    };
+    if (!this.isDiscountApplied && discountAmount > 0) {
+      this.isDiscountApplied = true;
+      this.Consessionres = true
+    }
+
+    const newCharge = new ChargesList(newRow);
+    newCharge.DiscAmt = newCharge.DiscAmt || 0;
+    newCharge.DiscPer = newCharge.DiscPer || 0;
+    this.chargeList.push(newCharge);
+    this.dstable1.data = this.chargeList;
+
+    this.updateCalculation(row);
+
+
+    if (row.PackageId == undefined) {
+      this.getRtevPackageDetList(row)
+    }
+  }
+
+  addCopyToPackageTable(row) {
+    // prevent duplicates
+    if (this.PacakgeList.some(p => p.PackageServiceId === (row.ServiceId ?? row.serviceId))) {
+      return;
+    }
+
+    this.PacakgeList.push({
+      serviceId: row.packageServiceId ?? row.serviceId,
+      serviceName: row.serviceName,
+      price: row.price || 0,
+      Qty: 1,
+      TotalAmt: (row.price * 1) || 0,
+      ConcessionPercentage: 0,
+      DiscAmt: 0,
+      NetAmount: (row.price * 1) || 0,
+      packageId: row.PackageId ?? row.packageId,
+      PackageServiceId: row.ServiceId ?? row.serviceId,
+      doctorId: row.DoctorId ?? 0,
+      doctorName: row.DoctorName ?? '',
+      isPathology: row.isPathology,
+      isRadiology: row.isRadiology,
+      pacakgeServiceName: row.pacakgeServiceName,
+    });
+
+    this.dsPackageList.data = [...this.PacakgeList];
+  }
+
+
+  getRtevPackageDetList(obj) {
+    var vdata =
+    {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],
+      "exportType": "JSON",
+      "columns": []
+    }
+    //console.log(vdata)
+    this._AppointmentlistService.getRtevPackageDetList(vdata).subscribe(data => {
+      // 
+      this.dsPackageList.data = data.data as ChargesList[];
+      this.dsPackageList.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            serviceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            Qty: 1,
+            TotalAmt: (element.price * 1) || 0,
+            ConcessionPercentage: 0,
+            DiscAmt: 0,
+            NetAmount: (element.price * 1) || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            pacakgeServiceName: element.pacakgeServiceName,
+            doctorName: element.doctorName,
+            doctorId: element.doctorId
+          })
+      })
+      this.dsPackageList.data = this.PacakgeList
+    });
+  }
+
+
+  servicedoctorname: any;
+  serivcedoctorId: any;
+  deleteTableRow(element) {
+    this.chargeslist = this.dstable1.data;
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dstable1.data = [];
+      this.dstable1.data = this.chargeslist;
+
+      if (this.chargeslist.length === 0) {
+        this.myForm.patchValue({
+          totalAmt: 0,
+          totalDiscountPer: 0,
+          discountAmt: 0,
+          netPayableAmt: 0
+        });
+        this.isDiscountApplied = false;
+      } else {
+        this.updateCalculation();
+      }
+      this.servicedoctorname = ''
+      this.serivcedoctorId = 0
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+  vRefDocId = 0
+  vRefDocName = ''
+  onChangeRefdoc(value) {
     this.vRefDocId = value.doctorId
     this.vRefDocName = value.doctorName
     this.myForm.get('refDocId').setValue(value.doctorId);
   }
 
- 
+
   prefixName: any;
   onChangePrefix(e) {
     this.prefixName = e.prefixName
@@ -1210,26 +1247,26 @@ this.loadDropdownOptions();
   // onChangecity(e) {
   //   this.CityName = e.cityName
   //   this.registerObj.stateId = e.stateId
-    
+
   //   this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
   //     this.ddlState.SetSelection(Response.stateId)
   //     this.ddlCountry.SetSelection(Response.countryId);
   //   });
   // }
-stateId=0
-countryId=0
-     onChangecity(e) {
+  stateId = 0
+  countryId = 0
+  onChangecity(e) {
 
-        this.CityName = e.cityName
-        this.registerObj.stateId = e.stateId
-        this.stateId = e.stateId
-        this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
-            // console.log(Response)
-            // this.ddlCountry.SetSelection(Response.countryId);
-            this.countryId = Response.countryId
-            console.log(Response.countryId)
-        });
-    }
+    this.CityName = e.cityName
+    this.registerObj.stateId = e.stateId
+    this.stateId = e.stateId
+    this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
+      // console.log(Response)
+      // this.ddlCountry.SetSelection(Response.countryId);
+      this.countryId = Response.countryId
+      console.log(Response.countryId)
+    });
+  }
 
 
   getSelectedTariffObj(event) {
@@ -1302,90 +1339,90 @@ countryId=0
   }
 
 
-   BillSave() {
-  
-      // if (this.mode === 'edit') {
-      //   Swal.fire({
-      //     title: 'Confirm Save',
-      //     text: 'Are you sure you want to update registration?',
-      //     icon: 'warning', // or 'question'
-      //     showCancelButton: true,
-      //     confirmButtonColor: '#3085d6', // Blue
-      //     cancelButtonColor: '#d33',     // Red
-      //     confirmButtonText: 'Yes, save it!',
-      //     cancelButtonText: 'No, cancel'
-      //   }).then((result) => {
-      //     if (result.isConfirmed) {
-      //      const formValue = { ...this.myForm.value };
-      //       const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-      //         'paymentType', 'servicedoctorId'];
-      //       controlsToRemove.forEach(key => delete formValue[key]);
-      //       console.log(formValue)
-      //       this._labPatientRegService.labPatientSave(formValue).subscribe((response) => {
-      //         this._matDialog.closeAll();
-      //       });
-      //       console.log("Api pending")
-      //       return;
-      //     }
-      //   });
-      // } else {
-        Swal.fire({
-          title: 'Confirm Save',
-          text: 'Are you sure you want to save this OP Bill?',
-          icon: 'warning', // or 'question'
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6', // Blue
-          cancelButtonColor: '#d33',     // Red
-          confirmButtonText: 'Yes, save it!',
-          cancelButtonText: 'No, cancel'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            console.log(this.myForm.value)
-            debugger
-            let priceflag = this.dstable1.data.filter(row => row.Price == 0 || row.Price == '');
-  
-            if (priceflag.length) {
-              this.toastr.warning('Please Enter Price For Service', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-              });
-              return;
-            }
-            debugger
-            this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
-            this.myForm.get('stateId').setValue(this.stateId)
-            this.myForm.get('countryId').setValue(String(this.countryId))
-            if (!this.myForm.invalid)
-              this.OnSave();
-  
-            else {
-              let invalidFields = [];
-              if (this.myForm.invalid) {
-                for (const controlName in this.myForm.controls) {
-                  const control = this.myForm.get(controlName);
-  
-                  if (control instanceof FormGroup || control instanceof FormArray) {
-                    for (const nestedKey in control.controls) {
-                      if (control.get(nestedKey)?.invalid) {
-                        invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
-                      }
-                    }
-                  } else if (control?.invalid) {
-                    invalidFields.push(`OP Bill From: ${controlName}`);
+  BillSave() {
+
+    // if (this.mode === 'edit') {
+    //   Swal.fire({
+    //     title: 'Confirm Save',
+    //     text: 'Are you sure you want to update registration?',
+    //     icon: 'warning', // or 'question'
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6', // Blue
+    //     cancelButtonColor: '#d33',     // Red
+    //     confirmButtonText: 'Yes, save it!',
+    //     cancelButtonText: 'No, cancel'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //      const formValue = { ...this.myForm.value };
+    //       const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
+    //         'paymentType', 'servicedoctorId'];
+    //       controlsToRemove.forEach(key => delete formValue[key]);
+    //       console.log(formValue)
+    //       this._labPatientRegService.labPatientSave(formValue).subscribe((response) => {
+    //         this._matDialog.closeAll();
+    //       });
+    //       console.log("Api pending")
+    //       return;
+    //     }
+    //   });
+    // } else {
+    Swal.fire({
+      title: 'Confirm Save',
+      text: 'Are you sure you want to save this OP Bill?',
+      icon: 'warning', // or 'question'
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6', // Blue
+      cancelButtonColor: '#d33',     // Red
+      confirmButtonText: 'Yes, save it!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(this.myForm.value)
+        debugger
+        let priceflag = this.dstable1.data.filter(row => row.Price == 0 || row.Price == '');
+
+        if (priceflag.length) {
+          this.toastr.warning('Please Enter Price For Service', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+        debugger
+        this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
+        this.myForm.get('stateId').setValue(this.stateId)
+        this.myForm.get('countryId').setValue(String(this.countryId))
+        if (!this.myForm.invalid)
+          this.OnSave();
+
+        else {
+          let invalidFields = [];
+          if (this.myForm.invalid) {
+            for (const controlName in this.myForm.controls) {
+              const control = this.myForm.get(controlName);
+
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
                   }
                 }
-              }
-              if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                  this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-                  );
-                });
-                return
+              } else if (control?.invalid) {
+                invalidFields.push(`OP Bill From: ${controlName}`);
               }
             }
           }
-        });
-      // }
-    }
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+              );
+            });
+            return
+          }
+        }
+      }
+    });
+    // }
+  }
   OnSave() {
 
     console.log(this.myForm.getRawValue())
@@ -1430,7 +1467,7 @@ countryId=0
       this.myForm.get('ageDay')?.setValue(String(ageDay), { emitEvent: false });
 
     }
-    
+
     // if (this.PatientName){
     this.PatientName = this.myForm.get('firstName').value + " " + this.myForm.get('lastName').value
     // }
@@ -1475,7 +1512,7 @@ countryId=0
 
     console.log("form values", this.AppointmentBillfinalform.value)
     // form vali??
-    
+
     if (!this.myForm.invalid && !this.VisitFormGroup.invalid) {
 
       if (this.isCompanySelected && this.VisitFormGroup.get('companyId').value == 0) {
@@ -1484,94 +1521,94 @@ countryId=0
         });
         return;
       }
-      
+
       if (this.searchFormGroup.get('regRadio').value == "registration") {
 
         //
         // if (this.OpBillForm.invalid) {
 
-          this.ChargeddetailsArray.clear();
-          this.BillDetailsArray.clear();
+        this.ChargeddetailsArray.clear();
+        this.BillDetailsArray.clear();
 
-          this.dstable1.data.forEach(item => {
-            this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
-            this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+        this.dstable1.data.forEach(item => {
+          this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
+          this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
 
-          });
+        });
 
-          console.log("form values", this.OpBillForm.value)
+        console.log("form values", this.OpBillForm.value)
 
-          if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-            let PatientHeaderObj = {};
-            PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
-              PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
-            PatientHeaderObj['RegNo'] = this.regNo;
-            PatientHeaderObj['DoctorName'] = this.doctorname;
-            PatientHeaderObj['CompanyName'] = this.companyName;
-            PatientHeaderObj['DepartmentName'] = this.departmentname;
-            PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
-            PatientHeaderObj['Age'] = this.ageYear;
-            PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
-            const dialogRef = this._matDialog.open(OpPaymentComponent,
-              {
-                maxWidth: "80vw",
-                height: '750px',
-                width: '80%',
-                data: {
-                  vPatientHeaderObj: PatientHeaderObj,
-                  FromName: "OP-Bill",
-                  advanceObj: PatientHeaderObj,
-                }
-              });
-            dialogRef.afterClosed().subscribe(result => {
-              if (result && result.IsSubmitFlag == true) {
-                this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
-                this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
-
-                this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-                console.log(this.AppointmentBillfinalform.value)
-
-                this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
-                  this.viewgetOPBillReportPdf(response.billNo)
-                  this.closeAllOrNavigateBack();
-                  this.savebtn = true
-                });
+        if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
+          let PatientHeaderObj = {};
+          PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
+            PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
+          PatientHeaderObj['RegNo'] = this.regNo;
+          PatientHeaderObj['DoctorName'] = this.doctorname;
+          PatientHeaderObj['CompanyName'] = this.companyName;
+          PatientHeaderObj['DepartmentName'] = this.departmentname;
+          PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
+          PatientHeaderObj['Age'] = this.ageYear;
+          PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
+          const dialogRef = this._matDialog.open(OpPaymentComponent,
+            {
+              maxWidth: "80vw",
+              height: '750px',
+              width: '80%',
+              data: {
+                vPatientHeaderObj: PatientHeaderObj,
+                FromName: "OP-Bill",
+                advanceObj: PatientHeaderObj,
               }
             });
-          }
-          else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
+          dialogRef.afterClosed().subscribe(result => {
+            if (result && result.IsSubmitFlag == true) {
+              this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
+              this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-            this.OpBillForm.get('balanceAmt').setValue(0)
-            this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-            this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
-            this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-            this.OpBillForm.get('payments.paymentTime')?.setValue(this.datePipe.transform(new Date(), 'HH:mm:ss'))
+              this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+              console.log(this.AppointmentBillfinalform.value)
 
-            console.log(this.OpBillForm.value)
-            this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-            console.log(this.AppointmentBillfinalform.value)
-            this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
-              console.log(response)
-              this.viewgetOPBillReportPdf(response.billNo)
-              this.closeAllOrNavigateBack();
-              this.savebtn = true
+              this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
+                this.viewgetOPBillReportPdf(response.billNo)
+                this.closeAllOrNavigateBack();
+                this.savebtn = true
+              });
+            }
+          });
+        }
+        else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
 
-            });
-          }
-          else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
-            this.OpBillForm.get('paidAmt').setValue(0)
-            this.OpBillForm.get('balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-            this.OpBillForm.removeControl('payments')
+          this.OpBillForm.get('balanceAmt').setValue(0)
+          this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+          this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
+          this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+          this.OpBillForm.get('payments.paymentTime')?.setValue(this.datePipe.transform(new Date(), 'HH:mm:ss'))
 
-            this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-            console.log(this.AppointmentBillfinalform.value)
+          console.log(this.OpBillForm.value)
+          this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+          console.log(this.AppointmentBillfinalform.value)
+          this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
+            console.log(response)
+            this.viewgetOPBillReportPdf(response.billNo)
+            this.closeAllOrNavigateBack();
+            this.savebtn = true
 
-            this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
-              // this.viewgetOPBillReportPdf(response.billNo)
-              this.closeAllOrNavigateBack();
-              this.savebtn = true
-            });
-          }
+          });
+        }
+        else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
+          this.OpBillForm.get('paidAmt').setValue(0)
+          this.OpBillForm.get('balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+          this.OpBillForm.removeControl('payments')
+
+          this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+          console.log(this.AppointmentBillfinalform.value)
+
+          this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
+            // this.viewgetOPBillReportPdf(response.billNo)
+            this.closeAllOrNavigateBack();
+            this.savebtn = true
+          });
+        }
         // }
         // else {
         //   let invalidFields = [];
@@ -1602,105 +1639,107 @@ countryId=0
       // Reg Patient
       else if (this.searchFormGroup.get('regRadio').value == "registrered") {
         debugger
+
+        this.VisitFormGroup.get('regId').setValue(this.RegId)
         // if (this.OpBillForm.invalid) {
 
-          this.ChargeddetailsArray.clear();
-          this.BillDetailsArray.clear();
+        this.ChargeddetailsArray.clear();
+        this.BillDetailsArray.clear();
 
-          this.dstable1.data.forEach(item => {
-            this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
-            this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+        this.dstable1.data.forEach(item => {
+          this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
+          this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
 
-          });
+        });
 
-          console.log("form values", this.OpBillForm.value)
+        console.log("form values", this.OpBillForm.value)
 
-          if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-            let PatientHeaderObj = {};
-            PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
-              PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
-            PatientHeaderObj['RegNo'] = this.regNo;
-            PatientHeaderObj['DoctorName'] = this.doctorname;
-            PatientHeaderObj['CompanyName'] = this.companyName;
-            PatientHeaderObj['DepartmentName'] = this.departmentname;
-            PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
-            PatientHeaderObj['Age'] = this.ageYear;
-            PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
-            const dialogRef = this._matDialog.open(OpPaymentComponent,
-              {
-                maxWidth: "80vw",
-                height: '750px',
-                width: '80%',
-                data: {
-                  vPatientHeaderObj: PatientHeaderObj,
-                  FromName: "OP-Bill",
-                  advanceObj: PatientHeaderObj,
-                }
-              });
-            dialogRef.afterClosed().subscribe(result => {
-              if (result && result.IsSubmitFlag == true) {
-                this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
-                this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
-
-                // this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-                // console.log(this.AppointmentBillfinalform.value)
-                this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-                this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
-
-
-                console.log(this.RegiAppointmentBillfinalform.value)
-
-                this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
-                  this.viewgetOPBillReportPdf(response.billNo)
-                  this.closeAllOrNavigateBack();
-                  this.savebtn = true
-                });
+        if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
+          let PatientHeaderObj = {};
+          PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
+            PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
+          PatientHeaderObj['RegNo'] = this.regNo;
+          PatientHeaderObj['DoctorName'] = this.doctorname;
+          PatientHeaderObj['CompanyName'] = this.companyName;
+          PatientHeaderObj['DepartmentName'] = this.departmentname;
+          PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
+          PatientHeaderObj['Age'] = this.ageYear;
+          PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
+          const dialogRef = this._matDialog.open(OpPaymentComponent,
+            {
+              maxWidth: "80vw",
+              height: '750px',
+              width: '80%',
+              data: {
+                vPatientHeaderObj: PatientHeaderObj,
+                FromName: "OP-Bill",
+                advanceObj: PatientHeaderObj,
               }
             });
-          }
-          else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
+          dialogRef.afterClosed().subscribe(result => {
+            if (result && result.IsSubmitFlag == true) {
+              this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
+              this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-            this.OpBillForm.get('balanceAmt').setValue(0)
-            this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-            this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
-            this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-            this.OpBillForm.get('payments.paymentTime')?.setValue(this.datePipe.transform(new Date(), 'HH:mm:ss'))
-
-            console.log(this.OpBillForm.value)
-debugger
-            this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-            this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
+              // this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+              // console.log(this.AppointmentBillfinalform.value)
+              this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+              this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
 
 
-            console.log(this.RegiAppointmentBillfinalform.value)
-            
+              console.log(this.RegiAppointmentBillfinalform.value)
 
-            // const formValue = { ...this.RegiAppointmentBillfinalform.value };
-            // delete formValue['appRegistrationBills']
-            console.log(this.RegiAppointmentBillfinalform.value)
-            //  console.log(formValue)
-            this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
-              console.log(response)
-              this.viewgetOPBillReportPdf(response.billNo)
-              this.closeAllOrNavigateBack();
-              this.savebtn = true
+              this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
+                this.viewgetOPBillReportPdf(response.billNo)
+                this.closeAllOrNavigateBack();
+                this.savebtn = true
+              });
+            }
+          });
+        }
+        else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
 
-            });
-          }
-          else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
-            this.OpBillForm.get('paidAmt').setValue(0)
-            this.OpBillForm.get('balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-            this.OpBillForm.removeControl('payments')
+          this.OpBillForm.get('balanceAmt').setValue(0)
+          this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+          this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
+          this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+          this.OpBillForm.get('payments.paymentTime')?.setValue(this.datePipe.transform(new Date(), 'HH:mm:ss'))
 
-            this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-            console.log(this.AppointmentBillfinalform.value)
+          console.log(this.OpBillForm.value)
+          debugger
+          this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+          this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
 
-            this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
-              // this.viewgetOPBillReportPdf(response.billNo)
-              this.closeAllOrNavigateBack();
-              this.savebtn = true
-            });
-          }
+
+          console.log(this.RegiAppointmentBillfinalform.value)
+
+
+          // const formValue = { ...this.RegiAppointmentBillfinalform.value };
+          // delete formValue['appRegistrationBills']
+          console.log(this.RegiAppointmentBillfinalform.value)
+          //  console.log(formValue)
+          this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
+            console.log(response)
+            this.viewgetOPBillReportPdf(response.billNo)
+            this.closeAllOrNavigateBack();
+            this.savebtn = true
+
+          });
+        }
+        else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
+          this.OpBillForm.get('paidAmt').setValue(0)
+          this.OpBillForm.get('balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+          this.OpBillForm.removeControl('payments')
+
+          this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+          console.log(this.AppointmentBillfinalform.value)
+
+          this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
+            // this.viewgetOPBillReportPdf(response.billNo)
+            this.closeAllOrNavigateBack();
+            this.savebtn = true
+          });
+        }
         // }
         // else {
         //   let invalidFields = [];
@@ -1845,7 +1884,7 @@ debugger
     })
   }
 
-    calculateTotalAmount(): void {
+  calculateTotalAmount(): void {
     // 
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
@@ -1979,127 +2018,51 @@ debugger
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
   }
   Patientnewold: any = 1;
-  // ??old
-  // onChangeReg(event) {
-  //   
-  //   if (event.value === 'registration') {
-  //     this.myForm.reset();
-  //     this.myForm.get('RegId').reset();
-  //     this.searchFormGroup.get('RegId').disable();
-  //     this.isRegSearchDisabled = false;
-  //     this.Patientnewold = 1;
-
-  //     // Instead of reassigning, update controls one by one
-  //     const myForm = this.CreateAppointmentForm();
-  //     this.resetFilteredOptions();
-  //     Object.keys(myForm.controls).forEach(key => {
-  //       if (this.myForm.contains(key)) {
-  //         this.myForm.setControl(key, myForm.get(key));
-  //       } else {
-  //         this.myForm.addControl(key, myForm.get(key));
-  //       }
-  //     });
-
-  //     // const myForm = this._AppointmentlistService.createVisitdetailForm();
-  //     // Object.keys(myForm.controls).forEach(key => {
-  //     //   if (this.myForm.contains(key)) {
-  //     //     this.myForm.setControl(key, myForm.get(key));
-  //     //   } else {
-  //     //     this.myForm.addControl(key, myForm.get(key));
-  //     //   }
-  //     // });
-
-  //     this.myForm.markAllAsTouched();
-  //     this.myForm.markAllAsTouched();
-
-  //     this.Regflag = false;
-  //     this.IsPhoneAppflag = true;
-
-  //   } else if (event.value === 'registrered') {
-
-  //     this.myForm.get('RegId').enable();
-  //     this.searchFormGroup.get('RegId').enable();
-  //     this.searchFormGroup.get('RegId').reset();
-  //     this.myForm.reset();
-  //     this.Patientnewold = 2;
-
-  //     const newPersonalForm = this.CreateAppointmentForm();
-  //     this.resetFilteredOptions();
-  //     Object.keys(newPersonalForm.controls).forEach(key => {
-  //       if (this.myForm.contains(key)) {
-  //         this.myForm.setControl(key, newPersonalForm.get(key));
-  //       } else {
-  //         this.myForm.addControl(key, newPersonalForm.get(key));
-  //       }
-  //     });
-
-  //     // const newVisitForm = this._AppointmentlistService.createVisitdetailForm();
-  //     // Object.keys(newVisitForm.controls).forEach(key => {
-  //     //   if (this.myForm.contains(key)) {
-  //     //     this.myForm.setControl(key, newVisitForm.get(key));
-  //     //   } else {
-  //     //     this.myForm.addControl(key, newVisitForm.get(key));
-  //     //   }
-  //     // });
-
-  //     this.myForm.markAllAsTouched();
-  //     this.myForm.markAllAsTouched();
-
-  //     this.Regflag = true;
-  //     this.IsPhoneAppflag = false;
-  //     this.isRegSearchDisabled = true;
-  //   }
-  // }
-  //Reg patient
-  resetFilteredOptions() {
+   resetFilteredOptions() {
     this.filteredOptions = [];
     this.prevResults = [];
   }
-  // getdocdetail(event) {
-  //   console.log(event)
-  //   this.doctorName = event.text
-  // }
-
+ 
   private destroy$ = new Subject<void>();
-    ////////////////////////// dd new method start ////////////////////
-    getdocdetail(event: MatSelectChange, row: any): void {
-  
-      const option = this.doctorOptions.find(
-        opt => (opt.value ?? opt.Value) === event.value
-      );
-  
-      if (!option) return;
-  
-      row.DoctorId = option.value ?? option.Value;
-      row.DoctorName = option.text ?? option.Text;
-  
-      this.dstable1.data = [...this.dstable1.data];
-    }
-   
-    private loadDropdownOptions(): void {
-      this.fetchDropdownOptions(this.autocompleteModedoctor)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(options => {
-          this.doctorOptions = options || [];
-        });
-    }
-  
-    private fetchDropdownOptions(mode: string): Observable<any[]> {
-      if (!mode) {
-        return of([]);
-      }
-      return this.apiCaller.GetData(`Dropdown/GetBindDropDown?mode=${mode}`);
-    }
+  ////////////////////////// dd new method start ////////////////////
+  getdocdetail(event: MatSelectChange, row: any): void {
 
-    
+    const option = this.doctorOptions.find(
+      opt => (opt.value ?? opt.Value) === event.value
+    );
+
+    if (!option) return;
+
+    row.DoctorId = option.value ?? option.Value;
+    row.DoctorName = option.text ?? option.Text;
+
+    this.dstable1.data = [...this.dstable1.data];
+  }
+
+  private loadDropdownOptions(): void {
+    this.fetchDropdownOptions(this.autocompleteModedoctor)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(options => {
+        this.doctorOptions = options || [];
+      });
+  }
+
+  private fetchDropdownOptions(mode: string): Observable<any[]> {
+    if (!mode) {
+      return of([]);
+    }
+    return this.apiCaller.GetData(`Dropdown/GetBindDropDown?mode=${mode}`);
+  }
+
+VRegId=0
   getSelectedObj(obj) {
     // 
     if (this.data?.FormName == 'Registration-Page') {
-      
+
       this.PatientName = obj.patientName
 
       if ((this.RegId ?? 0) > 0) {
-        
+         this.VRegId = obj.visitId;
         this.VisitFormGroup.get('regId').setValue(this.RegId)
         console.log(obj)
         setTimeout(() => {
@@ -2109,9 +2072,9 @@ debugger
             this.value = response.dateofBirth
             this.vRegNo = response.regno
             this.RegId = response.regId
-            
-            this.stateId= this.registerObj.stateId
-             this.countryId= this.registerObj.countryId
+
+            this.stateId = this.registerObj.stateId
+            this.countryId = this.registerObj.countryId
             this.onChangeDateofBirth(response.dateofBirth)
             console.log(response)
             this.getLastDepartmetnNameList(this.registerObj)
@@ -2194,7 +2157,13 @@ debugger
     }
 
     this.onChangeDateofBirth(this.registerObj.dateofBirth)
+debugger
+      // if (this.VRegId) {
+      // this.showPrevBtn = true
+      this.getPrevList();
+    // }
   }
+    showPrevBtn: boolean = false
   PrevregisterObj: any;
   getLastDepartmetnNameList(row) {
     const dialogRef = this._matDialog.open(PreviousDeptListComponent,
@@ -2255,20 +2224,20 @@ debugger
     });
   }
 
-    onChangeReg(event) {
-      if (event.value == 'onlinepay') {
-        this.onlineflag = true;
-        this.OPFooterForm.get('UPINO').setValidators([Validators.required]);
-        this.OPFooterForm.get('UPINO').enable();
-      } else {
-        this.onlineflag = false;
-        this.OPFooterForm.get('UPINO').reset();
-        this.OPFooterForm.get('UPINO').clearValidators();
-        this.OPFooterForm.get('UPINO').updateValueAndValidity();
-      }
+  onChangeReg(event) {
+    if (event.value == 'onlinepay') {
+      this.onlineflag = true;
+      this.OPFooterForm.get('UPINO').setValidators([Validators.required]);
+      this.OPFooterForm.get('UPINO').enable();
+    } else {
+      this.onlineflag = false;
+      this.OPFooterForm.get('UPINO').reset();
+      this.OPFooterForm.get('UPINO').clearValidators();
+      this.OPFooterForm.get('UPINO').updateValueAndValidity();
     }
-  
- onChangeReg1(event) {
+  }
+
+  onChangeReg1(event) {
     debugger
     if (event.value === 'registration') {
       this.myForm.reset();
@@ -2310,7 +2279,7 @@ debugger
     });
     this.doctorName = '';
   }
- 
+
   onChangePatient(value) {
 
     var mode = "Company"
@@ -2475,12 +2444,12 @@ debugger
       ClassId: [
         { name: "required", Message: "Class Name is required" }
       ],
-      Comments:[],
-      ReferByName:[],
-      location:[],
-      adharCardNo:[],
-      MaritalStatusId:[],
-      companyId:[]
+      Comments: [],
+      ReferByName: [],
+      location: [],
+      adharCardNo: [],
+      MaritalStatusId: [],
+      companyId: []
     }
   }
   aadharRaw = '';
@@ -2522,7 +2491,7 @@ debugger
       this._matDialog.closeAll();
     }
   }
- debounceTimers: { [key: string]: any } = {};
+  debounceTimers: { [key: string]: any } = {};
   // Manual refresh for waiting state
   manualRefresh(): void {
     this.statusMessage = 'Refreshing...';
@@ -2532,106 +2501,165 @@ debugger
     }, 1000);
   }
 
-     handleInputChange(changedField: string): void {
-        // Get all current field values
-        const firstName = this.myForm.get('firstName').value?.trim() || '';
-        const lastName = this.myForm.get('lastName').value?.trim() || '';
-        const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
+  handleInputChange(changedField: string): void {
+    // Get all current field values
+    const firstName = this.myForm.get('firstName').value?.trim() || '';
+    const lastName = this.myForm.get('lastName').value?.trim() || '';
+    const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
 
-        // If all fields are empty, clear everything
-        if (!firstName && !lastName && !mobileNo) {
-            this.resetFilteredOptions();
-            return;
-        }
-
-        // Count how many fields are filled
-        const filledFields = [firstName, mobileNo].filter(Boolean).length;
-
-        // If only one field is filled, and it's FirstName or MobileNo, call API
-        if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
-            const keyword = firstName || mobileNo;
-            this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
-                this.prevResults = results || [];
-                this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-            });
-            return;
-        }
-
-        // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
-        if (filledFields === 1 && changedField === 'LastName') {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-            return;
-        }
-
-        // If more than one field is filled, filter from prevResults
-        if (this.prevResults.length > 0) {
-            this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-        } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
-            // Fallback: if prevResults is empty, call API with the changed field (if allowed)
-            const keyword =firstName || mobileNo;// this.myForm.get(changedField).value?.trim();
-            if (keyword) {
-                this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
-                    this.prevResults = results || [];
-                    this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
-                });
-            }
-        } else {
-            // If changedField is LastName and prevResults is empty, do nothing
-            this.filteredOptions = [];
-        }
+    // If all fields are empty, clear everything
+    if (!firstName && !lastName && !mobileNo) {
+      this.resetFilteredOptions();
+      return;
     }
 
-    // Helper function to filter results by all non-empty fields
-    filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
-        const { firstName, lastName, mobileNo } = fields;
-        return results.filter(item => {
-            return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
-                && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
-                && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+    // Count how many fields are filled
+    const filledFields = [firstName, mobileNo].filter(Boolean).length;
+
+    // If only one field is filled, and it's FirstName or MobileNo, call API
+    if (filledFields === 1 && (changedField === 'FirstName' || changedField === 'MobileNo')) {
+      const keyword = firstName || mobileNo;
+      this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+        this.prevResults = results || [];
+        this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+      });
+      return;
+    }
+
+    // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
+    if (filledFields === 1 && changedField === 'LastName') {
+      this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+      return;
+    }
+
+    // If more than one field is filled, filter from prevResults
+    if (this.prevResults.length > 0) {
+      this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+    } else if (changedField === 'FirstName' || changedField === 'MobileNo') {
+      // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+      const keyword = firstName || mobileNo;// this.myForm.get(changedField).value?.trim();
+      if (keyword) {
+        this._AppointmentlistService.getSuggestions("OutPatient/auto-complete?Keyword=", keyword).subscribe(results => {
+          this.prevResults = results || [];
+          this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
         });
+      }
+    } else {
+      // If changedField is LastName and prevResults is empty, do nothing
+      this.filteredOptions = [];
     }
-    onSelectPatient(row: any) {
-        this.getSelectedObj(row);
-        this.resetFilteredOptions();
-    }
-    handleInputChangeDebounced(changedField: string): void {
-      debugger
-        // Clear any existing timer for this field
-        if (this.debounceTimers[changedField]) {
-            clearTimeout(this.debounceTimers[changedField]);
-        }
-        // Set a new timer
-        this.debounceTimers[changedField] = setTimeout(() => {
-            this.handleInputChange(changedField);
-        }, 300); // 300ms debounce
-    }
+  }
 
-     rawDate1: Date | string = '1900-01-01';
-        rawDate2: Date | string = '1900-01-01';
-        rawDate3: Date | string = '1900-01-01';
-    
-        onVisaDateChange(event: MatDatepickerInputEvent<Date>) {
-            console.log('Visa date selected:', event.value);
-            this.rawDate1 = event.value || '1900-01-01';
+  // Helper function to filter results by all non-empty fields
+  filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
+    const { firstName, lastName, mobileNo } = fields;
+    return results.filter(item => {
+      return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
+        && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+        && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+    });
+  }
+  onSelectPatient(row: any) {
+    this.getSelectedObj(row);
+    this.resetFilteredOptions();
+  }
+  handleInputChangeDebounced(changedField: string): void {
+    debugger
+    // Clear any existing timer for this field
+    if (this.debounceTimers[changedField]) {
+      clearTimeout(this.debounceTimers[changedField]);
+    }
+    // Set a new timer
+    this.debounceTimers[changedField] = setTimeout(() => {
+      this.handleInputChange(changedField);
+    }, 300); // 300ms debounce
+  }
+
+  rawDate1: Date | string = '1900-01-01';
+  rawDate2: Date | string = '1900-01-01';
+  rawDate3: Date | string = '1900-01-01';
+
+  onVisaDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Visa date selected:', event.value);
+    this.rawDate1 = event.value || '1900-01-01';
+  }
+
+  onValidityDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Validity date selected:', event.value);
+    this.rawDate2 = event.value || '1900-01-01';
+    if (this.rawDate1 instanceof Date && this.rawDate2 instanceof Date && this.rawDate1 > this.rawDate2) {
+      this.toastr.warning('Visa Issue Date cannot be greater than Visa Validity Date.', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      this.myForm.get('medTourismVisaValidityDate')?.setValue('');
+      return;
+    }
+  }
+
+  onEntryDateChange(event: MatDatepickerInputEvent<Date>) {
+    console.log('Entry date selected:', event.value);
+    this.rawDate3 = event.value || '1900-01-01';
+  }
+
+  getPrevList() {
+    debugger
+    const dialogRef = this._matDialog.open(PrevlabHistoryComponent,
+      {
+        maxWidth: "80vw",
+        height: '80%',
+        width: '100%',
+        data: 33,//this.vOPIPId
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Prev List:', result);
+      if (!result || result.length === 0) {
+        return;
+      }
+
+      let hasPrevDiscount = false;
+      if (Array.isArray(result)) {
+        result.forEach(item => {
+          item.serviceId = item.serviceId || item.ServiceId;
+          item.serviceName = item.serviceName || item.ServiceName;
+          item.price = item.price || item.Price;
+          item.isPathology = item.isPathology ?? item.IsPathology;
+          item.isRadiology = item.isRadiology ?? item.IsRadiology;
+          item.isPackage = item.isPackage ?? item.IsPackage;
+          item.DoctorId = item.DoctorId;
+          item.DoctorName = item.DoctorName;
+          // item.DiscPer = item.ConcessionPercentage
+          // item.DiscAmt = item.ConcessionAmount
+          item.DiscPer = 0
+          item.DiscAmt = 0
+          item.creditedtoDoctor = (item.DoctorId > 0);
+
+          if (item.DiscAmt > 0 || item.DiscPer > 0) {
+            this.isDiscountApplied = true;
+            hasPrevDiscount = true;
+          }
+
+          if (item.PackageId > 0) {
+            //goes ONLY to package table
+            this.addCopyToPackageTable(item);
+          } else {
+            this.onSaveEntry(item);
+          }
+        });
+
+        // need to check here during prevlist call diff addcharge so do there only calculateion
+        if (hasPrevDiscount) {
+          setTimeout(() => {
+            // this.updateFooterFromPrev();
+          });
         }
 
-     onValidityDateChange(event: MatDatepickerInputEvent<Date>) {
-           console.log('Validity date selected:', event.value);
-           this.rawDate2 = event.value || '1900-01-01';
-           if (this.rawDate1 instanceof Date && this.rawDate2 instanceof Date && this.rawDate1 > this.rawDate2) {
-               this.toastr.warning('Visa Issue Date cannot be greater than Visa Validity Date.', 'Warning!', {
-                   toastClass: 'tostr-tost custom-toast-warning',
-               });
-               this.myForm.get('medTourismVisaValidityDate')?.setValue('');
-               return;
-           }
-       }
-   
-       onEntryDateChange(event: MatDatepickerInputEvent<Date>) {
-           console.log('Entry date selected:', event.value);
-           this.rawDate3 = event.value || '1900-01-01';
-       }
-   
+      }
+
+      else {
+        this.onSaveEntry(result);
+      }
+    });
+  }
 
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"
