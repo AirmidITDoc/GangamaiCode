@@ -1,0 +1,35 @@
+.modal-header {
+    height: 48px !important;
+    min-height: 48px !important;
+}
+
+.modal-header-content {
+    min-height: 48px !important;
+    height: 100% !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
+
+/* Ensure the date input vertical spacing is minimal */
+.comman-date.resize-form-fields {
+    margin-top: -6px;
+    /* offset inner padding */
+    margin-bottom: -6px;
+}
+
+/* Fix vertical alignment of buttons in resized form rows */
+.resize-form-fields {
+
+    /* Push buttons down slightly to match to the visual input box rather than the floating label above it */
+    .input-add-button button,
+    >button[mat-raised-button] {
+        margin-top: 10px;
+        height: 36px;
+        line-height: normal;
+    }
+
+    mat-divider {
+        margin-top: 10px;
+        height: 36px;
+    }
+}

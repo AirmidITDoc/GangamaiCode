@@ -1,0 +1,48 @@
+.patient-info-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    /* Space between chips */
+    padding: 0;
+    margin: 0 0 4px 0;
+    /* Removed top margin, kept bottom margin */
+    width: 100%;
+}
+
+.patient-info-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    /* Reduced gap */
+    background-color: rgba(0, 0, 0, 0.03);
+    /* Lighter background */
+    padding: 2px 8px;
+    /* Reduced padding */
+    border-radius: 4px;
+    /* Flatter border radius */
+    font-size: 13px;
+    white-space: nowrap;
+    margin-bottom: 2px;
+    /* Add little space between row */
+
+    mat-icon {
+        font-size: 16px;
+        /* slightly smaller icon */
+        width: 16px;
+        height: 16px;
+        color: #1976d2;
+        /* Primary blue color */
+        vertical-align: middle;
+    }
+
+    .patient-col-key {
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .patient-col-value {
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.87);
+    }
+}
