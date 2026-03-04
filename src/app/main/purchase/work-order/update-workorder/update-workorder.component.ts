@@ -12,7 +12,7 @@ import { SnackBarService } from 'app/main/shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
 import { GRNItemResponseType, GSTType, ToastType } from '../../good-receiptnote/new-grn/types';
 import { FinalFormModel } from '../../purchase-order/new-purchaseorder/types';
-import { PurchaseFormModel } from '../../purchase-order/update-purchaseorder/types';
+import { PurchaseFormModel } from '../../purchase-order/purchase-requisition/types';
 import { WorkOrderService } from '../work-order.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
