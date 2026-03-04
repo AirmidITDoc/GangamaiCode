@@ -1378,7 +1378,7 @@ export class AdmissionPersonlModel {
   VisAdmTime: any;
   serviceId: any;
   pathReportID: any;
-
+ipdNo:any
   /**
 * Constructor
 *
@@ -1611,7 +1611,7 @@ export class AdmissionPersonlModel {
       this.converId = AdmissionPersonl.converId || 0
       this.serviceId = AdmissionPersonl.serviceId || 0
       this.pathReportID = AdmissionPersonl.pathReportID || 0
-
+      this.ipdNo= AdmissionPersonl.ipdNo || ''
     }
   }
 }

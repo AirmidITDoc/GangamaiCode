@@ -35,10 +35,10 @@ NewInMrdForm:FormGroup
 dateTimeString: any;
 rmdrecordId=0
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
-  isDatePckrDisabled: boolean = false;
-  isTimeChanged: boolean = false;
-  minDate: Date;
-  timeflag = 0;
+  // isDatePckrDisabled: boolean = false;
+  // isTimeChanged: boolean = false;
+  // minDate: Date;
+  // timeflag = 0;
    screenFromString = 'Common-form';
   date: string;
  registerObj = new AdmissionPersonlModel({});
@@ -59,10 +59,10 @@ rmdrecordId=0
   ngOnInit(): void {
        this.NewInMrdForm = this.createINMrdForm();
        if(this.data){
+        console.log(this.data)
         debugger
         this.rmdrecordId=this.data.rmdrecordId
         this.opipid=this.data.opipid
-        // this.NewInMrdForm.patchValue(this.data)
         this.registerObj=this.data
        }
     var now = new Date();

@@ -1,6 +1,444 @@
+// ── Expansion panel body ──
+::ng-deep .mat-expansion-panel-body {
+  padding: 8px 12px 8px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 12px 8px;
+}
+
+// ── Modal structure ──
+.labpatientMain {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.modal-body {
+  padding: 4px 8px !important;
+}
+
+// Top form row (Unit, PatientType, etc.)
+.top-form-row {
+  flex-shrink: 0;
+  padding: 2px 0 0;
+
+  > form {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .mat-mdc-form-field,
+  .mat-form-field {
+    margin-bottom: 0 !important;
+  }
+
+  .mat-form-field-wrapper,
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+
+  [class*="subscript-wrapper"],
+  [class*="bottom-align"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+.main-content {
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.modal-footer {
+  padding-bottom: 0 !important;
+}
+
+.labpatientHeader {
+  flex-shrink: 0;
+  background: #f5f5f5;
+
+  .modal-header-content {
+    padding: 4px 12px !important;
+    max-height: 50px !important;
+  }
+}
+
+.labpatientMiddle {
+  flex: 1;
+  overflow: hidden !important;
+  padding: 4px 8px;
+  background: #fff;
+  min-height: 0;
+
+  .modal-body-container {
+    height: 100%;
+  }
+
+  ::ng-deep .mat-drawer-content {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+} 
+
+// ── Left panel: Personal details ──
 .left-panel {
   width: 40%;
   overflow-y: auto;
   overflow-x: hidden;
   flex-shrink: 0;
 }
+
+// ── Right side billing section ──
+.detail-container {
+  overflow: hidden;
+  height: 100%;
+}
+
+// 3-zone flex layout for billing section
+.billing-flex-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+// Zone 1: Sticky top - Service name input
+.billing-top-zone {
+  flex-shrink: 0;
+  padding: 0 !important;
+  margin: 5px 0 0 0 !important;
+  background: #fff;
+  z-index: 3;
+
+  > form,
+  > div {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  airmid-autocomplete {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  // Target form field itself and all internal wrappers
+  .mat-mdc-form-field,
+  .mat-form-field {
+    margin-bottom: 0 !important;
+  }
+
+  .mat-form-field-wrapper,
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  // Kill subscript / bottom-align completely
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+
+  // Also catch any [class*="subscript"], [class*="bottom-align"]
+  [class*="subscript-wrapper"],
+  [class*="bottom-align"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+// Zone 2: Flexible middle - Table area
+.billing-middle-zone {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0; // important for flex child scrolling
+
+  .airmid-table-container {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  // Remove any top spacing from tab group
+  .mat-mdc-tab-group,
+  .mat-tab-group {
+    margin-top: 0 !important;
+  }
+
+  .mat-mdc-tab-header,
+  .mat-tab-header {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+}
+
+// Zone 3: Sticky bottom - Totals row
+.billing-bottom-zone {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 6px 8px 10px;
+  z-index: 3;
+}
+
+.labpatientfooter {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 6px 10px;
+  text-align: right;
+  position: sticky;
+  bottom: 0;
+}
+
+// Billing summary row
+.billing-summary-row {
+  background-color: #fff;
+}
+
+.labpatientbtn {
+  margin-left: 8px;
+}
+
+// ── Overlay / popup ──
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.popup {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.close-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 16px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.close-btn:hover {
+  background: #e60000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+#popupOverlay:target {
+  display: flex;
+}
+
+.ellipsis {
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+// ── Global form field spacing resets ──
+::ng-deep .mat-form-field-wrapper,
+::ng-deep .mat-mdc-form-field-wrapper {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper,
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 0 !important;
+  min-height: unset !important;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align,
+::ng-deep .mat-form-field-bottom-align {
+  height: 0 !important;
+  min-height: 0 !important;
+
+  &::before {
+    height: 0 !important;
+    display: none !important;
+  }
+}
+
+// ── Expansion panel header compact ──
+::ng-deep .mat-expansion-panel-header {
+  padding: 0 12px !important;
+  min-height: 40px !important;
+  height: 40px !important;
+}
+
+::ng-deep .mat-expansion-panel-header.mat-expanded {
+  min-height: 40px !important;
+  height: 40px !important;
+}
+
+// ── Personal panel: hide subscript wrappers ──
+.personal-panel {
+
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .mat-mdc-form-field-bottom-align,
+  .mat-form-field-bottom-align {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+
+    &::before {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+}
+
+// ══════════════════════════════════════════
+// Dense form field wrapper
+// ══════════════════════════════════════════
+// Now uses the shared global class "resize-form-fields".
+// Just add class="resize-form-fields" to the container div in the HTML.
+// If you need component-specific overrides, nest them here:
+// .lab-patient-reg-wrapper { /* custom overrides */ }
+
+// ══════════════════════════════════════════
+// MODERN LAB TABLE DESIGN - LIGHT THEME
+// ══════════════════════════════════════════
+
+// Modern Tabs Styling
+::ng-deep .lab-modern-tabs {
+  .mat-mdc-tab-header,
+  .mat-tab-header {
+    border-bottom: 2px solid #c5cae9;
+    background: #fafafa;
+  }
+
+  .mat-mdc-tab,
+  .mat-tab-label {
+    min-width: 140px !important;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    color: #546e7a;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+
+    &.mat-mdc-tab-active,
+    &.mat-tab-label-active {
+      opacity: 1;
+      font-weight: 600;
+      color: #3f51b5;
+    }
+  }
+
+  .mat-mdc-tab-body-wrapper,
+  .mat-tab-body-wrapper {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .mat-mdc-tab-body,
+  .mat-tab-body {
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-tab-body-content,
+  .mat-tab-body-content {
+    height: 100%;
+    overflow: auto !important;
+  }
+}
+

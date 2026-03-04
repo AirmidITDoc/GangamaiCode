@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container labpatientMain resize-form-fields">
   <!-- Modal header -->
   <div class="modal-header accent">
     <div class="modal-header-content">
@@ -27,11 +27,18 @@
 
           <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
             <div fxLayout="column" fxLayoutGap="6px">
-              <div class="patient-col">
+              <!-- <div class="patient-col">
                 <span class="patient-col-key">UHID No
                 </span>
                 <span>:</span>
                 <span class="patient-col-value">{{registerObj.regNo}}</span>
+              </div> -->
+
+              
+              <div class="patient-col">
+                <span class="patient-col-key">IPD No</span>
+                <span>:</span>
+                <span class="patient-col-value">{{registerObj.ipdNo}}</span>
               </div>
               <div class="patient-col">
                 <span class="patient-col-key">Patient Name
@@ -47,7 +54,7 @@
               <div class="patient-col">
                 <span class="patient-col-key">DOA | Time</span>
                 <span>:</span>
-                <!-- <span class="patient-col-value">{{registerObj.admissionTime}}</span> -->
+                <span class="patient-col-value">{{registerObj.admissionTime  | date:'dd-MM-yyyy, hh:mm a'}}</span>
               </div>
               
                <div class="patient-col">
@@ -64,14 +71,9 @@
               <div class="patient-col">
                 <span class="patient-col-key">Doctor Name</span>
                 <span>:</span>
-                <span class="patient-col-value">{{registerObj.doctorname}}</span>
+                <span class="patient-col-value">{{registerObj.doctorName}}</span>
               </div>
 
-              <div class="patient-col">
-                <span class="patient-col-key">IPD No</span>
-                <span>:</span>
-                <span class="patient-col-value">{{registerObj.ipdno}}</span>
-              </div>
 
              
 
@@ -99,20 +101,20 @@
                         OUT File Data
                       </div>
 
-                      <div style="padding: 15px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File OUT Number : -{{this.data.outFileId}}
+                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
+                        Mrd File OUT Number : -<span style="font-weight: bold;">{{this.data.outFileId}}</span>
                       </div>
 
-                      <div style="padding: 15px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File OUT Date : -{{this.data.outDate}}
+                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
+                        Mrd File OUT Date : -<span style="font-weight: bold;">{{this.data.outDate}}</span>
                       </div>
 
-                      <div style="padding: 15px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File OUT Person Name : -{{this.data.personName}}
+                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
+                        Mrd File OUT Person Name : -<span style="font-weight: bold;">{{this.data.personName}}</span>
                       </div>
 
-                      <div style="padding: 15px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File OUT Reason : -{{this.data.outReason}}
+                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
+                        Mrd File OUT Reason : -<span style="font-weight: bold;">{{this.data.outReason}}</span>
                       </div>
                     </div>
                   </div>
@@ -150,7 +152,7 @@
                   <div fxLayout="row wrap" fxLayoutGap="2px 0px grid">
 
 
-                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                    <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33" style="margin-top: 10px;">
                       <span style="font-size: large;font-weight: bold;color: rgb(4, 4, 62);padding: 10px;">In
                         File Data</span>
 

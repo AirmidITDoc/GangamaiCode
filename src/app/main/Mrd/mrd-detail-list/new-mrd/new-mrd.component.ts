@@ -174,7 +174,7 @@ export class NewMrdComponent {
   getSelectedRow(row: any): void {
 
     if (row.mrdInFileStatus) {
-      this.toastr.error('Selected Patinet File Already Received.', 'Save !', {
+      this.toastr.warning('Selected Patinet File Already Received.', 'Save !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
 
