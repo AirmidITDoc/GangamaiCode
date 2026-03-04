@@ -167,33 +167,34 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     // }
 
     navigateToBedOccupancyDashboard() {
-        // this.accountService.logout();
+       
         this.router.navigate(['/dashboard/bed-occupancy']);
     }
 
     navigateToRadiologyDashboard() {
-        // this.accountService.logout();
+       
         this.router.navigate(['/dashboard/Radiology-dashboard']);
     }
 
     navigateToCashlessDashboard() {
-        // this.accountService.logout();
+       
         this.router.navigate(['/dashboard/Cashless-dashboard']);
     }
 
     navigateToPharmacyDashboard() {
-        // this.accountService.logout();
+       
         this.router.navigate(['/dashboard/Pharmacy-dashboard']);
     }
     
     navigateToFinancialDashboard() {
-        // this.accountService.logout();
+       
         this.router.navigate(['/dashboard/Financial-dashboard']);
     }
      navigateToLabFinancialDashboard() {
-        // this.accountService.logout();
+       
         this.router.navigate(['/dashboard/Lab-Financial-dashboard']);
     }
+   
     /**
      * On destroy
      */
