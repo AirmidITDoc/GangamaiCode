@@ -142,8 +142,9 @@
                                             <!-- Test Date Column -->
                                             <ng-container matColumnDef="dot">
                                                 <th mat-header-cell *matHeaderCellDef> Test Date </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.dot | date:
-                                                    dateType.MEDIUM_DATE}} </td>
+                                                <!-- <td mat-cell *matCellDef="let element"> {{element.dot | date:
+                                                    dateType.MEDIUM_DATE}} </td> -->
+                                                    <td mat-cell *matCellDef="let element"> {{element.dot}} </td>
                                             </ng-container>
 
                                             <!-- UHID -->
@@ -212,6 +213,27 @@
                                                         style="overflow: hidden; display: flex; flex-direction: column; width: 100%;">
                                                         <div *ngIf="element == expandedElement"
                                                             style="padding: 2px 8px 0; background: #f9f9f9;">
+
+                                                            <div style="height: 30px;">
+                                                                <button mat-raised-button
+                                                                    (click)="chkresultentry(selection.selected,true)">
+                                                                    Result Entry
+                                                                </button>
+
+                                                                <button mat-raised-button (click)="PrintresultentryTop()"
+                                                                    style="margin-left: 5px;"
+                                                                    *ngIf="selection.selected.length>0">
+                                                                    Print Result
+                                                                </button>
+
+                                                                <button mat-raised-button
+                                                                    (click)="PrintresultentrywithheaderTop()"
+                                                                    *ngIf="selection.selected.length>0"
+                                                                    style="margin-left: 5px;">
+                                                                    Print With Header
+                                                                </button>
+
+                                                            </div>
 
                                                             <mat-table class="child-accordion-table" matSort
                                                                 [dataSource]="dataSource1"
@@ -453,21 +475,7 @@
 
                                             <ng-container matColumnDef="action" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-250">
-                                                    <div class="accordion-action-bar">
-                                                        <button mat-raised-button color="primary" class="btn-xs"
-                                                            (click)="chkresultentry(selection.selected,true)">
-                                                            Result Entry
-                                                        </button>
-                                                        <button mat-raised-button (click)="Printresultentry()"
-                                                            class="btn-xs" *ngIf="selection.selected.length>0">
-                                                            Print Result
-                                                        </button>
-                                                        <button mat-raised-button
-                                                            (click)="Printresultentrywithheader(contact)"
-                                                            *ngIf="selection.selected.length>0" class="btn-xs">
-                                                            Print With Header
-                                                        </button>
-                                                    </div>
+                                                    Actions
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" class="w-250">
                                                     <span [matTooltip]="contact.isSampleCollection === 'False'

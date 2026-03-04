@@ -98,6 +98,7 @@ export class NewLabresultEntryComponent {
   sampleNo = '0'
   suggestionNotes = ''
   verifyCheck: boolean;
+  viewCheck: boolean;
   type: string = '';
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
@@ -124,6 +125,7 @@ export class NewLabresultEntryComponent {
     if (this.data) {
       console.log(this.data)
       this.verifyCheck = data.verifyCheck
+      this.viewCheck = data.viewCheck
 
       this.selectedAdvanceObj2 = data.patientdata;
       console.log(this.data.patientdata)
@@ -755,7 +757,7 @@ export class NewLabresultEntryComponent {
       reportDate: this.datePipe.transform(this.currentDate, "yyyy-MM-dd"),
       reportTime: this.datePipe.transform(this.currentDate, "HH:mm"),
       isCompleted: true,
-      isPrinted: true,
+      isPrinted: false,
       pathResultDr1: [this.vPathResultDoctorId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       pathResultDr2: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       pathResultDr3: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

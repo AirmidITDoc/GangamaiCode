@@ -113,13 +113,13 @@
                                     </div>
 
                                     <button mat-raised-button color="primary" (click)="onUpload()"
-                                        style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
+                                        style="background-color: aliceblue; color: brown;"  *ngIf="!verifyCheck && !viewCheck">
                                         Upload
                                         <mat-icon class="ml-4">cloud_upload</mat-icon>
                                     </button>
 
                                     <button mat-raised-button color="primary"
-                                        style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
+                                        style="background-color: aliceblue; color: brown;"  *ngIf="!verifyCheck && !viewCheck">
                                         Re-Run
                                     </button>
                                 </div>
@@ -346,8 +346,8 @@
         </div>
         <div class="modal-footer-buttons">
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-            <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck">Save</button>
-            <button class="btn btn-success" (click)="onVerify()" *ngIf="verifyCheck">Authorization</button>
+            <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck && !viewCheck">Save</button>
+            <button class="btn btn-success" (click)="onVerify()" *ngIf="verifyCheck && !viewCheck">Authorization</button>
         </div>
     </div>
 </div>

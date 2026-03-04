@@ -58,12 +58,12 @@ export class TestsPopupComponent {
   }
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'color')!.template = this.Testcolors;
+    this.gridConfig.columnsList.find(col => col.key === 'specimenColorName')!.template = this.Testcolors;
   }
 
   allColumns = [
     {
-      heading: "Specimen Color", key: "color", sort: true, align: 'left', type: gridColumnTypes.template,
+      heading: "Specimen Color", key: "specimenColorName", sort: true, align: 'left', type: gridColumnTypes.template,
       template: this.Testcolors
     },
     { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
@@ -99,8 +99,10 @@ export class TestsPopupComponent {
         { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
       ]
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+    setTimeout(() => {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    }, 100);
   }
 
   OnPrintPatientIcard(data) {

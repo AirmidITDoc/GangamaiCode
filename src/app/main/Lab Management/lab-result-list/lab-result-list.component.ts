@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
 import { Component, ComponentRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -39,6 +39,7 @@ import { SampleCollOldMethodComponent } from '../lab-sample-collection/sample-co
 import { NewLabtemplateComponent } from './new-labtemplate/new-labtemplate.component';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 function formatDate(rawDate: string): string {
@@ -235,15 +236,18 @@ export class LabResultListComponent {
     private overlay: Overlay,
     private _loggedService: AuthenticationService,
     public permissionService: PagePermissionService,
+    public _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
 
   ngOnInit(): void {
     this.myformSearch = this._SampleService.createSearchForm()
+    this.reportlogFormGroup=this.createReportlogForm()
     this.fromDate = this.myformSearch.get("start").value || "";
     this.toDate = this.myformSearch.get("end").value || "";
     this.GetResultdetail();
     this.bindParentGridData();
+
   }
 
   ListView1(value) {
@@ -775,6 +779,7 @@ export class LabResultListComponent {
   }
 
   viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
+    this.OnPrintReportLogSave('Lab Print', contact) // log save
 
     setTimeout(() => {
       const param = {
@@ -856,10 +861,43 @@ export class LabResultListComponent {
   }
 
   CompletdFlag = 1
+  selectedItem: any;
+  PrintresultentryTop(row: any = null) {
+    debugger
+    console.log(row);
+    let pathologyDelete = [];
+
+    this.selectedItem = this.selection.selected[0];
+    this.OnPrintReportLogSave('Lab Print', this.selectedItem)  // log save
+
+    this.selection.selected.forEach((element) => {
+      pathologyDelete.push({ pathReportId: element.pathReportID });
+    });
+    if (this.selectedItem.isCompleted)
+      this.CompletdFlag = 1
+    else
+      this.CompletdFlag = 0
+
+    pathologyDelete.push({ pathReportId: this.selectedItem.pathReportID });
+
+    const submitData = {
+      pathPrintResultEntry: pathologyDelete
+    };
+
+    console.log(submitData);
+    if (this.CompletdFlag) {
+      this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
+        if (res) {
+          this.viewgetPathologyTestReportPdf(row)
+        }
+      });
+    }
+  }
 
   Printresultentry(row: any = null) {
     // debugger
     console.log(row);
+    this.OnPrintReportLogSave('Lab Print', row) // log save
     let pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
@@ -915,7 +953,32 @@ export class LabResultListComponent {
 
   }
 
+  PrintresultentrywithheaderTop(row: any = null) {
+    debugger
+    let pathologyDelete = [];
+
+    this.selectedItem = this.selection.selected[0];
+    this.OnPrintReportLogSave('Lab Print', this.selectedItem) // log save
+
+    this.selection.selected.forEach((element) => {
+      pathologyDelete.push({ pathReportId: element.pathReportID });
+    });
+
+    const submitData = {
+      pathPrintResultEntry: pathologyDelete
+    };
+
+    console.log(submitData);
+
+    this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
+      if (res) {
+        this.viewgetPathologyTestReportwithheaderPdf(row)
+      }
+    });
+  }
+
   Printresultentrywithheader(row: any = null) {
+    this.OnPrintReportLogSave('Lab Print', row) // log save
     let pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
@@ -931,6 +994,64 @@ export class LabResultListComponent {
         this.viewgetPathologyTestReportwithheaderPdf(row)
       }
     });
+  }
+
+  reportlogFormGroup: FormGroup
+  createReportlogForm(): FormGroup {
+    return this.formBuilder.group({
+      logId: [0],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opiptype: [4],
+      logTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      logTypeName: ['', [Validators.required]]
+    });
+  }
+
+  OnPrintReportLogSave(type: any, data: any) {
+    // debugger
+    const src = Array.isArray(data) ? data[0] : data;
+    const opipid = src?.opdipdId ?? src?.opdIpdId ?? src?.opdipdId;
+    if (type == 'Lab Print') {
+      this.reportlogFormGroup.get('logTypeId').setValue(1);
+      this.reportlogFormGroup.get('logTypeName').setValue('Lab Print');
+    }
+    if (type == 'Lab View') {
+      this.reportlogFormGroup.get('logTypeId').setValue(2);
+      this.reportlogFormGroup.get('logTypeName').setValue('Lab View');
+    }
+    this.reportlogFormGroup.get('opipid').setValue(opipid);
+
+    if (!this.reportlogFormGroup.invalid) {
+      console.log(this.reportlogFormGroup.value);
+
+      this._SampleService.getReportLog(this.reportlogFormGroup.value).subscribe(() => {
+        // this.GetSampleCollectiondetail();
+      });
+    } else {
+      let invalidFields = [];
+      if (this.reportlogFormGroup.invalid) {
+        for (const controlName in this.reportlogFormGroup.controls) {
+          const control = this.reportlogFormGroup.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Report Data : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`Report Data: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      }
+    }
   }
 
   viewgetPathologyTestReportwithheaderPdf(data) {
