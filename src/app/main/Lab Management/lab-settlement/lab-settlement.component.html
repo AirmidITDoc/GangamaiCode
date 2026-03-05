@@ -18,8 +18,8 @@
                 <mat-card style="padding: 5px;">
                     <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                         <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
-                            <div class="redio-container" style="padding: 10px; gap: 5px;">
-                                
+                            <div class="redio-container resize-form-fields" style="padding: 10px; gap: 5px;">
+
                                 <airmid-dropdown label="Unit Name" formControlName="UnitId" fxFlex="15%"
                                     [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
                                     [formGroup]="searchFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
@@ -40,37 +40,15 @@
                         <mat-card style="padding: 5px;">
                             <div class="patient-info-container">
                                 <div class="patient-info-box">
-                                    <div class="patient-info-title border-bottom pb-2">
-                                        <span class="h1">Patient Information</span>
+                                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
                                     </div>
-                                    <div class="patient-info-box my-8">
-                                        <div class="patient-info-row ">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.labRequestNo}}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key ">Patient Name</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{ registerObj.firstName }} {{
-                                                    registerObj.lastName
-                                                    }}</span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Gender</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.ageYear}}Y
-                                                    <!-- {{registerObj.genderId}} -->
-                                                </span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Mobile No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.mobileNo}}</span>
-                                            </div>
-
-                                        </div>
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="registerObj?.labRequestNo"
+                                            [patientName]="registerObj?.firstName + ' ' + registerObj?.lastName"
+                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                            [mobileNo]="registerObj?.mobileNo">
+                                        </app-patient-information>
                                     </div>
                                 </div>
                             </div>

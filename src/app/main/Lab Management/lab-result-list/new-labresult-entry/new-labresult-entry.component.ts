@@ -56,6 +56,7 @@ export class NewLabresultEntryComponent {
   Doctor1List: any = [];
   otherForm: FormGroup;
   msg: any;
+  AgeType: any = 'YEAR'
 
   selectedAdvanceObj1: SampleDetailObj;
   selectedAdvanceObj2: AdmissionPersonl;
@@ -162,12 +163,18 @@ export class NewLabresultEntryComponent {
       });
 
 
-      if (this.selectedAdvanceObj2.ageYear)
+      if (this.selectedAdvanceObj2.ageYear) {
         this.FinalAge = this.selectedAdvanceObj2.ageYear.trim();
-      if (this.selectedAdvanceObj2.ageMonth && this.FinalAge == 0)
+        this.AgeType = 'YEAR'
+      }
+      if (this.selectedAdvanceObj2.ageMonth && this.FinalAge == 0) {
         this.FinalAge = this.selectedAdvanceObj2.ageMonth.trim();
-      if (this.selectedAdvanceObj2.ageDay && this.FinalAge == 0)
+        this.AgeType = 'MONTH'
+      }
+      if (this.selectedAdvanceObj2.ageDay && this.FinalAge == 0) {
         this.FinalAge = this.selectedAdvanceObj2.ageDay.trim();
+        this.AgeType = 'DAY'
+      }
 
     }
 
@@ -490,6 +497,11 @@ export class NewLabresultEntryComponent {
           "fieldName": "MaxAge",
           "fieldValue": String(this.FinalAge),
           "opType": "Equals"
+        },
+        {
+          "fieldName": "AgeType",
+          "fieldValue": String(this.AgeType),
+          "opType": "Equals"
         }
       ],
       "mode": "PathologyResultEntryLAB"
@@ -563,6 +575,11 @@ export class NewLabresultEntryComponent {
         {
           "fieldName": "SampleNo",
           "fieldValue": String(this.sampleNo),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "AgeType",
+          "fieldValue": String(this.AgeType),
           "opType": "Equals"
         }
       ],

@@ -52,6 +52,7 @@ export class BrowseLabBillsComponent {
   regNo: any = "0"
   l_name: any = ""
   CompanyId = 0
+  isSettlement: boolean = false;
   PBillNo: any = "%"
   autocompleteModecompany: string = "Company";
   autocompleteModecompany1: string = "Company";
@@ -84,6 +85,7 @@ export class BrowseLabBillsComponent {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
+  @ViewChild('isApprovalstatus') isApprovalstatus!: TemplateRef<any>;
 
   allOBillfilters = [
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
@@ -189,6 +191,7 @@ export class BrowseLabBillsComponent {
   ]
 
   allOPRefundColumns = [
+    { heading: "Status", key: "isApproval", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
     { heading: "RefundDate", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
     // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -220,6 +223,7 @@ export class BrowseLabBillsComponent {
 
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
+    this.gridConfig2.columnsList.find(col => col.key === 'isApproval')!.template = this.isApprovalstatus;
   }
 
 
@@ -240,7 +244,6 @@ export class BrowseLabBillsComponent {
     sortOrder: 0,
     filters: this.allOPpaymentfilters
   }
-
 
   gridConfig2: gridModel = {
     permissionCode: permissionCodes.ExternalInvestigation,
@@ -266,6 +269,8 @@ export class BrowseLabBillsComponent {
 
   ngOnInit(): void {
     this.myFilterbillform = this._OPListService.myFilterbillbrowseform();
+    this.getAccessDetail();
+    
     this.myFilterbillform.get('UnitId').setValue(this.accountService.currentUserValue.user.unitId)
     this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
     this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
@@ -274,6 +279,29 @@ export class BrowseLabBillsComponent {
 
     this.menuActions.push("Bill Print-Package Info");
     this.menuActions.push("Bill Print");
+  }
+
+  getAccessDetail() {
+    // debugger
+    var SelectQuery = {
+      "searchFields": [{
+        "fieldName": "LoginId",
+        "fieldValue": String(this.accountService.currentUserValue.userId),
+        "opType": "Equals"
+      }],
+      "mode": "LoginWiseAccessConfigList"
+    }
+    this._OPListService.commonList(SelectQuery).subscribe(response => {
+      const settlementData = response.find(x => x.AccessValueName === 'IsSettlement');
+      console.log(settlementData)
+      if (settlementData?.AccessValue == true) {
+        this.isSettlement = settlementData?.AccessValue
+        console.log("Show", this.isSettlement)
+      } else {
+        this.isSettlement = false
+        console.log("Hide", this.isSettlement)
+      }
+    });
   }
 
   isActionEnabled(element: any): boolean {

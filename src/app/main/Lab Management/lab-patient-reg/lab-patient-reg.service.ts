@@ -149,4 +149,7 @@ export class LabPatientRegService {
    public commonList(Param) {
     return this._httpClient.PostData("Common", Param);
   }
+  public getPatientType(type) {
+    return this._httpClient.GetData("LabPatientRegistration/GetMConstant?ConstantType=" + type);
+  }
 }

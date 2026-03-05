@@ -12,6 +12,12 @@
             <span class="patient-col-value">{{patientName}}</span>
         </div>
 
+         <div class="patient-info-chip" *ngIf="mobileNo">
+            <mat-icon>call</mat-icon>
+            <span class="patient-col-key">Mobile No:</span>
+            <span class="patient-col-value">{{mobileNo}}</span>
+        </div>
+
         <div class="patient-info-chip" *ngIf="doctorName">
             <mat-icon>local_hospital</mat-icon>
             <span class="patient-col-key">Doctor Name:</span>

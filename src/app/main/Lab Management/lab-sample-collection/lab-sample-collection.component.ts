@@ -41,7 +41,7 @@ export class LabSampleCollectionComponent {
     f_name: any = "%"
     regNo: any = "0"
     l_name: any = "%"
-    status: any = "2"
+    status: any = "0"
     vCompanyId: any = "0"
     VPBillNo = "%"
     // Ptype: any = "5"
@@ -63,6 +63,7 @@ export class LabSampleCollectionComponent {
     @ViewChild('actionsPatientType') actionsPatientType!: TemplateRef<any>;
     @ViewChild('genderANDage') genderANDage!: TemplateRef<any>;
     @ViewChild('outSourceLabName') outSourceLabName!: TemplateRef<any>;
+    @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -71,6 +72,7 @@ export class LabSampleCollectionComponent {
         // this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsPatientType;
         this.gridConfig.columnsList.find(col => col.key === 'genderName')!.template = this.genderANDage;
         this.gridConfig.columnsList.find(col => col.key === 'outSourceLabName')!.template = this.outSourceLabName;
+        this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
     }
 
     allcolumns = [
@@ -78,15 +80,11 @@ export class LabSampleCollectionComponent {
             heading: "-", key: "action1", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.statusbtnTemplate
         },
-        // {
-        //     heading: "Patient Type", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-        //     template: this.actionsPatientType
-        // },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date-Time", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
         // { heading: "SampleCollection DateTime", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.template },
         { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 120 },
@@ -114,7 +112,7 @@ export class LabSampleCollectionComponent {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
             { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }

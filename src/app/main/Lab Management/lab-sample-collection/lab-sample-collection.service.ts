@@ -34,7 +34,7 @@ export class LabSampleCollectionService {
       // BillNo:[''],
       // BillDate:[''],
       PatientTypeSearch: ['5'],
-      StatusSearch: ['2'],
+      StatusSearch: ['0'],
       Istype: ['2'],
       CategoryId: [''],
       start: [new Date().toISOString()],

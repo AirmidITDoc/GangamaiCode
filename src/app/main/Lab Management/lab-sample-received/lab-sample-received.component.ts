@@ -38,7 +38,7 @@ export class LabSampleReceivedComponent {
   f_name: any = "%"
   regNo: any = "0"
   l_name: any = "%"
-  status: any = "2"
+  status: any = "0"
   vCompanyId: any = "0"
   VPBillNo = "%"
   // Ptype: any = "5"
@@ -345,7 +345,7 @@ export class LabSampleReceivedComponent {
     this.SelectedList = [];
     this.selection.clear();
     this.myformSearch.reset({
-      StatusSearch: "2",
+      StatusSearch: "0",
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       UnitId: [this._loggedService.currentUserValue.user.unitId]

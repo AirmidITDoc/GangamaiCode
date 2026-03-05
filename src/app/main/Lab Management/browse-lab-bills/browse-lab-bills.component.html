@@ -31,7 +31,7 @@
     <ng-template #actionsTemplate4 let-element>
         <div>
             <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
-                *ngIf="element.balanceAmt!='0'">
+                *ngIf="isSettlement && element.balanceAmt!='0'">
                 <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0 && element.isCancelled !=1"
                     class="disabled-icon">receipt</mat-icon>
                 <mat-icon title="paid" *ngIf="element.balanceAmt==0" [disabled]="element.disabled"
@@ -117,7 +117,8 @@
                     </div>
 
                 </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div id="contacts"
+                    class="page-layout simple left-sidebar inner-sidebar inner-scroll resize-form-fields">
                     <airmid-table [gridConfig]="gridConfig" class="content" #opBillGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterbillform">
@@ -222,7 +223,7 @@
                     <airmid-table [gridConfig]="gridConfig1" class="content" #opPaymentGrid>
                         <ng-container filters>
 
-                            <form [formGroup]="myFilterpayform">
+                            <form [formGroup]="myFilterpayform" class="resize-form-fields">
                                 <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
                                     (selectionChange)="ListViewUnit2($event)"
                                     [(ngModel)]="gridConfig1.filters[8].fieldValue" [formGroup]="myFilterpayform"
@@ -332,7 +333,21 @@
 
                         </div>
                     </ng-template>
-                    <airmid-table [gridConfig]="gridConfig2" class="content" #opRefundGrid>
+
+                    <ng-template #isApprovalstatus let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.isApproval==true" matTooltip="Refund Approved" class="s-20 mr-4"
+                                style="color: #4caf50;">
+                                check_circle
+                            </mat-icon>
+                            <mat-icon *ngIf="!element.isApproval==true" matTooltip="Refund Not Approved"
+                                class="s-20 mr-4" style="color: #f44336;">
+                                hourglass_empty
+                            </mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig2" class="content resize-form-fields" #opRefundGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterrefundform">
                                 <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"

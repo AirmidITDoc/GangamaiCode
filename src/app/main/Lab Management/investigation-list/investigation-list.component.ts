@@ -142,7 +142,7 @@ export class InvestigationListComponent {
   f_name: any = "%"
   regNo: any = "0"
   l_name: any = "%"
-  status: any = "2"
+  status: any = "0"
   vCompanyId: any = "0"
   VPBillNo = "%"
   // Ptype: any = "5"
@@ -220,7 +220,7 @@ export class InvestigationListComponent {
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-      { fieldName: "IsCompleted", fieldValue: "2", opType: OperatorComparer.Equals },
+      { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
       { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
@@ -667,7 +667,7 @@ export class InvestigationListComponent {
   ReceviedtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   Receviedf_name: any = "%"
   Receviedl_name: any = "%"
-  Receviedstatus: any = "2"
+  Receviedstatus: any = "0"
   ReceviedCompanyId: any = "0"
   ReceviedregNo: any = "0"
   ReceviedPBillNo = "%"
@@ -891,7 +891,7 @@ export class InvestigationListComponent {
     this.SelectedList = [];
     this.Receviedselection.clear();
     this.ReceviedformSearch.reset({
-      ReceiveStatusSearch: "2",
+      ReceiveStatusSearch: "0",
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       UnitId: [this.accountService.currentUserValue.user.unitId]
@@ -2406,7 +2406,7 @@ export class InvestigationListComponent {
     ]
   }
 
-  Approvalstatus: any = "0"
+  Approvalstatus: any = "1"
   // opipType: any = "3";
   ApprovalonChangeFirst() {
 
@@ -2446,7 +2446,7 @@ export class InvestigationListComponent {
 
   ApprovalonClear() {
     this.ApprovalmyformSearch.get('RegNoSearch').setValue("0");
-    this.ApprovalmyformSearch.get('ApprovalStatusSearch').setValue("0");
+    this.ApprovalmyformSearch.get('ApprovalStatusSearch').setValue("1");
     this.ApprovalmyformSearch.get('PatientTypeSearch').setValue("3");
   }
 

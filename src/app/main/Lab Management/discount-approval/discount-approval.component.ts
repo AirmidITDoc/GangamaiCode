@@ -18,16 +18,16 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
-import { RefundApprovalService } from './refund-approval.service';
+import { DiscountApprovalService } from './discount-approval.service';
 
 @Component({
-  selector: 'app-refund-approval',
-  templateUrl: './refund-approval.component.html',
-  styleUrls: ['./refund-approval.component.scss'],
+  selector: 'app-discount-approval',
+  templateUrl: './discount-approval.component.html',
+  styleUrls: ['./discount-approval.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class RefundApprovalComponent {
+export class DiscountApprovalComponent {
   myformSearch: FormGroup;
   autocompleteModeunit: string = "Hospital";
   autocompleteModecompany: string = "Company";
@@ -68,8 +68,9 @@ export class RefundApprovalComponent {
       template: this.firstActionButtonTemplate
     }
   ];
+
   gridConfig: gridModel = {
-    apiUrl: "RefundOfBill/LabRefundApprovedList",
+    apiUrl: "",
     columnsList: this.allcolumns,
     sortField: "RefundId",
     sortOrder: 0,
@@ -86,44 +87,20 @@ export class RefundApprovalComponent {
     ]
   }
 
-  constructor(public _refundApprovalService: RefundApprovalService,
+  constructor(public _discApprovalService: DiscountApprovalService,
     public _matDialog: MatDialog,
-    public datePipe: DatePipe,private _formBuilder: UntypedFormBuilder,
+    public datePipe: DatePipe, private _formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public permissionService: PagePermissionService,
     private overlay: Overlay,) { }
 
   ngOnInit(): void {
-    this.myformSearch = this.createSearchForm()
+    this.myformSearch = this._discApprovalService.createSearchForm()
     // this.GetSampleCollectiondetail()
-    this.approvalFormFinal = this._refundApprovalService.CreateForm();
+    this.approvalFormFinal = this._discApprovalService.CreateForm();
 
     this.myformSearch.get('UnitId').setValue(this._loggedService.currentUserValue.user.unitId)
-  }
-
-  createSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      RegNo: [],
-      FirstName: ['', [
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]],
-      LastName: ['', [
-        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
-      ]],
-      // BillNo:[''],
-      // BillDate:[''],
-      PatientTypeSearch: ['5'],
-      StatusSearch: ['0'],
-      Istype: ['2'],
-      CategoryId: [''],
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
-      TestStatusSearch: ['1'],
-      PBillNo: '',
-      CompanyId: 0,
-      UnitId: [this._loggedService.currentUserValue.user.unitId]
-    });
   }
 
   ListViewcompany(value) {
@@ -162,7 +139,7 @@ export class RefundApprovalComponent {
   getfilterdata() {
     // debugger
     this.gridConfig = {
-      apiUrl: "RefundOfBill/LabRefundApprovedList",
+      apiUrl: "",
       columnsList: this.allcolumns,
       sortField: "RefundId",
       sortOrder: 0,
@@ -181,6 +158,7 @@ export class RefundApprovalComponent {
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
+
 
   Clearfilter(event) {
     console.log(event)
@@ -207,57 +185,7 @@ export class RefundApprovalComponent {
     }
   }
 
-  patientName: string = '';
-  refundId: any;
-  openStatus(row: any = null): void {
-    console.log(row)
-    this.patientName = row?.firstName || '';
-    this.refundId = row.refundId
+  openStatus() {
 
-    const dialogRef = this._matDialog.open(this.statusForm, {
-      width: '35%',
-      height: '40%'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-    });
-  }
-
-  saveStatus() {
-    this.approvalFormFinal.get('refundId').setValue(this.refundId)
-
-    if (!this.approvalFormFinal.value.isApproval) {
-      this.toastr.warning('Please approve before saving');
-      return; // stop save
-    }
-
-    if (!this.approvalFormFinal.invalid) {
-      console.log(this.approvalFormFinal.value)
-
-      this._refundApprovalService.statusUpdate(this.approvalFormFinal.value).subscribe((response) => {
-        this.onClear();
-      });
-    } {
-      let invalidFields = [];
-      if (this.approvalFormFinal.invalid) {
-        for (const controlName in this.approvalFormFinal.controls) {
-          if (this.approvalFormFinal.controls[controlName].invalid) {
-            invalidFields.push(`Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
-
-    }
-  }
-
-  onClear() {
-    this.approvalFormFinal.reset();
-    this._matDialog.closeAll();
   }
 }
