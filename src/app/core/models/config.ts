@@ -116,6 +116,7 @@ IsIndentVerify:any
 IsMaterialAcceptDirect:any
 IsMaterialAcceptAgainstIndent:any
 IsMaterialAccept:any;
+IsOPBillProceed:any;
  /**
      * Constructor
      *
@@ -239,6 +240,8 @@ this.IsIndentVerify=ConfigSettingParams.IsIndentVerify;
 this.IsMaterialAcceptDirect=ConfigSettingParams.IsMaterialAcceptDirect;
 this.IsMaterialAcceptAgainstIndent=ConfigSettingParams.IsMaterialAcceptAgainstIndent;
 this.IsMaterialAccept=ConfigSettingParams.IsMaterialAccept;
+this.IsOPBillProceed=ConfigSettingParams.IsOPBillProceed;
+
     }
 
 }

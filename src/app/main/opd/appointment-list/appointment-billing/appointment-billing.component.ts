@@ -36,7 +36,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         ['groupName', 'serviceName', 'classRate', 'userName'];
     public mPesaColumns = ['PayStatus', 'transactionDate', 'phoneNumber', 'mpesaReceiptNumber', 'amount', 'ResponseDate', 'Description', 'Action'];
     public displayedColumnsDraft: string[] =
-        ['Status','DraftDate','NetAmount', 'Action'];
+        ['Status', 'DraftDate', 'NetAmount', 'Action'];
 
     countdown: number = 180; // 3 minutes
     countdownColorClass = 'green';
@@ -93,7 +93,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     serviceSelct = false
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     currency: any = '';
-    SetCashbydefault:boolean = false
+    SetCashbydefault: boolean = false
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
@@ -131,7 +131,25 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OPFooterForm = this.CreateOPFooter();
         this.OPFooterForm.markAllAsTouched();
         this.OpDraftSaveForm = this.createDraftSaveform()
+        debugger
 
+        if(this.data){
+        if (this.data.FormName = 'Appointment-OPBill') {
+            this.patientDetail = this.data.row
+            console.log("Data", this.patientDetail)
+
+             this.PatientName = this.patientDetail.patientName
+            this.patientDetail.doctorName = this.patientDetail.doctorname
+            this.DepartmentName = this.patientDetail.departmentName
+            this.AgeYear = this.patientDetail.ageYear
+            this.Doctorname = this.patientDetail.doctorname
+            this.vOPIPId = this.patientDetail.visitId;
+            this.vTariffId = this.patientDetail.tariffId;
+            this.vhospitalId = this.patientDetail.hospitalId;
+            this.vClassId = this.patientDetail.classId
+            this.RegNo = this.patientDetail.regNo
+
+        }}
         if (this.data) {
             // console.log(this.data)
             this.patientDetail = this.advanceDataStored.storage;
@@ -149,7 +167,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.vTariffId = this.patientDetail.tariffId;
             this.vhospitalId = this.patientDetail.hospitalId;
             this.vClassId = this.patientDetail.classId
-            this.RegNo=this.patientDetail.regNo
+            this.RegNo = this.patientDetail.regNo
             this.savebtn = false
             this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
             this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
@@ -160,7 +178,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.dsPackageList = new MatTableDataSource(this.packageList);
         this.dsServiceList = new MatTableDataSource(this.serviceList);
 
-        
+
         this.startCountdown();
         this.getdraftlist();
         this.getAccessDetail()
@@ -178,7 +196,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         //this is for set bydefault cash 
         debugger
         const [setCashBydefaultId, setCashBydefault] = this._ConfigService.configParams.OpBillSetCash.split(":");
-        this.SetCashbydefault = setCashBydefaultId === "1"; 
+        this.SetCashbydefault = setCashBydefaultId === "1";
 
         this.OPFooterForm = this.CreateOPFooter();
         this.setupFormListener();
@@ -267,7 +285,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (this.countdown <= 0) {
                 clearInterval(interval);
                 this.isWaiting = false;
-                 this.stopPolling();             // Stop polling
+                this.stopPolling();             // Stop polling
                 this.statusMessage = '❌ Payment not completed. User did not approve.';
             }
 
@@ -398,36 +416,36 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     getFixedDecimal(value: number) {
         return Number(value.toFixed(2));
     }
-    UserDicPerLimit:any=0;
-      getAccessDetail() {
+    UserDicPerLimit: any = 0;
+    getAccessDetail() {
         // debugger
         var SelectQuery = {
-          "first": 0,
-          "rows": 999,
-          "sortField": "AccessValueId",
-          "sortOrder": 0,
-          "filters": [
-            {
-              "fieldName": "LoginId",
-              "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
-              "opType": "Equals"
-            }
-          ],
-          "exportType": "JSON",
-          "columns": []
+            "first": 0,
+            "rows": 999,
+            "sortField": "AccessValueId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "LoginId",
+                    "fieldValue": String(this.accountService.currentUserValue.userId), //"30091",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
         }
         this._AppointmentlistService.getAccessDetailList(SelectQuery).subscribe(response => {
-          const getUserAccesDetList = response.data as UserDetail[];
-          console.log("get Access data:", getUserAccesDetList)
-          
-           const discountData = response.data.find(x => x.accessValueName === 'IsDiscount'); 
+            const getUserAccesDetList = response.data as UserDetail[];
+            console.log("get Access data:", getUserAccesDetList)
+
+            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
             console.log(discountData)
-            if(discountData?.accessValue){
+            if (discountData?.accessValue) {
                 this.UserDicPerLimit = discountData?.accessInputValue || 0
             }
         });
-      }
-    
+    }
+
     // Form creation Pending section
     createSearchForm() {
         return this.formBuilder.group({
@@ -452,7 +470,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     //Footer Form
     CreateOPFooter() {
         debugger
-        const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay"  ; 
+        const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay";
         return this.formBuilder.group({
             totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -461,7 +479,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: [paymentType],
             GovrnApprovAmt: [0],
-            mpesaMobile: ['' ],
+            mpesaMobile: [''],
             UpiNo: [0]
         })
     }
@@ -561,9 +579,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([]),
 
-            tdrBill:this.formBuilder.group({
-                drbno:[0],
-                isCancelled:[0]
+            tdrBill: this.formBuilder.group({
+                drbno: [0],
+                isCancelled: [0]
             })
         });
     }
@@ -621,8 +639,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
     }
     Createpacakgechargeform(item: any): FormGroup {
-debugger
-console.log(item)
+        debugger
+        console.log(item)
         return this.formBuilder.group({
             chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -854,7 +872,7 @@ console.log(item)
             this.dsPackageList.data = data.data as ChargesList[];
             this.dsPackageList.data.forEach(element => {
                 console.log(element)
-                
+
                 this.PacakgeList.push(
                     {
                         serviceId: element.packageServiceId,
@@ -1068,7 +1086,7 @@ console.log(item)
         this.calculateTotalAmount();
     }
     updateTotalDiscountAmt(): void {
-  debugger
+        debugger
         if (this.isUpdating) return; // Stop recursion
         this.isUpdating = true;
         const DiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
@@ -1079,14 +1097,14 @@ console.log(item)
                     title: 'Discount Limit Exceeded',
                     text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
                     confirmButtonColor: '#d33'
-                });  
-                    this.OPFooterForm.get("totalDiscountPer").setValue(this.UserDicPerLimit);
-                    this.isUpdating = false;
-             //   return; 
+                });
+                this.OPFooterForm.get("totalDiscountPer").setValue(this.UserDicPerLimit);
+                this.isUpdating = false;
+                //   return; 
             }
-        } 
+        }
 
-        const totalDiscountPer = +this.OPFooterForm.get("totalDiscountPer").value; 
+        const totalDiscountPer = +this.OPFooterForm.get("totalDiscountPer").value;
         if (totalDiscountPer == 0)
             this.OPFooterForm.get("concessionReasonId").setValue(0)
         if (totalDiscountPer < 0 || totalDiscountPer > 100) {
@@ -1198,7 +1216,7 @@ console.log(item)
         this.DepartmentName = this.patientDetail.departmentName
         this.AgeYear = this.patientDetail.ageYear
         this.Doctorname = this.patientDetail.doctorName
-        this.RegNo =Number(this.patientDetail.regNo.split('|')[0].trim());
+        this.RegNo = Number(this.patientDetail.regNo.split('|')[0].trim());
         this.vOPIPId = this.patientDetail.visitId
         this.vTariffId = this.patientDetail.tariffId;
         this.vhospitalId = this.patientDetail.hospitalId;
@@ -1275,9 +1293,9 @@ console.log(item)
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
         this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
         this.OpBillForm.get('govtApprovedAmt')?.setValue(this.OPFooterForm.get('GovrnApprovAmt').value || 0)
-        if((this.DraftdetObj?.drbno || 0)>0){
-        this.OpBillForm.get('tdrBill.drbno')?.setValue(this.DraftdetObj?.drbno || 0)
-        this.OpBillForm.get('tdrBill.isCancelled')?.setValue(1) 
+        if ((this.DraftdetObj?.drbno || 0) > 0) {
+            this.OpBillForm.get('tdrBill.drbno')?.setValue(this.DraftdetObj?.drbno || 0)
+            this.OpBillForm.get('tdrBill.isCancelled')?.setValue(1)
         }
         this.ChargeddetailsArray.clear();
         this.BillDetailsArray.clear();
@@ -1563,7 +1581,7 @@ console.log(item)
     }
     viewgetOPBillDraftReportPdf(element) {
         this.commonService.Onprint("BillNo", element, "OpDraftBillReceipt");
-    } 
+    }
     reportPrintObj: ChargesList;
     subscriptionArr: Subscription[] = [];
     printTemplate: any;
@@ -1698,9 +1716,9 @@ console.log(item)
     mPesa_ReceiptNo: any = '0';
     openWaitingScreen() {
         debugger
-         this.countdown = 180;  // reset timer
-         this.statusMessage = 'Waiting for customer approval...';
-        const mobileWithCode = '+254' + this.OPFooterForm.get('mpesaMobile')?.value || '0';  
+        this.countdown = 180;  // reset timer
+        this.statusMessage = 'Waiting for customer approval...';
+        const mobileWithCode = '+254' + this.OPFooterForm.get('mpesaMobile')?.value || '0';
         this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
             this.OpBillForm.get('opdipdid')?.value).subscribe(response => {
                 this.mpesaResponse = response;
@@ -1709,11 +1727,11 @@ console.log(item)
                 this.statusMessage = '' + response.responseDescription + '\n' +
                     'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
                     'MerchantRequestId  : ' + response.merchantRequestID;
-                this.isWaiting = true; 
+                this.isWaiting = true;
                 this.startCountdown();
                 this.startPolling();
-            }); 
-    } 
+            });
+    }
     manualRefresh() {
         this.checkStatus();
     }
@@ -2038,10 +2056,10 @@ console.log(item)
             tDraddCharge: this.formBuilder.array([]),
         });
     }
-    CreateDraftDet(item:any) {
+    CreateDraftDet(item: any) {
         return this.formBuilder.group({
             drno: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-           // drbillDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // drbillDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         })
     }
@@ -2104,7 +2122,7 @@ console.log(item)
             addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
-    } 
+    }
     get draftchargesArray(): FormArray {
         return this.OpDraftSaveForm.get('tDraddCharge') as FormArray;
     }
@@ -2170,7 +2188,7 @@ console.log(item)
                                 this._matDialog.closeAll();
                                 this.viewgetOPBillDraftReportPdf(response)
                             });
-                    } 
+                    }
                 }
                 else {
                     let invalidFields = [];
@@ -2233,7 +2251,7 @@ console.log(item)
         });
     }
     draftChargelist: any = [];
-    DraftdetObj:any;
+    DraftdetObj: any;
     getdraftchargelist(contact) {
         this.DraftdetObj = contact
         var param = {
@@ -2244,7 +2262,7 @@ console.log(item)
             "filters": [
                 { "fieldName": "DRBNo", "fieldValue": String(contact?.drbno), "opType": "Equals" },
                 { "fieldName": "OPD_IPD_ID", "fieldValue": String(this.vOPIPId), "opType": "Equals" },
-                { "fieldName": "OPD_IPD_Type", "fieldValue": String(0), "opType": "Equals" } 
+                { "fieldName": "OPD_IPD_Type", "fieldValue": String(0), "opType": "Equals" }
             ],
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
@@ -2252,14 +2270,14 @@ console.log(item)
         this._AppointmentlistService.getdraftchargeslist(param).subscribe(response => {
             console.log(response)
             this.draftChargelist = response.data as any;
-            if(this.draftChargelist.length){
-             this.onAddDraftCharges();
+            if (this.draftChargelist.length) {
+                this.onAddDraftCharges();
             }
         })
-    } 
+    }
 
     onAddDraftCharges(): void {
-        debugger 
+        debugger
         if (this.dsChargeList.data.length) {
             const hasDuplicate = this.dsChargeList.data.some(element =>
                 this.draftChargelist.some(
@@ -2275,12 +2293,12 @@ console.log(item)
                 });
                 return; // ✅ stops execution correctly
             }
-        } 
+        }
         if (this.draftChargelist.length) {
-            this.draftChargelist.forEach(element=>{
-                 const newRow = {
+            this.draftChargelist.forEach(element => {
+                const newRow = {
                     ServiceId: element.serviceId,
-                    ServiceName:element.serviceName,
+                    ServiceName: element.serviceName,
                     Price: element.price,
                     Qty: element.qty,
                     TotalAmt: element.totalAmt,
@@ -2295,14 +2313,14 @@ console.log(item)
                     IsRadiology: element.isRadiology,
                     IsPackage: element.isPackage,
                     serviceCode: element.companyCode,
-                    isInclusionExclusion: element.isInclusionExclusion 
-                }; 
-                const newCharge = new ChargesList(newRow); 
+                    isInclusionExclusion: element.isInclusionExclusion
+                };
+                const newCharge = new ChargesList(newRow);
                 this.chargeList.push(newCharge);
                 this.dsChargeList.data = this.chargeList;
                 this.calculateTotalAmount();
                 this.serviceSelct = false
-            }) 
+            })
         }
     }
     //   "drbno": 40245,
@@ -2436,6 +2454,7 @@ export class ChargesList {
     userName: any;
     BalanceAmt: any;
     Doctorflag: any;
+    EditDoctor: any;
     constructor(ChargesList) {
         this.ChargesId = ChargesList.ChargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
@@ -2489,9 +2508,10 @@ export class ChargesList {
         this.PaymentMode = ChargesList.PaymentMode || 0;
         this.TokenNo = ChargesList.TokenNo || 0;
         this.RefundAmt = ChargesList.RefundAmt || 0;
-          this.Doctorflag = ChargesList.Doctorflag || false;
+        this.Doctorflag = ChargesList.Doctorflag || false;
+        this.EditDoctor = ChargesList.EditDoctor || false;
 
-        
+
 
     }
 }

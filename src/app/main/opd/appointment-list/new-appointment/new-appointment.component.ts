@@ -23,6 +23,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { VisitMaster1 } from '../appointment-list.component';
 import { AreaMasterComponent } from 'app/main/setup/PersonalDetails/area-master/area-master.component';
 import { NewAreaComponent } from 'app/main/setup/PersonalDetails/area-master/new-area/new-area.component';
+import { AppointmentBillingComponent } from '../appointment-billing/appointment-billing.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { SearchInforObj1 } from '../../op-search-list/opd-search-list/opd-search-list.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -162,7 +165,7 @@ export class NewAppointmentComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
         private accountService: AuthenticationService,
         public matDialog: MatDialog,
-        private commonService: PrintserviceService,
+        private commonService: PrintserviceService, private advanceDataStored: AdvanceDataStored,
         private _configue: ConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, @Inject(MAT_DIALOG_DATA) public data: any
@@ -171,6 +174,7 @@ export class NewAppointmentComponent implements OnInit {
     FromRegistration: any;
     chkregisterd: boolean = false;
     Is9_Digit_National_Id: boolean = false;
+    IsOPBillProceed: boolean = false;
     ngOnInit(): void {
 
         // console.log(this._configue.configParams.OPDDefaultDepartment)
@@ -186,6 +190,12 @@ export class NewAppointmentComponent implements OnInit {
 
         //    const [DefaultDepartment, DepartmentId] = this._configue.configParams.OPDDefaultDepartment.split(":");
         //       const [DefaultDoctor, DoctorId] = this._configue.configParams.OPDDefaultDoctor.split(":");
+
+        debugger
+        const rawValue1 = this?._configue?.configParams?.IsOPBillProceed || "";
+
+        const [id1, val1] = rawValue1.includes(":") ? rawValue1.split(":") : [null, null];
+        this.IsOPBillProceed = id1 === "1";
 
 
         this.personalFormGroup = this.createPesonalForm();
@@ -446,8 +456,8 @@ export class NewAppointmentComponent implements OnInit {
             this.VisitFormGroup.get('CompanyId').reset(0);
             this.VisitFormGroup.get('SubCompanyId').reset(0);
             this.VisitFormGroup.get('policyNumber').reset('');
-            this.VisitFormGroup.get('policyLimit').reset(0); 
-            this.patienttype = 1; 
+            this.VisitFormGroup.get('policyLimit').reset(0);
+            this.patienttype = 1;
         }
     }
 
@@ -625,10 +635,6 @@ export class NewAppointmentComponent implements OnInit {
 
         });
     }
-
-
-
-
 
     vDepId = 0;
     vDocId = 0;
@@ -858,7 +864,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     OnsaveNewRegister() {
-debugger
+        debugger
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         this.VisitFormGroup.get("patientOldNew").setValue(this.Patientnewold)
@@ -892,13 +898,58 @@ debugger
 
         console.log(submitData);
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
-            if (!this.Is9_Digit_National_Id) {
-                this.OnViewReportPdf(response);
+            debugger
+            this.VisitId = response
+            if (this.IsOPBillProceed) {
+                this.OnBillPayment()
+            } else {
+                if (!this.Is9_Digit_National_Id) {
+                    this.OnViewReportPdf(response);
+                }
+
+                this.onClear(true);
+                this._matDialog.closeAll();
             }
-            this.onClear(true);
-            this._matDialog.closeAll();
+
+        });
+
+
+    }
+doctorName=''
+       patientDetail: any = new RegInsert({});
+    OnBillPayment() {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+        debugger
+        // this.patientDetail.doctorId = this.VisitFormGroup.get('ConsultantDocId').value
+        this.patientDetail.doctorname = this.doctorName
+         this.patientDetail.patientName = this.personalFormGroup.get('FirstName').value + " " + this.personalFormGroup.get('LastName').value
+        this.patientDetail.departmentName = this.departmentName
+        this.patientDetail.regNo =this.RegNo
+        this.patientDetail.visitId=this.VisitId
+        this.patientDetail.tariffId=this.VisitFormGroup.get('TariffId').value
+        this.patientDetail.hospitalId=this.VisitFormGroup.get('UnitId').value
+        this.patientDetail.ageYear=this.ageYear
+
+
+        console.log( this.patientDetail)
+        this.advanceDataStored.storage = new SearchInforObj1(this.patientDetail);
+
+        const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
+            maxWidth: "99vw",
+            height: "98vh",
+            width: "100%",
+            data: {
+                row: this.patientDetail,
+                FormName: 'Appointment-OPBill'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+
         });
     }
+
+
 
     rawDate1: Date | string = '1900-01-01';
     rawDate2: Date | string = '1900-01-01';
@@ -964,11 +1015,16 @@ debugger
         console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
             console.log(response)
-            if (!this.Is9_Digit_National_Id) {
-                this.OnViewReportPdf(response);
+            if (this.IsOPBillProceed) {
+                this.OnBillPayment()
+            } else {
+                if (!this.Is9_Digit_National_Id) {
+                    this.OnViewReportPdf(response);
+                }
+                this.onClear(true);
+                this._matDialog.closeAll();
             }
-            this.onClear(true);
-            this._matDialog.closeAll();
+
         });
     }
     onValidDateChange(event: any) {
@@ -1013,8 +1069,10 @@ debugger
         this.DosctorId = row.DoctorId;
         this.VisitFlagDisp = false;
     }
-
+departmentName=''
     selectChangedepartment(obj: any) {
+         this.departmentId = obj.value;
+        this.departmentName = obj.text;
 
         if (obj.value) {
             this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {

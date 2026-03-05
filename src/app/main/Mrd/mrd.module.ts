@@ -59,7 +59,7 @@ const approutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [NewCertificateVersionComponent, NewCertificateComponent, CertificateComponent, NewCertificateComponent],
+  declarations: [],
   // declarations: [CertificateComponent, NewCertificateComponent],
   imports: [
     RouterModule.forChild(approutes),
