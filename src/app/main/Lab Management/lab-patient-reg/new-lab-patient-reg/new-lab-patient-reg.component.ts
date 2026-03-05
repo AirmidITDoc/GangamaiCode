@@ -151,14 +151,13 @@ export class NewLabPatientRegComponent {
   vlastNameConfig: any;
   stateId = 0
   counryId = 0
+  patientTypeList: any = [];
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
   @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
   @ViewChild('ddlcompanyExec') ddlcompanyExec: AirmidDropDownComponent;
-
-  @ViewChild('serviceInput') serviceInput!: ElementRef<HTMLInputElement>;
 
   constructor(public _labPatientRegService: LabPatientRegService,
     public _matDialog: MatDialog,
@@ -188,9 +187,18 @@ export class NewLabPatientRegComponent {
     // this.TPaymentForm = this.CreateModePaymentform();
     this.abhaForm = this._labPatientRegService.createAbhadetailForm();
 
+    const Type = 'LabPatientType'
+    this._labPatientRegService.getPatientType(Type).subscribe(res => {
+      this.patientTypeList = res;
+      console.log(this.patientTypeList)
+
+      if (this.patientTypeList[0].name == 'Normal') {
+        this.myForm.get('patientType')?.setValue(this.patientTypeList[0].constantId);
+      }
+    });
+
     this.mode = this.data?.mode || 'add';
 
-    // this.myForm.get('patientType').setValue(this.data?.row?.patientTypeId);
     this.myForm.get('Comments').setValue(this.data?.row?.comments);
     this.myForm.get('ReferByName').setValue(this.data?.row?.referByName);
     this.myForm.get('tariffId').setValue(this.data?.row?.tariffId ?? 1);
@@ -1093,6 +1101,8 @@ export class NewLabPatientRegComponent {
   vQty: any;
   chkIsEditable: boolean = true;
   serviceSelct = false
+  @ViewChild('serviceInput', { read: ElementRef }) serviceInput!: ElementRef;
+
   getSelectedserviceObj(obj) {
     console.log(obj)
     this.SrvcName1 = obj.serviceName;

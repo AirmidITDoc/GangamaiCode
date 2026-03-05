@@ -25,7 +25,7 @@
                 <div fxLayout="column" class="gap-8 h-100-p">
                     <div class="modal-card-container">
                         <form [formGroup]="myformSearch">
-                            <div class="patient-search">
+                            <div class="patient-search resize-form-fields">
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                                     <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
 
@@ -116,11 +116,10 @@
                                                 <mat-radio-group name="StatusSearch" fxLayout="column"
                                                     [formGroup]="myformSearch" formControlName="StatusSearch"
                                                     (change)="onChangeFirst()" style="padding: 6px;" class="gap-4">
-                                                    <mat-label>Status:</mat-label>
                                                     <div fxLayout="row">
                                                         <mat-radio-button value='2'>All</mat-radio-button>
                                                         <mat-radio-button value='1'>Recevied</mat-radio-button>
-                                                        <mat-radio-button value='0'>Not</mat-radio-button>
+                                                        <mat-radio-button value='0'>Not Received</mat-radio-button>
                                                     </div>
                                                 </mat-radio-group>
                                             </div>

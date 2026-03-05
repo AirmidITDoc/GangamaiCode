@@ -72,4 +72,7 @@ export class BrowseLabBillsService {
    public InsertLabBillingsettlement(param) {
     return this._httpClient.PostData("OPSettlement/InsertSettlement", param)
   }
+  public commonList(Param) {
+    return this._httpClient.PostData("Common", Param);
+  }
 }

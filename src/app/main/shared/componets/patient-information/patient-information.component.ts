@@ -9,6 +9,7 @@ export class PatientInformationComponent implements OnInit {
 
   @Input() uhidNo: string = '';
   @Input() patientName: string = '';
+  @Input() mobileNo: string = '';
   @Input() doctorName: string = '';
   @Input() departmentName: string = '';
   @Input() doa: any;

@@ -250,7 +250,7 @@
                                     </div>
 
                                     <form [formGroup]="myForm">
-                                        <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm"
+                                        <airmid-autocomplete  #serviceInput label="Enter Service Name" [formGroup]="myForm"
                                             formControlName="ServiceId" placeholderText="Enter Service Name" fxFlex="50%"
                                             ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
                                             TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>

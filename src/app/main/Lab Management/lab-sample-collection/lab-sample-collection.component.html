@@ -145,8 +145,8 @@
                         {{ element.outSourceLabName }}
                     </span>
 
-                    <button mat-icon-button *ngIf="element.isPathOutSource == '1'"
-                        (click)="Editoutsoucedata(element)" matTooltip="Edit OutSource Data">
+                    <button mat-icon-button *ngIf="element.isPathOutSource == '1'" (click)="Editoutsoucedata(element)"
+                        matTooltip="Edit OutSource Data">
                         <mat-icon style="color:#ff5722;">edit</mat-icon>
                     </button>
                 </ng-container>
@@ -176,10 +176,31 @@
                 </div>
             </ng-template>
 
+            <ng-template #patientNameWithBadgeTemplate let-element>
+                <div fxLayout="column">
+                    <div class="teststatus-circle">
+                        <span class="teststatus total" matTooltip="Total Test">
+                            {{ element.testCountStatus.split('/')[0] }}
+                        </span>
+            
+                        <span class="teststatus completed" matTooltip="Completed">
+                            {{ element.testCountStatus.split('/')[1] }}
+                        </span>
+            
+                        <span class="teststatus pending" matTooltip="Pending">
+                            {{ element.testCountStatus.split('/')[2] }}
+                        </span>
+                    </div>
+            
+                    <div class="patient-name" matTooltip="{{ element.patientName }}">
+                        {{ element.patientName }}
+                    </div>
+                </div>
+            </ng-template>
 
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
                 <ng-container filters>
-                    <form [formGroup]="myformSearch">
+                    <form [formGroup]="myformSearch" class="resize-form-fields">
                         <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
                             [(ngModel)]="gridConfig.filters[8].fieldValue" (selectionChange)="ListView1($event)"
                             [formGroup]="myformSearch" [mode]="autocompleteModeunit"></airmid-dropdown>
@@ -189,17 +210,6 @@
                             [(fromValue)]="gridConfig.filters[3].fieldValue"
                             [(toValue)]="gridConfig.filters[4].fieldValue" (dateChange)="GetSampleCollectiondetail()">
                         </airmid-datepicker>
-
-                        <!-- <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="start" placeholder="Start date">
-                                <input matEndDate formControlName="end" placeholder="End date"
-                                    (dateChange)="onChangeFirst()">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field> -->
 
                         <mat-form-field appearance="outline">
                             <mat-label>UHID</mat-label>

@@ -33,7 +33,7 @@ export class InvestigationListService {
       // BillNo:[''],
       // BillDate:[''],
       PatientTypeSearch: ['5'],
-      SampleStatusSearch: ['2'],
+      SampleStatusSearch: ['0'],
       PBillNo: '',
       CompanyId: 0,
       Istype: ['2'],
@@ -62,7 +62,7 @@ export class InvestigationListService {
       LastName: ['', [
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
-      ReceiveStatusSearch: ['2'],
+      ReceiveStatusSearch: ['0'],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       PBillNo: '',
@@ -118,7 +118,7 @@ export class InvestigationListService {
       ]],
 
       PatientTypeSearch: ['3'],
-      ApprovalStatusSearch: ['0'],
+      ApprovalStatusSearch: ['1'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],

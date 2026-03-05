@@ -41,6 +41,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { HomeCollectionComponent } from './home-collection/home-collection.component';
 import { LabRadiologyComponent } from './lab-radiology/lab-radiology.component';
 import { LabRadApprovallistComponent } from './lab-rad-approvallist/lab-rad-approvallist.component';
+import { DiscountApprovalComponent } from './discount-approval/discount-approval.component';
 
 
 const appRoutes: Routes = [
@@ -63,6 +64,10 @@ const appRoutes: Routes = [
   {
     path: "lab-refund-approval",
     loadChildren: () => import("./refund-approval/refund-approval.module").then((m) => m.RefundApprovalModule),
+  },
+  {
+    path: "lab-discount-approval",
+    loadChildren: () => import("./discount-approval/discount-approval.module").then((m) => m.DiscountApprovalModule),
   },
   {
     path: "settlement",
@@ -110,7 +115,8 @@ const appRoutes: Routes = [
     EmailorSMSHistoryComponent,
     HomeCollectionComponent,
     LabRadiologyComponent,
-    LabRadApprovallistComponent
+    LabRadApprovallistComponent,
+    DiscountApprovalComponent
   ],
   imports: [
     RouterModule.forChild(appRoutes),

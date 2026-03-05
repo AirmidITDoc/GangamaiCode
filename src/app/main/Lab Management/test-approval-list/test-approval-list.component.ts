@@ -105,7 +105,7 @@ export class TestApprovalListComponent {
   age = ''
   gendername = ''
   Category = '%'
-  vStatusSearch: any = "0";
+  vStatusSearch: any = "1";
   patientName: 'RK'
   title: 'Reports'
   autocompleteModeunit: string = "Hospital";
@@ -550,7 +550,7 @@ export class TestApprovalListComponent {
 
   onClear() {
     this._LabResultListService.myformSearch.get('RegNoSearch').setValue("0");
-    this._LabResultListService.myformSearch.get('StatusSearch').setValue("0");
+    this._LabResultListService.myformSearch.get('StatusSearch').setValue("1");
     this._LabResultListService.myformSearch.get('PatientTypeSearch').setValue("3");
   }
 
