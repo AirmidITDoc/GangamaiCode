@@ -5,7 +5,6 @@ import { fuseAnimations } from "@fuse/animations";
 import Chart, { Color } from 'chart.js/auto';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from "../dashboard.service";
-import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: 'app-radiology-dashboard',
@@ -16,18 +15,9 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 })
 export class RadiologyDashboardComponent implements OnInit {
 
-    myFilterform: UntypedFormGroup;
-    fromDate: any;
-    toDate: any;
-
-     AppoinmentCount:any;
-  TotalAdmittedCount:any;
-  TotalSelf:any;
-  TotalCompany:any;
-  TodayAdmittedCount:any;
-  TodayDischargeCount:any;
-  TodaySelf:any;
-  TodayOther:any;
+    dateFilterForm: UntypedFormGroup;
+    fromDate: Date;
+    toDate: Date;
     // Summary Card Data
     totalTestsToday: number = 0;
     completedReports: number = 0;
@@ -39,48 +29,35 @@ export class RadiologyDashboardComponent implements OnInit {
     public completedReportsChart: any;
     public pendingReportsChart: any;
     public cancelledScansChart: any;
-
+    public modalityChart: any;
     public statusPieChart: any;
-    public statusPieChart1: any;
     public volumeTrendChart: any;
-
-
-     metrics = [
-    { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
-    { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
-    { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
-    { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
-    { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
-    { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
-  ];
 
     // Table Column Definitions
     recentReportsColumns: string[] = ['PatientName', 'TestType', 'Status', 'Radiologist', 'Date'];
     topTestsColumns: string[] = ['TestName', 'Count'];
     radiologistPerformanceColumns: string[] = ['RadiologistName', 'ReportsCompleted', 'AvgTime'];
 
+    dsRadiologyCount = new MatTableDataSource<PathologyCount>()
+    // Table Data Sources
+    dsRecentReports = new MatTableDataSource<RecentReport>();
+    dsTopTests = new MatTableDataSource<TopTest>();
+    dsRadiologistPerformance = new MatTableDataSource<RadiologistPerformance>();
 
-    public modalityChart: any;
-    public modalityChart1: any;
     // Tests by Modality Data
-
     modalityData = [
-        { modality: '', count: 0 }
+        { modality: 'X-Ray', count: 45 },
+        { modality: 'CT Scan', count: 32 },
+        { modality: 'MRI', count: 28 },
+        { modality: 'Ultrasound', count: 35 },
+        { modality: 'Mammography', count: 16 }
     ];
 
-    modalityData1 = [
-        { modality: '', count: 0 }
-    ];
     // Report Status Data
-
-    //   statusData = [
-    //     { status: '', count: 0 }
-    // ];
-
     statusData = [
-        { status: 'Completed', count: 0 },
-        { status: 'Pending', count: 0 },
-        { status: 'Cancelled', count: 0 }
+        { status: 'Completed', count: 118 },
+        { status: 'Pending', count: 32 },
+        { status: 'Cancelled', count: 6 }
     ];
 
     // Daily Test Volume Trend (Last 7 days)
@@ -156,16 +133,11 @@ export class RadiologyDashboardComponent implements OnInit {
     pathologistWorkloadColumns: string[] = ['PathologistName', 'TestsReported'];
 
     // Pathology Table Data Sources
-    dsPathologyReports = new MatTableDataSource<PathologyReport1>();
-    dsPathologyTopTests = new MatTableDataSource<TopTest1>();
+    dsPathologyReports = new MatTableDataSource<PathologyReport>();
+    dsPathologyTopTests = new MatTableDataSource<TopTest>();
     dsPathologistWorkload = new MatTableDataSource<PathologistWorkload>();
-    // dsCountsummary = new MatTableDataSource<testcountsummary>();
 
-    dsRadiologyCount = new MatTableDataSource<PathologyCount>()
-    // Table Data Sources
-    dsRecentReports = new MatTableDataSource<RecentReport>();
-    dsTopTests = new MatTableDataSource<TopTest>();
-    dsRadiologistPerformance = new MatTableDataSource<RadiologistPerformance>();
+
 
     // Sample Collection Statistics
     sampleCollectionStats = [
@@ -173,147 +145,133 @@ export class RadiologyDashboardComponent implements OnInit {
         { name: 'In Process', count: 28 },
         { name: 'Delayed', count: 12 }
     ];
-    UnitId: any = this._accountServices.currentUserValue.user.unitId;
+
     constructor(
         public datePipe: DatePipe,
-        private formBuilder: UntypedFormBuilder, public _accountServices: AuthenticationService,
+        private formBuilder: UntypedFormBuilder,
         private dashboardService: DashboardService,
     ) {
+        // Initialize date filter form
+        this.dateFilterForm = this.formBuilder.group({
+            start: [new Date(new Date().setDate(new Date().getDate() - 7))],
+            end: [new Date()]
+        });
 
-        // this.initializeDateRange();
+        this.initializeDateRange();
     }
     pathologyData: any;
     ngOnInit(): void {
-
-        this.myFilterform = this.dashboardService.filterFormfinance();
-
-
-        // this.dashboardService.getRadiologyDashboard({ "UnitId": this.UnitId, "FromDate": "2025-01-01", "ToDate": "2026-02-10" }).subscribe((data) => {
-        //     this.pathologyData = data;
-        //     console.log(data)
-        //     this.dsPathologyReports.data = this.pathologyData.recentPathologyReports;
-        //     this.dsPathologyTopTests.data = this.pathologyData.mostOrderedTests;
-        //     this.dsPathologistWorkload.data = this.pathologyData.pathologyWorkloads;
-        //     this.dsCountsummary.data = this.pathologyData.countSummary
-
-        //   debugger
-        //     this.totalTestsToday = this.pathologyData.countSummary.todaysCount
-        //     this.completedReports = this.pathologyData.countSummary.completedCount
-        //     this.pendingReports = this.pathologyData.countSummary.pendingCount
-        //     this.cancelledScans = this.pathologyData.countSummary.rejectedCount
-        //     debugger
-        //     this.dsPathologyTopTests.data.forEach((item, index) => {
-        //         this.modalityData[index].modality = item.testName
-        //         this.modalityData[index].count = item.count
-
-        //     });
-
-
-
-        // })
-        this.initializePathologyCharts();
-         this.getHomeDashboardAPI();
+        this.dashboardService.getPathologyDashboard({ "FromDate": this.fromDate.toLocaleDateString(), "ToDate": this.toDate.toLocaleDateString() }).subscribe((data) => {
+            this.pathologyData = data;
+            this.dsPathologyReports.data = this.pathologyData.recentPathologyReports;
+            this.dsPathologyTopTests.data = this.pathologyData.mostOrderedTests;
+            this.dsPathologistWorkload.data = this.pathologyData.pathologyWorkloads;
+        })
         this.loadTableData();
 
         // Initialize all charts after view is loaded
-        // setTimeout(() => {
-        //     this.initializeCharts();
-        // }, 500);
+        setTimeout(() => {
+            this.initializeCharts();
+        }, 500);
     }
 
-    // initializeDateRange() {
-    //     const today = new Date();
-    //     this.toDate = new Date(today);
+    initializeDateRange() {
+        const today = new Date();
+        this.toDate = new Date(today);
 
-    //     // Find Monday of current week
-    //     const day = today.getDay();
-    //     const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
-    //     const monday = new Date(today);
-    //     monday.setDate(diff);
-    //     this.fromDate = monday;
-    // }
+        // Find Monday of current week
+        const day = today.getDay();
+        const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+        const monday = new Date(today);
+        monday.setDate(diff);
+        this.fromDate = monday;
+    }
 
     loadTableData(): void {
         // Load Radiology Data
-        this.modalityData = [];
+        this.getRadiologyData();
+        this.dsRecentReports.data = this.recentReportsData;
+        this.dsTopTests.data = this.topTestsData;
+        this.dsRadiologistPerformance.data = this.radiologistPerformanceData;
 
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
-            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
-
-            this.getRadiologyData();
+        // Load Pathology Data
+        this.getpathologyData();
         this.getpathologyReportData();
+        // this.dsPathologyReports.data = this.pathologyReportsData;
+        // this.dsPathologyTopTests.data = this.pathologyTopTestsData;
+        // this.dsPathologistWorkload.data = this.pathologistWorkloadData;
+    }
+
+    formatDateForAPI(date: Date): string {
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${mm}/${dd}/${yyyy}`;
+    }
+
+    formatDateForRadiologyAPI(date: Date): string {
+        if (!date) return '';
+
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = ('0' + (d.getMonth() + 1)).slice(-2);
+        const day = ('0' + d.getDate()).slice(-2);
+
+        return `${year}-${month}-${day}`;
     }
 
     onDateRangeChanged(): void {
-        console.log('Date range changed:', this.myFilterform.value);
+        console.log('Date range changed:', this.dateFilterForm.value);
+        // TODO: When you add APIs, filter data based on date range here
+        // For now, using static data
         if (this.fromDate && this.toDate) {
             this.loadTableData();
         }
     }
 
-
-  get totalworkload(): number {
-    return this.dsPathologistWorkload.data.reduce((sum, r) => sum + r.count, 0);
-  }
-
-   get TotalTest(): number {
-    return this.dsPathologyTopTests.data.reduce((sum, r) => sum + r.count, 0);
-  }
-
-    trendData: TopTest1[] = [];
-    dsCountsummary: testcountsummary[] = [];
-
-    getpathologyReportData() {
-
-        this.dashboardService.getPathologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
-            this.pathologyData = res;
-            console.log('Pathology Reports:', res);
-
-            if (this.pathologyData) {
-                this.dsPathologyReports.data = res.recentPathologyReports;
-                this.dsPathologyTopTests.data = res.mostOrderedTests;
-                this.trendData = this.pathologyData.mostOrderedTests
-                this.dsPathologistWorkload.data = res.pathologyWorkloads
-
-
-                if (this.trendData) {
-
-                    this.modalityData = [
-                        ...this.modalityData,
-                        ...this.trendData.map(item => ({
-
-                            modality: item.testName,
-                            count: item.count
-                        }))
-                    ];
+    getpathologyData() {
+        const payload = {
+            "searchFields": [
+                {
+                    "fieldName": "FromDate",
+                    "fieldValue": this.formatDateForAPI(this.fromDate),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ToDate",
+                    "fieldValue": this.formatDateForAPI(this.toDate),
+                    "opType": "Equals"
                 }
-                debugger
-                console.log(this.modalityData)
-                if (this.modalityData)
-                    this.modalityChart = this.getModalityBarChart();
-
-                if (this.pathologyData) {
-                    this.statusData[0].count = this.pathologyData.countSummary.completedCount
-                    this.statusData[1].count = this.pathologyData.countSummary.pendingCount
-                    this.statusData[2].count = this.pathologyData.countSummary.rejectedCount
-                }
-                if (this.statusData)
-                    this.statusPieChart = this.getStatusPieChart();
-
-                 this.getPathologyDepartmentChart()
-                this.getPathologyStatusPieChart()
-                this.getPathologyVolumeTrendChart()
-            }
-        });
-
-
-
-
+            ],
+            "mode": "PathologyDashboard"
+        };
     }
 
-    onGo(): void {
-        this.ngOnDestroy()
-        this.loadTableData()
+    getpathologyReportData() {
+        const payload = {
+            "searchFields": [
+                {
+                    "fieldName": "FromDate",
+                    "fieldValue": this.formatDateForAPI(this.fromDate),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ToDate",
+                    "fieldValue": this.formatDateForAPI(this.toDate),
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "PathologyDashboard"
+        };
+
+        this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+            // this.dsPathologyReports.data = res || [];
+            //this.dsPathologyTopTests.data = res || [];
+            //this.dsPathologistWorkload.data = res || [];
+            console.log('Pathology Reports:', this.dsPathologyReports.data);
+            console.log('Pathology TopTests:', this.dsPathologyTopTests.data);
+            console.log('Pathologist:', this.dsPathologistWorkload.data);
+        });
     }
 
     getRadiologyData() {
@@ -321,12 +279,12 @@ export class RadiologyDashboardComponent implements OnInit {
             searchFields: [
                 {
                     fieldName: "FromDate",
-                    fieldValue: this.fromDate,
+                    fieldValue: this.formatDateForRadiologyAPI(this.fromDate),
                     opType: "Equals"
                 },
                 {
                     fieldName: "ToDate",
-                    fieldValue: this.toDate,
+                    fieldValue: this.formatDateForRadiologyAPI(this.toDate),
                     opType: "Equals"
                 }
             ],
@@ -377,12 +335,11 @@ export class RadiologyDashboardComponent implements OnInit {
         // Reinitialize charts for the selected tab
         setTimeout(() => {
             if (event.index === 0) {
-                this.initializePathologyCharts();
-                // Pathology tab - charts already initialized
+                // Radiology tab - charts already initialized
                 console.log('Radiology tab selected');
             } else if (event.index === 1) {
-                // Radiology tab - initialize charts
-                // this.initializeRadiologyCharts();
+                // Pathology tab - initialize charts
+                this.initializePathologyCharts();
             }
         }, 100);
     }
@@ -435,17 +392,17 @@ export class RadiologyDashboardComponent implements OnInit {
 
         // Tests by Modality Bar Chart
         if (document.getElementById('modalityChart')) {
-            // this.modalityChart = this.getModalityBarChart();
+            this.modalityChart = this.getModalityBarChart();
         }
 
         // Status Pie Chart
         if (document.getElementById('statusPieChart')) {
-            // this.statusPieChart = this.getStatusPieChart();
+            this.statusPieChart = this.getStatusPieChart();
         }
 
         // Volume Trend Chart
         if (document.getElementById('volumeTrendChart')) {
-            // this.volumeTrendChart = this.getVolumeTrendChart();
+            this.volumeTrendChart = this.getVolumeTrendChart();
         }
     }
 
@@ -491,78 +448,16 @@ export class RadiologyDashboardComponent implements OnInit {
         });
     }
 
-    ngOnDestroy() {
-        
-        if (this.modalityChart) {
-            this.modalityChart.destroy();
-        }
-        if (this.modalityChart1) {
-            this.modalityChart1.destroy();
-        }
-        if (this.statusPieChart) {
-            this.statusPieChart.destroy();
-        }
-        if (this.statusPieChart1) {
-            this.statusPieChart1.destroy();
-        }
-        if (this.pathologyDepartmentChart) {
-            this.pathologyDepartmentChart.destroy();
-        }
-        if (this.pathologyStatusPieChart) {
-            this.pathologyStatusPieChart.destroy();
-        }
-        if (this.pathologyVolumeTrendChart) {
-            this.pathologyVolumeTrendChart.destroy();
-        }
-
-    }
     // Tests by Modality Bar Chart
     getModalityBarChart() {
-        debugger
         return new Chart('modalityChart', {
             type: 'bar',
             data: {
                 labels: this.modalityData.map(d => d.modality),
                 datasets: [
                     {
-                        label: 'Tests Name',
-                        data: this.modalityData.map(d => d.count),
-                        backgroundColor: ['#9661db', '#f961d3', '#28af28', '#70c7bd', '#fbfb79'],
-                        borderRadius: 6
-                    }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            font: { size: 11 }
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            font: { size: 11 }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    getModalityBarChart1() {
-        return new Chart('modalityChart1', {
-            type: 'bar',
-            data: {
-                labels: this.modalityData1.map(d => d.modality),
-                datasets: [
-                    {
                         label: 'Number of Tests',
-                        data: this.modalityData1.map(d => d.count),
+                        data: this.modalityData.map(d => d.count),
                         backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
                         borderRadius: 6
                     }
@@ -592,14 +487,13 @@ export class RadiologyDashboardComponent implements OnInit {
 
     // Status Pie Chart
     getStatusPieChart() {
-        debugger
         return new Chart('statusPieChart', {
             type: 'doughnut',
             data: {
                 labels: this.statusData.map(d => d.status),
                 datasets: [
                     {
-                        backgroundColor: ['#28af28', '#ff5a8a', '#546dfa'],
+                        backgroundColor: ['#28af28', '#f6c542', '#ff5a8a'],
                         data: this.statusData.map(d => d.count),
                         borderWidth: 2
                     }
@@ -633,47 +527,6 @@ export class RadiologyDashboardComponent implements OnInit {
         });
     }
 
-    // Status Pie Chart
-    getStatusPieChart1() {
-        return new Chart('statusPieChart1', {
-            type: 'doughnut',
-            data: {
-                labels: this.statusData.map(d => d.status),
-                datasets: [
-                    {
-                        backgroundColor: [ '#ca42f7','#69f869', 'rgb(66, 138, 246)'],
-                        data: this.statusData.map(d => d.count),
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            font: { size: 12 },
-                            padding: 15
-                        }
-                    },
-                    tooltip: {
-                        enabled: true,
-                        callbacks: {
-                            label: function (context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                label += context.parsed + ' reports';
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
     // Volume Trend Line Chart
     getVolumeTrendChart() {
         return new Chart('volumeTrendChart', {
@@ -798,7 +651,7 @@ export class RadiologyDashboardComponent implements OnInit {
             this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart();
         }
     }
-   
+
     // Pathology Department Bar Chart
     getPathologyDepartmentChart() {
         return new Chart('pathologyDepartmentChart', {
@@ -809,7 +662,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Number of Tests',
                         data: this.pathologyData.pathologyValumes.map(d => d.categoryCount),
-                        backgroundColor: ['#179ee2','#ff6b9d', '#c364c7', '#6bcf7f'],
+                        backgroundColor: ['#ff6b9d', '#c364c7', '#4d96ff', '#6bcf7f'],
                         borderRadius: 6
                     }
                 ]
@@ -851,7 +704,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: pathologyStatusData.map(d => d.status),
                 datasets: [
                     {
-                        backgroundColor: ['#497df7','#28af28',  '#ff5a8a'],
+                        backgroundColor: ['#28af28', '#f6c542', '#ff5a8a'],
                         data: pathologyStatusData.map(d => d.count),
                         borderWidth: 2
                     }
@@ -949,58 +802,6 @@ export class RadiologyDashboardComponent implements OnInit {
             }
         });
     }
-
-  getMatIcon(icon: string): string {
-    switch (icon) {
-      case 'user-plus':
-        return 'person_add';
-      case 'calendar':
-        return 'calendar_today';
-      case 'check-circle':
-        return 'check_circle';
-      case 'logout':
-        return 'exit_to_app';
-      case 'hourglass':
-        return 'hourglass_empty';
-      case 'ambulance':
-        return 'local_hospital';
-      default:
-        return 'dashboard';
-    }
-  }
-
-      getHomeDashboardAPI() {
-    const payload = {
-      searchFields: [
-        { fieldName: 'UnitId', fieldValue: '0', opType: 'Equals' }
-      ],
-      mode: 'HomeDashboardAPI'
-    };
-    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      
-      let apiData = res && res.length ? res[0] : {};
-      this.metrics = [
-        { label: 'Todays Registrations', value: apiData?.RegistrationCount || 0, color: 'lavender', icon: 'user-plus' },
-        { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'butter', icon: 'calendar' },
-        { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'mint', icon: 'check-circle' },
-        { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'logout' },
-        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' }, // If API has a matching field, set it.
-        { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'peach', icon: 'ambulance' }
-      ];
-     
-    }, err => {
-      this.metrics = [
-        { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
-        { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
-        { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
-        { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
-        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
-        { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
-      ];
-    });
-  }
-
-    workloadTrend(){}
 }
 
 // Interface Definitions
@@ -1020,8 +821,6 @@ export class RecentReport {
     }
 }
 
-
-
 export class TopTest {
     TestName: string;
     Count: number;
@@ -1029,17 +828,6 @@ export class TopTest {
     constructor(test: any) {
         this.TestName = test.TestName || '';
         this.Count = test.Count || 0;
-    }
-}
-
-
-export class TopTest1 {
-    testName: string;
-    count: number;
-
-    constructor(test: any) {
-        this.testName = test.testName || '';
-        this.count = test.count || 0;
     }
 }
 
@@ -1072,22 +860,6 @@ export class PathologyReport {
     }
 }
 
-export class PathologyReport1 {
-    patientName: string;
-    testName: string;
-    isCompleted: string;
-    doctorName: string;
-    pathDate: string;
-
-    constructor(report: any) {
-        this.patientName = report.patientName || '';
-        this.testName = report.testName || '';
-        this.isCompleted = report.isCompleted || 0;
-        this.doctorName = report.doctorName || '';
-        this.pathDate = report.pathDate || '';
-    }
-}
-
 export class PathologyCount {
     TestCount: any;
     IsCompleted: any;
@@ -1106,30 +878,10 @@ export class PathologistWorkload {
     PathologistName: string;
     TestsReported: number;
     AvgTime: number;
-    count: any
-    doctorName: any
 
     constructor(pathologist: any) {
         this.PathologistName = pathologist.PathologistName || '';
         this.TestsReported = pathologist.TestsReported || 0;
         this.AvgTime = pathologist.AvgTime || 0;
-        this.doctorName = pathologist.doctorName || '';
-        this.count = pathologist.count || 0;
-
-    }
-}
-
-
-export class testcountsummary {
-    todaysCount: any;
-    completedCount: any;
-    pendingCount: any;
-    rejectedCount: any;
-
-    constructor(PathologyCount) {
-        this.todaysCount = PathologyCount.todaysCount || '0';
-        this.completedCount = PathologyCount.completedCount || '0';
-        this.pendingCount = PathologyCount.pendingCount || '0';
-        this.rejectedCount = PathologyCount.rejectedCount || '0';
     }
 }

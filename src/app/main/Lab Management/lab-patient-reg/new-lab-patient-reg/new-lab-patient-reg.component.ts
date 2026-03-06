@@ -129,12 +129,12 @@ export class NewLabPatientRegComponent {
   displayedServiceselected: string[] = [
     'Status',
     'ServiceName',
-    'DoctorName',
     'Urgent',
     'Price',
     'DiscountPer',
     'DiscountAmount',
     'NetAmount',
+    'DoctorName',
     'buttons'
   ]
   public displayedColumnspackage: string[] =

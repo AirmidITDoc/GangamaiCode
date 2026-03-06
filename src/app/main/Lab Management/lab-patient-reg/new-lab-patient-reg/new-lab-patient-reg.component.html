@@ -273,11 +273,11 @@
                                                     <!-- Status Column -->
                                                     <ng-container matColumnDef="Status" sticky>
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                            class="w-120 lab-status-col">
+                                                            class="w-80 lab-status-col">
                                                             <span class="header-text">Status</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact"
-                                                            class="w-120 lab-status-cell">
+                                                            class="w-80 lab-status-cell">
                                                             <div class="status-icons">
                                                                 <div *ngIf="contact.IsRadiology == 1"
                                                                     class="status-badge radiology-badge"
@@ -319,10 +319,10 @@
                                                     <!-- Doctor Name Column -->
                                                     <ng-container matColumnDef="DoctorName">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                            class="w-300">
+                                                            class="w-250">
                                                             <span class="header-text">Doctor</span>
                                                         </mat-header-cell>
-                                                        <mat-cell *matCellDef="let contact" class="w-300">
+                                                        <mat-cell *matCellDef="let contact" class="w-250">
                                                             <ng-container *ngIf="showDoctorDropdown(contact)">
                                                                 <mat-form-field appearance="outline"
                                                                     class="compact-select" floatLabel="never">
