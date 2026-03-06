@@ -46,6 +46,7 @@ export class NewLabresultEntryComponent {
     'ResultValue',
     'Flag',
     'NormalRange',
+    'machine',
     // 'Formula'
   ];
 

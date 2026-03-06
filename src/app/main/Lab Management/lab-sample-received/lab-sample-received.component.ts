@@ -55,15 +55,16 @@ export class LabSampleReceivedComponent {
     'CheckBox',
     // 'PBillNo',
     'datetime',
-    'samplecollectiondatetime',
+    'unitname',
     // 'UHID',
     'patientName',
     // 'genderName',
     // 'mobileNo',
     'serviceName',
     'outSourceLabName',
+    'samplecollectiondatetime',
     'Recevieddate',
-    'ReceviedBy',
+    // 'ReceviedBy',
   ];
   vSampleCollFormGroup: FormGroup
 

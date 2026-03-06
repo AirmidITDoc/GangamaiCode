@@ -8,7 +8,7 @@
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Radiology Report Entry
+                Other Service list
             </span>
         </div>
     </mat-toolbar>
@@ -34,16 +34,6 @@
                                         [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
                                         [mode]="autocompleteModeCategoryId"></airmid-dropdown>
                                 </div>
-                                <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-
-                                    <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
-                                        [formGroup]="myformSearch" formControlName="RegNoSearch"
-                                        placeholderText="Search Reg No / Patient Name / Mobile No"
-                                        [ApiUrl]="'LabPatientRegistration/search-patient-1?UnitId=' + vUnitId + '&Keyword='"
-                                        (selectionChange)="getSelectedObjIP($event)"
-                                        (onClearSelection)="resetFormPatient()">
-                                    </airmid-autocomplete>
-                                </div> -->
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <mat-form-field appearance="outline" fxFlex>
