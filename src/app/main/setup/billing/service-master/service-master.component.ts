@@ -40,6 +40,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
         this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
         this.gridConfig.columnsList.find(col => col.key === 'isPackage')!.template = this.iconisPackage;
         this.gridConfig.columnsList.find(col => col.key === 'isProcedure')!.template = this.iconisProcedure;
+        this.gridConfig.columnsList.find(col => col.key === 'isOtherService')!.template = this.iconisOtherService;
     }
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('iconcreditedtoDoctor') iconcreditedtoDoctor!: TemplateRef<any>;
@@ -47,6 +48,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
     @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
     @ViewChild('iconisPackage') iconisPackage!: TemplateRef<any>;
     @ViewChild('iconisProcedure') iconisProcedure!: TemplateRef<any>;
+    @ViewChild('iconisOtherService') iconisOtherService!: TemplateRef<any>;
 
     allColumns = [
         {
@@ -64,6 +66,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
         { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
         { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
         { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+        { heading: "IsOtherService", key: "isOtherService", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
         { heading: "IsProcedure", key: "isProcedure", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {

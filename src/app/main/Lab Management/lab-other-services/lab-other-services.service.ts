@@ -8,7 +8,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 @Injectable({
   providedIn: 'root'
 })
-export class LabRadiologyService {
+export class LabOtherServicesService {
 
   myformSearch: FormGroup;
   myform: FormGroup;
@@ -34,6 +34,17 @@ export class LabRadiologyService {
     });
   }
 
+  createRadiologytemplateForm(): FormGroup {
+    return this._formBuilder.group({
+      TemplateId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      TemplateName: [''],
+      TemplateDesc: [''],
+      suggestionNotes: [''],
+      ResultEntry: ['', Validators.required],
+      DoctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    });
+  }
+
   createReportlogForm(): FormGroup {
     return this._formBuilder.group({
       logId: [0],
@@ -41,32 +52,6 @@ export class LabRadiologyService {
       opiptype: [4],
       logTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       logTypeName: ['', [Validators.required]]
-    });
-  }
-
-  createRadiologytemplateForm(): FormGroup {
-    return this._formBuilder.group({
-      TemplateId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      TemplateName: [''],
-      TemplateDesc: [''],
-      // RadReportID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // ReportDate:[(new Date()).toISOString()],
-      // ReportTime:[(new Date()).toISOString()],
-      // IsCompleted: ['false'],
-      // IsPrinted: ['flase'],
-      // RadResultDr1: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // RadResultDr2:  [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // RadResultDr3:  [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      suggestionNotes: [''],
-      // AdmVisitDoctorID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // RefDoctorID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      ResultEntry: ['', Validators.required],
-      // Suggatationnote:[''],
-      DoctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // IsDeleted: ['false'],
-      // AddedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // UpdatedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // AddedByName: ['']
     });
   }
 
@@ -100,10 +85,9 @@ export class LabRadiologyService {
     this.myform.patchValue(employee);
   }
 
-  // public getRadioTestDetails(employee) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadioResultEntryList_Test_Dtls", employee)
-
-  // }
+  public getReportLog(employee) {
+    return this._httpClient1.PostData("ReportLog", employee)
+  }
 
   public getTestList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls1", employee)
@@ -123,8 +107,5 @@ export class LabRadiologyService {
 
   public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
-  }
-  public getReportLog(employee) {
-    return this._httpClient1.PostData("ReportLog", employee)
   }
 }

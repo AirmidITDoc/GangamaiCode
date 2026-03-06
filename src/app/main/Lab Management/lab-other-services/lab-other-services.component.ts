@@ -23,18 +23,18 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { Subscription } from 'rxjs';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
-import { LabRadiologyService } from './lab-radiology.service';
 import { RadioLabOutsourceComponent } from 'app/main/radiology/radiology-order-list/radio-lab-outsource/radio-lab-outsource.component';
-import { NewRadResultTemplateComponent } from './new-rad-result-template/new-rad-result-template.component';
+import { LabOtherServicesService } from './lab-other-services.service';
+import { NewRadResultTemplateComponent } from '../lab-radiology/new-rad-result-template/new-rad-result-template.component';
 
 @Component({
-  selector: 'app-lab-radiology',
-  templateUrl: './lab-radiology.component.html',
-  styleUrls: ['./lab-radiology.component.scss'],
+  selector: 'app-lab-other-services',
+  templateUrl: './lab-other-services.component.html',
+  styleUrls: ['./lab-other-services.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class LabRadiologyComponent {
+export class LabOtherServicesComponent {
   myformSearch: FormGroup;
   f_name: any = ""
   regNo: any = "0"
@@ -104,7 +104,7 @@ export class LabRadiologyComponent {
     { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
     { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "TestType", fieldValue: "1", opType: OperatorComparer.Equals },
     { fieldName: "OP_IP_Type", fieldValue: "3", opType: OperatorComparer.Equals },
     { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
   ]
@@ -119,7 +119,7 @@ export class LabRadiologyComponent {
   }
 
   constructor(
-    public _RadioloyOrderlistService: LabRadiologyService,
+    public _RadioloyOrderlistService: LabOtherServicesService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private accountService: AuthenticationService,
@@ -172,7 +172,7 @@ export class LabRadiologyComponent {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: String(this.status), opType: OperatorComparer.Equals },
-        { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "TestType", fieldValue: "1", opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
         { fieldName: "CategoryId", fieldValue: String(this.CategoryId), opType: OperatorComparer.Equals },
       ]
@@ -320,6 +320,7 @@ export class LabRadiologyComponent {
     this.onChangeFirst();
   }
 
+
   Editoutsoucedata(row) {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur(); // Remove focus from the button
@@ -387,6 +388,7 @@ export class LabRadiologyComponent {
       ? 'Verify Report'
       : 'Test is Pending';
   }
+
   //whatsapp
 
   private overlayRef: OverlayRef | null = null;
@@ -646,183 +648,4 @@ export class LabRadiologyComponent {
       }
     }
   }
-}
-
-export class RadioPatientList {
-  RadDate: Date;
-  RadTime: Date;
-  RegNo: any;
-  PatientName: String;
-  PatientType: number;
-  TestName: String;
-  ConsultantDoctor: any;
-  CategoryName: String;
-  AgeYear: number;
-  GenderName: String;
-  PBillNo: number;
-  OPD_IPD_ID: any;
-  OP_Ip_Type: any;
-  IsCompleted: any;
-  DoctorName: any;
-  AgeGender: any;
-  ServiceId: any;
-  ServiceName: any;
-  MobileNo: any;
-  CompanyName: any;
-  RefDoctorName: any;
-  Doctorname: any;
-  IsActive: any;
-
-  constructor(RadioPatientList) {
-    this.RadDate = RadioPatientList.RadDate || '';
-    this.RadTime = RadioPatientList.RadTime;
-    this.RegNo = RadioPatientList.RegNo;
-    this.PatientName = RadioPatientList.PatientName;
-    this.PBillNo = RadioPatientList.PBillNo;
-    this.PatientType = RadioPatientList.PatientType || '0';
-    this.ConsultantDoctor = RadioPatientList.ConsultantDoctor || '';
-    this.TestName = RadioPatientList.TestName || '0';
-    this.CategoryName = RadioPatientList.CategoryName || '';
-    this.AgeYear = RadioPatientList.AgeYear;
-    this.GenderName = RadioPatientList.GenderName;
-    this.OPD_IPD_ID = RadioPatientList.OPD_IPD_ID || '';
-
-    this.OP_Ip_Type = RadioPatientList.OP_Ip_Type || '';
-    this.IsCompleted = RadioPatientList.IsCompleted || '0';
-    this.DoctorName = RadioPatientList.DoctorName || '';
-    this.AgeGender = RadioPatientList.AgeGender;
-    this.ServiceId = RadioPatientList.ServiceId || 0;
-    this.ServiceName = RadioPatientList.ServiceName;
-    this.MobileNo = RadioPatientList.MobileNo || '';
-    this.CompanyName = RadioPatientList.CompanyName;
-    this.RefDoctorName = RadioPatientList.RefDoctorName || '';
-    this.Doctorname = RadioPatientList.Doctorname || ''
-    this.IsActive = RadioPatientList.IsActive || '';
-  }
-
-}
-
-export class Templateinfo {
-
-  RegNo: Number;
-  AdmissionID: Number;
-  PatientName: string;
-  Doctorname: string;
-  AdmDateTime: string;
-  AgeYear: number;
-  RadReportId: number;
-  RadTestID: String;
-
-
-  /**
-  * Constructor
-  *
-  * @param Templateinfo
-  */
-  constructor(Templateinfo) {
-    {
-      this.RegNo = Templateinfo.RegNo || '';
-      this.AdmissionID = Templateinfo.AdmissionID || '';
-      this.PatientName = Templateinfo.PatientName || '';
-      this.Doctorname = Templateinfo.Doctorname || '';
-      this.AdmDateTime = Templateinfo.AdmDateTime || '';
-      this.AgeYear = Templateinfo.AgeYear || '';
-      this.RadReportId = Templateinfo.RadReportId || '';
-      this.RadTestID = Templateinfo.RadTestID || '';
-    }
-  }
-}
-
-
-export class RadiologyPrint {
-  RegNo: Number;
-  AdmissionID: Number;
-  PatientName: string;
-  Doctorname: string;
-  AdmDateTime: string;
-  AgeYear: number;
-  RadReportId: number;
-  RadTestID: String;
-  RadDate: Date;
-  RadTime: Date;
-  PatientType: any;
-  TestName: String;
-  ConsultantDoctor: any;
-  CategoryName: String;
-  GenderName: String;
-  PBillNo: number;
-  AdmissionDate: Date;
-  VisitDate: Date;
-  VisitTime: Date;
-  OPDNo: number;
-  IPDNo: number;
-  ReportDate: Date;
-  ReportTime: Date;
-  ResultEntry: String;
-  RadiologyDocName: string;
-  RefDoctorName: any;
-  SuggestionNotes: string;
-  UserName: string;
-  PrintTestName: string;
-  Education: string;
-  AgeDay: any;
-  ChargeId: number;
-  ServiceName: String;
-  OP_IP_Type: any;
-  OP_IP_Number: any;
-  CompanyName: any;
-  DepartmentName: any;
-  AgeMonth: any;
-  ServiceId: any;
-  TemplateId: any;
-  OPD_IPD_Type: any;
-
-  constructor(RadiologyPrint) {
-    this.RadDate = RadiologyPrint.RadDate || '';
-    this.CompanyName = RadiologyPrint.CompanyName || '';
-    this.DepartmentName = RadiologyPrint.DepartmentName || '';
-    this.RefDoctorName = RadiologyPrint.RefDoctorName || '';
-    this.RadTime = RadiologyPrint.RadTime;
-    this.RegNo = RadiologyPrint.RegNo;
-    this.OP_IP_Number = RadiologyPrint.OP_IP_Number || '';
-    this.RadTime = RadiologyPrint.RadTime;
-    this.PatientName = RadiologyPrint.PatientName;
-    this.PBillNo = RadiologyPrint.PBillNo;
-    this.PatientType = RadiologyPrint.PatientType || '0';
-    this.ConsultantDoctor = RadiologyPrint.ConsultantDoctor || '';
-    this.TestName = RadiologyPrint.TestName || '0';
-    this.CategoryName = RadiologyPrint.CategoryName || '';
-    this.AgeYear = RadiologyPrint.AgeYear;
-    this.GenderName = RadiologyPrint.GenderName;
-    this.AdmissionDate = RadiologyPrint.AdmissionDate || '';
-    this.VisitDate = RadiologyPrint.VisitDate || '';
-    this.VisitTime = RadiologyPrint.VisitTime;
-    this.OPDNo = RadiologyPrint.OPDNo;
-    this.IPDNo = RadiologyPrint.IPDNo;
-    this.ReportDate = RadiologyPrint.ReportDate;
-    this.ReportTime = RadiologyPrint.ReportTime || '';
-    this.ResultEntry = RadiologyPrint.ResultEntry || '';
-    this.RadiologyDocName = RadiologyPrint.RadiologyDocName || '0';
-    this.AgeMonth = RadiologyPrint.AgeMonth || '0';
-    this.SuggestionNotes = RadiologyPrint.SuggestionNotes || '';
-    this.UserName = RadiologyPrint.UserName;
-    this.RadReportId = RadiologyPrint.RadReportId;
-
-    this.PrintTestName = RadiologyPrint.PrintTestName;
-    this.ChargeId = RadiologyPrint.ChargeId;
-    this.Education = RadiologyPrint.Education;
-    this.AgeDay = RadiologyPrint.AgeDay;
-    this.ServiceName = RadiologyPrint.ServiceName;
-    this.OP_IP_Type = RadiologyPrint.OP_IP_Type;
-    this.TemplateId = RadiologyPrint.TemplateId || 0;
-    this.AdmissionID = RadiologyPrint.AdmissionID || '';
-
-    this.Doctorname = RadiologyPrint.Doctorname || '';
-    this.AdmDateTime = RadiologyPrint.AdmDateTime || '';
-
-    this.RadTestID = RadiologyPrint.RadTestID || '';
-    this.ServiceId = RadiologyPrint.ServiceId || 0;
-    this.OPD_IPD_Type = RadiologyPrint.OPD_IPD_Type || 0;
-  }
-
 }

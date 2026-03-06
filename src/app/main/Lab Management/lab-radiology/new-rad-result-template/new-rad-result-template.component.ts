@@ -296,14 +296,14 @@ export class NewRadResultTemplateComponent {
   }
 
   onClear() {
-    this._radiologytemplateService.myform.get("ResultEntry")?.setValue('')
-    this._radiologytemplateService.myform.get("DoctorId")?.setValue('')
-    // this._radiologytemplateService.myform.reset();
+    // this._radiologytemplateService.myform.get("ResultEntry")?.setValue('')
+    // this._radiologytemplateService.myform.get("DoctorId")?.setValue('')
+    this._radiologytemplateService.myform.reset();
     this.dialogRef.close();
   }
 
   onClose() {
-    // this._radiologytemplateService.myform.reset();
+    this._radiologytemplateService.myform.reset();
     this.dialogRef.close();
   }
 }

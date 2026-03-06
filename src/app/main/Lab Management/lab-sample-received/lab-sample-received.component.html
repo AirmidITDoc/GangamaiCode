@@ -167,7 +167,8 @@
                                 <td mat-cell *matCellDef="let contact">
                                     <mat-checkbox (click)="$event.stopPropagation()"
                                         (change)="$event ? selection.toggle(contact) : null"
-                                        *ngIf="!contact.isSampleReceivedStatus  else noMLC" [checked]="selection.isSelected(contact)"
+                                        *ngIf="!contact.isSampleReceivedStatus  else noMLC"
+                                        [checked]="selection.isSelected(contact)"
                                         [disabled]="isCheckboxDisabled(contact)">
                                     </mat-checkbox>
                                     <ng-template #noMLC>
@@ -190,17 +191,31 @@
 
                             <ng-container matColumnDef="datetime">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Date-Time</mat-header-cell>
+                                    BillDate-Time</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     {{ contact.pathDate | date:'dd/MM/yyyy - h:mma' }}
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="unitname">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    UnitName</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{ contact.hospitalName}}
+                                </mat-cell>
+                            </ng-container>
+
                             <ng-container matColumnDef="samplecollectiondatetime">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    SampleCollection DateTime </mat-header-cell>
+                                    SampleCollection Details </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    <div style="margin-right:5px; font-weight: bold;">
+                                        {{contact.sampleNo}}
+                                    </div>
                                     {{ contact.sampleCollectionTime | date:'dd/MM/yyyy - h:mma' }}
+                                    <div style="margin-left:5px; font-weight: bold;"  *ngIf="contact.samplecollectedBy">
+                                        By: {{ contact.samplecollectedBy }}
+                                    </div>
                                 </mat-cell>
                             </ng-container>
 
@@ -292,17 +307,15 @@
 
                             <ng-container matColumnDef="Recevieddate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    Recevied DateTime</mat-header-cell>
+                                    Received Details</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{ contact.sampleReceviedDateTime | date:'dd/MM/yyyy - h:mma' }}
-                                </mat-cell>
-                            </ng-container>
+                                    <div>
+                                        {{ contact.sampleReceviedDateTime | date:'dd/MM/yyyy - h:mma' }}
+                                    </div>
 
-                            <ng-container matColumnDef="ReceviedBy">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                    ReceviedBy</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.userName}}
+                                    <div style="margin-left:5px; font-weight: bold;" *ngIf="contact.userName">
+                                        By: {{ contact.userName }}
+                                    </div>
                                 </mat-cell>
                             </ng-container>
 

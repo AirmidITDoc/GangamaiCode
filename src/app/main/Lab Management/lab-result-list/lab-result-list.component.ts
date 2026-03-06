@@ -161,7 +161,7 @@ export class LabResultListComponent {
     // 'IsTemplateTest',
     // 'outSourceStatus',
     // 'isVerifyid',
-    'action1',
+    // 'action1',
     'status',
     'verify',
     'CategoryName',

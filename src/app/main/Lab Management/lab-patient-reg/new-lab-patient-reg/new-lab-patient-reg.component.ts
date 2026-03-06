@@ -110,6 +110,7 @@ export class NewLabPatientRegComponent {
   departmentname = '';
   IsPathology: any;
   IsRadiology: any;
+  IsOtherService: any;
   vIsPackage: any;
   isCompanySelected: boolean = false;
   isTariffSelect: boolean = false;
@@ -564,6 +565,7 @@ export class NewLabPatientRegComponent {
       tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isOtherService: [item?.IsOtherService ? true : false],
     });
   }
   createBillDetails(item: any): FormGroup {
@@ -832,6 +834,7 @@ export class NewLabPatientRegComponent {
           item.DiscAmt = item.discAmount
           item.isPathology = item.isPathology ?? item.IsPathology;
           item.isRadiology = item.isRadiology ?? item.IsRadiology;
+          item.isOtherService = item.isOtherService ?? item.IsOtherService;
           item.isPackage = item.isPackage ?? item.IsPackage;
 
           if (item.DiscAmt > 0 || item.DiscPer > 0) {
@@ -869,6 +872,7 @@ export class NewLabPatientRegComponent {
           item.price = item.price || item.Price;
           item.isPathology = item.isPathology ?? item.IsPathology;
           item.isRadiology = item.isRadiology ?? item.IsRadiology;
+          item.isOtherService = item.isOtherService ?? item.IsOtherService;
           item.isPackage = item.isPackage ?? item.IsPackage;
           item.DoctorId = item.DoctorId;
           item.DoctorName = item.DoctorName;
@@ -1110,6 +1114,7 @@ export class NewLabPatientRegComponent {
     this.vQty = 1;
     this.IsPathology = obj.isPathology;
     this.IsRadiology = obj.isRadiology;
+    this.IsOtherService = obj.isOtherService;
     this.vIsPackage = obj.isPackage;
     this.serviceSelct = true
     this.onSaveEntry(obj);
@@ -1322,6 +1327,7 @@ export class NewLabPatientRegComponent {
     if (row.isPathology !== undefined || row.IsPathology !== undefined) {
       this.IsPathology = row.isPathology ?? row.IsPathology;
       this.IsRadiology = row.isRadiology ?? row.IsRadiology;
+      this.IsOtherService = row.isOtherService ?? row.IsOtherService;
     } else {
       if (this.myForm.get("IsPathRad")?.value == '1') {
         this.IsPathology = true;
@@ -1376,6 +1382,7 @@ export class NewLabPatientRegComponent {
       ChargesAddedName: this.accountService.currentUserValue.userName,
       IsPathology: row.isPathology == 1 ? true : false,
       IsRadiology: row.isRadiology == 1 ? true : false,
+      IsOtherService: row.isOtherService ? true : false,
       IsPackage: row.isPackage,
       serviceCode: 0,//formValue.serviceName.companyCode, 
       isInclusionExclusion: true,//formValue.serviceName.isInclusionOrExclusion
@@ -1427,6 +1434,7 @@ export class NewLabPatientRegComponent {
       doctorName: row.DoctorName ?? '',
       isPathology: row.isPathology,
       isRadiology: row.isRadiology,
+      isOtherService: row.isOtherService,
       pacakgeServiceName: row.pacakgeServiceName,
     });
 
@@ -1466,6 +1474,7 @@ export class NewLabPatientRegComponent {
             NetAmount: (element.price * 1) || 0,
             isPathology: element.isPathology,
             isRadiology: element.isRadiology,
+            isOtherService: element.isOtherService,
             packageId: element.packageId,
             PackageServiceId: element.serviceId,
             pacakgeServiceName: element.pacakgeServiceName,
@@ -1532,6 +1541,7 @@ export class NewLabPatientRegComponent {
               NetAmount: NetAmount || 0,
               isPathology: element.IsPathology || 0,
               isRadiology: element.IsRadiology || 0,
+              isOtherService: element.IsOtherService,
               packageId: element.PackageId || 0,
               PackageServiceId: element.PackageServiceId || 0,
               pacakgeServiceName: element.PacakgeServiceName || '',
@@ -1559,6 +1569,7 @@ export class NewLabPatientRegComponent {
                 ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
                 IsPathology: element.IsPathology,
                 IsRadiology: element.IsRadiology,
+                IsOtherService: element.IsOtherService,
                 IsPackage: element.IsPackage,
                 ClassName: element.ClassName,
                 ChargesAddedName: this.accountService.currentUserValue.user.id || 1,

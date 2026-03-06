@@ -28,77 +28,13 @@
         <div fxLayout="column" class="gap-8 h-100-p">
             <div class="modal-card-container">
                 <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
-                    <!-- <mat-card fxFlex.gt-sm="100%" fxFlex>
-                        <div class="patient-info-sales my-8">
-                            <div class="patient-info-title border-bottom pb-2" fxLayout="row"
-                                fxLayoutAlign="space-between">
-                                <span class="h1">Patient Information</span>
-
-                                <button mat-raised-button style="background-color: aliceblue;color: brown;">UpLoad
-                                    <mat-icon>cloud_upload</mat-icon>
-                                </button>
-                            </div>
-                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
-                                class="patient-info">
-                                <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111" style="padding: 10px;"
-                                        fxLayout="row" fxLayoutAlign="space-between">
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.labRequestNo}}</span>
-                                            </div>
-
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name
-                                                </span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj2.patientName}}</span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.oP_IP_No}}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Sex
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.ageYear}}Y|
-                                                    D |
-                                                    {{selectedAdvanceObj2.genderName}}</span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Doctor Name</span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj2.doctorName}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card> -->
 
                     <mat-card fxFlex.gt-sm="100%" fxFlex>
                         <div class="patient-info-sales my-8">
-                            <div class="patient-info-title border-bottom pb-2" fxLayout="row"
-                                fxLayoutAlign="space-between center">
 
-                                <span class="h1">Patient Information</span>
+                            <div class="patient-info-title border-bottom pb-1 mb-1" fxLayout="row"
+                                fxLayoutAlign="space-between center">
+                                <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
 
                                 <div class="gap-4" fxLayout="row">
 
@@ -113,80 +49,32 @@
                                     </div>
 
                                     <button mat-raised-button color="primary" (click)="onUpload()"
-                                        style="background-color: aliceblue; color: brown;"  *ngIf="!verifyCheck && !viewCheck">
+                                        style="background-color: aliceblue; color: brown;"
+                                        *ngIf="!verifyCheck && !viewCheck">
                                         Upload
                                         <mat-icon class="ml-4">cloud_upload</mat-icon>
                                     </button>
 
                                     <button mat-raised-button color="primary"
-                                        style="background-color: aliceblue; color: brown;"  *ngIf="!verifyCheck && !viewCheck">
+                                        style="background-color: aliceblue; color: brown;"
+                                        *ngIf="!verifyCheck && !viewCheck">
                                         Re-Run
                                     </button>
                                 </div>
                             </div>
-
-                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                fxLayoutAlign="space-between center">
-                                <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111"
-                                        style="padding: 10px; margin-bottom: 15px;" fxLayout="row"
-                                        fxLayoutAlign="space-between">
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No
-                                                </span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj2.labRequestNo}}</span>
-                                            </div>
-
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Patient Name
-                                                </span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj2.patientName}}</span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.oP_IP_No}}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Age | Sex
-                                                </span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj2.ageYear}}Y|
-                                                    {{selectedAdvanceObj2.ageMonth}}M|{{selectedAdvanceObj2.ageDay}}D
-                                                    |
-                                                    {{selectedAdvanceObj2.genderName}}</span>
-                                            </div>
-                                        </div>
-                                        <div fxLayout="column" fxLayoutGap="6px">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Doctor Name</span>
-                                                <span>:</span>
-                                                <span
-                                                    class="patient-col-value">{{selectedAdvanceObj2.doctorName}}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="Ipd-patient-info w-100-p">
+                                <app-patient-information [uhidNo]="selectedAdvanceObj2?.labRequestNo"
+                                    [patientName]="selectedAdvanceObj2?.patientName"
+                                    [ageString]="(selectedAdvanceObj2?.ageYear !== undefined ? selectedAdvanceObj2?.ageYear + 'Y|' + selectedAdvanceObj2?.ageMonth + 'M|' + selectedAdvanceObj2?.ageDay + 'D | ' + selectedAdvanceObj2?.genderName : '')"
+                                    [refDocName]="selectedAdvanceObj2?.doctorName">
+                                </app-patient-information>
                             </div>
-
                         </div>
                     </mat-card>
 
                 </div>
             </div>
-            <div class="modal-card-container h-100-p">
+            <div class="modal-card-container">
                 <div fxFlex.gt-sm="100%" fxFlex class="airmid-table-container">
                     <mat-card style="padding: 6px;">
                         <!-- appTableKeyboardNavigation -->
@@ -277,6 +165,16 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <ng-container matColumnDef="machine">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    M/I
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                    {{'-'}}
+                                </mat-cell>
+                            </ng-container>
+
                             <!-- <ng-container matColumnDef="Formula">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                     class="border-right">
@@ -314,40 +212,39 @@
                     </mat-card>
                 </div>
             </div>
+
+            <div class="modal-card-container">
+                <form [formGroup]="otherForm">
+                    <mat-card style="padding: 6px;">
+                        <div fxLayout="column" fxLayout="row" fxLayout="4px">
+
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Suggestion Note</mat-label>
+                                <textarea matInput rows="2" name="suggestionNotes" formControlName="suggestionNotes"
+                                    [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)">
+                                    </textarea>
+                                <!-- <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint> -->
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="column" fxLayout="row" fxLayout="4px" class=" resize-form-fields">
+                            <airmid-dropdown label="Technician Name" formControlName="PathResultDoctorId"
+                                [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)" fxFlex="40%"
+                                ValueField="doctorId" TextField="doctorName"
+                                ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
+                        </div>
+                    </mat-card>
+
+                </form>
+            </div>
         </div>
     </div>
     <div class="modal-footer" fxLayout="column">
-        <div class="modal-card-container">
-            <form [formGroup]="otherForm">
-                <mat-card style="padding: 6px;">
-                    <div fxLayout="column" fxLayout="row" fxLayout="4px">
-
-                        <mat-form-field appearance="outline" fxFlex>
-                            <mat-label>Suggestion Note</mat-label>
-                            <textarea matInput rows="2" name="suggestionNotes" formControlName="suggestionNotes"
-                                [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)">
-                                    </textarea>
-                            <!-- <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint> -->
-                        </mat-form-field>
-
-                    </div>
-
-                    <div fxLayout="column" fxLayout="row" fxLayout="4px">
-                        <airmid-dropdown label="Technician Name" formControlName="PathResultDoctorId"
-                            [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)" fxFlex="40%"
-                            ValueField="doctorId" TextField="doctorName"
-                            ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
-                    </div>
-
-
-                </mat-card>
-
-            </form>
-        </div>
         <div class="modal-footer-buttons">
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
             <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck && !viewCheck">Save</button>
-            <button class="btn btn-success" (click)="onVerify()" *ngIf="verifyCheck && !viewCheck">Authorization</button>
+            <button class="btn btn-success" (click)="onVerify()"
+                *ngIf="verifyCheck && !viewCheck">Authorization</button>
         </div>
     </div>
 </div>

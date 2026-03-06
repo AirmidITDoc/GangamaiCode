@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { TestApprovalListComponent } from './test-approval-list/test-approval-list.component';
 import { ReportDispatchComponent } from './report-dispatch/report-dispatch.component';
 import { EmailorSMSHistoryComponent } from './emailor-smshistory/emailor-smshistory.component';
-
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -104,6 +103,10 @@ const appRoutes: Routes = [
   {
     path: "investigation-list",
     loadChildren: () => import("./investigation-list/investigation-list.module").then((m) => m.InvestigationListModule),
+  },
+  {
+    path: "lab-other-service",
+    loadChildren: () => import("./lab-other-services/lab-other-services.module").then((m) => m.LabOtherServicesModule),
   },
 
 ];

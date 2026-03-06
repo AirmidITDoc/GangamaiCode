@@ -76,6 +76,16 @@ export class LabResultListService {
     });
   }
 
+  createReportlogForm(): FormGroup {
+    return this._formBuilder.group({
+      logId: [0],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opiptype: [4],
+      logTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      logTypeName: ['', [Validators.required]]
+    });
+  }
+
   // m_Rtrv_PathPatientList_Ptnt_Dtls
   public getPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathPatientList_Ptnt_Dtls", employee)
@@ -193,7 +203,7 @@ export class LabResultListService {
   }
 
   public getReportView(Param) {
-     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+    return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
 
   public getMultiReportView(Param) {

@@ -144,6 +144,11 @@
                                                     </button>
                                                 </span>
 
+                                                <button mat-icon-button matTooltip="View"
+                                                    (click)="onViewReport(element)">
+                                                    <mat-icon>remove_red_eye</mat-icon>
+                                                </button>
+
                                                 <span
                                                     [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
                                                             : element.paymentCompleted == 0 ? 'Payment is pending' : '' "

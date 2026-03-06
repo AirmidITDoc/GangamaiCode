@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
 import { ComponentRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -112,6 +112,7 @@ export class TestApprovalListComponent {
   autocompleteModeCategoryId: string = "PathCategory";
   page: PageNames = PageNames.PATIENT;
   pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
+  reportlogFormGroup: FormGroup
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -206,6 +207,7 @@ export class TestApprovalListComponent {
 
   ngOnInit(): void {
     this.myformSearch = this._LabResultListService.createSearchForm()
+    this.reportlogFormGroup = this._LabResultListService.createReportlogForm();
     this.fromDate = this.myformSearch.get("start").value || "";
     this.toDate = this.myformSearch.get("end").value || "";
     this.GetResultdetail();
@@ -326,6 +328,7 @@ export class TestApprovalListComponent {
   }
 
   viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
+    this.OnPrintReportLogSave('Lab Print', contact) // log save
 
     setTimeout(() => {
       const param = {
@@ -414,6 +417,7 @@ export class TestApprovalListComponent {
     // debugger
     console.log(row);
     let pathologyDelete = [];
+    this.OnPrintReportLogSave('Lab Print', row) // log save
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
 
@@ -474,6 +478,7 @@ export class TestApprovalListComponent {
 
   Printresultentrywithheader(row: any = null) {
     let pathologyDelete = [];
+    this.OnPrintReportLogSave('Lab Print', row) // log save
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
 
@@ -523,6 +528,173 @@ export class TestApprovalListComponent {
       });
     });
     // });
+  }
+
+  chkPrintViewResultVerify(contact, flag) {
+    // debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+    this.reportPrintObj = contact
+
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 0) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
+
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+        const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
+          {
+            maxWidth: "96vw",
+            height: "96vh",
+            width: "96%",
+            data: {
+              RIdData: data,
+              patientdata: this.reportPrintObj,
+              verifyCheck: false,
+              viewCheck: true,
+              sampleNo: contact.sampleNo
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => {
+        });
+      }, 100);
+      return;
+    }
+  }
+
+  chkPrintViewTemplateVerify(contact, flag) {
+    // debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 1) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
+
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+        const dialogRef = this._matDialog.open(NewLabtemplateComponent,
+          {
+            maxWidth: "75vw",
+            height: '95%',
+            width: '96%',
+            data: {
+              data: contact,
+              verifyCheck: false,
+              viewCheck: true,
+            }
+          });
+
+        dialogRef.afterClosed().subscribe(result => {
+        });
+        return;
+      }, 100);
+      return;
+    }
+  }
+
+  onViewReport(element: any) {
+    // Condition check
+    if (element.isCompleted && !element.isVerifyid) {
+      this.OnPrintReportLogSave('Lab View', element);
+
+      if (element.isTemplateTest == 1) {
+        this.chkPrintViewTemplateVerify(element, true);
+      } else {
+        this.chkPrintViewResultVerify(element, true);
+      }
+    }
+  }
+
+  OnPrintReportLogSave(type: any, data: any) {
+    // debugger
+    const src = Array.isArray(data) ? data[0] : data;
+    const opipid = src?.opdipdId ?? src?.opdIpdId ?? src?.opdipdId;
+    if (type == 'Lab Print') {
+      this.reportlogFormGroup.get('logTypeId').setValue(1);
+      this.reportlogFormGroup.get('logTypeName').setValue('Lab Print');
+    }
+    if (type == 'Lab View') {
+      this.reportlogFormGroup.get('logTypeId').setValue(2);
+      this.reportlogFormGroup.get('logTypeName').setValue('Lab View');
+    }
+    this.reportlogFormGroup.get('opipid').setValue(opipid);
+
+    if (!this.reportlogFormGroup.invalid) {
+      console.log(this.reportlogFormGroup.value);
+
+      this._LabResultListService.getReportLog(this.reportlogFormGroup.value).subscribe(() => {
+        // this.GetSampleCollectiondetail();
+      });
+    } else {
+      let invalidFields = [];
+      if (this.reportlogFormGroup.invalid) {
+        for (const controlName in this.reportlogFormGroup.controls) {
+          const control = this.reportlogFormGroup.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Report Data : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`Report Data: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      }
+    }
   }
 
   AdList: boolean = false;

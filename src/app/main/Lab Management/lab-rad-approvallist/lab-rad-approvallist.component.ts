@@ -101,7 +101,7 @@ export class LabRadApprovallistComponent {
   age = ''
   gendername = ''
   Category = '%'
-  vStatusSearch: any = "0";
+  vStatusSearch: any = "1";
   patientName: 'RK'
   title: 'Reports'
   autocompleteModeunit: string = "Hospital";
@@ -177,7 +177,7 @@ export class LabRadApprovallistComponent {
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-      { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "ApprovalStatus", fieldValue: "1", opType: OperatorComparer.Equals },
     ]
   }
 
@@ -256,7 +256,7 @@ export class LabRadApprovallistComponent {
 
   onClear() {
     this._LabResultListService.myformSearch.get('RegNoSearch').setValue("0");
-    this._LabResultListService.myformSearch.get('StatusSearch').setValue("0");
+    this._LabResultListService.myformSearch.get('StatusSearch').setValue("1");
     this._LabResultListService.myformSearch.get('PatientTypeSearch').setValue("3");
   }
 
