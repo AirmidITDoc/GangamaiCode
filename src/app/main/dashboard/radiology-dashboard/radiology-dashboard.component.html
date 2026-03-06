@@ -1,5 +1,5 @@
-<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll radiology-dashboard-wrapper"
-    fxLayout="column">
+<!-- <div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll" fxLayout="column"> -->
+    <div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight>
     <!-- HEADER -->
     <div class="top-header accent">
         <div class="top-header-info">
@@ -9,404 +9,49 @@
                 <span>Radiology & Pathology Dashboard</span>
             </div>
         </div>
-        <div class="date-filter-container resize-form-fields">
-            <mat-form-field appearance="outline">
-                <mat-label>Enter a date range</mat-label>
-                <mat-date-range-input [rangePicker]="rangePicker">
-                    <input matStartDate [(ngModel)]="fromDate" placeholder="Start date" readonly>
-                    <input matEndDate [(ngModel)]="toDate" (dateChange)="onDateRangeChanged()" placeholder="End date"
-                        readonly>
-                </mat-date-range-input>
-                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
-                <mat-date-range-picker #rangePicker></mat-date-range-picker>
-            </mat-form-field>
-        </div>
-    </div>
-    <!-- / HEADER -->
+        <form [formGroup]="myFilterform">
+            <div class="date-filter-container">
 
-    <!-- CONTENT -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="fromDate" placeholder="Start date">
+                        <input matEndDate formControlName="toDate" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">Go</button>
+
+            </div>
+        </form>
+
+    </div>
+    <!-- <div class="content layout-body"> -->
+
     <div class="center" fusePerfectScrollbar>
 
+        <div class="center p-5">
+            <div class="dashboard-container">
+                <div class="metrics-grid">
+                    <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards"
+                        [ngClass]="'theme-' + m.color">
+                        <mat-card-content class="metric-content" style="border: solid 1px;color: brown;">
+                            <div class="metric-icon">
+                                <mat-icon>{{ getMatIcon(m.icon) }}</mat-icon>
+                            </div>
+                            <div class="metric-text">
+                                <div class="metric-label">{{ m.label }}</div>
+                                <div class="metric-value">{{ m.value }}</div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
         <!-- TABS -->
         <mat-tab-group class="dashboard-tabs" [(selectedIndex)]="selectedTabIndex"
             (selectedTabChange)="onTabChanged($event)">
-
-            <!-- RADIOLOGY TAB -->
-            <mat-tab>
-                <ng-template mat-tab-label>
-                    <mat-icon class="tab-icon">biotech</mat-icon>
-                    <span class="tab-label">Radiology</span>
-                </ng-template>
-
-                <!-- Top Summary Cards -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <!-- Total Tests Today Card -->
-                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                        <mat-card class="dashboard-stat-card">
-                            <mat-card-content>
-                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                                    <div class="icon-div icon-1">
-                                        <mat-icon style="color: white;">assignment</mat-icon>
-                                    </div>
-                                    <div class="labels-div" fxLayout="row">
-                                        <div>Total Tests Today |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{totalTestsToday}}</div>
-                                    </div>
-                                </div>
-                                <div class="card-chart-section">
-                                    <canvas id="totalTestsChart"></canvas>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-
-                    <!-- Completed Reports Card -->
-                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                        <mat-card class="dashboard-stat-card">
-                            <mat-card-content>
-                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                                    <div class="icon-div icon-2">
-                                        <mat-icon style="color: white;">check_circle</mat-icon>
-                                    </div>
-                                    <div class="labels-div" fxLayout="row">
-                                        <div>Completed Reports |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{completedReports}}</div>
-                                    </div>
-                                </div>
-                                <div class="card-chart-section">
-                                    <canvas id="completedReportsChart"></canvas>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-
-                    <!-- Pending Reports Card -->
-                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                        <mat-card class="dashboard-stat-card">
-                            <mat-card-content>
-                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                                    <div class="icon-div icon-3">
-                                        <mat-icon style="color: white;">pending</mat-icon>
-                                    </div>
-                                    <div class="labels-div" fxLayout="row">
-                                        <div>Pending Reports |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{pendingReports}}</div>
-                                    </div>
-                                </div>
-                                <div class="card-chart-section">
-                                    <canvas id="pendingReportsChart"></canvas>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-
-                    <!-- Cancelled Scans Card -->
-                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                        <mat-card class="dashboard-stat-card">
-                            <mat-card-content>
-                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                                    <div class="icon-div icon-4">
-                                        <mat-icon style="color: white;">cancel</mat-icon>
-                                    </div>
-                                    <div class="labels-div" fxLayout="row">
-                                        <div>Cancelled/Rejected |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{cancelledScans}}</div>
-                                    </div>
-                                </div>
-                                <div class="card-chart-section">
-                                    <canvas id="cancelledScansChart"></canvas>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-
-                <!-- Charts Section -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <!-- Tests by Modality Bar Chart -->
-                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-card class="chart-card">
-                            <mat-card-content>
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Tests by Modality</h3>
-                                    <p class="chart-subtitle">Distribution of tests performed</p>
-                                </div>
-                                <div style="height: 350px;">
-                                    <canvas id="modalityChart"></canvas>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-
-                    <!-- Report Status Pie Chart -->
-                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-card class="chart-card">
-                            <mat-card-content>
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Report Status Distribution</h3>
-                                    <p class="chart-subtitle">Completed vs Pending vs Cancelled</p>
-                                </div>
-                                <div
-                                    style="height: 350px; display: flex; align-items: center; justify-content: center;">
-                                    <canvas id="statusPieChart"></canvas>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-
-                <!-- Test Volume Trend -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <div fxFlex="100%">
-                        <mat-card class="chart-card">
-                            <mat-card-content>
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Daily Test Volume Trend</h3>
-                                    <p class="chart-subtitle">Last 7 days performance</p>
-                                </div>
-                                <div style="height: 320px;">
-                                    <canvas id="volumeTrendChart"></canvas>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-
-                <!-- Recent Reports Table -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <div fxFlex="100%">
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="table-title">Recent Radiology Reports</div>
-                                <hr>
-                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsRecentReports"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                                    <ng-container matColumnDef="PatientName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Patient Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.PatientName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="TestType">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Test Type
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.TestType}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Status">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Status
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            <span [ngClass]="{
-                                        'status-completed': report.Status === 'Completed',
-                                        'status-pending': report.Status === 'Pending',
-                                        'status-cancelled': report.Status === 'Cancelled'
-                                    }">
-                                                {{report.Status}}
-                                            </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Radiologist">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Radiologist
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.Radiologist}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.Date}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            No data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="recentReportsColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let report; columns: recentReportsColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsRecentReports!=null && dsRecentReports.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-
-                <!-- Top Requested Tests & Additional Insights -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <!-- Top Requested Tests -->
-                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="table-title">Top Requested Tests (This Week)</div>
-                                <hr>
-                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsTopTests"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                                    <ng-container matColumnDef="TestName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Test Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let test">
-                                            {{test.TestName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Count">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Count
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let test">
-                                            {{test.Count}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            No data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent" *matHeaderRowDef="topTestsColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let test; columns: topTestsColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsTopTests!=null && dsTopTests.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-
-                    <!-- Radiologist Performance -->
-                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="table-title">Radiologist Performance</div>
-                                <hr>
-                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsRadiologistPerformance"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                                    <ng-container matColumnDef="RadiologistName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Radiologist
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let radiologist">
-                                            {{radiologist.RadiologistName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ReportsCompleted">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Reports
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let radiologist">
-                                            {{radiologist.ReportsCompleted}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AvgTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Avg Time (hrs)
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let radiologist">
-                                            {{radiologist.AvgTime}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            No data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="radiologistPerformanceColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let radiologist; columns: radiologistPerformanceColumns;"
-                                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                        appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsRadiologistPerformance!=null && dsRadiologistPerformance.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-
-                <!-- Equipment Utilization -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <div fxFlex="100%">
-                        <mat-card>
-                            <mat-card-content>
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Equipment Utilization</h3>
-                                    <p class="chart-subtitle">Machine usage percentage</p>
-                                </div>
-                                <div class="equipment-cards" fxLayout="row wrap" fxLayoutGap="16px"
-                                    style="margin-top: 16px;">
-                                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="calc(50% - 16px)"
-                                        fxFlex.sm="calc(50% - 16px)"
-                                        *ngFor="let equipment of equipmentUtilization; let i = index">
-                                        <mat-card class="equipment-card" [ngClass]="'equipment-card-' + (i + 1)">
-                                            <mat-card-content>
-                                                <div class="equipment-name">{{equipment.name}}</div>
-                                                <div class="equipment-percentage">{{equipment.utilization}}%</div>
-                                                <div class="equipment-status">
-                                                    <mat-progress-bar mode="determinate" [value]="equipment.utilization"
-                                                        [ngClass]="'progress-' + (i + 1)">
-                                                    </mat-progress-bar>
-                                                </div>
-                                                <div class="equipment-scans">{{equipment.scans}} scans today</div>
-                                            </mat-card-content>
-                                        </mat-card>
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </div>
-                </div>
-
-            </mat-tab>
-            <!-- END RADIOLOGY TAB -->
 
             <!-- PATHOLOGY TAB -->
             <mat-tab>
@@ -415,9 +60,6 @@
                     <span class="tab-label">Pathology</span>
                 </ng-template>
 
-                <!-- TODO: Replace with API data -->
-                <!-- Pathology Dashboard Content -->
-
                 <!-- Top Summary Cards -->
                 <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
                     <!-- Total Tests Today Card -->
@@ -428,7 +70,8 @@
                                     <div class="icon-div icon-1">
                                         <mat-icon style="color: white;">assignment</mat-icon>
                                     </div>
-                                    <div class="labels-div" fxLayout="row">
+                                    <div class="labels-div" fxLayout="row"
+                                        style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
                                         <div>Total Tests Today |</div>
                                         <div [@animate]="{value:'*',params:{x:'50px'}}">
                                             {{pathologyData?.countSummary?.todaysCount??0}}</div>
@@ -449,7 +92,8 @@
                                     <div class="icon-div icon-2">
                                         <mat-icon style="color: white;">check_circle</mat-icon>
                                     </div>
-                                    <div class="labels-div" fxLayout="row">
+                                    <div class="labels-div" fxLayout="row"
+                                        style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
                                         <div>Completed Reports |</div>
                                         <div [@animate]="{value:'*',params:{x:'50px'}}">
                                             {{pathologyData?.countSummary?.completedCount??0}}
@@ -471,7 +115,8 @@
                                     <div class="icon-div icon-3">
                                         <mat-icon style="color: white;">pending</mat-icon>
                                     </div>
-                                    <div class="labels-div" fxLayout="row">
+                                    <div class="labels-div" fxLayout="row"
+                                        style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
                                         <div>Pending Reports |</div>
                                         <div [@animate]="{value:'*',params:{x:'50px'}}">
                                             {{pathologyData?.countSummary?.pendingCount??0}}
@@ -493,7 +138,8 @@
                                     <div class="icon-div icon-4">
                                         <mat-icon style="color: white;">cancel</mat-icon>
                                     </div>
-                                    <div class="labels-div" fxLayout="row">
+                                    <div class="labels-div" fxLayout="row"
+                                        style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
                                         <div>Rejected Samples |</div>
                                         <div [@animate]="{value:'*',params:{x:'50px'}}">
                                             {{pathologyData?.countSummary?.rejectedCount??0}}
@@ -507,6 +153,40 @@
                         </mat-card>
                     </div>
                 </div>
+
+                <!-- Charts Section Test wise-->
+                <!-- <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                  
+                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Tests by Modality</h3>
+                                    <p class="chart-subtitle">Distribution of tests performed</p>
+                                </div>
+                                <div style="height: 350px;">
+                                    <canvas id="modalityChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    
+                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Report Status Distribution</h3>
+                                    <p class="chart-subtitle">Completed vs Pending vs Cancelled</p>
+                                </div>
+                                <div
+                                    style="height: 350px; display: flex; align-items: center; justify-content: center;">
+                                    <canvas id="statusPieChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div> -->
 
                 <!-- Charts Section -->
                 <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
@@ -560,11 +240,11 @@
                 </div>
 
                 <!-- Recent Reports Table -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                    <div fxFlex="100%">
+                <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
+                     <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
                             <mat-card-content>
-                                <div class="table-title">Recent Pathology Reports</div>
+                                <div style="font-size: large;font-weight: bold;color: rgb(21, 64, 72);">Recent Pathology Reports</div>
                                 <hr>
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyReports"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
@@ -628,7 +308,7 @@
                                             Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.pathDate}}
+                                            {{report.pathDate | date:'dd/MM/yyyy - h:mma' }}
                                         </mat-cell>
                                     </ng-container>
 
@@ -658,13 +338,14 @@
                 </div>
 
                 <!-- Top Tests & Pathologist Performance -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                <div class="dashboard-container gap-2" fxLayout="row wrap" fxLayoutGap="0px grid">
                     <!-- Top Ordered Tests -->
-                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
-                            <mat-card-content>
-                                <div class="table-title">Top Ordered Tests (This Week)</div>
+                            <!-- <mat-card-content> -->
+                                <div style="font-size: large;font-weight: bold;color: rgb(21, 64, 72);">Top Ordered Tests (This Week)</div>
                                 <hr>
+                                 <div style="height: 230px;overflow-y: auto;">
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyTopTests"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
@@ -706,16 +387,28 @@
                                         [ngClass]="{'hide':!(dsPathologyTopTests!=null && dsPathologyTopTests.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-                            </mat-card-content>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="totals-label"
+                                        style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 10px;">
+                                        Total
+                                        Test
+                                        <span class="totals-num" style="padding-left: 310px;">{{
+                                            TotalTest}}</span>
+                                    </div>
+                                </div>
+                            <!-- </mat-card-content> -->
                         </mat-card>
                     </div>
 
                     <!-- Pathologist Workload -->
-                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="53%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
-                            <mat-card-content>
-                                <div class="table-title">Pathologist Workload Summary</div>
-                                <hr>
+                            <!-- <mat-card-content> -->
+                            <div style="font-size: large;font-weight: bold;color: rgb(21, 64, 72);">Pathologist Workload Summary</div>
+                            <hr>
+                            <div style="height: 230px;overflow-y: auto;">
+
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologistWorkload"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
@@ -758,7 +451,20 @@
                                         [ngClass]="{'hide':!(dsPathologistWorkload!=null && dsPathologistWorkload.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-                            </mat-card-content>
+                            </div>
+                            <div class="totals">
+                                <div class="totals-row">
+                                    <div class="totals-label"
+                                        style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 20px;">
+                                        Total
+                                        WorkLoad
+                                        <span class="totals-num" style="padding-left: 320px;">{{
+                                            totalworkload}}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- </mat-card-content> -->
                         </mat-card>
                     </div>
                 </div>
@@ -781,7 +487,9 @@
                                                 <div class="sample-stat-name">{{stat.name}}</div>
                                                 <div class="sample-stat-count">{{stat.count}}</div>
                                                 <div class="sample-stat-percentage">
-                                                    {{ ((stat.count / getSampleTotal()) * 100).toFixed(1) }}% of total
+                                                    {{ ((stat.count / getSampleTotal()) * 100).toFixed(1)
+                                                    }}% of
+                                                    total
                                                 </div>
                                             </mat-card-content>
                                         </mat-card>
@@ -794,9 +502,415 @@
 
             </mat-tab>
             <!-- END PATHOLOGY TAB -->
+            <!-- RADIOLOGY TAB -->
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon">biotech</mat-icon>
+                    <span class="tab-label">Radiology</span>
+                </ng-template>
+
+                <!-- Top Summary Cards -->
+                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                    <!-- Total Tests Today Card -->
+                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
+                        <mat-card class="dashboard-stat-card">
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
+                                    <div class="icon-div icon-1">
+                                        <mat-icon style="color: white;">assignment</mat-icon>
+                                    </div>
+                                    <div class="labels-div" fxLayout="row">
+                                        <div>Total Tests Today |</div>
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.completedCount??0}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-chart-section">
+                                    <canvas id="RadiologytotalTestsChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <!-- Completed Reports Card -->
+                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
+                        <mat-card class="dashboard-stat-card">
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
+                                    <div class="icon-div icon-2">
+                                        <mat-icon style="color: white;">check_circle</mat-icon>
+                                    </div>
+                                    <div class="labels-div" fxLayout="row">
+                                        <div>Completed Reports |</div>
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.completedCount??0}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-chart-section">
+                                    <canvas id="RadiologycompletedReportsChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <!-- Pending Reports Card -->
+                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
+                        <mat-card class="dashboard-stat-card">
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
+                                    <div class="icon-div icon-3">
+                                        <mat-icon style="color: white;">pending</mat-icon>
+                                    </div>
+                                    <div class="labels-div" fxLayout="row">
+                                        <div>Pending Reports |</div>
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.pendingCount??0}}</div>
+                                    </div>
+                                </div>
+                                <div class="card-chart-section">
+                                    <canvas id="RadiologypendingReportsChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <!-- Cancelled Scans Card -->
+                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
+                        <mat-card class="dashboard-stat-card">
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
+                                    <div class="icon-div icon-4">
+                                        <mat-icon style="color: white;">cancel</mat-icon>
+                                    </div>
+                                    <div class="labels-div" fxLayout="row">
+                                        <div>Cancelled/Rejected |</div>
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.pendingCount??0}}</div>
+                                    </div>
+                                </div>
+                                <div class="card-chart-section">
+                                    <canvas id="RadiologycancelledScansChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                   
+                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Tests by Modality</h3>
+                                    <p class="chart-subtitle">Distribution of tests performed</p>
+                                </div>
+                                <div style="height: 350px;">
+                                    <canvas id="RadiologyDepartmentChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                   
+                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Report Status Distribution</h3>
+                                    <p class="chart-subtitle">Completed vs Pending vs Cancelled</p>
+                                </div>
+                                <div
+                                    style="height: 350px; display: flex; align-items: center; justify-content: center;">
+                                    <canvas id="RadiologyStatusPieChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- Test Volume Trend -->
+                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                    <div fxFlex="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Daily Test Volume Trend</h3>
+                                    <p class="chart-subtitle">Last 7 days performance</p>
+                                </div>
+                                <div style="height: 320px;">
+                                    <canvas id="RadiologyVolumeTrendChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- Recent Reports Table -->
+                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                    <div fxFlex="100%">
+                        <mat-card>
+                            <mat-card-content>
+                                <div class="table-title">Recent Radiology Reports</div>
+                                <hr>
+                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsRadiologyRecentReports"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                    
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            {{report.radDate | date:'shortDate'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="PatientName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Patient Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            {{report.patientName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="patientType">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Patient Type
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            {{report.patientType}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Status">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Status
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            <span [ngClass]="{
+                                        'status-completed': report.Status === 'Completed',
+                                        'status-pending': report.Status === 'Pending',
+                                        'status-cancelled': report.Status === 'Cancelled'
+                                    }">
+                                                {{report.isCompleted}}
+                                            </span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Radiologist">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Radiologist
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            {{report.doctorName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            No data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="recentReportsColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let report; columns: recentReportsColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsRadiologyRecentReports!=null && dsRadiologyRecentReports.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- Top Requested Tests & Additional Insights -->
+                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                    <!-- Top Requested Tests -->
+                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card>
+                            <mat-card-content>
+                                <div class="table-title">Top Requested Tests (This Week)</div>
+                                <hr>
+                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsTopTests"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                    <ng-container matColumnDef="TestName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Test Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let test">
+                                            {{test.serviceName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Count">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Count
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let test">
+                                            {{test.count}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            No data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="topTestsColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let test; columns: topTestsColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsTopTests!=null && dsTopTests.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="panel-footer">
+                                    <div class="totals-label"
+                                        style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 10px;">
+                                        Total
+                                        Test
+                                        <span class="totals-num" style="padding-left: 340px;">{{
+                                            RadioTotalTest}}</span>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <!-- Radiologist Performance -->
+                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card>
+                            <mat-card-content>
+                                <div class="table-title">Radiologist Performance</div>
+                                <hr>
+                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsRadiologistPerformance"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                    <ng-container matColumnDef="RadiologistName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Radiologist
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let radiologist">
+                                            {{radiologist.doctorName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="ReportsCompleted">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Reports
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let radiologist">
+                                            {{radiologist.count}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- <ng-container matColumnDef="AvgTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Avg Time (hrs)
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let radiologist">
+                                            {{radiologist.AvgTime}}
+                                        </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            No data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="radiologistPerformanceColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let radiologist; columns: radiologistPerformanceColumns;"
+                                        class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
+                                        appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsRadiologistPerformance!=null && dsRadiologistPerformance.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                 <div class="totals">
+                                <div class="totals-row">
+                                    <div class="totals-label"
+                                        style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 20px;">
+                                        Total
+                                        WorkLoad
+                                        <span class="totals-num" style="padding-left: 290px;">{{
+                                            Radtotalworkload}}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- Equipment Utilization -->
+                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                    <div fxFlex="100%">
+                        <mat-card>
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Equipment Utilization</h3>
+                                    <p class="chart-subtitle">Machine usage percentage</p>
+                                </div>
+                                <div class="equipment-cards" fxLayout="row wrap" fxLayoutGap="16px"
+                                    style="margin-top: 16px;">
+                                    <div fxFlex="calc(25% - 16px)" fxFlex.xs="calc(50% - 16px)"
+                                        fxFlex.sm="calc(50% - 16px)"
+                                        *ngFor="let equipment of equipmentUtilization; let i = index">
+                                        <mat-card class="equipment-card" [ngClass]="'equipment-card-' + (i + 1)">
+                                            <mat-card-content>
+                                                <div class="equipment-name">{{equipment.name}}</div>
+                                                <div class="equipment-percentage">{{equipment.utilization}}%
+                                                </div>
+                                                <div class="equipment-status">
+                                                    <mat-progress-bar mode="determinate" [value]="equipment.utilization"
+                                                        [ngClass]="'progress-' + (i + 1)">
+                                                    </mat-progress-bar>
+                                                </div>
+                                                <div class="equipment-scans">{{equipment.scans}} scans today
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+            </mat-tab>
+            <!-- END RADIOLOGY TAB -->
+
+
 
         </mat-tab-group>
         <!-- END TABS -->
 
     </div>
+    <!-- </div> -->
 </div>

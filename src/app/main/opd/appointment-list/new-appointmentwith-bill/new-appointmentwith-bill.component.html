@@ -761,7 +761,8 @@
                                                                     <input matInput [(ngModel)]="contact.Price"
                                                                         type="text" [id]="'Price' + index" [min]="0"
                                                                         (ngModelChange)="getCellCalculation(contact)"
-                                                                        type="number" />
+                                                                        [type]="'text'"
+                                                                 (keypress)="keyPressCharater($event)"/>
                                                                 </mat-form-field>
                                                             </mat-cell>
                                                         </ng-container>
@@ -772,7 +773,8 @@
                                                             <mat-cell *matCellDef="let contact" class="w-100">
                                                                 <mat-form-field floatLabel="never" appearance="fill">
                                                                     <input matInput placeholder="Disc Per"
-                                                                        [(ngModel)]="contact.DiscPer" type="number"
+                                                                        [(ngModel)]="contact.DiscPer" [type]="'text'"
+                                                                 (keypress)="keyPressCharater($event)"
                                                                         [min]="0" [max]="100"
                                                                         (ngModelChange)="onDiscountPerChange(contact)">
                                                                 </mat-form-field>
@@ -785,7 +787,8 @@
                                                             <mat-cell *matCellDef="let contact" class="w-100">
                                                                 <mat-form-field floatLabel="never" appearance="fill">
                                                                     <input matInput placeholder="Disc Amt"
-                                                                        [(ngModel)]="contact.DiscAmt" type="text"
+                                                                        [(ngModel)]="contact.DiscAmt" [type]="'text'"
+                                                                 (keypress)="keyPressCharater($event)"
                                                                         [min]="0" [max]="contact.TotalAmt"
                                                                         (ngModelChange)="onDiscountAmtChange(contact)">
                                                                 </mat-form-field>

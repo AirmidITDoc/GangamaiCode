@@ -58,6 +58,15 @@ export class DashboardService {
         });
       }
 
+        filterFormInvestigation(): FormGroup {
+        return this._formBuilder.group({
+        
+          fromDate: [(new Date()).toISOString()],
+          toDate: [(new Date()).toISOString()],
+          
+        });
+      }
+
     // public getDailyDashboardSummary() {
     //   return this._httpClient.PostData("Generic/GetByProc?procName=rptDailyDashboardSummary", {})
     // }

@@ -1988,7 +1988,15 @@ export class NewAppointmentwithBillComponent {
     });
   }
 
-  
+      keyPressCharater(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
   DoctorisableEditing(row: ChargesList) {
     row.EditDoctor = false;
     this.opbillServiceform.get('EditDoctor').setValue('')
