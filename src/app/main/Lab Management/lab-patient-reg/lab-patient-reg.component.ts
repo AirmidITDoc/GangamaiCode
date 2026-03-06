@@ -723,10 +723,10 @@ export class LabPatientRegComponent {
       console.log(settlementData)
       if (settlementData?.AccessValue == true) {
         this.isSettlement = settlementData?.AccessValue
-         console.log("Show",this.isSettlement)
-      }else{
+        console.log("Show", this.isSettlement)
+      } else {
         this.isSettlement = false
-         console.log("Hide",this.isSettlement)
+        console.log("Hide", this.isSettlement)
       }
     });
   }
@@ -1153,6 +1153,7 @@ export class ChargesList {
   ChargesDate: Date;
   IsPathology: any;
   IsRadiology: any;
+  IsOtherService: any;
   ClassId: number;
   ClassName: string;
   ChargesAddedName: string;
@@ -1183,6 +1184,7 @@ export class ChargesList {
   doctorId: any;
   isPathology: any;
   isRadiology: any;
+  isOtherService: any;
   pacakgeServiceName: any;
   packageServiceId: any;
   price: any;
@@ -1206,6 +1208,7 @@ export class ChargesList {
     this.DoctorName = ChargesList.DoctorName || '';
     this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
     this.ChargesDate = ChargesList.ChargesDate || '';
+    this.IsOtherService = ChargesList.IsOtherService || '';
     this.IsPathology = ChargesList.IsPathology || '';
     this.IsRadiology = ChargesList.IsRadiology || '';
     this.ClassId = ChargesList.ClassId || 0;
@@ -1229,6 +1232,7 @@ export class ChargesList {
     this.serviceCode = ChargesList.serviceCode || 0;
     this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
     this.isPathology = ChargesList.isPathology || 0;
+    this.isOtherService = ChargesList.isOtherService || '';
     this.isRadiology = ChargesList.isRadiology || 0;
     this.userName = ChargesList.userName || '';
 

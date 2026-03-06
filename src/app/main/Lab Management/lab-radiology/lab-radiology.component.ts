@@ -104,6 +104,7 @@ export class LabRadiologyComponent {
     { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
     { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "OP_IP_Type", fieldValue: "3", opType: OperatorComparer.Equals },
     { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
   ]
@@ -171,6 +172,7 @@ export class LabRadiologyComponent {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: String(this.status), opType: OperatorComparer.Equals },
+        { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
         { fieldName: "CategoryId", fieldValue: String(this.CategoryId), opType: OperatorComparer.Equals },
       ]

@@ -238,7 +238,9 @@
                         <div fxFlex="60">
                             <div class="detail-container billing-flex-layout" *ngIf="mode !== 'edit'">
 
-                                <!-- Zone 1: Sticky Top - Service Name -->
+                                <div style="align-items: start center; height: 40px;margin-top: 5px;">
+                                    <h3 style="font-weight: bold;">Enter Services</h3>
+                                </div>
                                 <div class="billing-top-zone">
                                     <div *ngIf="showPrevBtn" fxLayoutAlign="end"
                                         style="margin-bottom: 5px;margin-right: 10px;">
@@ -250,10 +252,11 @@
                                     </div>
 
                                     <form [formGroup]="myForm">
-                                        <airmid-autocomplete  #serviceInput label="Enter Service Name" [formGroup]="myForm"
-                                            formControlName="ServiceId" placeholderText="Enter Service Name" fxFlex="50%"
-                                            ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
-                                            TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
+                                        <airmid-autocomplete #serviceInput label="Enter Service Name"
+                                            [formGroup]="myForm" formControlName="ServiceId"
+                                            placeholderText="Enter Service Name" fxFlex="50%" ApiUrl="{{ApiURL}}"
+                                            (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
+                                            ValueField="serviceId"></airmid-autocomplete>
                                     </form>
                                 </div>
 
@@ -262,8 +265,9 @@
                                     <div class="airmid-table-container resize-form-fields">
                                         <!-- <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
                                             class="lab-modern-tabs" style="width: 100%; height: 100%;"> -->
-                                        <mat-tab-group mat-align-tabs="start" mat-stretch-tabs="false" animationDuration="0ms"
-                                            class="lab-modern-tabs" [(selectedIndex)]="selectedTabIndex">
+                                        <mat-tab-group mat-align-tabs="start" mat-stretch-tabs="false"
+                                            animationDuration="0ms" class="lab-modern-tabs"
+                                            [(selectedIndex)]="selectedTabIndex">
 
                                             <!-- Charges List Tab -->
                                             <mat-tab label="Charges List">
@@ -297,6 +301,12 @@
                                                                     (click)="getPacakgeDetail(contact)">
                                                                     <img width="16px" height="16px"
                                                                         src="/assets/images/logos/package.png">
+                                                                </div>
+                                                                <div *ngIf="contact.IsOtherService == true"
+                                                                    class="status-badge package-badge"
+                                                                    matTooltip="Other Service">
+                                                                    <img width="16px" height="16px"
+                                                                        src="/assets/images/logos/otherService.png">
                                                                 </div>
                                                             </div>
                                                         </mat-cell>
@@ -361,9 +371,12 @@
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                             <mat-form-field appearance="fill" class="compact-input">
-                                                                <input matInput [(ngModel)]="contact.Price"
+                                                                <!-- <input matInput [(ngModel)]="contact.Price"
                                                                     type="number" [id]="'Price' + index" [min]="0"
-                                                                    (ngModelChange)="getCellCalculation(contact)" />
+                                                                    (ngModelChange)="getCellCalculation(contact)" /> -->
+                                                                <input matInput type="text" pattern="[0-9]*"
+                                                                    inputmode="numeric" [(ngModel)]="contact.Price"
+                                                                    (ngModelChange)="getCellCalculation(contact)">
                                                             </mat-form-field>
                                                         </mat-cell>
                                                     </ng-container>
@@ -376,9 +389,12 @@
                                                         <mat-cell *matCellDef="let contact" class="w-100">
                                                             <mat-form-field floatLabel="never" appearance="fill"
                                                                 class="compact-input">
-                                                                <input matInput placeholder="0"
+                                                                <!-- <input matInput placeholder="0"
                                                                     [(ngModel)]="contact.DiscPer" type="number"
                                                                     [min]="0" [max]="100"
+                                                                    (ngModelChange)="onDiscountPerChange(contact)"> -->
+                                                                <input matInput type="text" pattern="[0-9]*"
+                                                                    inputmode="numeric" [(ngModel)]="contact.DiscPer"
                                                                     (ngModelChange)="onDiscountPerChange(contact)">
                                                             </mat-form-field>
                                                         </mat-cell>
@@ -392,9 +408,13 @@
                                                         <mat-cell *matCellDef="let contact" class="w-100">
                                                             <mat-form-field floatLabel="never" appearance="fill"
                                                                 class="compact-input">
-                                                                <input matInput placeholder="0"
+                                                                <!-- <input matInput placeholder="0"
                                                                     [(ngModel)]="contact.DiscAmt" type="number"
                                                                     [min]="0" [max]="contact.TotalAmt"
+                                                                    (ngModelChange)="onDiscountAmtChange(contact)"> -->
+                                                                <input matInput type="text" pattern="[0-9]*"
+                                                                 [min]="0" [max]="contact.TotalAmt"
+                                                                    inputmode="numeric" [(ngModel)]="contact.DiscAmt"
                                                                     (ngModelChange)="onDiscountAmtChange(contact)">
                                                             </mat-form-field>
                                                         </mat-cell>

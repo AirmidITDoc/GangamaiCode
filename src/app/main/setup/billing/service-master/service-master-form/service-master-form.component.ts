@@ -163,6 +163,7 @@ export class ServiceMasterFormComponent implements OnInit {
             isDiscount: [false],
             isProcedure: [false],
             isPackage: [0],
+            isOtherService: [false],
             subGroupId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             doctorId: 0,
             isEmergency: false,
