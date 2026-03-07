@@ -209,39 +209,46 @@
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="pathDate">
-                                                            <th mat-header-cell *matHeaderCellDef class="w-200"> Date&Time
+                                                            <th mat-header-cell *matHeaderCellDef class="w-200">
+                                                                Date&Time
                                                             </th>
-                                                            <td mat-cell *matCellDef="let element" class="w-200"> {{element.pathDate |
+                                                            <td mat-cell *matCellDef="let element" class="w-200">
+                                                                {{element.pathDate |
                                                                 date:'dd/MM/yyyy - h:mma'}}
                                                             </td>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="labRequestNo">
-                                                            <th mat-header-cell *matHeaderCellDef class="w-150"> UHID </th>
+                                                            <th mat-header-cell *matHeaderCellDef class="w-150"> UHID
+                                                            </th>
                                                             <td mat-cell *matCellDef="let element" class="w-150">
                                                                 {{element.labRequestNo}} </td>
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="patientName">
-                                                            <th mat-header-cell *matHeaderCellDef class="w-250"> Patient Name </th>
+                                                            <th mat-header-cell *matHeaderCellDef class="w-250"> Patient
+                                                                Name </th>
 
                                                             <td mat-cell *matCellDef="let element" class="w-250">
-                                                                <div class="teststatus-circle"style="margin-right: 50%;">
-                                                                    <span class="teststatus total" matTooltip="Total Test">
+                                                                <div class="teststatus-circle"
+                                                                    style="margin-right: 50%;">
+                                                                    <span class="teststatus total"
+                                                                        matTooltip="Total Test">
                                                                         {{ element.testCountStatus.split('/')[0] }}
                                                                     </span>
-                                                                
-                                                                    <span class="teststatus completed" matTooltip="Completed">
+
+                                                                    <span class="teststatus completed"
+                                                                        matTooltip="Completed">
                                                                         {{ element.testCountStatus.split('/')[1] }}
                                                                     </span>
-                                                                
-                                                                    <span class="teststatus pending" matTooltip="Pending">
+
+                                                                    <span class="teststatus pending"
+                                                                        matTooltip="Pending">
                                                                         {{ element.testCountStatus.split('/')[2] }}
                                                                     </span>
                                                                 </div>
 
-                                                                <div class="patient-name"
-                                                                style="margin-right: 50%;">
+                                                                <div class="patient-name" style="margin-right: 50%;">
                                                                     {{ element.patientName }}
                                                                 </div>
                                                             </td>
@@ -254,7 +261,8 @@
                                                         </ng-container>
 
                                                         <ng-container matColumnDef="pBillNo" class="w-100">
-                                                            <th mat-header-cell *matHeaderCellDef class="w-100"> PBill No </th>
+                                                            <th mat-header-cell *matHeaderCellDef class="w-100"> PBill
+                                                                No </th>
                                                             <td mat-cell *matCellDef="let element">
                                                                 {{element.pBillNo}} </td>
                                                         </ng-container>
@@ -384,12 +392,6 @@
                                                                                 </mat-header-cell>
                                                                                 <mat-cell *matCellDef="let contact"
                                                                                     fxShow.gt-sm>
-                                                                                    <!-- <mat-icon
-                                                                                        [style.backgroundColor]="getSpecimenColor(contact)"
-                                                                                        matTooltip="{{ contact.specimenColorName || 'No Color' }}"
-                                                                                        class="pill s-16">
-                                                                                        circle
-                                                                                    </mat-icon> -->
 
                                                                                     <div style=" width: 32px; height: 32px; border-radius: 50%;
                                                                                         display: flex; align-items: center; justify-content: center;
@@ -1025,7 +1027,34 @@
                                                         <ng-container matColumnDef="patientName">
                                                             <th mat-header-cell *matHeaderCellDef> Patient Name </th>
                                                             <td mat-cell *matCellDef="let element">
-                                                                {{element.patientName}} </td>
+                                                                <div class="teststatus-circle"
+                                                                    style="margin-right: 50%;">
+                                                                    <span class="teststatus total"
+                                                                        matTooltip="Total Test">
+                                                                        <!-- {{ element.testCountStatus.split('/')[0] }} -->
+                                                                        {{ '-' }}
+                                                                    </span>
+
+                                                                    <span class="teststatus completed"
+                                                                        matTooltip="Completed">
+                                                                        <!-- {{ element.testCountStatus.split('/')[1] }} -->
+                                                                        {{ '-' }}
+                                                                    </span>
+
+                                                                    <span class="teststatus pending"
+                                                                        matTooltip="Pending">
+                                                                        <!-- {{ element.testCountStatus.split('/')[2] }} -->
+                                                                        {{ '-' }}
+                                                                    </span>
+                                                                </div>
+
+                                                                <div class="patient-name" style="margin-right: 50%;"
+                                                                    matTooltip="{{ element.patientName }}">
+                                                                    {{ element.patientName }}
+                                                                </div>
+                                                            </td>
+                                                            <!-- <td mat-cell *matCellDef="let element">
+                                                                                                                        {{element.patientName}} </td> -->
                                                         </ng-container>
 
                                                         <!-- Age | Gender -->
@@ -1203,7 +1232,41 @@
                                                                 Name
                                                             </mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                <span> {{contact.serviceName}}</span>
+                                                                <span matTooltip="{{contact.serviceName}}">
+                                                                    {{contact.serviceName}}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="color">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                fxShow.gt-sm>Specimen
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+
+                                                                <div style=" width: 32px; height: 32px; border-radius: 50%;
+                                                                                        display: flex; align-items: center; justify-content: center;
+                                                                                        border: 1px solid #ccc; margin-left: 10%;"
+                                                                    [style.backgroundColor]="getSpecimenColor(contact)"
+                                                                    [matTooltip]="contact.specimenTypeName">
+
+                                                                    <img src="assets/images/logos/testtube.png"
+                                                                        alt="Specimen"
+                                                                        style="width: 20px; height: 20px;" />
+                                                                </div>
+                                                            </mat-cell>
+                                                        </ng-container>
+
+                                                        <ng-container matColumnDef="tat">
+                                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm>TAT
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                <span class="tat-badge">
+                                                                    <ng-container *ngIf="contact.tatday > 0">
+                                                                        {{ contact.tatday }}d
+                                                                    </ng-container>
+                                                                    {{ contact.tathour }}h {{
+                                                                    contact.tatmin }}m
+                                                                </span>
                                                             </mat-cell>
                                                         </ng-container>
 

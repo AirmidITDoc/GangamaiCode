@@ -210,8 +210,8 @@ export class NewLabPatientRegComponent {
     this.myForm.get('companyId').disable() // disable for 1st time when form will open after comp select enable
 
     if (this.data.mode == 'add') {
-      if (this.data?.row?.labPatientId) {
-        this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
+      if (this.data?.row?.labPatRegId) {
+        this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatRegId).subscribe((response) => {
           this.registerObj = response;
           this.myForm.get('doctorId').setValue(this.registerObj.doctorId);
           this.myForm.get('refDocId').setValue(this.registerObj.refDocId);
@@ -225,8 +225,8 @@ export class NewLabPatientRegComponent {
         });
       }
     } else if (this.data.mode == 'edit') {
-      if (this.data?.row?.labPatientId) {
-        this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
+      if (this.data?.row?.labPatRegId) {
+        this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatRegId).subscribe((response) => {
           this.registerObj = response;
           this.myForm.get('doctorId').setValue(this.registerObj.doctorId);
           this.myForm.get('refDocId').setValue(this.registerObj.refDocId);
@@ -1611,6 +1611,13 @@ export class NewLabPatientRegComponent {
     this.chargeslist = this.dstable1.data;
     let index = this.chargeslist.indexOf(element);
     if (index >= 0) {
+
+      // Package remove logic
+      if (element.IsPackage == '1' && element.ServiceId) {
+        this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId != element.ServiceId);
+        this.dsPackageList.data = this.PacakgeList;
+      }
+
       this.chargeslist.splice(index, 1);
       this.dstable1.data = [];
       this.dstable1.data = this.chargeslist;

@@ -34,10 +34,9 @@
             </mat-card>
 
             <!-- dynamicTableHeight -->
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+            <div fusePerfectScrollbar fxLayoutGap="5px" >
 
-                <div id="contacts" style="height: 250px;">
+                <div id="contacts">
 
                     <ng-template #ColorCode let-element>
                         <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
@@ -71,8 +70,7 @@
                             <span [matTooltip]="contact.isVerifySign === false
                                                     ? 'Verification is Pending'
                                                     : ''">
-                                <button mat-icon-button matTooltip="Print"
-                                    [disabled]="contact.isVerifySign === false">
+                                <button mat-icon-button matTooltip="Print" [disabled]="contact.isVerifySign === false">
                                     <mat-icon>print</mat-icon>
                                 </button>
                             </span>
@@ -123,42 +121,52 @@
                     <div class="gridtitle">
                         Test & Services
                     </div>
-                    <airmid-table [gridConfig]="gridConfig" #billgrid :ShowFilter="false" :ShowButtons="false">
-                        <ng-container filters>
-                        </ng-container>
-                    </airmid-table>
+
+                    <div class="table-scroll">
+                        <airmid-table [gridConfig]="gridConfig" #billgrid :ShowFilter="false" :ShowButtons="false">
+                            <ng-container filters>
+                            </ng-container>
+                        </airmid-table>
+
+                    </div>
                 </div>
 
-                <div id="contacts" style="height: 200px;margin-top: 20px;">
+                <div id="contacts">
                     <div class="gridtitle">
                         <span>
                             Discount Details
                         </span>
                     </div>
+                    <!-- <div class="table-scroll"> -->
                     <airmid-table [gridConfig]="gridConfig1" #Discgrid :ShowFilter="false" :ShowButtons="false">
                         <ng-container filters>
                         </ng-container>
                     </airmid-table>
+                    <!-- </div> -->
                 </div>
 
-                <div id="contacts" style="height: 200px;margin-top: 50px;">
+                <div id="contacts">
                     <div class="gridtitle">
                         Payment Details
                     </div>
-                    <airmid-table [gridConfig]="gridConfig2" #PayGrid :ShowFilter="false" :ShowButtons="false">
+                    <!-- <div class="table-scroll"> -->
+                    <airmid-table [gridConfig]="gridConfig2" #Paygrid :ShowFilter="false" :ShowButtons="false">
                         <ng-container filters>
                         </ng-container>
                     </airmid-table>
+                    <!-- </div> -->
                 </div>
 
-                <div id="contacts" style="height: 200px;margin-top: 60px;">
+                <div id="contacts">
                     <div class="gridtitle">
                         Credit Details
                     </div>
+                    <!-- <div class="table-scroll"> -->
                     <airmid-table [gridConfig]="gridConfig3" #Creditgrid :ShowFilter="false" :ShowButtons="false">
                         <ng-container filters>
                         </ng-container>
                     </airmid-table>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>

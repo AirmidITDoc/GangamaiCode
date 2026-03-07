@@ -166,7 +166,8 @@ export class LabResultListComponent {
     'verify',
     'CategoryName',
     'TestName',
-    'SampleCollectionTime',
+    'color',
+    'tat',
     'SampleNo',
     'outSourceLabName',
     'action'
@@ -248,6 +249,13 @@ export class LabResultListComponent {
     this.GetResultdetail();
     this.bindParentGridData();
 
+  }
+
+  getSpecimenColor(contact: any): string {
+    if (!contact?.specimenColorName) {
+      return '#ccc';
+    }
+    return contact.specimenColorName.replace(/\s+/g, '').toLowerCase();
   }
 
   ListView1(value) {

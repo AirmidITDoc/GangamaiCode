@@ -258,7 +258,7 @@ export class LabrefundBillComponent {
           this.registerObj = response;
           this.VlabPatId = this.registerObj?.labPatientId
           this.RegNo = this.registerObj?.labRequestNo
-          this.PatientName = this.registerObj?.patientName
+          this.PatientName = this.registerObj?.firstName + ' ' + this.registerObj?.lastName
           // this.billNo = this.registerObj.billNo;
           this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.registerObj.billNo);
           console.log(response)
