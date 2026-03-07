@@ -36,7 +36,7 @@
             <!-- dynamicTableHeight -->
             <div fusePerfectScrollbar fxLayoutGap="5px" >
 
-                <div id="contacts">
+                <div id="contacts" fusePerfectScrollbar>
 
                     <ng-template #ColorCode let-element>
                         <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
@@ -122,13 +122,13 @@
                         Test & Services
                     </div>
 
-                    <div class="table-scroll">
+                    <!-- <div class="table-scroll"> -->
                         <airmid-table [gridConfig]="gridConfig" #billgrid :ShowFilter="false" :ShowButtons="false">
                             <ng-container filters>
                             </ng-container>
                         </airmid-table>
 
-                    </div>
+                    <!-- </div> -->
                 </div>
 
                 <div id="contacts">
