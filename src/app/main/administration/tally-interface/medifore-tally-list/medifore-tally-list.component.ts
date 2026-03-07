@@ -428,7 +428,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allOPbillcashcountercolumns,
         sortField: "BillDate",
         sortOrder: 0,
-        filters: this.allOBillcashcounterfilters
+        filters: this.allOBillcashcounterfilters,
+        fileName: 'OpPayment_Excel'
     }
     // gridConfigOPBill: gridModel = {
     //     permissionCode: permissionCodes.TallyInterface,
@@ -456,7 +457,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allOPRefundColumns,
         sortField: "BillDate",
         sortOrder: 0,
-        filters: this.allOPRefundfilters
+        filters: this.allOPRefundfilters,
+        fileName: 'OpRefundPayment_Excel'
     }
 
 
@@ -466,7 +468,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allIpBillColumns,
         sortField: "BillDate",
         sortOrder: 0,
-        filters: this.allIPbillfilters
+        filters: this.allIPbillfilters,
+        fileName: 'IpBillPatientWise_Excel'
     }
 
     gridConfigIPBilldetail: gridModel = {
@@ -475,7 +478,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allIpBilldetailColumns,
         sortField: "BillDate",
         sortOrder: 0,
-        filters: this.allIPbilldetailfilters
+        filters: this.allIPbilldetailfilters,
+        fileName: 'IpBillDetailsWise_Excel'
     }
 
 
@@ -486,7 +490,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allIpBillcashcountercolumns,
         sortField: "UnitId",
         sortOrder: 0,
-        filters: this.allIPPaymentfilters
+        filters: this.allIPPaymentfilters,
+        fileName: 'IpBillPayment_Excel'
     }
 
 
@@ -496,7 +501,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allIpBillRefundcolumns,
         sortField: "UnitId",
         sortOrder: 0,
-        filters: this.allIPBillRefundfilters
+        filters: this.allIPBillRefundfilters,
+         fileName: 'IpBillRefundPayment_Excel'
     }
 
     gridConfigIPAdvance: gridModel = { 
@@ -505,7 +511,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allIpAdvancecolumns,
         sortField: "UnitId",
         sortOrder: 0,
-        filters: this.allIPAdvancefilters
+        filters: this.allIPAdvancefilters,
+        fileName: 'IpAdvancePayment_Excel'
     }
 
     gridConfigIAdvRefund: gridModel = {
@@ -514,7 +521,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allAdvReturncolumns,
         sortField: "UnitId",
         sortOrder: 0,
-        filters: this.allAdvReturnfilters
+        filters: this.allAdvReturnfilters,
+        fileName: 'IpAdvanceRefundPayment_Excel'
     }
 
 
@@ -575,7 +583,8 @@ export class MediforeTallyListComponent {
             sortOrder: 0,
             filters: [{ fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-            ]
+            ],
+            fileName: 'OpPayment_Excel'
         }
 
         this.oppaygrid.gridConfig = { ...this.gridConfigOPBillCashcouner };
@@ -592,7 +601,8 @@ export class MediforeTallyListComponent {
             sortOrder: 0,
             filters: [{ fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-            ]
+            ],
+            fileName: 'OpRefundPayment_Excel'
         }
 
         this.oprefundgrid.gridConfig = { ...this.gridConfigOpRefund };
@@ -623,7 +633,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
 
-            ]
+            ],
+            fileName: 'IpBillPatientWise_Excel'
         }
         this.ipcashcounergrid.gridConfig = { ...this.gridConfigIPBill };
         this.ipcashcounergrid.bindGridData();
@@ -639,7 +650,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
 
-            ]
+            ],
+            fileName: 'IpBillDetailsWise_Excel'
         }
         this.ippatientwiseGrid.gridConfig = { ...this.gridConfigIPBilldetail };
         this.ippatientwiseGrid.bindGridData();
@@ -657,7 +669,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
 
-            ]
+            ],
+            fileName: 'IpBillPayment_Excel'
         }
         this.ippaymentGrid.gridConfig = { ...this.gridConfigIPbillCashcounter };
         this.ippaymentGrid.bindGridData();
@@ -673,7 +686,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
 
-            ]
+            ],
+              fileName: 'IpBillRefundPayment_Excel'
         }
         this.iprefundGrid.gridConfig = { ...this.gridConfigIPRefundBillPay };
         this.iprefundGrid.bindGridData();
@@ -699,7 +713,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
 
-            ]
+            ],
+             fileName: 'IpAdvancePayment_Excel'
         }
         this.ipadvanceGrid.gridConfig = this.gridConfigIPAdvance;
         this.ipadvanceGrid.bindGridData();
@@ -715,7 +730,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
 
-            ]
+            ],
+             fileName: 'IpAdvanceRefundPayment_Excel'
         }
         this.ipadvrefundGrid.gridConfig = this.gridConfigIAdvRefund;
         this.ipadvrefundGrid.bindGridData();
@@ -730,7 +746,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allPharmacySalescolumns,
         sortField: "UnitId",
         sortOrder: 0,
-        filters: this.allPharmacysalesfilters
+        filters: this.allPharmacysalesfilters,
+        fileName: 'IpOPIPSalesPayment_Excel'
     }
 
     gridConfigSalesdetail: gridModel = {
@@ -739,7 +756,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allPharmacysalesdetailcolumns,
         sortField: "UnitId",
         sortOrder: 0,
-        filters: this.allPharmacysalesdetailfilters
+        filters: this.allPharmacysalesdetailfilters,
+        fileName: 'IpOPIPSalesDetails_Excel'
     }
 
 
@@ -749,7 +767,8 @@ export class MediforeTallyListComponent {
         columnsList: this.allPharreturnColumns,
         sortField: "UnitId",
         sortOrder: 0,
-        filters: this.allPharreturnfilters
+        filters: this.allPharreturnfilters,
+        fileName: 'IpOPIPSalesReturn_Excel'
     }
 
     onChangePharmacy() {
@@ -774,7 +793,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate3, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate3, opType: OperatorComparer.Equals }
 
-            ]
+            ],
+             fileName: 'IpOPIPSalesPayment_Excel'
         }
         this.saleGrid.gridConfig = this.gridConfigPharSales;
         this.saleGrid.bindGridData();
@@ -789,7 +809,8 @@ export class MediforeTallyListComponent {
             sortOrder: 0,
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate3, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate3, opType: OperatorComparer.Equals }
-            ]
+            ],
+             fileName: 'IpOPIPSalesDetails_Excel'
         }
         this.saledetailGrid.gridConfig = this.gridConfigSalesdetail;
         this.saledetailGrid.bindGridData();
@@ -805,7 +826,8 @@ export class MediforeTallyListComponent {
             filters: [{ fieldName: "Fromdate", fieldValue: this.fromDate3, opType: OperatorComparer.Equals },
             { fieldName: "Todate", fieldValue: this.toDate3, opType: OperatorComparer.Equals }
 
-            ]
+            ],
+          fileName: 'IpOPIPSalesReturn_Excel' 
         }
         this.salesreturnGrid.gridConfig = this.gridConfigSalesReturn;
         this.salesreturnGrid.bindGridData();

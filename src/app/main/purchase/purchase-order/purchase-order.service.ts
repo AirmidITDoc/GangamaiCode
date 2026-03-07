@@ -169,6 +169,9 @@ export class PurchaseOrderService {
     public getPORequisitionDetList(data) {
     return this._httpClient1.PostData("PurchaseRequisition/PurchaseRequisitionDetailList", data);
   }
+    public SavePR(data) {
+    return this._httpClient1.PostData("PurchaseRequisitionFinal/Insert", data);
+  }
   public EmailSendInsert(emp) {
     return this._httpClient.post("WhatsappEmail/EmailSave", emp);
   }

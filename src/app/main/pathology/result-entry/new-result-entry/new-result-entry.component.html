@@ -98,7 +98,7 @@
                             <div class="patient-info-title border-bottom pb-2" fxLayout="row"
                                 fxLayoutAlign="space-between center">
 
-                                <span class="h1">Patient Information</span>
+                                <span class="h1">Patient Information</span> 
 
                                 <button mat-raised-button color="primary" (click)="onUpload()"
                                     style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
@@ -328,6 +328,11 @@
             </form>
         </div>
         <div class="modal-footer-buttons">
+            <button mat-raised-button color="primary" (click)="getValidatetabledata()"
+                style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
+                Validate Data
+                <mat-icon class="ml-4">sync</mat-icon>
+            </button>
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
             <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck">Save</button>
             <button class="btn btn-success" (click)="onVerify()" *ngIf="verifyCheck">Authorization</button>

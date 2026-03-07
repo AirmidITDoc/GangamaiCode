@@ -82,7 +82,7 @@ export class NewPurchaserequisitionComponent {
     this.vstoreId = this._loggedService.currentUserValue.user.storeId;
 
     // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPOBySp?StoreId=${this.vstoreId}&ItemName=`
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPOBySp?StoreId=${this.vToStoreId}&ItemName=`
     this.PrequiSaveFrom = this.CreatePrequiSaveFrom();
     this.PrequiItemSaveFrom = this._PurchaseRequisitionVerificationService.createnewPurchaserequfrom();
     this.PrequiSaveFrom.markAllAsTouched();

@@ -739,6 +739,7 @@ export class PurchaseItemList {
   SupplierId: any;
   StoreName: any;
   Remarks: any;
+  itemName:any
   Mobile: any;
   /**
    * Constructor
