@@ -191,10 +191,14 @@ export class NewLabPatientRegComponent {
     const Type = 'LabPatientType'
     this._labPatientRegService.getPatientType(Type).subscribe(res => {
       this.patientTypeList = res;
-      console.log(this.patientTypeList)
+      console.log(this.patientTypeList);
 
-      if (this.patientTypeList[0].name == 'Normal') {
-        this.myForm.get('patientType')?.setValue(this.patientTypeList[0].constantId);
+      const normalType = this.patientTypeList.find(
+        (item: any) => item.name === 'Normal'
+      );
+
+      if (normalType) {
+        this.myForm.get('patientType')?.setValue(normalType.constantId);
       }
     });
 

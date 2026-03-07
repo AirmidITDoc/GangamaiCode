@@ -203,8 +203,9 @@ export class LabOtherServicesComponent {
     let that = this;
     const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
       {
-        maxHeight: '99vh',
-        width: '80%',
+        // maxHeight: '99vh',
+        width: '95%',
+        height:'95%',
         data: {
           data: row,
           verifyCheck: false

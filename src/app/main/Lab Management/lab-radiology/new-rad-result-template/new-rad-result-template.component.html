@@ -3,7 +3,7 @@
     <div class="modal-header accent preOperHeader">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Radiology Template Master</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Add Template</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -72,8 +72,8 @@
 
                             </div>
 
-                            <div>
-                                <airmid-editor label="Template Details" formControlName="ResultEntry"
+                            <div style="height: 500px;">
+                                <airmid-editor label="Template Details" formControlName="ResultEntry" fxFlex
                                     [(value)]="vTemplateDesc" [formGroup]="_radiologytemplateService.myform"
                                     (valueChange)="onEditorValueChange($event)">
                                 </airmid-editor>

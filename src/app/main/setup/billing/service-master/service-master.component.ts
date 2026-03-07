@@ -66,7 +66,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
         { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
         { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
         { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-        { heading: "IsOtherService", key: "isOtherService", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+        { heading: "IsOtherTest", key: "isOtherService", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
         { heading: "IsProcedure", key: "isProcedure", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {
