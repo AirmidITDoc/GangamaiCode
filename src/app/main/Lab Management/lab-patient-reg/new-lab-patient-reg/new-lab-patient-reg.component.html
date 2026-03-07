@@ -277,11 +277,11 @@
                                                     <!-- Status Column -->
                                                     <ng-container matColumnDef="Status" sticky>
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                            class="w-80 lab-status-col">
+                                                            class="w-100 lab-status-col">
                                                             <span class="header-text">Status</span>
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact"
-                                                            class="w-80 lab-status-cell">
+                                                            class="w-100 lab-status-cell">
                                                             <div class="status-icons">
                                                                 <div *ngIf="contact.IsRadiology == 1"
                                                                     class="status-badge radiology-badge"
@@ -371,9 +371,6 @@
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                             <mat-form-field appearance="fill" class="compact-input">
-                                                                <!-- <input matInput [(ngModel)]="contact.Price"
-                                                                    type="number" [id]="'Price' + index" [min]="0"
-                                                                    (ngModelChange)="getCellCalculation(contact)" /> -->
                                                                 <input matInput type="text" pattern="[0-9]*"
                                                                     inputmode="numeric" [(ngModel)]="contact.Price"
                                                                     (ngModelChange)="getCellCalculation(contact)">
@@ -389,10 +386,6 @@
                                                         <mat-cell *matCellDef="let contact" class="w-100">
                                                             <mat-form-field floatLabel="never" appearance="fill"
                                                                 class="compact-input">
-                                                                <!-- <input matInput placeholder="0"
-                                                                    [(ngModel)]="contact.DiscPer" type="number"
-                                                                    [min]="0" [max]="100"
-                                                                    (ngModelChange)="onDiscountPerChange(contact)"> -->
                                                                 <input matInput type="text" pattern="[0-9]*"
                                                                     inputmode="numeric" [(ngModel)]="contact.DiscPer"
                                                                     (ngModelChange)="onDiscountPerChange(contact)">
@@ -408,10 +401,6 @@
                                                         <mat-cell *matCellDef="let contact" class="w-100">
                                                             <mat-form-field floatLabel="never" appearance="fill"
                                                                 class="compact-input">
-                                                                <!-- <input matInput placeholder="0"
-                                                                    [(ngModel)]="contact.DiscAmt" type="number"
-                                                                    [min]="0" [max]="contact.TotalAmt"
-                                                                    (ngModelChange)="onDiscountAmtChange(contact)"> -->
                                                                 <input matInput type="text" pattern="[0-9]*"
                                                                  [min]="0" [max]="contact.TotalAmt"
                                                                     inputmode="numeric" [(ngModel)]="contact.DiscAmt"

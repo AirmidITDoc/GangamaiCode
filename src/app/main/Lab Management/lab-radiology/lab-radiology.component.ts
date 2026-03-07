@@ -203,8 +203,10 @@ export class LabRadiologyComponent {
     let that = this;
     const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
       {
-        maxHeight: '99vh',
-        width: '80%',
+        // maxHeight: '99vh',
+        maxWidth: "95vw",
+        height: '95%',
+        width: '95%',
         data: {
           data: row,
           verifyCheck: false

@@ -61,8 +61,8 @@
                                         </div>
                                         <div class="Ipd-patient-info w-100-p">
                                             <app-patient-information [uhidNo]="registerObj?.labRequestNo"
-                                                [patientName]="registerObj?.firstName + ' ' + registerObj?.lastName"
-                                                [ageString]="(registerObj?.age !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                                [patientName]="PatientName"
+                                                [ageString]="(registerObj?.ageYear !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
                                                 [mobileNo]="registerObj?.mobileNo">
                                             </app-patient-information>
                                         </div>

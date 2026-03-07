@@ -1079,7 +1079,8 @@ export class InvestigationListComponent {
     'verify',
     'CategoryName',
     'TestName',
-    // 'SampleCollectionTime',
+    'color',
+    'tat',
     'SampleNo',
     'outSourceLabName',
     'action'

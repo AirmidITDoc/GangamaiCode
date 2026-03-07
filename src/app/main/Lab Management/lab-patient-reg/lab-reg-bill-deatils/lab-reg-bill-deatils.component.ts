@@ -34,15 +34,20 @@ export class LabRegBillDeatilsComponent {
     @ViewChild('icons') icons!: TemplateRef<any>;
     @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
     @ViewChild('billgrid', { static: false }) billgrid: AirmidTableComponent;
-    @ViewChild('DiscGrid', { static: false }) Discgrid: AirmidTableComponent;
-    @ViewChild('PayGrid', { static: false }) Paygrid: AirmidTableComponent;
-    @ViewChild('CreditGrid', { static: false }) Creditgrid: AirmidTableComponent;
+    @ViewChild('Discgrid', { static: false }) Discgrid: AirmidTableComponent;
+    @ViewChild('Paygrid', { static: false }) Paygrid: AirmidTableComponent;
+    @ViewChild('Creditgrid', { static: false }) Creditgrid: AirmidTableComponent;
+    
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'icon')!.template = this.icons;
         // this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
         // this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
         this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.ColorCode;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+            this.getfilterdata();
+            this.getDiscountfilterdata();
+            this.getCreditfilterdata();
+            this.getPayoutfilterdata();
     }
 
     ngOnInit(): void {
@@ -50,10 +55,6 @@ export class LabRegBillDeatilsComponent {
             this.BillNo = this.data.billNo;
             this.doctorName = this.data.doctorName;
             this.labId=this.data.labPatientId
-            this.getfilterdata();
-            this.getDiscountfilterdata();
-            this.getCreditfilterdata();
-            this.getPayoutfilterdata();
         }
     }
 
@@ -144,7 +145,7 @@ export class LabRegBillDeatilsComponent {
         setTimeout(() => {
             this.Discgrid.gridConfig = this.gridConfig1;
             this.Discgrid.bindGridData();
-        }, 100);
+        }, 200);
     }
     allPaycolumns = [
         { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA'},
@@ -211,7 +212,7 @@ export class LabRegBillDeatilsComponent {
         setTimeout(() => {
             this.Creditgrid.gridConfig = this.gridConfig3;
             this.Creditgrid.bindGridData();
-        }, 100);
+        }, 200);
     }
 
     viewgetPathologyTestReportPdf(data) {

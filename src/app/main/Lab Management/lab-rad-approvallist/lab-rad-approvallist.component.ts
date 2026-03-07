@@ -324,8 +324,9 @@ export class LabRadApprovallistComponent {
     let that = this;
     const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
       {
-        maxHeight: '99vh',
-        width: '80%',
+        maxWidth: "95vw",
+        height: '95%',
+        width: '95%',
         data: {
           data: row,
           verifyCheck: true
@@ -340,25 +341,25 @@ export class LabRadApprovallistComponent {
 
     console.log(contact)
 
-      Swal.fire({
-        title: 'Select Report Format',
-        text: "Choose how you want to view the report:",
-        icon: "warning",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        denyButtonColor: "#6c757d",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "With Header",
-        denyButtonText: "Without Header",
-      }).then((result) => {
+    Swal.fire({
+      title: 'Select Report Format',
+      text: "Choose how you want to view the report:",
+      icon: "warning",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      denyButtonColor: "#6c757d",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "With Header",
+      denyButtonText: "Without Header",
+    }).then((result) => {
 
-        if (result.isConfirmed) {
-          this.viewgetRadioloyTemplateReportPdf(contact);
-        } else if (result.isDenied) {
-          this.viewgetRadioloyTemplateReportPdf1(contact);
-        }
-      });
+      if (result.isConfirmed) {
+        this.viewgetRadioloyTemplateReportPdf(contact);
+      } else if (result.isDenied) {
+        this.viewgetRadioloyTemplateReportPdf1(contact);
+      }
+    });
   }
 
   viewgetRadioloyTemplateReportPdf(contact) {

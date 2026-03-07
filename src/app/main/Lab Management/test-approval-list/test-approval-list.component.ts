@@ -619,9 +619,9 @@ export class TestApprovalListComponent {
 
         const dialogRef = this._matDialog.open(NewLabtemplateComponent,
           {
-            maxWidth: "75vw",
+            maxWidth: "95vw",
             height: '95%',
-            width: '96%',
+            width: '95%',
             data: {
               data: contact,
               verifyCheck: false,
@@ -847,9 +847,9 @@ export class TestApprovalListComponent {
 
         const dialogRef = this._matDialog.open(NewLabtemplateComponent,
           {
-            maxWidth: "75vw",
+            maxWidth: "95vw",
             height: '95%',
-            width: '96%',
+            width: '95%',
             data: {
               data: contact,
               verifyCheck: true

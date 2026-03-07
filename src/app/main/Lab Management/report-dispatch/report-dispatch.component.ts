@@ -32,7 +32,7 @@ export class ReportDispatchComponent {
 
   Remark: any = ''
   dateTimeObj: any
-  LabId:any=0
+  LabId: any = 0
   UnitId = this._accountService.currentUserValue.user.unitId
   DueAmt = 0
   ModeId = "0"
@@ -61,7 +61,7 @@ export class ReportDispatchComponent {
 
     }
     this.myReportform = this.CreateReportDiscpathform()
-    if (this.LabId!=0)
+    if (this.LabId != 0)
       this.getfilterReporthistory()
   }
 
@@ -76,7 +76,8 @@ export class ReportDispatchComponent {
       dispatchModeId: [this.ModeId, [Validators.required]],
       comments: "",
       dispatchBy: this._accountService.currentUserValue.userId,
-      dispatchOn: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+      dispatchOn: ['',Validators.required],
+      // dispatchOn: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
       // DispatchBranch:0,
       // DueAmt:0,
       Service: true
@@ -90,12 +91,12 @@ export class ReportDispatchComponent {
 
   allReportcolumns = [
     { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150  },
+    { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Dispatch By", key: "dispatchBy", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-   { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 8 },
+    { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-   { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -120,14 +121,14 @@ export class ReportDispatchComponent {
 
   allServicecolumns = [
     { heading: "Service Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-  //   { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150  },
-  //   { heading: "Dispatch By", key: "dispatchBy", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-  //  { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-  //  { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
-  //   { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-  //   { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
+    //   { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150  },
+    //   { heading: "Dispatch By", key: "dispatchBy", sort: true, align: 'left', emptySign: 'NA' },
+    //   { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    //  { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
+    //   { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    //  { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
+    //   { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    //   { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -150,7 +151,7 @@ export class ReportDispatchComponent {
     sortField: "PatientId",
     sortOrder: 0,
     filters: this.allservicefilters
-}
+  }
 
 
   gridConfigReportdispatch: gridModel = {
@@ -169,13 +170,13 @@ export class ReportDispatchComponent {
       columnsList: this.allReportcolumns,
       sortField: "DispatchId",
       sortOrder: 0,
-      filters: [{ fieldName: "DispatchId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
-
-      ]
+      filters: [{ fieldName: "DispatchId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }]
     }
-    debugger
-    this.repogrid.gridConfig = this.gridConfigReportdispatch;
-    this.repogrid.bindGridData();
+    
+    setTimeout(() => {
+      this.repogrid.gridConfig = this.gridConfigReportdispatch;
+      this.repogrid.bindGridData();
+    }, 100);
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -225,13 +226,15 @@ export class ReportDispatchComponent {
       this.myReportform.removeControl('Service')
 
       this.myReportform.get('unitId').setValue(parseInt(this.myReportform.get('unitId').value))
+      this.myReportform.get('dispatchOn').setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd'T'HH:mm:ss"))
       this.myReportform.get('dispatchModeId').setValue(parseInt(this.myReportform.get('dispatchModeId').value))
 
       console.log(this.myReportform.value)
       debugger
       this._LabmanagementService.ReportDispatchInsert(this.myReportform.value).subscribe((response) => {
         console.log(response)
-        this._matDialog.closeAll();
+        this.repogrid.bindGridData();
+        // this._matDialog.closeAll();
       });
     } else {
       let invalidFields = [];

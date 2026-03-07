@@ -567,8 +567,8 @@ export class LabPatientRegComponent {
     console.log(element)
     const dialogRef = this._matDialog.open(LabRegBillDeatilsComponent,
       {
-        maxWidth: "90vw",
-        height: '90%',
+        maxWidth: "95vw",
+        height: '95%',
         width: '100%',
         data: element
 
@@ -599,8 +599,8 @@ export class LabPatientRegComponent {
     console.log(element)
     const dialogRef = this._matDialog.open(ReportDispatchComponent,
       {
-        maxWidth: "90vw",
-        maxHeight: '95%',
+        maxWidth: "95vw",
+        height: '95%',
         width: '100%',
         data: element
 
@@ -615,9 +615,8 @@ export class LabPatientRegComponent {
     console.log(element)
     const dialogRef = this._matDialog.open(EmailorSMSHistoryComponent,
       {
-        maxWidth: "90vw",
-        maxHeight: '115%',
-
+        maxWidth: "95vw",
+        height: '95%',
         width: '100%',
         data: element
 
@@ -1028,6 +1027,7 @@ export class LabPatientList {
   phlebotomist: any;
   patRegId: any;
   patientType: any;
+  companyName: any;
 
   constructor(LabPatientList) {
     {
@@ -1111,7 +1111,7 @@ export class LabPatientList {
       this.phlebotomist = LabPatientList.phlebotomist || ''
       this.patRegId = LabPatientList.patRegId || ''
       this.patientType = LabPatientList.patientType || ''
-      // this.location = LabPatientList.location || ''
+      this.companyName = LabPatientList.companyName || ''
       // this.location = LabPatientList.location || ''
     }
   }

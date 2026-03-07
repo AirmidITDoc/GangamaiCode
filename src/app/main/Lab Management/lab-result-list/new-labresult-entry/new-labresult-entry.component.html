@@ -78,7 +78,7 @@
                 <div fxFlex.gt-sm="100%" fxFlex class="airmid-table-container">
                     <mat-card style="padding: 6px;">
                         <!-- appTableKeyboardNavigation -->
-                        <mat-table matSort [dataSource]="dataSource" class="airmid-table h-400"
+                        <mat-table matSort [dataSource]="dataSource" style="height: 500px;" class="airmid-table"
                             [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
 
                             <ng-container matColumnDef="sequence">
@@ -215,36 +215,36 @@
 
             <div class="modal-card-container">
                 <form [formGroup]="otherForm">
-                    <mat-card style="padding: 6px;">
-                        <div fxLayout="column" fxLayout="row" fxLayout="4px">
+                    <div fxLayout="column" fxLayout="row" fxLayout="4px">
 
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Suggestion Note</mat-label>
-                                <textarea matInput rows="2" name="suggestionNotes" formControlName="suggestionNotes"
-                                    [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Suggestion Note</mat-label>
+                            <textarea matInput rows="2" name="suggestionNotes" formControlName="suggestionNotes"
+                                [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)">
                                     </textarea>
-                                <!-- <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint> -->
-                            </mat-form-field>
-                        </div>
-
-                        <div fxLayout="column" fxLayout="row" fxLayout="4px" class=" resize-form-fields">
-                            <airmid-dropdown label="Technician Name" formControlName="PathResultDoctorId"
-                                [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)" fxFlex="40%"
-                                ValueField="doctorId" TextField="doctorName"
-                                ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
-                        </div>
-                    </mat-card>
-
+                            <!-- <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint> -->
+                        </mat-form-field>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
     <div class="modal-footer" fxLayout="column">
-        <div class="modal-footer-buttons">
-            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-            <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck && !viewCheck">Save</button>
-            <button class="btn btn-success" (click)="onVerify()"
-                *ngIf="verifyCheck && !viewCheck">Authorization</button>
+        <div fxLayoutAlign="space-between center">
+            <form [formGroup]="otherForm">
+                <div fxLayout="column" fxLayout="row" fxLayout="4px" class=" resize-form-fields">
+                    <airmid-dropdown label="Technician Name" formControlName="PathResultDoctorId"
+                        [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)" fxFlex="300px"
+                        ValueField="doctorId" TextField="doctorName"
+                        ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
+                </div>
+            </form>
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck && !viewCheck">Save</button>
+                <button class="btn btn-success" (click)="onVerify()"
+                    *ngIf="verifyCheck && !viewCheck">Authorization</button>
+            </div>
         </div>
     </div>
 </div>
