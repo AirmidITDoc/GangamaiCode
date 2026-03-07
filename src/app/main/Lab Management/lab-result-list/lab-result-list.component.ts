@@ -242,7 +242,7 @@ export class LabResultListComponent {
 
   ngOnInit(): void {
     this.myformSearch = this._SampleService.createSearchForm()
-    this.reportlogFormGroup=this.createReportlogForm()
+    this.reportlogFormGroup = this.createReportlogForm()
     this.fromDate = this.myformSearch.get("start").value || "";
     this.toDate = this.myformSearch.get("end").value || "";
     this.GetResultdetail();
@@ -529,9 +529,9 @@ export class LabResultListComponent {
       this.advanceDataStored.storage = new SampleDetailObj(contact);
       const dialogRef = this._matDialog.open(NewLabtemplateComponent,
         {
-          maxWidth: "75vw",
+          maxWidth: "95vw",
           height: '95%',
-          width: '96%',
+          width: '95%',
           data: {
             data: contact,
             verifyCheck: false
@@ -698,9 +698,9 @@ export class LabResultListComponent {
 
         const dialogRef = this._matDialog.open(NewLabtemplateComponent,
           {
-            maxWidth: "75vw",
+            maxWidth: "95vw",
             height: '95%',
-            width: '96%',
+            width: '95%',
             data: {
               data: contact,
               verifyCheck: true

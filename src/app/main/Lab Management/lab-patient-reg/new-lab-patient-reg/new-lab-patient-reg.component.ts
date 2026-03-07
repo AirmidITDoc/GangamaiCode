@@ -1123,13 +1123,12 @@ export class NewLabPatientRegComponent {
     this.serviceSelct = true
     this.onSaveEntry(obj);
 
-    // ✅ Clear Service Name
     this.myForm.get('ServiceId')?.reset();
 
-    // ✅ Focus back to input (wait for DOM update)
     setTimeout(() => {
-      this.serviceInput?.nativeElement.focus();
-    });
+      const input = this.serviceInput.nativeElement.querySelector('input');
+      input?.focus();
+    }, 150);
   }
 
   onChangeReg(event) {
