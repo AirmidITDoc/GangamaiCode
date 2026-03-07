@@ -300,7 +300,7 @@ export class NewPurchaseorderComponent {
       ItemName: ['', [Validators.required,]],
       ConversionFactor: [''],
       Qty: ['', [Validators.required, Validators.min(1)]],
-      FreeQty: ['', [Validators.required, Validators.min(1)]],
+      FreeQty: [0],
       UOM: [''],
       Rate: ['', [Validators.required, Validators.min(1)]],
       HSNcode: [''],

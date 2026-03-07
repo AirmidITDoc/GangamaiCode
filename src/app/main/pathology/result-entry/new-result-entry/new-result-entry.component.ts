@@ -236,9 +236,16 @@ export class NewResultEntryComponent {
         });
         return Keys;
     }
-
+getValidatetabledata(){
+      if(this.dataSource.data.length){
+            this.dataSource.data.forEach(element=>{
+            this.onResultUp(element)
+            }) 
+        }
+}
     onResultUp(data) {
-
+debugger
+//Changes done by Ambadas 07-03-2026
         let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -246,9 +253,17 @@ export class NewResultEntryComponent {
             formulas.forEach(e => {
                 let itm = this.dataSource.data.find(x => x.ParameterShortName == e);
                 if (itm)
-                    formula = formula.replace("{{" + e + "}}", itm.ResultValue)
+                    //formula = formula.replaceAll("{{" + e + "}}", itm.ResultValue || 0)
+                    formula = formula.replaceAll("{{" + e + "}}",  String(Number(itm?.ResultValue) || 0));
             });
-            items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
+            //items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula); 
+             let result: any = "";
+try {
+    result = eval(formula);
+} catch (error) {
+    console.error("Invalid formula:", formula);
+}
+            items[i].ResultValue = isNaN(result as any) ? "" : result;
             if (!isNaN(items[i].ResultValue))
                 items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
         }
@@ -915,7 +930,7 @@ export class NewResultEntryComponent {
             });
 
         }
-
+        this.getValidatetabledata()
     }
 
     onVerify() {
@@ -1005,6 +1020,7 @@ export class NewResultEntryComponent {
     printf: boolean = true;
 
     onSave() {
+        this.getValidatetabledata()
 
         if ((this.vPathResultDoctorId == 0 || this.vPathResultDoctorId == undefined)) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {

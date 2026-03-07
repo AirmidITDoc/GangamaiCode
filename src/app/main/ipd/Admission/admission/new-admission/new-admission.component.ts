@@ -681,7 +681,9 @@ this.Is9_Digit_National_Id = id === "1";
   onISCharChange(event: any) {
     this.admissionFormGroup.patchValue({ IsCharity: event.checked });
   }
-
+  onIsReimbursementChange(event: any) {
+    //this.admissionFormGroup.patchValue({ IsCharity: event.checked });
+  }
   onIsSeniorChange(event: any) {
     // this.admissionFormGroup.patchValue({ IsSenior: event.checked });
   }

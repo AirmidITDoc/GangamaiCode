@@ -166,8 +166,10 @@ export class AirmidTableComponent implements OnInit {
     }
     onExportClick(type: gridResponseType) {
         this.gridDataRequest.exportType = type;
-        let filename = this.gridConfig.fileName;
-        if ((filename ?? "") == "") filename = "Document";
+        debugger
+       // let filename = this.gridConfig.fileName;
+        let filename = this.gridConfig.fileName || "Document";
+      //  if ((filename ?? "") == "") filename = "Document";
         if (type == gridResponseType.Csv)
             filename = filename + ".csv";
         else if (type == gridResponseType.Pdf)

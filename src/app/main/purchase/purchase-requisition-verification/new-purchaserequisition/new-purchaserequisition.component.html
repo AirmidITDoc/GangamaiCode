@@ -55,7 +55,7 @@
                                     <airmid-autocomplete label="Item Name (enter 2 char)"
                                         [formGroup]="PrequiItemSaveFrom" formControlName="ItemName"
                                         placeholderText="Item Name (enter 2 char)"
-                                        [ApiUrl]="'ItemMaster/search-GetItemListForIndent?StoreId=' + vstoreId + '&ItemName='"
+                                        [ApiUrl]="'ItemMaster/search-GetItemListForIndent?StoreId=' + vToStoreId + '&ItemName='"
                                         fxFlex="38%" (selectionChange)="getSelectedItem($event)" TextField="itemName"
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 

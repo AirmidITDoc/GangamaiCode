@@ -1032,6 +1032,11 @@
                             IsCharity
                         </mat-checkbox>
 
+                        <mat-checkbox aria-label="IsReimbursement" formControlName="IsReimbursement" style="margin-left:30px;"
+                            (change)="onIsReimbursementChange($event)">
+                            IsReimbursement
+                        </mat-checkbox>
+
                         <!-- <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;"
                             (change)="onIsSeniorChange($event)">
                             IsSeniorCitizen
