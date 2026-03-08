@@ -730,13 +730,13 @@ export class DischargeSummaryTemplateComponent {
 
   viewgetDischargesummaryPdf(AdmId) {
     console.log(AdmId)
-    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplatewithPatientHeader");
+    this.commonService.OnprintOld("AdmissionID", AdmId, "IpDischargeSummaryTemplatewithPatientHeader");
     // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplate");
   }
 
   viewgetDischargesummaryTempPdf(AdmId) {
     console.log(AdmId)
-    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplatepatientWithoutHeader");
+    this.commonService.OnprintOld("AdmissionID", AdmId, "IpDischargeSummaryTemplatepatientWithoutHeader");
     // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplateWithoutHeader");
   }
 

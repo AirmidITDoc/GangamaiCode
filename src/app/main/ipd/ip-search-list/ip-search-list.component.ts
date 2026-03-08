@@ -628,17 +628,17 @@ export class IPSearchListComponent implements OnInit {
     printDischargesummaryWithoutletterhead(event) {
         const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
         if (IpDischargeSummaryId != 1) {
-            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
+            this.commonService.OnprintOld("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
         } else {
-            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryTemplateWithoutHeader");
+            this.commonService.OnprintOld("AdmissionID", event.admissionId, "IpDischargeSummaryTemplateWithoutHeader");
         }
     }
     printDischargesummary(event) {
         const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
         if (IpDischargeSummaryId != 1) {
-            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
+            this.commonService.OnprintOld("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
         } else {
-            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryTemplate");
+            this.commonService.OnprintOld("AdmissionID", event.admissionId, "IpDischargeSummaryTemplate");
         }
     }
 

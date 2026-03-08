@@ -318,6 +318,9 @@ export class AppointmentlistService {
         return this._httpClient1.GetData("VisitDetail/search-patient?Keyword=" + keyword);
     }
 
+    public getReportViewOld(Param) {
+         return this._httpClient1.PostData("Report/ViewReport", Param);
+    }
     public getReportView(Param) {
          return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
