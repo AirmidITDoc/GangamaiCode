@@ -1,3 +1,4 @@
+
 <!-- <div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll" fxLayout="column"> -->
     <div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight>
     <!-- HEADER -->
@@ -50,7 +51,7 @@
             </div>
         </div>
         <!-- TABS -->
-        <mat-tab-group class="dashboard-tabs" [(selectedIndex)]="selectedTabIndex"
+           <mat-tab-group class="dashboard-tabs" [(selectedIndex)]="selectedTabIndex"
             (selectedTabChange)="onTabChanged($event)">
 
             <!-- PATHOLOGY TAB -->
@@ -61,7 +62,7 @@
                 </ng-template>
 
                 <!-- Top Summary Cards -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
                     <!-- Total Tests Today Card -->
                     <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
                         <mat-card class="dashboard-stat-card">
@@ -113,7 +114,7 @@
                             <mat-card-content>
                                 <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
                                     <div class="icon-div icon-3">
-                                        <mat-icon style="color: white;">pending</mat-icon>
+                                        <mat-icon style="color: white">hourglass_empty</mat-icon>
                                     </div>
                                     <div class="labels-div" fxLayout="row"
                                         style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
@@ -189,7 +190,7 @@
                 </div> -->
 
                 <!-- Charts Section -->
-                <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
                     <!-- Test Volume by Department Bar Chart -->
                     <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card class="chart-card">
@@ -244,7 +245,7 @@
                      <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
                             <mat-card-content>
-                                <div style="font-size: large;font-weight: bold;color: rgb(21, 64, 72);">Recent Pathology Reports</div>
+                                <div class="table-title">Recent Pathology Reports</div>
                                 <hr>
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyReports"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
@@ -343,7 +344,7 @@
                     <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
                             <!-- <mat-card-content> -->
-                                <div style="font-size: large;font-weight: bold;color: rgb(21, 64, 72);">Top Ordered Tests (This Week)</div>
+                                <div class="table-title">Top Ordered Tests (This Week)</div>
                                 <hr>
                                  <div style="height: 230px;overflow-y: auto;">
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyTopTests"
@@ -393,7 +394,7 @@
                                         style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 10px;">
                                         Total
                                         Test
-                                        <span class="totals-num" style="padding-left: 310px;">{{
+                                        <span class="totals-num" style="padding-left: 280px;">{{
                                             TotalTest}}</span>
                                     </div>
                                 </div>
@@ -405,7 +406,7 @@
                     <div fxFlex="53%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
                             <!-- <mat-card-content> -->
-                            <div style="font-size: large;font-weight: bold;color: rgb(21, 64, 72);">Pathologist Workload Summary</div>
+                            <div class="table-title">Pathologist Workload Summary</div>
                             <hr>
                             <div style="height: 230px;overflow-y: auto;">
 
@@ -458,7 +459,7 @@
                                         style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 20px;">
                                         Total
                                         WorkLoad
-                                        <span class="totals-num" style="padding-left: 320px;">{{
+                                        <span class="totals-num" style="padding-left: 280px;">{{
                                             totalworkload}}</span>
                                     </div>
                                 </div>
@@ -559,7 +560,7 @@
                             <mat-card-content>
                                 <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
                                     <div class="icon-div icon-3">
-                                        <mat-icon style="color: white;">pending</mat-icon>
+                                        <mat-icon style="color: white;">hourglass_empty</mat-icon>
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Pending Reports |</div>
@@ -914,3 +915,7 @@
     </div>
     <!-- </div> -->
 </div>
+
+
+
+

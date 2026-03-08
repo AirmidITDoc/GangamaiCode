@@ -419,7 +419,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         };
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             let apiData = res && res.length ? res : {};
-
+            console.log(res)
             return new Chart('BedAdmissionsLine', {
                 type: 'line',
                 data: {
@@ -472,7 +472,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
 
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             let apiData = res && res.length ? res : {};
-
+                console.log(res)
             return new Chart('BedDischargeLine', {
                 type: 'line',
                 data: {

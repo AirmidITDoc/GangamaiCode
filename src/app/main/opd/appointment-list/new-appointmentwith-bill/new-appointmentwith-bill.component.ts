@@ -2004,7 +2004,7 @@ export class NewAppointmentwithBillComponent {
   }
 
   DocenableEditing(row: ChargesList) {
-    if (row.Doctorflag == true) {
+    if (row.creditedtoDoctor == false) {
       this.toastr.warning('Doctor option unavailable for the selected service!', 'warning', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -2016,7 +2016,10 @@ export class NewAppointmentwithBillComponent {
 
 
   SelectedDocName: any = [];
-  DropDownValue(Obj) {
+  DropDownValue(element,Obj) {
+     element.DoctorId=Obj.value
+    element.DoctorName=Obj.text
+
     console.log(Obj)
   }
   private destroy$ = new Subject<void>();
@@ -2054,13 +2057,13 @@ export class NewAppointmentwithBillComponent {
   getSelectedObj(obj) {
     // 
     if (this.data?.FormName == 'Registration-Page') {
-
+ console.log(obj)
       this.PatientName = obj.patientName
       this.RegId = obj.value
       if ((this.RegId ?? 0) > 0) {
         this.VRegId = obj.visitId;
         this.VisitFormGroup.get('regId').setValue(this.RegId)
-        console.log(obj)
+       
         setTimeout(() => {
           this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
             this.registerObj = response;
@@ -2119,6 +2122,7 @@ export class NewAppointmentwithBillComponent {
             this.registerObj = response;
             console.log(response)
             this.value = response.dateofBirth
+             this.RegId = response.regId
             this.onChangeDateofBirth(response.dateofBirth)
             this.getLastDepartmetnNameList(this.registerObj)
             this.myForm.patchValue({
@@ -2156,11 +2160,12 @@ export class NewAppointmentwithBillComponent {
     debugger
     // if (this.VRegId) {
     // this.showPrevBtn = true
-    this.getPrevList();
+    // this.getPrevList();
     // }
   }
   showPrevBtn: boolean = false
   PrevregisterObj: any;
+  VisitId=0
   getLastDepartmetnNameList(row) {
     const dialogRef = this._matDialog.open(PreviousDeptListComponent,
       {
@@ -2174,12 +2179,34 @@ export class NewAppointmentwithBillComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.PrevregisterObj = result
+      this.doctorName=result.doctorName
+     
       this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
       this.selectChangedepartment(this.PrevregisterObj)
+      this.vOPIPId=this.PrevregisterObj.visitId
+      if(this.vOPIPId)
+        this.getPrevBill()
       console.log(this.PrevregisterObj)
     });
   }
 
+
+  getPrevBill(){
+ Swal.fire({
+      title: 'Confirm Save',
+      text: 'Are you sure you want to Check Previous Bill?',
+      icon: 'warning', // or 'question'
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6', // Blue
+      cancelButtonColor: '#d33',     // Red
+      confirmButtonText: 'Yes, save it!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+    this.getPrevList();
+      }
+  })
+}
   vDepId = 0;
   vDocId = 0;
   //   changed by raksha date:17/6/25

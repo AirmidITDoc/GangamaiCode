@@ -4,6 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import Chart, { Color } from 'chart.js/auto';
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { DashboardService } from "../dashboard.service";
 
 @Component({
     selector: "app-pharmacy-dashboard",
@@ -13,23 +14,26 @@ import { AuthenticationService } from "app/core/services/authentication.service"
     animations: fuseAnimations,
 })
 export class PharmacyDashboardComponent implements OnInit {
-    
+
     username: any;
     dateFilterForm: UntypedFormGroup;
-
+    UnitId: any = this._accountServices.currentUserValue.user.unitId;
+    pharmacyData
+    fromDate: any;
+    toDate: any;
     // Static data for dashboard (NOT affected by date filter)
-    totalRevenue: number = 1250000;
-    weeklyRevenue: number = 285000;
-    monthlyRevenue: number = 1050000;
-    inventoryValue: number = 4500000;
-    lowStockItems: number = 15;
-    expiringMedicines: number = 8;
-    totalSuppliers: number = 45;
+    totalRevenue: any;
+    weeklyRevenue: any;
+    monthlyRevenue: any;
+    inventoryValue: any;
+    lowStockItems: any;
+    expiringMedicines: any;
+    totalSuppliers: any;
 
     // Date-filtered data (AFFECTED by date filter)
-    totalOrders: number = 3456;
-    totalCustomers: number = 892;
-    pendingOrders: number = 23;
+    totalOrders: any;
+    totalCustomers: any;
+    pendingOrders: any;
 
     // Charts
     public weeklyRevenueChart: any;
@@ -71,58 +75,58 @@ export class PharmacyDashboardComponent implements OnInit {
 
     // Payment mode distribution - AFFECTED by date filter
     paymentModeData = [
-        { mode: 'Cash', amount: 450000 },
-        { mode: 'Card', amount: 380000 },
-        { mode: 'Online', amount: 320000 },
-        { mode: 'Insurance', amount: 100000 }
+        { mode: 'Cash', amount: 0 },
+        { mode: 'Card', amount: 0 },
+        { mode: 'Online', amount: 0 },
+        { mode: 'Insurance', amount: 0 }
     ];
 
     // Top selling medicines - AFFECTED by date filter
     topMedicinesData = [
-        { name: 'Paracetamol', sales: 12500 },
-        { name: 'Amoxicillin', sales: 9800 },
-        { name: 'Ibuprofen', sales: 8500 },
-        { name: 'Metformin', sales: 7200 },
-        { name: 'Aspirin', sales: 6800 }
+        { name: 'Paracetamol', sales: 0 },
+        { name: 'Amoxicillin', sales: 0 },
+        { name: 'Ibuprofen', sales: 0 },
+        { name: 'Metformin', sales: 0 },
+        { name: 'Aspirin', sales: 0 }
     ];
 
     // Inventory status - NOT affected by date filter
     inventoryData = [
-        { category: 'In Stock', count: 450 },
-        { category: 'Low Stock', count: 15 },
+        { category: 'In Stock', count: 0 },
+        { category: 'Low Stock', count: 0 },
         { category: 'Out of Stock', count: 8 }
     ];
 
     // Medicine categories - NOT affected by date filter
     categoryData = [
-        { category: 'Tablets', count: 250 },
-        { category: 'Syrups', count: 85 },
-        { category: 'Injections', count: 65 },
-        { category: 'Capsules', count: 120 },
-        { category: 'Ointments', count: 45 }
+        { category: 'Tablets', count: 0 },
+        { category: 'Syrups', count: 0 },
+        { category: 'Injections', count: 0 },
+        { category: 'Capsules', count: 0 },
+        { category: 'Ointments', count: 0 }
     ];
 
     // Expiring medicines - NOT affected by date filter
     expiryData = [
-        { period: 'This Month', count: 8 },
-        { period: 'Next Month', count: 12 },
-        { period: '3 Months', count: 25 }
+        { period: 'This Month', count: 0 },
+        { period: 'Next Month', count: 0 },
+        { period: '3 Months', count: 0 }
     ];
 
     // Stock value by category - NOT affected by date filter
     stockValueData = [
-        { category: 'Antibiotics', value: 850000 },
-        { category: 'Pain Relief', value: 650000 },
-        { category: 'Diabetes Care', value: 720000 },
-        { category: 'Cardiac', value: 580000 },
-        { category: 'Others', value: 1700000 }
+        { category: 'Antibiotics', value: 0 },
+        { category: 'Pain Relief', value: 0 },
+        { category: 'Diabetes Care', value: 0 },
+        { category: 'Cardiac', value: 0 },
+        { category: 'Others', value: 0 }
     ];
 
     constructor(
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder,
-        public _accountServices: AuthenticationService
-    ) { 
+        public _accountServices: AuthenticationService, private dashboardService: DashboardService,
+    ) {
         // Initialize date filter form
         this.dateFilterForm = this.formBuilder.group({
             start: [new Date(new Date().setDate(new Date().getDate() - 30))],
@@ -148,18 +152,74 @@ export class PharmacyDashboardComponent implements OnInit {
         // This method will be called when date range changes
         // Here you would filter the date-dependent data
         console.log('Date range changed:', this.dateFilterForm.value);
-        
+
         // For now, using static data
         // When you add APIs, filter these data based on date:
         // - totalOrders
         // - totalCustomers
         // - paymentModeData
         // - topMedicinesData
-        
+
         // Re-render affected charts
         this.updateDateFilteredCharts();
     }
 
+    onGo(): void {
+        // this.ngOnDestroy()
+        this.getpathologyReportData()
+        this.updateDateFilteredCharts()
+    }
+
+    getpathologyReportData() {
+        this.fromDate = this.datePipe.transform(this.dateFilterForm.get('start').value, "yyyy-MM-dd") || '01/01/2020',
+        this.toDate = this.datePipe.transform(this.dateFilterForm.get('end').value, "yyyy-MM-dd ") || '01/01/2020',
+
+
+            this.dashboardService.getPathologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
+                this.pharmacyData = res;
+                console.log('Pathology Reports:', res);
+
+                if (this.pharmacyData) {
+                    // this.dsPathologyReports.data = res.recentPathologyReports;
+                    // this.dsPathologyTopTests.data = res.mostOrderedTests;
+                    // this.trendData = this.pathologyData.mostOrderedTests
+                    // this.dsPathologistWorkload.data = res.pathologyWorkloads
+
+
+                    // if (this.trendData) {
+
+                    //     this.modalityData = [
+                    //         ...this.modalityData,
+                    //         ...this.trendData.map(item => ({
+
+                    //             modality: item.testName,
+                    //             count: item.count
+                    //         }))
+                    //     ];
+                    // }
+                    debugger
+                    // console.log(this.modalityData)
+                    // if (this.modalityData)
+                    //     this.modalityChart = this.getModalityBarChart();
+
+                    // if (this.pathologyData) {
+                    //     this.statusData[0].count = this.pathologyData.countSummary.completedCount
+                    //     this.statusData[1].count = this.pathologyData.countSummary.pendingCount
+                    //     this.statusData[2].count = this.pathologyData.countSummary.rejectedCount
+                    // }
+                    // if (this.statusData)
+                    //     this.statusPieChart = this.getStatusPieChart();
+
+                    // if (this.pathologyData.pathologyValumes.length > 0)
+                    //     // this.getPathologyDepartmentChart()
+                    //     this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
+                    // this.pathologyStatusPieChart = this.getPathologyStatusPieChart()
+                    // if (this.pathologyData.dailyTestCounts.length > 0)
+                    //     this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart()
+                }
+            });
+
+    }
     updateDateFilteredCharts(): void {
         // Update charts that are affected by date filter
         if (this.ordersChart) {
@@ -213,7 +273,7 @@ export class PharmacyDashboardComponent implements OnInit {
 
     initializeCharts(): void {
         console.log('Initializing charts...');
-        
+
         // Weekly Revenue Chart (NOT affected by date filter)
         const weeklyCanvas = document.getElementById('weeklyRevenueChart');
         if (weeklyCanvas) {
@@ -347,7 +407,7 @@ export class PharmacyDashboardComponent implements OnInit {
                 console.error('Error creating category chart:', error);
             }
         }
-        
+
         console.log('Charts initialization complete');
     }
 
@@ -375,7 +435,7 @@ export class PharmacyDashboardComponent implements OnInit {
                     legend: { display: false }
                 },
                 scales: {
-                    x: { 
+                    x: {
                         display: true,
                         title: {
                             display: !!xAxisLabel,
@@ -394,7 +454,7 @@ export class PharmacyDashboardComponent implements OnInit {
                             }
                         }
                     },
-                    y: { 
+                    y: {
                         display: true,
                         title: {
                             display: !!yAxisLabel,
@@ -412,7 +472,7 @@ export class PharmacyDashboardComponent implements OnInit {
                             font: {
                                 size: 9
                             },
-                            callback: function(value: any) {
+                            callback: function (value: any) {
                                 if (Number(value) >= 1000) {
                                     return '₹' + (Number(value) / 1000) + 'K';
                                 }
@@ -430,7 +490,7 @@ export class PharmacyDashboardComponent implements OnInit {
         return new Chart('paymentModeChart', {
             type: 'doughnut',
             data: {
-                labels: this.paymentModeData.map(d => d.mode),
+                labels: this.pharmacyData.paymentModeData.map(d => d.mode),
                 datasets: [
                     {
                         backgroundColor: ['#FF3784', '#36A2EB', '#4BC0C0', '#F77825'],
@@ -447,7 +507,7 @@ export class PharmacyDashboardComponent implements OnInit {
                     tooltip: {
                         enabled: true,
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 let label = context.label || '';
                                 if (label) {
                                     label += ': ';
@@ -467,7 +527,7 @@ export class PharmacyDashboardComponent implements OnInit {
         return new Chart('topMedicinesChart', {
             type: 'bar',
             data: {
-                labels: this.topMedicinesData.map(d => d.name),
+                labels: this.pharmacyData.topMedicinesData.map(d => d.name),
                 datasets: [
                     {
                         label: 'Sales Count',
@@ -496,7 +556,7 @@ export class PharmacyDashboardComponent implements OnInit {
         return new Chart('stockValueChart', {
             type: 'bar',
             data: {
-                labels: this.stockValueData.map(d => d.category),
+                labels: this.pharmacyData.stockValueData.map(d => d.category),
                 datasets: [
                     {
                         label: 'Stock Value (₹)',
@@ -514,7 +574,7 @@ export class PharmacyDashboardComponent implements OnInit {
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value: any) {
+                            callback: function (value: any) {
                                 return '₹' + (Number(value) / 1000) + 'K';
                             }
                         }

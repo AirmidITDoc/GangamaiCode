@@ -19,7 +19,7 @@ export class RadiologyDashboardComponent implements OnInit {
     myFilterform: UntypedFormGroup;
     fromDate: any;
     toDate: any;
-
+  UnitId: any = this._accountServices.currentUserValue.user.unitId;
     AppoinmentCount: any;
     TotalAdmittedCount: any;
     TotalSelf: any;
@@ -50,15 +50,15 @@ export class RadiologyDashboardComponent implements OnInit {
     dsCountsummary: testcountsummary[] = [];
 
     metrics = [
-        { label: 'Total Report', value: 20, color: 'lavender', icon: 'assignment' },
-        { label: 'Completed', value: 18, color: 'green', icon: 'check_circle' },
-        { label: 'Pending', value: 2, color: 'mint', icon: 'pending' },
-        { label: 'Collected', value: 3, color: 'rose', icon: 'collected' },
-        { label: 'NotCollected', value: 17, color: 'sky', icon: 'notcollected' },
-        { label: 'Verified', value: 9, color: 'green', icon: 'verified' },
-        { label: 'Not Verified', value: 11, color: 'peach', icon: 'unpublished' },
-        { label: 'Dispatched', value: 10, color: 'peach', icon: 'local_shipping' },
-        { label: 'NoDispatched', value: 10, color: 'orange', icon: 'pending_actions' },
+        { label: 'Total Report', value: 0, color: 'lavender', icon: 'assignment' },
+        { label: 'Completed', value: 0, color: 'green', icon: 'check_circle' },
+        { label: 'Pending', value: 0, color: 'mint', icon: 'pending' },
+        { label: 'Collected', value: 0, color: 'rose', icon: 'collected' },
+        { label: 'NotCollected', value: 0, color: 'sky', icon: 'notcollected' },
+        { label: 'Verified', value: 0, color: 'green', icon: 'verified' },
+        { label: 'Not Verified', value: 0, color: 'peach', icon: 'unpublished' },
+        { label: 'Dispatched', value: 0, color: 'peach', icon: 'local_shipping' },
+        { label: 'NoDispatch', value: 0, color: 'orange', icon: 'pending_actions' },
     ];
 
 
@@ -190,7 +190,7 @@ export class RadiologyDashboardComponent implements OnInit {
         { name: 'In Process', count: 28 },
         { name: 'Delayed', count: 12 }
     ];
-    UnitId: any = this._accountServices.currentUserValue.user.unitId;
+  
     constructor(
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder, public _accountServices: AuthenticationService,
@@ -236,14 +236,15 @@ export class RadiologyDashboardComponent implements OnInit {
 
         // this.initializePathologyCharts();
         //   this.initializeRadiologyCharts();
+        this.loadTableData();
         this.getHomeDashboardAPI();
-       
+
         setTimeout(() => {
             this.initializePathologyCharts();
             // this.initializeRadiologyCharts();
         }, 500);
 
-         this.loadTableData();
+
     }
 
     // initializeDateRange() {
@@ -268,6 +269,8 @@ export class RadiologyDashboardComponent implements OnInit {
             this.getRadiologyData();
         this.getpathologyReportData();
         this.getRadiologyReportData();
+
+        
     }
 
     onDateRangeChanged(): void {
@@ -296,7 +299,7 @@ export class RadiologyDashboardComponent implements OnInit {
     }
 
     getpathologyReportData() {
-        
+
 
         this.dashboardService.getPathologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
             this.pathologyData = res;
@@ -333,9 +336,12 @@ export class RadiologyDashboardComponent implements OnInit {
                 // if (this.statusData)
                 //     this.statusPieChart = this.getStatusPieChart();
 
-                this.getPathologyDepartmentChart()
-                this.getPathologyStatusPieChart()
-                this.getPathologyVolumeTrendChart()
+                if (this.pathologyData.pathologyValumes.length > 0)
+                    // this.getPathologyDepartmentChart()
+                    this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
+                this.pathologyStatusPieChart = this.getPathologyStatusPieChart()
+                if (this.pathologyData.dailyTestCounts.length > 0)
+                    this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart()
             }
         });
 
@@ -348,7 +354,7 @@ export class RadiologyDashboardComponent implements OnInit {
             if (this.RadiologyData) {
                 this.dsRadiologyRecentReports.data = res.recentRadiologyReports;
                 this.dsTopTests.data = res.topOrderedTests;
-                this.trendData1 = this.RadiologyData.topOrderedTests
+                // this.trendData1 = this.RadiologyData.topOrderedTests
                 this.dsRadiologistPerformance.data = res.radiologyWorkloads
 
 
@@ -376,14 +382,13 @@ export class RadiologyDashboardComponent implements OnInit {
                 // if (this.statusData1)
                 //     this.statusPieChart1 = this.getStatusPieChart1();
 
+                // if(this.RadiologyData.radiologyVolumes.length >0)
                 // this.getRadiologyDepartmentChart()
                 // this.getRadiologyStatusPieChart()
+                //  if(this.RadiologyData.dailyTestCounts.length >0)
                 // this.getRadiologyVolumeTrendChart()
             }
         });
-
-
-
 
     }
     onGo(): void {
@@ -532,7 +537,7 @@ export class RadiologyDashboardComponent implements OnInit {
         }
         if (this.pathologyVolumeTrendChart) {
             this.pathologyVolumeTrendChart.destroy();
-        } 
+        }
         // if (this.pathologyTotalTestsChart) {
         //     this.pathologyTotalTestsChart.destroy();
         // }
@@ -548,14 +553,14 @@ export class RadiologyDashboardComponent implements OnInit {
         // } if (this.RadiologycancelledScansChart) {
         //     this.RadiologycancelledScansChart.destroy();
         // }
-      
+
         if (this.RadiologyDepartmentChart) {
             this.RadiologyDepartmentChart.destroy();
         }
-         if (this.RadiologyStatusPieChart) {
+        if (this.RadiologyStatusPieChart) {
             this.RadiologyStatusPieChart.destroy();
         }
-         if (this.RadiologyVolumeTrendChart) {
+        if (this.RadiologyVolumeTrendChart) {
             this.RadiologyVolumeTrendChart.destroy();
         }
 
@@ -829,29 +834,30 @@ export class RadiologyDashboardComponent implements OnInit {
 
         // Department Bar Chart
         if (document.getElementById('pathologyDepartmentChart')) {
-            this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
+            // this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
         }
 
         // Status Pie Chart
         if (document.getElementById('pathologyStatusPieChart')) {
-            this.pathologyStatusPieChart = this.getPathologyStatusPieChart();
+            // this.pathologyStatusPieChart = this.getPathologyStatusPieChart();
         }
 
         // Volume Trend Chart
         if (document.getElementById('pathologyVolumeTrendChart')) {
-            this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart();
+            // this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart();
         }
     }
 
     // Pathology Department Bar Chart
     getPathologyDepartmentChart() {
+        debugger
         if (this.pathologyDepartmentChart) {
-      this.pathologyDepartmentChart.destroy();
-    }
+            this.pathologyDepartmentChart.destroy();
+        }
 
-        // return new Chart('pathologyDepartmentChart', {
-        this.pathologyDepartmentChart = new Chart('pathologyDepartmentChart', {
-            
+        return new Chart('pathologyDepartmentChart', {
+        // this.pathologyDepartmentChart = new Chart('pathologyDepartmentChart', {
+
             type: 'bar',
             data: {
                 labels: this.pathologyData.pathologyValumes.map(d => d.categoryName),
@@ -888,9 +894,9 @@ export class RadiologyDashboardComponent implements OnInit {
 
     // Pathology Status Pie Chart
     getPathologyStatusPieChart() {
-  if (this.pathologyStatusPieChart) {
-      this.pathologyStatusPieChart.destroy();
-    }
+        if (this.pathologyStatusPieChart) {
+            this.pathologyStatusPieChart.destroy();
+        }
 
         // Pathology Status Data
         let pathologyStatusData = [
@@ -898,10 +904,10 @@ export class RadiologyDashboardComponent implements OnInit {
             { status: 'Pending', count: this.pathologyData?.countSummary?.pendingCount ?? 0 },
             { status: 'Rejected', count: this.pathologyData?.countSummary?.rejectedCount ?? 0 }
         ];
-        // return new Chart('pathologyStatusPieChart', {
-         this.pathologyStatusPieChart = new Chart('pathologyStatusPieChart', {
-        
-        type: 'doughnut',
+        return new Chart('pathologyStatusPieChart', {
+        // this.pathologyStatusPieChart = new Chart('pathologyStatusPieChart', {
+
+            type: 'doughnut',
             data: {
                 labels: pathologyStatusData.map(d => d.status),
                 datasets: [
@@ -943,13 +949,13 @@ export class RadiologyDashboardComponent implements OnInit {
     // Pathology Volume Trend Line Chart
     getPathologyVolumeTrendChart() {
 
-         if (this.pathologyVolumeTrendChart) {
-      this.pathologyVolumeTrendChart.destroy();
-    }
+        if (this.pathologyVolumeTrendChart) {
+            this.pathologyVolumeTrendChart.destroy();
+        }
 
-        // return new Chart('pathologyVolumeTrendChart', {
-         this.pathologyVolumeTrendChart = new Chart('pathologyVolumeTrendChart', {
-        
+        return new Chart('pathologyVolumeTrendChart', {
+        // this.pathologyVolumeTrendChart = new Chart('pathologyVolumeTrendChart', {
+
             type: 'line',
             data: {
                 labels: this.pathologyData.dailyTestCounts.map(d => d.pathDate),
@@ -1056,17 +1062,17 @@ export class RadiologyDashboardComponent implements OnInit {
 
         // Department Bar Chart
         if (document.getElementById('RadiologyDepartmentChart')) {
-            this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart();
+            // this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart();
         }
 
         // Status Pie Chart
         if (document.getElementById('RadiologyStatusPieChart')) {
-            this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart();
+            // this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart();
         }
 
         // Volume Trend Chart
         if (document.getElementById('RadiologyVolumeTrendChart')) {
-            this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart();
+            // this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart();
         }
     }
     //    initializeCharts(): void {
@@ -1129,13 +1135,13 @@ export class RadiologyDashboardComponent implements OnInit {
 
     // Radiology Department Bar Chart
     getRadiologyDepartmentChart() {
-          if (this.RadiologyDepartmentChart) {
-      this.RadiologyDepartmentChart.destroy();
-    }
+        if (this.RadiologyDepartmentChart) {
+            this.RadiologyDepartmentChart.destroy();
+        }
 
-      this.RadiologyDepartmentChart = new Chart('RadiologyDepartmentChart', {
-        
-        // return new Chart('RadiologyDepartmentChart', {
+        // this.RadiologyDepartmentChart = new Chart('RadiologyDepartmentChart', {
+
+            return new Chart('RadiologyDepartmentChart', {
             type: 'bar',
             data: {
                 labels: this.RadiologyData.radiologyVolumes.map(d => d.categoryName),
@@ -1172,20 +1178,20 @@ export class RadiologyDashboardComponent implements OnInit {
 
     // Radiology Status Pie Chart
     getRadiologyStatusPieChart() {
- if (this.RadiologyStatusPieChart) {
-      this.RadiologyStatusPieChart.destroy();
-    }
+        if (this.RadiologyStatusPieChart) {
+            this.RadiologyStatusPieChart.destroy();
+        }
 
-      
+
         // Pathology Status Data
         let RadiologyStatusData = [
             { status: 'Completed', count: this.RadiologyData?.countSummary?.completedCount ?? 0 },
             { status: 'Pending', count: this.RadiologyData?.countSummary?.pendingCount ?? 0 },
             { status: 'Rejected', count: this.RadiologyData?.countSummary?.rejectedCount ?? 0 }
         ];
-        // return new Chart('RadiologyStatusPieChart', {
-        this.RadiologyStatusPieChart = new Chart('RadiologyStatusPieChart', {
-        
+        return new Chart('RadiologyStatusPieChart', {
+        // this.RadiologyStatusPieChart = new Chart('RadiologyStatusPieChart', {
+
             type: 'doughnut',
             data: {
                 labels: RadiologyStatusData.map(d => d.status),
@@ -1229,11 +1235,11 @@ export class RadiologyDashboardComponent implements OnInit {
     getRadiologyVolumeTrendChart() {
 
         if (this.RadiologyVolumeTrendChart) {
-      this.RadiologyVolumeTrendChart.destroy();
-    }
-     this.RadiologyVolumeTrendChart = new Chart('RadiologyVolumeTrendChart', {
-       
-        // return new Chart('RadiologyVolumeTrendChart', {
+            this.RadiologyVolumeTrendChart.destroy();
+        }
+        // this.RadiologyVolumeTrendChart = new Chart('RadiologyVolumeTrendChart', {
+
+            return new Chart('RadiologyVolumeTrendChart', {
             type: 'line',
             data: {
                 labels: this.RadiologyData.dailyTestCounts.map(d => d.pathDate),
@@ -1296,7 +1302,7 @@ export class RadiologyDashboardComponent implements OnInit {
         });
     }
 
-getMatIcon(icon: string): string {
+    getMatIcon(icon: string): string {
         switch (icon) {
             case 'assignment':
                 return 'assignment';
@@ -1322,51 +1328,48 @@ getMatIcon(icon: string): string {
     }
 
     getHomeDashboardAPI() {
-        const payload = {
-            searchFields: [
-                { fieldName: 'UnitId', fieldValue: '0', opType: 'Equals' }
-            ],
-            mode: 'HomeDashboardAPI'
-        };
-        this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
 
 
-            let apiData = res && res.length ? res[0] : {};
-            //   this.metrics = [
-            //     { label: 'Total Report', value: apiData?.RegistrationCount || 0, color: 'lavender', icon: 'assignment' },
-            //     { label: 'Completed', value: apiData?.AppointmentCount || 0, color: 'green', icon: 'check_circle' },
-            //     { label: 'Pending', value: apiData?.CheckInCount || 0, color: 'mint', icon: 'pending' },
-            //     { label: 'Collected', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'collected' },
-            //     { label: 'Not Collected', value: 0, color: 'sky', icon: 'notcollected' }, // If API has a matching field, set it.
-            //     { label: 'Verified', value: apiData?.OPtoIPConvertCount || 0, color: 'green', icon: 'verified' },
-            //      { label: 'Not Verified', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'unpublished' },
-            //     { label: 'Dispatched', value: 0, color: 'sky', icon: 'local_shipping' }, // If API has a matching field, set it.
-            //     { label: 'Not Dispatched', value: apiData?.OPtoIPConvertCount || 0, color: 'peach', icon: 'pending_actions' }
-            //   ];
-            this.metrics = [
-                { label: 'Total Report', value: 20, color: 'lavender', icon: 'assignment' },
-                { label: 'Completed', value: 18, color: 'green', icon: 'check_circle' },
-                { label: 'Pending', value: 2, color: 'mint', icon: 'pending' },
-                { label: 'Collected', value: 3, color: 'rose', icon: 'collected' },
-                { label: 'NotCollected', value: 17, color: 'sky', icon: 'notcollected' },
-                { label: 'Verified', value: 9, color: 'green', icon: 'verified' },
-                { label: 'Not Verified', value: 11, color: 'peach', icon: 'unpublished' },
-                { label: 'Dispatched', value: 10, color: 'peach', icon: 'local_shipping' },
-                { label: 'NoDispatched', value: 10, color: 'orange', icon: 'pending_actions' }
-            ];
-        }, err => {
-            this.metrics = [
-                { label: 'Total Report', value: 20, color: 'lavender', icon: 'assignment' },
-                { label: 'Completed', value: 18, color: 'green', icon: 'check_circle' },
-                { label: 'Pending', value: 2, color: 'mint', icon: 'pending' },
-                { label: 'Collected', value: 3, color: 'rose', icon: 'collected' },
-                { label: 'NotCollected', value: 17, color: 'sky', icon: 'notcollected' },
-                { label: 'Verified', value: 9, color: 'green', icon: 'verified' },
-                { label: 'Not Verified', value: 11, color: 'peach', icon: 'unpublished' },
-                { label: 'Dispatched', value: 10, color: 'peach', icon: 'local_shipping' },
-                { label: 'NoDispatched', value: 10, color: 'orange', icon: 'pending_actions' },
-            ];
-        });
+            // const payload = {
+            //     searchFields: [
+            //         { fieldName: 'UnitId', fieldValue: '0', opType: 'Equals' }
+            //     ],
+            //     mode: 'HomeDashboardAPI'
+            // };
+            // this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+            this.dashboardService.getPathologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
+                this.pathologyData = res;
+                console.log('Pathology Reports:', res);
+
+                let apiData = this.pathologyData.pathologyReportStatus && this.pathologyData.pathologyReportStatus.length ? this.pathologyData.pathologyReportStatus[0] : {};
+                this.metrics = [
+                    { label: 'Total Report', value: apiData?.totalReports || 0, color: 'lavender', icon: 'assignment' },
+                    { label: 'Completed', value: apiData?.completedReports || 0, color: 'green', icon: 'check_circle' },
+                    { label: 'Pending', value: apiData?.pendingReports || 0, color: 'mint', icon: 'pending' },
+                    { label: 'Collected', value: apiData?.collectedSamples || 0, color: 'rose', icon: 'collected' },
+                    { label: 'NoCollected', value: apiData?.notCollectedSamples, color: 'sky', icon: 'notcollected' }, // If API has a matching field, set it.
+                    { label: 'Verified', value: apiData?.verifiedReports || 0, color: 'green', icon: 'verified' },
+                    { label: 'Not Verified', value: apiData?.nonVerifiedReports || 0, color: 'rose', icon: 'unpublished' },
+                    { label: 'Dispatched', value: apiData?.dispatchedReports, color: 'sky', icon: 'local_shipping' }, // If API has a matching field, set it.
+                    { label: 'NoDispatch', value: apiData?.nonDispatchedReports || 0, color: 'peach', icon: 'pending_actions' }
+                ];
+               
+            }, err => {
+                this.metrics = [
+                    { label: 'Total Report', value: 0, color: 'lavender', icon: 'assignment' },
+                    { label: 'Completed', value: 0, color: 'green', icon: 'check_circle' },
+                    { label: 'Pending', value: 0, color: 'mint', icon: 'pending' },
+                    { label: 'Collected', value: 0, color: 'rose', icon: 'collected' },
+                    { label: 'NoCollected', value: 0, color: 'sky', icon: 'notcollected' },
+                    { label: 'Verified', value: 0, color: 'green', icon: 'verified' },
+                    { label: 'Not Verified', value: 0, color: 'peach', icon: 'unpublished' },
+                    { label: 'Dispatched', value: 0, color: 'peach', icon: 'local_shipping' },
+                    { label: 'NoDispatch', value: 0, color: 'orange', icon: 'pending_actions' },
+                ];
+            });
     }
 
     workloadTrend() { }

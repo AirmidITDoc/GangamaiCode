@@ -87,6 +87,7 @@ export class PreviousDeptListComponent {
     }
     this._opappointmentService.getLabVisitDoctorList(vdata).subscribe(data => {
       // this.dsLastDepartmentname.data = data.data as RegInsert[]
+      console.log(data)
       this.dsLastDepartmentname.data = (data.data as RegInsert[]).map(item => {
         if (item.regDate) { 
           return {

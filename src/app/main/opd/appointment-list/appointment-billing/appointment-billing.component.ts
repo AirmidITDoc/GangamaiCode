@@ -2455,6 +2455,8 @@ export class ChargesList {
     BalanceAmt: any;
     Doctorflag: any;
     EditDoctor: any;
+    creditedtoDoctor: any;
+
     constructor(ChargesList) {
         this.ChargesId = ChargesList.ChargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
@@ -2510,6 +2512,7 @@ export class ChargesList {
         this.RefundAmt = ChargesList.RefundAmt || 0;
         this.Doctorflag = ChargesList.Doctorflag || false;
         this.EditDoctor = ChargesList.EditDoctor || false;
+        this.creditedtoDoctor = ChargesList.creditedtoDoctor || false;
 
 
 

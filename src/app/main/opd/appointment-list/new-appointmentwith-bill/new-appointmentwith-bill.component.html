@@ -638,75 +638,40 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                        <ng-container matColumnDef="ServiceName">
+                                                        <!-- <ng-container matColumnDef="ServiceName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                 class="w-250">Service
                                                                 Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact"
                                                                 class="w-250">{{contact.ServiceName}}</mat-cell>
+                                                        </ng-container> -->
+
+
+                                                        <ng-container matColumnDef="ServiceName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                fxShow.gt-sm class="w-250 border-right">Service
+                                                                Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                class="w-250 border-right">
+                                                                <ng-container
+                                                                    *ngIf="contact.isNewRow || contact.isEditMode; else showService">
+                                                                    <mat-form-field appearance="outline"
+                                                                        class="compact-field w-100-p">
+                                                                        <input matInput placeholder="Enter Service Name"
+                                                                            [(ngModel)]="contact.ServiceName" />
+                                                                    </mat-form-field>
+                                                                </ng-container>
+                                                                <ng-template #showService>
+                                                                    <span matTooltip="{{contact.ServiceName}}">{{
+                                                                        contact.ServiceName }}</span>
+                                                                </ng-template>
+                                                            </mat-cell>
                                                         </ng-container>
 
 
-                                                        <!-- <ng-container matColumnDef="DoctorName">
-                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                fxShow.gt-sm class="w-250">
-                                                                <span class="header-text">Doctor</span>
-                                                            </mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" class="w-250">
-                                                                <ng-container *ngIf="contact.Doctorflag">
-                                                                    <mat-form-field appearance="outline"
-                                                                        floatLabel="never">
-                                                                        <mat-select placeholder="Select Doctor"
-                                                                            [(ngModel)]="contact.DoctorId"
-                                                                            [ngModelOptions]="{ standalone: true }"
-                                                                            required
-                                                                            (selectionChange)="getdocdetail($event, contact)">
-                                                                            <mat-option
-                                                                                *ngFor="let option of doctorOptions"
-                                                                                [value]="option.value || option.Value">
-                                                                                {{ option.text || option.Text || contact.DoctorName}}
-                                                                            </mat-option>
-                                                                        </mat-select>
-                                                                    </mat-form-field>
-                                                                </ng-container>
-                                                            </mat-cell>
-                                                        </ng-container> -->
+
 
                                                         <!-- <ng-container matColumnDef="DoctorName">
-                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                fxShow.gt-sm class="w-230">Doctor
-                                                                Name</mat-header-cell>
-                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                class="w-230">
-                                                                <span>{{ contact.DoctorName}}</span>
-                                                                <div *ngIf="contact.Doctorflag">
-                                                                    <ng-container
-                                                                        *ngIf="!contact.Doctorflag; else showInput">
-                                                                        <button mat-icon-button
-                                                                            (click)="DocenableEditing(contact)"
-                                                                            class="clear-button">
-                                                                            <mat-icon>edit</mat-icon></button>
-                                                                    </ng-container>
-                                                                    <ng-template #showInput>
-                                                                        <form [formGroup]="opbillServiceform"
-                                                                            fxLayout="row" fxLayoutGap="2px">
-                                                                            <airmid-dropdown
-                                                                                formControlName="EditDoctor"
-                                                                                class="w-180" appearance="fill"
-                                                                                [formGroup]="opbillServiceform"
-                                                                                [mode]="autocompleteModedeptdoc"
-                                                                                [validations]="getValidationMessages().DoctorId"
-                                                                                (selectionChange)="DropDownValue($event)"></airmid-dropdown>
-                                                                        </form>
-                                                                        <mat-icon matTooltip="Close"
-                                                                            (click)="DoctorisableEditing(contact)">cancel</mat-icon>
-                                                                    </ng-template>
-                                                                </div>
-                                                            </mat-cell>
-                                                        </ng-container> -->
-
-
-                                                        <ng-container matColumnDef="DoctorName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                 fxShow.gt-sm class="w-230">Doctor
                                                                 Name</mat-header-cell>
@@ -737,8 +702,40 @@
                                                                     </ng-template>
                                                                 </div>
                                                             </mat-cell>
-                                                        </ng-container>
+                                                        </ng-container> -->
 
+                                                        <ng-container matColumnDef="DoctorName">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                fxShow.gt-sm class="w-230">Doctor
+                                                                Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                class="w-230">
+                                                                <span>{{ contact.DoctorName}}</span>
+                                                                <div *ngIf="contact.creditedtoDoctor == true">
+                                                                    <ng-container
+                                                                        *ngIf="!contact.EditDoctor; else showInput">
+                                                                        <button mat-icon-button
+                                                                            (click)="DocenableEditing(contact)"
+                                                                            class="clear-button">
+                                                                            <mat-icon>edit</mat-icon></button>
+                                                                    </ng-container>
+                                                                    <ng-template #showInput>
+                                                                        <form [formGroup]="opbillServiceform"
+                                                                            fxLayout="row" fxLayoutGap="2px">
+                                                                            <airmid-dropdown
+                                                                                formControlName="EditDoctor"
+                                                                                class="w-180" appearance="fill"
+                                                                                [formGroup]="opbillServiceform"
+                                                                                [mode]="autocompleteModedeptdoc"
+                                                                                [validations]="getValidationMessages().DoctorId"
+                                                                                (selectionChange)="DropDownValue(contact,$event)"></airmid-dropdown>
+                                                                        </form>
+                                                                        <mat-icon matTooltip="Close"
+                                                                            (click)="DoctorisableEditing(contact)">cancel</mat-icon>
+                                                                    </ng-template>
+                                                                </div>
+                                                            </mat-cell>
+                                                        </ng-container>
                                                         <!-- <ng-container matColumnDef="Urgent">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                 fxShow.gt-sm class="w-70">
@@ -762,7 +759,7 @@
                                                                         type="text" [id]="'Price' + index" [min]="0"
                                                                         (ngModelChange)="getCellCalculation(contact)"
                                                                         [type]="'text'"
-                                                                 (keypress)="keyPressCharater($event)"/>
+                                                                        (keypress)="keyPressCharater($event)" />
                                                                 </mat-form-field>
                                                             </mat-cell>
                                                         </ng-container>
@@ -774,8 +771,8 @@
                                                                 <mat-form-field floatLabel="never" appearance="fill">
                                                                     <input matInput placeholder="Disc Per"
                                                                         [(ngModel)]="contact.DiscPer" [type]="'text'"
-                                                                 (keypress)="keyPressCharater($event)"
-                                                                        [min]="0" [max]="100"
+                                                                        (keypress)="keyPressCharater($event)" [min]="0"
+                                                                        [max]="100"
                                                                         (ngModelChange)="onDiscountPerChange(contact)">
                                                                 </mat-form-field>
                                                             </mat-cell>
@@ -788,8 +785,8 @@
                                                                 <mat-form-field floatLabel="never" appearance="fill">
                                                                     <input matInput placeholder="Disc Amt"
                                                                         [(ngModel)]="contact.DiscAmt" [type]="'text'"
-                                                                 (keypress)="keyPressCharater($event)"
-                                                                        [min]="0" [max]="contact.TotalAmt"
+                                                                        (keypress)="keyPressCharater($event)" [min]="0"
+                                                                        [max]="contact.TotalAmt"
                                                                         (ngModelChange)="onDiscountAmtChange(contact)">
                                                                 </mat-form-field>
                                                             </mat-cell>
