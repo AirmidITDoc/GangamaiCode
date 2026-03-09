@@ -2038,12 +2038,12 @@ export class NewLabPatientRegComponent {
       }
       else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
         // debugger
-        if (!(this.OPFooterForm.get('UPINO')?.value)) {
-          this.toastrService.warning('Please enter upi no', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        }
+        // if (!(this.OPFooterForm.get('UPINO')?.value)) {
+        //   this.toastrService.warning('Please enter upi no', 'Warning !', {
+        //     toastClass: 'tostr-tost custom-toast-warning',
+        //   });
+        //   return;
+        // }
 
         let ModePaymentObj = [];
         ModePaymentObj.push({
@@ -2064,7 +2064,8 @@ export class NewLabPatientRegComponent {
         });
 
         this.OpBillForm.get('payments.payTmamount')?.setValue(this.myForm.get('netPayableAmt')?.value)
-        this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.OPFooterForm.get('UPINO')?.value)
+        this.OpBillForm.get('payments.payTmtranNo')?.setValue('0000')
+        // this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.OPFooterForm.get('UPINO')?.value)
         this.OpBillForm.get('payments.payTmdate').setValue(formattedDate)
         this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)

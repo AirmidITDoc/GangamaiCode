@@ -297,7 +297,21 @@
                                                     class="w-180">Status</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" class="w-180">
                                                     <div fxLayout="row" fxLayoutAlign="center center">
-                                                        <ng-container *ngIf="contact">
+                                                        <ng-container *ngIf="contact" class="gap-8">
+                                                            <div>
+
+                                                                <img *ngIf="contact.isTemplateTest == 0" width="16px"
+                                                                    height="16px"
+                                                                    src="/assets/images/logos/pathology.png"
+                                                                    matTooltip="Pathology Test">
+
+                                                                <mat-icon *ngIf="contact.isTemplateTest == 1"
+                                                                    matTooltip="Template Test">
+                                                                    assignment
+                                                                </mat-icon>
+
+                                                            </div>
+
                                                             <div class="status-wrapper">
                                                                 <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isCompleted,
@@ -484,7 +498,7 @@
                                                             : contact.paymentCompleted == 0 ? 'Payment is pending' : '' "
                                                         matTooltipPosition="above">
                                                         <button mat-icon-button (click)="getPrint(contact)"
-                                                            matTooltip="Result Print"
+                                                            matTooltip="Print"
                                                             [disabled]="!contact.isCompleted || contact.isVerifySign === false || contact.paymentCompleted == 0">
                                                             <mat-icon>print</mat-icon>
                                                         </button>

@@ -76,7 +76,7 @@ export class ReportDispatchComponent {
       dispatchModeId: [this.ModeId, [Validators.required]],
       comments: "",
       dispatchBy: this._accountService.currentUserValue.userId,
-      dispatchOn: ['',Validators.required],
+      dispatchOn: ['', Validators.required],
       // dispatchOn: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
       // DispatchBranch:0,
       // DueAmt:0,
@@ -172,7 +172,7 @@ export class ReportDispatchComponent {
       sortOrder: 0,
       filters: [{ fieldName: "DispatchId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }]
     }
-    
+
     setTimeout(() => {
       this.repogrid.gridConfig = this.gridConfigReportdispatch;
       this.repogrid.bindGridData();
@@ -218,16 +218,12 @@ export class ReportDispatchComponent {
     };
   }
   onSubmit() {
+    this.myReportform.removeControl('Service')
+
+    this.myReportform.get('unitId').setValue(parseInt(this.myReportform.get('unitId').value))
+    this.myReportform.get('dispatchOn').setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd'T'HH:mm:ss"))
+    this.myReportform.get('dispatchModeId').setValue(parseInt(this.myReportform.get('dispatchModeId').value))
     if (!this.myReportform.invalid) {
-      console.log(this.myReportform.value)
-
-      // this.myReportform.removeControl('DispatchBranch')
-      //   this.myReportform.removeControl('DueAmt')
-      this.myReportform.removeControl('Service')
-
-      this.myReportform.get('unitId').setValue(parseInt(this.myReportform.get('unitId').value))
-      this.myReportform.get('dispatchOn').setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd'T'HH:mm:ss"))
-      this.myReportform.get('dispatchModeId').setValue(parseInt(this.myReportform.get('dispatchModeId').value))
 
       console.log(this.myReportform.value)
       debugger
