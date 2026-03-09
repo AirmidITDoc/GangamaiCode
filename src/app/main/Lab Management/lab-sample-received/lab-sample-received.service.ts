@@ -43,11 +43,14 @@ export class LabSampleReceivedService {
     });
   }
 
-   public UpdateSampleRecived(employee) {
+  public UpdateSampleRecived(employee) {
     return this._httpClient1.PutData("LabSampleRecived/LabSampleRecivedUpdate", employee);
   }
 
   public getSampleRecivedlist(employee) {
     return this._httpClient1.PostData("LabSampleRecived/LabSampleRecivedList", employee)
+  }
+  public OnCancel(param) {
+    return this._httpClient1.PostData('', param)
   }
 }

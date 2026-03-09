@@ -741,14 +741,14 @@ export class LabResultListComponent {
 
     }
 
-    // if (!m || typeof m !== 'object' || !('isTemplateTest' in m) || m.isTemplateTest == null) {
+    if (!m || typeof m !== 'object' || !('isTemplateTest' in m) || m.isTemplateTest == null) {
 
-    //   this.toastr.warning('This Test Not Created!', 'Warning!', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   console.log('isTemplateTest not found or null, dataSource1 cleared.');
-    //   return;
-    // }
+      this.toastr.warning('This Test Not Created!', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      console.log('isTemplateTest not found or null, dataSource1 cleared.');
+      return;
+    }
   }
 
   Cancleresult(row) {
