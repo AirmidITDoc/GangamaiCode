@@ -65,11 +65,11 @@ export class BillingSummarygraphComponent {
 
 
     modalityData = [
-        { modality: 'X-Ray', opcount: 0 }
+        { modality: '', opcount: 0 }
     ];
 
     modalityData1 = [
-        { modality: 'X-Ray', opcount: 0 }
+        { modality: '', opcount: 0 }
     ];
 
       collection: CollectionRow[] = [

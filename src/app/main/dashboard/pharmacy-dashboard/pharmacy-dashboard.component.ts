@@ -78,7 +78,9 @@ export class PharmacyDashboardComponent implements OnInit {
         { mode: 'Cash', amount: 0 },
         { mode: 'Card', amount: 0 },
         { mode: 'Online', amount: 0 },
-        { mode: 'Insurance', amount: 0 }
+        { mode: 'AdvUsed', amount: 0 },
+        { mode: 'TdsPay', amount: 0 },
+        { mode: 'WFPay', amount: 0 },
     ];
 
     // Top selling medicines - AFFECTED by date filter
@@ -141,7 +143,7 @@ export class PharmacyDashboardComponent implements OnInit {
         } else {
             this.username = 'User';
         }
-
+        this.getpharmacyData()
         // Initialize all charts after view is loaded
         setTimeout(() => {
             this.initializeCharts();
@@ -166,56 +168,30 @@ export class PharmacyDashboardComponent implements OnInit {
 
     onGo(): void {
         // this.ngOnDestroy()
-        this.getpathologyReportData()
+       
         this.updateDateFilteredCharts()
+         this.getpharmacyData()
     }
-
-    getpathologyReportData() {
+    modalityData = [
+        { modality: '', opcount: 0 }
+    ];
+    getpharmacyData() {
         this.fromDate = this.datePipe.transform(this.dateFilterForm.get('start').value, "yyyy-MM-dd") || '01/01/2020',
-        this.toDate = this.datePipe.transform(this.dateFilterForm.get('end').value, "yyyy-MM-dd ") || '01/01/2020',
+            this.toDate = this.datePipe.transform(this.dateFilterForm.get('end').value, "yyyy-MM-dd ") || '01/01/2020',
 
 
-            this.dashboardService.getPathologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
+            this.dashboardService.getPharmacyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
                 this.pharmacyData = res;
-                console.log('Pathology Reports:', res);
+                console.log('Pharmacy Reports:', res);
 
                 if (this.pharmacyData) {
-                    // this.dsPathologyReports.data = res.recentPathologyReports;
-                    // this.dsPathologyTopTests.data = res.mostOrderedTests;
-                    // this.trendData = this.pathologyData.mostOrderedTests
-                    // this.dsPathologistWorkload.data = res.pathologyWorkloads
 
+                    if (this.pharmacyData.paymentCountSummary)
+                        this.paymentModeChart = this.getPaymentDoughnutChart();
+                    this.topMedicinesChart = this.getTopMedicinesChart();
+                    this.stockValueChart = this.getStockValueChart();
+                    this.expiryChart = this.getExpiryChart();
 
-                    // if (this.trendData) {
-
-                    //     this.modalityData = [
-                    //         ...this.modalityData,
-                    //         ...this.trendData.map(item => ({
-
-                    //             modality: item.testName,
-                    //             count: item.count
-                    //         }))
-                    //     ];
-                    // }
-                    debugger
-                    // console.log(this.modalityData)
-                    // if (this.modalityData)
-                    //     this.modalityChart = this.getModalityBarChart();
-
-                    // if (this.pathologyData) {
-                    //     this.statusData[0].count = this.pathologyData.countSummary.completedCount
-                    //     this.statusData[1].count = this.pathologyData.countSummary.pendingCount
-                    //     this.statusData[2].count = this.pathologyData.countSummary.rejectedCount
-                    // }
-                    // if (this.statusData)
-                    //     this.statusPieChart = this.getStatusPieChart();
-
-                    // if (this.pathologyData.pathologyValumes.length > 0)
-                    //     // this.getPathologyDepartmentChart()
-                    //     this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
-                    // this.pathologyStatusPieChart = this.getPathologyStatusPieChart()
-                    // if (this.pathologyData.dailyTestCounts.length > 0)
-                    //     this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart()
                 }
             });
 
@@ -262,11 +238,11 @@ export class PharmacyDashboardComponent implements OnInit {
             }
 
             if (document.getElementById('paymentModeChart')) {
-                this.paymentModeChart = this.getPaymentDoughnutChart();
+                // this.paymentModeChart = this.getPaymentDoughnutChart();
             }
 
             if (document.getElementById('topMedicinesChart')) {
-                this.topMedicinesChart = this.getTopMedicinesChart();
+                // this.topMedicinesChart = this.getTopMedicinesChart();
             }
         }, 100);
     }
@@ -362,7 +338,7 @@ export class PharmacyDashboardComponent implements OnInit {
         if (document.getElementById('paymentModeChart')) {
             console.log('Creating payment mode chart');
             try {
-                this.paymentModeChart = this.getPaymentDoughnutChart();
+                // this.paymentModeChart = this.getPaymentDoughnutChart();
             } catch (error) {
                 console.error('Error creating payment mode chart:', error);
             }
@@ -372,7 +348,7 @@ export class PharmacyDashboardComponent implements OnInit {
         if (document.getElementById('topMedicinesChart')) {
             console.log('Creating top medicines chart');
             try {
-                this.topMedicinesChart = this.getTopMedicinesChart();
+                // this.topMedicinesChart = this.getTopMedicinesChart();
             } catch (error) {
                 console.error('Error creating top medicines chart:', error);
             }
@@ -382,7 +358,7 @@ export class PharmacyDashboardComponent implements OnInit {
         if (document.getElementById('stockValueChart')) {
             console.log('Creating stock value chart');
             try {
-                this.stockValueChart = this.getStockValueChart();
+                // this.stockValueChart = this.getStockValueChart();
             } catch (error) {
                 console.error('Error creating stock value chart:', error);
             }
@@ -392,7 +368,7 @@ export class PharmacyDashboardComponent implements OnInit {
         if (document.getElementById('expiryChart')) {
             console.log('Creating expiry chart');
             try {
-                this.expiryChart = this.getExpiryChart();
+                // this.expiryChart = this.getExpiryChart();
             } catch (error) {
                 console.error('Error creating expiry chart:', error);
             }
@@ -485,16 +461,35 @@ export class PharmacyDashboardComponent implements OnInit {
         });
     }
 
+    // paymodedata = []
+
+
     // Payment Mode Doughnut Chart
     getPaymentDoughnutChart() {
+
+        if (this.paymentModeChart) {
+            this.paymentModeChart.destroy();
+        }
+
+
+        this.paymentModeData[0].amount = this.pharmacyData.paymentCountSummary['cashPay']
+        this.paymentModeData[1].amount = this.pharmacyData.paymentCountSummary['cardPay']
+        this.paymentModeData[2].amount = this.pharmacyData.paymentCountSummary['onlinePay']
+
+        this.paymentModeData[3].amount = this.pharmacyData.paymentCountSummary['advUsed']
+
+        this.paymentModeData[4].amount = this.pharmacyData.paymentCountSummary['tdsPay']
+        this.paymentModeData[5].amount = this.pharmacyData.paymentCountSummary['wfPay']
+
+        debugger
         return new Chart('paymentModeChart', {
             type: 'doughnut',
             data: {
-                labels: this.pharmacyData.paymentModeData.map(d => d.mode),
+                labels: this.paymentModeData.map(d => d.mode),
                 datasets: [
                     {
-                        backgroundColor: ['#FF3784', '#36A2EB', '#4BC0C0', '#F77825'],
-                        data: this.paymentModeData.map(d => d.amount)
+                        backgroundColor: ['#FF3784', '#36A2EB', '#e471fe', '#F77825', '#bdf5ac'],
+                        data: this.paymentModeData.map(d => d.amount),
                     }
                 ]
             },
@@ -524,14 +519,18 @@ export class PharmacyDashboardComponent implements OnInit {
 
     // Top Medicines Horizontal Bar Chart
     getTopMedicinesChart() {
+        if (this.topMedicinesChart) {
+            this.topMedicinesChart.destroy();
+        }
+
         return new Chart('topMedicinesChart', {
             type: 'bar',
             data: {
-                labels: this.pharmacyData.topMedicinesData.map(d => d.name),
+                labels: this.pharmacyData.topSellingMedicines.map(d => d.itemName),
                 datasets: [
                     {
                         label: 'Sales Count',
-                        data: this.topMedicinesData.map(d => d.sales),
+                        data: this.pharmacyData.topSellingMedicines.map(d => d.qty),
                         backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6']
                     }
                 ]
@@ -556,7 +555,7 @@ export class PharmacyDashboardComponent implements OnInit {
         return new Chart('stockValueChart', {
             type: 'bar',
             data: {
-                labels: this.pharmacyData.stockValueData.map(d => d.category),
+                // labels: this.pharmacyData.stockValueData.map(d => d.category),
                 datasets: [
                     {
                         label: 'Stock Value (₹)',
@@ -586,10 +585,21 @@ export class PharmacyDashboardComponent implements OnInit {
 
     // Expiring Medicines Chart
     getExpiryChart() {
+
+         if (this.expiryChart) {
+            this.expiryChart.destroy();
+        }
+
+
+        // this.expiryData[0].count = this.pharmacyData.paymentCountSummary['cashPay']
+        // this.expiryData[1].count = this.pharmacyData.paymentCountSummary['cardPay']
+        // this.expiryData[2].count = this.pharmacyData.paymentCountSummary['onlinePay']
+
+        
         return new Chart('expiryChart', {
             type: 'doughnut',
             data: {
-                labels: this.expiryData.map(d => d.period),
+                labels: this.pharmacyData.expiringMedicines.map(d => d.period),
                 datasets: [
                     {
                         backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e'],
@@ -613,7 +623,7 @@ export class PharmacyDashboardComponent implements OnInit {
         return new Chart('categoryChart', {
             type: 'pie',
             data: {
-                labels: this.categoryData.map(d => d.category),
+                labels: this.pharmacyData.patientCategoryWiseSummary.map(d => d.category),
                 datasets: [
                     {
                         backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],

@@ -22,7 +22,7 @@ export class ItemGenericMasterService {
             itemGenericNameId: [0],
             itemGenericName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(250),
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],

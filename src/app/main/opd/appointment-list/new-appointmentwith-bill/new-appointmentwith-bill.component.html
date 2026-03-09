@@ -269,7 +269,7 @@
                                                                         <airmid-textbox label="National ID"
                                                                             formControlName="aadharCardNo"
                                                                             [value]="registerObj.aadharCardNo ?? ''"
-                                                                            [formGroup]="myForm"
+                                                                            [formGroup]="myForm"  [maxLength]="12"
                                                                             [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
                                                                     </div>
                                                                 </div>
@@ -710,7 +710,7 @@
                                                                 Name</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm
                                                                 class="w-230">
-                                                                <span>{{ contact.DoctorName}}</span>
+                                                                <span *ngIf="!contact.EditDoctor">{{ contact.DoctorName}}</span>
                                                                 <div *ngIf="contact.creditedtoDoctor == true">
                                                                     <ng-container
                                                                         *ngIf="!contact.EditDoctor; else showInput">

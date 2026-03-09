@@ -52,10 +52,10 @@
   }
 
   .metric-card {
-    flex: 1 1 240px;
+    flex: 1 1 220px;
     /* fluid card width; 3-5 per row depending on space */
     min-width: 180px;
-    max-width: 256px;
+    max-width: 220px;
     height: fit-content;
     border-radius: 14px;
     overflow: visible;
@@ -68,8 +68,8 @@
   }
 
   .metric-icon {
-    width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
     border-radius: 12px;
     display: grid;
     place-items: center;

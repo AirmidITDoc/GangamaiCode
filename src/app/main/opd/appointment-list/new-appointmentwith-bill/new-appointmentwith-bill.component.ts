@@ -2018,8 +2018,9 @@ export class NewAppointmentwithBillComponent {
   SelectedDocName: any = [];
   DropDownValue(element,Obj) {
      element.DoctorId=Obj.value
-    element.DoctorName=Obj.text
+     element.DoctorName=Obj.text
 
+      element.EditDoctor = false;
     console.log(Obj)
   }
   private destroy$ = new Subject<void>();

@@ -233,6 +233,11 @@ export class DashboardService {
         return this._httpClient.GetData("Dashboard/pathology-dashboard?UnitId=" + params.UnitId+"&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
     }
 
+public getPharmacyDashboard(params) {
+        return this._httpClient.GetData("Dashboard/pharmacy-dashboard?UnitId=" + params.UnitId+"&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+    }
+    
+
  public getRadiologyDashboard(params) {
         return this._httpClient.GetData("Dashboard/radiology-dashboard?UnitId=" + params.UnitId+"&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
     }

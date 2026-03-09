@@ -3,6 +3,7 @@ import Chart from 'chart.js/auto';
 import { DashboardService } from '../dashboard.service';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-new-dashboard',
@@ -14,26 +15,27 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 export class NewDashboardComponent implements OnInit {
   
   // Date filter properties
-  fromDate: Date;
-  toDate: Date;
+ fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
   
   constructor(private dashboardService: DashboardService,
-     private accountService: AuthenticationService,
+     private accountService: AuthenticationService,public datePipe: DatePipe,
   ) { 
     // Set default dates to current week (Monday to today)
-    this.initializeDateRange();
+    // this.initializeDateRange();
   }
   
   initializeDateRange() {
-    const today = new Date();
-    this.toDate = new Date(today);
+    // const today = new Date();
+    // this.toDate = new Date(today);
     
     // Find Monday of current week
-    const day = today.getDay();
-    const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
-    const monday = new Date(today);
-    monday.setDate(diff);
-    this.fromDate = monday;
+    // const day = today.getDay();
+    // const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+    // const monday = new Date(today);
+    // monday.setDate(diff);
+    // this.fromDate = monday;
   }
   
   onDateChange() {
@@ -171,12 +173,12 @@ export class NewDashboardComponent implements OnInit {
         },
        {
           "fieldName": "FromDate",
-          "fieldValue": this.formatDateForAPI(this.fromDate),
+          "fieldValue": this.fromDate,
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
-          "fieldValue": this.formatDateForAPI(this.toDate),
+          "fieldValue": this.toDate,
           "opType": "Equals"
         }
       ],
@@ -187,7 +189,7 @@ export class NewDashboardComponent implements OnInit {
       
       let apiData = res && res.length ? res[0] : {};
       console.log("==api data", apiData);
-
+      console.log(res)
       this.financeSummary = [
         { label: 'Today Revenue', value: apiData?.Total_Revenue || 0, color: 'mint', icon: 'check-circle' },
         { label: 'Pending Dues', value: apiData?.PendingDues || 0, color: 'rose', icon: 'hourglass' },
@@ -226,12 +228,12 @@ export class NewDashboardComponent implements OnInit {
           },
         {
             "fieldName": "FromDate",
-            "fieldValue": this.formatDateForAPI(this.fromDate),
+            "fieldValue": this.fromDate,
             "opType": "Equals"
           },
         {
             "fieldName": "ToDate",
-            "fieldValue": this.formatDateForAPI(this.toDate),
+            "fieldValue":this.toDate,
             "opType": "Equals"
           }
         ],
@@ -239,7 +241,7 @@ export class NewDashboardComponent implements OnInit {
       };
       this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
         let apiData = res && res.length ? res : {};
-
+        console.log(res)
         this.departmentVisits = [
           { name: 'Medicine', value: apiData?.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
           { name: 'Gastrologist', value: apiData?.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
@@ -271,12 +273,12 @@ export class NewDashboardComponent implements OnInit {
         },
         {
           "fieldName": "FromDate",
-          "fieldValue": this.formatDateForAPI(this.fromDate),
+          "fieldValue":this.fromDate,
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
-          "fieldValue": this.formatDateForAPI(this.toDate),
+          "fieldValue": this.toDate,
           "opType": "Equals"
         }
       ],
@@ -418,6 +420,28 @@ export class NewDashboardComponent implements OnInit {
     }
   ];
 
+
+   trendSeriesOP = [
+        { name: 'Mon', value: 110 },
+        { name: 'Tue', value: 135 },
+        { name: 'Wed', value: 128 },
+        { name: 'Thu', value: 160 },
+        { name: 'Fri', value: 148 },
+        { name: 'Sat', value: 120 },
+        { name: 'Sun', value: 90 }
+      
+   ]
+  trendSeriesIP = [
+        { name: 'Mon', value: 60 },
+        { name: 'Tue', value: 72 },
+        { name: 'Wed', value: 68 },
+        { name: 'Thu', value: 75 },
+        { name: 'Fri', value: 80 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 55 }
+      ]
+    
+  
 
   recentColumns = ['name', 'type', 'dept', 'time'];
   recentPatients = [
@@ -566,13 +590,13 @@ export class NewDashboardComponent implements OnInit {
         {
           "fieldName": "FromDate",
           // "fieldValue": "10/01/2025",
-          "fieldValue": this.formatDateForAPI(this.fromDate),
+          "fieldValue": this.fromDate,
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
           // "fieldValue": "10/11/2025",
-          "fieldValue": this.formatDateForAPI(this.toDate),
+          "fieldValue": this.toDate,
           "opType": "Equals"
         }
       ],
@@ -1059,4 +1083,54 @@ export class NewDashboardComponent implements OnInit {
       }
     }
   }
+
+     getDashOPrendseriesOPCount() {
+      const payload = {
+        "searchFields": [
+          {
+            "fieldName": "UnitId",
+            "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
+            "opType": "Equals"
+          },
+        {
+            "fieldName": "FromDate",
+            "fieldValue": this.fromDate,
+            "opType": "Equals"
+          },
+        {
+            "fieldName": "ToDate",
+            "fieldValue":this.toDate,
+            "opType": "Equals"
+          }
+        ],
+        "mode": "DashOPDepatmentWiseCount"
+      };
+      this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+        let apiData = res && res.length ? res : {};
+        console.log(res)
+        this.trendSeriesOP = [
+          { name: 'Mon', value: apiData?.find(d => d.name.toLowerCase() === 'Mon'.toLowerCase())?.value || 0 },
+          { name: 'Tue', value: apiData?.find(d => d.name.toLowerCase() === 'Tue'.toLowerCase())?.value || 0 },
+          { name: 'Wed', value: apiData?.find(d => d.name.toLowerCase() === 'Wed'.toLowerCase())?.value || 0 },
+          { name: 'Thu', value: apiData?.find(d => d.name.toLowerCase() === 'Thu'.toLowerCase())?.value || 0 },
+          { name: 'Fri', value: apiData?.find(d => d.name.toLowerCase() === 'Fri'.toLowerCase())?.value || 0 },
+          { name: 'Sat', value: apiData?.find(d => d.name.toLowerCase() === 'Sat'.toLowerCase())?.value || 0 },
+           { name: 'Sun', value: apiData?.find(d => d.name.toLowerCase() === 'Sun'.toLowerCase())?.value || 0 },
+        ];
+      
+      }, err => {
+        this.trendSeriesOP = [
+        { name: 'Mon', value: 110 },
+        { name: 'Tue', value: 135 },
+        { name: 'Wed', value: 128 },
+        { name: 'Thu', value: 160 },
+        { name: 'Fri', value: 148 },
+        { name: 'Sat', value: 120 },
+        { name: 'Sun', value: 90 }
+      ]
+    
+    
+    })
+  }
+
 }
