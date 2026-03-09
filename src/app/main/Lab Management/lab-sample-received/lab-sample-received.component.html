@@ -206,26 +206,18 @@
                             </ng-container>
 
                             <ng-container matColumnDef="samplecollectiondatetime">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-300">
                                     SampleCollection Details </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
                                     <div style="margin-right:5px; font-weight: bold;">
                                         {{contact.sampleNo}}
                                     </div>
                                     {{ contact.sampleCollectionTime | date:'dd/MM/yyyy - h:mma' }}
-                                    <div style="margin-left:5px; font-weight: bold;"  *ngIf="contact.samplecollectedBy">
+                                    <div style="margin-left:5px; font-weight: bold;" *ngIf="contact.samplecollectedBy">
                                         By: {{ contact.samplecollectedBy }}
                                     </div>
                                 </mat-cell>
                             </ng-container>
-
-                            <!-- <ng-container matColumnDef="UHID">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                    UHID</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                    {{contact.labRequestNo}}
-                                </mat-cell>
-                            </ng-container> -->
 
                             <ng-container matColumnDef="patientName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -240,22 +232,6 @@
                                     </span>
                                 </mat-cell>
                             </ng-container>
-
-                            <!-- <ng-container matColumnDef="genderName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                    Gender-Age</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                    {{contact.genderName}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="mobileNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                    Mobile No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                    {{contact.mobileNo}}
-                                </mat-cell>
-                            </ng-container> -->
 
                             <ng-container matColumnDef="serviceName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -316,6 +292,18 @@
                                     <div style="margin-left:5px; font-weight: bold;" *ngIf="contact.userName">
                                         By: {{ contact.userName }}
                                     </div>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                                    Actions
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <button mat-icon-button (click)="OnCancel(contact)" matTooltip="Cancel">
+                                        <mat-icon color="warn">cancel</mat-icon>
+                                    </button>
+                                    <!-- [disabled]="contact.isSampleReceivedStatus == false" -->
                                 </mat-cell>
                             </ng-container>
 

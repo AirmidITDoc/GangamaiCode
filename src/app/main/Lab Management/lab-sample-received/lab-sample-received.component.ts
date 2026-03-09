@@ -64,7 +64,7 @@ export class LabSampleReceivedComponent {
     'outSourceLabName',
     'samplecollectiondatetime',
     'Recevieddate',
-    // 'ReceviedBy',
+    'action',
   ];
   vSampleCollFormGroup: FormGroup
 
@@ -352,6 +352,40 @@ export class LabSampleReceivedComponent {
       UnitId: [this._loggedService.currentUserValue.user.unitId]
     });
   }
+
+  OnCancel(data: any) {
+    Swal.fire({
+      title: 'Do you want to cancel Sample Recevied?',
+      text: "Please provide a reason for cancellation",
+      icon: "warning",
+      input: 'text',
+      inputPlaceholder: 'Enter cancellation reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
+    }).then((result) => {
+      // if (result.isConfirmed) {
+      //   let submitData = {
+      //     otReservationId: data.otReservationId,
+      //     reason: result.value,
+      //     isCancelledBy: this._loggedService.currentUserValue.userId
+      //   };
+      //   console.log(submitData);
+      //   this._SampleCollectionService.OnCancel(submitData).subscribe((res) => {
+      //     this.toastr.success(res.message);
+      //     this.GetSampleCollectiondetail();
+      //   });
+      // }
+    });
+  }
+
 
   // ////////////// outsource popup //////////////////////
   // private overlayRef: OverlayRef | null = null;
