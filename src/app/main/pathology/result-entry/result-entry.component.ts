@@ -858,8 +858,9 @@ export class ResultEntryComponent implements OnInit {
 
 
     // changed by raksha 5/11/25
+    //Changed by ambadas 09/03/2026
     Printresultentry(row: any = null) {
-        // debugger
+         debugger
         console.log(row);
         console.log(this.selection.selected);
         let pathologyDelete = [];
@@ -867,14 +868,20 @@ export class ResultEntryComponent implements OnInit {
         this.selectedItem = this.selection.selected[0];
 
         this.selection.selected.forEach((element) => {
-            pathologyDelete.push({ pathReportId: element.pathReportId });
-        });
-        if (this.selectedItem.isCompleted)
+        if (element?.isCompleted){
             this.CompletdFlag = 1
-        else
+            pathologyDelete.push({ pathReportId: element.pathReportId });
+        }
+        else{
             this.CompletdFlag = 0
+        }
+        });
+        // if (this.selectedItem.isCompleted)
+        //     this.CompletdFlag = 1
+        // else
+        //     this.CompletdFlag = 0
 
-        pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
+       // pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
 
         const submitData = {
             pathPrintResultEntry: pathologyDelete
@@ -893,6 +900,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     viewgetPathologyTestReportPdf(data) {
+        debugger
         const param = {
             searchFields: [
                 {

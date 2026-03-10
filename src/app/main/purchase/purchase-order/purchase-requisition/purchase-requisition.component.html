@@ -1,3 +1,99 @@
+<ng-template #LastThreeSupplier>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Last Three Supplier Details</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="Lastthreelist-table1 p-12" fxFlex="100%">
+        <div class="table-body">
+            <div class="airmid-table"> 
+                 <mat-table matSort [dataSource]="dsLastThreeItemList" [@animateStagger]="{value:'50'}">
+
+                      <ng-container matColumnDef="supplierName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            SupplierName</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.supplierName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="receiveQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            R_Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.receiveQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="freeQty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            F_Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.freeQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="mrp">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            MRP</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.mrp | currency:'INR':'symbol-narrow':'0.2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="rate">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Rate</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.rate | currency:'INR':'symbol-narrow':'0.2'}}
+                                        </mat-cell>
+                                    </ng-container>
+                                   
+
+                                    <ng-container matColumnDef="vatPercentage">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                            Vat</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                            {{contact.vatPercentage}}%
+                                        </mat-cell>
+                                    </ng-container>
+
+                    <ng-container matColumnDef="NoData">
+                        <mat-footer-cell *matFooterCellDef>
+                            <span>No Data Found</span>
+                        </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedPrescriptionColumns; sticky: true">
+                    </mat-header-row>
+
+                    <mat-row *matRowDef="let contact; columns: displayedPrescriptionColumns;"
+                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="getService(contact)"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['NoData']"
+                        [ngClass]="{'hide':dsLastThreeItemList.data.length > 0}"></mat-footer-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">Close</button>
+            </div>
+        </div>
+    </div> -->
+</ng-template>
+
 <div class="modal-page page-layout inner-scroll"   >
     <div class="modal-wrapper grid-container">
     <div class="modal-header accent">
@@ -55,7 +151,7 @@
                                        
                                     
                                         <div style="padding: 10px;">
-                                            <button class="btn btn-primary btn-with-icon btn-xs" >
+                                            <button class="btn btn-primary btn-with-icon btn-xs" (click)="onChangeFirst()">
                                                 <span>Search</span>
                                             </button>
                                         </div>
@@ -65,10 +161,10 @@
                             
                                 <div class="modal-card-container dynamic-table-wrapper" fxFlex>
                                     <div class="airmid-table-container">
-                                        <mat-table #table matSort [dataSource]="dsPORequisitionHeader" [@animateStagger]="{ value: '50' }"
+                                        <mat-table #table matSort [dataSource]="dsPRHeader" [@animateStagger]="{ value: '50' }"
                                             class="airmid-table table3" style="overflow: auto;">
 
-                                             <ng-container matColumnDef="isVerify">
+                                             <!-- <ng-container matColumnDef="isVerify">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                                  
                                                 </mat-header-cell>
@@ -80,45 +176,35 @@
                                                     <mat-icon *ngIf="!contact.isverify=='1';" matTooltip="Is Verify Pending"
                                                         style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
                                                 </mat-cell>
-                                            </ng-container> 
+                                            </ng-container>  -->
 
                                             <ng-container matColumnDef="Date">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
                                                     Date
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
-                                                    <span> {{contact.purchaseRequisitionDate | date:'yyyy-MM-dd'}}-{{contact.purchaseRequisitionTime | date:'hh:mm a'}}</span>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                    <span> {{contact.prdate | date:'yyyy-MM-dd'}} - {{contact.prtime | date:'hh:mm a'}}</span>
                                                 </mat-cell>
                                             </ng-container>
 
-                                              <ng-container matColumnDef="purchaseRequisitionNo">
+                                              <ng-container matColumnDef="prNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                                  PO Req.No
+                                                  PR No
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                                    <span> {{contact.purchaseRequisitionNo}}</span>
+                                                    <span> {{contact.prno}}</span>
                                                 </mat-cell>
                                             </ng-container>
                             
-                                            <ng-container matColumnDef="fromStore">
+                                            <ng-container matColumnDef="storeName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                                   From Store
+                                                  Store Name
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150"
-                                                matTooltip="{{contact.fromStore}}">
-                                                    <span> {{contact.fromStore}}</span>
+                                                matTooltip="{{contact.storeName}}">
+                                                    <span> {{contact.storeName}}</span>
                                                 </mat-cell>
-                                            </ng-container>
-                            
-                                            <ng-container matColumnDef="toStore">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">
-                                                    To Store
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180"
-                                                  matTooltip="{{contact.toStore}}">
-                                                    <span> {{contact.toStore}}</span>
-                                                </mat-cell>
-                                            </ng-container>
+                                            </ng-container> 
 
                                             
                                             <ng-container matColumnDef="comments">
@@ -136,19 +222,19 @@
                                                    Added by
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160"
-                                                  matTooltip="{{contact.addedby}}">
-                                                    <span> {{contact.addedby}}</span>
+                                                  matTooltip="{{contact.createdBy}}">
+                                                    <span> {{contact.createdBy}}</span>
                                                 </mat-cell>
                                             </ng-container> 
 
-                                            <ng-container matColumnDef="isInchargeVerifyDate" StickyEnd>
+                                            <!-- <ng-container matColumnDef="isInchargeVerifyDate" StickyEnd>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                                 IsVerify Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                                     <span> {{contact.isInchargeVerifyDate | date:'yyyy-MM-dd'}}</span>
                                                 </mat-cell>
-                                            </ng-container> 
+                                            </ng-container>  -->
                             
                                             <ng-container matColumnDef="loading">
                                                 <mat-footer-cell *matFooterCellDef colspan="6">
@@ -162,18 +248,75 @@
                                                 </mat-footer-cell>
                                             </ng-container> 
                             
-                                            <mat-header-row class="accent min-width-1400" *matHeaderRowDef="displayedColumnsPOReqHeader; sticky: true"></mat-header-row>
-                                            <mat-row *matRowDef="let contact; columns: displayedColumnsPOReqHeader; let i = index" (click)="getPOReqDetList(contact)"
-                                                class="contact min-width-1400" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight tabindex="999"></mat-row>
+                                            <mat-header-row class="accent min-width-1000" *matHeaderRowDef="displayedColumnsPRHeader; sticky: true"></mat-header-row>
+                                            <mat-row *matRowDef="let contact; columns: displayedColumnsPRHeader; let i = index" (click)="getPRDetList(contact)"
+                                                class="contact min-width-1000" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight tabindex="999"></mat-row>
                                             <mat-footer-row *matFooterRowDef="['loading']"
                                                 [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
                                             <mat-footer-row *matFooterRowDef="['noData']"
-                                                [ngClass]="{ hide: !(dsPORequisitionHeader != null && dsPORequisitionHeader.data.length == 0) }"></mat-footer-row>
+                                                [ngClass]="{ hide: !(dsPRHeader != null && dsPRHeader.data.length == 0) }"></mat-footer-row>
                                         </mat-table>
                                     </div> 
                                 </div>
                                 <mat-paginator #paginator [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25" showFirstLastButtons>
                                 </mat-paginator> 
+
+                                <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                                    <div class="airmid-table-container">
+                                        <mat-table #table matSort [dataSource]="dsPRdetailslist" [@animateStagger]="{ value: '50' }"
+                                            class="airmid-table table3" style="overflow: auto;">
+                                            <ng-container matColumnDef="itemName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Item Name
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <span> {{contact.itemName}}</span>
+                                                </mat-cell>
+                                            </ng-container> 
+                            
+                                            <ng-container matColumnDef="Qty">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <span> {{contact.qty || '-'}}</span>
+                                                </mat-cell>
+                                            </ng-container> 
+
+                                             <ng-container matColumnDef="Store">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
+                                                   From/To Store
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
+                                                matTooltip="{{contact.fromStore}}-{{contact.toStore}}">
+                                                    <span> {{contact.fromStore}} | {{contact.toStore}}</span>
+                                                </mat-cell>
+                                            </ng-container>  
+                                            
+                                            <ng-container matColumnDef="loading">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    loading data...
+                                                </mat-footer-cell>
+                                            </ng-container>
+                            
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    <span>No Data Found</span>
+                                                </mat-footer-cell>
+                                            </ng-container> 
+                            
+                                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsPRDet; sticky: true"></mat-header-row>
+                                            <mat-row *matRowDef="let contact; columns: displayedColumnsPRDet; let i = index" tabindex="999"
+                                                class="contact" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight 
+                                                (click)="openLastthreeSupplierlist(contact)"></mat-row>
+                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{ hide: !(dsPRdetailslist != null && dsPRdetailslist.data.length == 0) }"></mat-footer-row>
+                                        </mat-table>
+                                    </div>
+                                </div>
+                                <mat-paginator #paginatoritem [pageSizeOptions]="[25,35, 50, 100]" [pageSize]="25" showFirstLastButtons>
+                                </mat-paginator>  
                             </mat-card>
                         </div> 
                     </div> 

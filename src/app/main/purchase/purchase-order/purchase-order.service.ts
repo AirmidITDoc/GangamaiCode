@@ -169,6 +169,12 @@ export class PurchaseOrderService {
     public getPORequisitionDetList(data) {
     return this._httpClient1.PostData("PurchaseRequisition/PurchaseRequisitionDetailList", data);
   }
+    public getPRHeaderList(data) {
+    return this._httpClient1.PostData("PurchaseRequisitionFinal/PurchaseRequisitionFinalHeaderList", data);
+  }
+    public getPRDetList(data) {
+    return this._httpClient1.PostData("PurchaseRequisitionFinal/PurchaseRequisitionFinalDetailList", data);
+  }
     public SavePR(data) {
     return this._httpClient1.PostData("PurchaseRequisitionFinal/Insert", data);
   }

@@ -10,6 +10,7 @@ import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdo
 import { Console } from "console";
 import { ItemMasterModule } from "../item-master.module";
 import { ItemWiseSupplierRateComponent } from "../item-wise-supplier-rate/item-wise-supplier-rate.component";
+import { NewManufactureComponent } from "../../manufacture-master/new-manufacture/new-manufacture.component";
 
 @Component({
     selector: "app-item-form-master",
@@ -121,6 +122,18 @@ export class ItemFormMasterComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
+        });
+    }
+    
+    AddNewManufactur(row: any = null) {
+        let that = this; 
+        const dialogRef = this._matDialog.open(NewManufactureComponent,
+            {
+                height: '45%',
+                width: '80%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => { 
         });
     }
 

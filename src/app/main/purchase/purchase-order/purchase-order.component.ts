@@ -739,8 +739,14 @@ export class PurchaseItemList {
   SupplierId: any;
   StoreName: any;
   Remarks: any;
-  itemName:any
   Mobile: any;
+
+
+itemId:any
+itemName:any;
+purchaseRequisitionId:any;
+purchaseRequisitionDetId:any;
+qty:any;
   /**
    * Constructor
    *
@@ -757,6 +763,11 @@ export class PurchaseItemList {
       this.StoreName = PurchaseItemList.StoreName || '';
       this.Remarks = PurchaseItemList.Remarks || '';
       this.Mobile = PurchaseItemList.Mobile || 0;
+      this.itemName = PurchaseItemList.itemName || "";
+      this.itemId = PurchaseItemList.itemId || 0;
+      this.qty = PurchaseItemList.qty || 0;
+      this.purchaseRequisitionId = PurchaseItemList.purchaseRequisitionId || 0;
+      this.purchaseRequisitionDetId = PurchaseItemList.purchaseRequisitionDetId || 0;
     }
   }
 }

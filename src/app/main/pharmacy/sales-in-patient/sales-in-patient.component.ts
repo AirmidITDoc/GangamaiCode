@@ -544,10 +544,10 @@ export class SalesInPatientComponent implements OnInit {
              MRPRateTotal = (qty * formvalues?.MRPRate).toFixed(2);
              marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
              PurTotAmt = (qty * this.selectedItem?.purchaseRate).toFixed(2);
-             GSTAmount = (((parseFloat(TotalMRP) * formvalues?.GSTPer) / 100) * qty).toFixed(2);
-             CGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.cgstPer) / 100) * qty).toFixed(2);
-             SGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.sgstPer) / 100) * qty).toFixed(2);
-             IGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.igstPer) / 100) * qty).toFixed(2);
+             GSTAmount = (((parseFloat(TotalMRP) * formvalues?.GSTPer) / 100)).toFixed(2);
+             CGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.cgstPer) / 100)).toFixed(2);
+             SGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.sgstPer) / 100)).toFixed(2);
+             IGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.igstPer) / 100)).toFixed(2);
          } else if (!qty || qty == 0) {
              TotalMRP = '0';
              LandedRateandedTotal = '0';

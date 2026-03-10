@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -15,6 +15,8 @@ import { ToastType } from '../types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { element } from 'protractor';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-purchase-requisitionlist',
@@ -56,6 +58,9 @@ export class PurchaseRequisitionlistComponent implements OnInit {
   status = this.accountService.currentUserValue.user.storeId 
   Verify = "1"
   chargeslist:any=[];
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatPaginator) paginatoritem: MatPaginator;
 
 
     dsPoReqitemlist = new MatTableDataSource<ItemNameList>();
@@ -148,39 +153,18 @@ export class PurchaseRequisitionlistComponent implements OnInit {
     this._PurchaseOrderService.getPORequisitionHeaderList(data).subscribe(res => {
       console.log(data);
       this.dsPORequisitionHeader.data = res.data
-     
+      this.dsPORequisitionHeader.sort = this.sort
+       this.dsPORequisitionHeader.paginator = this.paginator
     });
-  }
-
-
-  AddPOItem(contact){   
-    const iscekDuplicate = this.dsPoReqitemlist.data.some(item => item.itemName == contact.itemName) 
-    if (!iscekDuplicate) {
-      this.dsPoReqitemlist.data = [];
-      debugger
-      this.chargeslist.push(
-        {
-       //   ItemID: this.IndentForm.get("ItemName").value.itemId || 0,
-          itemName:contact.itemName || '',
-          qty: contact.qty 
-        });
-      this.dsPoReqitemlist.data = this.chargeslist 
-    } else {
-      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    } 
   } 
-
 CreatePRReqForm(){
   return this._FormBuilder.group({
       prid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], 
       prdate: new Date(),
       prtime: new Date(),
-      unitId: [this.accountService.currentUserValue.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]], 
+      unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]], 
       priority: [false],
-      storeId: [this.accountService.currentUserValue.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]], 
+      storeId: [this.accountService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]], 
       comments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       isclosed: [false],   
       isverify: [false],  
@@ -189,24 +173,24 @@ CreatePRReqForm(){
       isCancelled: [false], 
       isCancelledBy:[0, [this._FormvalidationserviceService.onlyNumberValidator()]], 
       isCancelledDateTime:['1900-01-01'],
-      tPrdetails:[],
-      tPr:[] 
+      tPrdetails: this._FormBuilder.array([]),
+      tPr: this._FormBuilder.array([])
   }) 
 }
 CreatePoReqDet(item:any){
   return this._FormBuilder.group({
-    prdetId: [item?.sadaa , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    fromStoreId: [item?.sadaa , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    toStoreId: [item?.sadaa , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    itemId: [item?.sadaa , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    qty: [item?.sadaa , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    prrequestHeaderId: [item?.sadaa , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    prrequestDetId: [item?.sadaa , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    prdetId: [0 , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    fromStoreId: [item?.fromStoreId , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    toStoreId: [item?.toStoreId , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    itemId: [item?.itemId , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    qty: [item?.qty , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    prrequestHeaderId: [item?.prrequestHeaderId , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    prrequestDetId: [item?.prrequestDetId , [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
   })
 }
 CreatePoReqHeader(item:any){
   return this._FormBuilder.group({
-    prrequestHeaderId: [item?.asassa, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]] 
+    prrequestHeaderId: [item?.prrequestHeaderId, [this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]] 
   })
 } 
   get poReqDetArray(): FormArray {
@@ -216,9 +200,13 @@ CreatePoReqHeader(item:any){
     return this.POReqSaveform.get('tPr') as FormArray;
   }
   OnSave(){
+    debugger
     const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
-    const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    const FormattedDateTime = formattedDate + ' ' + formattedTime 
+    const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd'); 
+
+    const prdate = formattedDate + 'T00:00:00';
+    const prtime = formattedDate + 'T' + formattedTime;
+   
 
       if(!this.dsPoReqitemlist.data.length){
         this.toastr.warning('PO list is empty please check', 'Warning !', {
@@ -227,15 +215,15 @@ CreatePoReqHeader(item:any){
       return
       }
       if(this.POReqSaveform.valid){ 
-        this.POReqSaveform.get('prdate').setValue(formattedDate)
-        this.POReqSaveform.get('prtime').setValue(FormattedDateTime)
+        this.POReqSaveform.get('prdate').setValue(prdate)
+        this.POReqSaveform.get('prtime').setValue(prtime)
         this.POReqSaveform.get('comments').setValue(this.userFormGroup.get('Remark').value || '') 
 
         this.poReqDetArray.clear();
         this.poReqHeaderArray.clear();
         this.dsPoReqitemlist.data.forEach(element=>{
         this.poReqDetArray.push(this.CreatePoReqDet(element)) 
-        this.poReqDetArray.push(this.CreatePoReqHeader(element)) 
+        this.poReqHeaderArray.push(this.CreatePoReqHeader(element)) 
         }) 
 
         this._PurchaseOrderService.SavePR(this.POReqSaveform.value).subscribe(res=>{
@@ -257,15 +245,59 @@ CreatePoReqHeader(item:any){
     this.fromStore = this.accountService.currentUserValue.user.storeId; 
     this.dialogRef.close();
   }
-
-     getPOReqDetList(contact){
+ 
+      deleteTableRow(row: ItemNameList) {
+        debugger
+          const index = this.SelectedList.indexOf(row);
+            if (index > -1) {
+              this.SelectedList.splice(index, 1);
+            } 
+      this.dsPoReqitemlist.data = this.SelectedList
+      this._PurchaseOrderService.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
+    }  
+// tableElementChecked(event: any, row: any) {
+//   debugger;  
+//      this.getPOReqDetList(row);  
+//    setTimeout(() => {
+//   if (this.dsPORequisitiondet.data.length) { 
+//     this.dsPORequisitiondet.data.forEach(item => { 
+//       if (event.checked) { 
+//         const exists = this.SelectedList.find(x =>  x.itemId == item.itemId); 
+//         if (!exists) {
+//         //  this.SelectedList.push(item);
+//            this.SelectedList.push({
+//                 fromStoreId:row?.fromStoreId || 1,
+//                 toStoreId:row?.fromStoreId || 2,
+//                 itemName:item?.itemName || '',
+//                 itemId: item?.itemId,
+//                 qty: item?.qty || 1,
+//                 prrequestHeaderId:item?.purchaseRequisitionId || 0,
+//                 prrequestDetId :item?.purchaseRequisitionDetId || 0
+//               }) 
+//         } else {
+//           this.toastr.warning(  'Selected item already added in the list',  'Warning!',
+//             { toastClass: 'tostr-tost custom-toast-warning' }
+//           );
+//         } 
+//       } else { 
+//         const index = this.SelectedList.findIndex(x => x.itemId === item.itemId);
+//         if (index > -1) {
+//           this.SelectedList.splice(index, 1);
+//         } 
+//       } 
+//     }); 
+//   } 
+//   this.dsPoReqitemlist.data = this.SelectedList;
+//     }, 1000);
+// }
+     getPOReqDetList(contact,addItem=false){
         var data =
     {
       "first": 0,
       "rows": 999,
       "sortField": "PurchaseRequisitionId",
       "sortOrder": 0,
-      "filters": [{ "fieldName": "PurchaseRequisitionId", "fieldValue": String(contact.purchaseRequisitionId), "opType": "Equals" } 
+      "filters": [{ "fieldName": "PurchaseRequisitionId", "fieldValue": String(contact?.purchaseRequisitionId || 0), "opType": "Equals" } 
       ],
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]
@@ -274,69 +306,88 @@ CreatePoReqHeader(item:any){
     this._PurchaseOrderService.getPORequisitionDetList(data).subscribe(res => {
       console.log(data);
       this.dsPORequisitiondet.data = res.data; 
+      this.dsPORequisitiondet.sort = this.sort
+      this.dsPORequisitiondet.paginator = this.paginatoritem
+debugger
+  if (addItem) {
+      res.data.forEach(item => this.getaddItem(true, contact, item));
+    } else {
+      res.data.forEach(item => this.getaddItem(false, contact, item));
+    }
     });
   }
-      deleteTableRow(row: ItemNameList) {
-          const index = this.SelectedList.indexOf(row);
-            if (index > -1) {
-              this.SelectedList.splice(index, 1);
-            } 
-      this.dsPoReqitemlist.data = this.SelectedList
-      this._PurchaseOrderService.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
-    }  
-tableElementChecked(event: any, row: any) {
-  debugger; 
-  this.getPOReqDetList(row); 
-  if (this.dsPORequisitiondet.data.length) { 
-    this.dsPORequisitiondet.data.forEach(item => { 
-      if (event.checked) { 
-        const exists = this.SelectedList.find(x =>  x.itemName == item.itemName); 
-        if (!exists) {
-          this.SelectedList.push(item);
-        } else {
-          this.toastr.warning(  'Selected item already added in the list',  'Warning!',
-            { toastClass: 'tostr-tost custom-toast-warning' }
-          );
-        } 
-      } else { 
-        const index = this.SelectedList.findIndex(x => x.itemName === item.itemName);
-        if (index > -1) {
-          this.SelectedList.splice(index, 1);
-        } 
+getaddItem(Additem,row,item){
+  debugger 
+  if (!this.dsPORequisitiondet.data.length) return;
+
+  if (Additem) { 
+      const exists = this.SelectedList.find(x => x.itemId == item.itemId && x.prrequestHeaderId === row.purchaseRequisitionId);
+      if (!exists) {
+        //  this.SelectedList.push(item);
+        this.SelectedList.push({
+          fromStoreId: row?.fromStoreId || 1,
+          toStoreId: row?.fromStoreId || 2,
+          itemName: item?.itemName || '',
+          itemId: item?.itemId,
+          qty: item?.qty || 1,
+          prrequestHeaderId: item?.purchaseRequisitionId || 0,
+          prrequestDetId: item?.purchaseRequisitionDetId || 0
+        })
+      } else {
+        this.toastr.warning('Selected item already added in the list', 'Warning!',
+          { toastClass: 'tostr-tost custom-toast-warning' }
+        );
       } 
-    }); 
-  } 
-  this.dsPoReqitemlist.data = this.SelectedList;
+  } else { 
+        const index = this.SelectedList.findIndex(x =>  x.itemId === item.itemId &&   x.prrequestHeaderId === row.purchaseRequisitionId);
+      if (index > -1) {
+        this.SelectedList.splice(index, 1);
+      } 
+  }
+  this.dsPoReqitemlist.data = [...this.SelectedList];
 }
-  SelectedList: any = [];
- selection = new SelectionModel<ItemNameList>(true, []);  
+tableElementChecked(event, element) {  
+  debugger
+  if (event.checked) {
+    this.selection.select(element); 
+    this.getPOReqDetList(element,true) 
+  } else {
+    this.selection.deselect(element);  
+     this.getPOReqDetList(element,false) 
+  }  
+}
+ 
+ SelectedList: any = [];
+ selection = new SelectionModel<PurchaseItemList>(true, []);  
   masterToggle() {
-    const selectableRows = this.dsPORequisitiondet.data;
+    debugger
+    const selectableRows = this.dsPORequisitionHeader.data;
   
     if (this.isAllSelected()) {
       this.selection.clear();
       this.SelectedList = [];  
-    } else {
-      this.selection.clear();
-      this.SelectedList = [];    
-  
+      this.dsPoReqitemlist.data = [];
+    } else { 
       selectableRows.forEach(row => {
-        // this.selection.select(row);
-        this.SelectedList.push(row);   
+        this.selection.select(row);
+        this.getPOReqDetList(row,true);  
       });
-    } 
+    }    
   }
   
-    isAllSelected() { 
-      const selectableRows = this.dsPORequisitiondet.data 
-      const numSelected = this.selection.selected.length;
-      const numRows = selectableRows.length; 
-      return numRows > 0 && numSelected === numRows;
-    } 
-    isSomeSelected() { 
-         const selectableRows = this.dsPORequisitiondet.data 
-        return this.selection.selected.length > 0 &&
-        this.selection.selected.length < selectableRows.length;
-    }
  
+ isAllSelected() { 
+  debugger
+  const numSelected = this.selection.selected.length;
+  const numRows = this.dsPORequisitionHeader.data.length; 
+  return numSelected === numRows && numRows > 0;
+
+}
+ isSomeSelected() { 
+  debugger
+  const numSelected = this.selection.selected.length;
+  const numRows = this.dsPORequisitionHeader.data.length; 
+  return numSelected > 0 && numSelected < numRows;
+
+}
 }
