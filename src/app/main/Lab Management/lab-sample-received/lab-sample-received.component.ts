@@ -371,18 +371,17 @@ export class LabSampleReceivedComponent {
         return reason;
       }
     }).then((result) => {
-      // if (result.isConfirmed) {
-      //   let submitData = {
-      //     otReservationId: data.otReservationId,
-      //     reason: result.value,
-      //     isCancelledBy: this._loggedService.currentUserValue.userId
-      //   };
-      //   console.log(submitData);
-      //   this._SampleCollectionService.OnCancel(submitData).subscribe((res) => {
-      //     this.toastr.success(res.message);
-      //     this.GetSampleCollectiondetail();
-      //   });
-      // }
+      if (result.isConfirmed) {
+        let submitData = {
+          pathReportId: data.pathReportID,
+          sampleReceviedCancelReason: result.value,
+        };
+        console.log(submitData);
+        this._SampleCollectionService.OnCancel(submitData).subscribe((res) => {
+          this.toastr.success(res.message);
+          this.GetSampleCollectiondetail();
+        });
+      }
     });
   }
 

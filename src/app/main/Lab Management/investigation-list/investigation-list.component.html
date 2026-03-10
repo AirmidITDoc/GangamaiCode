@@ -449,6 +449,60 @@
                                                                                 </mat-cell>
                                                                             </ng-container>
 
+                                                                            <ng-container
+                                                                                matColumnDef="outSourceLabName">
+                                                                                <mat-header-cell *matHeaderCellDef
+                                                                                    mat-sort-header fxHide fxShow.gt-md>
+                                                                                    OutSource Name
+                                                                                </mat-header-cell>
+
+                                                                                <mat-cell *matCellDef="let element"
+                                                                                    fxHide fxShow.gt-md>
+
+                                                                                    <ng-container
+                                                                                        *ngIf="element.outSourceLabName; else noOutSource">
+                                                                                        <span
+                                                                                            [matBadge]="element.tokenNo"
+                                                                                            matBadgeColor="warn"
+                                                                                            matBadgePosition="after"
+                                                                                            matBadgeOverlap="false"
+                                                                                            matBadgeSize="small"
+                                                                                            [matBadgeHidden]="!element.tokenNo"
+                                                                                            (mouseenter)="openPatientDetailsPopover($event, element)"
+                                                                                            (mouseleave)="closePatientDetailsPopover()"
+                                                                                            style="font-size:14px; line-height:18px; cursor:pointer;
+                                                                                            text-decoration:underline; color:#667eea;">
+                                                                                            {{ element.outSourceLabName
+                                                                                            }}
+                                                                                        </span>
+
+                                                                                        <button mat-icon-button
+                                                                                            *ngIf="element.isPathOutSource === true"
+                                                                                            (click)="Editoutsoucedata(element)"
+                                                                                            matTooltip="Edit OutSource Data">
+                                                                                            <mat-icon
+                                                                                                style="color:#ff5722;">edit</mat-icon>
+                                                                                        </button>
+                                                                                    </ng-container>
+
+                                                                                    <ng-template #noOutSource>
+                                                                                        <span [matTooltip]="element.isSampleCollection === false
+                                                                                                    ? 'Please complete sample collection first'
+                                                                                                    : ''">
+                                                                                            <button mat-icon-button
+                                                                                                *ngIf="element.isPathOutSource === true"
+                                                                                                [disabled]="element.isSampleCollection === false"
+                                                                                                (click)="element.isSampleCollection !== false && Editoutsoucedata(element)">
+
+                                                                                                <mat-icon
+                                                                                                    style="color:#ff5722;">local_shipping</mat-icon>
+                                                                                            </button>
+
+                                                                                        </span>
+                                                                                    </ng-template>
+                                                                                </mat-cell>
+                                                                            </ng-container>
+
                                                                             <ng-container matColumnDef="action"
                                                                                 stickyEnd>
                                                                                 <mat-header-cell *matHeaderCellDef

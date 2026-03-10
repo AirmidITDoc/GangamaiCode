@@ -300,10 +300,12 @@
                                     Actions
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button (click)="OnCancel(contact)" matTooltip="Cancel">
+                                    <button mat-icon-button (click)="OnCancel(contact)" matTooltip="Cancel"
+                                    >
                                         <mat-icon color="warn">cancel</mat-icon>
                                     </button>
-                                    <!-- [disabled]="contact.isSampleReceivedStatus == false" -->
+                                    <!-- [disabled]="contact.isCompleted == true"
+                                     [disabled]="contact.isSampleReceviedCancel==true" -->
                                 </mat-cell>
                             </ng-container>
 

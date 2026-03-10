@@ -15,7 +15,6 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
-import { LabsampleCollFormComponent } from './labsample-coll-form/labsample-coll-form.component';
 import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-coll-old-method.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -313,20 +312,6 @@ export class LabSampleCollectionComponent {
             this.GetSampleCollectiondetail();
         });
     }
-
-    // onSavedemo(row: any = null) {
-    //     let that = this;
-    //     const dialogRef = this._matDialog.open(LabsampleCollFormComponent,
-    //         {
-    //             maxHeight: '80vh',
-    //             width: '80%',
-    //             data: row
-    //         });
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         this.grid.bindGridData();
-    //         this.GetSampleCollectiondetail();
-    //     });
-    // }
 
     onSavedemo(row: any = null) {
         let that = this;

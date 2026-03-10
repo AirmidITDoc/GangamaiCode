@@ -51,6 +51,6 @@ export class LabSampleReceivedService {
     return this._httpClient1.PostData("LabSampleRecived/LabSampleRecivedList", employee)
   }
   public OnCancel(param) {
-    return this._httpClient1.PostData('', param)
+    return this._httpClient1.PostData('LabSampleRecived/Cancel', param)
   }
 }

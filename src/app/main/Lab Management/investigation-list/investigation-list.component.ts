@@ -406,7 +406,7 @@ export class InvestigationListComponent {
   sampleDetailDS = new MatTableDataSource<SampleList>();
 
   parentSampleColumns: string[] = ['status', 'pathDate', 'labRequestNo', 'patientName', 'cm', 'pBillNo', 'action'];
-  parentSampleDetColumns: string[] = ['status', 'color', 'serviceName', 'tat', 'sampleNo', 'action'];
+  parentSampleDetColumns: string[] = ['status', 'color', 'serviceName', 'tat', 'sampleNo','outSourceLabName', 'action'];
   columnsToDisplayWithSampleExpand = [...this.parentSampleColumns];
   expandedSampleElement: any | null = null;
   parentSampleLength = 0;
