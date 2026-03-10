@@ -29,6 +29,7 @@ export class LabRadiologyService {
       StatusSearch: ['0'],
       TestStatusSearch: ['0'],
       CategoryId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      GroupId:[0],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
     });

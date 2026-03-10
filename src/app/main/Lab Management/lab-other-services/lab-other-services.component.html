@@ -30,9 +30,13 @@
                                 </div>
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                                    <!-- <airmid-dropdown label="CategoryName" formControlName="CategoryId"
                                         [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
-                                        [mode]="autocompleteModeCategoryId"></airmid-dropdown>
+                                        [mode]="autocompleteModeCategoryId"></airmid-dropdown> -->
+                                    <airmid-dropdown label="Group Name" formControlName="GroupId"
+                                        [formGroup]="myformSearch" [mode]="autocompleteModegroupName"
+                                        (selectionChange)="groupView($event)">
+                                    </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
@@ -110,7 +114,7 @@
                                             class="s-20 mr-4" color="warn">
                                             send
                                         </mat-icon>
-                                        <mat-icon *ngIf="!element.outSourceStatus" matTooltip="Lab Test"
+                                        <mat-icon *ngIf="!element.outSourceStatus" matTooltip="Other Test"
                                             class="s-20 mr-4" color="accent">
                                             local_hospital
                                         </mat-icon>
@@ -122,11 +126,17 @@
                             <ng-template #actionButtonTemplate let-element>
                                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                                    <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
+                                    <button mat-icon-button matTooltip="Edit" (click)="onSave(element)"
+                                    [disabled]="element.isVerified==true">
                                         <mat-icon title="Edit">edit</mat-icon>
                                     </button>
                                     <!-- 
                                         [style.visibility]="element.isVerified==false ? 'visible' : 'hidden'" -->
+                                    <button mat-icon-button matTooltip="Verify"
+                                        [disabled]="element.isCompleted==false || element.isVerified==true"
+                                        (click)=" element.isCompleted && !element.isVerifyid ? onView(element) : null">
+                                        <mat-icon>verified_user</mat-icon>
+                                    </button>
 
                                     <span [matTooltip]="element.isVerified == false
                                                     ? 'Verification is Pending'

@@ -92,12 +92,11 @@ export class ReportDispatchComponent {
   allReportcolumns = [
     { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Dispatch By", key: "dispatchBy", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 8 },
     { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-    { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    // { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

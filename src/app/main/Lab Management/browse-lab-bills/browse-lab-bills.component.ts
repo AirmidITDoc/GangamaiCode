@@ -306,8 +306,8 @@ export class BrowseLabBillsComponent {
 
   isActionEnabled(element: any): boolean {
     return (
-      (element.patientType === 'Self' && element.isVerifySign === true) ||
-      (element.patientType !== 'Self' && element.isVerifySign === false)
+      (element.patientType === 'Self' && element.isVerifySign === 1) ||
+      (element.patientType !== 'Self' && element.isVerifySign === 0)
     );
   }
 

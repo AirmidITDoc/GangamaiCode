@@ -107,6 +107,7 @@ export class LabRadiologyComponent {
     { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "OP_IP_Type", fieldValue: "3", opType: OperatorComparer.Equals },
     { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
   ]
 
   gridConfig: gridModel = {
@@ -175,6 +176,7 @@ export class LabRadiologyComponent {
         { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
         { fieldName: "CategoryId", fieldValue: String(this.CategoryId), opType: OperatorComparer.Equals },
+        { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
       ]
 
     }

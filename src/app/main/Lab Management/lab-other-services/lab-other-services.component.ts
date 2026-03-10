@@ -44,6 +44,7 @@ export class LabOtherServicesComponent {
   page: PageNames = PageNames.PATIENT;
   pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
   autocompleteModeCategoryId: string = "RadioCategory";
+  autocompleteModegroupName: string = "GroupName";
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   vUnitId = 0;
   reportlogFormGroup: FormGroup
@@ -89,7 +90,7 @@ export class LabOtherServicesComponent {
     { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "OutSourceName", key: "outSourceLabName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
     {
       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -107,6 +108,7 @@ export class LabOtherServicesComponent {
     { fieldName: "TestType", fieldValue: "1", opType: OperatorComparer.Equals },
     { fieldName: "OP_IP_Type", fieldValue: "3", opType: OperatorComparer.Equals },
     { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
   ]
 
   gridConfig: gridModel = {
@@ -145,6 +147,16 @@ export class LabOtherServicesComponent {
 
     this.onChangeFirst();
   }
+
+  GroupId = "0"
+  groupView(value) {
+    if (value.value != 0) {
+      this.GroupId = value.value
+    } else {
+      this.GroupId = "0"
+    }
+    this.onChangeFirst();
+  }
   onChangeFirst() {
     // debugger
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
@@ -153,7 +165,7 @@ export class LabOtherServicesComponent {
     this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
     this.status = this.myformSearch.get('StatusSearch').value
     this.opipType = this.myformSearch.get('PatientTypeSearch').value
-    //this.regNo = this.myformSearch.get('RegNoSearch').value  || 0
+    this.GroupId = this.myformSearch.get('GroupId').value || 0
     this.CategoryId = this.myformSearch.get('CategoryId').value || '0'
     this.getfilterdata();
   }
@@ -175,14 +187,13 @@ export class LabOtherServicesComponent {
         { fieldName: "TestType", fieldValue: "1", opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
         { fieldName: "CategoryId", fieldValue: String(this.CategoryId), opType: OperatorComparer.Equals },
+        { fieldName: "GroupId", fieldValue: String(this.GroupId), opType: OperatorComparer.Equals },
       ]
 
     }
     console.log(this.gridConfig)
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
-    //  this.CategoryId ="0"
-    //  this.regNo ="0"
   }
 
   Clearfilter(event) {
@@ -215,6 +226,23 @@ export class LabOtherServicesComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
 
+    });
+  }
+
+   onView(row: any = null) {
+    let that = this;
+    const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
+      {
+        maxWidth: "95vw",
+        height: '95%',
+        width: '95%',
+        data: {
+          data: row,
+          verifyCheck: true
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
     });
   }
 

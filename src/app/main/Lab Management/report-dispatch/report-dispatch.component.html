@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container" dynamicTableHeight>
+<div class="modal-wrapper grid-container">
   <!-- Modal header -->
   <div class="modal-header accent">
     <div class="modal-header-content">
@@ -38,8 +38,7 @@
         </div>
       </div>
 
-
-      <div class="container">
+      <!-- <div class="container">
         <mat-card style="padding: 20px;">
           <div class="row">
 
@@ -63,7 +62,7 @@
 
           </div>
         </mat-card>
-      </div>
+      </div> -->
 
     </div>
     <div class="modal-card-container">
@@ -76,7 +75,7 @@
             <input type="hidden" name="dispatchId" formControlName="dispatchId">
 
             <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
-              <div fxFlex.gt-xs="60" fxFlex="100" class="table-left">
+              <div fxFlex.gt-xs="40" fxFlex="100" class="table-left">
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <div fxLayout="column" fxFlex>
                     <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
@@ -114,7 +113,7 @@
                 </mat-card>
 
               </div>
-              <div fxFlex.gt-xs="40" fxFlex="100" class="table-left">
+              <div fxFlex.gt-xs="60" fxFlex="100" class="table-left">
 
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <mat-card-content>
@@ -153,8 +152,7 @@
       <div>
         <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>
       </div>
-      <!-- style="height: 200px; overflow:auto;"? -->
-      <div style="overflow:auto;">
+      <div style="overflow:auto; height: 450px;">
         <airmid-table [gridConfig]="gridConfigReportdispatch" #ReportGrid [ShowFilter]="false" [ShowButtons]="false">
 
         </airmid-table>
