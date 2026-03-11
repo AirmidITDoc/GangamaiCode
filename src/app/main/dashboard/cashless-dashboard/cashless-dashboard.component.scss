@@ -1,0 +1,1970 @@
+
+.radiolo.new-dashboard-section {
+
+  // Matching Dashboard Structure
+  #dashboard-project {
+
+    .mat-display-1,
+    .mat-typography .mat-display-1 {
+      letter-spacing: normal;
+      margin: 0 0 64px;
+    }
+
+    >.sidebar {
+      width: 280px;
+      min-width: 280px;
+      max-width: 280px;
+    }
+
+    >.center {
+      >.header {
+        height: 75px;
+        min-height: 75px;
+        max-height: 160px;
+      }
+
+      >.content {
+        flex: 1;
+        display: block !important;
+      }
+    }
+  }
+
+  // Header Styles
+  .date-filter-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .top-header {
+    display: flex;
+    align-items: center;
+    max-height: 70px !important;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 12px 24px;
+    justify-content: space-between;
+  }
+
+  .top-header-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-icon {
+    font-size: 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    color: white;
+  }
+
+  .date-range-input {
+    color: #000000 !important;
+    font-weight: 500;
+  }
+
+  // Dashboard Container
+  .dashboard-container {
+    padding: 12px;
+  }
+
+  // Gap utility
+  .gap-14 {
+    gap: 14px;
+  }
+  .gap-5 {
+    gap: 5;
+  }
+
+  // Cards - Base styling
+  mat-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-content {
+      padding: 2px !important;
+    }
+  }
+
+
+  // Dashboard Container
+  .dashboard-container {
+    padding: 5px;
+  }
+  // Dashboard Stat Cards - Matching Daily Dashboard EXACTLY
+  .dashboard-stat-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 6px !important;
+    }
+  }
+
+  // Ensure ALL top row cards have EXACT same dimensions
+  .dashboard-container:first-of-type {
+    >div {
+      display: flex;
+
+      .dashboard-stat-card {
+        height: 240px !important;
+        min-height: 240px !important;
+        max-height: 240px !important;
+        width: 100%;
+
+        mat-card-content {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  // Icon Styles
+  .icon-div {
+    padding: 8px;
+    border-radius: 5px;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .icon-1 {
+    background-color: #9661db;
+  }
+
+  .icon-2 {
+    background-color: #e9ac1b;
+  }
+
+  .icon-3 {
+    background-color: #28af28;
+  }
+
+  .icon-4 {
+    background-color: #70c7bd;
+  }
+
+  // Card sections for consistent layout
+  .card-header-section {
+    min-height: 50px;
+    margin-bottom: 4px;
+  }
+
+  .card-chart-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    max-height: 150px;
+    padding: 4px 0;
+
+    canvas {
+      width: 100% !important;
+      height: 150px !important;
+    }
+  }
+
+  // Labels
+  .labels-div {
+    text-align: end;
+    font-weight: bold;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+  }
+
+  .labels-sm {
+    text-align: end;
+    font-weight: 130;
+    font-size: 10px;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    margin-top: 0px;
+    margin-bottom: 8px;
+  }
+
+  // Chart Cards
+  .chart-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-content {
+      padding: 20px !important;
+    }
+  }
+
+  .chart-header {
+    margin-bottom: 16px;
+    text-align: center;
+
+    .chart-title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #283593;
+      margin: 8px 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .chart-subtitle {
+      font-size: 12px;
+      color: #6c757d;
+      margin: 0;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+
+  // Table Styles
+  .table-title {
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #283593;
+    margin: 16px 0 8px 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .table-designed {
+    width: 100%;
+  }
+
+  .h-200 {
+    max-height: 400px;
+    overflow: auto;
+  }
+
+  // Status badges
+  .status-completed {
+    padding: 4px 12px;
+    border-radius: 12px;
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .status-pending {
+    padding: 4px 12px;
+    border-radius: 12px;
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .status-cancelled {
+    padding: 4px 12px;
+    border-radius: 12px;
+    background-color: #f8d7da;
+    color: #721c24;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  // Equipment Utilization Cards
+  .equipment-cards {
+    margin-top: 16px;
+  }
+
+  .equipment-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    background: #ffffff;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-content {
+      padding: 16px !important;
+      text-align: center;
+    }
+
+    .equipment-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .equipment-percentage {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .equipment-status {
+      margin-bottom: 8px;
+
+      mat-progress-bar {
+        height: 8px;
+        border-radius: 4px;
+      }
+    }
+
+    .equipment-scans {
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+
+  // Equipment card color variations
+  .equipment-card-1 {
+    .equipment-percentage {
+      color: #9661db;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #9661db !important;
+    }
+  }
+
+  .equipment-card-2 {
+    .equipment-percentage {
+      color: #e9ac1b;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #e9ac1b !important;
+    }
+  }
+
+  .equipment-card-3 {
+    .equipment-percentage {
+      color: #28af28;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #28af28 !important;
+    }
+  }
+
+  .equipment-card-4 {
+    .equipment-percentage {
+      color: #70c7bd;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #70c7bd !important;
+    }
+  }
+
+  // Hide utility
+  .hide {
+    display: none !important;
+  }
+
+  // Responsive Styles
+  @media (max-width: 959px) {
+    .dashboard-container:first-of-type {
+      >div {
+        .dashboard-stat-card {
+          height: 220px !important;
+          min-height: 220px !important;
+          max-height: 220px !important;
+        }
+      }
+    }
+
+    // .card-chart-section {
+    //     min-height: 130px;
+    //     max-height: 130px;
+
+    //     canvas {
+    //         height: 130px !important;
+    //     }
+    // }
+
+    // .chart-header {
+    //     .chart-title {
+    //         font-size: 16px;
+    //     }
+
+    //     .chart-subtitle {
+    //         font-size: 11px;
+    //     }
+    // }
+
+    .labels-div {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 599px) {
+    .dashboard-container:first-of-type {
+      >div {
+        .dashboard-stat-card {
+          height: 200px !important;
+          min-height: 200px !important;
+          max-height: 200px !important;
+        }
+      }
+    }
+
+    .card-chart-section {
+      min-height: 110px;
+      max-height: 110px;
+
+      canvas {
+        height: 110px !important;
+      }
+    }
+
+    .icon-div {
+      height: 40px;
+      width: 40px;
+      padding: 8px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .labels-div {
+      font-size: 11px;
+    }
+
+    .labels-sm {
+      font-size: 9px;
+    }
+
+    // .dashboard-stat-card mat-card-content {
+    //   padding: 12px !important;
+    // }
+
+    .chart-card mat-card-content {
+      padding: 16px !important;
+    }
+
+    .top-header-title span {
+      font-size: 18px !important;
+    }
+
+    .logo-icon {
+      font-size: 24px !important;
+      width: 24px !important;
+      height: 24px !important;
+    }
+  }
+
+  .chart-header {
+    margin-bottom: 16px;
+    text-align: center;
+
+    .chart-title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #283593;
+      margin: 8px 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .chart-subtitle {
+      font-size: 12px;
+      color: #6c757d;
+      margin: 0;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+
+  // Canvas Styles
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+
+  // Material Overrides
+  .mat-card {
+    padding: 0 !important;
+  }
+
+  // Animation
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  mat-card {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  // Utility Classes
+  .mt-8 {
+    margin-top: 8px;
+  }
+
+  .mt-12 {
+    margin-top: 12px;
+  }
+
+  .mt-16 {
+    margin-top: 16px;
+  }
+
+  .mb-16 {
+    margin-bottom: 16px;
+  }
+
+  .p-12 {
+    padding: 12px;
+  }
+
+  .p-16 {
+    padding: 16px;
+  }
+
+  .mr-12 {
+    margin-right: 12px;
+  }
+
+  .m-0 {
+    margin: 0;
+  }
+
+  // Ensure no horizontal scroll
+  .center {
+    overflow-x: hidden !important;
+  }
+
+  #dashboard-project {
+    overflow-x: hidden !important;
+  }
+
+  // ========== TAB STYLES ==========
+  .dashboard-tabs {
+    margin: 16px 2px 0 2px;
+    background: #ffffff;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+    ::ng-deep {
+      .mat-tab-header {
+        border-bottom: 2px solid #e9ecef;
+        background: #ffffff;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .mat-tab-label {
+        height: 64px;
+        padding: 0 32px;
+        opacity: 0.6;
+        color: #6c757d;
+        font-weight: 500;
+        font-size: 14px;
+        min-width: 160px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          opacity: 0.8;
+          background: rgba(150, 97, 219, 0.05);
+        }
+
+        .tab-icon {
+          margin-right: 12px;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+
+        .tab-label {
+          font-weight: 500;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      .mat-tab-label-active {
+        opacity: 1;
+        color: #9661db;
+        font-weight: 600;
+
+        .tab-icon {
+          color: #9661db;
+        }
+      }
+
+      .mat-ink-bar {
+        background-color: #9661db !important;
+        height: 3px;
+        border-radius: 3px 3px 0 0;
+      }
+
+      .mat-tab-body-wrapper {
+        padding: 0;
+      }
+
+      .mat-tab-body-content {
+        overflow: visible !important;
+      }
+    }
+  }
+
+  // Sample Collection Statistics Cards
+  .sample-stats-cards {
+    margin-top: 16px;
+  }
+
+  .sample-stat-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    background: #ffffff;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-content {
+      padding: 20px !important;
+      text-align: center;
+    }
+
+    .sample-stat-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sample-stat-count {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .sample-stat-percentage {
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+
+  // Sample stat card color variations
+  .sample-stat-card-1 {
+    .sample-stat-count {
+      color: #28af28;
+    }
+  }
+
+  .sample-stat-card-2 {
+    .sample-stat-count {
+      color: #f6c542;
+    }
+  }
+
+  .sample-stat-card-3 {
+    .sample-stat-count {
+      color: #ff5a8a;
+    }
+  }
+
+  // Tab fade animation
+  @keyframes tabFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mat-tab-body-content {
+    animation: tabFadeIn 0.4s ease-out;
+  }
+
+}
+
+/* Minimal styles complementing Angular Material */
+:host {
+  display: block;
+  box-sizing: border-box;
+}
+
+// ========== ALL styles scoped under the component root to prevent global leakage ==========
+.new-dashboard-section {
+
+  /* Date filter container */
+  .date-filter-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .top-header {
+    display: flex;
+    align-items: center;
+    max-height: 70px !important;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .date-range-input {
+    color: #000000 !important;
+    font-weight: 500;
+  }
+
+   &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+  // Gap utility
+  .gap-14 {
+    gap: 14px;
+  }
+
+  .metrics-grid {
+    display: flex;
+    height: fit-content;
+    gap: 6px;
+    padding: 5;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  /* (reverted) */
+
+  /* Prevent flex-items from overflowing and getting clipped */
+  .metrics-grid>.mat-card,
+  .charts-row>.mat-card,
+  .tables-row>.mat-card,
+  .finance-grid>.mat-card {
+    min-width: 0;
+  }
+
+  .metric-card {
+    flex: 1 1 155px;
+    /* fluid card width; 3-5 per row depending on space */
+    min-width: 155px;
+    max-width: 155px;
+    height: fit-content;
+    border-radius: 14px;
+    overflow: visible;
+    /* allow chart callouts/labels to be visible */
+  }
+
+  .metric-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .metric-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    margin-right: 10px;
+  }
+
+  .metric-icon .mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .metric-label {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.75;
+  }
+
+  .metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  /* Soft color themes */
+  .theme-lavender {
+    background: linear-gradient(135deg, #f0f2ff 0%, #f7f5ff 100%);
+  }
+
+  .theme-lavender .metric-icon {
+    background: rgba(84, 104, 255, 0.12);
+    color: #5468ff;
+  }
+
+  .theme-butter {
+    background: linear-gradient(135deg, #fff8e1 0%, #fffbea 100%);
+  }
+
+  .theme-butter .metric-icon {
+    background: rgba(250, 189, 0, 0.12);
+    color: #e2a300;
+  }
+
+  .theme-mint {
+    background: linear-gradient(135deg, #e9fbf0 0%, #f3fdf6 100%);
+  }
+
+  .theme-mint .metric-icon {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+  }
+
+  .theme-rose {
+    background: linear-gradient(135deg, #ffe9f2 0%, #fff2f7 100%);
+  }
+
+  .theme-rose .metric-icon {
+    background: rgba(236, 72, 153, 0.12);
+    color: #ec4899;
+  }
+
+  .theme-sky {
+    background: linear-gradient(135deg, #e6f4ff 0%, #f0f8ff 100%);
+  }
+
+  .theme-sky .metric-icon {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+  }
+
+  .theme-peach {
+    background: linear-gradient(135deg, #fff0e6 0%, #fff6f0 100%);
+  }
+
+  .theme-peach .metric-icon {
+    background: rgba(249, 115, 22, 0.12);
+    color: #f97316;
+  }
+
+  /* Flex layout wraps naturally; no grid media queries needed */
+
+  .charts-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    padding: 10px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  // .dashboard-container {
+  //   display: flex;
+  //   flex-direction: column;
+  //   width: 100%;
+  //   max-width: 1400px;
+  //   margin-left: auto;
+  //   margin-right: auto;
+  // }
+
+  // Chart Cards
+  .chart-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    // &:hover {
+    //   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    // }
+
+    mat-card-content {
+      padding: 20px !important;
+    }
+  }
+
+  .chart-wrapper {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .tables-row {
+    padding: 10px;
+  }
+
+  .table-card {
+    width: 100%;
+  }
+
+  .full-width-table {
+    width: 100%;
+  }
+
+  .finance-grid .metric-card {
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  }
+
+  /* Stack cards on small screens */
+  @media (max-width: 768px) {
+    .dashboard-container {
+      padding: 0 8px;
+    }
+
+    .count-cards {
+      width: fit-content !important;
+    }
+
+    // .metrics-grid {
+    //   display: grid;
+    //   grid-template-columns: 1fr;
+    //   gap: 12px;
+    //   padding: 8px;
+    // }
+
+    // .metric-card {
+    //   /* Stack and fill on small screens */
+    //   flex: 1 1 100%;
+    //   width: 100%;
+    //   min-width: 0;
+    //   max-width: 100%;
+    // }
+
+    .charts-row {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 8px;
+    }
+
+    .tables-row {
+      padding: 8px;
+    }
+  }
+
+  /* Mini cards inside Patient Mix */
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .mini-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+
+  .mini-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .mini-label {
+    font-size: 12px;
+    opacity: .8;
+    font-weight: 600;
+  }
+
+  .mini-value {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  @media (max-width: 992px) {
+    .mini-grid {
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .mini-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  
+  
+  // Dashboard Container
+  .dashboard-container {
+    padding: 12px;
+  }
+  // Dashboard Stat Cards - Matching Daily Dashboard EXACTLY
+  .dashboard-stat-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 16px !important;
+    }
+  }
+
+  // Ensure ALL top row cards have EXACT same dimensions
+  .dashboard-container:first-of-type {
+    >div {
+      display: flex;
+
+      .dashboard-stat-card {
+        height: 240px !important;
+        min-height: 240px !important;
+        max-height: 240px !important;
+        width: 100%;
+
+        mat-card-content {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  // Icon Styles
+  .icon-div {
+    padding: 8px;
+    border-radius: 5px;
+    height: 45px;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .icon-1 {
+    background-color: #9661db;
+  }
+
+  .icon-2 {
+    background-color: #e9ac1b;
+  }
+
+  .icon-3 {
+    background-color: #28af28;
+  }
+
+  .icon-4 {
+    background-color: #70c7bd;
+  }
+
+  
+  /* Ensure ngx-charts canvases are responsive within cards */
+  :host ::ng-deep ngx-charts-pie-chart,
+  :host ::ng-deep ngx-charts-bar-vertical,
+  :host ::ng-deep ngx-charts-bar-horizontal,
+  :host ::ng-deep ngx-charts-line-chart {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+  }
+
+  /* Specific fixes for horizontal bar chart overflow */
+  :host ::ng-deep .chart-wrapper ngx-charts-bar-horizontal {
+    width: 100% !important;
+    height: 100% !important;
+
+    .ngx-charts {
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden;
+    }
+
+    svg {
+      width: 100% !important;
+      height: 100% !important;
+      overflow: visible;
+    }
+
+    /* Ensure data labels are positioned correctly */
+    .bar-label-text {
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    /* Add padding to chart area to prevent label cutoff */
+    .chart {
+      margin-right: 50px;
+      margin-left: 10px;
+    }
+  }
+
+  /* Override Angular Material card overflow for metric cards only */
+  :host ::ng-deep .metric-card.mat-card {
+    overflow: visible;
+  }
+
+  /* Ensure chart cards stay contained */
+  :host ::ng-deep .chart-card.mat-card {
+    overflow: hidden !important;
+  }
+
+  /* Improve table responsiveness */
+  .full-width-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tweak grid gaps on very small screens */
+  @media (max-width: 400px) {
+    .metrics-grid {
+      gap: 8px;
+      padding: 8px;
+    }
+
+    .charts-row {
+      gap: 8px;
+      padding: 8px;
+    }
+  }
+
+  /* Prevent unexpected overflow from long labels/values */
+  // .metric-content {
+  //   flex-wrap: wrap;
+  // }
+
+  .metric-label,
+  .metric-value {
+    word-break: break-word;
+  }
+
+  /* Safety: avoid horizontal scrolling from nested elements */
+  .dashboard-container,
+  .metrics-grid,
+  .charts-row,
+  .tables-row {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  /* Make images/svgs within cards scale down */
+  ::host img,
+  ::host svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Patient Overview Chart Styles - matching bed-occupancy */
+  .patient-overview-card {
+    .overall-stats-section {
+      padding: 12px 8px;
+    }
+
+    .overall-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #7c7c7c;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .overall-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      padding: 0 8px;
+    }
+
+    .overall-left,
+    .overall-right {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .overall-value {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      color: #2c3e50;
+      margin-bottom: 4px;
+    }
+
+    .overall-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6c757d;
+    }
+
+    .overall-total {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      color: #2c3e50;
+      margin-bottom: 4px;
+      text-align: right;
+    }
+
+    .overall-total-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6c757d;
+      text-align: right;
+    }
+
+    .overall-donut-wrap {
+      margin: 12px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      canvas {
+        max-width: 280px !important;
+        max-height: 200px !important;
+        width: 100% !important;
+        height: auto !important;
+      }
+    }
+
+    .legend-mini {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+      padding: 0 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: #555;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-red {
+      background-color: #ff5a8a;
+    }
+
+    .dot-amber {
+      background-color: #f6c542;
+    }
+
+    .dot-green {
+      background-color: #3ecf8e;
+    }
+
+    .dot-blue {
+      background-color: #5ac8fa;
+    }
+
+    .dot-violet {
+      background-color: #a283f6;
+    }
+
+    .dot-orange {
+      background-color: #ff9f43;
+    }
+
+    .dashboard-tabs {
+    margin: 10px 2px 0 2px;
+    background: #ffffff;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+    ::ng-deep {
+      .mat-tab-header {
+        border-bottom: 2px solid #e9ecef;
+        background: #ffffff;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .mat-tab-label {
+        height: 64px;
+        padding: 0 32px;
+        opacity: 0.6;
+        color: #6c757d;
+        font-weight: 500;
+        font-size: 14px;
+        min-width: 160px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          opacity: 0.8;
+          background: rgba(150, 97, 219, 0.05);
+        }
+
+        .tab-icon {
+          margin-right: 12px;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+
+        .tab-label {
+          font-weight: 500;
+          letter-spacing: 0.5px;
+        }
+      }
+
+      .mat-tab-label-active {
+        opacity: 1;
+        color: #9661db;
+        font-weight: 600;
+
+        .tab-icon {
+          color: #9661db;
+        }
+      }
+
+      .mat-ink-bar {
+        background-color: #9661db !important;
+        height: 3px;
+        border-radius: 3px 3px 0 0;
+      }
+
+      .mat-tab-body-wrapper {
+        padding: 0;
+      }
+
+      .mat-tab-body-content {
+        overflow: visible !important;
+      }
+    }
+  }
+  }
+
+  // .finance-grid {
+  //   align-items: stretch;
+  // }
+
+  // /* Ensure all cards fill equal vertical space */
+  // .metric-card {
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: space-between;
+  // }
+
+  // /* Keep chart visually separated from edges */
+  // .chart-card {
+  //   padding-right: 12px;
+  // }
+
+  // /* Fix chart overflowing to the edge */
+  // .chart-content {
+  //   padding-right: 8px;
+  //   box-sizing: border-box;
+  // }
+
+  // /* Optional: consistent min height */
+  // .metric-card,
+  // .chart-card {
+  //   min-height: 300px;
+  // }
+
+  /* Comprehensive Chart Data Popover Styles */
+  .chart-data-popover {
+    position: fixed;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.95);
+    color: white;
+    border-radius: 12px;
+    padding: 0;
+    font-size: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 300px;
+    min-width: 250px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .popover-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      .popover-title {
+        font-weight: 700;
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 4px;
+      }
+
+      .popover-total {
+        font-size: 12px;
+        color: #4ade80;
+        font-weight: 600;
+      }
+    }
+
+    .popover-content {
+      padding: 12px 20px 16px;
+
+      .data-item {
+        margin-bottom: 8px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .data-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .data-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+          }
+
+          .data-name {
+            flex: 1;
+            font-size: 12px;
+            color: #e2e8f0;
+            font-weight: 500;
+          }
+
+          .data-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4ade80;
+            min-width: 40px;
+            text-align: right;
+          }
+
+          .data-percentage {
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 600;
+            min-width: 35px;
+            text-align: right;
+          }
+        }
+      }
+    }
+ // Cards - Base styling
+  mat-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-content {
+      padding: 16px !important;
+    }
+  }
+    .popover-arrow {
+      position: absolute;
+      top: 50%;
+      left: -6px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 6px solid rgba(0, 0, 0, 0.95);
+    }
+
+    // Arrow positioning for different orientations
+    &.arrow-left .popover-arrow {
+      left: -6px;
+      border-right: 6px solid rgba(0, 0, 0, 0.95);
+      border-left: none;
+    }
+
+    &.arrow-right .popover-arrow {
+      left: auto;
+      right: -6px;
+      border-left: 6px solid rgba(0, 0, 0, 0.95);
+      border-right: none;
+    }
+
+    &.arrow-top .popover-arrow {
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top: none;
+      border-bottom: 6px solid rgba(0, 0, 0, 0.95);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+    }
+  }
+
+  /* Individual Segment Popover Styles */
+  .segment-popover {
+    position: fixed;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.95);
+    color: white;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-5px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 320px;
+    min-width: 280px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .segment-content {
+      .segment-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+
+        .segment-dot {
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          flex-shrink: 0;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .segment-title {
+          font-weight: 700;
+          font-size: 14px;
+          color: #fff;
+        }
+      }
+
+      .segment-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+        .segment-value {
+          font-size: 24px;
+          font-weight: 800;
+          color: #4ade80;
+        }
+
+        .segment-percentage {
+          font-size: 16px;
+          color: #94a3b8;
+          font-weight: 600;
+        }
+      }
+
+      .breakdown-section {
+        .breakdown-title {
+          font-size: 11px;
+          font-weight: 600;
+          color: #a1a1aa;
+          margin-bottom: 10px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .breakdown-list {
+          margin-bottom: 12px;
+
+          .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            .breakdown-source {
+              font-size: 12px;
+              color: #e2e8f0;
+              font-weight: 500;
+            }
+
+            .breakdown-count {
+              font-size: 13px;
+              color: #4ade80;
+              font-weight: 700;
+            }
+          }
+        }
+
+        .breakdown-total {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 12px;
+          background: rgba(74, 222, 128, 0.1);
+          border-radius: 6px;
+          border: 1px solid rgba(74, 222, 128, 0.2);
+
+          .total-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4ade80;
+          }
+
+          .total-value {
+            font-size: 16px;
+            font-weight: 800;
+            color: #4ade80;
+          }
+        }
+      }
+    }
+
+    .popover-arrow {
+      position: absolute;
+      top: 50%;
+      left: -6px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 6px solid rgba(0, 0, 0, 0.95);
+    }
+
+    // Arrow positioning for different orientations
+    &.arrow-left .popover-arrow {
+      left: -6px;
+      border-right: 6px solid rgba(0, 0, 0, 0.95);
+      border-left: none;
+    }
+
+    &.arrow-right .popover-arrow {
+      left: auto;
+      right: -6px;
+      border-left: 6px solid rgba(0, 0, 0, 0.95);
+      border-right: none;
+    }
+
+    &.arrow-top .popover-arrow {
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top: none;
+      border-bottom: 6px solid rgba(0, 0, 0, 0.95);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+    }
+
+    &.arrow-bottom .popover-arrow {
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid rgba(0, 0, 0, 0.95);
+    }
+  }
+
+  /* Chart hover area styling */
+  .overall-donut-wrap {
+    canvas {
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  }
+
+  //equ
+  
+   // Chart Cards
+  .chart-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-content {
+      padding: 20px !important;
+    }
+  }
+
+  .chart-header {
+    margin-bottom: 16px;
+    text-align: center;
+
+    .chart-title {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #283593;
+      margin: 8px 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .chart-subtitle {
+      font-size: 12px;
+      color: #6c757d;
+      margin: 0;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+
+  // Table Styles
+  .table-title {
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #283593;
+    margin: 16px 0 8px 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .table-designed {
+    width: 100%;
+  }
+
+  // Equipment Utilization Cards
+  .equipment-cards {
+    margin-top: 16px;
+  }
+
+  .equipment-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    background: #ffffff;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-content {
+      padding: 16px !important;
+      text-align: center;
+    }
+
+    .equipment-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .equipment-percentage {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .equipment-status {
+      margin-bottom: 8px;
+
+      mat-progress-bar {
+        height: 8px;
+        border-radius: 4px;
+      }
+    }
+
+    .equipment-scans {
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+
+  // Equipment card color variations
+  .equipment-card-1 {
+    .equipment-percentage {
+      color: #9661db;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #9661db !important;
+    }
+  }
+
+  .equipment-card-2 {
+    .equipment-percentage {
+      color: #e9ac1b;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #e9ac1b !important;
+    }
+  }
+
+  .equipment-card-3 {
+    .equipment-percentage {
+      color: #28af28;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #28af28 !important;
+    }
+  }
+
+  .equipment-card-4 {
+    .equipment-percentage {
+      color: #70c7bd;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #70c7bd !important;
+    }
+  }
+
+  // Hide utility
+  .hide {
+    display: none !important;
+  }
+// Sample Collection Statistics Cards
+  .sample-stats-cards {
+    margin-top: 16px;
+  }
+
+  .sample-stat-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    background: #ffffff;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-content {
+      padding: 20px !important;
+      text-align: center;
+    }
+
+    .sample-stat-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sample-stat-count {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .sample-stat-percentage {
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+
+  // Sample stat card color variations
+  .sample-stat-card-1 {
+    .sample-stat-count {
+      color: #28af28;
+    }
+  }
+
+  .sample-stat-card-2 {
+    .sample-stat-count {
+      color: #f6c542;
+    }
+  }
+
+  .sample-stat-card-3 {
+    .sample-stat-count {
+      color: #ff5a8a;
+    }
+  }
+}
+
+// end .new-dashboard-section
+// end .radiology-dashboard-wrapper

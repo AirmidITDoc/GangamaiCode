@@ -51,21 +51,31 @@ export class DashboardService {
 
     filterFormfinance(): FormGroup {
         return this._formBuilder.group({
-        
-          fromDate: [(new Date()).toISOString()],
-          toDate: [(new Date()).toISOString()],
-          
-        });
-      }
 
-        filterFormInvestigation(): FormGroup {
-        return this._formBuilder.group({
-        
-          fromDate: [(new Date()).toISOString()],
-          toDate: [(new Date()).toISOString()],
-          
+            fromDate: [(new Date()).toISOString()],
+            toDate: [(new Date()).toISOString()],
+
         });
-      }
+    }
+
+    filterdashboardForm(): FormGroup {
+        return this._formBuilder.group({
+
+            fromDate: [(new Date()).toISOString()],
+            toDate: [(new Date()).toISOString()],
+
+        });
+    }
+
+
+    filterFormInvestigation(): FormGroup {
+        return this._formBuilder.group({
+
+            fromDate: [(new Date()).toISOString()],
+            toDate: [(new Date()).toISOString()],
+
+        });
+    }
 
     // public getDailyDashboardSummary() {
     //   return this._httpClient.PostData("Generic/GetByProc?procName=rptDailyDashboardSummary", {})
@@ -230,23 +240,61 @@ export class DashboardService {
         return this._httpClient.PutData("BedMaster/Edit", {});
     }
     public getPathologyDashboard(params) {
-        return this._httpClient.GetData("Dashboard/pathology-dashboard?UnitId=" + params.UnitId+"&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+        return this._httpClient.GetData("Dashboard/pathology-dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
     }
 
-public getPharmacyDashboard(params) {
-        return this._httpClient.GetData("Dashboard/pharmacy-dashboard?UnitId=" + params.UnitId+"&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+    public getPharmacyDashboard(params) {
+        return this._httpClient.GetData("Dashboard/pharmacy-dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
     }
+
+
+    public getRadiologyDashboard(params) {
+        return this._httpClient.GetData("Dashboard/radiology-dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+    }
+
+    public getwardCoutList(params) {
+
+        return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
+
+
+    }
+
+    public getDoctorwisesales(employee) {
+        return this._httpClient.PostData("Branch/UnitBranchWiseDoctorSummary", employee)
+    }
+    public getBranchList(employee) {
+        return this._httpClient.PostData("Branch/UnitBranchWiseDoctorSummary", employee)
+    }
+
+    public getBillrevenudetailList(param) {
+
+        return this._httpClient.PostData("Branch/UnitBranchWiseRevenueSummary", param)
+    }
+
+    public getCompanywiseList(param) {
+
+        return this._httpClient.PostData("Branch/UnitBranchWiseCompanySummary", param)
+    }
+
+
+
+    public getDeptwisesales(param) {
+
+        return this._httpClient.PostData("Branch/UnitBranchWiseCategorySummary", param)
+    }
+
+    public allDashboarddata(params) {
+
+        return this._httpClient.GetData("Dashboard/Daily-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
+
+    }
+
     
+ public getcashlessDashboard(params) {
 
- public getRadiologyDashboard(params) {
-        return this._httpClient.GetData("Dashboard/radiology-dashboard?UnitId=" + params.UnitId+"&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+        return this._httpClient.GetData("Dashboard/Daily-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
+
     }
-    
-     public getwardCoutList(params) {
-        
-     return this._httpClient.GetData("Dashboard/Financial-dashboard?UnitId=" + params.UnitId+"&FromDate="+params.FromDate+"&ToDate="+params.ToDate);
 
-
-}
 }
 

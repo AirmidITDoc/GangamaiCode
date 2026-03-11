@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup } from '@angular/forms';
+import { BillRevenuList } from 'app/main/Lab Management/branch-wise-summary/branch-wise-summary.component';
 
 @Component({
   selector: 'app-lab-financial-dashboard',
@@ -15,8 +16,8 @@ import { FormGroup } from '@angular/forms';
   animations: fuseAnimations,
 })
 export class LabFinancialDashboardComponent {
-  fromDate: Date = new Date(2026, 0, 27);
-  toDate: Date = new Date(2026, 0, 27);
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   myFilterform: FormGroup;
   username = '';
   UnitId: any = this._accountServices.currentUserValue.user.unitId;
@@ -26,7 +27,7 @@ export class LabFinancialDashboardComponent {
     public _accountServices: AuthenticationService,
     private router: Router,
     public datePipe: DatePipe,
-  ) {}
+  ) { }
 
   AppoinmentCount: any;
   TotalAdmittedCount: any;
@@ -59,42 +60,45 @@ export class LabFinancialDashboardComponent {
   Insuranceds = new MatTableDataSource<Insurance>();
 
   // Summary card data
-  todayRegistration = 92;
-  todaySales = 189506.0;
-  thisMonthSales = 5234287.0;
-  todayTests = 161;
-  pendingTests = 63;
+  todayRegistration = 0;
+  todaySales = 0;
+  thisMonthSales = 0;
+  todayTests = 0;
+  pendingTests = 0;
   labBusinessLabel = 'Lab Business';
 
+  doctorSales = new MatTableDataSource<DoctorSalesList>();
+  BranchList = new MatTableDataSource<branchList>();
+  cpSales = new MatTableDataSource<CompanyList>();
   // Branch list
-  branches: string[] = [
-    'SADAR HOSPITAL VAISHALI-BIHAR',
-    'SADAR HOSPITAL AURANGABAD-BIHAR',
-    'AAHCUTTACK',
-    'SADAR HOSPITAL GOPALGANJ-BIHAR',
-    'DHH SAMBALPUR CT CENTRE',
-    'AHRCC CT SCAN CENTER-CUTTACK',
-    'SADAR HOSPITAL GAYA(CT)-BIHAR',
-    'MALKANAGIRI',
-    'DHH ANGUL MRI CENTER-ANGUL',
-    'MKCG MCH CT SCAN CENTER-BERHAMPUR',
-  ];
+  branches: string[] = []
+  //   'SADAR HOSPITAL VAISHALI-BIHAR',
+  //   'SADAR HOSPITAL AURANGABAD-BIHAR',
+  //   'AAHCUTTACK',
+  //   'SADAR HOSPITAL GOPALGANJ-BIHAR',
+  //   'DHH SAMBALPUR CT CENTRE',
+  //   'AHRCC CT SCAN CENTER-CUTTACK',
+  //   'SADAR HOSPITAL GAYA(CT)-BIHAR',
+  //   'MALKANAGIRI',
+  //   'DHH ANGUL MRI CENTER-ANGUL',
+  //   'MKCG MCH CT SCAN CENTER-BERHAMPUR',
+  // ];
   selectedBranch = 'AAHCUTTACK';
 
-  // Department wise sales
-  departmentSalesColumns: string[] = ['index', 'department', 'testCount', 'centerSale', 'corporate', 'digital', 'referral', 'netSale'];
+  // Department wise sales  'centerSale', 'corporate', 'digital', 'referral',
+  departmentSalesColumns: string[] = ['index', 'department', 'testCount',  'netSale'];
   departmentSales = new MatTableDataSource<any>([
-    { department: 'CARDIOLOGY', testCount: 11, centerSale: 5550.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 5550.0 },
-    { department: 'GASTROENTEROLOGY', testCount: 4, centerSale: 6000.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 6000.0 },
-    { department: 'NEUROLOGY', testCount: 3, centerSale: 3700.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 3700.0 },
-    { department: 'PATHOLOGY', testCount: 48, centerSale: 8381.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 8381.0 },
-    { department: 'RADIOLOGY', testCount: 94, centerSale: 165528.27, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 165528.27 },
-    { department: 'UROFLOWMETRY', testCount: 1, centerSale: 350.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 350.0 },
+    // { department: 'CARDIOLOGY', testCount: 11, centerSale: 5550.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 5550.0 },
+    // { department: 'GASTROENTEROLOGY', testCount: 4, centerSale: 6000.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 6000.0 },
+    // { department: 'NEUROLOGY', testCount: 3, centerSale: 3700.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 3700.0 },
+    // { department: 'PATHOLOGY', testCount: 48, centerSale: 8381.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 8381.0 },
+    // { department: 'RADIOLOGY', testCount: 94, centerSale: 165528.27, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 165528.27 },
+    // { department: 'UROFLOWMETRY', testCount: 1, centerSale: 350.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 350.0 },
   ]);
 
-  todaySaleTotal = 189509.27;
-  todaySaleTestCount = 151;
-  monthSaleTotal = 5234287.0;
+  todaySaleTotal = 0;
+  todaySaleTestCount = 0;
+  monthSaleTotal = 0;
   monthTestCount = 0;
 
   // Daily sales chart (ngx-charts)
@@ -129,30 +133,34 @@ export class LabFinancialDashboardComponent {
   ];
   chartColorScheme: any = { domain: ['#4CAF50'] };
 
+
+
   // Doctor wise sales
   doctorSalesColumns: string[] = ['index', 'doctorName', 'totalPatient', 'totalSales'];
-  doctorSales = new MatTableDataSource<any>([
-    { doctorName: 'DESIRE TO LIFE', totalPatient: 4, totalSales: 12700.0 },
-    { doctorName: 'CHANAKYA HOSPITAL', totalPatient: 4, totalSales: 12000.0 },
-    { doctorName: 'MEERA HOSPITAL', totalPatient: 3, totalSales: 11700.0 },
-    { doctorName: 'Satya Sai Clinic', totalPatient: 3, totalSales: 10700.0 },
-    { doctorName: 'Dr.Sanjay Kumar Behera', totalPatient: 3, totalSales: 10300.0 },
-    { doctorName: 'MATIKURUPA PATHO CARE & MEDICINE STORE', totalPatient: 3, totalSales: 8400.0 },
-    { doctorName: 'NABAKALEBAR CLINIC', totalPatient: 2, totalSales: 7700.0 },
-    { doctorName: 'Relax Hospital', totalPatient: 2, totalSales: 7000.0 },
-    { doctorName: 'DR.PARSIRAM JENA', totalPatient: 3, totalSales: 6100.0 },
-    { doctorName: 'ARCHIE HOSPITAL', totalPatient: 1, totalSales: 6000.0 },
-  ]);
+  // doctorSales = new MatTableDataSource<any>([
+  //   { doctorName: 'DESIRE TO LIFE', totalPatient: 4, totalSales: 12700.0 },
+  //   { doctorName: 'CHANAKYA HOSPITAL', totalPatient: 4, totalSales: 12000.0 },
+  //   { doctorName: 'MEERA HOSPITAL', totalPatient: 3, totalSales: 11700.0 },
+  //   { doctorName: 'Satya Sai Clinic', totalPatient: 3, totalSales: 10700.0 },
+  //   { doctorName: 'Dr.Sanjay Kumar Behera', totalPatient: 3, totalSales: 10300.0 },
+  //   { doctorName: 'MATIKURUPA PATHO CARE & MEDICINE STORE', totalPatient: 3, totalSales: 8400.0 },
+  //   { doctorName: 'NABAKALEBAR CLINIC', totalPatient: 2, totalSales: 7700.0 },
+  //   { doctorName: 'Relax Hospital', totalPatient: 2, totalSales: 7000.0 },
+  //   { doctorName: 'DR.PARSIRAM JENA', totalPatient: 3, totalSales: 6100.0 },
+  //   { doctorName: 'ARCHIE HOSPITAL', totalPatient: 1, totalSales: 6000.0 },
+  // ]);
 
   // CP wise sales
   cpSalesColumns: string[] = ['index', 'cpName', 'totalPatient', 'totalSales'];
-  cpSales = new MatTableDataSource<any>([
-    { cpName: "DOCTOR'S CARE HOSPITAL & RESEARCH CENTRE (BSKY)", totalPatient: 2, totalSales: 8858.0 },
-    { cpName: 'RAKSHYA HOSPITAL BSKY', totalPatient: 3, totalSales: 3238.0 },
-    { cpName: 'SAI VISION HOSPITAL & RESEARCH CENTER(BSKY)', totalPatient: 1, totalSales: 900.0 },
-    { cpName: 'SATYAM HOSPITAL(BSKY)', totalPatient: 1, totalSales: 800.0 },
-    { cpName: 'ROHAN HOSPITAL(BSKY)', totalPatient: 1, totalSales: 400.0 },
-  ]);
+  // cpSales = new MatTableDataSource<any>([
+  //   { cpName: "DOCTOR'S CARE HOSPITAL & RESEARCH CENTRE (BSKY)", totalPatient: 2, totalSales: 8858.0 },
+  //   { cpName: 'RAKSHYA HOSPITAL BSKY', totalPatient: 3, totalSales: 3238.0 },
+  //   { cpName: 'SAI VISION HOSPITAL & RESEARCH CENTER(BSKY)', totalPatient: 1, totalSales: 900.0 },
+  //   { cpName: 'SATYAM HOSPITAL(BSKY)', totalPatient: 1, totalSales: 800.0 },
+  //   { cpName: 'ROHAN HOSPITAL(BSKY)', totalPatient: 1, totalSales: 400.0 },
+  // ]);
+
+
   cpTotalPatient = 8;
   cpTotalSales = 14196.0;
 
@@ -222,19 +230,28 @@ export class LabFinancialDashboardComponent {
       : '';
 
     this.getwardpatientList();
+    this.getDoctorwisesalesList()
+    this.getBranchList()
+    this.GetBillRevenudetail()
+    this.GetCompanywisesale()
+    this.getDepartmentwisesalesList()
   }
 
   onGo(): void {
-    this.getwardpatientList();
+    this.getDoctorwisesalesList()
+    this.getBranchList()
+    this.GetBillRevenudetail()
+    this.GetCompanywisesale()
+    this.getDepartmentwisesalesList()
   }
 
   selectBranch(branch: string): void {
     this.selectedBranch = branch;
   }
 
-  formatCurrency(value: number): string {
-    return value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
+  // formatCurrency(value: number): string {
+  //   return value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  // }
 
   get wardTotalPatients(): number {
     return this.wardHeadCount.data.reduce((sum, r) => sum + r.occupiedBeds, 0);
@@ -310,7 +327,275 @@ export class LabFinancialDashboardComponent {
     return this.departmentSales.data.reduce((sum, r) => sum + (r.testCount || 0), 0);
   }
   get deptTotalNetSale(): number {
-    return this.departmentSales.data.reduce((sum, r) => sum + (r.netSale || 0), 0);
+    return this.departmentSales.data.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
+  }
+
+
+
+  getDoctorwisesalesList() {
+
+    let filters: any[] = [];
+    // UnitId: this.UnitId,
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+      this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
+
+
+      filters.push(
+
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": String(this.fromDate),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": String(this.toDate),
+          "opType": "Equals"
+        }
+      );
+
+    let data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "DoctorName",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    this._dashboardServices.getDoctorwisesales(data).subscribe((data: any) => {
+      this.Financedata = data;
+      console.log(data)
+      this.doctorSales.data = data.data;
+    })
+  }
+  Brancharray = []
+  getBranchList() {
+
+    let filters: any[] = [];
+    // UnitId: this.UnitId,
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+      this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
+
+
+      filters.push(
+
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": String(this.fromDate),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": String(this.toDate),
+          "opType": "Equals"
+        }
+      );
+
+    let data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "DoctorName",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    this._dashboardServices.getBranchList(data).subscribe((data: any) => {
+
+      this.Brancharray = data.data as [];
+      this.branches = [...new Set(this.Brancharray.map(item => item.unitBranchName))];
+
+      console.log(this.branches)
+
+    })
+  }
+
+  GetCompanywisesale() {
+
+    let filters: any[] = [];
+    // UnitId: this.UnitId,
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+      this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
+
+
+      filters.push(
+
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": String(this.fromDate),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": String(this.toDate),
+          "opType": "Equals"
+        }
+      );
+
+    let data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "CompanyName",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    this._dashboardServices.getCompanywiseList(data).subscribe((data: any) => {
+      
+      this.cpSales.data = data.data as [];
+      // this.branches = [...new Set(this.Brancharray.map(item => item.unitBranchName))];
+
+      console.log(this.cpSales.data)
+
+    })
+  }
+
+  getDepartmentwisesalesList() {
+
+    let filters: any[] = [];
+    // UnitId: this.UnitId,
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+      this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
+
+
+      filters.push(
+
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": String(this.fromDate),
+          "opType": "Contains"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": String(this.toDate),
+          "opType": "Equals"
+        }
+      );
+
+    let data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "UnitId",
+      "sortOrder": 0,
+      "filters": filters,
+      "exportType": "JSON",
+      "columns": []
+    };
+    debugger
+    this._dashboardServices.getDeptwisesales(data).subscribe((data: any) => {
+      console.log(data)
+      this.departmentSales.data = data.data;
+    })
+  }
+  Billdetaildatasource = new MatTableDataSource<BillRevenuList>();
+  paydata = []
+  paymentModeData1: any[] = []
+  GetBillRevenudetail() {
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+      this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
+
+    var vdata = {
+      "first": 0,
+      "rows": 200,
+      "sortField": "UnitId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        },
+
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+
+    console.log(vdata)
+
+    this._dashboardServices.getBillrevenudetailList(vdata).subscribe(data => {
+      this.Billdetaildatasource.data = data.data as BillRevenuList[]
+      console.log(this.Billdetaildatasource.data)
+      
+      this.todayRegistration = this.Billdetaildatasource.data[0]['patientCount'];
+      this.todaySales = this.Billdetaildatasource.data[0]['totalRevenue'];
+      // this.thisMonthSales =this.Billdetaildatasource.data.patientCount;
+      // this.todayTests =this.Billdetaildatasource.data.patientCount;
+      // this.pendingTests = 0;
+      this.labBusinessLabel = 'Lab Business';
+
+      this.paydata = [];
+
+      // if (this.paymentModeChart) {
+      //   this.paymentModeChart.destroy();
+      // }
+      this.Billdetaildatasource.data.forEach(element => {
+        console.log(element)
+        this.paydata.push({
+          mode: element.unitBranchName?.trim() || '',
+          amount: Number(element.netRevenue) || 0
+        });
+        console.log(this.paydata)
+        // this.paymentModeData1.push(this.paydata)
+      })
+
+      // ✅ Re-create chart AFTER data is ready
+      setTimeout(() => {
+        // this.renderPaymentChart();
+      }, 0);
+
+      // console.log(this.paymentModeData1)
+      if (this.Billdetaildatasource.data.length > 0)
+        this.getsumdetail()
+    })
+  }
+
+  TotAmt = 0
+  TotconAmt = 0
+  TotNetamt = 0
+
+  count = 0
+  TotCount = 0
+  getsumdetail() {
+    // 
+    this.count = this.Billdetaildatasource.data.length
+
+    this.TotCount = this.Billdetaildatasource.data.reduce((sum, { patientCount }) => sum += +(patientCount || 0), 0);
+
+    this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netRevenue }) => sum += +(netRevenue || 0), 0);
+
   }
 
   getwardpatientList() {
@@ -517,5 +802,51 @@ export class Insurance {
     this.IPUnpaidCharges = Insurance.IPUnpaidCharges || 0;
     this.UnadjestedAdvance = Insurance.UnadjestedAdvance || 0;
     this.InsuranceAdequancy = Insurance.InsuranceAdequancy || '0';
+  }
+}
+
+export class DoctorSalesList {
+
+  doctorName: string;
+  testCount: number;
+  totalAmount: number;
+  constructor(DoctorSalesList) {
+
+    this.doctorName = DoctorSalesList.doctorName;
+    this.testCount = DoctorSalesList.testCount || 0;
+    this.totalAmount = DoctorSalesList.totalAmount || '0';
+
+  }
+}
+
+
+export class branchList {
+
+  doctorName: string;
+  testCount: number;
+  totalAmount: number;
+
+  constructor(branchList) {
+
+    this.doctorName = branchList.doctorName;
+    this.testCount = branchList.testCount || 0;
+    this.totalAmount = branchList.totalAmount || '0';
+
+  }
+}
+
+
+export class CompanyList {
+
+  companyName: string;
+  testCount: number;
+  totalAmount: number;
+
+  constructor(CompanyList) {
+
+    this.companyName = CompanyList.companyName;
+    this.testCount = CompanyList.testCount || 0;
+    this.totalAmount = CompanyList.totalAmount || '0';
+
   }
 }

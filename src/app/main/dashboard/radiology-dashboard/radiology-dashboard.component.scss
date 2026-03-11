@@ -1,5 +1,3 @@
-// ========== ALL styles scoped under the component root to prevent global leakage ==========
-// This component uses ViewEncapsulation.None, so we MUST scope under a unique wrapper.
 
 .radiolo.new-dashboard-section {
 
@@ -1750,6 +1748,8 @@
     }
   }
 
+  //equ
+  
    // Chart Cards
   .chart-card {
     border-radius: 8px;
@@ -1804,6 +1804,166 @@
     width: 100%;
   }
 
+  // Equipment Utilization Cards
+  .equipment-cards {
+    margin-top: 16px;
+  }
+
+  .equipment-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    background: #ffffff;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-content {
+      padding: 16px !important;
+      text-align: center;
+    }
+
+    .equipment-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .equipment-percentage {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .equipment-status {
+      margin-bottom: 8px;
+
+      mat-progress-bar {
+        height: 8px;
+        border-radius: 4px;
+      }
+    }
+
+    .equipment-scans {
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+
+  // Equipment card color variations
+  .equipment-card-1 {
+    .equipment-percentage {
+      color: #9661db;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #9661db !important;
+    }
+  }
+
+  .equipment-card-2 {
+    .equipment-percentage {
+      color: #e9ac1b;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #e9ac1b !important;
+    }
+  }
+
+  .equipment-card-3 {
+    .equipment-percentage {
+      color: #28af28;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #28af28 !important;
+    }
+  }
+
+  .equipment-card-4 {
+    .equipment-percentage {
+      color: #70c7bd;
+    }
+
+    ::ng-deep .mat-progress-bar-fill::after {
+      background-color: #70c7bd !important;
+    }
+  }
+
+  // Hide utility
+  .hide {
+    display: none !important;
+  }
+// Sample Collection Statistics Cards
+  .sample-stats-cards {
+    margin-top: 16px;
+  }
+
+  .sample-stat-card {
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    background: #ffffff;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    mat-card-content {
+      padding: 20px !important;
+      text-align: center;
+    }
+
+    .sample-stat-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sample-stat-count {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .sample-stat-percentage {
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+
+  // Sample stat card color variations
+  .sample-stat-card-1 {
+    .sample-stat-count {
+      color: #28af28;
+    }
+  }
+
+  .sample-stat-card-2 {
+    .sample-stat-count {
+      color: #f6c542;
+    }
+  }
+
+  .sample-stat-card-3 {
+    .sample-stat-count {
+      color: #ff5a8a;
+    }
+  }
 }
 
 // end .new-dashboard-section

@@ -45,8 +45,8 @@
         </div>
         <div class="card-info">
           <span class="card-label">Today's Sales</span>
-          <span class="card-value">{{ formatCurrency(todaySales) }}</span>
-          <span class="card-sub">This Month {{ formatCurrency(thisMonthSales) }}</span>
+          <span class="card-value">{{ todaySales }}</span>
+          <span class="card-sub">This Month {{ thisMonthSales }}</span>
         </div>
       </div>
 
@@ -111,7 +111,7 @@
 
               <ng-container matColumnDef="department">
                 <th mat-header-cell *matHeaderCellDef> Department </th>
-                <td mat-cell *matCellDef="let r"> {{ r.department }} </td>
+                <td mat-cell *matCellDef="let r"> {{ r.categoryName }} </td>
               </ng-container>
 
               <ng-container matColumnDef="testCount">
@@ -119,29 +119,29 @@
                 <td mat-cell *matCellDef="let r" class="num-col"> {{ r.testCount }} </td>
               </ng-container>
 
-              <ng-container matColumnDef="centerSale">
+              <!-- <ng-container matColumnDef="centerSale">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Center Sale </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.centerSale) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.centerSale }} </td>
               </ng-container>
 
               <ng-container matColumnDef="corporate">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Corporate </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.corporate) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{r.corporate}} </td>
               </ng-container>
 
               <ng-container matColumnDef="digital">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Digital </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.digital) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{r.digital }} </td>
               </ng-container>
 
               <ng-container matColumnDef="referral">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Referral </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.referral) }} </td>
-              </ng-container>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.referral }} </td>
+              </ng-container> -->
 
               <ng-container matColumnDef="netSale">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Net Sale </th>
-                <td mat-cell *matCellDef="let r" class="num-col net-sale"> {{ formatCurrency(r.netSale) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col net-sale"> {{ r.totalAmount}} </td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="departmentSalesColumns"></tr>
@@ -153,22 +153,22 @@
           <div class="dept-footer">
             <div class="dept-footer-row today-row">
               <span class="footer-label">Today's Sale</span>
-              <span class="footer-val">{{ deptTotalTestCount }}</span>
-              <span class="footer-val">{{ formatCurrency(todaySaleTotal) }}</span>
+              <span class="footer-val" style="margin-left: 340px;">{{ deptTotalTestCount }}</span>
+              <!-- <span class="footer-val">{{ todaySaleTotal }}</span>
               <span class="footer-val zero">0.00</span>
               <span class="footer-val zero">0.00</span>
-              <span class="footer-val zero">0.00</span>
-              <span class="footer-val highlight">{{ formatCurrency(todaySaleTotal) }}</span>
+              <span class="footer-val zero">0.00</span> -->
+              <span class="footer-val highlight" style="margin-left: 400px;">{{ deptTotalNetSale }}</span>
             </div>
-            <div class="dept-footer-row month-row">
+            <!-- <div class="dept-footer-row month-row">
               <span class="footer-label">This Month's Sale</span>
               <span class="footer-val">{{ monthTestCount }}</span>
-              <span class="footer-val">{{ formatCurrency(monthSaleTotal) }}</span>
+              <span class="footer-val">{{ monthSaleTotal }}</span>
               <span class="footer-val zero">0.00</span>
               <span class="footer-val zero">0.00</span>
               <span class="footer-val zero">0.00</span>
-              <span class="footer-val highlight">{{ formatCurrency(monthSaleTotal) }}</span>
-            </div>
+              <span class="footer-val highlight">{{ monthSaleTotal }}</span>
+            </div> -->
           </div>
         </div>
       </mat-card>
@@ -214,11 +214,11 @@
               </ng-container>
               <ng-container matColumnDef="totalPatient">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Total Patient </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.totalPatient }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.testCount }} </td>
               </ng-container>
               <ng-container matColumnDef="totalSales">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Total Sales </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.totalSales) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.totalAmount }} </td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="doctorSalesColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: doctorSalesColumns;"></tr>
@@ -242,15 +242,15 @@
               </ng-container>
               <ng-container matColumnDef="cpName">
                 <th mat-header-cell *matHeaderCellDef> CP Name </th>
-                <td mat-cell *matCellDef="let r"> {{ r.cpName }} </td>
+                <td mat-cell *matCellDef="let r"> {{ r.companyName }} </td>
               </ng-container>
               <ng-container matColumnDef="totalPatient">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Total Patient </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.totalPatient }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.testCount }} </td>
               </ng-container>
               <ng-container matColumnDef="totalSales">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Total Sales </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.totalSales) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.totalAmount }} </td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="cpSalesColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: cpSalesColumns;"></tr>
@@ -259,7 +259,7 @@
           <div class="table-total-footer cp-footer">
             <span class="footer-label">Total</span>
             <span class="footer-val">{{ cpTotalPatient }}</span>
-            <span class="footer-val highlight">{{ formatCurrency(cpTotalSales) }}</span>
+            <span class="footer-val highlight">{{ cpTotalSales }}</span>
           </div>
         </div>
       </mat-card>
@@ -283,19 +283,19 @@
               </ng-container>
               <ng-container matColumnDef="gross">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Gross </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.gross) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.gross }} </td>
               </ng-container>
               <ng-container matColumnDef="discount">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Discount </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.discount) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.discount }} </td>
               </ng-container>
               <ng-container matColumnDef="reversal">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Reversal </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ formatCurrency(r.reversal) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.reversal }} </td>
               </ng-container>
               <ng-container matColumnDef="net">
                 <th mat-header-cell *matHeaderCellDef class="num-col"> Net </th>
-                <td mat-cell *matCellDef="let r" class="num-col net-sale"> {{ formatCurrency(r.net) }} </td>
+                <td mat-cell *matCellDef="let r" class="num-col net-sale"> {{ r.net }} </td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="marketingSalesColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: marketingSalesColumns;"></tr>
@@ -303,10 +303,10 @@
           </div>
           <div class="table-total-footer marketing-footer">
             <span class="footer-label">Total</span>
-            <span class="footer-val">{{ formatCurrency(marketingTotalGross) }}</span>
-            <span class="footer-val">{{ formatCurrency(marketingTotalDiscount) }}</span>
-            <span class="footer-val">{{ formatCurrency(marketingTotalReversal) }}</span>
-            <span class="footer-val highlight">{{ formatCurrency(marketingTotalNet) }}</span>
+            <span class="footer-val">{{ marketingTotalGross }}</span>
+            <span class="footer-val">{{ marketingTotalDiscount }}</span>
+            <span class="footer-val">{{ marketingTotalReversal }}</span>
+            <span class="footer-val highlight">{{ marketingTotalNet }}</span>
           </div>
         </div>
       </mat-card>

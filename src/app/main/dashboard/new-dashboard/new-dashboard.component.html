@@ -7,17 +7,22 @@
         <span>New Dashboard</span>
       </div>
     </div>
-    <div class="date-filter-container resize-form-fields">
-      <mat-form-field appearance="outline">
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="rangePicker">
-          <input matStartDate [(ngModel)]="fromDate" (dateChange)="onDateChange()" placeholder="Start date" readonly>
-          <input matEndDate [(ngModel)]="toDate" (dateChange)="onDateChange()" placeholder="End date" readonly>
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
-        <mat-date-range-picker #rangePicker></mat-date-range-picker>
-      </mat-form-field>
-    </div>
+    <form [formGroup]="myFilterform">
+      <div class="date-filter-container">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate formControlName="fromDate" placeholder="Start date">
+            <input matEndDate formControlName="toDate" placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">Go</button>
+
+      </div>
+    </form>
   </div>
   <!-- / HEADER -->
 
@@ -67,7 +72,7 @@
             <mat-card-content>
               <div class="overall-stats-section">
                 <div class="overall-donut-wrap">
-                  <canvas id="OPDOverviewDoughnut"></canvas>
+                  <canvas id="OPDDrOverviewDoughnut"></canvas>
                 </div>
                 <div class="legend-mini">
                   <span class="legend-item"><span class="dot dot-red"></span> Registrations</span>
@@ -143,7 +148,7 @@
         </div>
 
         <!-- Recent activity table -->
-        <div class="tables-row">
+        <!-- <div class="tables-row">
           <mat-card class="table-card mat-elevation-z2">
             <mat-card-header>
               <mat-card-title>Recent Patients</mat-card-title>
@@ -172,7 +177,7 @@
               </table>
             </mat-card-content>
           </mat-card>
-        </div>
+        </div> -->
 
         <!-- Patient Mix section: mediclaim vs self vs reference -->
         <div class="charts-row">

@@ -19,7 +19,7 @@ export class RadiologyDashboardComponent implements OnInit {
     myFilterform: UntypedFormGroup;
     fromDate: any;
     toDate: any;
-  UnitId: any = this._accountServices.currentUserValue.user.unitId;
+    UnitId: any = this._accountServices.currentUserValue.user.unitId;
     AppoinmentCount: any;
     TotalAdmittedCount: any;
     TotalSelf: any;
@@ -63,23 +63,6 @@ export class RadiologyDashboardComponent implements OnInit {
 
 
 
-    // public modalityChart: any;
-    // public modalityChart1: any;
-    // Tests by Modality Data
-
-    // modalityData = [
-    //     { modality: '', count: 0 }
-    // ];
-
-    // modalityData1 = [
-    //     { modality: '', count: 0 }
-    // ];
-    // Report Status Data
-
-    //   statusData = [
-    //     { status: '', count: 0 }
-    // ];
-
     statusData = [
         { status: 'Completed', count: 0 },
         { status: 'Pending', count: 0 },
@@ -91,48 +74,6 @@ export class RadiologyDashboardComponent implements OnInit {
         { status: 'Pending', count: 0 },
         { status: 'Cancelled', count: 0 }
     ];
-    // Daily Test Volume Trend (Last 7 days)
-    // volumeTrendData = [
-    //     { day: 'Mon', count: 142 },
-    //     { day: 'Tue', count: 158 },
-    //     { day: 'Wed', count: 135 },
-    //     { day: 'Thu', count: 165 },
-    //     { day: 'Fri', count: 148 },
-    //     { day: 'Sat', count: 172 },
-    //     { day: 'Sun', count: 156 }
-    // ];
-
-    // Recent Reports Mock Data
-    // recentReportsData: RecentReport[] = [
-    //     { PatientName: 'Rajesh Kumar', TestType: 'CT Scan - Brain', Status: 'Completed', Radiologist: 'Dr. Sharma', Date: '2025-11-09' },
-    //     { PatientName: 'Priya Singh', TestType: 'X-Ray - Chest', Status: 'Completed', Radiologist: 'Dr. Patel', Date: '2025-11-09' },
-    //     { PatientName: 'Amit Verma', TestType: 'MRI - Spine', Status: 'Pending', Radiologist: 'Dr. Reddy', Date: '2025-11-09' },
-    //     { PatientName: 'Sunita Devi', TestType: 'Ultrasound - Abdomen', Status: 'Completed', Radiologist: 'Dr. Gupta', Date: '2025-11-09' },
-    //     { PatientName: 'Vikram Rao', TestType: 'CT Scan - Abdomen', Status: 'Pending', Radiologist: 'Dr. Sharma', Date: '2025-11-08' },
-    //     { PatientName: 'Anjali Mehta', TestType: 'Mammography', Status: 'Completed', Radiologist: 'Dr. Nair', Date: '2025-11-08' },
-    //     { PatientName: 'Ravi Shankar', TestType: 'X-Ray - Knee', Status: 'Cancelled', Radiologist: 'Dr. Patel', Date: '2025-11-08' },
-    //     { PatientName: 'Neha Agarwal', TestType: 'MRI - Brain', Status: 'Completed', Radiologist: 'Dr. Reddy', Date: '2025-11-08' }
-    // ];
-
-    // Top Requested Tests Mock Data
-    // topTestsData: TopTest[] = [
-    //     { TestName: 'X-Ray - Chest', Count: 45 },
-    //     { TestName: 'CT Scan - Brain', Count: 38 },
-    //     { TestName: 'Ultrasound - Abdomen', Count: 35 },
-    //     { TestName: 'MRI - Spine', Count: 28 },
-    //     { TestName: 'X-Ray - Knee', Count: 24 },
-    //     { TestName: 'CT Scan - Abdomen', Count: 22 },
-    //     { TestName: 'Mammography', Count: 16 }
-    // ];
-
-    // Radiologist Performance Mock Data
-    // radiologistPerformanceData: RadiologistPerformance[] = [
-    //     { RadiologistName: 'Dr. Sharma', ReportsCompleted: 42, AvgTime: 2.5 },
-    //     { RadiologistName: 'Dr. Patel', ReportsCompleted: 38, AvgTime: 2.8 },
-    //     { RadiologistName: 'Dr. Reddy', ReportsCompleted: 35, AvgTime: 3.2 },
-    //     { RadiologistName: 'Dr. Gupta', ReportsCompleted: 32, AvgTime: 2.9 },
-    //     { RadiologistName: 'Dr. Nair', ReportsCompleted: 28, AvgTime: 3.0 }
-    // ];
 
     // Equipment Utilization Data
     equipmentUtilization = [
@@ -190,7 +131,7 @@ export class RadiologyDashboardComponent implements OnInit {
         { name: 'In Process', count: 28 },
         { name: 'Delayed', count: 12 }
     ];
-  
+
     constructor(
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder, public _accountServices: AuthenticationService,
@@ -217,17 +158,20 @@ export class RadiologyDashboardComponent implements OnInit {
 
     }
 
-   
+    onGo(): void {
+        // this.ngOnDestroy()
+        this.loadTableData()
+    }
 
     loadTableData(): void {
-              this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
             this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
-
-            this.getRadiologyData();
+            this.getHomeDashboardAPI();
+        this.getRadiologyData();
         this.getpathologyReportData();
         this.getRadiologyReportData();
 
-        
+
     }
 
     onDateRangeChanged(): void {
@@ -280,7 +224,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 //         }))
                 //     ];
                 // }
-                
+
                 // console.log(this.modalityData)
                 // if (this.modalityData)
                 //     this.modalityChart = this.getModalityBarChart();
@@ -326,7 +270,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 //         }))
                 //     ];
                 // }
-                
+
                 // console.log(this.modalityData1)
                 // if (this.modalityData1)
                 //     this.modalityChart1 = this.getModalityBarChart1();
@@ -339,19 +283,16 @@ export class RadiologyDashboardComponent implements OnInit {
                 // if (this.statusData1)
                 //     this.statusPieChart1 = this.getStatusPieChart1();
 
-                // if(this.RadiologyData.radiologyVolumes.length >0)
-                // this.getRadiologyDepartmentChart()
-                // this.getRadiologyStatusPieChart()
-                //  if(this.RadiologyData.dailyTestCounts.length >0)
-                // this.getRadiologyVolumeTrendChart()
+                if (this.RadiologyData.radiologyVolumes.length > 0)
+                    this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart()
+                this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart()
+                if (this.RadiologyData.dailyTestCounts.length > 0)
+                    this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart()
             }
         });
 
     }
-    onGo(): void {
-        // this.ngOnDestroy()
-        this.loadTableData()
-    }
+
 
     getRadiologyData() {
         const payload = {
@@ -374,12 +315,15 @@ export class RadiologyDashboardComponent implements OnInit {
         this.completedReports = 0;
         this.pendingReports = 0;
         this.cancelledScans = 0;
-
+        
         this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
             this.dsRadiologyCount.data = res || [];
             this.dsRadiologyRecentReports.data = res || [];
             this.dsTopTests.data = res || [];
             this.dsRadiologistPerformance.data = res || [];
+
+            console.log(this.dsRadiologyCount)
+
 
             if (this.dsRadiologyCount.data.length > 0) {
 
@@ -401,10 +345,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     }
                 });
             }
-            // console.log('Radiology Total Tests:', this.totalTestsToday);
-            // console.log('Radiology complete Tests:', this.completedReports);
-            // console.log('Radiology Pending Tests:', this.pendingReports);
-            // console.log('Radiology cancel Tests:', this.cancelledScans);
+         
         });
     }
 
@@ -522,164 +463,7 @@ export class RadiologyDashboardComponent implements OnInit {
         }
 
     }
-    // Tests by Modality Bar Chart
-    // getModalityBarChart() {
-    //     
-    //     return new Chart('modalityChart', {
-    //         type: 'bar',
-    //         data: {
-    //             labels: this.modalityData.map(d => d.modality),
-    //             datasets: [
-    //                 {
-    //                     label: 'Tests Name',
-    //                     data: this.modalityData.map(d => d.count),
-    //                     backgroundColor: ['#9661db', '#f961d3', '#28af28', '#70c7bd', '#fbfb79'],
-    //                     borderRadius: 6
-    //                 }
-    //             ]
-    //         },
-    //         options: {
-    //             maintainAspectRatio: false,
-    //             plugins: {
-    //                 legend: { display: false }
-    //             },
-    //             scales: {
-    //                 y: {
-    //                     beginAtZero: true,
-    //                     ticks: {
-    //                         font: { size: 11 }
-    //                     }
-    //                 },
-    //                 x: {
-    //                     ticks: {
-    //                         font: { size: 11 }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
 
-    // getModalityBarChart1() {
-    //     return new Chart('modalityChart1', {
-    //         type: 'bar',
-    //         data: {
-    //             labels: this.modalityData1.map(d => d.modality),
-    //             datasets: [
-    //                 {
-    //                     label: 'Number of Tests',
-    //                     data: this.modalityData1.map(d => d.count),
-    //                     backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
-    //                     borderRadius: 6
-    //                 }
-    //             ]
-    //         },
-    //         options: {
-    //             maintainAspectRatio: false,
-    //             plugins: {
-    //                 legend: { display: false }
-    //             },
-    //             scales: {
-    //                 y: {
-    //                     beginAtZero: true,
-    //                     ticks: {
-    //                         font: { size: 11 }
-    //                     }
-    //                 },
-    //                 x: {
-    //                     ticks: {
-    //                         font: { size: 11 }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-
-    // // Status Pie Chart
-    // getStatusPieChart() {
-    //     
-    //     return new Chart('statusPieChart', {
-    //         type: 'doughnut',
-    //         data: {
-    //             labels: this.statusData.map(d => d.status),
-    //             datasets: [
-    //                 {
-    //                     backgroundColor: ['#28af28', '#ff5a8a', '#546dfa'],
-    //                     data: this.statusData.map(d => d.count),
-    //                     borderWidth: 2
-    //                 }
-    //             ]
-    //         },
-    //         options: {
-    //             maintainAspectRatio: false,
-    //             plugins: {
-    //                 legend: {
-    //                     position: 'bottom',
-    //                     labels: {
-    //                         font: { size: 12 },
-    //                         padding: 15
-    //                     }
-    //                 },
-    //                 tooltip: {
-    //                     enabled: true,
-    //                     callbacks: {
-    //                         label: function (context) {
-    //                             let label = context.label || '';
-    //                             if (label) {
-    //                                 label += ': ';
-    //                             }
-    //                             label += context.parsed + ' reports';
-    //                             return label;
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-
-    // // Status Pie Chart
-    // getStatusPieChart1() {
-    //     return new Chart('statusPieChart1', {
-    //         type: 'doughnut',
-    //         data: {
-    //             labels: this.statusData1.map(d => d.status),
-    //             datasets: [
-    //                 {
-    //                     backgroundColor: ['#ca42f7', '#69f869', 'rgb(66, 138, 246)'],
-    //                     data: this.statusData1.map(d => d.count),
-    //                     borderWidth: 2
-    //                 }
-    //             ]
-    //         },
-    //         options: {
-    //             maintainAspectRatio: false,
-    //             plugins: {
-    //                 legend: {
-    //                     position: 'bottom',
-    //                     labels: {
-    //                         font: { size: 12 },
-    //                         padding: 15
-    //                     }
-    //                 },
-    //                 tooltip: {
-    //                     enabled: true,
-    //                     callbacks: {
-    //                         label: function (context) {
-    //                             let label = context.label || '';
-    //                             if (label) {
-    //                                 label += ': ';
-    //                             }
-    //                             label += context.parsed + ' reports';
-    //                             return label;
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
     // Volume Trend Line Chart
     getVolumeTrendChart() {
         return new Chart('volumeTrendChart', {
@@ -748,60 +532,26 @@ export class RadiologyDashboardComponent implements OnInit {
     // ========== PATHOLOGY CHART METHODS ==========
 
     initializePathologyCharts(): void {
-        // Summary Cards Charts
-        // if (document.getElementById('pathologyTotalTestsChart')) {
-        //     this.pathologyTotalTestsChart = this.getLineChartData(
-        //         'pathologyTotalTestsChart',
-        //         '#d4bbf4',
-        //         '#c5aae6',
-        //         ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        //         [218, 245, 212, 252, 229, 268, 234]
-        //     );
-        // }
 
-          // Department Bar Chart
+        // Department Bar Chart
         if (document.getElementById('pathologyTotalTestsChart')) {
             this.pathologyTotalTestsChart = this.getpathologyTotalTestsChart();
         }
 
-        // if (document.getElementById('pathologyCompletedChart')) {
-        //     this.pathologyCompletedChart = this.getLineChartData(
-        //         'pathologyCompletedChart',
-        //         '#f3ddb3',
-        //         '#ebcf9a',
-        //         ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        //         [182, 205, 178, 215, 192, 228, 198]
-        //     );
-        // }
-          if (document.getElementById('pathologyCompletedChart')) {
+
+        if (document.getElementById('pathologyCompletedChart')) {
             this.pathologyCompletedChart = this.getpathologyCompletedChart();
         }
 
-        // if (document.getElementById('pathologyPendingChart')) {
-        //     this.pathologyPendingChart = this.getLineChartData(
-        //         'pathologyPendingChart',
-        //         '#d1efad',
-        //         '#c5e999',
-        //         ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        //         [30, 32, 28, 30, 32, 35, 28]
-        //     );
-        // }
 
-          if (document.getElementById('pathologyPendingChart')) {
+
+        if (document.getElementById('pathologyPendingChart')) {
             this.pathologyPendingChart = this.getpathologyPendingChart();
         }
 
-        // if (document.getElementById('pathologyRejectedChart')) {
-        //     this.pathologyRejectedChart = this.getLineChartData(
-        //         'pathologyRejectedChart',
-        //         '#c5f1ef',
-        //         '#a1e6e3',
-        //         ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        //         [6, 8, 6, 7, 5, 5, 8]
-        //     );
-        // }
 
-          if (document.getElementById('pathologyRejectedChart')) {
+
+        if (document.getElementById('pathologyRejectedChart')) {
             this.pathologyRejectedChart = this.getpathologyRejectedChart();
         }
 
@@ -820,87 +570,87 @@ export class RadiologyDashboardComponent implements OnInit {
             // this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart();
         }
     }
-bartotalTests=[]
+    bartotalTests = []
 
-    getpathologyTotalTestsChart(){
-
-        debugger
-                if (this.pathologyData.weeklyTestReport) {
-                this.bartotalTests = this.pathologyData.weeklyTestReport.map(day => day.totalTests);
-                }
-                console.log(this.bartotalTests)
-         this.pathologyTotalTestsChart = this.getLineChartData(
-                'pathologyTotalTestsChart',
-                '#d4bbf4',
-                '#c5aae6',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                this.bartotalTests
-            );
-    }
-
-barCompletTests=[]
-    getpathologyCompletedChart(){
-
-        debugger
-                if (this.pathologyData.weeklyTestReport) {
-                this.barCompletTests = this.pathologyData.weeklyTestReport.map(day => day.completedReports);
-                }
-                console.log(this.barCompletTests)
-             this.pathologyCompletedChart = this.getLineChartData(
-                'pathologyCompletedChart',
-                '#d4bbf4',
-                '#c5aae6',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                this.barCompletTests
-            );
-    }
-    
-    
-barpendingTests=[]
-    getpathologyPendingChart(){
-
-        debugger
-                if (this.pathologyData.weeklyTestReport) {
-                this.barpendingTests = this.pathologyData.weeklyTestReport.map(day => day.pendingReports);
-                }
-                console.log(this.barpendingTests)
-             this.pathologyPendingChart = this.getLineChartData(
-                'pathologyPendingChart',
-                '#d4bbf4',
-                '#c5aae6',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                this.barpendingTests
-            );
-    }
+    getpathologyTotalTestsChart() {
 
         
-barrejectedTests=[]
-    getpathologyRejectedChart(){
+        if (this.pathologyData.weeklyTestReport) {
+            this.bartotalTests = this.pathologyData.weeklyTestReport.map(day => day.totalTests);
+        }
+        console.log(this.bartotalTests)
+        this.pathologyTotalTestsChart = this.getLineChartData(
+            'pathologyTotalTestsChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.bartotalTests
+        );
+    }
 
-        debugger
-                if (this.pathologyData.weeklyTestReport) {
-                this.barrejectedTests = this.pathologyData.weeklyTestReport.map(day => day.cancelledReports);
-                }
-                console.log(this.barrejectedTests)
-             this.pathologyRejectedChart = this.getLineChartData(
-                'pathologyRejectedChart',
-                '#d4bbf4',
-                '#c5aae6',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                this.barrejectedTests
-            );
+    barCompletTests = []
+    getpathologyCompletedChart() {
+
+        
+        if (this.pathologyData.weeklyTestReport) {
+            this.barCompletTests = this.pathologyData.weeklyTestReport.map(day => day.completedReports);
+        }
+        console.log(this.barCompletTests)
+        this.pathologyCompletedChart = this.getLineChartData(
+            'pathologyCompletedChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.barCompletTests
+        );
+    }
+
+
+    barpendingTests = []
+    getpathologyPendingChart() {
+
+        
+        if (this.pathologyData.weeklyTestReport) {
+            this.barpendingTests = this.pathologyData.weeklyTestReport.map(day => day.pendingReports);
+        }
+        console.log(this.barpendingTests)
+        this.pathologyPendingChart = this.getLineChartData(
+            'pathologyPendingChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.barpendingTests
+        );
+    }
+
+
+    barrejectedTests = []
+    getpathologyRejectedChart() {
+
+        
+        if (this.pathologyData.weeklyTestReport) {
+            this.barrejectedTests = this.pathologyData.weeklyTestReport.map(day => day.cancelledReports);
+        }
+        console.log(this.barrejectedTests)
+        this.pathologyRejectedChart = this.getLineChartData(
+            'pathologyRejectedChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.barrejectedTests
+        );
     }
 
 
     // Pathology Department Bar Chart
     getPathologyDepartmentChart() {
-        
+
         if (this.pathologyDepartmentChart) {
             this.pathologyDepartmentChart.destroy();
         }
 
         return new Chart('pathologyDepartmentChart', {
-        // this.pathologyDepartmentChart = new Chart('pathologyDepartmentChart', {
+            // this.pathologyDepartmentChart = new Chart('pathologyDepartmentChart', {
 
             type: 'bar',
             data: {
@@ -949,7 +699,7 @@ barrejectedTests=[]
             { status: 'Rejected', count: this.pathologyData?.countSummary?.rejectedCount ?? 0 }
         ];
         return new Chart('pathologyStatusPieChart', {
-        // this.pathologyStatusPieChart = new Chart('pathologyStatusPieChart', {
+            // this.pathologyStatusPieChart = new Chart('pathologyStatusPieChart', {
 
             type: 'doughnut',
             data: {
@@ -998,7 +748,7 @@ barrejectedTests=[]
         }
 
         return new Chart('pathologyVolumeTrendChart', {
-        // this.pathologyVolumeTrendChart = new Chart('pathologyVolumeTrendChart', {
+            // this.pathologyVolumeTrendChart = new Chart('pathologyVolumeTrendChart', {
 
             type: 'line',
             data: {
@@ -1063,49 +813,23 @@ barrejectedTests=[]
     }
 
     initializeRadiologyCharts(): void {
-        // Summary Cards Charts
+
         if (document.getElementById('RadiologytotalTestsChart')) {
-            this.RadiologytotalTestsChart = this.getLineChartData(
-                'RadiologytotalTestsChart',
-                '#d4bbf4',
-                '#c5aae6',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                [218, 245, 212, 252, 229, 268, 234]
-            );
+            this.RadiologytotalTestsChart = this.getradiologyTotalTestsChart();
         }
-
-        
-
         if (document.getElementById('RadiologycompletedReportsChart')) {
-            this.RadiologycompletedReportsChart = this.getLineChartData(
-                'RadiologycompletedReportsChart',
-                '#f3ddb3',
-                '#ebcf9a',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                [182, 205, 178, 215, 192, 228, 198]
-            );
+            this.RadiologycompletedReportsChart = this.getradiologyCompletTestsChart();
         }
+
 
         if (document.getElementById('RadiologypendingReportsChart')) {
-            this.RadiologypendingReportsChart = this.getLineChartData(
-                'RadiologypendingReportsChart',
-                '#d1efad',
-                '#c5e999',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                [30, 32, 28, 30, 32, 35, 28]
-            );
+            this.RadiologypendingReportsChart = this.getradiologyPendingTestsChart();
         }
+
 
         if (document.getElementById('RadiologycancelledScansChart')) {
-            this.RadiologycancelledScansChart = this.getLineChartData(
-                'RadiologycancelledScansChart',
-                '#c5f1ef',
-                '#a1e6e3',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                [6, 8, 6, 7, 5, 5, 8]
-            );
+            this.RadiologycancelledScansChart = this.getradiologyCancleTestsChart();
         }
-
         // Department Bar Chart
         if (document.getElementById('RadiologyDepartmentChart')) {
             // this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart();
@@ -1121,7 +845,82 @@ barrejectedTests=[]
             // this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart();
         }
     }
-    
+
+
+    radiobartotalTests = []
+
+    getradiologyTotalTestsChart() {
+
+        
+        if (this.RadiologyData.radWeeklyTestReport) {
+            this.radiobartotalTests = this.RadiologyData.radWeeklyTestReport.map(day => day.totalTests);
+        }
+        console.log(this.radiobartotalTests)
+        this.pathologyTotalTestsChart = this.getLineChartData(
+            'RadiologytotalTestsChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.radiobartotalTests
+        );
+    }
+
+    radiobarcomplTests = []
+
+    getradiologyCompletTestsChart() {
+
+        
+        if (this.RadiologyData.radWeeklyTestReport) {
+            this.radiobarcomplTests = this.RadiologyData.radWeeklyTestReport.map(day => day.completedReports);
+        }
+        console.log(this.radiobarcomplTests)
+        this.RadiologycompletedReportsChart = this.getLineChartData(
+            'RadiologycompletedReportsChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.radiobarcomplTests
+        );
+    }
+
+
+    radiobarpendingTests = []
+
+    getradiologyPendingTestsChart() {
+
+        
+        if (this.RadiologyData.radWeeklyTestReport) {
+            this.radiobarpendingTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
+        }
+        console.log(this.radiobarpendingTests)
+        this.RadiologypendingReportsChart = this.getLineChartData(
+            'RadiologypendingReportsChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.radiobarpendingTests
+        );
+    }
+
+
+    radiobarcancleTests = []
+
+    getradiologyCancleTestsChart() {
+
+        
+        if (this.RadiologyData.radWeeklyTestReport) {
+            this.radiobarcancleTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
+        }
+        console.log(this.radiobarcancleTests)
+        this.RadiologycancelledScansChart = this.getLineChartData(
+            'RadiologycancelledScansChart',
+            '#d4bbf4',
+            '#c5aae6',
+            ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            this.radiobarcancleTests
+        );
+    }
+
     // Radiology Department Bar Chart
     getRadiologyDepartmentChart() {
         if (this.RadiologyDepartmentChart) {
@@ -1130,7 +929,7 @@ barrejectedTests=[]
 
         // this.RadiologyDepartmentChart = new Chart('RadiologyDepartmentChart', {
 
-            return new Chart('RadiologyDepartmentChart', {
+        return new Chart('RadiologyDepartmentChart', {
             type: 'bar',
             data: {
                 labels: this.RadiologyData.radiologyVolumes.map(d => d.categoryName),
@@ -1179,7 +978,7 @@ barrejectedTests=[]
             { status: 'Rejected', count: this.RadiologyData?.countSummary?.rejectedCount ?? 0 }
         ];
         return new Chart('RadiologyStatusPieChart', {
-        // this.RadiologyStatusPieChart = new Chart('RadiologyStatusPieChart', {
+            // this.RadiologyStatusPieChart = new Chart('RadiologyStatusPieChart', {
 
             type: 'doughnut',
             data: {
@@ -1227,11 +1026,11 @@ barrejectedTests=[]
             this.RadiologyVolumeTrendChart.destroy();
         }
         // this.RadiologyVolumeTrendChart = new Chart('RadiologyVolumeTrendChart', {
-
-            return new Chart('RadiologyVolumeTrendChart', {
+debugger
+        return new Chart('RadiologyVolumeTrendChart', {
             type: 'line',
             data: {
-                labels: this.RadiologyData.dailyTestCounts.map(d => d.pathDate),
+                labels: this.RadiologyData.dailyTestCounts.map(d => d.radDate),
                 datasets: [
                     {
                         label: 'Daily Test Count',
@@ -1337,7 +1136,7 @@ barrejectedTests=[]
                     { label: 'Dispatched', value: apiData?.dispatchedReports, color: 'sky', icon: 'local_shipping' }, // If API has a matching field, set it.
                     { label: 'NoDispatch', value: apiData?.nonDispatchedReports || 0, color: 'peach', icon: 'pending_actions' }
                 ];
-               
+
             }, err => {
                 this.metrics = [
                     { label: 'Total Report', value: 0, color: 'lavender', icon: 'assignment' },

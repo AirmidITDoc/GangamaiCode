@@ -21,7 +21,7 @@ export class CanteenmanagementService {
     return this._frombuilder.group({
       Type:['1'],
       Code:0,
-      ItemID:'',
+      ItemID:'%',
       CustomerName:'',
       Start:[(new Date())],
       TotalAmount:'',
@@ -29,7 +29,7 @@ export class CanteenmanagementService {
       end: [new Date().toISOString()],
       DiscAmt:'',
       Discount:'',
-      Status:['1'],
+      Status:['CashPay'],
      roomId:0,
      cashCounterId:0,
      
@@ -49,13 +49,13 @@ export class CanteenmanagementService {
       public canteenrequestSave(employee) {
     return this._httpClient.PostData("CanteenRequest/Insert", employee);
     }
-  // public getBillList(Param){
-  //   return this._httpClient.post("Generic/GetByProc?procName=rtrv_CanteenBillList",Param);
-  // }
-  // public getBillDetList(Param){
-  //   return this._httpClient.post("Generic/GetByProc?procName=RptCateenRepPrint",Param);
-  // }
-  // public getNursingBillList(Param){
-  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard",Param);
-  // }
+  public getBillList(Param){
+    return this._httpClient.PostData("CanteenRequest/CanteenRequestHeaderList",Param);
+  }
+  public getBillDetList(Param){
+    return this._httpClient.PostData("CanteenRequest/CanteenRequestList",Param);
+  }
+  public getNursingBill(Param){
+    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard",Param);
+  }
 }
