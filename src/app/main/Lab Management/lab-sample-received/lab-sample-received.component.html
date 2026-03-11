@@ -301,7 +301,7 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
                                     <button mat-icon-button (click)="OnCancel(contact)" matTooltip="Cancel"
-                                    >
+                                    [disabled]="contact.isCompleted == true">
                                         <mat-icon color="warn">cancel</mat-icon>
                                     </button>
                                     <!-- [disabled]="contact.isCompleted == true"
