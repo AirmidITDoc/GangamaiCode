@@ -43,6 +43,7 @@ export interface GRNFormModel {
   RatePerUnit:number;
   LandedRate:number;
   TotalAmount: number;
+  HospitalMRP:any;
 
   // Discount Details
   Disc: number;

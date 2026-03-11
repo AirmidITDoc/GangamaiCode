@@ -106,6 +106,7 @@ export class GoodReceiptnoteService {
       PaymentType:[false],
       SupplierName:[''], 
       SupplierAddress:[''],
+      HospitalMRP:[0],
       StoreId:[this.accountService.currentUserValue.user.storeId,
         [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] 
     });

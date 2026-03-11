@@ -135,6 +135,8 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
         { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
         { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Hos.MRP(Strip)", key: "hmrpStrip", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+        { heading: "Hos.PerUnitMRP", key: "hmrpUnitPrice", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
         { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
         { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160 }
@@ -197,6 +199,8 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
                 { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
                 { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Hos.MRP(Strip)", key: "hmrpStrip", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+        { heading: "Hos.PerUnitMRP", key: "hmrpUnitPrice", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
                 { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
                 { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160 }
@@ -1078,7 +1082,7 @@ export class ItemNameList {
     SrNo: number;
     DebitAmount: any;
     GSTType: GSTType | null;
-
+HospitalMRP:any;
     cgst: number;
     sgst: number;
     igst: number;
@@ -1151,7 +1155,9 @@ export class ItemNameList {
     isVerifiedDatetime: any;
     isVerifiedUserId: any;
     discAmt2: any;
-
+HospitalPerUnitMRP:any;
+hmrpStrip:any;
+hmrpUnitPrice:any;
     /**
      * Constructor
      *
@@ -1235,8 +1241,10 @@ export class ItemNameList {
             this.ConversionFactor = ItemNameList.ConversionFactor || 0
             this.SrNo = ItemNameList.SrNo || 0;
             this.PurchaseNo = ItemNameList.PurchaseNo || 0;
+            this.HospitalMRP = ItemNameList.HospitalMRP || 0;
             this.GSTType = ItemNameList.GSTType || null;
             this.DebitAmount = ItemNameList.DebitAmount || 0
+              this.HospitalPerUnitMRP = ItemNameList.HospitalPerUnitMRP || 0;
         }
     }
 }

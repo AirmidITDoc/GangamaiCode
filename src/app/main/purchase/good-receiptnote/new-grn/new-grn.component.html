@@ -230,6 +230,10 @@
                     <!-- <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup"
                       type="text" [readonly]="true"></airmid-textbox> -->
 
+                       <airmid-textbox  fxFlex="6%" label="Hos.MRP" formControlName="HospitalMRP" [formGroup]="userFormGroup"
+                      placeholder="HospitalMRP" [validations]="getValidationMessages().HospitalMRP" [type]="'text'"
+                        (keypress)="keyPressCharater($event)" ></airmid-textbox>
+
                     <airmid-textbox fxFlex="7%" label="Net Amount" formControlName="NetAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
                     <div [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
@@ -377,6 +381,13 @@
                       (keydown.arrowup)="setFocus('Rate_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
                       [min]="0" />
                   </mat-form-field>
+                </mat-cell>
+              </ng-container>
+
+                <ng-container matColumnDef="HospitalMRP">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">HOS.MRP(Strip)</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                  {{ contact.HospitalMRP | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
 

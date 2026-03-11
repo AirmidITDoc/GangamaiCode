@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { GRNFinalFormModel, ToastType } from '../../good-receiptnote/new-grn/types';
 import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseFormModel } from './types';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-purchase-requisition',
@@ -24,9 +25,16 @@ import { PurchaseFormModel } from './types';
 })
 export class  PurchaseRequisitionComponent implements OnInit {
    displayedColumnspo: string[] = [ 
+    'Status',
+    'SupplierName',
     'IemName', 
-    //'Price',
     'Qty',
+    'Price',
+    'Qty',
+    'TotalAmt',
+    'DiscPer',
+    'DiscAmt',
+    'NetAmt',
     'Action'
   ]
     displayedColumnsPRHeader: string[] = [ 
@@ -45,14 +53,12 @@ export class  PurchaseRequisitionComponent implements OnInit {
     'Store' 
     //'BalQty', 
   ]
-    displayedColumns3 = [
+    displayedColumnslastthree = [
     'supplierName',
     'receiveQty',
     'freeQty',
     'mrp',
-    'rate',
-    'discpercentage',
-    'DiscAmount',
+    'rate', 
     'vatPercentage'
   ]
   userFormGroup: FormGroup;
@@ -64,7 +70,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
   chargeslist:any=[];
     @ViewChild('LastThreeSupplier') LastThreeSupplier!: TemplateRef<any>;  
 
-    dsPoReqitemlist = new MatTableDataSource<ItemNameList>();
+    dsPRFinalitemlist = new MatTableDataSource<ItemNameList>();
     dsPRHeader = new MatTableDataSource<PurchaseItemList>();
     dsPRdetailslist = new MatTableDataSource<PurchaseItemList>();
     dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>(); 
@@ -72,6 +78,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) paginatoritem: MatPaginator;
+  @ViewChild(MatPaginator) paginatorFinalitem: MatPaginator;
  
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
@@ -164,35 +171,105 @@ public _FormBuilder:FormBuilder,
       this.dsPRdetailslist.data = res.data; 
        this.dsPRdetailslist.sort = this.sort
        this.dsPRdetailslist.paginator = this.paginatoritem
+
+
+    if (this.dsPRdetailslist.data.length) { 
+      res.data.forEach(item => this.openLastthreeSupplierlist(item , false));
+    }  
     });
   } 
-      openLastthreeSupplierlist(ItemId): void {
-        this._matDialog.open(this.LastThreeSupplier, {
-            width: '40%',
-            height: '60%',
-        })
-        let Data = {
-            "first": 0,
-            "rows": 9999,
-            "sortField": "ItemId",
-            "sortOrder": 0,
-            "filters": [{ "fieldName": "ItemId", "fieldValue":  String(ItemId), "opType": "Equals" }],
-            "exportType": "JSON",
-            "columns": [{ "data": "string", "name": "string" }]
-        }
-           this._PurchaseOrder.getLastThreeItemInfo(Data).subscribe(res => {
-          this.dsLastThreeItemList.data = res.data as LastThreeItemList[];  
-            console.log(this.dsLastThreeItemList.data)
-        });
+  openLastthreeSupplierlist(row, flag): void {
+    if (flag) {
+      this._matDialog.open(this.LastThreeSupplier, {
+        width: '45%',
+        height: '50%',
+      })
     }
+    let Data = {
+      "first": 0,
+      "rows": 9999,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ItemId", "fieldValue": String(row?.itemId), "opType": "Equals" }],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    }
+    this._PurchaseOrder.getLastThreeItemInfo(Data).subscribe(res => {
+      this.dsLastThreeItemList.data = res.data as LastThreeItemList[];
+      console.log(this.dsLastThreeItemList.data)
+      // Get lowest rate
+      if (!flag) {
+        const lowestRate = Math.min(...this.dsLastThreeItemList.data.map(i => i.rate));
+        // Get full object with lowest rate
+        const lowestItem = this.dsLastThreeItemList.data.find(i => i.rate === lowestRate);
+        if (lowestItem) {
+          this.onAddItem(row, lowestItem)
+        }
+      } 
+    });
+  }
 
 
+  onAddItem(row,contact) { 
+    debugger
+    console.log(contact)
 
+ if(!(row?.itemId && contact?.supplierId)) return; 
 
+    const isDuplicate = this.dsPRFinalitemlist.data.some(item => item.itemId === row?.itemId) 
+    if(isDuplicate){
+       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+     return
+    } 
 
+   const qty = +row?.qty || 0;
+   const rate = +contact?.rate || 0;
+   const TotalAmt = qty * rate;
 
-
-
+    this.chargeslist.push({
+        SupplierId:contact?.supplierId,
+        SupplierName:contact?.supplierName,
+        itemId:row.itemId ,
+        ItemName:row.itemName ,
+        Qty:qty,
+        MRP: contact.mrp || 0,
+        Price:rate,
+        TotalAmt:TotalAmt,
+        DiscPer:0,
+        DiscAmt:0,
+        NetAmt:TotalAmt,
+        TotalQty:row.qty,
+        FreeQty:0,
+        Specification:'',
+        CGSTPer:  0,
+        CGSTAmount:0,
+        CGSTAmt: 0,
+        SGSTPer: 0,
+        SGSTAmount:0,
+        SGSTAmt: 0,
+        IGST: 0,
+        IGSTAmont: 0,
+        IGSTAmt: 0,
+        GST: 0,
+        GSTAmount: 0  
+    })
+    this.dsPRFinalitemlist.data = [...this.chargeslist]  
+    this.dsPRFinalitemlist.sort = this.sort;
+    this.dsPRFinalitemlist.paginator = this.paginatorFinalitem
+  } 
+  deleteTableRow(element) {
+    let index = this.chargeslist.indexOf(element);
+    if (index >= 0) {
+      this.chargeslist.splice(index, 1);
+      this.dsPRFinalitemlist.data = [];
+      this.dsPRFinalitemlist.data = this.chargeslist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  } 
 
   getLastThreeItemInfo(ItemId) {
     var vdata = { 
@@ -243,73 +320,6 @@ public _FormBuilder:FormBuilder,
 
  
 
-  onAdd() {
-
-    debugger
-    if ((this.userFormGroup.get("Qty").value == 0 || this.userFormGroup.get("Qty").value == "")) {
-      this.toastr.warning('Please enter a Qty', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    // if ((this.vMRP == '' || this.vMRP == null || this.vMRP == undefined)) {
-    //   this.toastr.warning('Please enter a MRP', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-    if ((this.userFormGroup.get("Rate").value == 0 || this.userFormGroup.get("Rate").value == "")) {
-      this.toastr.warning('Please enter a Rate', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    const isDuplicate = 0// this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
-
-    if (!isDuplicate) {
- 
-      const formValues = this.userFormGroup.getRawValue() as PurchaseFormModel;
-      console.log(formValues)
-      if (formValues.ItemName) {
-        const newItem = new ItemNameList({
-          ...formValues,
-          ItemName: formValues.ItemName.itemName,
-          // TotalQty: formValues.Qty,
-          ItemId: formValues.ItemName.itemId,
-          UOM:  0,
-          Rate:formValues.Rate,// this.userFormGroup.get("Rate").value,// this.vRate || 0,
-          Qty: formValues.Qty || 0,
-          TotalAmount: formValues.TotalAmount || 0,
-          DiscPer: formValues.Disc || 0,
-          DiscAmount: formValues.DiscAmount || 0,
-          CGST: formValues.CGSTPer || 0,
-          CGSTAmount: formValues.CGSTAmount || 0,
-          SGST: formValues.SGSTPer || 0,
-          SGSTAmount: formValues.SGSTAmount || 0,
-          IGST: formValues.IGSTPer || 0,
-          IGSTAmont: formValues.IGSTAmount || 0,
-          GST: formValues.GSTPer || 0,
-          GSTAmount: formValues.GSTAmount || 0,
-          NetAmount: formValues.NetAmount || 0,
-          MRP: formValues.MRP || 0,
-          DefRate: formValues.DefRate || 0,
-          Specification: formValues.Specification || '',
-        });
-        console.log(newItem)
-       
-        //this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
-        this.updatePurchaseFinalForm();
-      }
-    }
-
-    else {
-      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-    }
-    // this.itemid.nativeElement.focus(); 
-  }
-
 
   updatePurchaseFinalForm() {
     const form = this.userFormGroup;
@@ -328,17 +338,7 @@ public _FormBuilder:FormBuilder,
     });
   }
 
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      // this.dsItemNameList.data = [];
-      // this.dsItemNameList.data = this.chargeslist;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
-    });
-  } 
+
  
  
    OnSave() {
@@ -677,6 +677,7 @@ export class LastThreeItemList {
   TotalAmount: number;
   ConversionFactor: number;
   VatPercentage: number;
+  rate:any;
 
   constructor(LastThreeItemList) {
     {
@@ -688,6 +689,7 @@ export class LastThreeItemList {
       this.ReceiveQty = LastThreeItemList.ReceiveQty || 0;
       this.FreeQty = LastThreeItemList.FreeQty || 0;
       this.MRP = LastThreeItemList.MRP || 0;
+       this.rate = LastThreeItemList.rate || 0;
 
     }
   }
