@@ -105,7 +105,6 @@
                     <div fxLayoutAlign="end">
                       <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
                         style="margin: 10px 5px 0px 5px; ">
-                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                         <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                       </div>
                     </div>
@@ -115,30 +114,99 @@
               </div>
               <div fxFlex.gt-xs="60" fxFlex="100" class="table-left">
 
-                <mat-card fxFlex.gt-sm="100%" fxFlex>
-                  <mat-card-content>
+                <!-- <mat-card fxFlex.gt-sm="100%" fxFlex>
+                  <mat-card-content> -->
 
-                    <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
-                      <div fxLayout="column" fxFlex>
+                <!-- <div fxLayout="row wrap" fxLayoutGap="5px 0px grid"> -->
+                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" class="airmid-table">
 
+                  <ng-container matColumnDef="CheckBox">
+                    <th mat-header-cell *matHeaderCellDef>
+                      <mat-checkbox (change)="masterToggle()" [checked]="isAllSelected()"
+                        [indeterminate]="isSomeSelected()" [disabled]="areAllRowsDisabled()">
+                      </mat-checkbox>
+                    </th>
 
-                        <!-- <mat-checkbox aria-label="Service Name" formControlName="Service">
-                          
-                          </mat-checkbox> -->
-                        <mat-icon title="Branch">
-                          <img width="90px" height="90px" src="assets/images/logos/serviceicon.png">
-                        </mat-icon> Service Name
-                        <div style="height: 100px; overflow:auto;">
-                          <!-- <airmid-table [gridConfig]="gridConfig" #EBillGrid :ShowFilter="false"
-                                :ShowButtons="false">
-                              </airmid-table> -->
+                    <td mat-cell *matCellDef="let contact">
+                      <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(contact) : null" *ngIf="!contact.name else noMLC"
+                        [checked]="selection.isSelected(contact)" [disabled]="isCheckboxDisabled(contact)">
+                      </mat-checkbox>
+                      <ng-template #noMLC>
+                        <div
+                          style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                          <span>----</span>
                         </div>
+                      </ng-template>
+                    </td>
 
-                      </div>
-                    </div>
+                  </ng-container>
 
-                  </mat-card-content>
-                </mat-card>
+                  <ng-container matColumnDef="testname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                      TestName</mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                      {{ contact.testName}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="mode">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                      Mode</mat-header-cell>
+                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                      {{contact.name}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                      Actions
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      <button mat-icon-button matTooltip="Print">
+                        <mat-icon>print</mat-icon>
+                      </button>
+
+                      <button mat-icon-button
+                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                        matTooltipPosition="right" (click)="Onemail(element)"
+                        (mouseenter)="openEmailDetailsPopover($event, element)"
+                        (mouseleave)="closeEmailDetailsPopover()"
+                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                        <mat-icon>email</mat-icon>
+                      </button>
+
+                      <button mat-icon-button
+                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                        matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                        (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                        (mouseleave)="closeWhatsappDetailsPopover()"
+                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                        <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                      </button>
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="loading">
+                    <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                      <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                      <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                    </mat-footer-cell>
+                  </ng-container>
+
+                  <mat-header-row class="accent min-width-800" style="height: 40px;"
+                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-800"
+                    style="height: 40px;" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                </mat-table>
+                <!-- </div> -->
+
+                <!-- </mat-card-content>
+                </mat-card> -->
               </div>
             </div>
           </div>

@@ -26,7 +26,7 @@ import { ReportDispatchComponent } from '../../report-dispatch/report-dispatch.c
 export class LabRegBillDeatilsComponent {
     BillNo = "0"
     doctorName = ""
-    labId="0"
+    labId = "0"
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
@@ -37,24 +37,24 @@ export class LabRegBillDeatilsComponent {
     @ViewChild('Discgrid', { static: false }) Discgrid: AirmidTableComponent;
     @ViewChild('Paygrid', { static: false }) Paygrid: AirmidTableComponent;
     @ViewChild('Creditgrid', { static: false }) Creditgrid: AirmidTableComponent;
-    
+
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'icon')!.template = this.icons;
         // this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
         // this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
         this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.ColorCode;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-            this.getfilterdata();
-            this.getDiscountfilterdata();
-            this.getCreditfilterdata();
-            this.getPayoutfilterdata();
+        this.getfilterdata();
+        this.getDiscountfilterdata();
+        this.getCreditfilterdata();
+        this.getPayoutfilterdata();
     }
 
     ngOnInit(): void {
         if (this.data) {
             this.BillNo = this.data.billNo;
             this.doctorName = this.data.doctorName;
-            this.labId=this.data.labPatientId
+            this.labId = this.data.labPatientId
         }
     }
 
@@ -148,7 +148,7 @@ export class LabRegBillDeatilsComponent {
         }, 200);
     }
     allPaycolumns = [
-        { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Method", key: "method", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tran. Type", key: "payMode", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Amount", key: "payAmount", sort: true, align: 'left', emptySign: 'NA' },
@@ -251,8 +251,8 @@ export class LabRegBillDeatilsComponent {
         this._matDialog.closeAll()
     }
 
-    onPrint(){        
-      this.commonService.Onprint("OPD_IPD_ID", this.labId, "LabSlipReport");
+    onPrint() {
+        this.commonService.Onprint("OPD_IPD_ID", this.labId, "LabSlipReport");
     }
 
     getWhatsappshareReport(el) {
@@ -282,14 +282,14 @@ export class LabRegBillDeatilsComponent {
         });
     }
 
-    viewgetReportdispatch(element) {
-        console.log(element)
+    viewgetReportdispatch() {
+        console.log(this.data)
         const dialogRef = this._matDialog.open(ReportDispatchComponent,
             {
                 maxWidth: "90vw",
                 maxHeight: '95%',
                 width: '100%',
-                data: element
+                data: this.data
 
             });
         dialogRef.afterClosed().subscribe(result => {
