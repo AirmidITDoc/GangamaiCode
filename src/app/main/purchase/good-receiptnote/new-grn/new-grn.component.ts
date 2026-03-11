@@ -43,7 +43,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'ConversionFactor',
         'TotalQty',
         'MRP',
-        'Rate',
+        'Rate', 
+        'HospitalMRP',
         'TotalAmount',
         'Disc',
         'Disc2',
@@ -548,7 +549,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 PurUnitRate: Number(formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor)).toFixed(2),
                 PurUnitRateWF: Number(formValues.TotalAmount / (totalQty || 1)).toFixed(2),
                 UnitMRP: Number(formValues.MRP / formValues.ConversionFactor).toFixed(2),
-                ItemId: formValues.ItemName.itemId
+                ItemId: formValues.ItemName.itemId,
+                HospitalPerUnitMRP: Number(formValues.HospitalMRP / formValues.ConversionFactor).toFixed(2),
             });
             this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
             this.updateGRNFinalForm();
@@ -605,7 +607,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             GSTAmount: 0,
             TotalAmount: 0,
             NetAmount: 0,
-            FinalTotalQty: 0
+            FinalTotalQty: 0,
+            HospitalMRP:0,
+            HospitalPerUnitMRP:0
         });
         this.userFormGroup.markAsUntouched();
     }
@@ -651,7 +655,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             form.patchValue({
                 TotalAmount: totalAmount,
                 NetAmount: netAmount,
-                FinalTotalQty: totalQty
+                FinalTotalQty: totalQty,
+                HospitalMRP:+form.get('MRP').value || 0
             });
             // Trigger discount and GST calculations
             // this.calculateDiscperAmount();
@@ -741,6 +746,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 PurUnitRate: Number(item.TotalAmount / (item.Qty * item.ConversionFactor)).toFixed(2),
                 PurUnitRateWF: Number(item.TotalAmount / (item.TotalQty || 1)).toFixed(2),
                 UnitMRP: Number(item.MRP / item.ConversionFactor).toFixed(2),
+                HospitalPerUnitMRP: Number(item.HospitalMRP / item.ConversionFactor).toFixed(2),
             };
         } catch (error) {
             console.error('Error calculating GST:', error);
@@ -976,6 +982,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             isVerified: [item?.IsVerified || false],
             isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
             isVerifiedUserId: [item?.IsVerifiedUserId || 0],
+            hmrpStrip: [item?.HospitalMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            hmrpUnitPrice: [item?.HospitalPerUnitMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+ 
         });
     }
     //Insert current stk form
@@ -1224,7 +1233,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         IsVerified: element.isVerified,
                         IsVerifiedDatetime: element.isVerifiedDatetime,
                         StkID: element.stkID,
-                        grnDetID: element.grnDetID
+                        grnDetID: element.grnDetID,
+                        HospitalMRP:element?.hmrpStrip || 0,
+                        HospitalPerUnitMRP:element?.hmrpUnitPrice || 0
                     }
                 )
             })
@@ -1356,6 +1367,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 // { name: "required", Message: "qty is required" }
             ],
             Disc: [
+                // { name: "required", Message: "Disc is required" }
+            ],
+              HospitalMRP: [
                 // { name: "required", Message: "Disc is required" }
             ],
         };
@@ -1608,11 +1622,16 @@ debugger
                 const FinalpurUnitRate = (((element.TotalAmount) / (element.Qty)) * (element?.ConversionFactor || 1))
                 const FinalpurUnitrateWF = (((element.TotalAmount) / (FinalTotalQty)) * (element?.ConversionFactor || 1))
                 let  FinalUnitMRP_1 = 0 
+                let HosPerUnitRate = 0
+                let HosMRP = 0
                 if(element?.MRP){
                  FinalUnitMRP_1 = (element.MRP) / (element?.ConversionFactor || 1)
+                 HosPerUnitRate = FinalUnitMRP_1
+                 HosMRP = element.MRP
                 }else{
-                 let FinalMRP = (element.Rate) * (element?.ConversionFactor || 1)
-                 FinalUnitMRP_1 = (FinalMRP) / (element?.ConversionFactor || 1)   
+                  FinalUnitMRP_1 = (element.Rate) / (element?.ConversionFactor || 1) 
+                  HosPerUnitRate = FinalUnitMRP_1
+                    HosMRP = element.Rate
                 } 
                 const FinalUnitMRP = FinalUnitMRP_1 || 0;
                 this.chargeslist.push(
@@ -1656,7 +1675,9 @@ debugger
                         IsVerifiedDatetime: '1999-01-01',
                         StkID: 0,
                         grnDetID: 0,
-                        purchaseNo: Number(element.PurchaseNo) || 0
+                        purchaseNo: Number(element.PurchaseNo) || 0, 
+                        HospitalMRP:Number(HosMRP) || 0,
+                        HospitalPerUnitMRP:Number(HosPerUnitRate) || 0,
                     });
                 this.dsItemNameList.data = this.chargeslist
                 this.updateGRNFinalForm();
@@ -1766,6 +1787,8 @@ debugger
             isVerified: [item?.IsVerified || false],
             isVerifiedDatetime: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
             isVerifiedUserId: [0],
+            hmrpStrip: [item?.HospitalMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            hmrpUnitPrice: [item?.HospitalPerUnitMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         });
     }
     //Insert Po to grn current stk form
