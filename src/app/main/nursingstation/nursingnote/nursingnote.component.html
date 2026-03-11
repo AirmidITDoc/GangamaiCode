@@ -188,7 +188,7 @@
                                                                                 <div>
                                                                                     <button #addbutton
                                                                                         class="btn btn-primary btn-with-icon"
-                                                                                        (click)="onAdd()" id="btnAdd"
+                                                                                        (click)="onAddTemp()" id="btnAdd"
                                                                                         [disabled]="IsAddFlag">
                                                                                         <span class="btn-icon">
                                                                                             <mat-icon> add </mat-icon>
@@ -544,22 +544,29 @@
                                                     <form [formGroup]="MedicineItemForm">
                                                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row"
                                                             class="gap-8">
-                                                            <airmid-autocomplete label="Enter Item Name"
+                                                            <airmid-autocomplete label="Enter Item Name" fxFlex="25%"
                                                                 [formGroup]="MedicineItemForm" formControlName="ItemId"
-                                                                placeholderText="Enter Item Name" fxFlex
+                                                                placeholderText="Enter Item Name" 
                                                                 [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                                                 (selectionChange)="getSelectedserviceObj($event)"
                                                                 TextField="itemName" ValueField="itemId"
                                                                 (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
-                                                            <airmid-dropdown label="Dose Name" formControlName="DoseId"
+                                                            <airmid-dropdown label="Frequency" formControlName="DoseId" fxFlex="7%"
                                                                 [formGroup]="MedicineItemForm"
                                                                 [validations]="getValidationMessages().DoseId"
                                                                 (selectionChange)="getdose($event)"
                                                                 [mode]="autocompleteModeDose" [(ngModel)]="doseId"
                                                                 *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
 
-                                                            <airmid-textbox label="Day" formControlName="Day"
+                                                                   <airmid-dropdown label="Timing" formControlName="TimeId" fxFlex="7%"
+                                                                [formGroup]="MedicineItemForm"
+                                                                [validations]="getValidationMessages().TimeId"
+                                                                (selectionChange)="getime($event)"
+                                                                [mode]="autocompleteModeime" [(ngModel)]="TimeId"
+                                                                *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
+
+                                                            <airmid-textbox label="Day" formControlName="Day" fxFlex="7%"
                                                                 [value]="vDay" [formGroup]="MedicineItemForm"
                                                                 [type]="'text'"
                                                                 (keypress)="keyPressCharater($event)"></airmid-textbox>
@@ -636,11 +643,20 @@
 
                                                         <ng-container matColumnDef="doseName">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                                                fxShow.gt-sm>Dose Name</mat-header-cell>
+                                                                fxShow.gt-sm>Frequency</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                                 <span>{{ element.doseName }}</span>
                                                             </mat-cell>
                                                         </ng-container>
+
+                                                         <ng-container matColumnDef="time">
+                                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                                fxShow.gt-sm>Timing</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                                <span>{{ element.timename }}</span>
+                                                            </mat-cell>
+                                                        </ng-container>
+
 
                                                         <ng-container matColumnDef="day">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide

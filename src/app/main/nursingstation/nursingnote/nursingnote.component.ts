@@ -18,6 +18,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
 import Swal from 'sweetalert2';
 import { PrescriptionTemplateComponent } from 'app/main/opd/new-casepaper/prescription-template/prescription-template.component';
+import { time } from 'console';
 
 @Component({
   selector: 'app-nursingnote',
@@ -33,8 +34,9 @@ export class NursingnoteComponent implements OnInit {
   displayedColumns: string[] = [
     'itemName',
     'doseName',
+    'time',
     'day',
-    //  'Remark',
+   
     'Action'
   ]
   onBlur(e: any) {
@@ -84,6 +86,8 @@ export class NursingnoteComponent implements OnInit {
   dsItemList = new MatTableDataSource<MedicineItemList>();
   dsHandOverNoteList = new MatTableDataSource<DocNote>();
   autocompleteModeNurNote: string = "NurNote";
+    autocompleteModeime: string = "DrugTimeDurationMaster";
+
   HandOverNoteList: any = [];
   vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
   vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
@@ -280,7 +284,8 @@ export class NursingnoteComponent implements OnInit {
       DoseId: '',
       Day: '',
       Instruction: '',
-      TemplateId: ['']
+      TemplateId: [''],
+      TimeId:''
     });
   }
 
@@ -420,7 +425,7 @@ export class NursingnoteComponent implements OnInit {
   // }
 
   // dont change without asking raksha
-  onAdd() {
+  onAddTemp() {
     if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -619,6 +624,13 @@ export class NursingnoteComponent implements OnInit {
     this.doseName1 = event.text
     this.doseId = event.value
   }
+timeId=0
+timename='';
+   getime(event) {
+    this.timename = event.text
+    this.timeId = event.value
+  }
+
 
   getSelectedserviceObj(obj) {
     this.ItemId = obj.itemId
@@ -645,6 +657,7 @@ export class NursingnoteComponent implements OnInit {
       DoseId: "",
       vDay: "",
       Day: "",
+      TimeId:''
     });
   }
 
@@ -652,56 +665,60 @@ export class NursingnoteComponent implements OnInit {
   templateId: any;
   templateName: any;
 
-  // onAdd() {
-  //     if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
-  //       this.toastr.warning('Please select Item', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //       });
-  //       return;
-  //     }
-  //     if (!this.MedicineItemForm.get("DoseId")?.value) {
-  //       this.toastr.warning('Please select a Dose Name', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //       });
-  //       return;
-  //     }
-  //     //  if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
-  //     //   this.toastr.warning('Please enter a Day', 'Warning !', {
-  //     //     toastClass: 'tostr-tost custom-toast-warning',
-  //     //   });
-  //     //   return;
-  //     // }
+  onAdd() {
+      if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
+        this.toastr.warning('Please select Item', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (!this.MedicineItemForm.get("DoseId")?.value) {
+        this.toastr.warning('Please select a Dose Name', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+       if (!this.MedicineItemForm.get("TimeId")?.value) {
+        this.toastr.warning('Please enter a Time', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
 
-  //     if (!Array.isArray(this.Chargelist)) {
-  //       console.warn("Chargelist was not an array. Resetting...");
-  //       this.Chargelist = [...this.dsItemList.data];
-  //     }
+      if (!Array.isArray(this.Chargelist)) {
+        console.warn("Chargelist was not an array. Resetting...");
+        this.Chargelist = [...this.dsItemList.data];
+      }
 
-  //     const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
-  //     if (!iscekDuplicate) {
-  //       // this.dsItemList.data = [];
-  //       let newEntry = {
-  //         itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
-  //         itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
-  //         doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
-  //         doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
-  //         days: this.MedicineItemForm.get('Day').value || 0,
-  //         instruction: this.vInstruction || ''
-  //       }
-  //       this.Chargelist.push(newEntry);
-  //       this.dsItemList.data = [...this.Chargelist];
-  //     } else {
-  //       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //       });
-  //       return;
-  //     }
-  //     this.MedicineItemForm.get('ItemId').reset('');
-  //     this.MedicineItemForm.get('DoseId').reset('');
-  //     this.MedicineItemForm.get('Day').reset('');
-  //     this.MedicineItemForm.get('Instruction').reset('');
-  //     // this.itemid.nativeElement.focus();
-  //   }
+      const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
+      if (!iscekDuplicate) {
+        // this.dsItemList.data = [];
+        let newEntry = {
+          itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
+          itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
+          doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
+          doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
+          days: this.MedicineItemForm.get('Day').value || 0,
+          timeId:this.timeId || 0,
+          timename:this.timename || '',
+          instruction: this.vInstruction || ''
+        }
+        debugger
+        this.Chargelist.push(newEntry);
+        this.dsItemList.data = [...this.Chargelist];
+      } else {
+        this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      this.MedicineItemForm.get('ItemId').reset('');
+      this.MedicineItemForm.get('DoseId').reset('');
+      this.MedicineItemForm.get('Day').reset('');
+      this.MedicineItemForm.get('Instruction').reset('');
+       this.MedicineItemForm.get('TimeId').reset('');
+      // this.itemid.nativeElement.focus();
+    }
 
   deleteTableRow(event, element) {
 
@@ -823,7 +840,8 @@ export class NursingnoteComponent implements OnInit {
 
   getValidationMessages() {
     return {
-      DoseId: []
+      DoseId: [],
+      TimeId:[]
 
     };
   }
@@ -881,7 +899,8 @@ export class MedicineItemList {
   Instruction: any;
   DoseDateTime: any;
   itemID: any;
-
+  timeId:any;
+  timename:any;
   /**
   * Constructor
   *
@@ -897,6 +916,9 @@ export class MedicineItemList {
       this.Route = MedicineItemList.Route || 0;
       this.NurseName = MedicineItemList.NurseName || 0;
       this.itemID = MedicineItemList.itemID || 0;
+       this.timeId = MedicineItemList.timeId || '';
+        this.timename = MedicineItemList.timename || '';
+      
     }
   }
 }

@@ -39,17 +39,18 @@ export class LabmanagementService {
   }
 
   public ReportDispatchInsert(Param: any) {
-    if (Param.dispatchId) {
-      return this._httpClient.PutData("PathDispatchReportHistory/" + Param.dispatchId, Param);
-    } else return this._httpClient.PostData("PathDispatchReportHistory", Param)
+    // if (Param.dispatchId) {
+    //   return this._httpClient.PutData("PathDispatchReportHistory/" + Param.dispatchId, Param);
+    // } else 
+      return this._httpClient.PostData("PathDispatchReportHistory/Insert", Param)
   }
 
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("CompanyTPAApproval?Id=" + m_data.toString());
   }
 
-  
-
- 
+  public gettestlist(employee) {
+    return this._httpClient.PostData("PathDispatchReportHistory/dispatchTestList", employee)
+  }
 }
 
