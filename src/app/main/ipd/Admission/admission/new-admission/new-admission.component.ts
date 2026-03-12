@@ -564,22 +564,57 @@ this.Is9_Digit_National_Id = id === "1";
       }
       debugger
       console.log(this.personalFormGroup.value)
-      if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.searchFormGroup.invalid) {
-        Swal.fire({
+      // if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.searchFormGroup.invalid) {
+      //   Swal.fire({
+      //     title: 'Do you want to Save the Admission ',
+      //     text: "You won't be able to revert this!",
+      //     icon: "warning",
+      //     showCancelButton: true,
+      //     confirmButtonColor: "#3085d6",
+      //     cancelButtonColor: "#d33",
+      //     confirmButtonText: "Yes, Save!"
+
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       this.OnSaveAdmission();
+      //     }
+      //   })
+      // }
+
+         if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.searchFormGroup.invalid) {
+        if (this.admissionFormGroup.get('isReimbursement').value == false) {
+          Swal.fire({
+            title: 'Confirm Admission Save',
+            text: 'Do you want to save this admission with reimbursement option ?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Save Admission',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              return
+            } else {
+              this.OnSaveAdmission();
+            }
+          })
+        } else {
+          Swal.fire({
           title: 'Do you want to Save the Admission ',
           text: "You won't be able to revert this!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, Save!"
-
+          confirmButtonText: "Yes, Save!"  
         }).then((result) => {
           if (result.isConfirmed) {
             this.OnSaveAdmission();
           }
-        })
-      }
+        }) 
+        }
+    }	
       else {
         let invalidFields = [];
 
@@ -682,7 +717,7 @@ this.Is9_Digit_National_Id = id === "1";
     this.admissionFormGroup.patchValue({ IsCharity: event.checked });
   }
   onIsReimbursementChange(event: any) {
-    //this.admissionFormGroup.patchValue({ IsCharity: event.checked });
+    this.admissionFormGroup.patchValue({ isReimbursement: event.checked });
   }
   onIsSeniorChange(event: any) {
     // this.admissionFormGroup.patchValue({ IsSenior: event.checked });

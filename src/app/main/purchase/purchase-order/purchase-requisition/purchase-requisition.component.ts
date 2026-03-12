@@ -1,11 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component,Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator'; 
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { MatTableDataSource } from '@angular/material/table'; 
 import { AuthenticationService } from 'app/core/services/authentication.service'; 
 import Swal from 'sweetalert2';
 import { PurchaseOrderService } from '../purchase-order.service'; 
@@ -15,6 +14,7 @@ import { GRNFinalFormModel, ToastType } from '../../good-receiptnote/new-grn/typ
 import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseFormModel } from './types';
 import { element } from 'protractor';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-purchase-requisition',
@@ -29,11 +29,20 @@ export class  PurchaseRequisitionComponent implements OnInit {
     'SupplierName',
     'IemName', 
     'Qty',
+    "MRP",
     'Price',
     'Qty',
     'TotalAmt',
     'DiscPer',
     'DiscAmt',
+    'GST',
+    'GSTAmount',
+    'CGSTPer',
+    'CGSTAmount',
+    'SGSTPer',
+    'SGSTAmount',
+    'IGSTPer',
+    'IGSTAmount', 
     'NetAmt',
     'Action'
   ]
@@ -68,6 +77,8 @@ export class  PurchaseRequisitionComponent implements OnInit {
   StoreId = this.accountService.currentUserValue.user.storeId  
   status = "0"
   chargeslist:any=[];
+    autocompletepaymentterm: string = "TermofPayment";
+  autocompletepaymentmode: string = "PaymentMode";
     @ViewChild('LastThreeSupplier') LastThreeSupplier!: TemplateRef<any>;  
 
     dsPRFinalitemlist = new MatTableDataSource<ItemNameList>();
@@ -82,18 +93,19 @@ export class  PurchaseRequisitionComponent implements OnInit {
  
   constructor(
     public _PurchaseOrder: PurchaseOrderService,
-    public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
+    public _matDialog: MatDialog, 
     public datePipe: DatePipe,
-public _FormBuilder:FormBuilder,
+    public _FormBuilder:FormBuilder,
     public dialogRef: MatDialogRef<PurchaseRequisitionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
     private accountService: AuthenticationService,
+    public _FormvalidationserviceService:FormvalidationserviceService
   ) { }
 
   ngOnInit(): void {
-     this.userFormGroup = this.SearchFilterForm();  
+     this.userFormGroup = this.SearchFilterForm(); 
+     this.userFormGroup.markAllAsTouched(); 
      this.onChangeFirst(); 
   }
   SearchFilterForm(): FormGroup {
@@ -103,7 +115,12 @@ public _FormBuilder:FormBuilder,
       FromStoreId: [this.accountService.currentUserValue.user.storeId],
       ToStoreId: [0],
       status: [0],
-       Verify: [{ value: true, disabled: true }]
+       Verify: [{ value: true, disabled: true }],
+       HandlingCharges:[0],
+       TransportCharges:[0],
+      Remark: ['', [Validators.required]],
+      PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
   
@@ -249,15 +266,15 @@ public _FormBuilder:FormBuilder,
         SGSTPer: 0,
         SGSTAmount:0,
         SGSTAmt: 0,
-        IGST: 0,
-        IGSTAmont: 0,
-        IGSTAmt: 0,
+        IGSTPer: 0, 
+        IGSTAmount: 0,
         GST: 0,
         GSTAmount: 0  
     })
     this.dsPRFinalitemlist.data = [...this.chargeslist]  
     this.dsPRFinalitemlist.sort = this.sort;
     this.dsPRFinalitemlist.paginator = this.paginatorFinalitem
+    console.log(this.dsPRFinalitemlist.data )
   } 
   deleteTableRow(element) {
     let index = this.chargeslist.indexOf(element);
@@ -429,7 +446,7 @@ public _FormBuilder:FormBuilder,
   IgstPercentage: any = 0;
   CgstPercentage: any = 0;
   SgstPercentage: any = 0; 
-  getCellCalculation(contact, Qty) {
+  getCellCalculation(contact) {
 
     if (contact.DefRate > 0) {
       if (contact.Rate > contact.DefRate) {
@@ -663,6 +680,27 @@ public _FormBuilder:FormBuilder,
   resetForm() {
     this.userFormGroup.reset(); 
   } 
+
+       // it allowed only Digit 
+       keyPressDigitsOnly(event) {
+           var inp = String.fromCharCode(event.keyCode);
+           if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+               return true;
+           } else {
+               event.preventDefault();
+               return false;
+           }
+       }
+       // it allowed only Digit & decimal
+       keyPressDigitDecimalOnly(event) {
+           var inp = String.fromCharCode(event.keyCode);
+           if (/^\d*\.?\d*$/.test(inp)) {
+               return true;
+           } else {
+               event.preventDefault();
+               return false;
+           }
+       }
 } 
  
 export class LastThreeItemList {

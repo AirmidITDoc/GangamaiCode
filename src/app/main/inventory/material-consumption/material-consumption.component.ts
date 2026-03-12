@@ -23,7 +23,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 })
 export class MaterialConsumptionComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.MaterialConsumption, permissionType.Add);
-      
+
     hasSelectedContacts: boolean;
     myFilterform: FormGroup;
     autocompletestore: string = "Store";
@@ -40,7 +40,7 @@ export class MaterialConsumptionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
     allcolumns = [
-       
+
         { heading: "-", key: "admId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Date Time", key: "consumptionTime", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 8 },
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -49,13 +49,13 @@ export class MaterialConsumptionComponent implements OnInit {
         { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate 
+            template: this.actionButtonTemplate
         }
     ]
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.MaterialConsumption,
+        permissionCode: permissionCodes.MaterialConsumption,
         apiUrl: "MaterialConsumption/MaterialConsumptionList",
         columnsList: this.allcolumns,
         sortField: "MaterialConsumptionId",
@@ -68,7 +68,7 @@ export class MaterialConsumptionComponent implements OnInit {
 
     constructor(
         public _MaterialConsumptionService: MaterialConsumptionService, public _formBuilder: UntypedFormBuilder, private commonService: PrintserviceService,
-        public toastr: ToastrService, public _matDialog: MatDialog, public datePipe: DatePipe, private accountService: AuthenticationService,public permissionService: PagePermissionService,
+        public toastr: ToastrService, public _matDialog: MatDialog, public datePipe: DatePipe, private accountService: AuthenticationService, public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void { this.myFilterform = this._MaterialConsumptionService.createSearchFrom(); }
@@ -78,8 +78,11 @@ export class MaterialConsumptionComponent implements OnInit {
     NewMatrialCon() {
         const dialogRef = this._matDialog.open(NewMaterialConsumptionComponent,
             {
-                maxHeight: '98vh',
-                width: '95%',
+                // maxHeight: '98vh',
+                // width: '95%',
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
@@ -100,12 +103,12 @@ export class MaterialConsumptionComponent implements OnInit {
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 170 },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-                { heading: "PerUnit Purchase", key: "perUnitPurchaseRate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount  },
-                { heading: "PerUnit LandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount  },
-                { heading: "PerUnit MRPRate", key: "perUnitMRPRate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount  },
-                { heading: "Pur TotalAmt", key: "purTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount  },
-                { heading: "Landed TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount  },
-                { heading: "MRP TotalAmt", key: "mrpTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: gridColumnTypes.amount },
+                { heading: "PerUnit Purchase", key: "perUnitPurchaseRate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+                { heading: "PerUnit LandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+                { heading: "PerUnit MRPRate", key: "perUnitMRPRate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+                { heading: "Pur TotalAmt", key: "purTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+                { heading: "Landed TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+                { heading: "MRP TotalAmt", key: "mrpTotalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
                 { heading: "Start Date", key: "startDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "End Date", key: "endDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -172,7 +175,7 @@ export class MaterialConsumptionComponent implements OnInit {
     getValidationMessages() {
         return {
             ToStoreId: [
-                  { name: "required", Message: "Store Name is required" }
+                { name: "required", Message: "Store Name is required" }
             ]
         };
     }

@@ -146,6 +146,7 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
   @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
   @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
+    @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>;
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
@@ -156,11 +157,13 @@ export class AdmissionComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
     this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'isReimbursement')!.template = this.actionisReimbursement;
   }
 
   allcolumns = [
     { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "-", key: "admissionType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
+    { heading: "-", key: "admissionType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "-", key: "isReimbursement", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
 
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -1379,6 +1382,7 @@ export class AdmissionPersonlModel {
   serviceId: any;
   pathReportID: any;
 ipdNo:any
+isReimbursement:any;
   /**
 * Constructor
 *
@@ -1510,7 +1514,7 @@ ipdNo:any
       this.wardId = AdmissionPersonl.wardId || 0;
       this.PolicyNo = AdmissionPersonl.PolicyNo || '';
       this.MemberNo = AdmissionPersonl.MemberNo || '';
-
+ this.isReimbursement = AdmissionPersonl.isReimbursement || 0;
       this.AprovAmount = AdmissionPersonl.AprovAmount || '';
       this.CompDOD = AdmissionPersonl.CompDOD || '';
       this.IsPharClearance = AdmissionPersonl.IsPharClearance || '';

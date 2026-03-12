@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="modal-body overflow-hidden">
+    <div class="modal-body overflow-hidden resize-form-fields">
         <div class="modal-body-container">
             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
                 <form [formGroup]="userFormGroup">
@@ -68,7 +68,7 @@
                         </div>
                         <airmid-dropdown label="FromStore" formControlName="FromStoreId" [formGroup]="userFormGroup"
                             fxFlex="40%" [validations]="getValidationMessages().FromStoreId"
-                            [mode]="autocompleteModeStoreName">
+                            [mode]="autocompleteModeStoreName" (selectionChange)="selectChangeStore($event)">
                         </airmid-dropdown>
                     </div>
                 </form>
@@ -78,10 +78,11 @@
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                             <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="ItemFormGroup"
-                                formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
-                                ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                formControlName="ItemName" placeholderText="Item Name (enter 2 char)"                                
+                                ApiUrl={{ApiUrl}}
                                 (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                 ValueField="itemId" (onClearSelection)="ItemReset()"></airmid-autocomplete>
+                                <!-- ApiUrl="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + vStoreId + '&ItemName='" -->
                         </div>
 
                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -116,9 +117,9 @@
 
                 </form>
 
-                <mat-card style="padding-:2px;" fxFlex>
+                <mat-card style="padding:2px;" fxFlex>
                     <mat-table #table matSort [dataSource]="dsNewmaterialList" [@animateStagger]="{value:'50'}"
-                        style="overflow:auto;height: 250px;">
+                        style="overflow:auto;height: 300px;">
 
                         <ng-container matColumnDef="ItemName" sticky>
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-300">

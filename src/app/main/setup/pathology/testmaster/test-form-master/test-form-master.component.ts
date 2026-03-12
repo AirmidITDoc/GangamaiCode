@@ -16,6 +16,7 @@ import { TemplatedetailList, TestList, TestMaster } from "../testmaster.componen
 import { TestmasterService } from "../testmaster.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 import { element } from "protractor";
+import Swal from "sweetalert2";
 
 
 
@@ -59,7 +60,7 @@ export class TestFormMasterComponent implements OnInit {
     showTemplateTable: boolean = false;
     displayedColumns5: string[] = ['TemplateName', 'Action'];
     vUnitId = this._loggedService.currentUserValue.user.unitId;
-vsuggestionNote:any
+    vsuggestionNote: any
     constructor(
         public _TestmasterService: TestmasterService,
         public dialogRef: MatDialogRef<TestFormMasterComponent>,
@@ -89,8 +90,8 @@ vsuggestionNote:any
             this.vTestName = this.registerObj.testName
             this.TemplateId = this.registerObj.TemplateId;
             this.isActive = this.registerObj.isActive;
-             this.vsuggestionNote = this.registerObj?.suggestionNote || '';  
- 
+            this.vsuggestionNote = this.registerObj?.suggestionNote || '';
+
 
             if (this.registerObj.isTemplateTest === "0" && !this.registerObj.isSubTest) {
                 this._TestmasterService.is_subtest = false;
@@ -149,7 +150,7 @@ vsuggestionNote:any
                 isActive: Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
                 addedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
                 updatedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-                serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                serviceId: [0],
                 isTemplateTest: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isCategoryPrint: false,
                 isPrintTestName: false,
@@ -200,7 +201,7 @@ vsuggestionNote:any
             this.Statusflag = false;
             this.serviceflag = true;
             this._TestmasterService.is_templatetest = false;
-            this.testForm.get('ServiceId')?.setValidators([Validators.required])
+            this.testForm.get('ServiceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])
             this.testForm.get('ServiceId')?.updateValueAndValidity();
         } else if (val == "2") {
             this._TestmasterService.is_subtest = true;
@@ -220,7 +221,7 @@ vsuggestionNote:any
             this.serviceflag = true;
             this.Subtest = false
             this.DSTestList.data = [];
-            this.testForm.get('ServiceId')?.setValidators([Validators.required])
+            this.testForm.get('ServiceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])
             this.testForm.get('ServiceId')?.updateValueAndValidity();
         }
     }
@@ -418,7 +419,14 @@ vsuggestionNote:any
 
     onSubmit() {
         // debugger
-
+        if (this.ServiceID == 0) {
+            this.testForm.get('ServiceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])
+            this.testForm.get('ServiceId')?.updateValueAndValidity();
+            this.toastr.warning(`Select Service Name`, 'Warning',);
+            return;
+        }
+        this.testForm.get("ServiceId").setValue(this.ServiceID)
+        this.testFormInsert.get("pathTest.serviceId")?.setValue(Number(this.testForm.get("ServiceId").value) || 0)
         if (!this.testForm.invalid && !this.testFormInsert.invalid) {
             this.invalidFields1 = [];
 
@@ -464,7 +472,6 @@ vsuggestionNote:any
             this.testFormInsert.get("pathTest.machineName")?.setValue(this.testForm.get("MachineName").value || '')
             this.testFormInsert.get("pathTest.suggestionNote")?.setValue(this.testForm.get("SuggestionNote").value || '')
             this.testFormInsert.get("pathTest.footNote")?.setValue(this.testForm.get("FootNote").value || '')
-            this.testFormInsert.get("pathTest.serviceId")?.setValue(Number(this.testForm.get("ServiceId").value) || 0)
             this.testFormInsert.get("pathTest.isSubTest")?.setValue(this.Subtest !== undefined ? this.Subtest : false)
             this.testFormInsert.get("pathTest.isTemplateTest")?.setValue(this._TestmasterService.is_templatetest ? 1 : 0)
             console.log("json of Test:", this.testFormInsert.value)
@@ -797,7 +804,23 @@ vsuggestionNote:any
         this.CategoryId = obj;
     }
     selectChangeServiceID(obj: any) {
-        this.ServiceID = obj;
+        if (obj.status == 'Completed') {
+            const name = obj.serviceName;
+            Swal.fire({
+                icon: 'warning',
+                title: 'Test already completed',
+                text: `This ${name} already has an Test.`,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        this.ServiceID = obj.serviceId;
+        if (this.ServiceID == 0) {
+            this.testForm.get('ServiceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])
+            this.testForm.get('ServiceId')?.updateValueAndValidity();
+        }
     }
     selectChangeTemplateName(obj: any) {
         this.TemplateId = obj;

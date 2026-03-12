@@ -214,7 +214,7 @@ this.Is9_Digit_National_Id = id === "1";
             IsMLC: [false],
             // OPIPChange: [false],
             IsCharity: [false],
-             IsReimbursement: [false]
+            isReimbursement: [false]
             // IsSenior: [false],
             // Citizen: [false],
             // Emergancy: [false],

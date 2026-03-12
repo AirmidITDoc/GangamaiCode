@@ -61,6 +61,7 @@ export class IPSearchListComponent implements OnInit {
     @ViewChild('mrdInFileStatus') mrdInFileStatus!: TemplateRef<any>;
     @ViewChild('isAnaesthetistPaidStatus') isAnaesthetistPaidStatus!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+       @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
@@ -69,10 +70,12 @@ export class IPSearchListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'mrdInFileStatus')!.template = this.mrdInFileStatus;
         this.gridConfig.columnsList.find(col => col.key === 'isAnaesthetistPaid')!.template = this.isAnaesthetistPaidStatus;
+            this.gridConfig.columnsList.find(col => col.key === 'isReimbursement')!.template = this.actionisReimbursement;
     }
 
     allcolumns = [
         { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
+        { heading: "-", key: "isReimbursement", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
         { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },

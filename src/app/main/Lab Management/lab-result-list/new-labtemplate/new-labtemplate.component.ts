@@ -288,7 +288,7 @@ export class NewLabtemplateComponent {
 
         this.dialogRef.close();
 
-        this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
+        // this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
 
       });
 
