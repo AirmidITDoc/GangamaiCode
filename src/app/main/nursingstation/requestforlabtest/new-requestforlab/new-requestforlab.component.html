@@ -37,8 +37,30 @@
                 </form>
             </mat-card>
 
-
-            <mat-card style="padding: 10px;">
+<!-- Patient Info Section -->
+                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                <div class="patient-info-sales">
+                                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="registerObj?.regNo"
+                                            [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                            [departmentName]="registerObj?.departmentName" [doa]="vDOA"
+                                            [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                            [refDocName]="vRefDocName"
+                                            [wardBedName]="(vRoomName && vBedName) ? (vRoomName + ' | ' + vBedName) : ''"
+                                            [patientType]="vPatientType" [tariffName]="vTariffName"
+                                            [companyName]="vCompanyName"></app-patient-information>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+            <!-- <mat-card style="padding: 10px;">
                 <div fxLayout="row wrap" fxLayoutGap="32px">
                     <div fxFlex="30%">
                         <div class="patient-col"><b>UHID No:</b> {{vRegNo}}</div>
@@ -61,7 +83,7 @@
                                 style="color: orange;">{{vCompanyName}}</span></div>
                     </div>
                 </div>
-            </mat-card>
+            </mat-card> -->
 
             <mat-card style="padding: 10px;">
                 <form [formGroup]="myFormGroup">

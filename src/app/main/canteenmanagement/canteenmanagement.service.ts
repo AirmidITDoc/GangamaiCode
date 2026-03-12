@@ -1,61 +1,80 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanteenmanagementService {
-  userFormGroup:FormGroup;
-  BillListFrom:FormGroup;
+  userFormGroup: FormGroup;
+  BillListFrom: FormGroup;
 
   constructor(
-   public  _frombuilder:UntypedFormBuilder,
-   public  _httpClient:ApiCaller
-  )
-   {this.userFormGroup = this.createUseFrom(),
-  this.BillListFrom =this.createBillListFrom()}
+    public _frombuilder: UntypedFormBuilder,
+    public _httpClient: ApiCaller
+  ) {
+    this.userFormGroup = this.createUseFrom(),
+    this.BillListFrom = this.createBillListFrom()
+  }
 
-   createUseFrom() {
+
+  myFilterbrowseform(): FormGroup {
     return this._frombuilder.group({
-      Type:['1'],
-      Code:0,
-      ItemID:'%',
-      CustomerName:'',
-      Start:[(new Date())],
-      TotalAmount:'',
+
+      FirstName: ['', [Validators.maxLength(50),
+      Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      LastName: ['', [Validators.maxLength(50),
+      Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo: '',
+      
+    });
+  }
+
+
+  createUseFrom() {
+    return this._frombuilder.group({
+      Type: ['1'],
+      Code: 0,
+      ItemID: '%',
+      CustomerName: '',
+      Start: [(new Date())],
+      TotalAmount: '',
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      DiscAmt:'',
-      Discount:'',
-      Status:['CashPay'],
-     roomId:0,
-     cashCounterId:0,
-     
+      DiscAmt: '',
+      Discount: '',
+      Status: ['CashPay'],
+      roomId: 0,
+      cashCounterId: 0,
+
     })
-   }
-   createBillListFrom(){
+  }
+  createBillListFrom() {
     return this._frombuilder.group({
       startdate: [new Date().toISOString()],
       enddate: [new Date().toISOString()],
 
     })
-   }
-   public getItemTable1List(Param){
-    return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName="+Param);
+  }
+  public getItemTable1List(Param) {
+    return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
   }
 
-      public canteenrequestSave(employee) {
+  public canteenrequestSave(employee) {
     return this._httpClient.PostData("CanteenRequest/Insert", employee);
-    }
-  public getBillList(Param){
-    return this._httpClient.PostData("CanteenRequest/CanteenRequestHeaderList",Param);
   }
-  public getBillDetList(Param){
-    return this._httpClient.PostData("CanteenRequest/CanteenRequestList",Param);
+  public getBillList(Param) {
+    return this._httpClient.PostData("CanteenRequest/CanteenRequestHeaderList", Param);
   }
-  public getNursingBill(Param){
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard",Param);
+  public getBillDetList(Param) {
+    return this._httpClient.PostData("CanteenRequest/CanteenRequestList", Param);
+  }
+  public getNursingBill(Param) {
+    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
   }
 }

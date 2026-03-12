@@ -24,7 +24,7 @@ export class NewDashboardComponent implements OnInit {
   public patientOverviewChart: any;
   public opdOverviewChart: any;
   PatientOverviewDoughnut: any;
-
+OPDDrOverviewDoughnut: any;
   constructor(private dashboardService: DashboardService, public _accountServices: AuthenticationService,
     private accountService: AuthenticationService, public datePipe: DatePipe,
   ) {
@@ -78,14 +78,14 @@ export class NewDashboardComponent implements OnInit {
     this.alldashdata()
     // Re-initialize charts with new date range
     setTimeout(() => {
-      // if (document.getElementById('PatientOverviewDoughnut')) {
-      //   this.patientOverviewChart = this.getPatientOverviewChart();
-      // }
-       if (document.getElementById('PatientOverviewDoughnut')) {
-        this.PatientOverviewDoughnut = this.getPatientOverviewChart();
+      if (document.getElementById('PatientOverviewDoughnut')) {
+        this.patientOverviewChart = this.getPatientOverviewChart();
+      }
+       if (document.getElementById('OPDDrOverviewDoughnut')) {
+        this.OPDDrOverviewDoughnut = this.getDrPatientOverviewChart();
       }
       if (document.getElementById('OPDOverviewDoughnut')) {
-        this.opdOverviewChart = this.getOPDOverviewChart();
+        // this.opdOverviewChart = this.getOPDOverviewChart();
       }
     });
   }
@@ -110,9 +110,9 @@ export class NewDashboardComponent implements OnInit {
   metrics = [
     { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
     { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
-    { label: 'Admission', value: 0, color: 'green', icon: 'assignment' },
+    { label: 'Total Admission', value: 0, color: 'green', icon: 'assignment' },
     { label: 'Discharge', value: 0, color: 'butter', icon: 'logout' },
-    { label: 'Company', value: 0, color: 'red', icon: 'ambulance' },
+    { label: 'Total Company', value: 0, color: 'red', icon: 'ambulance' },
     //   { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
     // { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
     // { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
@@ -164,9 +164,9 @@ export class NewDashboardComponent implements OnInit {
       this.metrics = [
         { label: 'Todays Registrations', value: apiData?.RegistrationCount || 0, color: 'lavender', icon: 'user-plus' },
         { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'butter', icon: 'calendar' },
-        { label: 'Admission', value: apiData?.TotalAdmittedPatientCount || 0, color: 'green', icon: 'assignment' },
+        { label: 'Total Admission', value: apiData?.TotalAdmittedPatientCount || 0, color: 'green', icon: 'assignment' },
         { label: 'Discharge', value: apiData?.TodayDischargePatient || 0, color: 'butter', icon: 'logout' },
-        { label: 'Company', value: apiData?.CompnayPatient || 0, color: 'red', icon: 'ambulance' },
+        { label: 'Total Company', value: apiData?.CompnayPatient || 0, color: 'red', icon: 'ambulance' },
 
         // { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'mint', icon: 'check-circle' },
         // { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'logout' },
@@ -178,9 +178,9 @@ export class NewDashboardComponent implements OnInit {
       this.metrics = [
         { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
         { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
-        { label: 'Admission', value: 0, color: 'green', icon: 'assignment' },
+        { label: 'Total Admission', value: 0, color: 'green', icon: 'assignment' },
         { label: 'Discharge', value: 0, color: 'butter', icon: 'logout' },
-        { label: 'Company', value: 0, color: 'red', icon: 'ambulance' },
+        { label: 'Total Company', value: 0, color: 'red', icon: 'ambulance' },
 
         // { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
         // { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
@@ -210,7 +210,7 @@ export class NewDashboardComponent implements OnInit {
           
           this.trendSeries = [
             {
-              name: 'OPD ()',
+              name: 'OPD (PCount)',
               series: [
                 { name: 'Mon', value: this.DailydashData.trend[0]?.opd || 0 },
                 { name: 'Tue', value: this.DailydashData.trend[1]?.opd || 0 },
@@ -222,7 +222,7 @@ export class NewDashboardComponent implements OnInit {
               ]
             },
             {
-              name: 'IPD ()',
+              name: 'IPD (PCount)',
               series: [
                 { name: 'Mon', value: this.DailydashData.trend[0]?.ipd || 0 },
                 { name: 'Tue', value: this.DailydashData.trend[0]?.ipd || 0 },
@@ -387,50 +387,50 @@ export class NewDashboardComponent implements OnInit {
       return []
     })
   }
-  // getMatIcon(icon: string): string {
-  //   switch (icon) {
-  //     case 'assignment':
-  //       return 'assignment';
-  //     case 'user-plus':
-  //       return 'person_add';
-  //     case 'calendar':
-  //       return 'calendar_today';
-  //     case 'check-circle':
-  //       return 'check_circle';
-  //     case 'logout':
-  //       return 'exit_to_app';
-  //     case 'hourglass':
-  //       return 'hourglass_empty';
-  //     case 'ambulance':
-  //       return 'local_hospital';
-  //     default:
-  //       return 'dashboard';
-  //   }
-  // }
   getMatIcon(icon: string): string {
-        switch (icon) {
-            case 'assignment':
-                return 'assignment';
-            case 'check_circle':
-                return 'check_circle';
-            case 'pending':
-                return 'hourglass_empty';
-            case 'collected':
-                return 'local_shipping';
-            case 'notcollected':
-                return 'work_off';
-            case 'verified':
-                return 'verified_user';
-            case 'unpublished':
-                return 'error_outline';
-            case 'local_shipping':
-                return 'local_shipping';
-            case 'pending_actions':
-                return 'backspace';
-            default:
-                return 'dashboard';
-        }
+    switch (icon) {
+      case 'assignment':
+        return 'assignment';
+      case 'user-plus':
+        return 'person_add';
+      case 'calendar':
+        return 'calendar_today';
+      case 'check-circle':
+        return 'check_circle';
+      case 'logout':
+        return 'exit_to_app';
+      case 'hourglass':
+        return 'hourglass_empty';
+      case 'ambulance':
+        return 'local_hospital';
+      default:
+        return 'dashboard';
     }
+  }
+  // getMatIcon(icon: string): string {
+  //       switch (icon) {
+  //           case 'assignment':
+  //               return 'assignment';
+  //           case 'check_circle':
+  //               return 'check_circle';
+  //           case 'pending':
+  //               return 'hourglass_empty';
+  //           case 'collected':
+  //               return 'local_shipping';
+  //           case 'notcollected':
+  //               return 'work_off';
+  //           case 'verified':
+  //               return 'verified_user';
+  //           case 'unpublished':
+  //               return 'error_outline';
+  //           case 'local_shipping':
+  //               return 'local_shipping';
+  //           case 'pending_actions':
+  //               return 'backspace';
+  //           default:
+  //               return 'dashboard';
+  //       }
+  //   }
   labelFormatting(c: any): string {
     return `${c.value}`;
   }
@@ -515,7 +515,7 @@ export class NewDashboardComponent implements OnInit {
 
   trendSeries = [
     {
-      name: 'OPD',
+      name: 'OPD (PCount)',
       series: [
         { name: 'Mon', value: 110 },
         { name: 'Tue', value: 135 },
@@ -527,7 +527,7 @@ export class NewDashboardComponent implements OnInit {
       ]
     },
     {
-      name: 'IPD',
+      name: 'IPD (PCount)',
       series: [
         { name: 'Mon', value: 60 },
         { name: 'Tue', value: 72 },
@@ -621,9 +621,9 @@ export class NewDashboardComponent implements OnInit {
   // Chart.js doughnut chart with custom plugins
   async getPatientOverviewChart() {
 
-    // if (this.PatientOverviewDoughnut) {
-    //   this.PatientOverviewDoughnut.destroy();
-    // }
+    if (this.PatientOverviewDoughnut) {
+      this.PatientOverviewDoughnut.destroy();
+    }
     // const centerTextPlugin = {
     //   id: 'centerText',
     //   beforeDraw: (chart: any) => {
@@ -729,13 +729,205 @@ export class NewDashboardComponent implements OnInit {
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : [];
       console.log("apiDataapiDataapiData", apiData)
-      debugger
+      
       // Check if data is empty or all values are zero
       const hasData = apiData && apiData.length > 0 && apiData.some((item: any) => item.value > 0);
 
       if (!hasData) {
         // Display empty state message
         const canvas = document.getElementById('PatientOverviewDoughnut') as HTMLCanvasElement;
+        if (canvas) {
+          // Set canvas size if not already set
+          if (canvas.width === 0 || canvas.height === 0) {
+            canvas.width = 300;
+            canvas.height = 200;
+          }
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#9e9e9e';
+            ctx.font = '16px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+          }
+        }
+        return null;
+      }
+      
+      debugger
+      console.log(apiData)
+      // const chart = new Chart('PatientOverviewDoughnut', {
+  return new Chart('PatientOverviewDoughnut', {
+      
+        type: 'doughnut',
+        data: {
+          labels: apiData?.map(data => data.name) || [],
+          datasets: [
+            {
+              backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
+              data: apiData?.map(data => data.value) || []
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 1.4,
+          plugins: {
+            tooltip: { enabled: true }, // Disable default tooltip
+            legend: { display: false }
+          },
+          cutout: 0,
+          // onHover: (event: any, elements: any) => {
+          //   console.log('Patient Chart Hover event triggered:', elements.length);
+          //   if (elements.length > 0) {
+          //     const element = elements[0];
+          //     const index = element.index;
+          //     const dataset = chart.data.datasets[element.datasetIndex];
+          //     const data = {
+          //       name: this.registrationChartData[index].name,
+          //       value: this.registrationChartData[index].value,
+          //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
+          //       color: dataset.backgroundColor[index]
+          //     };
+          //     console.log('Showing Patient popover for:', data);
+          //     this.showSegmentPopover(event, data);
+          //   } else {
+          //     console.log('Hiding Patient popover');
+          //     this.hideSegmentPopover();
+          //   }
+          // }
+        },
+        plugins: [dataLabelsPlugin]
+      });
+      // return chart;
+
+    }, err => {
+      return []
+    })
+
+
+    // Add additional event listeners
+    // chart.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+    //   const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+    //   console.log('Canvas mousemove - elements:', elements.length);
+    //   if (elements.length > 0) {
+    //     const element = elements[0];
+    //     const index = element.index;
+    //     const dataset = chart.data.datasets[element.datasetIndex];
+    //     const data = {
+    //       name: this.registrationChartData[index].name,
+    //       value: this.registrationChartData[index].value,
+    //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
+    //       color: dataset.backgroundColor[index]
+    //     };
+    //     console.log('Canvas mousemove - showing popover for:', data);
+    //     this.showSegmentPopover(event, data);
+    //   } else {
+    //     this.hideSegmentPopover();
+    //   }
+    // });
+
+    // chart.canvas.addEventListener('mouseleave', () => {
+    //   console.log('Canvas mouseleave - hiding popover');
+    //   this.hideSegmentPopover();
+    // });
+
+  }
+
+
+  
+   async getDrPatientOverviewChart() {
+
+   
+
+    const dataLabelsPlugin = {
+      id: 'dataLabels',
+      afterDatasetDraw: (chart: any) => {
+        const { ctx } = chart;
+        const labels = chart.data.labels;
+
+        chart.data.datasets.forEach((dataset: any, datasetIndex: number) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          if (!meta.hidden) {
+            meta.data.forEach((element: any, index: number) => {
+              const value = dataset.data[index];
+
+              // Calculate percentage first
+              const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+              const percentage = Math.round((value / total) * 100);
+
+              // Only show labels for segments with at least 8% to avoid clutter
+              if (value > 0 && percentage >= 8) {
+                ctx.save();
+
+                // Get arc properties
+                const model = element;
+                const centerX = chart.width / 2;
+                const centerY = chart.height / 2;
+
+                // Calculate middle angle of the arc
+                const startAngle = model.startAngle;
+                const endAngle = model.endAngle;
+                const midAngle = startAngle + (endAngle - startAngle) / 2;
+
+                // Position at 60% of radius for better placement
+                const radius = model.outerRadius * 0.65;
+                const labelX = centerX + Math.cos(midAngle) * radius;
+                const labelY = centerY + Math.sin(midAngle) * radius;
+
+                // Draw labels with white text and shadow for contrast
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Show count and percentage only
+                const labelText = `${value} (${percentage}%)`;
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.lineWidth = 3;
+                ctx.strokeText(labelText, labelX, labelY);
+                ctx.fillText(labelText, labelX, labelY);
+
+                ctx.restore();
+              }
+            });
+          }
+        });
+      }
+    };
+
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashRegistrationAgeWiseCount"
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      let apiData = res && res.length ? res : [];
+      console.log("apiDataapiDataapiData", apiData)
+      
+      // Check if data is empty or all values are zero
+      const hasData = apiData && apiData.length > 0 && apiData.some((item: any) => item.value > 0);
+
+      if (!hasData) {
+        // Display empty state message
+        const canvas = document.getElementById('OPDDrOverviewDoughnut') as HTMLCanvasElement;
         if (canvas) {
           // Set canvas size if not already set
           if (canvas.width === 0 || canvas.height === 0) {
@@ -835,7 +1027,6 @@ export class NewDashboardComponent implements OnInit {
     // });
 
   }
-
   // OPD Overview Chart with custom plugins
   getOPDOverviewChart() {
 

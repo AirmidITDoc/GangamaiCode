@@ -32,110 +32,30 @@
                 </div>
                 <form [formGroup]="myform">
                     <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-
-                        <mat-card style="padding: 5px;">
-                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                                <div class="patient-info-container">
-                                    <div class="patient-info-box">
-                                        <div class="patient-info-sales my-8">
-                                            <div class="patient-info-title border-bottom pb-2">
-                                                <span class="h1">Patient Information</span>
-                                            </div>
-                                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                                fxLayoutAlign="space-between center" class="patient-info">
-                                                <div class="patient-sub">
-                                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                        fxLayoutAlign="space-between">
-                                                        <div fxLayout="column" fxLayoutGap="6px">
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">UHID No
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vRegNo}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Patient Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vPatientName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Doctor Name</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vDoctorName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Department</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vDepartment}}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div fxLayout="column" fxLayoutGap="6px">
-
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">DOA | Time</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vDOA |
-                                                                    date:'dd/MM/YYYY'}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">IPD No</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vIPDNo}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Age | Sex
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span
-                                                                    class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}D
-                                                                    | {{vGenderName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Ref-Doctor Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vRefDocName}}</span>
-                                                            </div>
-
-                                                        </div>
-                                                        <div fxLayout="column" fxLayoutGap="6px">
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Ward | Bed Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vWardName}}
-                                                                    | {{vBedName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Patient Type
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vPatientType}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Tarrif Name
-                                                                </span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value">{{vTariffName}}</span>
-                                                            </div>
-                                                            <div class="patient-col">
-                                                                <span class="patient-col-key">Company Name</span>
-                                                                <span>:</span>
-                                                                <span class="patient-col-value"
-                                                                    style="color: orange;">{{vCompanyName}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+  <!-- Patient Info Section -->
+                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                <div class="patient-info-sales">
+                                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="registerObj?.regNo"
+                                            [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                            [departmentName]="registerObj?.departmentName" [doa]="vDOA"
+                                            [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                            [refDocName]="vRefDocName"
+                                            [wardBedName]="(vWardName && vBedName) ? (vWardName + ' | ' + vBedName) : ''"
+                                            [patientType]="vPatientType" [tariffName]="vTariffName"
+                                            [companyName]="vCompanyName"></app-patient-information>
                                     </div>
                                 </div>
-                            </div>
-                        </mat-card>
-
-                        <div fxFlex.gt-sm="100%" fxFlex>
+                            </mat-card>
+                        </div>
+                    </div>
+                       <div fxFlex.gt-sm="100%" fxFlex>
                             <mat-tab-group>
                                 <mat-tab label="Doctor Note">
                                     <div class="content" style="overflow: auto;">

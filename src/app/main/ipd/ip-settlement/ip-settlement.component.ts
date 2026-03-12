@@ -305,11 +305,12 @@ export class IPSettlementComponent implements OnInit {
     get ModeOfPaymentsArray(): FormArray {
         return this.IPBillMyForm.get('tPayments') as FormArray;
     } 
-    //    110193 
+    vIPDNo=''
     getSelectedObj(obj) {
         console.log(obj)
         this.RegId1 = obj.regID;
         this.registerObj = obj;
+        this.vIPDNo=obj.ipdNo
         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
         // setTimeout(() => {
         //     this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {

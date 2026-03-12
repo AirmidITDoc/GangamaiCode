@@ -1039,6 +1039,7 @@ export class OtReserInsert {
     anesthesiaId: any;
     checkOutTime: any;
     toDepartment: any;
+    refDocName: any;
     /**
      * Constructor
      *
@@ -1153,6 +1154,8 @@ export class OtReserInsert {
             this.AnesthesiaId = OtReserInsert.AnesthesiaId || 0
             this.anesthesiaId = OtReserInsert.anesthesiaId || 0
             this.toDepartment = OtReserInsert.toDepartment || 0
+             this.refDocName = OtReserInsert.refDocName || ''
+  
         }
     }
 }

@@ -66,6 +66,7 @@ export class IPRefundofBillComponent implements OnInit {
   RefundOfBillFormFooter: FormGroup;
   isLoading: String = '';
   selectedAdvanceObj: any;
+  
   dateTimeObj: any;
   BillNo: number;
   NetBillAmount: number = 0;
@@ -112,6 +113,8 @@ currency:any='';
     if (this.data) {
       console.log(this.data)
       this.selectedAdvanceObj = this.data
+
+      this.registerObj= this.data
       this.getData(this.selectedAdvanceObj.admissionId)
       this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(this.selectedAdvanceObj.admissionId)
     }

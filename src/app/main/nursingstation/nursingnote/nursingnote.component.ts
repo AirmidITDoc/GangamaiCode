@@ -323,6 +323,7 @@ export class NursingnoteComponent implements OnInit {
 
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
+       this.registerObj = obj
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName

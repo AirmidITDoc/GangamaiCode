@@ -380,6 +380,7 @@ export class DoctornoteComponent implements OnInit {
   getSelectedObjIP(obj) {
 
     if ((obj.regID ?? 0) > 0) {
+       this.registerObj = obj
       console.log("Admitted patient:", obj)
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName

@@ -323,6 +323,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   getSelectedObjOP(obj) {
 
     if ((obj.regId ?? 0) > 0) {
+       this.registerObj = obj
       console.log("Visite Patient:", obj)
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
@@ -351,6 +352,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
+       this.registerObj = obj
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName

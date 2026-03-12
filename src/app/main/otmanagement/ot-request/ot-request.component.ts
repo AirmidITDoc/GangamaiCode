@@ -329,7 +329,7 @@ export class OtReqInsert {
   locationId:any;
   otPreOperationId:any;
   isPrimary:any;
-  
+  refDocName:any;
 opIpType:any;
 
   /**
@@ -407,6 +407,8 @@ opIpType:any;
       this.otPreOperationId = OtReqInsert.otPreOperationId || ''
       this.isPrimary = OtReqInsert.isPrimary || ''
    this.opIpType = OtReqInsert.opIpType || 1
+ this.refDocName = OtReqInsert.refDocName || ''
+   
     }
   }
 }

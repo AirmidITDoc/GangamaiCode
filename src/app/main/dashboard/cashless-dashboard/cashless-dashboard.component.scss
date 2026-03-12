@@ -793,11 +793,11 @@
     min-width: 0;
   }
 
-  .metric-card {
-    flex: 1 1 155px;
+ .metric-card {
+    flex: 1 1 220px;
     /* fluid card width; 3-5 per row depending on space */
-    min-width: 155px;
-    max-width: 155px;
+    min-width: 180px;
+    max-width: 220px;
     height: fit-content;
     border-radius: 14px;
     overflow: visible;
@@ -1060,9 +1060,9 @@
       display: flex;
 
       .dashboard-stat-card {
-        height: 240px !important;
-        min-height: 240px !important;
-        max-height: 240px !important;
+        height: 270px !important;
+        min-height: 270px !important;
+        max-height: 270px !important;
         width: 100%;
 
         mat-card-content {

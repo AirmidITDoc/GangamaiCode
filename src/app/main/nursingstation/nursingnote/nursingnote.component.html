@@ -38,107 +38,29 @@
                                 </div>
                             </form>
                         </div>
-
-                        <mat-card style="padding: 5px;">
-                            <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                                <div class="patient-info-container">
-                                    <div class="patient-info-sales my-8">
-                                        <div class="patient-info-title border-bottom pb-2">
-                                            <span class="h1">Patient Information</span>
-                                        </div>
-                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                            fxLayoutAlign="space-between center" class="patient-info">
-                                            <div class="patient-sub">
-                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                    fxLayoutAlign="space-between">
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">UHID No
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vRegNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Patient Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vPatientName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Doctor Name</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vDoctorName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Department</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vDepartment}}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">DOA | Time</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vDOA |
-                                                                date:'dd/MM/YYYY'}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">IPD No</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vIPDNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Age | Sex
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{vAge}}Y|{{vAgeMonth}}M|{{vAgeDay}}D
-                                                                | {{vGenderName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Ref-Doctor Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vRefDocName}}</span>
-                                                        </div>
-
-                                                    </div>
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Ward | Bed Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vWardName}}
-                                                                | {{vBedName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Patient Type
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vPatientType}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Tarrif Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vTariffName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Company Name</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value"
-                                                                style="color: orange;">{{vCompanyName}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                      <!-- Patient Info Section -->
+                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                <div class="patient-info-sales">
+                                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="registerObj?.regNo"
+                                            [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                            [departmentName]="registerObj?.departmentName" [doa]="vDOA"
+                                            [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                            [refDocName]="vRefDocName"
+                                            [wardBedName]="(vWardName && vBedName) ? (vWardName + ' | ' + vBedName) : ''"
+                                            [patientType]="vPatientType" [tariffName]="vTariffName"
+                                            [companyName]="vCompanyName"></app-patient-information>
                                     </div>
                                 </div>
-                            </div>
-                        </mat-card>
-
+                            </mat-card>
+                        </div>
+                    </div>
                         <div fxFlex.gt-sm="100%" fxFlex>
                             <mat-tab-group>
                                 <mat-tab label="Doctor Note">
@@ -188,7 +110,8 @@
                                                                                 <div>
                                                                                     <button #addbutton
                                                                                         class="btn btn-primary btn-with-icon"
-                                                                                        (click)="onAddTemp()" id="btnAdd"
+                                                                                        (click)="onAddTemp()"
+                                                                                        id="btnAdd"
                                                                                         [disabled]="IsAddFlag">
                                                                                         <span class="btn-icon">
                                                                                             <mat-icon> add </mat-icon>
@@ -546,29 +469,29 @@
                                                             class="gap-8">
                                                             <airmid-autocomplete label="Enter Item Name" fxFlex="25%"
                                                                 [formGroup]="MedicineItemForm" formControlName="ItemId"
-                                                                placeholderText="Enter Item Name" 
+                                                                placeholderText="Enter Item Name"
                                                                 [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                                                 (selectionChange)="getSelectedserviceObj($event)"
                                                                 TextField="itemName" ValueField="itemId"
                                                                 (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
-                                                            <airmid-dropdown label="Frequency" formControlName="DoseId" fxFlex="7%"
-                                                                [formGroup]="MedicineItemForm"
+                                                            <airmid-dropdown label="Frequency" formControlName="DoseId"
+                                                                fxFlex="7%" [formGroup]="MedicineItemForm"
                                                                 [validations]="getValidationMessages().DoseId"
                                                                 (selectionChange)="getdose($event)"
                                                                 [mode]="autocompleteModeDose" [(ngModel)]="doseId"
                                                                 *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
 
-                                                                   <airmid-dropdown label="Timing" formControlName="TimeId" fxFlex="7%"
-                                                                [formGroup]="MedicineItemForm"
+                                                            <airmid-dropdown label="Timing" formControlName="TimeId"
+                                                                fxFlex="7%" [formGroup]="MedicineItemForm"
                                                                 [validations]="getValidationMessages().TimeId"
                                                                 (selectionChange)="getime($event)"
                                                                 [mode]="autocompleteModeime" [(ngModel)]="TimeId"
                                                                 *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
 
-                                                            <airmid-textbox label="Day" formControlName="Day" fxFlex="7%"
-                                                                [value]="vDay" [formGroup]="MedicineItemForm"
-                                                                [type]="'text'"
+                                                            <airmid-textbox label="Day" formControlName="Day"
+                                                                fxFlex="7%" [value]="vDay"
+                                                                [formGroup]="MedicineItemForm" [type]="'text'"
                                                                 (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                                                             <div class="input-add-button">
@@ -649,7 +572,7 @@
                                                             </mat-cell>
                                                         </ng-container>
 
-                                                         <ng-container matColumnDef="time">
+                                                        <ng-container matColumnDef="time">
                                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
                                                                 fxShow.gt-sm>Timing</mat-header-cell>
                                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>

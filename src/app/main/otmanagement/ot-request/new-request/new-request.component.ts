@@ -321,6 +321,11 @@ export class NewRequestComponent implements OnInit {
     }
     this.patientInfoReset();
   }
+// vTariffName=''
+// vCompanyName=''
+// vWardName=''
+// vBedName=''
+// vRefDocName=''
 
   getSelectedObjIP(obj) {
     if ((obj.regID ?? 0) > 0) {
@@ -330,6 +335,11 @@ export class NewRequestComponent implements OnInit {
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       this.vIPDNo = obj.ipdNo
       this.opIpId = obj.admissionID;
+      //   this.vTariffName = obj.tariffName
+      // this.vCompanyName = obj.companyName
+      //   this.vWardName = obj.roomName
+      // this.vBedName = obj.bedName
+      //  this.vRefDocName = obj.refDocName
     }
   }
   getSelectedObjOP(obj) {

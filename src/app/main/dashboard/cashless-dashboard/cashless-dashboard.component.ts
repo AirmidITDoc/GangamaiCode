@@ -33,7 +33,7 @@ export class CashlessDashboardComponent implements OnInit {
     // this.initializeDateRange();
   }
   metrics = [
-    { label: 'Total Cashless', value: 0, color: 'lavender', icon: 'assignment' },
+    { label: 'TotalCashless', value: 0, color: 'lavender', icon: 'assignment' },
     // { label: 'Completed', value: 0, color: 'green', icon: 'check_circle' },
     { label: 'Pending', value: 0, color: 'mint', icon: 'pending' },
     { label: 'Approval', value: 0, color: 'rose', icon: 'collected' },

@@ -60,8 +60,35 @@
                     </div>
 
                 </div>
-
-                <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
+                <!-- Patient Info Section -->
+                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                    <app-patient-information [uhidNo]="registerObj1?.regNo" [patientName]=" (registerObj1?.firstName || '') +
+                                        (registerObj1?.middleName ? ' ' + registerObj1.middleName : '') +
+                                        (registerObj1?.lastName ? ' ' + registerObj1.lastName : '')
+                                        || registerObj1?.patientName
+                                        " [doctorName]="registerObj1?.doctorName"
+                                        [departmentName]="registerObj1?.departmentName"
+                                        [doa]="registerObj1?.admissionDate"
+                                        [ipdNo]="registerObj1?.ipdNo || registerObj1?.ipdNo"
+                                        [ageString]="(registerObj1?.age !== undefined ? registerObj1?.age + 'Y|' + registerObj1?.ageMonth + 'M|' + registerObj1?.ageDay + 'D | ' + registerObj1?.genderName : '')"
+                                        [refDocName]="registerObj1?.refDocName"
+                                        [wardBedName]="(registerObj1?.roomName && registerObj1?.bedName) ? (registerObj1?.roomName + ' | ' + registerObj1?.bedName) : ''"
+                                        [patientType]="registerObj1?.patientType"
+                                        [tariffName]="registerObj1?.tariffName"
+                                        [companyName]="registerObj1?.companyName"></app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+                <!-- <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                         <div class="patient-info-container">
                             <div class="patient-info-box gap-4" fxFlexFill fxLayout="column">
@@ -185,13 +212,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
                     <mat-tab label="Details" class="gap-4">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                fxLayoutGap="4px grid">                                
+                                fxLayoutGap="4px grid">
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"

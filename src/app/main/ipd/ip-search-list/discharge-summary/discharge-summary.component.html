@@ -23,7 +23,7 @@
   <div class="modal-body">
     <div class="modal-body-container">
       <div fxLayout="column" class="gap-12 h-100-p">
-        <mat-card>
+        <!-- <mat-card>
           <mat-card-content>
             <div class="patient-info-container">
               <div class="patient-info-box">
@@ -106,8 +106,37 @@
               </div>
             </div>
           </mat-card-content>
-        </mat-card>
+        </mat-card> -->
 
+
+           <!-- Patient Info Section -->
+                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                    <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
+                                        (data?.middleName ? ' ' + data.middleName : '') +
+                                        (data?.lastName ? ' ' + data.lastName : '')
+                                        || data?.patientName
+                                        " [doctorName]="data?.doctorName"
+                                        [departmentName]="data?.departmentName"
+                                        [doa]="data?.admissionDate"
+                                        [ipdNo]="data?.ipdno || data?.ipdno"
+                                        [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
+                                        [refDocName]="data?.refDocName"
+                                        [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
+                                        [patientType]="data?.patientType"
+                                        [tariffName]="data?.tariffName"
+                                        [companyName]="data?.companyName"></app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
         <form [formGroup]="DischargesumInsertForm" fusePerfectScrollbar>
           <mat-tab-group class="dynamic-table-wrapper">
             <!-- 1st tab -->

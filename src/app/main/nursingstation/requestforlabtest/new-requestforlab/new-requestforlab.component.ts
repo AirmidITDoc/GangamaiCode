@@ -302,6 +302,7 @@ export class NewRequestforlabComponent implements OnInit {
 
     console.log(obj)
     if ((obj.regID ?? 0) > 0) {
+        this.registerObj = obj
       console.log("Admitted patient:", obj)
       this.vRegNo = obj.regNo
       this.vRegId = obj.regID

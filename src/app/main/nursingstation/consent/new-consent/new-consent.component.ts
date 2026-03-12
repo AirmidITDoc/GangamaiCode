@@ -128,6 +128,7 @@ export class NewConsentComponent {
     console.log("Admitted patient:", obj)
     this.registerObj = obj
     this.vRegNo = obj.regNo
+     this.vRoomName = obj.roomName
     this.OP_IP_Id = obj.admissionID
   }
 
