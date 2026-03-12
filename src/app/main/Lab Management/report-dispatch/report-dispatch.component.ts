@@ -218,8 +218,8 @@ export class ReportDispatchComponent {
   SelectedList: any = [];
   dataSource = new MatTableDataSource<SampleList>();
   isCheckboxDisabled(row: any): boolean {
-    return !row?.name && row.name.trim() === '';
-  }
+  return row?.name?.trim()?.length > 0;
+}
   areAllRowsDisabled(): boolean {
     return this.dataSource?.data?.length
       ? this.dataSource.data.every(row => this.isCheckboxDisabled(row))
