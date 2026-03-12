@@ -225,15 +225,26 @@ export class ReportDispatchComponent {
       ? this.dataSource.data.every(row => this.isCheckboxDisabled(row))
       : true;
   }
+  // masterToggle() {
+  //   if (this.isAllSelected()) {
+  //     this.selection.clear();
+  //   } else {
+  //     this.dataSource.data
+  //       .filter(row => !row?.name || row.name.trim() === '')   // check name empty
+  //       .forEach(row => this.selection.select(row));
+  //   }
+  // }
   masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.dataSource.data
-        .filter(row => !row?.name || row.name.trim() === '')   // check name empty
-        .forEach(row => this.selection.select(row));
-    }
+  if (this.selection.selected.length > 0) {
+    // uncheck all
+    this.selection.clear();
+  } else {
+    // select only rows where name is empty
+    this.dataSource.data
+      .filter(row => !row?.name || row.name.trim() === '')
+      .forEach(row => this.selection.select(row));
   }
+}
 
   isAllSelected() {
     const selectableRows = this.dataSource.data.filter(
