@@ -40,9 +40,13 @@
           </div>
 
           <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-dropdown label="ServiceName" formControlName="ServiceId" [value]="registerObj?.serviceID"
+            <!-- <airmid-dropdown label="ServiceName" formControlName="ServiceId" [value]="registerObj?.serviceID"
               [formGroup]="testForm" [mode]="autocompleteModeServiceID"
-              (selectionChange)="selectChangeServiceID($event)" *ngIf="serviceflag"></airmid-dropdown>
+              (selectionChange)="selectChangeServiceID($event)" *ngIf="serviceflag"></airmid-dropdown> -->
+            <airmid-dropdown label="Service Name" formControlName="ServiceId" TextField="serviceName"
+              ValueField="serviceId" [value]="registerObj?.serviceID" [formGroup]="testForm" *ngIf="serviceflag"
+              ApiUrl="BillingService/PathologyServicesearch?Keyword=%"
+              (selectionChange)="selectChangeServiceID($event)"></airmid-dropdown>
           </div>
         </div>
 

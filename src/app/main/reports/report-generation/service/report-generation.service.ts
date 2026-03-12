@@ -50,7 +50,8 @@ export class ReportService {
             OPIPType: ["2"],
             type:["0"],
             expCategoryId:[""],
-            expHeadId:[""]
+            expHeadId:[""],
+            HospitalId:[""]
             // 
         });
     }

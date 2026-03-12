@@ -61,7 +61,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   vTotalAmount: any;
   vlandedTotalAmount: any;
   vPureTotalAmount: any;
-  vStoreId: any;
+  vStoreId: any = 0;
   vfinalTotalAmount
   vStockId: any;
   vExpDate: any;
@@ -88,6 +88,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   PatientListfilteredOptionsIP: any;
   vIsPatientWiseConsumption: any;
 
+  ApiUrl = ""
   registerObjOP: any;
   registerObjIP: any;
   vAdmissionId: any;
@@ -116,10 +117,13 @@ export class NewMaterialConsumptionComponent implements OnInit {
   ) { }
   MaterialInsertForm: FormGroup;
   ngOnInit(): void {
+    this.vStoreId = this.accountService.currentUserValue.user.storeId;
     this.userFormGroup = this._MaterialConsumptionService.createUserForm();
     this.ItemFormGroup = this._MaterialConsumptionService.createItemForm();
     this.userFormGroup.markAllAsTouched();
     this.ItemFormGroup.markAllAsTouched();
+
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
 
     this.MaterialInsertForm = this.creatematerialconsInsert()
     this.MaterialConDetailsArray.push(this.creatematerialconsDetail());
@@ -234,6 +238,11 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.vAdmissionId = this.registerObjIP.this.VisitId
   }
 
+  selectChangeStore(obj: any) {
+    console.log("Store:", obj);
+    this.vStoreId = obj.value
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
+  }
 
   getBatch() {
     // this.usedQty.nativeElement.focus();
@@ -410,7 +419,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.MaterialInsertForm.get("materialConsumption.purTotalAmount").setValue(this.vPurTotalAmount || 0)
     this.MaterialInsertForm.get("materialConsumption.mrpTotalAmount").setValue(this.vMRPTotalAmount || 0)
     this.MaterialInsertForm.get("materialConsumption.fromStoreId").setValue(this._loggedService.currentUserValue.user.storeId || 0)
-     this.MaterialInsertForm.get("materialConsumption.admId").setValue(this.vAdmissionId || 0)
+    this.MaterialInsertForm.get("materialConsumption.admId").setValue(this.vAdmissionId || 0)
     this.MaterialInsertForm.get("materialConsumption.remark").setValue(this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value)
 
     console.log(this.MaterialInsertForm.value)
@@ -428,7 +437,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
     });
 
   }
-OnDraftSave() {
+  OnDraftSave() {
 
     if ((!this.dsNewmaterialList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -462,7 +471,7 @@ OnDraftSave() {
     this.MaterialInsertForm.get("materialConsumption.purTotalAmount").setValue(this.vPurTotalAmount || 0)
     this.MaterialInsertForm.get("materialConsumption.mrpTotalAmount").setValue(this.vMRPTotalAmount || 0)
     this.MaterialInsertForm.get("materialConsumption.fromStoreId").setValue(this._loggedService.currentUserValue.user.storeId || 0)
-     this.MaterialInsertForm.get("materialConsumption.admId").setValue(this.vAdmissionId || 0)
+    this.MaterialInsertForm.get("materialConsumption.admId").setValue(this.vAdmissionId || 0)
     this.MaterialInsertForm.get("materialConsumption.remark").setValue(this._MaterialConsumptionService.FinalMaterialForm.get('Remark').value)
 
     console.log(this.MaterialInsertForm.value)

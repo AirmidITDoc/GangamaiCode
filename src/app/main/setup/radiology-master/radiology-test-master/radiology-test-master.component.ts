@@ -128,8 +128,8 @@ export class RadiologyTestMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
             {
                 maxWidth: "95vw",
-                maxHeight: '95vh',
-                width: '95%',
+                height: '95%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

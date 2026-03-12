@@ -526,8 +526,9 @@ export class LabResultListComponent {
               }
             });
           dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
+            // this.grid.bindGridData();
             this.getSelectedRow(event);
+            this.bindParentGridData();
           });
         }, 100);
         return;
@@ -547,7 +548,7 @@ export class LabResultListComponent {
         });
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Pathology Template  Saved ..', result);
+        this.bindParentGridData();
       });
       return;
     }
@@ -602,8 +603,9 @@ export class LabResultListComponent {
             }
           });
         dialogRef.afterClosed().subscribe(result => {
-          this.grid.bindGridData();
+          // this.grid.bindGridData();
           this.getSelectedRow(event);
+          this.bindParentGridData();
         });
       }, 100);
       return;
@@ -611,118 +613,6 @@ export class LabResultListComponent {
     this.searchRecords(contact)
     // this.selection.clear(); // Clears all selected items
     // this.dataSource1.data = [];
-  }
-
-  chkresultentryVerify(contact, flag) {
-    // debugger
-    this.printdata = [];
-    this.reportIdData = [];
-    this.ServiceIdData = [];
-
-    if (flag)
-      this.IsTemplateTest = contact.isTemplateTest
-
-    console.log(contact)
-    if (this.IsTemplateTest == 0) {
-      setTimeout(() => {
-        let data = [];
-        const contactArray = Array.isArray(contact) ? contact : [contact];
-        contactArray.forEach(element => {
-          console.log(element)
-          data.push({
-            PathReportId: element["pathReportID"].toString(),
-            ServiceId: element["serviceId"].toString(),
-            IsCompleted: element["isCompleted"].toString()
-          });
-          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
-        });
-
-        console.log(this.printdata)
-        data.forEach((element) => {
-          console.log('aaaaaa:', element)
-          this.reportIdData.push(element.PathReportId)
-          this.ServiceIdData.push(element.ServiceId)
-          if (element.IsCompleted == "true")
-            this.Iscompleted = 1;
-        });
-
-        const dialogRef = this._matDialog.open(NewLabresultEntryComponent,
-          {
-            maxWidth: "96vw",
-            height: "96vh",
-            width: "96%",
-            data: {
-              RIdData: data,
-              patientdata: this.reportPrintObj,
-              verifyCheck: true,
-              type: 'Lab',
-              sampleNo: contact.sampleNo
-            }
-          });
-        dialogRef.afterClosed().subscribe(result => {
-          this.grid.bindGridData();
-          this.getSelectedRow(event);
-        });
-      }, 100);
-      return;
-    }
-    this.searchRecords(contact)
-    // this.selection.clear(); // Clears all selected items
-    // this.dataSource1.data = [];
-  }
-
-  chkTemplateVerify(contact, flag) {
-    debugger
-    this.printdata = [];
-    this.reportIdData = [];
-    this.ServiceIdData = [];
-
-    if (flag)
-      this.IsTemplateTest = contact.isTemplateTest
-
-    console.log(contact)
-    if (this.IsTemplateTest == 1) {
-      setTimeout(() => {
-        let data = [];
-        const contactArray = Array.isArray(contact) ? contact : [contact];
-        contactArray.forEach(element => {
-          console.log(element)
-          data.push({
-            PathReportId: element["pathReportID"].toString(),
-            ServiceId: element["serviceId"].toString(),
-            IsCompleted: element["isCompleted"].toString()
-          });
-          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
-        });
-
-        console.log(this.printdata)
-        data.forEach((element) => {
-          console.log('aaaaaa:', element)
-          this.reportIdData.push(element.PathReportId)
-          this.ServiceIdData.push(element.ServiceId)
-          if (element.IsCompleted == "true")
-            this.Iscompleted = 1;
-        });
-
-        const dialogRef = this._matDialog.open(NewLabtemplateComponent,
-          {
-            maxWidth: "95vw",
-            height: '95%',
-            width: '95%',
-            data: {
-              data: contact,
-              verifyCheck: true
-            }
-          });
-
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('Pathology Template  Saved ..', result);
-        });
-        return;
-      }, 100);
-      return;
-    }
-    this.searchRecords(contact)
   }
 
   OPIPID: any = 0;
@@ -1114,24 +1004,6 @@ export class LabResultListComponent {
     // this.selection.clear();
   }
 
-  // onsamplecolltion(contact) {
-  //   console.log(contact)
-  //   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-  //   buttonElement.blur(); // Remove focus from the button
-
-  //   const dialogRef1 = this._matDialog.open(NewLabtemplateComponent,
-  //     {
-  //       maxWidth: "75vw",
-  //       height: '95%',
-  //       width: '96%',
-  //       data: {
-  //         regobj: contact
-  //       }
-  //     });
-
-  //   dialogRef1.afterClosed().subscribe(result => {
-  //   });
-  // }
   Editoutsoucedata(row) {
     console.log(row)
 

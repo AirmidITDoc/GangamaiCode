@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -7,6 +7,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject } from 'rxjs';
 import { RadiologyTestMasterService } from '../radiology-test-master.service';
+import Swal from 'sweetalert2';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-updateradiologymaster',
@@ -45,7 +47,7 @@ export class UpdateradiologymasterComponent implements OnInit {
     vCategoryId: any;
     testId: any;
 
-   
+
     DSTestList = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
 
@@ -55,10 +57,10 @@ export class UpdateradiologymasterComponent implements OnInit {
         public toastr: ToastrService,
         public _matDialog: MatDialog,
         private accountService: AuthenticationService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
         public dialogRef: MatDialogRef<UpdateradiologymasterComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) { }
-
 
     ngOnInit(): void {
 
@@ -73,25 +75,40 @@ export class UpdateradiologymasterComponent implements OnInit {
             this.testForm.get("serviceId").setValue(this.data.serviceId)
             this.gettemplateMasterServicewise(this.data);
             this.testForm.patchValue(this.data);
-             this.templateName=this.data.templateName
+            this.templateName = this.data.templateName
             console.log(this.data)
         }
     }
 
     itemId = 0;
     selectChangeCategory(obj: any) {
-      this.itemId = obj
+        this.itemId = obj
     }
 
     service = 0;
     selectChangeservice(obj: any) {
-   this.service = obj
+        if (obj.status == 'Completed') {
+            const name = obj.serviceName;
+            Swal.fire({
+                icon: 'warning',
+                title: 'Test already completed',
+                text: `This ${name} already has an Test.`,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+        this.service = obj.serviceId;
+        if (this.service == 0) {
+            this.testForm.get('serviceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])
+            this.testForm.get('serviceId')?.updateValueAndValidity();
+        }
     }
 
     templateId = 0
     templateName = ''
     selectChangetemplate(obj: any) {
-      this.templateId = obj.value
+        this.templateId = obj.value
         this.templateName = obj.text
     }
 
@@ -225,66 +242,72 @@ export class UpdateradiologymasterComponent implements OnInit {
 
     invalidFields1 = [];
 
-   onSubmit() {
-  debugger;
+    onSubmit() {
+        debugger;
+        if (this.service == 0) {
+            this.testForm.get('serviceId')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()])
+            this.testForm.get('serviceId')?.updateValueAndValidity();
+            this.toastr.warning(`Select Service Name`, 'Warning',);
+            return;
+        }
+        this.testForm.get("serviceId").setValue(this.service)
+
+        if (this.testForm.invalid) {
+            const invalidFields: string[] = [];
+
+            Object.keys(this.testForm.controls).forEach(controlName => {
+                const control = this.testForm.controls[controlName];
+                if (control.invalid) {
+                    invalidFields.push(`My Form: ${controlName}`);
+                }
+            });
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+                });
+            }
+            return;
+        }
 
 
-  if (this.testForm.invalid) {
-    const invalidFields: string[] = [];
+        this.invalidFields1 = [];
 
-    Object.keys(this.testForm.controls).forEach(controlName => {
-      const control = this.testForm.controls[controlName];
-      if (control.invalid) {
-        invalidFields.push(`My Form: ${controlName}`);
-      }
-    });
+        if (this.DSTestList.data.length === 0) {
+            this.invalidFields1.push('No data in the Template list!');
+        }
 
-    if (invalidFields.length > 0) {
-      invalidFields.forEach(field => {
-        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
-      });
+        if (this.invalidFields1.length > 0) {
+            this.invalidFields1.forEach(field => {
+                this.toastr.warning(field, 'Warning!');
+            });
+            return;
+        }
+
+
+        const mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
+            ptemplateId: 0,
+            testId: 0,
+            templateId: row.templateId || 0
+        }));
+
+        console.log("Insert data1:", mRadiologyTemplateDetails);
+
+
+        const testIdControl = this.testForm.controls['testId'];
+        const templateDetailsControl = this.testForm.controls['mRadiologyTemplateDetails'];
+
+        testIdControl.setValue(this.testId);
+        templateDetailsControl.setValue(mRadiologyTemplateDetails);
+
+        console.log(this.testForm.value);
+
+
+        this._radiologytestService.testMasterSave(this.testForm.value).subscribe(response => {
+            this.toastr.success(response.message);
+            this.onClear(true);
+        });
     }
-    return;
-  }
-
- 
-  this.invalidFields1 = [];
-
-  if (this.DSTestList.data.length === 0) {
-    this.invalidFields1.push('No data in the Template list!');
-  }
-
-  if (this.invalidFields1.length > 0) {
-    this.invalidFields1.forEach(field => {
-      this.toastr.warning(field, 'Warning!');
-    });
-    return;
-  }
-
-  
-  const mRadiologyTemplateDetails = this.DSTestList.data.map((row: any) => ({
-    ptemplateId: 0,
-    testId: 0,
-    templateId: row.templateId || 0
-  }));
-
-  console.log("Insert data1:", mRadiologyTemplateDetails);
-
- 
-  const testIdControl = this.testForm.controls['testId'];
-  const templateDetailsControl = this.testForm.controls['mRadiologyTemplateDetails'];
-
-  testIdControl.setValue(this.testId);
-  templateDetailsControl.setValue(mRadiologyTemplateDetails);
-
-  console.log(this.testForm.value);
-
- 
-  this._radiologytestService.testMasterSave(this.testForm.value).subscribe(response => {
-    this.toastr.success(response.message);
-    this.onClear(true);
-  });
-}
 
 
     getValidationMessages() {
