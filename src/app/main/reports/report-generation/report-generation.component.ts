@@ -68,6 +68,7 @@ export class ReportGenerationComponent implements OnInit {
     StoreId: any;
     FromStoreId: any;
     ToStoreId: any;
+    HospitalId: any;
     ExpHeadId: any;
     ExpCatId: any;
     SupplierId: any;
@@ -132,6 +133,7 @@ export class ReportGenerationComponent implements OnInit {
     flagTypeSelected: boolean = false;
     flagFromStoreSelected: boolean = false;
     flagToStoreSelected: boolean = false;
+    flagUnitSelected: boolean = false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -194,7 +196,7 @@ export class ReportGenerationComponent implements OnInit {
                 debugger
                 // let mainData = this.reportsData.filter(x => (x.parentid == undefined || x.parentid == null || x.parentid == '')).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
                 let mainData = this.reportsData
-                    .filter(x =>  !x.parentid  || x.parentid=='NULL')               // shortest & very common
+                    .filter(x => !x.parentid || x.parentid == 'NULL')               // shortest & very common
                     .map(x => ({
                         id: x.reportId,
                         name: x.reportName,
@@ -276,6 +278,8 @@ export class ReportGenerationComponent implements OnInit {
             this.FlaExpHeadSelected = true;
         if (controllerPermission.filter(x => x == "ExpensesCategory")?.length > 0)
             this.FlaExpCategorySelected = true;
+        if (controllerPermission.filter(x => x == "Hospital")?.length > 0)
+            this.flagUnitSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -341,6 +345,9 @@ export class ReportGenerationComponent implements OnInit {
     SelectedCreditObj(obj) {
         this.CreditId = obj.value;
     }
+    SelectedHospitalObj(obj) {
+        this.HospitalId = obj.value;
+    }
     // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
@@ -365,6 +372,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('type').setValue('0');
         this._ReportService.userForm.get('expHeadId').setValue('');
         this._ReportService.userForm.get('expCategoryId').setValue('');
+        this._ReportService.userForm.get('HospitalId').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -385,6 +393,7 @@ export class ReportGenerationComponent implements OnInit {
         this.DrugTypeId = 0;
         this.ItemId = 0;
         this.dischargeTypeId = 0;
+        this.HospitalId = 0;
         this.flagDoctorSelected = false;
         this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
@@ -399,6 +408,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagStoreSelected = false;
         this.flagFromStoreSelected = false;
         this.flagToStoreSelected = false;
+        this.flagUnitSelected = false;
         this.flagSupplierelected = false;
         this.flagPaymentSelected = false;
         this.flagDrugTypeSelected = false;
@@ -576,6 +586,12 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "ExpCategoryId",
                     "fieldValue": this.ExpCatId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagUnitSelected)
+                paramFilterList.push({
+                    "fieldName": "HospitalId",
+                    "fieldValue": this.HospitalId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   
