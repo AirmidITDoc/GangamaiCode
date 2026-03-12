@@ -113,6 +113,7 @@ export class EditAdmissionComponent implements OnInit {
             }
               this.admissionFormGroup.get("isMlc").setValue(this.registerObj1.isMlc)
               this.admissionFormGroup.get("ischarity").setValue(this.registerObj1.ischarity)
+              this.admissionFormGroup.get("isReimbursement").setValue(this.registerObj1.isReimbursement)
           }
 
         });
@@ -178,7 +179,8 @@ export class EditAdmissionComponent implements OnInit {
         IsOpToIpconv: [this.registerObj1?.isOpToIpconv || ''],
         // RefDoctorDept: [this.registerObj1?.refDoctorDept || ''],
         // AdmissionType:[this.registerObj1?.admittedDoctor2 || ''],
-        convertId:0 
+        convertId:0 ,
+        isReimbursement: [false]
     });
 }
 
@@ -318,7 +320,9 @@ const inputDate = this.parseAdmissionTime(this.registerObj1.admissionTime);
   getAdmittedPatientCasepaperview(AdmissionId) {
     this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
   }
-
+  onIsReimbursementChange(event: any) {
+      this.admissionFormGroup.patchValue({ isReimbursement: event.checked });
+  }
   getValidationMessages() {
     return {
       RegId: [],

@@ -110,6 +110,14 @@
         </div>
     </ng-template>
 
+      <ng-template #actionisReimbursement let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+           <mat-icon matTooltip="IsReimbursement Patient" *ngIf="element.isReimbursement==1" >
+                transfer_within_a_station
+            </mat-icon>
+        </div>
+    </ng-template>
+
     <ng-template #actionsTemplate2 let-element>
         <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
             <!-- <mat-icon matTooltip="Normal" *ngIf="element.admissionType==0" [disabled]="element.disabled"
