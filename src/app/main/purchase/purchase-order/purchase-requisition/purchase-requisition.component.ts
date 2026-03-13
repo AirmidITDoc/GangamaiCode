@@ -15,6 +15,7 @@ import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseFormModel } from './types';
 import { element } from 'protractor';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { Conversion } from 'ckeditor5';
 
 @Component({
   selector: 'app-purchase-requisition',
@@ -28,10 +29,13 @@ export class  PurchaseRequisitionComponent implements OnInit {
     'Status',
     'SupplierName',
     'IemName', 
+    'UMOName',
+    'ConversionFactor',
     'Qty',
+    'FreeQty',
+    'TotalQty',
     "MRP",
-    'Price',
-    'Qty',
+    'Price', 
     'TotalAmt',
     'DiscPer',
     'DiscAmt',
@@ -71,15 +75,17 @@ export class  PurchaseRequisitionComponent implements OnInit {
     'vatPercentage'
   ]
   userFormGroup: FormGroup;
+  PRTOPoSaveForm :FormGroup
   autocompletestore: string = "Store";
   fromDate =  this.datePipe.transform(new Date(), "yyyy-MM-dd");
   toDate =  this.datePipe.transform(new Date(), "yyyy-MM-dd");
   StoreId = this.accountService.currentUserValue.user.storeId  
   status = "0"
   chargeslist:any=[];
-    autocompletepaymentterm: string = "TermofPayment";
+  autocompletepaymentterm: string = "TermofPayment";
   autocompletepaymentmode: string = "PaymentMode";
-    @ViewChild('LastThreeSupplier') LastThreeSupplier!: TemplateRef<any>;  
+  dialogRefSupplier!: MatDialogRef<any>; 
+  @ViewChild('LastThreeSupplier') LastThreeSupplier!: TemplateRef<any>;  
 
     dsPRFinalitemlist = new MatTableDataSource<ItemNameList>();
     dsPRHeader = new MatTableDataSource<PurchaseItemList>();
@@ -96,6 +102,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
     public _matDialog: MatDialog, 
     public datePipe: DatePipe,
     public _FormBuilder:FormBuilder,
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<PurchaseRequisitionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
@@ -107,6 +114,8 @@ export class  PurchaseRequisitionComponent implements OnInit {
      this.userFormGroup = this.SearchFilterForm(); 
      this.userFormGroup.markAllAsTouched(); 
      this.onChangeFirst(); 
+  
+this.PRTOPoSaveForm  =this.CreatePRToPoSaveForm();
   }
   SearchFilterForm(): FormGroup {
     return this._FormBuilder.group({
@@ -195,9 +204,12 @@ export class  PurchaseRequisitionComponent implements OnInit {
     }  
     });
   } 
+  selectedRow:any; 
   openLastthreeSupplierlist(row, flag): void {
+    this.selectedRow = ''
     if (flag) {
-      this._matDialog.open(this.LastThreeSupplier, {
+      this.selectedRow = row;
+     this.dialogRefSupplier =  this._matDialog.open(this.LastThreeSupplier, {
         width: '45%',
         height: '50%',
       })
@@ -222,7 +234,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
         if (lowestItem) {
           this.onAddItem(row, lowestItem)
         }
-      } 
+      }  
     });
   }
 
@@ -243,33 +255,41 @@ export class  PurchaseRequisitionComponent implements OnInit {
 
    const qty = +row?.qty || 0;
    const rate = +contact?.rate || 0;
+   const gstPer = +contact?.vatPercentage || 0;
    const TotalAmt = qty * rate;
+   const GSTAmt = (rate * gstPer / 100) * qty;
+   const CGSTPer = gstPer / 2;
+   const SGSTPer = gstPer / 2;
+   const CGSTAmt = (rate * CGSTPer / 100) * qty;
+   const SGSTAmt = (rate * SGSTPer / 100) * qty;
+
 
     this.chargeslist.push({
         SupplierId:contact?.supplierId,
         SupplierName:contact?.supplierName,
         itemId:row.itemId ,
         ItemName:row.itemName ,
+        UMOName:contact?.uomid || 0,
+        UMOId:contact?.unitofMeasurementName || '',
         Qty:qty,
+        FreeQty:0,
+        ConversionFactor:1,
         MRP: contact.mrp || 0,
         Price:rate,
         TotalAmt:TotalAmt,
         DiscPer:0,
         DiscAmt:0,
         NetAmt:TotalAmt,
-        TotalQty:row.qty,
-        FreeQty:0,
+        TotalQty:qty, 
         Specification:'',
-        CGSTPer:  0,
-        CGSTAmount:0,
-        CGSTAmt: 0,
-        SGSTPer: 0,
-        SGSTAmount:0,
-        SGSTAmt: 0,
+        CGSTPer:CGSTPer || 0,
+        CGSTAmount:CGSTAmt || 0, 
+        SGSTPer:SGSTPer || 0,
+        SGSTAmount:SGSTAmt || 0, 
         IGSTPer: 0, 
         IGSTAmount: 0,
-        GST: 0,
-        GSTAmount: 0  
+        GSTPer: contact?.vatPercentage || 0,
+        GSTAmount: GSTAmt || 0  
     })
     this.dsPRFinalitemlist.data = [...this.chargeslist]  
     this.dsPRFinalitemlist.sort = this.sort;
@@ -287,6 +307,164 @@ export class  PurchaseRequisitionComponent implements OnInit {
       toastClass: 'tostr-tost custom-toast-success',
     });
   } 
+
+
+//selected supplier wise calculation
+getselectedSupplierDet(contact){
+  if(!this.selectedRow) return ;
+
+const index = this.chargeslist.findIndex(item => item.itemId === this.selectedRow?.itemId);
+
+if (index !== -1) { 
+  const qty = +this.chargeslist[index].Qty || 0;
+  const rate = +contact?.rate || 0;
+  const mrp = +contact?.mrp || 0;
+  const gstPer = +contact?.vatPercentage || 0;
+
+  const totalAmt = qty * rate;  
+  const CGSTPer = gstPer / 2;
+  const SGSTPer = gstPer / 2; 
+  const CGSTAmt = (rate * CGSTPer / 100) * qty;
+  const SGSTAmt = (rate * SGSTPer / 100) * qty; 
+  const GSTAmt = CGSTAmt + SGSTAmt; 
+  const netAmt = totalAmt + GSTAmt;
+
+  this.chargeslist[index] = {
+    ...this.chargeslist[index],
+
+    SupplierId: contact?.supplierId,
+    SupplierName: contact?.supplierName, 
+    MRP: mrp,
+    Price: rate, 
+    TotalAmt: totalAmt, 
+    CGSTPer: CGSTPer,
+    CGSTAmount: CGSTAmt, 
+    SGSTPer: SGSTPer,
+    SGSTAmount: SGSTAmt, 
+    GSTPer: gstPer,
+    GSTAmount: GSTAmt, 
+    NetAmt: netAmt,
+    UMOId:contact?.uomid || 0,
+    UMOName:contact?.unitofMeasurementName || '',
+  };
+} 
+this.dsPRFinalitemlist.data = [...this.chargeslist]; 
+this.oncloseSupplierlist();
+this.selectedRow = '';
+}
+
+    oncloseSupplierlist() { 
+  if (this.dialogRefSupplier) {
+    this.dialogRefSupplier.close();
+  } 
+    }
+ 
+  getCellCalculation(contact) {
+debugger
+ if((contact?.Qty || 0) <= 0 || (contact?.Price || 0) <= 0){
+  this.toastr.warning('Values must be greater than 0', 'Warning !',
+     { toastClass: 'tostr-tost custom-toast-warning' });
+ 
+}
+
+   const qty = Number(contact?.Qty) || 0; 
+   const freeQty = Number(contact?.FreeQty) || 0;
+   const conversionFactor = Number(contact?.ConversionFactor) || 1;
+   const totalQty = ((qty + freeQty) * conversionFactor);
+   const rate = Number(contact?.Price) || 0;  
+   const discPer = Number(contact?.DiscPer) || 0; 
+   const cgstPer = Number(contact?.CGSTPer) || 0;
+   const sgstPer = Number(contact?.SGSTPer) || 0;
+   const igstPer = Number(contact?.IGSTPer) || 0;
+   const TotalAmt = qty * rate;
+   const DisAmount = (TotalAmt * discPer / 100);
+   const NetAmount = TotalAmt - DisAmount  
+   const CGSTAmt = (NetAmount * cgstPer / 100);
+   const SGSTAmt = (NetAmount * sgstPer / 100);
+   const IGSTAmt = (NetAmount * igstPer / 100);
+   const gstPer =  cgstPer + sgstPer + igstPer  
+   const gstAmount = CGSTAmt + SGSTAmt + IGSTAmt;
+   const GrossAmt = NetAmount + gstAmount  
+    
+    contact.TotalQty = totalQty,
+    contact.TotalAmt =TotalAmt,  
+    contact.CGSTAmount = CGSTAmt,  
+    contact.SGSTAmount = SGSTAmt, 
+    contact.IGSTAmount = IGSTAmt,
+    contact.GSTPer = gstPer,
+    contact.GSTAmount = gstAmount,
+    contact.NetAmt = GrossAmt 
+  
+  }
+
+
+
+  CreatePRToPoSaveForm() {
+    return this._FormBuilder.group({
+      purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purchaseNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purchaseDate: new Date(),
+      purchaseTime: new Date(),
+      storeId: [this.accountService.currentUserValue.user.storeId [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      supplierId: [this.vSupplierId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+     // totalAmount: [this.FinalTotalAmt[this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+     // discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      //taxAmount: [parseFloat(this.GSTAmount) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      freightAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      octriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      //grandTotal: [this.FinalNetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isclosed: [false],
+      isVerified: [false],
+      remarks: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      taxId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // paymentTermId: this.paymentterm || 0,
+      // modeofPayment: this.paymentmode || 0,
+      worrenty: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
+      roundVal: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      prefix: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      isVerifiedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+      // totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      // totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      // totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      transportChanges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      handlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      isCancelled: [false],
+      tPurchaseDetails: this._FormBuilder.array([])
+    });
+  }
+  // Purchase Save Details Form
+  createPurchasedetailForm(item: any = {}): FormGroup {
+    return this._FormBuilder.group({
+      purchaseId: [item.PurchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      uomid: [item.UOM || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      freeQty: [item.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      rate: [item.Rate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalAmount: [item.TotalAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discAmount: [item.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discPer: [item.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatAmount: [item.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatPer: [item.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      grandTotalAmount: [item.NetAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      mrp: [item.MRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      specification: [item.Specification || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      cgstper: [item.CGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cgstamt: [item.CGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      sgstper: [item.SGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      sgstamt: [item.SGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      igstper: [item.IGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      igstamt: [item.IGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalQty:[item.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      defRate: [item.DefRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vendDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
+    });
+  }
+
+
 
   getLastThreeItemInfo(ItemId) {
     var vdata = { 
@@ -443,77 +621,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
 
   //   });
    }
-  IgstPercentage: any = 0;
-  CgstPercentage: any = 0;
-  SgstPercentage: any = 0; 
-  getCellCalculation(contact) {
 
-    if (contact.DefRate > 0) {
-      if (contact.Rate > contact.DefRate) {
-        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-      }
-    }
-    if (contact.SGSTPer == "" || contact.SGSTPer == null || contact.SGSTPer == undefined) {
-      contact.SGSTAmt = 0;
-      //contact.SGSTPer = this.SgstPercentage 
-    }
-    if (contact.CGSTPer == "" || contact.CGSTPer == null || contact.CGSTPer == undefined) {
-      contact.CGSTAmt = 0;
-      //contact.CGSTPer = this.CgstPercentage 
-    }
-    if (contact.IGSTPer == "" || contact.IGSTPer == null || contact.IGSTPer == undefined) {
-      contact.IGSTAmt = 0;
-      //contact.IGSTPer = this.IgstPercentage 
-    }
-
-    if (contact.Qty > 0 && contact.Rate > 0) {
-
-      this.IgstPercentage = contact.IGSTPer;
-      this.CgstPercentage = contact.CGSTPer;
-      this.SgstPercentage = contact.SGSTPer;
-      if (this.userFormGroup.get('Status3').value.Name == 'GST After Disc') {
-        //total amt
-        contact.TotalAmount = (contact.Qty * contact.Rate);
-        //disc
-        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-        let TotalAmt: any = 0;
-        TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
-        //Gst
-        contact.VatPer = (parseFloat(this.CgstPercentage) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
-        contact.CGSTAmt = ((parseFloat(TotalAmt) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
-        contact.SGSTAmt = ((parseFloat(TotalAmt) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
-        contact.IGSTAmt = ((parseFloat(TotalAmt) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
-        contact.VatAmount = ((parseFloat(TotalAmt) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-        contact.GrandTotalAmount = ((TotalAmt) + (contact.VatAmount)).toFixed(2);
-      }
-      else if (this.userFormGroup.get('Status3').value.Name == 'GST Before Disc') {
-        //total amt
-        contact.TotalAmount = (contact.Qty * contact.Rate);
-        //Gst
-        contact.VatPer = (parseFloat(this.CgstPercentage) + parseFloat(this.SgstPercentage) + parseFloat(this.IgstPercentage)).toFixed(2);
-        contact.CGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(this.CgstPercentage)) / 100).toFixed(2);
-        contact.SGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(this.SgstPercentage)) / 100).toFixed(2);
-        contact.IGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(this.IgstPercentage)) / 100).toFixed(2);
-        contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-        let totalAmt: any = 0
-        totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatAmount)).toFixed(2);
-        //disc
-        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-        contact.GrandTotalAmount = (parseFloat(totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);
-      }
-
-    }
-    else {
-      contact.TotalAmount = 0;
-      contact.DiscAmount = 0;
-      contact.CGSTAmt = 0;
-      contact.SGSTAmt = 0;
-      contact.IGSTAmt = 0;
-      contact.VatAmount = 0;
-      contact.GrandTotalAmount = 0;
-    }
-
-  }
   
 
   calculateTotalAmt() {

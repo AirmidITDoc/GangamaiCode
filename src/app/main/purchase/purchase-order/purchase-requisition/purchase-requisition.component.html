@@ -77,7 +77,7 @@
                     </mat-header-row>
                 
                     <mat-row *matRowDef="let contact; columns: displayedColumnslastthree;" [@animate]="{value:'*',params:{y:'100%'}}"
-                        (click)="onAddItem(contact)"></mat-row>
+                        (click)="getselectedSupplierDet(contact)"></mat-row>
                     <mat-footer-row *matFooterRowDef="['NoData']"
                         [ngClass]="{'hide':dsLastThreeItemList.data.length > 0}"></mat-footer-row>
                 </mat-table>
@@ -339,7 +339,7 @@
                                             </mat-cell>
                                         </ng-container>
                                     
-                                        <ng-container matColumnDef="SupplierName">
+                                        <ng-container matColumnDef="SupplierName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
                                                 Supplier Name
                                             </mat-header-cell>
@@ -356,6 +356,26 @@
                                                 <span> {{contact.ItemName}}</span>
                                             </mat-cell>
                                         </ng-container>
+
+                                         <ng-container matColumnDef="UMOName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                               UMO
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
+                                                <span> {{contact.UMOName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                          <ng-container matColumnDef="ConversionFactor">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Packing
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="contact.ConversionFactor" type="text" OnlyNumber [id]="'ConversionFactor' + index"
+                                                        (input)="getCellCalculation(contact)" [min]="0" (keypress)="keyPressDigitsOnly($event)" />
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
                                     
                                         <ng-container matColumnDef="Qty">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Qty
@@ -365,6 +385,25 @@
                                                     <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber [id]="'Qty_' + index"
                                                         (input)="getCellCalculation(contact)" [min]="0" (keypress)="keyPressDigitsOnly($event)" />
                                                 </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                         <ng-container matColumnDef="FreeQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Free Qty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="contact.FreeQty" type="text" OnlyNumber [id]="'FreeQty' + index"
+                                                        (input)="getCellCalculation(contact)" [min]="0" (keypress)="keyPressDigitsOnly($event)" />
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                           <ng-container matColumnDef="TotalQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
+                                             Total Qty</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
+                                                {{contact.TotalQty}}
                                             </mat-cell>
                                         </ng-container>
                                     
@@ -397,10 +436,10 @@
                                         </ng-container>
                                     
                                         <ng-container matColumnDef="TotalAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                                 Total Amt
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-150">
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
                                                 <span> {{contact.TotalAmt | number:'1.2-2'}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -495,10 +534,10 @@
                                         </ng-container>
                                     
                                         <ng-container matColumnDef="GST">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                                 GST(%)</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                                {{contact.GST}}
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
+                                                {{contact.GSTPer}}
                                             </mat-cell>
                                         </ng-container>
                                     
@@ -511,19 +550,19 @@
                                         </ng-container>
                                     
                                     
-                                        <ng-container matColumnDef="NetAmt">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
+                                        <ng-container matColumnDef="NetAmt" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                                 Net Amt
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-150">
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
                                                 <span> {{contact.NetAmt | number:'1.2-2'}}</span>
                                             </mat-cell>
                                         </ng-container>
                                     
                                         <ng-container matColumnDef="Action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Action
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">Action
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-80">
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-60">
                                                 <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                                     <mat-icon>delete_outline</mat-icon>
                                                 </button>
@@ -543,9 +582,9 @@
                                         </ng-container>
                                     
                                     
-                                        <mat-header-row class="accent min-width-1800" *matHeaderRowDef="displayedColumnspo; sticky: true"></mat-header-row>
+                                        <mat-header-row class="accent min-width-1900" *matHeaderRowDef="displayedColumnspo; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumnspo; let i = index" tabindex="999"
-                                            class="contact min-width-1800" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
+                                            class="contact min-width-1900" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
