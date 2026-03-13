@@ -26,6 +26,9 @@ export class CanteenRequestComponent implements OnInit {
     regNo: any = ""
     fname = "%"
     lname = "%"
+    WardId="0"
+      autocompleteModewardName: string = "Room";
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -40,13 +43,13 @@ export class CanteenRequestComponent implements OnInit {
 
         { heading: "-", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150  },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
        
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "IPD NO", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "WardName | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "AddUserName", key: "addedUserName", sort: true, align: 'left', emptySign: 'NA' },
@@ -73,6 +76,7 @@ export class CanteenRequestComponent implements OnInit {
             enddate: [(new Date()).toISOString()],
             fName: "",
             lName: "",
+            wardId:''
         });
     }
 
@@ -86,9 +90,22 @@ export class CanteenRequestComponent implements OnInit {
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
-            { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
+            { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals },
+             { fieldName: "WardId", fieldValue: this.WardId, opType: OperatorComparer.Equals }
+
+             
         ]
     }
+
+        
+  selectChangeward(value) {
+    if (value.value !== 0)
+      this.WardId = value.value
+    else
+      this.WardId = "0"
+
+    this.onChangeFirst();
+  }
 
     Clearfilter(event) {
         console.log(event)
@@ -112,6 +129,8 @@ export class CanteenRequestComponent implements OnInit {
     }
 
     getfilterdata() {
+
+        debugger
         let fromDate1 = this.myFilterform.get("fromDate").value || "";
         let toDate1 = this.myFilterform.get("enddate").value || "";
         fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
@@ -126,7 +145,9 @@ export class CanteenRequestComponent implements OnInit {
                 { fieldName: "ToDate", fieldValue: toDate1, opType: OperatorComparer.Equals },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
-                { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
+                { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals },
+                 { fieldName: "WardId", fieldValue: this.WardId, opType: OperatorComparer.Equals }
+
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -215,6 +236,15 @@ export class CanteenRequestComponent implements OnInit {
             }
         });
     }
+
+    
+  getValidationMessages() {
+    return {
+    
+      WardName: [],
+         
+    }
+  }
 }
 
 

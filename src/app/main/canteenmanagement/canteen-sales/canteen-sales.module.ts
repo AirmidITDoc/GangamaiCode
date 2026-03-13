@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,12 +35,15 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { CanteenSalesComponent } from './canteen-sales.component';
- 
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: CanteenSalesComponent 
-  },
+    {
+        path: '**',
+        component: CanteenSalesComponent
+    },
 ];
 
 @NgModule({
@@ -85,7 +88,13 @@ const routes: Routes = [
         MatSelectModule,
         MatChipsModule,
         // NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule
+        MatTooltipModule,
+        MatSliderModule,
+        FormsModule,
+        MatSidenavModule,
+        MatCardModule,
+
+        MatButtonToggleModule
     ],
     providers: [
         DatePipe,

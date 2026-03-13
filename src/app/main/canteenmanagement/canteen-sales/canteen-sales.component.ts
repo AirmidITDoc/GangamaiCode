@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { AirmidCardViewComponent } from 'app/main/shared/componets/airmid-card-view/airmid-card-view.component';
 
 @Component({
   selector: 'app-canteen-sales',
@@ -24,6 +25,10 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 
 })
 export class CanteenSalesComponent implements OnInit {
+
+  IsWard: boolean = false
+
+
   // card?
   @HostBinding('style.display') display = 'flex';
   @HostBinding('style.flex') flex = '1 1 auto';
@@ -32,7 +37,7 @@ export class CanteenSalesComponent implements OnInit {
 
 
   // Add view mode and user data for card view
-  viewMode: 'table' | 'card' = 'table';
+  viewMode: 'table' | 'card' = 'card';
   userList: any[] = [];
 
   // Card view config and pagination
@@ -49,7 +54,9 @@ export class CanteenSalesComponent implements OnInit {
 
   // ward data
   @ViewChild('BillGrid', { static: false }) grid: AirmidTableComponent;
-
+  @ViewChild('WardGrid', { static: false }) wardgrid: AirmidTableComponent;
+  // @ViewChild('ItemGrid', { static: false }) grid1: AirmidTableComponent;
+  @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
   myFilterbillform: FormGroup;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -62,6 +69,7 @@ export class CanteenSalesComponent implements OnInit {
 
     { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals }
 
   ];
 
@@ -100,22 +108,61 @@ export class CanteenSalesComponent implements OnInit {
   }
 
   allcardFilters = [
-    { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.Equals  },
+    { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.Equals },
 
   ];
-  allcardcolumns = [{ heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+  allcardcolumns = [{ heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
   { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 }
 
   ]
 
   gridConfigcard: gridModel = {
-    apiUrl: "CanteenRequest/GetItemListforCanteen",
+    apiUrl: "CanteenRequest/CanteenItemList",
     columnsList: this.allcardcolumns,
     sortField: "ItemID",
     sortOrder: 1,
     filters: this.allcardFilters,
     row: 50
   }
+
+  allcolumns = [
+
+    // { heading: "-", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    // { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150  },
+    // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+
+    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+    // { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    // { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "AddUserName", key: "addedUserName", sort: true, align: 'left', emptySign: 'NA' },
+
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate  // Assign ng-template to the column
+    // }
+  ]
+
+
+  gridConfig1: gridModel = {
+    apiUrl: "CanteenRequest/CanteenRequestHeaderList",
+    columnsList: this.allcolumns,
+    sortField: "ReqId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+      { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals }
+
+    ]
+  }
+
 
   displayedColumns = [
     'Code',
@@ -167,8 +214,8 @@ export class CanteenSalesComponent implements OnInit {
   f_name = '%'
   l_name = '%'
   regNo = '0'
-  fromdate = '2025-01-01'// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  todate = '2025-12-01'//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromdate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  todate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -196,8 +243,8 @@ export class CanteenSalesComponent implements OnInit {
   }
 
   autocompleteModeCashcounter: string = "CashCounter";
-  RegId = 20
-  Opipid = 241330
+  RegId = 0
+  Opipid = 0
 
   createCanteenform(): FormGroup {
 
@@ -263,8 +310,12 @@ export class CanteenSalesComponent implements OnInit {
       this.canteendetailArray.push(this.tCanteenRequestDetails(item));
     });
 
+
+    this.CanteenForm.get("date").setValue(this.datePipe.transform(this.dateTimeObj, "yyyy-MM-dd"))
+    this.CanteenForm.get("time").setValue(this.dateTimeObj)
+
     this.CanteenForm.get("wardId").setValue(this.RoomId)
-    // this.CanteenForm.get("opIpId").setValue(this._CanteenmanagementService.userFormGroup.get('Code').value)
+    this.CanteenForm.get("opIpId").setValue(this._CanteenmanagementService.userFormGroup.get('Code').value)
     // this.CanteenForm.get("tCanteenRequestDetails.totalAmount").setValue(this._CanteenmanagementService.userFormGroup.get('TotalAmount').value)
 
     console.log(this.CanteenForm.value)
@@ -313,12 +364,12 @@ export class CanteenSalesComponent implements OnInit {
       console.log(data)
       this.dsItemTable1.sort = this.sort;
       this.dsItemTable1.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+
+    });
+
+    this.getLatestIemList(vdata)
   }
+
 
 
 
@@ -338,7 +389,30 @@ export class CanteenSalesComponent implements OnInit {
     // } else if (this.chargeslist && this.chargeslist.length == 0) {
     this.addChargList(row);
     // }
+
   }
+  @ViewChild(AirmidCardViewComponent) cardView: AirmidCardViewComponent;
+
+  getLatestIemList(Param) {
+    debugger
+    this.gridConfigcard = {
+      apiUrl: "CanteenRequest/CanteenItemList",
+      columnsList: this.allcardcolumns,
+      sortField: "ItemID",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "ItemName", fieldValue: Param + "%", opType: OperatorComparer.Equals }
+
+      ]
+    }
+    // this.grid1.gridConfig = this.gridConfigcard;
+    // this.grid1.bindGridData();
+
+      this.cardView.gridConfig = this.gridConfigcard;
+      this.cardView.bindGridData();
+    
+  }
+
 
   addChargList(row) {
     // 
@@ -449,7 +523,12 @@ export class CanteenSalesComponent implements OnInit {
         "fieldName": "L_Name",
         "fieldValue": this.l_name,
         "opType": "GreaterThanOrEqual"
-      }
+      },
+      {
+        "fieldName": "WardId",
+        "fieldValue": "0",
+        "opType": "Equals"
+      },
     );
 
     let data = {
@@ -466,22 +545,19 @@ export class CanteenSalesComponent implements OnInit {
       this.dsBillList.data = data.data as BillList[];
       console.log(data)
 
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    });
   }
+  ReqLength = 0
   //BillDetailList ReqId
   getBillDetList(Param) {
-
+    debugger
     let filters: any[] = [];
-
-
+    this.chargeslist = []
     filters.push(
 
       {
         "fieldName": "ReqId",
-        "fieldValue": String(Param.reqId),
+        "fieldValue": String(Param),
         "opType": "Equals"
       }
     );
@@ -496,9 +572,23 @@ export class CanteenSalesComponent implements OnInit {
       "columns": []
     };
     // console.log(vdata);
-    this._CanteenmanagementService.getBillDetList(data).subscribe(data => {
-      this.dsBillDetailList.data = data.data as BillDetailList[];
-      console.log(this.dsBillDetailList.data)
+    this._CanteenmanagementService.getBillDetailsList(data).subscribe(data => {
+      // this.dsBillDetailList.data = data.data as BillDetailList[];
+      debugger
+      data.data.forEach(element => {
+        this.chargeslist.push(
+          {
+            ItemID: element.itemID,
+            ItemName: element.itemName,
+            Price: element.unitMRP || 0,
+            Qty: element.qty,
+            Amount: element.unitMRP * element.qty
+          });
+      })
+      this.dsItemDetTable2.data = this.chargeslist;
+
+      console.log(this.dsItemDetTable2.data)
+      this.getTotalAmount()
 
     },
       error => {
@@ -517,19 +607,14 @@ export class CanteenSalesComponent implements OnInit {
     // console.log(vdata);
     this._CanteenmanagementService.getNursingBill(vdata).subscribe(data => {
       this.dsNursingBillList.data = data as NursingBillList[];
-      // console.log(this.dsNursingBillList.data)
       this.dsNursingBillList.sort = this.sort;
       this.dsNursingBillList.paginator = this.paginator;
       this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    });
   }
 
   RoomId = 0
   onChangeWard(e) {
-    // debugger
     this.RoomId = e.roomId
 
   }
@@ -560,7 +645,7 @@ export class CanteenSalesComponent implements OnInit {
 
   getfilterdataBill() {
     debugger
-    this.gridConfig = {
+    this.gridConfig1 = {
       apiUrl: "CanteenRequest/CanteenRequestHeaderList",
       columnsList: this.allbillcolumns,
       sortField: "ReqId",
@@ -574,7 +659,7 @@ export class CanteenSalesComponent implements OnInit {
 
       ]
     }
-    this.grid.gridConfig = this.gridConfig;
+    this.grid.gridConfig = this.gridConfig1;
     this.grid.bindGridData();
   }
 
@@ -625,6 +710,47 @@ export class CanteenSalesComponent implements OnInit {
     }
   }
   onEdit(element) { }
+
+  //
+  getfilterdata() {
+
+    debugger
+    let fromDate1 = this._CanteenmanagementService.userFormGroup.get("start").value || "";
+    let toDate1 = this._CanteenmanagementService.userFormGroup.get("end").value || "";
+    fromDate1 = fromDate1 ? this.datePipe.transform(fromDate1, "yyyy-MM-dd") : "";
+    toDate1 = toDate1 ? this.datePipe.transform(toDate1, "yyyy-MM-dd") : "";
+    this.gridConfig = {
+      apiUrl: "CanteenRequest/CanteenRequestHeaderList",
+      columnsList: this.allcolumns,
+      sortField: "ReqId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "FromDate", fieldValue: fromDate1, opType: OperatorComparer.Equals },
+        { fieldName: "ToDate", fieldValue: toDate1, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals }
+
+      ]
+    }
+    this.wardgrid.gridConfig = this.gridConfig;
+    this.wardgrid.bindGridData();
+  }
+
+  GetDetails1(data) {
+    console.log(data)
+    this.IsWard = true
+    this._CanteenmanagementService.userFormGroup.get('roomId').setValue(data.roomId)
+    this._CanteenmanagementService.userFormGroup.get('CustomerName').setValue(data.patientName)
+    this._CanteenmanagementService.userFormGroup.get('Code').setValue(data.oP_IP_ID)
+
+
+
+    this.getBillDetList(data.reqId)
+
+
+  }
 }
 export class ItemTable1List {
 

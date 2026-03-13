@@ -1,17 +1,22 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Canteen Request
-            </span>
+    <div class="top-header header accent p-16">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Canteen Request List
+                </span>
+            </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="NewRequest()">New Request
+            <button mat-raised-button (click)="NewRequest($event)">New Request
             </button>
-        </div>
-    </mat-toolbar>
 
+        </div>
+
+
+    </div>
 
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -36,7 +41,7 @@
                     <button mat-icon-button matTooltip="Print Canteen Request" (click)="onPrint(element)">
                         <mat-icon>print</mat-icon>
                     </button>
-<!-- *ngIf="element.isCancelled==false" -->
+                    <!-- *ngIf="element.isCancelled==false" -->
                     <button mat-icon-button (click)="Canteencancle(element)" matTooltip="Canteen Request Cancel">
                         <mat-icon title="Cancel Request">cancel</mat-icon>
                     </button>
@@ -84,6 +89,11 @@
                             </button>
                         </mat-form-field>
 
+
+                        <airmid-dropdown label="Ward Name" formControlName="wardId" fxFlex
+                            [formGroup]="myFilterform" [validations]="getValidationMessages().WardName"
+                            [mode]="autocompleteModewardName" (selectionChange)="selectChangeward($event)">
+                        </airmid-dropdown>
                     </form>
                 </ng-container>
             </airmid-table>
