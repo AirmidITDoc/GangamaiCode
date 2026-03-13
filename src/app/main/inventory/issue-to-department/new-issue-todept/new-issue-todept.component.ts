@@ -172,13 +172,14 @@ export class NewIssueTodeptComponent {
     else
       this.Status = 'Material Issued Only To Department'
 
-      if (this.IsIndentAgainstMaterialAccept)
-        this.Status = 'Indent Against Issed Material Directly Accepted By Department'
-      else
-        this.Status = 'Indent Against  Material Issued Only To Department'
+    if (this.IsIndentAgainstMaterialAccept)
+      this.Status = 'Indent Against Issed Material Directly Accepted By Department'
+    else
+      this.Status = 'Indent Against  Material Issued Only To Department'
 
-        
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+
+    // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+    this.ApiUrl = `ItemMaster/NewGetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
 
     this.NewIssueGroup = this._IssueToDep.getNewIssueForm();
 
@@ -310,7 +311,7 @@ export class NewIssueTodeptComponent {
       tCurrentStock: this._formBuilder.array([]),
       "materialAcceptIssueHeader": {
         "issueId": 0,
-        "acceptedBy":1,// [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        "acceptedBy": 1,// [this.accountService.currentUserValue.user.userId | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "isAccepted": true
       },
       materialAcceptIssueDetails: this._formBuilder.array([]),
@@ -453,7 +454,7 @@ export class NewIssueTodeptComponent {
   get AcceptstockIndentaginstacceptarray(): FormArray {
     return this.FinalIssueaginstAcceptForm.get('tCurrentStock') as FormArray;
   }
- 
+
   get AcceptdeptIndentaginstdeptArray(): FormArray {
     return this.FinalIssueaginstAcceptForm.get('tIssueToDepartmentDetails') as FormArray;
   }
@@ -490,7 +491,7 @@ export class NewIssueTodeptComponent {
     });
   }
   currentstockform(element: any = {}): FormGroup {
-debugger
+    debugger
     console.log(element)
     return this._formBuilder.group({
       itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -785,7 +786,7 @@ debugger
     this.showIndentFlag = true
   }
   AddIndentSelectedItem(contact) {
-debugger
+    debugger
     console.log(contact)
     this.vIndentId = contact.indentId;
     this.indentdetid = contact.indentDetailsId;
@@ -1273,7 +1274,8 @@ debugger
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vstoreId = obj.value
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+    this.ApiUrl = `ItemMaster/NewGetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+    // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
 
   }
   selectChangeStore1(obj: any) {

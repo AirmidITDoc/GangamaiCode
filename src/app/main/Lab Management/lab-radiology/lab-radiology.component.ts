@@ -53,6 +53,7 @@ export class LabRadiologyComponent {
   @ViewChild('actionsCompleted') actionsCompleted!: TemplateRef<any>;
   @ViewChild('actionsverify') actionsverify!: TemplateRef<any>;
   @ViewChild('outSourcePopOver') outSourcePopOver!: TemplateRef<any>;
+    @ViewChild('genderANDage') genderANDage!: TemplateRef<any>;
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -65,6 +66,7 @@ export class LabRadiologyComponent {
     this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.actionsCompleted;
     this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.actionsverify;
     this.gridConfig.columnsList.find(col => col.key === 'outSourceLabName')!.template = this.outSourcePopOver;
+    this.gridConfig.columnsList.find(col => col.key === 'genderName')!.template = this.genderANDage;
   }
 
   allColumns = [
@@ -84,7 +86,7 @@ export class LabRadiologyComponent {
     { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 160 },
     { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-    // { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
     { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
