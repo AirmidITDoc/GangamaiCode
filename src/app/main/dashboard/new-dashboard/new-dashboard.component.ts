@@ -63,19 +63,19 @@ OPDDrOverviewDoughnut: any;
   }
 
   onGo(): void {
-
     this.loadDashboardData()
   }
 
   loadDashboardData() {
     
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
-      this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
+    this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
 
-      this.getHomeDashboardAPI();
+    this.getHomeDashboardAPI();
     this.getDashOPUserWiseRevenue();
     this.getDashOPDepatmentWiseCount();
     this.alldashdata()
+    this.getDashRegistrationAgeWiseCount();
     // Re-initialize charts with new date range
     setTimeout(() => {
       if (document.getElementById('PatientOverviewDoughnut')) {
@@ -153,7 +153,9 @@ OPDDrOverviewDoughnut: any;
   getHomeDashboardAPI() {
     const payload = {
       searchFields: [
-        { fieldName: 'UnitId', fieldValue: '0', opType: 'Equals' }
+        { "fieldName": 'UnitId', "fieldValue": '0', "opType": 'Equals' },
+        { "fieldName": "FromDate", "fieldValue": this.fromDate,"opType": "Equals"},
+        { "fieldName": "ToDate","fieldValue": this.toDate,"opType": "Equals" }
       ],
       mode: 'HomeDashboardAPI'
     };
