@@ -12,11 +12,10 @@ export class LabCancellationService {
     public _formBuilder: UntypedFormBuilder,
     public _httpClient: ApiCaller,
     private accountService: AuthenticationService,
-  ) {}
+  ) { }
 
   createUserFormGroup() {
     return this._formBuilder.group({
-
       FirstName: [''],
       LastName: [''],
       fromDate: [(new Date()).toISOString()],
@@ -29,7 +28,22 @@ export class LabCancellationService {
     });
   }
 
-  public LabCancelBill(param) {    
-    return this._httpClient.PutData("BillCancellation/LabBillCancel", param) 
+  myFilterrefundbrowseform(): FormGroup {
+    return this._formBuilder.group({
+
+      FirstName: [''],
+      LastName: [''],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      PBillNo: '',
+      RegNo: '',
+      RefundNo: '',
+      CompanyId: 0,
+      UnitId: [this.accountService.currentUserValue.user.unitId]
+    });
+  }
+
+  public LabCancelBill(param) {
+    return this._httpClient.PutData("BillCancellation/LabBillCancel", param)
   }
 }

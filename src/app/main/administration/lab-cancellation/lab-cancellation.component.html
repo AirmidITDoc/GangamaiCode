@@ -131,7 +131,7 @@
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
 
-                <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplateIPRefundBill let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -142,47 +142,70 @@
                     </ng-template>
                     <airmid-table [gridConfig]="gridConfig2" class="content" #labRefund>
                         <ng-container filters>
-                            <form [formGroup]="_CancellationService.UserFormGroup" fxLayout="column" class="resize-form-fields">
+                            <form [formGroup]="myFilterrefundform" class="resize-form-fields">
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
+                                    (selectionChange)="ListViewUnit3($event)"
+                                    [(ngModel)]="gridConfig2.filters[5].fieldValue" [formGroup]="myFilterrefundform"
+                                    [mode]="autocompleteModeunit"></airmid-dropdown>
 
-                                <airmid-datepicker [formGroup]="_CancellationService.UserFormGroup"
-                                    [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                <airmid-datepicker [formGroup]="myFilterrefundform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig2.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig2.filters[3].fieldValue">
-                                </airmid-datepicker>
+                                    [(toValue)]="gridConfig2.filters[3].fieldValue"></airmid-datepicker>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>UHID No</mat-label>
-                                    <input matInput placeholder="Search UHID No" autocomplete="off"
-                                        (input)="onChangeIPRefund()" formControlName="RegNo" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterIPRefund('RegNo')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
-                                        (input)="onChangeIPRefund()" formControlName="FirstName" />
+                                        [formGroup]="myFilterrefundform" formControlName="FirstName"
+                                        (input)="onChangeOPRefund()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterIPRefund('FirstName')">
+                                        (click)=" ClearfilterOPRefund('FirstName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex>
+                                <mat-form-field appearance="outline">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
-                                        (input)="onChangeIPRefund()" formControlName="LastName" />
+                                        [formGroup]="myFilterrefundform" formControlName="LastName"
+                                        (input)="onChangeOPRefund()" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterIPRefund('LastName')">
+                                        (click)=" ClearfilterOPRefund('LastName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="myFilterrefundform" formControlName="RegNo"
+                                        (keypress)="keyPressAlphanumeric($event)" (input)="onChangeOPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPRefund('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>RefundNo</mat-label>
+                                    <input matInput placeholder="Search RefundNo" autocomplete="off"
+                                        [formGroup]="myFilterrefundform" formControlName="RefundNo"
+                                        (keypress)="keyPressAlphanumeric($event)" (input)="onChangeOPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPRefund('RefundNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <airmid-dropdown label="Company Name" formControlName="CompanyId"
+                                    [formGroup]="myFilterrefundform" [(ngModel)]="gridConfig2.filters[7].fieldValue"
+                                    (selectionChange)="ListView1($event)"
+                                    [mode]="autocompleteModecompany1"></airmid-dropdown>
+
                             </form>
                         </ng-container>
                     </airmid-table>
-                </div> -->
+                </div>
             </div>
 
         </mat-tab>

@@ -668,6 +668,7 @@ export class NewLabPatientRegComponent {
       this.myForm.get('companyId').clearValidators();
       this.myForm.get('companyId').updateValueAndValidity();
       this.patienttype = 1;
+      this.myForm.get('refDocId').enable()
       this.OPFooterForm.get('paymentType').setValue('CashPay')
       this.myForm.get('companyId').setValue(0);
       this.myForm.get('tariffId').setValue(1);
