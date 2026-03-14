@@ -1,6 +1,5 @@
-
 <!-- <div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll" fxLayout="column"> -->
-    <div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight>
     <!-- HEADER -->
     <div class="top-header accent">
         <div class="top-header-info">
@@ -32,7 +31,7 @@
 
     <div class="center" fusePerfectScrollbar>
 
-        <div class="center p-5">
+        <!-- <div class="center p-5">
             <div class="dashboard-container">
                 <div class="metrics-grid">
                     <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards"
@@ -49,9 +48,32 @@
                     </mat-card>
                 </div>
             </div>
+        </div> -->
+
+        <!--Summary  -->
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="100%">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="chart-header">
+                            <h3 class="chart-title">Summary</h3>
+                        </div>
+                        <div class="sample-stats-cards" fxLayout="row wrap" fxLayoutGap="8px" style="margin-top: 16px;">
+                            <div fxFlex="140px" *ngFor="let stat of metrics; let i = index">
+                                <mat-card class="sample-stat-card" [ngClass]="'sample-stat-card-' + (i + 1)">
+                                    <mat-card-content>
+                                        <div class="sample-stat-name">{{stat.label}}</div>
+                                        <div class="sample-stat-count">{{stat.value}}</div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
         </div>
         <!-- TABS -->
-           <mat-tab-group class="dashboard-tabs" [(selectedIndex)]="selectedTabIndex"
+        <mat-tab-group class="dashboard-tabs" [(selectedIndex)]="selectedTabIndex"
             (selectedTabChange)="onTabChanged($event)">
 
             <!-- PATHOLOGY TAB -->
@@ -155,7 +177,7 @@
                     </div>
                 </div>
 
-             
+
                 <!-- Charts Section -->
                 <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
                     <!-- Test Volume by Department Bar Chart -->
@@ -209,7 +231,7 @@
 
                 <!-- Recent Reports Table -->
                 <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
-                     <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
                             <mat-card-content>
                                 <div class="table-title">Recent Pathology Reports</div>
@@ -217,12 +239,21 @@
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyReports"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
+                                    <ng-container matColumnDef="Date">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            {{report.pathDate | date:'dd/MM/yyyy - h:mma' }}
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="PatientName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
                                             Patient Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.printTestName}}
+                                            {{report.patientName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -271,14 +302,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Date">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Date
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.pathDate | date:'dd/MM/yyyy - h:mma' }}
-                                        </mat-cell>
-                                    </ng-container>
+
 
                                     <ng-container matColumnDef="loading">
                                         <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -311,9 +335,9 @@
                     <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card>
                             <!-- <mat-card-content> -->
-                                <div class="table-title">Top Ordered Tests (This Week)</div>
-                                <hr>
-                                 <div style="height: 230px;overflow-y: auto;">
+                            <div class="table-title">Top Ordered Tests (This Week)</div>
+                            <hr>
+                            <div style="height: 230px;overflow-y: auto;">
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyTopTests"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
@@ -355,16 +379,16 @@
                                         [ngClass]="{'hide':!(dsPathologyTopTests!=null && dsPathologyTopTests.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="totals-label"
+                                    style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 10px;">
+                                    Total
+                                    Test
+                                    <span class="totals-num" style="padding-left: 280px;">{{
+                                        TotalTest}}</span>
                                 </div>
-                                <div class="panel-footer">
-                                    <div class="totals-label"
-                                        style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 10px;">
-                                        Total
-                                        Test
-                                        <span class="totals-num" style="padding-left: 280px;">{{
-                                            TotalTest}}</span>
-                                    </div>
-                                </div>
+                            </div>
                             <!-- </mat-card-content> -->
                         </mat-card>
                     </div>
@@ -489,7 +513,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Total Tests Today |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.completedCount??0}}
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{RadiologyData?.countSummary?.completedCount??0}}
                                         </div>
                                     </div>
                                 </div>
@@ -510,7 +535,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Completed Reports |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.completedCount??0}}
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{RadiologyData?.countSummary?.completedCount??0}}
                                         </div>
                                     </div>
                                 </div>
@@ -531,7 +557,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Pending Reports |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.pendingCount??0}}</div>
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{RadiologyData?.countSummary?.pendingCount??0}}</div>
                                     </div>
                                 </div>
                                 <div class="card-chart-section">
@@ -551,7 +578,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Cancelled/Rejected |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{RadiologyData?.countSummary?.pendingCount??0}}</div>
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{RadiologyData?.countSummary?.pendingCount??0}}</div>
                                     </div>
                                 </div>
                                 <div class="card-chart-section">
@@ -564,7 +592,7 @@
 
                 <!-- Charts Section -->
                 <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-                   
+
                     <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card class="chart-card">
                             <mat-card-content>
@@ -579,7 +607,7 @@
                         </mat-card>
                     </div>
 
-                   
+
                     <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-card class="chart-card">
                             <mat-card-content>
@@ -623,7 +651,7 @@
                                 <mat-table matSort class="h-200 table-designed" [dataSource]="dsRadiologyRecentReports"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    
+
                                     <ng-container matColumnDef="Date">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
                                             Date
@@ -819,18 +847,18 @@
                                         [ngClass]="{'hide':!(dsRadiologistPerformance!=null && dsRadiologistPerformance.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
-                                 <div class="totals">
-                                <div class="totals-row">
-                                    <div class="totals-label"
-                                        style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 20px;">
-                                        Total
-                                        WorkLoad
-                                        <span class="totals-num" style="padding-left: 290px;">{{
-                                            Radtotalworkload}}</span>
+                                <div class="totals">
+                                    <div class="totals-row">
+                                        <div class="totals-label"
+                                            style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 20px;">
+                                            Total
+                                            WorkLoad
+                                            <span class="totals-num" style="padding-left: 290px;">{{
+                                                Radtotalworkload}}</span>
+                                        </div>
                                     </div>
-                                </div>
 
-                            </div>
+                                </div>
                             </mat-card-content>
                         </mat-card>
                     </div>
@@ -882,7 +910,3 @@
     </div>
     <!-- </div> -->
 </div>
-
-
-
-
