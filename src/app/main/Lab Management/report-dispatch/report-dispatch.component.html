@@ -52,25 +52,31 @@
               <div fxFlex.gt-xs="40" fxFlex="100" class="table-left">
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <div fxLayout="column" fxFlex>
-                    <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
+                    <div fxLayout="row wrap" fxLayoutGap="4px" class="p-4">
 
-                      <div fxFlex="48%" fxFlex.sm="100%">
+                      <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Branch" formControlName="unitId" [formGroup]="myReportform"
                           [validations]="getValidationMessages().UnitId" [mode]="autocompleteModehospital"
                           (selectionChange)="getSelectedObjunit($event)">
                         </airmid-dropdown>
                       </div>
 
-                      <div fxFlex="48%" fxFlex.sm="100%">
+                      <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-dropdown label="Mode" formControlName="dispatchModeId" [formGroup]="myReportform"
                           [validations]="getValidationMessages().Mode" [mode]="autocompleteModedispatch"
                           (selectionChange)="getSelectedObjMode($event)">
                         </airmid-dropdown>
                       </div>
                     </div>
-                    <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
+                    <div fxLayout="row wrap" fxLayoutGap="4px" class="p-4">
 
-                      <div fxFlex="96%" fxFlex.xs="100" fxFlex.sm="100%">
+                      <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId" [formGroup]="myReportform"
+                          TextField="doctorName" ValueField="doctorId" (selectionChange)="onChangeRefdoc($event)"
+                          ApiUrl="Doctor/RefdoctorComboList?keywoard="></airmid-dropdown>
+                      </div>
+
+                      <div fxFlex="49%" fxFlex.xs="100" fxFlex.sm="33%">
                         <airmid-textbox label="Remark" formControlName="comments" [formGroup]="myReportform"
                           [validations]="getValidationMessages().Remark" [maxLength]="500">
                         </airmid-textbox>
@@ -136,7 +142,7 @@
                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                       Actions
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let element">
+                    <mat-cell *matCellDef="let element" >
                       <button mat-icon-button matTooltip="Print">
                         <mat-icon>print</mat-icon>
                       </button>
@@ -156,7 +162,7 @@
                         (mouseenter)="openWhatsappDetailsPopover($event, element)"
                         (mouseleave)="closeWhatsappDetailsPopover()"
                         style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                        <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                        <img src="assets/images/logos/WhatsApp.png" style="margin-bottom: 6px;">
                       </button>
                     </mat-cell>
                   </ng-container>

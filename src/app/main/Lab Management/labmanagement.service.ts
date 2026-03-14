@@ -52,5 +52,8 @@ export class LabmanagementService {
   public gettestlist(employee) {
     return this._httpClient.PostData("PathDispatchReportHistory/dispatchTestList", employee)
   }
+   public getModeType(type) {
+    return this._httpClient.GetData("LabPatientRegistration/GetMConstant?ConstantType=" + type);
+  }
 }
 

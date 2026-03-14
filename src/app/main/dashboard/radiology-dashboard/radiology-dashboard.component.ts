@@ -106,11 +106,11 @@ export class RadiologyDashboardComponent implements OnInit {
 
 
     // Pathology Table Column Definitions
-    pathologyReportsColumns: string[] = ['PatientName', 'TestName', 'Status', 'Pathologist', 'Date'];
+    pathologyReportsColumns: string[] = ['Date','PatientName', 'TestName', 'Pathologist','Status' ];
     pathologyTopTestsColumns: string[] = ['TestName', 'Count'];
     pathologistWorkloadColumns: string[] = ['PathologistName', 'TestsReported'];
     // Radiology Table Column Definitions
-    recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Status', 'Radiologist'];
+    recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Radiologist','Status'];
     topTestsColumns: string[] = ['TestName', 'Count'];
     radiologistPerformanceColumns: string[] = ['RadiologistName', 'ReportsCompleted'];
     // Pathology Table Data Sources

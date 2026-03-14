@@ -658,6 +658,9 @@ export class NewLabPatientRegComponent {
       this.myForm.get('companyId').enable()
       this.patienttype = 2;
       this.OPFooterForm.get('paymentType').setValue('CreditPay')
+      this.myForm.get('refDocId').disable()
+      this.myForm.get('refDocId').clearValidators();
+      this.myForm.get('refDocId').updateValueAndValidity();
 
     } else if (value.text == "Self") {
       // this.isCompanySelected = false;      
@@ -665,6 +668,7 @@ export class NewLabPatientRegComponent {
       this.myForm.get('companyId').clearValidators();
       this.myForm.get('companyId').updateValueAndValidity();
       this.patienttype = 1;
+      this.myForm.get('refDocId').enable()
       this.OPFooterForm.get('paymentType').setValue('CashPay')
       this.myForm.get('companyId').setValue(0);
       this.myForm.get('tariffId').setValue(1);
