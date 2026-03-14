@@ -37,13 +37,13 @@
                 <div class="metrics-grid">
                     <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards"
                         [ngClass]="'theme-' + m.color">
-                        <mat-card-content class="metric-content" style="border: solid 1px;color: brown;">
-                            <div class="metric-icon">
+                        <mat-card-content class="metric-content">
+                            <!-- <div class="metric-icon">
                                 <mat-icon>{{ getMatIcon(m.icon) }}</mat-icon>
-                            </div>
+                            </div> -->
                             <div class="metric-text">
                                 <div class="metric-label">{{ m.label }}</div>
-                                <div class="metric-value">{{ m.value }}</div>
+                                <div class="metric-value"> <mat-icon>{{ getMatIcon(m.icon) }}</mat-icon> {{ m.value }}</div>
                             </div>
                         </mat-card-content>
                     </mat-card>

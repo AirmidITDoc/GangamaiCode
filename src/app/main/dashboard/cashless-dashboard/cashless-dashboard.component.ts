@@ -10,7 +10,9 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 @Component({
   selector: 'app-cashless-dashboard',
   templateUrl: './cashless-dashboard.component.html',
-  styleUrls: ['./cashless-dashboard.component.scss']
+  styleUrls: ['./cashless-dashboard.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class CashlessDashboardComponent implements OnInit {
   myFilterform: UntypedFormGroup;
@@ -18,10 +20,12 @@ export class CashlessDashboardComponent implements OnInit {
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-   cashlessallData:any
-  public CompanyRevenuChart: any;
+  cashlessallData: any
+  public CompanycountChart: any;
+  public CompanydailyTrendChart: any
   public CompanyrevenuStatusPieChart: any;
 
+  compReportsColumns: string[] = ['companyName', 'cashlessPatientCount', 'billAmount', 'discAmount', 'compDiscAmount', 'netBillAmount'];
 
 
   constructor(
@@ -32,12 +36,13 @@ export class CashlessDashboardComponent implements OnInit {
 
     // this.initializeDateRange();
   }
+
+
   metrics = [
-    { label: 'TotalCashless', value: 0, color: 'lavender', icon: 'assignment' },
-    // { label: 'Completed', value: 0, color: 'green', icon: 'check_circle' },
-    { label: 'Pending', value: 0, color: 'mint', icon: 'pending' },
-    { label: 'Approval', value: 0, color: 'rose', icon: 'collected' },
-    { label: 'Rejected', value: 0, color: 'sky', icon: 'notcollected' },
+    { label: 'Total OP Count', value: 0, color: 'lavender', icon: 'assignment' },
+    { label: 'Total IP Count', value: 0, color: 'mint', icon: 'pending' },
+    // { label: 'Approval', value: 0, color: 'rose', icon: 'collected' },
+    // { label: 'Rejected', value: 0, color: 'sky', icon: 'notcollected' },
     // { label: 'Verified', value: 0, color: 'green', icon: 'verified' },
     // { label: 'Not Verified', value: 0, color: 'peach', icon: 'unpublished' },
     // { label: 'Dispatched', value: 0, color: 'peach', icon: 'local_shipping' },
@@ -64,9 +69,11 @@ export class CashlessDashboardComponent implements OnInit {
       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020'
 
     this.getCashlessdata()
+    // this.getCompanydailyTrendChart()
+    // this.getCompnayRevenuChart()
   }
- 
 
+  dsCompsummaryReports = new MatTableDataSource<Compsummary>();
   getCashlessdata() {
 
 
@@ -75,65 +82,113 @@ export class CashlessDashboardComponent implements OnInit {
       console.log('Cashless Reports:', res);
 
       if (this.cashlessallData) {
-        // this.dsPathologyReports.data = res.recentPathologyReports;
-        // this.dsPathologyTopTests.data = res.mostOrderedTests;
-        // this.trendData = this.cashlessallData.mostOrderedTests
-        // this.dsPathologistWorkload.data = res.pathologyWorkloads
+        this.dsCompsummaryReports.data = res.companyBillSummaries;
+        //  this.dsCompsummaryReports.data = res.companyBillSummaries;
+        debugger
+        this.metrics = [
+          { label: 'Total OP Count', value: this.cashlessallData?.cashlessPatientSummary[0].cashlessPatientCount || 0, color: 'cream', icon: 'assignment' },
+          { label: 'Total IP Count', value: this.cashlessallData?.cashlessPatientSummary[1].cashlessPatientCount || 0, color: 'cream', icon: 'check_circle' },
 
+        ];
 
-        // if (this.trendData) {
-
-        //     this.modalityData = [
-        //         ...this.modalityData,
-        //         ...this.trendData.map(item => ({
-
-        //             modality: item.testName,
-        //             count: item.count
-        //         }))
-        //     ];
-        // }
-
-        // console.log(this.modalityData)
-        // if (this.modalityData)
-        //     this.modalityChart = this.getModalityBarChart();
-
-        // if (this.cashlessallData) {
-        //     this.statusData[0].count = this.cashlessallData.countSummary.completedCount
-        //     this.statusData[1].count = this.cashlessallData.countSummary.pendingCount
-        //     this.statusData[2].count = this.cashlessallData.countSummary.rejectedCount
-        // }
-        // if (this.statusData)
-        //     this.statusPieChart = this.getStatusPieChart();
-
-        // if (this.cashlessallData.pathologyValumes.length > 0)
-
-        this.CompanyRevenuChart = this.getCompnayRevenuChart();
-        // this.pathologyStatusPieChart = this.getPathologyStatusPieChart()
-        // if (this.cashlessallData.dailyTestCounts.length > 0)
-        //     this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart()
+        if (this.cashlessallData.companyPatientCounts)
+          this.CompanycountChart = this.getCompnayRevenuChart();
+        if (this.cashlessallData.dailyTrend.length > 0)
+          this.CompanydailyTrendChart = this.getCompanydailyTrendChart()
       }
     });
 
   }
 
 
+  getCompanydailyTrendChart() {
+
+    if (this.CompanydailyTrendChart) {
+      this.CompanydailyTrendChart.destroy();
+    }
+
+    return new Chart('CompanydailyTrendChart', {
+
+      type: 'line',
+      data: {
+        labels: this.cashlessallData.dailyTrend.map(d => d.date),
+        datasets: [
+          {
+            label: 'Daily Count',
+            data: this.cashlessallData.dailyTrend.map(d => d.cashlessPatientCount),
+            backgroundColor: 'rgba(255, 107, 157, 0.2)',
+            borderColor: '#3d4ff7',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true,
+            pointRadius: 5,
+            pointBackgroundColor: '#ff6b9d',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointHoverRadius: 7
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              font: { size: 12 }
+            }
+          },
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: function (context) {
+                return 'Tests: ' + context.parsed.y;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: { size: 11 }
+            },
+            grid: {
+              color: 'rgba(0, 0, 0, 0.05)'
+            }
+          },
+          x: {
+            ticks: {
+              font: { size: 11 }
+            },
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  }
+
+
   // Pathology Department Bar Chart
   getCompnayRevenuChart() {
 
-    if (this.CompanyRevenuChart) {
-      this.CompanyRevenuChart.destroy();
+    if (this.CompanycountChart) {
+      this.CompanycountChart.destroy();
     }
 
-    return new Chart('CompanyRevenuChart', {
+    return new Chart('CompanycountChart', {
       // this.pathologyDepartmentChart = new Chart('pathologyDepartmentChart', {
 
       type: 'bar',
       data: {
-        labels: this.cashlessallData.pathologyValumes.map(d => d.categoryName),
+        labels: this.cashlessallData.companyPatientCounts.map(d => d.companyName),
         datasets: [
           {
             label: 'Number of Tests',
-            data: this.cashlessallData.pathologyValumes.map(d => d.categoryCount),
+            data: this.cashlessallData.companyPatientCounts.map(d => d.cashlessPatientCount),
             backgroundColor: ['#179ee2', '#ff6b9d', '#c364c7', '#6bcf7f'],
             borderRadius: 6
           }
@@ -162,28 +217,46 @@ export class CashlessDashboardComponent implements OnInit {
   }
 
   getMatIcon(icon: string): string {
-        switch (icon) {
-            case 'assignment':
-                return 'assignment';
-            case 'check_circle':
-                return 'check_circle';
-            case 'pending':
-                return 'hourglass_empty';
-            case 'collected':
-                return 'local_shipping';
-            case 'notcollected':
-                return 'work_off';
-            case 'verified':
-                return 'verified_user';
-            case 'unpublished':
-                return 'error_outline';
-            case 'local_shipping':
-                return 'local_shipping';
-            case 'pending_actions':
-                return 'backspace';
-            default:
-                return 'dashboard';
-        }
+    switch (icon) {
+      case 'assignment':
+        return 'assignment';
+      case 'check_circle':
+        return 'check_circle';
+      case 'pending':
+        return 'hourglass_empty';
+      case 'collected':
+        return 'local_shipping';
+      case 'notcollected':
+        return 'work_off';
+      case 'verified':
+        return 'verified_user';
+      case 'unpublished':
+        return 'error_outline';
+      case 'local_shipping':
+        return 'local_shipping';
+      case 'pending_actions':
+        return 'backspace';
+      default:
+        return 'dashboard';
     }
+  }
 
+}
+
+
+export class Compsummary {
+  companyName: any;
+  cashlessPatientCount: any;
+  billAmount: any;
+  discAmount: any;
+  compDiscAmount: any;
+  netBillAmount: any;
+  constructor(Compsummary) {
+    this.companyName = Compsummary.companyName || '';
+    this.cashlessPatientCount = Compsummary.cashlessPatientCount || '0';
+    this.billAmount = Compsummary.billAmount || '0';
+    this.discAmount = Compsummary.discAmount || '0';
+    this.compDiscAmount = Compsummary.compDiscAmount || '0';
+    this.netBillAmount = Compsummary.netBillAmount || '0';
+  }
 }

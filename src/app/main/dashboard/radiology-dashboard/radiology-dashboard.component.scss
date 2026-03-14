@@ -794,10 +794,10 @@
   }
 
   .metric-card {
-    flex: 1 1 155px;
+    flex: 1 1 150px;
     /* fluid card width; 3-5 per row depending on space */
-    min-width: 155px;
-    max-width: 155px;
+    min-width: 150px;
+    max-width: 150px;
     height: fit-content;
     border-radius: 14px;
     overflow: visible;
@@ -1165,7 +1165,7 @@
   }
 
   /* Tweak grid gaps on very small screens */
-  @media (max-width: 400px) {
+  @media (max-width: 300px) {
     .metrics-grid {
       gap: 8px;
       padding: 8px;

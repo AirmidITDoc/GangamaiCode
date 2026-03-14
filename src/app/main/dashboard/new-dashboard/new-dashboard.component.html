@@ -51,12 +51,12 @@
               <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards"
                 [ngClass]="'theme-' + m.color">
                 <mat-card-content class="metric-content">
-                  <div class="metric-icon">
+                  <!-- <div class="metric-icon">
                     <mat-icon>{{ getMatIcon(m.icon) }}</mat-icon>
-                  </div>
+                  </div> -->
                   <div class="metric-text">
                     <div class="metric-label">{{ m.label }}</div>
-                    <div class="metric-value">{{ m.value }}</div>
+                    <div class="metric-value"><mat-icon>{{ getMatIcon(m.icon) }}</mat-icon>  {{ m.value }}</div>
                   </div>
                 </mat-card-content>
               </mat-card>
@@ -106,6 +106,23 @@
             </mat-card-content>
           </mat-card> -->
 
+        
+          
+          <!-- <div class="metrics-grid finance-grid">
+            <mat-card *ngFor="let f of financeSummary" class="metric-card mat-elevation-z2 count-cards"
+              [ngClass]="'theme-' + f.color">
+              <mat-card-content class="metric-content">
+                <div class="metric-icon">
+                  <mat-icon>{{ getMatIcon(f.icon) }}</mat-icon>
+                </div>
+                <div class="metric-text">
+                  <div class="metric-label">{{ f.label }}</div>
+                  <div class="metric-value">{{ f.value | number }}</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div> -->
+
           <mat-card class="chart-card mat-elevation-z2">
             <mat-card-header>
               <mat-card-title>Departments by Visits</mat-card-title>
@@ -125,7 +142,7 @@
       <div class="extra-sections">
         <!-- Finance summary cards -->
         <div class="metrics-grid finance-grid">
-          <mat-card *ngFor="let f of financeSummary" class="metric-card mat-elevation-z2 count-cards"
+          <mat-card *ngFor="let f of financeSummary" class="metric-card1 mat-elevation-z2 count-cards"
             [ngClass]="'theme-' + f.color">
             <mat-card-content class="metric-content">
               <div class="metric-icon">
@@ -133,7 +150,7 @@
               </div>
               <div class="metric-text">
                 <div class="metric-label">{{ f.label }}</div>
-                <div class="metric-value">{{ f.value | number }}</div>
+                <div class="metric-value1">{{ f.value }}</div>
               </div>
             </mat-card-content>
           </mat-card>
@@ -168,21 +185,21 @@
         </div>
 
 
-  <div class="charts-row">
-        <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-          <mat-card class="chart-card">
-            <mat-card-content>
-              <div class="chart-header">
-                <h3 class="chart-title">Dr. Wise Count</h3>
+        <div class="charts-row">
+          <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-card class="chart-card">
+              <mat-card-content>
+                <div class="chart-header">
+                  <h3 class="chart-title">Doctor Wise Count Summary </h3>
 
-              </div>
-              <div style="height: 350px;">
-                <canvas id="DrcountChart"></canvas>
-              </div>
-            </mat-card-content>
-          </mat-card>
+                </div>
+                <div style="height: 350px;">
+                  <canvas id="DrcountChart"></canvas>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
-</div>
 
         <!-- Recent activity table -->
         <!-- <div class="tables-row">
