@@ -25,7 +25,7 @@ export class WhatsappDetPopUpOverComponent {
   ) { }
 
   ngOnInit(): void {
-    debugger
+    // debugger
     if (this.patientData && this.patientData.billNo || this.patientData.pBillNo) {
        this.patientDetails = this.patientData;
        console.log(this.patientDetails)
