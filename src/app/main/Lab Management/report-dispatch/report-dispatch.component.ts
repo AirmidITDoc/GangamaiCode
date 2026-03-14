@@ -44,6 +44,7 @@ export class ReportDispatchComponent {
   DueAmt = 0
   ModeId = "0"
   screenFromString = 'ExternalLab-form';
+  modeTypeList: any = [];
 
   @ViewChild('ReportGrid', { static: false }) repogrid: AirmidTableComponent;
 
@@ -80,6 +81,7 @@ export class ReportDispatchComponent {
         Validators.required]],
       unitId: [this._accountService.currentUserValue.user.unitId, [Validators.required]],
       dispatchModeId: [this.ModeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      refDocId: [0],
       comments: "",
       dispatchBy: this._accountService.currentUserValue.userId,
       dispatchOn: ['', Validators.required],
@@ -108,23 +110,16 @@ export class ReportDispatchComponent {
   allReportcolumns = [
     { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 8 },
     { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-    // { heading: "Modified By", key: "modifieduser", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "Modified Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' }
     // {
     //   heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
     //     {
     //       action: gridActions.edit, callback: (data: any) => {
     //         this.OnEdit(data)
-    //       }
-    //     }, {
-    //       action: gridActions.delete, callback: (data: any) => {
-    //         this._LabmanagementService.deactivateTheStatus(data.id).subscribe((response: any) => {
-    //           // this.getfilterdata();
-    //         });
     //       }
     //     }]
     // }
@@ -196,10 +191,16 @@ export class ReportDispatchComponent {
     this.dateTimeObj = dateTimeObj;
   }
 
+  modeId = 0
   getSelectedObjMode(obj) {
-    console.log("Mode data:", obj)
-
+    this.modeId = obj.Value
   }
+
+  vRefDocId = 0
+  onChangeRefdoc(value) {
+    this.vRefDocId = value.doctorId
+  }
+
   OnEdit(row: any) {
     this.myReportform.patchValue(row);
   }
@@ -218,33 +219,25 @@ export class ReportDispatchComponent {
   SelectedList: any = [];
   dataSource = new MatTableDataSource<SampleList>();
   isCheckboxDisabled(row: any): boolean {
-  return row?.name?.trim()?.length > 0;
-}
+    return row?.name?.trim()?.length > 0;
+  }
   areAllRowsDisabled(): boolean {
     return this.dataSource?.data?.length
       ? this.dataSource.data.every(row => this.isCheckboxDisabled(row))
       : true;
   }
-  // masterToggle() {
-  //   if (this.isAllSelected()) {
-  //     this.selection.clear();
-  //   } else {
-  //     this.dataSource.data
-  //       .filter(row => !row?.name || row.name.trim() === '')   // check name empty
-  //       .forEach(row => this.selection.select(row));
-  //   }
-  // }
+
   masterToggle() {
-  if (this.selection.selected.length > 0) {
-    // uncheck all
-    this.selection.clear();
-  } else {
-    // select only rows where name is empty
-    this.dataSource.data
-      .filter(row => !row?.name || row.name.trim() === '')
-      .forEach(row => this.selection.select(row));
+    if (this.selection.selected.length > 0) {
+      // uncheck all
+      this.selection.clear();
+    } else {
+      // select only rows where name is empty
+      this.dataSource.data
+        .filter(row => !row?.name || row.name.trim() === '')
+        .forEach(row => this.selection.select(row));
+    }
   }
-}
 
   isAllSelected() {
     const selectableRows = this.dataSource.data.filter(
@@ -308,50 +301,180 @@ export class ReportDispatchComponent {
       ],
     };
   }
-  onSubmit() {
-    this.myReportform.removeControl('Service')
 
-    this.myReportform.get('unitId').setValue(parseInt(this.myReportform.get('unitId').value))
-    this.myReportform.get('dispatchOn').setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd'T'HH:mm:ss"))
-    this.myReportform.get('dispatchModeId').setValue(parseInt(this.myReportform.get('dispatchModeId').value))
+  // onSubmit(row: any = null, type: any = null) {
 
-    if (this.selection.selected.length === 0) {
-      this.toastr.warning(`select Report to dispatch`, 'Warning');
-      return;
-    }
-    debugger
-    this.testDetailsArray.clear();
-    this.selection.selected.forEach(item => {
-      this.testDetailsArray.push(this.createTestDetail(item));
-    });
+  //   if (type == 'email') {
 
-    if (!this.myReportform.invalid) {
+  //     const Type = 'LabDispatchMode'
+  //     this._LabmanagementService.getModeType(Type).subscribe(res => {
+  //       this.modeTypeList = res;
 
-      console.log(this.myReportform.value)
-      this._LabmanagementService.ReportDispatchInsert(this.myReportform.value).subscribe((response) => {
-        this.repogrid.bindGridData();
-        this.getServiceTestList();
-        this.myReportform.get('dispatchModeId').setValue(0)
-      });
-    } else {
-      let invalidFields = [];
+  //       const normalType = this.modeTypeList.find(
+  //         (item: any) => item.name === 'Email'
+  //       );
 
-      if (this.myReportform.invalid) {
-        for (const controlName in this.myReportform.controls) {
-          if (this.myReportform.controls[controlName].invalid) {
-            invalidFields.push(`Report Dispatch  Form: ${controlName}`);
-          }
+  //       if (normalType) {
+  //         this.modeId = normalType.constantId
+  //         // this.myReportform.get('dispatchModeId')?.setValue(normalType.constantId);
+  //       }
+
+  //       this.myReportform.get('dispatchModeId').clearValidators();
+  //       this.myReportform.get('dispatchModeId').updateValueAndValidity();
+  //     });
+
+  //     this.testDetailsArray.clear();
+  //     this.testDetailsArray.push(this.createTestDetail(row));
+  //   } else {
+  //     this.myReportform.get('dispatchModeId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+  //     if (this.selection.selected.length === 0) {
+  //       this.toastr.warning(`select Report to dispatch`, 'Warning');
+  //       return;
+  //     }
+  //     this.testDetailsArray.clear();
+  //     this.selection.selected.forEach(item => {
+  //       this.testDetailsArray.push(this.createTestDetail(item));
+  //     });
+  //     // this.myReportform.get('dispatchModeId').setValue(parseInt(this.myReportform.get('dispatchModeId').value))
+  //   }
+
+  //   this.myReportform.removeControl('Service')
+
+  //   this.myReportform.get('unitId').setValue(parseInt(this.myReportform.get('unitId').value))
+  //   this.myReportform.get('dispatchOn').setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd'T'HH:mm:ss"))
+  //   this.myReportform.get('refDocId').setValue(this.vRefDocId)
+  //   setTimeout(() => {
+  //     this.myReportform.get('dispatchModeId').setValue(this.modeId)
+  //   }, 100);
+
+  //   console.log(this.myReportform.value)
+  //   if (!this.myReportform.invalid) {
+  //     return;
+
+  //     console.log(this.myReportform.value)
+
+  //     this._LabmanagementService.ReportDispatchInsert(this.myReportform.value).subscribe((response) => {
+  //       this.repogrid.bindGridData();
+  //       this.getServiceTestList();
+  //       this.myReportform.get('dispatchModeId').setValue(0)
+  //     });
+  //   } else {
+  //     let invalidFields = [];
+
+  //     if (this.myReportform.invalid) {
+  //       for (const controlName in this.myReportform.controls) {
+  //         if (this.myReportform.controls[controlName].invalid) {
+  //           invalidFields.push(`Report Dispatch  Form: ${controlName}`);
+  //         }
+  //       }
+  //     }
+  //     if (invalidFields.length > 0) {
+  //       invalidFields.forEach(field => {
+  //         this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+  //         );
+  //       });
+  //     }
+  //   }
+  // }
+
+  onSubmit(row: any = null, type: any = null) {
+
+    if (type == 'email') {
+
+      const Type = 'LabDispatchMode';
+
+      this._LabmanagementService.getModeType(Type).subscribe(res => {
+
+        this.modeTypeList = res;
+
+        const normalType = this.modeTypeList.find(
+          (item: any) => item.name === 'Email'
+        );
+
+        if (normalType) {
+          this.myReportform.get('dispatchModeId')?.setValue(normalType.constantId);
         }
+
+        this.myReportform.get('dispatchModeId')?.clearValidators();
+        this.myReportform.get('dispatchModeId')?.updateValueAndValidity();
+
+        this.testDetailsArray.clear();
+        this.testDetailsArray.push(this.createTestDetail(row));
+
+        this.afterSubmitSetup();
+      });
+
+    } else  if (type == 'whatsapp') {
+
+      const Type = 'LabDispatchMode';
+
+      this._LabmanagementService.getModeType(Type).subscribe(res => {
+
+        this.modeTypeList = res;
+
+        const normalType = this.modeTypeList.find(
+          (item: any) => item.name === 'Whatsapp'
+        );
+
+        if (normalType) {
+          this.myReportform.get('dispatchModeId')?.setValue(normalType.constantId);
+        }
+
+        this.myReportform.get('dispatchModeId')?.clearValidators();
+        this.myReportform.get('dispatchModeId')?.updateValueAndValidity();
+
+        this.testDetailsArray.clear();
+        this.testDetailsArray.push(this.createTestDetail(row));
+
+        this.afterSubmitSetup();
+      });
+
+    } else {
+
+      this.myReportform.get('dispatchModeId')
+        .setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+
+      if (this.selection.selected.length === 0) {
+        this.toastr.warning(`select Report to dispatch`, 'Warning');
+        return;
       }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
+
+      this.testDetailsArray.clear();
+      this.selection.selected.forEach(item => {
+        this.testDetailsArray.push(this.createTestDetail(item));
+      });
+
+      this.myReportform.get('dispatchModeId')
+        .setValue(parseInt(this.myReportform.get('dispatchModeId').value));
+
+      this.afterSubmitSetup();
     }
   }
 
+  afterSubmitSetup() {
+
+    this.myReportform.removeControl('Service');
+
+    this.myReportform.get('unitId').setValue(parseInt(this.myReportform.get('unitId').value));
+
+    this.myReportform.get('dispatchOn').setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd'T'HH:mm:ss"));
+
+    this.myReportform.get('refDocId').setValue(this.vRefDocId);
+
+    console.log(this.myReportform.value);
+    
+    if (this.myReportform.invalid) {
+      return;
+    }
+
+    this._LabmanagementService.ReportDispatchInsert(this.myReportform.value)
+      .subscribe((response) => {
+        this.repogrid.bindGridData();
+        this.getServiceTestList();
+        this.myReportform.get('dispatchModeId').setValue(0);
+        this.myReportform.get('refDocId').setValue(0);
+      });
+  }
 
   private overlayRef: OverlayRef | null = null;
   private EmailOverlayRef: OverlayRef | null = null;
@@ -532,29 +655,32 @@ export class ReportDispatchComponent {
 
   getWhatsappshareBill(el) {
     console.log(el);
-    this._whatsppService.OnWhatsAppMsgSent({
-      mobileNo: el.mobileNo,
-      patientName: el.patientName,
-      billNo: el.billNo,
-      smsType: "OPBill",
-      patientId: el.regNo
-    })
+    this.onSubmit(el, 'whatsapp')
+    // this._whatsppService.OnWhatsAppMsgSent({
+    //   mobileNo: el.mobileNo,
+    //   patientName: el.patientName,
+    //   billNo: el.billNo,
+    //   smsType: "OPBill",
+    //   patientId: el.regNo
+    // })
   }
 
   Onemail(contact) {
-    const dialogRef = this._matDialog.open(EmailSendComponent,
-      {
-        maxWidth: "100%",
-        height: '75%',
-        width: '55%',
-        data: {
-          Obj: contact,
-          emailType: 'OPBill'
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      // this.grid.bindGridData();
-    });
+    console.log(contact)
+    this.onSubmit(contact, 'email')
+    //   const dialogRef = this._matDialog.open(EmailSendComponent,
+    //     {
+    //       maxWidth: "100%",
+    //       height: '75%',
+    //       width: '55%',
+    //       data: {
+    //         Obj: contact,
+    //         emailType: 'OPBill'
+    //       }
+    //     });
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     // this.grid.bindGridData();
+    //   });
   }
 }
 

@@ -36,6 +36,10 @@ const appRoutes: Routes = [
     loadChildren: () => import("./cancellation/cancellation.module").then((m) => m.CancellationModule),
   },
   {
+    path:"labcancellation",
+    loadChildren: () => import("./lab-cancellation/lab-cancellation.module").then((m) => m.LabCancellationModule),
+   },
+  {
     path: "reportconfiguration",
     loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },

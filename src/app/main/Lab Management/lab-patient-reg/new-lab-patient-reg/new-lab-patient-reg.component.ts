@@ -658,6 +658,9 @@ export class NewLabPatientRegComponent {
       this.myForm.get('companyId').enable()
       this.patienttype = 2;
       this.OPFooterForm.get('paymentType').setValue('CreditPay')
+      this.myForm.get('refDocId').disable()
+      this.myForm.get('refDocId').clearValidators();
+      this.myForm.get('refDocId').updateValueAndValidity();
 
     } else if (value.text == "Self") {
       // this.isCompanySelected = false;      
