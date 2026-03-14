@@ -55,9 +55,9 @@ export class PurchaseRequisitionVerificationComponent {
   }
 
   allColumns2 = [
-    { heading: "Status", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-    { heading: "Priority", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-    { heading: "Is Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+    { heading: "Status", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Priority", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Is Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
     { heading: "No", key: "purchaseRequisitionNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
     { heading: "Date", key: "purchaseRequisitionTime", sort: true, align: 'left', emptySign: 'NA', width: 150,type:6 },

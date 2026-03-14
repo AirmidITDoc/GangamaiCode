@@ -42,8 +42,8 @@
                                     </mat-radio-group>
 
                                 </div>
-                                <div class="input-container gap-8" fxFlex="50%">
-                                  
+                                <div class="input-container gap-2" fxFlex="90%">
+
 
                                     <!-- <airmid-autocomplete lbl="RegID" [formGroup]="CanteenInsertForm" *ngIf="!custflag"
                                         label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegID"
@@ -53,7 +53,7 @@
                                         ValueField="regId">
                                     </airmid-autocomplete> -->
 
-                                    <airmid-autocomplete lbl="RgId" [formGroup]="CanteenInsertForm"
+                                    <airmid-autocomplete lbl="RgId" [formGroup]="CanteenInsertForm" fxFlex="38%"
                                         formControlName="RegID" placeholderText="IP-RegNo/FirstName/LastName"
                                         *ngIf="!custflag" label="Search UHID / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
@@ -63,7 +63,7 @@
 
 
                                     <!-- (keydown)="onEnterCustomer($event)" -->
-                                    <mat-form-field appearance="outline" fxFlex="28%" *ngIf="custflag">
+                                    <mat-form-field appearance="outline" fxFlex="38%" *ngIf="custflag">
                                         <mat-label>Customer Name</mat-label>
                                         <input matInput name="CustomerName" #CustomerName
                                             formControlName="CustomerName">
@@ -80,8 +80,8 @@
                             </div>
 
                         </div>
-                        <div class="modal-card-container" style="padding: 1px 2px 5px 0px ;">
-                            <mat-card>
+                        <!-- <div class="modal-card-container" style="padding: 1px 2px 5px 0px ;"> -->
+                            <!-- <mat-card>
                                 <div class="patient-info-container">
                                     <div class="patient-info-box" style="padding: 10px;">
                                         <div class="patient-info-title border-bottom pb-2">
@@ -191,8 +191,38 @@
                                         </div>
                                     </div>
                                 </div>
-                            </mat-card>
-                        </div>
+                            </mat-card> -->
+
+                            <!-- Patient Info Section -->
+                            
+                        <!-- </div> -->
+
+                        <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                                <div fxFlex.gt-sm="100%" fxFlex>
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                        <div class="patient-info-sales">
+                                            <div class="patient-info-title border-bottom pb-1 mb-1">
+                                                <span class="h1 m-0" style="line-height: normal;">Patient
+                                                    Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info w-100-p">
+                                                <app-patient-information [uhidNo]="registerObj?.regNo" [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                                    [departmentName]="registerObj?.departmentName"
+                                                    [doa]="registerObj?.admissionDate"
+                                                    [ipdNo]="registerObj?.ipdNo"
+                                                    [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                                    [refDocName]="registerObj?.refDocName"
+                                                    [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
+                                                    [patientType]="registerObj?.patientType"
+                                                    [tariffName]="registerObj?.tariffName"
+                                                    [companyName]="registerObj?.companyName"></app-patient-information>
+
+                                                    
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </div>
                         <mat-card style="padding: 6px;">
                             <!-- <div class="modal-card-container">
 

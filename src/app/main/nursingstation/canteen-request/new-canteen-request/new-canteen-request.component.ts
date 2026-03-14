@@ -139,6 +139,7 @@ export class NewCanteenRequestComponent implements OnInit {
     'buttons'
   ]
 
+  vPatientName=''
  getSelectedObjIP(obj) {
 
     console.log(obj)
@@ -147,7 +148,7 @@ export class NewCanteenRequestComponent implements OnInit {
       // this.vRegNo = obj.regNo
       // this.vRegId = obj.regID
       // this.vDoctorName = obj.doctorName
-      // this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
       // this.vDepartment = obj.departmentName
       // this.vAdmissionDate = obj.admissionDate
       // this.vAdmissionTime = obj.admissionTime

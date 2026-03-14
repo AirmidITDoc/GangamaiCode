@@ -402,9 +402,9 @@ export class TestApprovalListComponent {
       }).then((result) => {
 
         if (result.isConfirmed) {
-          this.Printresultentry(contact);
-        } else if (result.isDenied) {
           this.Printresultentrywithheader(contact);
+        } else if (result.isDenied) {
+          this.Printresultentry(contact);
         }
       });
     }

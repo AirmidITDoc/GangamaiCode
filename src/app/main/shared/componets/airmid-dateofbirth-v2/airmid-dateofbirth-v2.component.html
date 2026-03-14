@@ -9,27 +9,32 @@
     </mat-form-field>
 
     <!-- Age Input Field (Y/M/D based on selection) -->
-    <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Year' && !hideButtons">
+    <!-- <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Year' && !hideButtons">
         <mat-label>Age (Y)</mat-label>
         <input matInput type="number" [(ngModel)]="ageYear" (keyup)="CalcDOB('Year', $event)" maxlength="2" min="0">
+    </mat-form-field> -->
+    <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Year' && !hideButtons">
+        <mat-label>Age (Y)</mat-label>
+        <input matInput type="number" [(ngModel)]="ageYear" (keyup)="CalcDOB('Year', $event)" maxlength="2" min="0"
+            onfocus="if(this.value=='0'){this.value=''}">
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Month' && !hideButtons">
         <mat-label>Age (M)</mat-label>
-        <input matInput type="number" [(ngModel)]="ageMonth" (keyup)="CalcDOB('Month', $event)" maxlength="2" min="0">
+        <input matInput type="number" [(ngModel)]="ageMonth" (keyup)="CalcDOB('Month', $event)" maxlength="2" min="0"
+        onfocus="if(this.value=='0'){this.value=''}">
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Day' && !hideButtons">
         <mat-label>Age (D)</mat-label>
-        <input matInput type="number" [(ngModel)]="ageDay" (keyup)="CalcDOB('Day', $event)" maxlength="2" min="0">
+        <input matInput type="number" [(ngModel)]="ageDay" (keyup)="CalcDOB('Day', $event)" maxlength="2" min="0"
+        onfocus="if(this.value=='0'){this.value=''}">
     </mat-form-field>
 
     <!-- Date Picker -->
     <mat-form-field appearance="outline" class="date-picker">
-        <input matInput [matDatepicker]="validFromPickerV2" #bdayV2 [value]="value" 
-               [disabled]="dateStyle !== 'Date'" 
-               (dateChange)="onChangeDateofBirth($event.value)" 
-               placeholder="mm/dd/yyyy">
+        <input matInput [matDatepicker]="validFromPickerV2" #bdayV2 [value]="value" [disabled]="dateStyle !== 'Date'"
+            (dateChange)="onChangeDateofBirth($event.value)" placeholder="mm/dd/yyyy">
         <mat-datepicker-toggle matSuffix [for]="validFromPickerV2"></mat-datepicker-toggle>
         <mat-datepicker #validFromPickerV2></mat-datepicker>
     </mat-form-field>
@@ -50,4 +55,3 @@
         </mat-form-field>
     </div>
 </div>
-

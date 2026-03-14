@@ -71,10 +71,16 @@ export class CanteenmanagementService {
   public getBillList(Param) {
     return this._httpClient.PostData("CanteenRequest/CanteenRequestHeaderList", Param);
   }
-  public getBillDetList(Param) {
+  public getBillDetailsList(Param) {
     return this._httpClient.PostData("CanteenRequest/CanteenRequestList", Param);
   }
   public getNursingBill(Param) {
     return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
   }
+
+ public getItemLatestList(Param) {
+    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
+  }
+
+  
 }

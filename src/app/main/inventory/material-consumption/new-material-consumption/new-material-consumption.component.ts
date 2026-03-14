@@ -123,7 +123,8 @@ export class NewMaterialConsumptionComponent implements OnInit {
     this.userFormGroup.markAllAsTouched();
     this.ItemFormGroup.markAllAsTouched();
 
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
+    // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
+    this.ApiUrl = `ItemMaster/NewGetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
 
     this.MaterialInsertForm = this.creatematerialconsInsert()
     this.MaterialConDetailsArray.push(this.creatematerialconsDetail());
@@ -241,7 +242,8 @@ export class NewMaterialConsumptionComponent implements OnInit {
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vStoreId = obj.value
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
+    // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
+    this.ApiUrl = `ItemMaster/NewGetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
   }
 
   getBatch() {
