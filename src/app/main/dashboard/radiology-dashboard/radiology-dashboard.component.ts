@@ -251,7 +251,7 @@ export class RadiologyDashboardComponent implements OnInit {
         this.dashboardService.getRadiologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
             this.RadiologyData = res;
             console.log('Radiology Reports:', res);
-
+            debugger
             if (this.RadiologyData) {
                 this.dsRadiologyRecentReports.data = res.recentRadiologyReports;
                 this.dsTopTests.data = res.topOrderedTests;

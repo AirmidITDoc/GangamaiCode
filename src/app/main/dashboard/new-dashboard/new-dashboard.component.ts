@@ -5,6 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DatePipe } from '@angular/common';
 import { FormGroup } from '@angular/forms';
+import { Servicecharge } from '../lab-financial-dashboard/lab-financial-dashboard.component';
 
 @Component({
   selector: 'app-new-dashboard',
@@ -24,29 +25,20 @@ export class NewDashboardComponent implements OnInit {
   public patientOverviewChart: any;
   public opdOverviewChart: any;
   PatientOverviewDoughnut: any;
-OPDDrOverviewDoughnut: any;
+  OPDDrOverviewDoughnut: any;
   constructor(private dashboardService: DashboardService, public _accountServices: AuthenticationService,
     private accountService: AuthenticationService, public datePipe: DatePipe,
   ) {
-    // Set default dates to current week (Monday to today)
-    // this.initializeDateRange();
+
   }
   ngOnInit(): void {
     this.myFilterform = this.dashboardService.filterdashboardForm()
     this.loadDashboardData();
-  }
-  initializeDateRange() {
-    // const today = new Date();
-    // this.toDate = new Date(today);
 
-    // Find Monday of current week
-    // const day = today.getDay();
-    // const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
-    // const monday = new Date(today);
-    // monday.setDate(diff);
-    // this.fromDate = monday;
-  }
+    this.getdrwiseList();
 
+  }
+ 
   onDateChange() {
     // Reload all data when dates change, only if both dates are set
     if (this.fromDate && this.toDate) {
@@ -68,7 +60,7 @@ OPDDrOverviewDoughnut: any;
   }
 
   loadDashboardData() {
-    
+
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
 
@@ -76,12 +68,13 @@ OPDDrOverviewDoughnut: any;
     this.getDashOPUserWiseRevenue();
     this.getDashOPDepatmentWiseCount();
     this.alldashdata()
+    this.getdrwiseList()
     // Re-initialize charts with new date range
     setTimeout(() => {
       if (document.getElementById('PatientOverviewDoughnut')) {
         this.patientOverviewChart = this.getPatientOverviewChart();
       }
-       if (document.getElementById('OPDDrOverviewDoughnut')) {
+      if (document.getElementById('OPDDrOverviewDoughnut')) {
         this.OPDDrOverviewDoughnut = this.getDrPatientOverviewChart();
       }
       if (document.getElementById('OPDOverviewDoughnut')) {
@@ -168,10 +161,10 @@ OPDDrOverviewDoughnut: any;
         { label: 'Discharge', value: apiData?.TodayDischargePatient || 0, color: 'butter', icon: 'logout' },
         { label: 'Total Company', value: apiData?.CompnayPatient || 0, color: 'red', icon: 'ambulance' },
 
-        // { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'mint', icon: 'check-circle' },
-        // { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'logout' },
-        // { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' }, // If API has a matching field, set it.
-        // { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'peach', icon: 'ambulance' }
+        { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'mint', icon: 'check-circle' },
+        { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'logout' },
+        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' }, // If API has a matching field, set it.
+        { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'peach', icon: 'ambulance' }
       ];
 
     }, err => {
@@ -182,10 +175,10 @@ OPDDrOverviewDoughnut: any;
         { label: 'Discharge', value: 0, color: 'butter', icon: 'logout' },
         { label: 'Total Company', value: 0, color: 'red', icon: 'ambulance' },
 
-        // { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
-        // { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
-        // { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
-        // { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
+        { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
+        { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
+        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
+        { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
       ];
     });
   }
@@ -207,7 +200,7 @@ OPDDrOverviewDoughnut: any;
             total: this.DailydashData.patientSummary.totalPatients
           };
 
-          
+
           this.trendSeries = [
             {
               name: 'OPD (PCount)',
@@ -387,6 +380,38 @@ OPDDrOverviewDoughnut: any;
       return []
     })
   }
+
+
+  getDashDrWiseCount() {
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashOPConsultantWiseCount"
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      let apiData1 = res && res.length ? res : {};
+      console.log(res)
+      return apiData1;
+
+    }, err => {
+      return []
+    })
+  }
   getMatIcon(icon: string): string {
     switch (icon) {
       case 'assignment':
@@ -541,28 +566,6 @@ OPDDrOverviewDoughnut: any;
   ];
 
 
-  // trendSeriesOP = [
-  //   { name: 'Mon', value: 110 },
-  //   { name: 'Tue', value: 135 },
-  //   { name: 'Wed', value: 128 },
-  //   { name: 'Thu', value: 160 },
-  //   { name: 'Fri', value: 148 },
-  //   { name: 'Sat', value: 120 },
-  //   { name: 'Sun', value: 90 }
-
-  // ]
-  // trendSeriesIP = [
-  //   { name: 'Mon', value: 60 },
-  //   { name: 'Tue', value: 72 },
-  //   { name: 'Wed', value: 68 },
-  //   { name: 'Thu', value: 75 },
-  //   { name: 'Fri', value: 80 },
-  //   { name: 'Sat', value: 70 },
-  //   { name: 'Sun', value: 55 }
-  // ]
-
-
-
   recentColumns = ['name', 'type', 'dept', 'time'];
   recentPatients = [
     { name: 'Anita Deshmukh', type: 'OPD', department: 'Medicine', time: '09:10 AM' },
@@ -621,9 +624,6 @@ OPDDrOverviewDoughnut: any;
   // Chart.js doughnut chart with custom plugins
   async getPatientOverviewChart() {
 
-    if (this.PatientOverviewDoughnut) {
-      this.PatientOverviewDoughnut.destroy();
-    }
     // const centerTextPlugin = {
     //   id: 'centerText',
     //   beforeDraw: (chart: any) => {
@@ -729,7 +729,7 @@ OPDDrOverviewDoughnut: any;
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : [];
       console.log("apiDataapiDataapiData", apiData)
-      
+
       // Check if data is empty or all values are zero
       const hasData = apiData && apiData.length > 0 && apiData.some((item: any) => item.value > 0);
 
@@ -754,12 +754,17 @@ OPDDrOverviewDoughnut: any;
         }
         return null;
       }
-      
+
       debugger
+
+
+      if (this.PatientOverviewDoughnut) {
+        this.PatientOverviewDoughnut.destroy();
+      }
       console.log(apiData)
       // const chart = new Chart('PatientOverviewDoughnut', {
-  return new Chart('PatientOverviewDoughnut', {
-      
+      return new Chart('PatientOverviewDoughnut', {
+
         type: 'doughnut',
         data: {
           labels: apiData?.map(data => data.name) || [],
@@ -837,10 +842,8 @@ OPDDrOverviewDoughnut: any;
   }
 
 
-  
-   async getDrPatientOverviewChart() {
 
-   
+  async getDrPatientOverviewChart() {
 
     const dataLabelsPlugin = {
       id: 'dataLabels',
@@ -916,12 +919,12 @@ OPDDrOverviewDoughnut: any;
           "opType": "Equals"
         }
       ],
-      "mode": "DashRegistrationAgeWiseCount"
+      "mode": "DashOPConsultantWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : [];
       console.log("apiDataapiDataapiData", apiData)
-      
+
       // Check if data is empty or all values are zero
       const hasData = apiData && apiData.length > 0 && apiData.some((item: any) => item.value > 0);
 
@@ -946,12 +949,12 @@ OPDDrOverviewDoughnut: any;
         }
         return null;
       }
-      
-      
+
+
       console.log(apiData)
       // const chart = new Chart('PatientOverviewDoughnut', {
-  return new Chart('PatientOverviewDoughnut', {
-      
+      return new Chart('OPDDrOverviewDoughnut', {
+
         type: 'doughnut',
         data: {
           labels: apiData?.map(data => data.name) || [],
@@ -999,33 +1002,108 @@ OPDDrOverviewDoughnut: any;
       return []
     })
 
+  }
+  public chargeList: drcountdata[] = [];
 
-    // Add additional event listeners
-    // chart.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-    //   const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
-    //   console.log('Canvas mousemove - elements:', elements.length);
-    //   if (elements.length > 0) {
-    //     const element = elements[0];
-    //     const index = element.index;
-    //     const dataset = chart.data.datasets[element.datasetIndex];
-    //     const data = {
-    //       name: this.registrationChartData[index].name,
-    //       value: this.registrationChartData[index].value,
-    //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
-    //       color: dataset.backgroundColor[index]
-    //     };
-    //     console.log('Canvas mousemove - showing popover for:', data);
-    //     this.showSegmentPopover(event, data);
-    //   } else {
-    //     this.hideSegmentPopover();
-    //   }
-    // });
+  trendData: drcountdata[] = [];
+  //  trendData1: Servicecharge[] = [];
+  trendChart: any;
+  drcountdata: any
+  public DrcountChart: any;
 
-    // chart.canvas.addEventListener('mouseleave', () => {
-    //   console.log('Canvas mouseleave - hiding popover');
-    //   this.hideSegmentPopover();
-    // });
+  modalityData = [
+    { name: '', value: 0 }
+  ];
 
+  getdrwiseList() {
+    
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashOPConsultantWiseCount"
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      this.drcountdata = res
+        this.trendData = res
+          
+debugger
+      console.log(res)
+      if (this.trendData) {
+
+        this.modalityData = [
+          ...this.modalityData,
+          ...this.trendData.map(item => ({
+
+            name: item.name,
+            value: item.value
+          }))
+        ];
+      }
+
+      console.log(this.modalityData)
+
+      // if (this.modalityData)
+      this.DrcountChart = this.getDrBarChart();
+
+    });
+  }
+
+
+  //
+  getDrBarChart() {
+     if (this.DrcountChart) {
+      this.DrcountChart.destroy();
+    }
+
+
+    return new Chart('DrcountChart', {
+      type: 'bar',
+      data: {
+        labels: this.modalityData.map(d => d.name),
+        datasets: [
+          {
+            label: 'Dr. Name',
+            data: this.modalityData.map(d => d.value),
+            backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: { size: 11 }
+            }
+          },
+          x: {
+            ticks: {
+              font: { size: 11 }
+            }
+          }
+        }
+      }
+    });
   }
   // OPD Overview Chart with custom plugins
   getOPDOverviewChart() {
@@ -1116,7 +1194,7 @@ OPDDrOverviewDoughnut: any;
         });
       }
     };
-    
+
     // Check if OPD data exists and has values
     const opdDataArray = [
       this.DropdData[0].value,
@@ -1465,7 +1543,7 @@ OPDDrOverviewDoughnut: any;
 
     })
   }
- 
+
 
   updateDateFilteredCharts(): void {
     // Update charts that are affected by date filter
@@ -1494,5 +1572,19 @@ OPDDrOverviewDoughnut: any;
         // this.topMedicinesChart = this.getTopMedicinesChart();
       }
     }, 100);
+  }
+}
+
+
+export class drcountdata {
+  name: any;
+  value: any;
+
+
+  constructor(test: any) {
+    this.name = test.name || '';
+    this.value = test.value || 0;
+
+
   }
 }

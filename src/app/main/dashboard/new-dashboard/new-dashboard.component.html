@@ -30,7 +30,7 @@
   <div class="content layout-body">
     <div class="center p-12">
       <div class="dashboard-container">
-        <div class="metrics-grid">
+        <!-- <div class="metrics-grid">
           <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards"
             [ngClass]="'theme-' + m.color">
             <mat-card-content class="metric-content">
@@ -43,7 +43,27 @@
               </div>
             </mat-card-content>
           </mat-card>
+        </div> -->
+
+        <div class="center p-5">
+          <div class="dashboard-container">
+            <div class="metrics-grid">
+              <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards"
+                [ngClass]="'theme-' + m.color">
+                <mat-card-content class="metric-content">
+                  <div class="metric-icon">
+                    <mat-icon>{{ getMatIcon(m.icon) }}</mat-icon>
+                  </div>
+                  <div class="metric-text">
+                    <div class="metric-label">{{ m.label }}</div>
+                    <div class="metric-value">{{ m.value }}</div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
         </div>
+
         <div class="charts-row">
           <mat-card class="chart-card patient-overview-card mat-elevation-z2">
             <mat-card-header>
@@ -65,7 +85,7 @@
             </mat-card-content>
           </mat-card>
 
-          <mat-card class="chart-card patient-overview-card mat-elevation-z2">
+          <!-- <mat-card class="chart-card patient-overview-card mat-elevation-z2">
             <mat-card-header>
               <mat-card-title>Doctor Overview</mat-card-title>
             </mat-card-header>
@@ -84,7 +104,7 @@
                 </div>
               </div>
             </mat-card-content>
-          </mat-card>
+          </mat-card> -->
 
           <mat-card class="chart-card mat-elevation-z2">
             <mat-card-header>
@@ -146,6 +166,23 @@
           </mat-card>
 
         </div>
+
+
+  <div class="charts-row">
+        <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+          <mat-card class="chart-card">
+            <mat-card-content>
+              <div class="chart-header">
+                <h3 class="chart-title">Dr. Wise Count</h3>
+
+              </div>
+              <div style="height: 350px;">
+                <canvas id="DrcountChart"></canvas>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+</div>
 
         <!-- Recent activity table -->
         <!-- <div class="tables-row">
