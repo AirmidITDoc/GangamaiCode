@@ -39,13 +39,13 @@ export class DrwisecollectionComponent {
     ngOnInit() {
         this.unitId = this.data.unit
        
-        this.getServiceList();
+        this.getdrwiseList();
     }
 
 
     setFilterType(type: 'Day' | 'Month') {
 
-        this.getServiceList();
+        this.getdrwiseList();
     }
     public modalityChart: any;
     public modalityChart1: any;
@@ -69,7 +69,7 @@ export class DrwisecollectionComponent {
         { modality: '', opcount: 0 }
     ];
     public chargeList: modilitydata[] = [];
-    getServiceList() {
+    getdrwiseList() {
         debugger
         var vadat = {
             "UnitId": this.unitId,
@@ -116,6 +116,7 @@ export class DrwisecollectionComponent {
 
     // Tests by Modality Bar Chart
     getModalityBarChart() {
+        
             return new Chart('modalityChart', {
                 type: 'bar',
                 data: {
