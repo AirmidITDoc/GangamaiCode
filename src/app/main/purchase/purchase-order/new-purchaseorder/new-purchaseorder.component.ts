@@ -21,6 +21,7 @@ import { PurchaseOrderService } from '../purchase-order.service';
 import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from './types';
 import { ConfigService } from 'app/core/services/config.service';
 import { PurchaseRequisitionlistComponent } from './purchase-requisitionlist/purchase-requisitionlist.component';
+import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
 // import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
 
 @Component({
@@ -867,6 +868,17 @@ export class NewPurchaseorderComponent {
     //   }
     // }
   }
+      // Add New Item
+      OnAddItem() {
+          const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+              maxWidth: "100%",
+              height: '95%',
+              width: '95%',
+          });
+          dialogRef.afterClosed().subscribe((result) => {
+              console.log("The dialog was closed - Insert Action", result);
+          });
+      }
   calculateDiscountAmount() {
     const form = this.userFormGroup;
     const values = form.getRawValue() as PurchaseFormModel;

@@ -36,7 +36,7 @@
                 <div class="metrics-grid">
                     <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards"
                         [ngClass]="'theme-' + m.color">
-                        <mat-card-content class="metric-content" style="border: solid 1px;color: brown;">
+                        <mat-card-content class="metric-content" >
                             <div class="metric-icon">
                                 <mat-icon>{{ getMatIcon(m.icon) }}</mat-icon>
                             </div>
@@ -52,102 +52,7 @@
         <!-- TABS -->
 
 
-        <!-- Top Summary Cards -->
-        <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <!-- Total Tests Today Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-1">
-                                <mat-icon style="color: white;">assignment</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row"
-                                style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
-                                <div>Total Collection Today |</div>
-                                <!-- <div [@animate]="{value:'*',params:{x:'50px'}}">
-                                            {{cashlessallData?.countSummary?.todaysCount??0}}</div> -->
-                            </div>
-                        </div>
-                        <div class="card-chart-section">
-                            <!-- <canvas id="pathologyTotalTestsChart"></canvas> -->
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-
-            <!-- Completed Reports Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-2">
-                                <mat-icon style="color: white;">check_circle</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row"
-                                style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
-                                <div>Approval |</div>
-                                <!-- <div [@animate]="{value:'*',params:{x:'50px'}}">
-                                            {{cashlessallData?.countSummary?.completedCount??0}}
-                                        </div> -->
-                            </div>
-                        </div>
-                        <div class="card-chart-section">
-                            <!-- <canvas id="pathologyCompletedChart"></canvas> -->
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-
-            <!-- Pending Reports Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-3">
-                                <mat-icon style="color: white">hourglass_empty</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row"
-                                style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
-                                <div>Pending |</div>
-                                <!-- <div [@animate]="{value:'*',params:{x:'50px'}}">
-                                            {{cashlessallData?.countSummary?.pendingCount??0}}
-                                        </div> -->
-                            </div>
-                        </div>
-                        <div class="card-chart-section">
-                            <!-- <canvas id="pathologyPendingChart"></canvas> -->
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-
-            <!-- Rejected Samples Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-4">
-                                <mat-icon style="color: white;">cancel</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row"
-                                style="font-size: large;color: rgb(5, 54, 118);font-weight: bold;">
-                                <div>Rejected |</div>
-                                <!-- <div [@animate]="{value:'*',params:{x:'50px'}}">
-                                            {{cashlessallData?.countSummary?.rejectedCount??0}}
-                                        </div> -->
-                            </div>
-                        </div>
-                        <div class="card-chart-section">
-                            <!-- <canvas id="pathologyRejectedChart"></canvas> -->
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
-
-
-
+       
         <!-- Charts Section -->
         <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
             <!-- Test Volume by Department Bar Chart -->
@@ -155,30 +60,29 @@
                 <mat-card class="chart-card">
                     <mat-card-content>
                         <div class="chart-header">
-                            <h3 class="chart-title">Total Company Revenu</h3>
+                            <h3 class="chart-title">Total Company Wise Count</h3>
                             <!-- <p class="chart-subtitle">Distribution across lab departments</p> -->
                         </div>
                         <div style="height: 350px;">
-                            <canvas id="CompanyRevenuChart"></canvas>
+                            <canvas id="CompanycountChart"></canvas>
                         </div>
                     </mat-card-content>
                 </mat-card>
             </div>
 
             <!-- Test Status Pie Chart -->
-            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+            <!-- <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
                 <mat-card class="chart-card">
                     <mat-card-content>
                         <div class="chart-header">
                             <h3 class="chart-title">Company Revenu Distribution</h3>
-                            <!-- <p class="chart-subtitle">Completed vs Pending vs Rejected</p> -->
-                        </div>
+                           </div>
                         <div style="height: 350px; display: flex; align-items: center; justify-content: center;">
                             <canvas id="CompanyrevenuStatusPieChart"></canvas>
                         </div>
                     </mat-card-content>
                 </mat-card>
-            </div>
+            </div> -->
         </div>
 
         <!-- Test Volume Trend -->
@@ -191,7 +95,7 @@
                             <!-- <p class="chart-subtitle">Last 7 days performance</p> -->
                         </div>
                         <div style="height: 320px;">
-                            <!-- <canvas id="pathologyVolumeTrendChart"></canvas> -->
+                            <canvas id="CompanydailyTrendChart"></canvas>
                         </div>
                     </mat-card-content>
                 </mat-card>
@@ -201,65 +105,71 @@
         <!-- Recent Reports Table -->
         <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
             <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                
                 <mat-card>
+                    
                     <mat-card-content>
-                        <div class="table-title">Recent Company Reports</div>
+                           <div class="chart-header">
+                            <h3 class="chart-title">Recent Company Summary</h3>
+                            
+                        </div>
                         <hr>
-                        <!-- <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyReports"
+                        <mat-table matSort class="h-200 table-designed" [dataSource]="dsCompsummaryReports"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="PatientName">
+                                    <ng-container matColumnDef="companyName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Patient Name
+                                            Company Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.printTestName}}
+                                            {{report.companyName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="TestName">
+                                    <ng-container matColumnDef="cashlessPatientCount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Test Name
+                                           Toal Count
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.testName}}
+                                            {{report.cashlessPatientCount}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Status">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Status
-                                        </mat-header-cell>
-                                      
-                                        <mat-cell *matCellDef="let report">
-                                            <span [ngClass]="{
-                                                'status-cancelled': report.isCompleted === 1,
-                                                'status-completed': report.isCompleted !== 1 && report.isCompleted === 1,
-                                                'status-pending': report.isCompleted !== 1 && report.isCompleted !== 1
-                                                }">
-                                                {{
-                                                report.isCompleted
-                                                }}
-                                            </span>
-                                        </mat-cell>
+                                   
 
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Pathologist">
+                                    <ng-container matColumnDef="billAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Pathologist
+                                            Bill Amount
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.doctorName}}
+                                            {{report.billAmount}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Date">
+                                    <ng-container matColumnDef="discAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Date
+                                            Disc Amount
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.pathDate | date:'dd/MM/yyyy - h:mma' }}
+                                            {{report.discAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="compDiscAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                          Comp  Disc Amount
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            {{report.compDiscAmount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="netBillAmount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            Net Amount
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let report">
+                                            {{report.netBillAmount}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -275,14 +185,14 @@
                                     </ng-container>
 
                                     <mat-header-row class="accent"
-                                        *matHeaderRowDef="pathologyReportsColumns; sticky: true">
+                                        *matHeaderRowDef="compReportsColumns; sticky: true">
                                     </mat-header-row>
-                                    <mat-row *matRowDef="let report; columns: pathologyReportsColumns;" class="contact"
+                                    <mat-row *matRowDef="let report; columns: compReportsColumns;" class="contact"
                                         [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
                                     <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsPathologyReports!=null && dsPathologyReports.data.length==0)}">
+                                        [ngClass]="{'hide':!(dsCompsummaryReports!=null && dsCompsummaryReports.data.length==0)}">
                                     </mat-footer-row>
-                                </mat-table> -->
+                                </mat-table>
                     </mat-card-content>
                 </mat-card>
             </div>

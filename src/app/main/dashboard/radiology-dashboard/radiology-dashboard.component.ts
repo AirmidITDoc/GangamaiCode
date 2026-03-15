@@ -1126,15 +1126,15 @@ debugger
 
                 let apiData = this.pathologyData.pathologyReportStatus && this.pathologyData.pathologyReportStatus.length ? this.pathologyData.pathologyReportStatus[0] : {};
                 this.metrics = [
-                    { label: 'Total Report', value: apiData?.totalReports || 0, color: 'lavender', icon: 'assignment' },
-                    { label: 'Completed', value: apiData?.completedReports || 0, color: 'green', icon: 'check_circle' },
-                    { label: 'Pending', value: apiData?.pendingReports || 0, color: 'mint', icon: 'pending' },
-                    { label: 'Collected', value: apiData?.collectedSamples || 0, color: 'rose', icon: 'collected' },
-                    { label: 'NoCollected', value: apiData?.notCollectedSamples, color: 'sky', icon: 'notcollected' }, // If API has a matching field, set it.
-                    { label: 'Verified', value: apiData?.verifiedReports || 0, color: 'green', icon: 'verified' },
-                    { label: 'Not Verified', value: apiData?.nonVerifiedReports || 0, color: 'rose', icon: 'unpublished' },
-                    { label: 'Dispatched', value: apiData?.dispatchedReports, color: 'sky', icon: 'local_shipping' }, // If API has a matching field, set it.
-                    { label: 'NoDispatch', value: apiData?.nonDispatchedReports || 0, color: 'peach', icon: 'pending_actions' }
+                    { label: 'Total Report', value: apiData?.totalReports || 0, color: 'cream', icon: 'assignment' },
+                    { label: 'Completed', value: apiData?.completedReports || 0, color: 'cream', icon: 'check_circle' },
+                    { label: 'Pending', value: apiData?.pendingReports || 0, color: 'cream', icon: 'pending' },
+                    { label: 'Collected', value: apiData?.collectedSamples || 0, color: 'cream', icon: 'collected' },
+                    { label: 'NoCollected', value: apiData?.notCollectedSamples, color: 'cream', icon: 'notcollected' }, // If API has a matching field, set it.
+                    { label: 'Verified', value: apiData?.verifiedReports || 0, color: 'cream', icon: 'verified' },
+                    { label: 'Not Verified', value: apiData?.nonVerifiedReports || 0, color: 'cream', icon: 'unpublished' },
+                    { label: 'Dispatched', value: apiData?.dispatchedReports, color: 'cream', icon: 'local_shipping' }, // If API has a matching field, set it.
+                    { label: 'NoDispatch', value: apiData?.nonDispatchedReports || 0, color: 'cream', icon: 'pending_actions' }
                 ];
 
             }, err => {

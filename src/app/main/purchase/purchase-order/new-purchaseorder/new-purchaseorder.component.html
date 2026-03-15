@@ -8,8 +8,7 @@
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Purchase Order</span>
                 </div>
                 <div class="modal-header-right">
-                    <div class="comman-date-container">
-                         <button mat-raised-button (click)="getPurchaseRequisition()">GET REQUISITION LIST</button>
+                    <div class="comman-date-container">  
                         <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                         <div class="close-icon">
@@ -651,6 +650,7 @@
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
+                      <button class="btn btn-primary-outline"   (click)="OnAddItem()">Add Item</button>
                     <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
                     <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button>
                 </div>

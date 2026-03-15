@@ -24,8 +24,8 @@ export class NewDashboardComponent implements OnInit {
   UnitId: any = this._accountServices.currentUserValue.user.unitId;
   public patientOverviewChart: any;
   public opdOverviewChart: any;
-  PatientOverviewDoughnut: any;
-  OPDDrOverviewDoughnut: any;
+  public PatientOverviewDoughnut: any;
+  public OPDDrOverviewDoughnut: any;
   constructor(private dashboardService: DashboardService, public _accountServices: AuthenticationService,
     private accountService: AuthenticationService, public datePipe: DatePipe,
   ) {
@@ -68,16 +68,20 @@ export class NewDashboardComponent implements OnInit {
     this.getDashOPDepatmentWiseCount();
     this.alldashdata()
     this.getDashRegistrationAgeWiseCount();
+    this.getdrwiseList()
     // Re-initialize charts with new date range
     setTimeout(() => {
-      if (document.getElementById('PatientOverviewDoughnut')) {
-        this.patientOverviewChart = this.getPatientOverviewChart();
-      }
+      // if (document.getElementById('PatientOverviewDoughnut')) {
+      //   this.patientOverviewChart = this.getPatientOverviewChart();
+      // }
       if (document.getElementById('OPDDrOverviewDoughnut')) {
         this.OPDDrOverviewDoughnut = this.getDrPatientOverviewChart();
       }
-      if (document.getElementById('OPDOverviewDoughnut')) {
-        // this.opdOverviewChart = this.getOPDOverviewChart();
+      if (document.getElementById('PatientOverviewDoughnut')) {
+        if (this.PatientOverviewDoughnut) {
+        this.PatientOverviewDoughnut.destroy();
+       }
+        this.PatientOverviewDoughnut = this.getPatientOverviewChart();
       }
     });
   }
@@ -100,18 +104,18 @@ export class NewDashboardComponent implements OnInit {
   segmentPopoverArrowClass = '';
   private segmentHoverTimeout: any;
   metrics = [
-    { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
-    { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
+    { label: 'Registrations', value: 0, color: 'cream', icon: 'user-plus' },
+    { label: 'Appointments', value: 0, color: 'cream', icon: 'calendar' },
     { label: 'Total Admission', value: 0, color: 'green', icon: 'assignment' },
-    { label: 'Discharge', value: 0, color: 'butter', icon: 'logout' },
-    { label: 'Total Company', value: 0, color: 'red', icon: 'ambulance' },
-    //   { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
-    // { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
-    // { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
-    // { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
+    { label: 'Discharge', value: 0, color: 'red', icon: 'logout' },
+    { label: 'Total Company', value: 0, color: 'cream', icon: 'ambulance' },
+      { label: 'Checked In', value: 0, color: 'cream', icon: 'check-circle' },
+    { label: 'Checked-Out', value: 0, color: 'cream', icon: 'logout' },
+    { label: 'Pending & Waiting', value: 0, color: 'cream', icon: 'hourglass' },
+    { label: 'ER to OP.', value: 0, color: 'cream', icon: 'ambulance' }
   ];
   financeSummary = [
-    { label: 'Today Revenue', value: 0, color: 'mint', icon: 'check-circle' },
+    { label: 'Today Revenue', value: 0, color: 'green', icon: 'check-circle' },
     { label: 'Pending Dues', value: 0, color: 'rose', icon: 'hourglass' },
     { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' },
     { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' }
@@ -156,30 +160,30 @@ export class NewDashboardComponent implements OnInit {
       let apiData = res && res.length ? res[0] : {};
       console.log(apiData)
       this.metrics = [
-        { label: 'Todays Registrations', value: apiData?.RegistrationCount || 0, color: 'lavender', icon: 'user-plus' },
-        { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'butter', icon: 'calendar' },
-        { label: 'Total Admission', value: apiData?.TotalAdmittedPatientCount || 0, color: 'green', icon: 'assignment' },
-        { label: 'Discharge', value: apiData?.TodayDischargePatient || 0, color: 'butter', icon: 'logout' },
-        { label: 'Total Company', value: apiData?.CompnayPatient || 0, color: 'red', icon: 'ambulance' },
+        { label: 'Registrations', value: apiData?.RegistrationCount || 0, color: 'cream', icon: 'user-plus' },
+        { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'cream', icon: 'calendar' },
+        { label: 'Total Admission', value: apiData?.TotalAdmittedPatientCount || 0, color: 'cream', icon: 'assignment' },
+        { label: 'Discharge', value: apiData?.TodayDischargePatient || 0, color: 'cream', icon: 'logout' },
+        { label: 'Total Company', value: apiData?.CompnayPatient || 0, color: 'cream', icon: 'ambulance' },
 
-        { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'mint', icon: 'check-circle' },
-        { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'logout' },
-        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' }, // If API has a matching field, set it.
-        { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'peach', icon: 'ambulance' }
+        { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'cream', icon: 'check-circle' },
+        { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'cream', icon: 'logout' },
+        { label: 'Pending & Waiting', value: 0, color: 'cream', icon: 'hourglass' }, // If API has a matching field, set it.
+        { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'cream', icon: 'ambulance' }
       ];
 
     }, err => {
       this.metrics = [
-        { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
-        { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
-        { label: 'Total Admission', value: 0, color: 'green', icon: 'assignment' },
-        { label: 'Discharge', value: 0, color: 'butter', icon: 'logout' },
-        { label: 'Total Company', value: 0, color: 'red', icon: 'ambulance' },
+        { label: 'Registrations', value: 0, color: 'cream', icon: 'user-plus' },
+        { label: 'Appointments', value: 0, color: 'cream', icon: 'calendar' },
+        { label: 'Total Admission', value: 0, color: 'cream', icon: 'assignment' },
+        { label: 'Discharge', value: 0, color: 'cream', icon: 'logout' },
+        { label: 'Total Company', value: 0, color: 'cream', icon: 'ambulance' },
 
-        { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
-        { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
-        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
-        { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
+        { label: 'Checked In', value: 0, color: 'cream', icon: 'check-circle' },
+        { label: 'Checked-Out', value: 0, color: 'cream', icon: 'logout' },
+        { label: 'Pending & Waiting', value: 0, color: 'cream', icon: 'hourglass' },
+        { label: 'ER to OP.', value: 0, color: 'cream', icon: 'ambulance' }
       ];
     });
   }
@@ -244,7 +248,8 @@ export class NewDashboardComponent implements OnInit {
 
       })
 
-  }
+
+         }
 
   getDashOPUserWiseRevenue() {
     const payload = {
@@ -625,32 +630,7 @@ export class NewDashboardComponent implements OnInit {
   // Chart.js doughnut chart with custom plugins
   async getPatientOverviewChart() {
 
-    // const centerTextPlugin = {
-    //   id: 'centerText',
-    //   beforeDraw: (chart: any) => {
-    //     const { width, height, ctx } = chart;
-    //     ctx.restore();
-
-    //     // Main percentage text
-    //     const percentText = `${this.registrationPercent}%`;
-    //     ctx.font = 'bold 36px Inter, sans-serif';
-    //     ctx.fillStyle = '#2c3e50';
-    //     ctx.textAlign = 'center';
-    //     ctx.textBaseline = 'middle';
-    //     const percentX = width / 2;
-    //     const percentY = height / 2 - 8;
-    //     ctx.fillText(percentText, percentX, percentY);
-
-    //     // Subtitle text
-    //     ctx.font = '12px Inter, sans-serif';
-    //     ctx.fillStyle = '#6c757d';
-    //     const subtitleY = height / 2 + 20;
-    //     ctx.fillText('New Registrations', percentX, subtitleY);
-
-    //     ctx.save();
-    //   }
-    // };
-
+  
     const dataLabelsPlugin = {
       id: 'dataLabels',
       afterDatasetDraw: (chart: any) => {
@@ -759,9 +739,7 @@ export class NewDashboardComponent implements OnInit {
       debugger
 
 
-      if (this.PatientOverviewDoughnut) {
-        this.PatientOverviewDoughnut.destroy();
-      }
+      
       console.log(apiData)
       // const chart = new Chart('PatientOverviewDoughnut', {
       return new Chart('PatientOverviewDoughnut', {
@@ -813,32 +791,6 @@ export class NewDashboardComponent implements OnInit {
       return []
     })
 
-
-    // Add additional event listeners
-    // chart.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-    //   const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
-    //   console.log('Canvas mousemove - elements:', elements.length);
-    //   if (elements.length > 0) {
-    //     const element = elements[0];
-    //     const index = element.index;
-    //     const dataset = chart.data.datasets[element.datasetIndex];
-    //     const data = {
-    //       name: this.registrationChartData[index].name,
-    //       value: this.registrationChartData[index].value,
-    //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
-    //       color: dataset.backgroundColor[index]
-    //     };
-    //     console.log('Canvas mousemove - showing popover for:', data);
-    //     this.showSegmentPopover(event, data);
-    //   } else {
-    //     this.hideSegmentPopover();
-    //   }
-    // });
-
-    // chart.canvas.addEventListener('mouseleave', () => {
-    //   console.log('Canvas mouseleave - hiding popover');
-    //   this.hideSegmentPopover();
-    // });
 
   }
 
@@ -1004,7 +956,7 @@ export class NewDashboardComponent implements OnInit {
     })
 
   }
-  public chargeList: drcountdata[] = [];
+   public chargeList: drcountdata[] = [];
 
   trendData: drcountdata[] = [];
   //  trendData1: Servicecharge[] = [];
@@ -1058,7 +1010,7 @@ debugger
 
       console.log(this.modalityData)
 
-      // if (this.modalityData)
+      if (this.modalityData)
       this.DrcountChart = this.getDrBarChart();
 
     });

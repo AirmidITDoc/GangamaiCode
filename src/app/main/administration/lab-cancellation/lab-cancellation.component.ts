@@ -48,16 +48,17 @@ export class LabCancellationComponent {
   isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
 
   @ViewChild('labCan', { static: false }) grid: AirmidTableComponent;
-  @ViewChild('labRefund', { static: false }) grid1: AirmidTableComponent;
+  @ViewChild('labRefund', { static: false }) grid2: AirmidTableComponent;
 
   @ViewChild('ColorCodeCancel') ColorCodeCancel!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplateIPRefundBill') actionButtonTemplateIPRefundBill!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.ColorCodeCancel;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
-    // this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundBill;
+    this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIPRefundBill;
   }
 
   constructor(
@@ -71,13 +72,13 @@ export class LabCancellationComponent {
   ) { }
 
   ngOnInit(): void {
-
     this.myFilterbillform = this._CancellationService.createUserFormGroup();
+    this.myFilterrefundform = this._CancellationService.myFilterrefundbrowseform();
     this.myFilterbillform.get('UnitId').setValue(this._loggedService.currentUserValue.user.unitId)
   }
 
   allopdColumns = [
-    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template},
+    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
     { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "PBill No", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -185,8 +186,8 @@ export class LabCancellationComponent {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      // this.refreshdatalist()
-
+      this.grid.bindGridData();
+      this.grid2.bindGridData();
     });
   }
 
@@ -200,7 +201,8 @@ export class LabCancellationComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
     });
-    this.grid1.bindGridData();
+    this.grid.bindGridData();
+    this.grid2.bindGridData();
   }
 
   OnSaveCancelBill() {
@@ -265,5 +267,118 @@ export class LabCancellationComponent {
       width: '50%',
       height: '45%'
     })
+  }
+
+  ////////////////////// lab refund ////////////////
+  myFilterrefundform: FormGroup;
+  rf_name: any = ""
+  rregNo: any = "0"
+  rl_name: any = ""
+  rPBillNo: any = "%"
+  rrefundNo = "0"
+  rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+  allOPRefundFilters = [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+    { fieldName: "RefundNo", fieldValue: "0", opType: OperatorComparer.Contains },
+    { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
+  ]
+
+  allOPRefundColumns = [
+    { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplateIPRefundBill
+    }
+  ]
+
+  gridConfig2: gridModel = {
+    apiUrl: "LabBrowseList/LabRefundList",
+    columnsList: this.allOPRefundColumns,
+    sortField: "BillDate",
+    sortOrder: 0,
+    filters: this.allOPRefundFilters
+  }
+
+  onChangeOPRefund() {
+    this.rfromDate = this.datePipe.transform(this.myFilterrefundform.get('fromDate').value, "yyyy-MM-dd")
+    this.rtoDate = this.datePipe.transform(this.myFilterrefundform.get('enddate').value, "yyyy-MM-dd")
+    this.rf_name = this.myFilterrefundform.get('FirstName').value + "%"
+    this.rl_name = this.myFilterrefundform.get('LastName').value + "%"
+    this.rregNo = this.myFilterrefundform.get('RegNo').value || "0"
+    this.UnitId = this.myFilterrefundform.get('UnitId').value || "0"
+    this.rrefundNo = this.myFilterrefundform.get('RefundNo').value || "0"
+    this.CompanyId2 = this.myFilterrefundform.get('CompanyId').value || "0"
+    this.getfilterdataOPRefund();
+  }
+
+  getfilterdataOPRefund() {
+    this.gridConfig2 = {
+      apiUrl: "LabBrowseList/LabRefundList",
+      columnsList: this.allOPRefundColumns,
+      sortField: "BillDate",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "F_Name", fieldValue: this.rf_name, opType: OperatorComparer.Contains },
+        { fieldName: "L_Name", fieldValue: this.rl_name, opType: OperatorComparer.Contains },
+        { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals },
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "RefundNo", fieldValue: this.rrefundNo, opType: OperatorComparer.Contains },
+        { fieldName: "CompanyId", fieldValue: this.CompanyId2, opType: OperatorComparer.Equals },
+      ]
+    }
+    this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference
+    this.grid2.bindGridData(); // Only refresh the OPRefund grid        
+
+  }
+
+  ClearfilterOPRefund(event) {
+    console.log(event)
+    if (event == 'FirstName')
+      this.myFilterrefundform.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myFilterrefundform.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this.myFilterrefundform.get('RegNo').setValue("")
+    if (event == 'RefundNo')
+      this.myFilterrefundform.get('RefundNo').setValue("")
+
+    this.onChangeOPRefund();
+  }
+
+  CompanyId2 = 0
+  ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.CompanyId2 = value.value
+    else
+      this.CompanyId2 = 0
+
+    this.onChangeOPRefund();
+  }
+
+  ListViewUnit3(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+
+    this.onChangeOPRefund();
   }
 }
