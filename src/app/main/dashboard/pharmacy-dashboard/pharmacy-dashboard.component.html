@@ -31,9 +31,98 @@
 
     <!-- CONTENT -->
     <div class="center" fusePerfectScrollbar>
-        <!-- Top Summary Cards - Matching Daily Dashboard Structure -->
+
+
         <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <!-- Weekly Revenue Card -->
+            <div fxFlex="100%">
+                <mat-card>
+                    <mat-card-content>
+        
+                        <div class="payment-details-header">
+                            <h3 class="section-title">Summary (Selected Period)</h3>
+                        </div>
+        
+                        <!-- 70% + 30% Layout -->
+                        <div fxLayout="row" fxLayoutGap="16px" style="margin-top:16px;">
+        
+                            <!-- LEFT SECTION (70%) -->
+                            <div fxFlex="70">
+        
+                                <div class="payment-cards" fxLayout="row wrap" fxLayoutGap="16px">
+        
+                                    <div fxFlex="140px" *ngFor="let payment of paymentModeData; let i = index">
+                                        <mat-card class="payment-card" [ngClass]="'payment-card-' + (i + 1)">
+                                            <mat-card-content>
+                                                <div class="payment-mode-name">{{payment.mode}}</div>
+                                                <div class="payment-amount">
+                                                    {{payment.amount | currency:'INR':'symbol':'1.0-0'}}
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+        
+                                </div>
+        
+                            </div>
+        
+                            <!-- RIGHT SECTION (30%) -->
+                            <div fxFlex="30">
+        
+                                <mat-card class="summary-extra-card">
+                                    <mat-card-content>
+        
+                                        <div class="extra-title">Other Details</div>
+        
+                                        <div class="extra-item">
+                                            Total Collection : ₹ 
+                                        </div>
+        
+                                        <div class="extra-item">
+                                            Pending Amount : ₹ 
+                                        </div>
+        
+                                        <div class="extra-item">
+                                            Refund Amount : ₹ 
+                                        </div>
+        
+                                    </mat-card-content>
+                                </mat-card>
+        
+                            </div>
+        
+                        </div>
+        
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+
+         <!-- Payment Summary Cards - AFFECTED by date filter -->
+        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="100%">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="payment-details-header">
+                            <h3 class="section-title">Payment Summary (Selected Period)</h3>
+                        </div>
+                        <div class="payment-cards" fxLayout="row wrap" fxLayoutGap="16px" style="margin-top: 16px;">
+                            <div fxFlex="140px" *ngFor="let payment of paymentModeData; let i = index">
+                                <mat-card class="payment-card" [ngClass]="'payment-card-' + (i + 1)">
+                                    <mat-card-content>
+                                        <div class="payment-mode-name">{{payment.mode}}</div>
+                                        <div class="payment-amount">{{payment.amount | currency:'INR':'symbol':'1.0-0'}}
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+
+        <!-- Top Summary Cards - Matching Daily Dashboard Structure -->
+        <!-- <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
             <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
                 <mat-card class="dashboard-stat-card">
                     <mat-card-content>
@@ -55,7 +144,6 @@
                 </mat-card>
             </div>
 
-            <!-- Monthly Revenue Card -->
             <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
                 <mat-card class="dashboard-stat-card">
                     <mat-card-content>
@@ -77,7 +165,6 @@
                 </mat-card>
             </div>
 
-            <!-- Total Orders Card -->
             <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
                 <mat-card class="dashboard-stat-card">
                     <mat-card-content>
@@ -98,7 +185,6 @@
                 </mat-card>
             </div>
 
-            <!-- Total Customers Card -->
             <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
                 <mat-card class="dashboard-stat-card">
                     <mat-card-content>
@@ -117,7 +203,7 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-        </div>
+        </div> -->
 
         <!-- Payment Mode & Top Medicines Section - AFFECTED by date filter -->
         <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
@@ -277,32 +363,5 @@
             </div>
         </div>
 
-        <!-- Payment Summary Cards - AFFECTED by date filter -->
-        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="100%">
-                <mat-card>
-                    <mat-card-content>
-                        <div class="payment-details-header">
-                            <h3 class="section-title">Payment Summary (Selected Period)</h3>
-                        </div>
-                        <div class="payment-cards" fxLayout="row wrap" fxLayoutGap="16px" style="margin-top: 16px;">
-                            <div fxFlex="calc(25% - 16px)" fxFlex.xs="calc(50% - 16px)" fxFlex.sm="calc(50% - 16px)"
-                                *ngFor="let payment of paymentModeData; let i = index">
-                                <mat-card class="payment-card" [ngClass]="'payment-card-' + (i + 1)">
-                                    <mat-card-content>
-                                        <div class="payment-mode-name">{{payment.mode}}</div>
-                                        <div class="payment-amount">{{payment.amount | currency:'INR':'symbol':'1.0-0'}}
-                                        </div>
-                                        <div class="payment-percentage">
-                                            {{ ((payment.amount / totalRevenue) * 100).toFixed(1) }}% of total
-                                        </div>
-                                    </mat-card-content>
-                                </mat-card>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
     </div>
 </div>
