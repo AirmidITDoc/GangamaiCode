@@ -581,17 +581,12 @@ export class PharmacyDashboardComponent implements OnInit {
         if (this.paymentModeChart) {
             this.paymentModeChart.destroy();
         }
-
-
         this.paymentModeData[0].amount = this.pharmacyData.paymentCountSummary['cashPay']
         this.paymentModeData[1].amount = this.pharmacyData.paymentCountSummary['cardPay']
         this.paymentModeData[2].amount = this.pharmacyData.paymentCountSummary['onlinePay']
-
         this.paymentModeData[3].amount = this.pharmacyData.paymentCountSummary['advUsed']
-
         this.paymentModeData[4].amount = this.pharmacyData.paymentCountSummary['tdsPay']
         this.paymentModeData[5].amount = this.pharmacyData.paymentCountSummary['wfPay']
-
         debugger
         return new Chart('paymentModeChart', {
             type: 'doughnut',
