@@ -569,6 +569,111 @@
         overflow-x: hidden !important;
     }
 
+     // Table Styles
+  .table-title {
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #283593;
+    margin: 16px 0 8px 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .table-designed {
+    width: 100%;
+  }
+
+  
+  .metrics-grid {
+    display: flex;
+    height: fit-content;
+    gap: 16px;
+    padding: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  /* (reverted) */
+
+  /* Prevent flex-items from overflowing and getting clipped */
+  .metrics-grid>.mat-card,
+  .charts-row>.mat-card,
+  .tables-row>.mat-card,
+  .finance-grid>.mat-card {
+    min-width: 0;
+  }
+
+  .metric-card {
+    flex: 1 1 140px;
+    /* fluid card width; 3-5 per row depending on space */
+    min-width: 140px;
+    max-width: 140px;
+    height: fit-content;
+    border-radius: 14px;
+    overflow: visible;
+    /* allow chart callouts/labels to be visible */
+  }
+
+    .metric-card1 {
+    flex: 1 1 180px;
+    /* fluid card width; 3-5 per row depending on space */
+    min-width: 180px;
+    max-width: 180px;
+    height: fit-content;
+    border-radius: 14px;
+    overflow: visible;
+    /* allow chart callouts/labels to be visible */
+  }
+
+  .metric-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .metric-icon {
+    width: 8px;
+    height: 8px;
+    border-radius: 1px;
+    display: grid;
+    place-items: left;
+    // margin-right: 12px;
+  }
+
+  .metric-icon .mat-icon {
+    font-size: 27px;
+    width: 8px;
+    height: 8px;
+    //  margin-right: 12px;
+  }
+
+  .metric-label {
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0.75;
+    color: #05253a;
+  }
+
+  .metric-value {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: purple;
+    padding-left: 10px;
+  }
+
+
+   .metric-value1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-left: 20px;
+      color: purple;
+  }
+
 }
 
 // end .pharmacy-dashboard-wrapper

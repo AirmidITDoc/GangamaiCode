@@ -418,4 +418,32 @@
 .red-icon {
   color: #f44336;     /* or #ef5350, #e53935, etc. */
 }
+
 }
+
+mat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+mat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.14) !important;
+}
+
+.field-label {
+  color: #616161;
+  font-weight: bold;
+}
+
+.field-value {
+  font-weight: bold;
+  color: #1976d2;
+  text-align: right;
+}
+
+.price {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+

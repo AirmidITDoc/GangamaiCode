@@ -5,6 +5,8 @@ import { fuseAnimations } from "@fuse/animations";
 import Chart, { Color } from 'chart.js/auto';
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { DashboardService } from "../dashboard.service";
+import { RecentReport } from "../radiology-dashboard/radiology-dashboard.component";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
     selector: "app-pharmacy-dashboard",
@@ -45,6 +47,30 @@ export class PharmacyDashboardComponent implements OnInit {
     public stockValueChart: any;
     public expiryChart: any;
     public categoryChart: any;
+
+    financeSummary = [
+        { label: 'Patients', value: 0, color: 'green', icon: 'user-plus' },
+        { label: 'Collection', value: 0, color: 'rose', icon: 'hourglass' },
+        { label: 'DiscAmount', value: 0, color: 'sky', icon: 'logout' },
+        { label: 'Revenue', value: 0, color: 'butter', icon: 'user-plus' },
+        { label: 'PaidAmount', value: 0, color: 'green', icon: 'check-circle' },
+        { label: 'CreditAmount', value: 0, color: 'rose', icon: 'hourglass' },
+        { label: 'RefundAmount', value: 0, color: 'sky', icon: 'logout' },
+        { label: 'AdvAmount', value: 0, color: 'butter', icon: 'user-plus' },
+        { label: 'Advused', value: 0, color: 'sky', icon: 'logout' },
+        { label: 'AdvRefund', value: 0, color: 'butter', icon: 'user-plus' }
+    ];
+
+    dspcategorycount = new MatTableDataSource<PharmacyRecentReport>();
+    dsCollectioncount = new MatTableDataSource<PharmacyRecentReport>();
+
+
+    recentReportsColumns: string[] = ['countPatient', 'totalCollection', 'discAmount', 'totalRevenue', 'paidAmount', 'creditAmount', 'refundAmount', 'advAmount', 'advusedAmount', 'advRefundAmount'];
+
+    pcategorycountColumns: string[] = ['opipType', 'countPatient', 'totalCollection', 'totalRevenue', 'paidAmount'
+        , 'creditAmount', 'refundAmount'
+    ];
+
 
     // Weekly revenue data (last 7 days) - NOT affected by date filter
     weeklyRevenueData = [
@@ -107,12 +133,13 @@ export class PharmacyDashboardComponent implements OnInit {
         { category: 'Capsules', count: 0 },
         { category: 'Ointments', count: 0 }
     ];
+    colorScheme = { domain: ['#6366f1', '#f59e0b', '#10b981', '#ec4899', '#3b82f6', '#f97316'] };
 
     // Expiring medicines - NOT affected by date filter
     expiryData = [
-        { period: 'This Month', count: 0 },
-        { period: 'Next Month', count: 0 },
-        { period: '3 Months', count: 0 }
+        { name: 'This Year', value: 0 },
+        { name: 'This Month', value: 0 },
+        { name: 'Count', value: 0 }
     ];
 
     // Stock value by category - NOT affected by date filter
@@ -168,9 +195,9 @@ export class PharmacyDashboardComponent implements OnInit {
 
     onGo(): void {
         // this.ngOnDestroy()
-       
+
         this.updateDateFilteredCharts()
-         this.getpharmacyData()
+        this.getpharmacyData()
     }
     modalityData = [
         { modality: '', opcount: 0 }
@@ -182,20 +209,102 @@ export class PharmacyDashboardComponent implements OnInit {
 
             this.dashboardService.getPharmacyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
                 this.pharmacyData = res;
+                debugger
+                this.dsCollectioncount.data[0] = this.pharmacyData.collectionCountSummary
+
+                this.dspcategorycount.data = this.pharmacyData.patientCategoryWiseSummary
+
+
                 console.log('Pharmacy Reports:', res);
 
                 if (this.pharmacyData) {
 
+ 
+                    this.financeSummary = [
+                        { label: 'Patients', value: this.pharmacyData.collectionCountSummary?.countPatient || 0, color: 'mint', icon: 'check-circle' },
+                        { label: 'Collection', value: this.pharmacyData.collectionCountSummary?.totalCollection || 0, color: 'rose', icon: 'hourglass' },
+                        { label: 'DiscAmount', value: this.pharmacyData.collectionCountSummary?.discAmount || 0, color: 'sky', icon: 'logout' },
+                        { label: 'Revenue', value: this.pharmacyData.collectionCountSummary?.totalRevenue || 0, color: 'butter', icon: 'user-plus' },
+                        { label: 'PaidAmount', value: this.pharmacyData.collectionCountSummary?.paidAmount || 0, color: 'butter', icon: 'user-plus' },
+
+                        { label: 'CreditAmount', value: this.pharmacyData.collectionCountSummary?.creditAmount || 0, color: 'mint', icon: 'check-circle' },
+                        { label: 'RefundAmount', value: this.pharmacyData.collectionCountSummary?.refundAmount || 0, color: 'rose', icon: 'hourglass' },
+                        { label: 'AdvAmount', value: this.pharmacyData.collectionCountSummary?.advAmount || 0, color: 'sky', icon: 'logout' },
+                        { label: 'Advused', value: this.pharmacyData.collectionCountSummary?.advusedAmount || 0, color: 'butter', icon: 'user-plus' },
+                        { label: 'AdvRefund', value: this.pharmacyData.collectionCountSummary?.advRefundAmount || 0, color: 'mint', icon: 'check-circle' },
+
+                    ];
+
+
+
                     if (this.pharmacyData.paymentCountSummary)
                         this.paymentModeChart = this.getPaymentDoughnutChart();
                     this.topMedicinesChart = this.getTopMedicinesChart();
-                    this.stockValueChart = this.getStockValueChart();
-                    this.expiryChart = this.getExpiryChart();
+                    // this.stockValueChart = this.getStockValueChart();
+                    if (this.pharmacyData.expiringMedicines)
+                        this.expiryChart = this.getExpiryChart();
 
                 }
-            });
+            })
 
     }
+
+
+    getExpiryChart() {
+        if (this.expiryChart) {
+            this.expiryChart.destroy();
+        }
+
+        // Pharmacy Exp Data
+        this.expiryData = [
+            { name: 'This Year', value: this.pharmacyData?.expiringMedicines[0]?.expYear ?? 0 },
+            { name: 'This Month', value: this.pharmacyData?.expiringMedicines[0]?.expMonth ?? 0 },
+            { name: 'Count', value: this.pharmacyData?.expiringMedicines[0]?.cnt ?? 0 }
+        ];
+        return new Chart('pathologyStatusPieChart', {
+            // this.pathologyStatusPieChart = new Chart('pathologyStatusPieChart', {
+
+            type: 'doughnut',
+            data: {
+                labels: this.expiryData.map(d => d.name),
+                datasets: [
+                    {
+                        backgroundColor: ['#497df7', '#28af28', '#ff5a8a'],
+                        data: this.expiryData.map(d => d.value),
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 12 },
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.parsed + ' tests';
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
+
     updateDateFilteredCharts(): void {
         // Update charts that are affected by date filter
         if (this.ordersChart) {
@@ -210,41 +319,43 @@ export class PharmacyDashboardComponent implements OnInit {
         if (this.topMedicinesChart) {
             this.topMedicinesChart.destroy();
         }
-
+        //  if (this.expiryData) {
+        //             this.expiryData.destroy();
+        //         }
         // Reinitialize the affected charts
-        setTimeout(() => {
-            if (document.getElementById('ordersChart')) {
-                this.ordersChart = this.getLineChartData(
-                    'ordersChart',
-                    '#d1efad',
-                    '#c5e999',
-                    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    [45, 52, 48, 65, 58, 72, 38],
-                    'Days',
-                    'Orders'
-                );
-            }
+        // setTimeout(() => {
+        //     if (document.getElementById('ordersChart')) {
+        //         this.ordersChart = this.getLineChartData(
+        //             'ordersChart',
+        //             '#d1efad',
+        //             '#c5e999',
+        //             ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        //             [45, 52, 48, 65, 58, 72, 38],
+        //             'Days',
+        //             'Orders'
+        //         );
+        //     }
 
-            if (document.getElementById('customersChart')) {
-                this.customersChart = this.getLineChartData(
-                    'customersChart',
-                    '#c5f1ef',
-                    '#a1e6e3',
-                    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    [28, 35, 32, 42, 38, 45, 25],
-                    'Days',
-                    'Customers'
-                );
-            }
+        //     if (document.getElementById('customersChart')) {
+        //         this.customersChart = this.getLineChartData(
+        //             'customersChart',
+        //             '#c5f1ef',
+        //             '#a1e6e3',
+        //             ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        //             [28, 35, 32, 42, 38, 45, 25],
+        //             'Days',
+        //             'Customers'
+        //         );
+        //     }
 
-            if (document.getElementById('paymentModeChart')) {
-                // this.paymentModeChart = this.getPaymentDoughnutChart();
-            }
+        //     if (document.getElementById('paymentModeChart')) {
+        //         // this.paymentModeChart = this.getPaymentDoughnutChart();
+        //     }
 
-            if (document.getElementById('topMedicinesChart')) {
-                // this.topMedicinesChart = this.getTopMedicinesChart();
-            }
-        }, 100);
+        //     if (document.getElementById('topMedicinesChart')) {
+        //         // this.topMedicinesChart = this.getTopMedicinesChart();
+        //     }
+        // }, 100);
     }
 
     initializeCharts(): void {
@@ -583,40 +694,6 @@ export class PharmacyDashboardComponent implements OnInit {
         });
     }
 
-    // Expiring Medicines Chart
-    getExpiryChart() {
-
-         if (this.expiryChart) {
-            this.expiryChart.destroy();
-        }
-
-
-        // this.expiryData[0].count = this.pharmacyData.paymentCountSummary['cashPay']
-        // this.expiryData[1].count = this.pharmacyData.paymentCountSummary['cardPay']
-        // this.expiryData[2].count = this.pharmacyData.paymentCountSummary['onlinePay']
-
-        
-        return new Chart('expiryChart', {
-            type: 'doughnut',
-            data: {
-                labels: this.pharmacyData.expiringMedicines.map(d => d.period),
-                datasets: [
-                    {
-                        backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e'],
-                        data: this.expiryData.map(d => d.count)
-                    }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    }
 
     // Medicine Categories Chart
     getCategoryChart() {
@@ -641,5 +718,56 @@ export class PharmacyDashboardComponent implements OnInit {
             }
         });
     }
+
+    getMatIcon(icon: string): string {
+        switch (icon) {
+            case 'assignment':
+                return 'assignment';
+            case 'user-plus':
+                return 'person_add';
+            case 'calendar':
+                return 'calendar_today';
+            case 'check-circle':
+                return 'check_circle';
+            case 'logout':
+                return 'exit_to_app';
+            case 'hourglass':
+                return 'hourglass_empty';
+            case 'ambulance':
+                return 'local_hospital';
+            default:
+                return 'dashboard';
+        }
+    }
 }
 
+
+export class PharmacyRecentReport {
+    opipType: any;
+    countPatient: any;
+    totalCollection: any;
+    discAmount: any;
+    totalRevenue: any;
+    paidAmount: any;
+    creditAmount: any;
+    refundAmount: any;
+    advAmount: any;
+    advusedAmount: any;
+    advRefundAmount: any;
+
+    constructor(report: any) {
+
+        this.opipType = report.opipType || '';
+
+        this.countPatient = report.countPatient || '';
+        this.totalCollection = report.totalCollection || '';
+        this.discAmount = report.discAmount || 0;
+        this.totalRevenue = report.totalRevenue || '';
+        this.paidAmount = report.paidAmount || '';
+        this.creditAmount = report.creditAmount || '';
+        this.refundAmount = report.refundAmount || 0;
+        this.advAmount = report.advAmount || '';
+        this.advusedAmount = report.advusedAmount || '';
+        this.advRefundAmount = report.advRefundAmount || '';
+    }
+}

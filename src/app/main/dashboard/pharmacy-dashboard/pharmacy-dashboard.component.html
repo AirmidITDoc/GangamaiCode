@@ -31,92 +31,22 @@
 
     <!-- CONTENT -->
     <div class="center" fusePerfectScrollbar>
-        <!-- Top Summary Cards - Matching Daily Dashboard Structure -->
-        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <!-- Weekly Revenue Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-1">
-                                <mat-icon style="color: white;">trending_up</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row">
-                                <div>Weekly Revenue |</div>
-                                <div [@animate]="{value:'*',params:{x:'50px'}}">
-                                    {{weeklyRevenue | currency:'INR':'symbol':'1.0-0'}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-chart-section">
-                            <canvas id="weeklyRevenueChart"></canvas>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-
-            <!-- Monthly Revenue Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-2">
-                                <mat-icon style="color: white;">monetization_on</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row">
-                                <div>Monthly Revenue |</div>
-                                <div [@animate]="{value:'*',params:{x:'50px'}}">
-                                    {{monthlyRevenue | currency:'INR':'symbol':'1.0-0'}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-chart-section">
-                            <canvas id="monthlyRevenueChart"></canvas>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-
-            <!-- Total Orders Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-3">
-                                <mat-icon style="color: white;">shopping_cart</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row">
-                                <div>Total Orders |</div>
-                                <div [@animate]="{value:'*',params:{x:'50px'}}">{{totalOrders}}</div>
-                            </div>
-                        </div>
-
-                        <div class="card-chart-section">
-                            <canvas id="ordersChart"></canvas>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-
-            <!-- Total Customers Card -->
-            <div fxFlex="calc(25% - 16px)" fxFlex.xs="100%" fxFlex.sm="calc(33% - 16px)">
-                <mat-card class="dashboard-stat-card">
-                    <mat-card-content>
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="card-header-section">
-                            <div class="icon-div icon-4">
-                                <mat-icon style="color: white;">people</mat-icon>
-                            </div>
-                            <div class="labels-div" fxLayout="row">
-                                <div>Total Customers |</div>
-                                <div [@animate]="{value:'*',params:{x:'50px'}}">{{totalCustomers}}</div>
-                            </div>
-                        </div>
-                        <div class="card-chart-section">
-                            <canvas id="customersChart"></canvas>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
+        
+          <div class="extra-sections">
+        <!-- Finance summary cards -->
+        <div class="metrics-grid finance-grid">
+          <mat-card *ngFor="let f of financeSummary" class="metric-card1 mat-elevation-z2 count-cards"
+            [ngClass]="'theme-' + f.color">
+            <mat-card-content class="metric-content">
+              <div class="metric-icon">
+                <mat-icon>{{ getMatIcon(f.icon) }}</mat-icon>
+              </div>
+              <div class="metric-text">
+                <div class="metric-label">{{ f.label }}</div>
+                <div class="metric-value1">{{ f.value }}</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
         </div>
 
         <!-- Payment Mode & Top Medicines Section - AFFECTED by date filter -->
@@ -152,44 +82,233 @@
             </div>
         </div>
 
-        <!-- Inventory & Stock Sections - NOT affected by date filter -->
-        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-            
-            <!-- <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-card class="chart-card">
+         <!-- patientCategoryWiseSummary Reports Table -->
+        <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-card>
                     <mat-card-content>
-                        <div class="chart-header">
-                            <h3 class="chart-title">Stock Value by Category</h3>
-                            <p class="chart-subtitle">Current inventory value distribution</p>
-                        </div>
-                        <div style="height: 320px;">
-                            <canvas id="stockValueChart"></canvas>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div> -->
+                        <div class="table-title">Patient Category Wise Summary</div>
+                        <hr>
+                        <mat-table matSort class="h-200 table-designed" [dataSource]="dspcategorycount"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-            <!-- Medicine Categories -->
-            <!-- <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-card class="chart-card">
-                    <mat-card-content>
-                        <div class="chart-header">
-                            <h3 class="chart-title">Medicine Categories Distribution</h3>
-                            <p class="chart-subtitle">Stock by medicine type</p>
-                        </div>
-                        <div style="height: 320px; display: flex; align-items: center; justify-content: center;">
-                            <canvas id="categoryChart"></canvas>
-                        </div>
+                            <ng-container matColumnDef="opipType">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Patient Type
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.opipType}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="countPatient">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Count Patient
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.countPatient}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totalCollection">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Total Collection
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.totalCollection}}
+                                </mat-cell>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="discAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Disc Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.discAmount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="totalRevenue">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Total Revenue
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.totalRevenue}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="paidAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Paid Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.paidAmount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="creditAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Credit Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.creditAmount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="refundAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Refund Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.refundAmount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    No data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="pcategorycountColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let report; columns: pcategorycountColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dspcategorycount!=null && dspcategorycount.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
                     </mat-card-content>
                 </mat-card>
-            </div> -->
+            </div>
         </div>
+        <!-- RecentCollection Reports Table -->
+        <!-- <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
+            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="table-title">Recent Collection Count Summary</div>
+                        <hr>
+                        <mat-table matSort class="h-200 table-designed" [dataSource]="dsCollectioncount"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                            <ng-container matColumnDef="countPatient">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Count Patient
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.countPatient}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totalCollection">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Total Collection
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.totalCollection}}
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="discAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Disc Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.discAmount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="totalRevenue">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Total Revenue
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.totalRevenue}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="paidAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Paid Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.paidAmount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="creditAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Credit Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.creditAmount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="refundAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Refund Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.refundAmount}}
+                                </mat-cell>
+                            </ng-container><ng-container matColumnDef="advAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Adv Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.advAmount}}
+                                </mat-cell>
+                            </ng-container><ng-container matColumnDef="advusedAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Adv usedAmount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.advusedAmount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="advRefundAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Adv Ref.Amount
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report">
+                                    {{report.advRefundAmount}}
+                                </mat-cell>
+                            </ng-container>
+
+
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    No data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="recentReportsColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let report; columns: recentReportsColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsCollectioncount!=null && dsCollectioncount.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div> -->
+
 
         <!-- Expiry & Quick Stats Section - NOT affected by date filter -->
         <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
             <!-- Expiring Medicines Chart -->
             <div fxFlex="calc(33.33% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-card class="chart-card">
+                <!--   <mat-card class="chart-card">
                     <mat-card-content>
                         <div class="chart-header">
                             <h3 class="chart-title">Expiring Medicines</h3>
@@ -199,8 +318,41 @@
                             <canvas id="expiryChart"></canvas>
                         </div>
                     </mat-card-content>
-                </mat-card>
+                </mat-card>-->
+
+                <!-- <mat-card class="chart-card mat-elevation-z2">
+                    <mat-card-header>
+                        <mat-card-title>Expiring Medicines</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="chart-content">
+                        <div class="chart-wrapper">
+                            <ngx-charts-bar-horizontal [results]="expiryData" [scheme]="colorScheme" [xAxis]="true"
+                                [yAxis]="true" [legend]="false" [showDataLabel]="true" [showXAxisLabel]="true"
+                                [showYAxisLabel]="true" [xAxisLabel]="'Medicine Count'" [yAxisLabel]="'Duration'"
+                                [showGridLines]="true" [roundDomains]="false">
+                            </ngx-charts-bar-horizontal>
+                        </div>
+                    </mat-card-content>
+                </mat-card> -->
+
+                 <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Expiring Medicines</h3>
+                                    <!-- <p class="chart-subtitle">Completed vs Pending vs Rejected</p> -->
+                                </div>
+                                <div
+                                    style="height: 350px; display: flex; align-items: center; justify-content: center;">
+                                    <canvas id="pathologyStatusPieChart"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
             </div>
+
+
+
 
             <!-- Quick Stats Cards -->
             <div fxFlex="calc(66.66% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
