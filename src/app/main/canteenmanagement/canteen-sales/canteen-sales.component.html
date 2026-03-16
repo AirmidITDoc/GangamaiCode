@@ -27,7 +27,7 @@
         <div class="example-sidenav-content">
             <div fxFlexFill fxLayout="column" fxLayoutGap="6px" class="h-100-p">
 
-                <mat-card class="p-12 overflow-auto" fxFlex>
+                <mat-card class="p-5 overflow-auto" fxFlex>
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <mat-tab-group class="dynamic-table-wrapper">
                             <!-- 1st tab -->
@@ -93,7 +93,7 @@
 
                                                 <div class="modal-card-container dynamic-table-wrapper">
                                                     <div fxLayout="row" fxLayoutGap="4px">
-                                                        <div fxFlex="60%" fxFlex.sm="60%" fxFlex.xs="100%"
+                                                        <div fxFlex="65%" fxFlex.sm="60%" fxFlex.xs="100%"
                                                             class="table-left">
 
                                                             <div fxLayout="column">
@@ -155,10 +155,10 @@
                                                                         <ng-container matColumnDef="ItemName">
                                                                             <mat-header-cell *matHeaderCellDef
                                                                                 mat-sort-header fxShow.gt-sm
-                                                                                class="w-310">
+                                                                                class="w-300">
                                                                                 ItemName </mat-header-cell>
                                                                             <mat-cell *matCellDef="let contact"
-                                                                                fxShow.gt-sm class="w-310">
+                                                                                fxShow.gt-sm class="w-300">
                                                                                 {{contact.itemName}}
                                                                             </mat-cell>
                                                                         </ng-container>
@@ -174,6 +174,20 @@
                                                                             </mat-cell>
                                                                         </ng-container>
 
+                                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                style="color: white;">
+                                                                                Action</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let element">
+                                                                                <button mat-icon-button
+                                                                                    (click)="getItemDetailList(element)"
+                                                                                    color="warn">
+                                                                                    <mat-icon>add</mat-icon>
+                                                                                </button>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+
                                                                         <ng-container matColumnDef="noData">
                                                                             <mat-footer-cell *matFooterCellDef
                                                                                 colspan="6">
@@ -186,9 +200,6 @@
                                                                                 colspan="6" style="display: none;">
                                                                             </mat-header-cell>
                                                                         </ng-container>
-
-
-
 
                                                                         <mat-header-row class="accent"
                                                                             *matHeaderRowDef="displayedColumns; sticky: true">
@@ -210,8 +221,9 @@
                                                                     <!-- // -->
                                                                     <!-- CARD VIEW -->
                                                                     <div *ngIf="viewMode === 'card'" fxFlex
-                                                                        fxLayout="column" style="min-height:0;width: fit-content;">
-                                                                        <airmid-card-view [data]="userList"
+                                                                        fxLayout="column"
+                                                                        style="min-height:0;width: fit-content;">
+                                                                        <!-- <airmid-card-view [data]="userList"
                                                                             [config]="cardConfig"
                                                                             [gridConfig]="gridConfigcard"
                                                                             (afterLoadData)="onAfterLoadData($event)"
@@ -221,16 +233,167 @@
                                                                             (action)="onCardAction($event)"
                                                                             
                                                                             (page)="onCardPage($event)">
-                                                                        </airmid-card-view>
+                                                                        </airmid-card-view> -->
+                                                                        <!-- // -->
+                                                                        <div class="airmid-cards-content"
+                                                                            fxFlex="1 1 auto">
+
+                                                                            <ng-container
+                                                                                *ngIf="dsItemTable1?.data && dsItemTable1?.data.length; else emptyState">
+
+                                                                                <div fxLayout="row wrap"
+                                                                                    fxLayoutAlign="start start"
+                                                                                    style="margin: 0 5px 5px;">
+
+                                                                                    <!-- One card per item – this *ngFor is the only loop we need -->
+                                                                                    <div fxLayout="row wrap"
+                                                                                        fxLayoutGap="12px grid"
+                                                                                        style="width:100%; padding: 0 8px;">
+                                                                                        <div *ngFor="let item of dsItemTable1.data"
+                                                                                            fxFlex="14"
+                                                                                            style="padding:0; box-sizing:border-box;">
+                                                                                            <mat-card
+                                                                                                class="mat-elevation-z3 mat-density-compact"
+                                                                                                style="width: 100%; height: 100%; border-radius: 12px; padding: 5px;">
+
+                                                                                                <!-- Your card content remains the same -->
+                                                                                                <mat-card-header>
+                                                                                                    <!-- <button mat-mini-fab
+                                                                                                        mat-card-avatar
+                                                                                                        color="primary"
+                                                                                                        tabindex="-1"
+                                                                                                        aria-label="Item avatar">
+                                                                                                        <mat-icon>restaurant</mat-icon>
+                                                                                                    </button> -->
+
+                                                                                                    <!-- <mat-icon style="color: rgb(246, 101, 246);">restaurant</mat-icon> -->
+                                                                                                    <span
+                                                                                                        style="font-size: 1.1rem; font-weight: bold;color: rgb(4, 22, 94);">
+                                                                                                        {{ item.itemName
+                                                                                                        || 'Unnamed
+                                                                                                        Item' }}
+                                                                                                    </span>
+                                                                                                    <div
+                                                                                                        style="font-size: 1.1rem; font-weight: bold;color: rgb(73, 5, 87);">
+                                                                                                        | {{
+                                                                                                        item.price
+                                                                                                        |
+                                                                                                        currency:'INR':'symbol-narrow':'1.0-2'
+                                                                                                        || '—'
+                                                                                                        }}
+                                                                                                    </div>
+                                                                                                </mat-card-header>
+
+                                                                                                <mat-divider
+                                                                                                    inset></mat-divider>
+
+                                                                                                <!-- <mat-card-content
+                                                                                                    style="padding: 10px 0; font-size: 0.95rem;">
+                                                                                                    <div fxLayout="column"
+                                                                                                        style="gap: 10px;">
+                                                                                                        <div fxLayout="row"
+                                                                                                            fxLayoutAlign="space-between center">
+                                                                                                            <span
+                                                                                                                class="field-label">Item
+                                                                                                                </span>
+                                                                                                            <span
+                                                                                                                class="field-value">{{
+                                                                                                                item.itemName
+                                                                                                                || '—'
+                                                                                                                }}</span>
+
+                                                                                                                 <span
+                                                                                                                class="field-label">| Price</span>
+                                                                                                            <span
+                                                                                                                class="field-value price">
+                                                                                                                {{
+                                                                                                                item.price
+                                                                                                                |
+                                                                                                                currency:'INR':'symbol-narrow':'1.0-2'
+                                                                                                                || '—'
+                                                                                                                }}
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                        <div fxLayout="row"
+                                                                                                            fxLayoutAlign="space-between center">
+                                                                                                            <span
+                                                                                                                class="field-label">Price</span>
+                                                                                                            <span
+                                                                                                                class="field-value price">
+                                                                                                                {{
+                                                                                                                item.price
+                                                                                                                |
+                                                                                                                currency:'INR':'symbol-narrow':'1.0-2'
+                                                                                                                || '—'
+                                                                                                                }}
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                      
+                                                                                                    </div>
+                                                                                                </mat-card-content> -->
+
+                                                                                                <mat-card-actions
+                                                                                                    fxLayout="row"
+                                                                                                    fxLayoutAlign="end center"
+                                                                                                    fxLayoutGap="2px"
+                                                                                                    style="padding: 2px 2px 2px 2px; margin-top: 5px;">
+                                                                                                    <!-- push to bottom if card has flex -->
+
+                                                                                                    <!-- Example: Edit button -->
+                                                                                                    <button
+                                                                                                        mat-icon-button
+                                                                                                        color="primary"
+                                                                                                        matTooltip="Add Item"
+                                                                                                        (click)="onEdit(item)">
+                                                                                                        <mat-icon>add</mat-icon>
+                                                                                                    </button>
+
+                                                                                                    <!-- Example: Delete button -->
+                                                                                                    <!-- <button
+                                                                                                        mat-icon-button
+                                                                                                        color="warn"
+                                                                                                        matTooltip="Delete Item"
+                                                                                                        (click)="deleteItem(item)">
+                                                                                                        <mat-icon>delete_outline</mat-icon>
+                                                                                                    </button> -->
+
+
+
+                                                                                                </mat-card-actions>
+
+                                                                                            </mat-card>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </ng-container>
+
+                                                                            <!-- Empty state -->
+                                                                            <ng-template #emptyState>
+                                                                                <div fxLayout="column"
+                                                                                    fxLayoutAlign="center center"
+                                                                                    style="min-height: 220px; color: #9e9e9e; text-align: center;">
+                                                                                    <mat-icon
+                                                                                        style="font-size: 64px; width: 64px; height: 64px; margin-bottom: 16px;">inventory_2</mat-icon>
+                                                                                    <p style="margin: 8px 0;">No items
+                                                                                        available</p>
+                                                                                    <small>Check back later or add new
+                                                                                        items</small>
+                                                                                </div>
+                                                                            </ng-template>
+
+                                                                        </div>
+
+                                                                        <!-- // -->
                                                                     </div>
                                                                     <!-- // -->
                                                                 </div>
-<!-- (export)="onCardExport($event)"? -->
+                                                                <!-- (export)="onCardExport($event)"? -->
                                                             </div>
                                                         </div>
 
                                                         <!-- ?//? -->
-                                                        <div fxFlex="40%" fxFlex.sm="60%" fxFlex.xs="100%"
+                                                        <div fxFlex="35%" fxFlex.sm="60%" fxFlex.xs="100%"
                                                             class="table-left">
 
                                                             <div style="height: 370px;">

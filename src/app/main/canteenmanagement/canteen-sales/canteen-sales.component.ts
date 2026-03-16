@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, HostBinding, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostBinding, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -52,6 +52,10 @@ export class CanteenSalesComponent implements OnInit {
     ]
   };
 
+  @Input() config: any;
+
+  
+
   // ward data
   @ViewChild('BillGrid', { static: false }) grid: AirmidTableComponent;
   @ViewChild('WardGrid', { static: false }) wardgrid: AirmidTableComponent;
@@ -62,6 +66,11 @@ export class CanteenSalesComponent implements OnInit {
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  
+  }
   allBillfilters = [
     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
@@ -112,8 +121,11 @@ export class CanteenSalesComponent implements OnInit {
 
   ];
   allcardcolumns = [{ heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-  { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 }
-
+  { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+//  {
+//       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+//       template: this.actionButtonTemplate
+//     } 
   ]
 
   gridConfigcard: gridModel = {
@@ -167,8 +179,8 @@ export class CanteenSalesComponent implements OnInit {
   displayedColumns = [
     'Code',
     'ItemName',
-    'Price'
-    //'Qty'
+    'Price',
+    'Action'
   ];
   displayedColumns1 = [
     'ItemName',
@@ -290,7 +302,7 @@ export class CanteenSalesComponent implements OnInit {
   }
 
   Save() {
-    console.log(this.CanteenForm.value)
+    // console.log(this.CanteenForm.value)
 
     if (this._CanteenmanagementService.userFormGroup.get('CustomerName').value == '') {
       this.toastr.warning('Please select a Customer Name .', 'Warning!', {
@@ -311,17 +323,17 @@ export class CanteenSalesComponent implements OnInit {
     });
 
 
-    this.CanteenForm.get("date").setValue(this.datePipe.transform(this.dateTimeObj, "yyyy-MM-dd"))
-    this.CanteenForm.get("time").setValue(this.dateTimeObj)
+    this._CanteenmanagementService.userFormGroup.get("date").setValue(this.datePipe.transform(this.dateTimeObj, "yyyy-MM-dd"))
+    this._CanteenmanagementService.userFormGroup.get("time").setValue(this.dateTimeObj)
 
-    this.CanteenForm.get("wardId").setValue(this.RoomId)
-    this.CanteenForm.get("opIpId").setValue(this._CanteenmanagementService.userFormGroup.get('Code').value)
+    this._CanteenmanagementService.userFormGroup.get("wardId").setValue(this.RoomId)
+    this._CanteenmanagementService.userFormGroup.get("opIpId").setValue(this._CanteenmanagementService.userFormGroup.get('Code').value)
     // this.CanteenForm.get("tCanteenRequestDetails.totalAmount").setValue(this._CanteenmanagementService.userFormGroup.get('TotalAmount').value)
 
-    console.log(this.CanteenForm.value)
+    console.log(this._CanteenmanagementService.userFormGroup.value)
 
 
-    this._CanteenmanagementService.canteenrequestSave(this.CanteenForm.value).subscribe(response => {
+    this._CanteenmanagementService.canteenrequestSave(this._CanteenmanagementService.userFormGroup.value).subscribe(response => {
       //  this.viewgetLabrequestReportPdf(response)
       // this.d.closeAll();
 
@@ -709,9 +721,17 @@ export class CanteenSalesComponent implements OnInit {
     } else if (event.action === 'delete') {
     }
   }
-  onEdit(element) { }
+  onEdit(element) {
+    console.log(element)
+    this.addChargList(element)
+   }
 
   //
+@Output() action = new EventEmitter<{ action: string, item: any }>();
+  onAction(action: string, item: any) {
+  this.action.emit({ action, item });
+}
+
   getfilterdata() {
 
     debugger
