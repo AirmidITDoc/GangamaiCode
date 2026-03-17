@@ -6,6 +6,7 @@ import Chart, { Color } from 'chart.js/auto';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from "../dashboard.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { SignalRService } from "app/core/services/signalr.service";
 
 @Component({
     selector: 'app-radiology-dashboard',
@@ -106,11 +107,11 @@ export class RadiologyDashboardComponent implements OnInit {
 
 
     // Pathology Table Column Definitions
-    pathologyReportsColumns: string[] = ['Date','PatientName', 'TestName', 'Pathologist','Status' ];
+    pathologyReportsColumns: string[] = ['Date', 'PatientName', 'TestName', 'Pathologist', 'Status'];
     pathologyTopTestsColumns: string[] = ['TestName', 'Count'];
     pathologistWorkloadColumns: string[] = ['PathologistName', 'TestsReported'];
     // Radiology Table Column Definitions
-    recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Radiologist','Status'];
+    recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Radiologist', 'Status'];
     topTestsColumns: string[] = ['TestName', 'Count'];
     radiologistPerformanceColumns: string[] = ['RadiologistName', 'ReportsCompleted'];
     // Pathology Table Data Sources
@@ -136,6 +137,7 @@ export class RadiologyDashboardComponent implements OnInit {
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder, public _accountServices: AuthenticationService,
         private dashboardService: DashboardService,
+        private signalRService: SignalRService
     ) {
 
         // this.initializeDateRange();
@@ -143,7 +145,13 @@ export class RadiologyDashboardComponent implements OnInit {
     pathologyData: any;
     RadiologyData: any;
     ngOnInit(): void {
-
+        this.signalRService.startConnection();
+        this.signalRService.addReceiveInvestigationDashboardListener((data, user) => {
+            if (data == "Investigation_Bill") {
+                var old = this.metrics.find(x => x.label == "Total Report");
+                this.metrics.find(x => x.label == "Total Report").value = old.value + user.BillCount;
+            }
+        });
         this.myFilterform = this.dashboardService.filterFormfinance();
 
 
@@ -315,7 +323,7 @@ export class RadiologyDashboardComponent implements OnInit {
         this.completedReports = 0;
         this.pendingReports = 0;
         this.cancelledScans = 0;
-        
+
         this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
             this.dsRadiologyCount.data = res || [];
             this.dsRadiologyRecentReports.data = res || [];
@@ -345,7 +353,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     }
                 });
             }
-         
+
         });
     }
 
@@ -574,7 +582,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getpathologyTotalTestsChart() {
 
-        
+
         if (this.pathologyData.weeklyTestReport) {
             this.bartotalTests = this.pathologyData.weeklyTestReport.map(day => day.totalTests);
         }
@@ -591,7 +599,7 @@ export class RadiologyDashboardComponent implements OnInit {
     barCompletTests = []
     getpathologyCompletedChart() {
 
-        
+
         if (this.pathologyData.weeklyTestReport) {
             this.barCompletTests = this.pathologyData.weeklyTestReport.map(day => day.completedReports);
         }
@@ -609,7 +617,7 @@ export class RadiologyDashboardComponent implements OnInit {
     barpendingTests = []
     getpathologyPendingChart() {
 
-        
+
         if (this.pathologyData.weeklyTestReport) {
             this.barpendingTests = this.pathologyData.weeklyTestReport.map(day => day.pendingReports);
         }
@@ -627,7 +635,7 @@ export class RadiologyDashboardComponent implements OnInit {
     barrejectedTests = []
     getpathologyRejectedChart() {
 
-        
+
         if (this.pathologyData.weeklyTestReport) {
             this.barrejectedTests = this.pathologyData.weeklyTestReport.map(day => day.cancelledReports);
         }
@@ -851,7 +859,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyTotalTestsChart() {
 
-        
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobartotalTests = this.RadiologyData.radWeeklyTestReport.map(day => day.totalTests);
         }
@@ -869,7 +877,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyCompletTestsChart() {
 
-        
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarcomplTests = this.RadiologyData.radWeeklyTestReport.map(day => day.completedReports);
         }
@@ -888,7 +896,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyPendingTestsChart() {
 
-        
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarpendingTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
         }
@@ -907,7 +915,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyCancleTestsChart() {
 
-        
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarcancleTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
         }
@@ -1026,7 +1034,7 @@ export class RadiologyDashboardComponent implements OnInit {
             this.RadiologyVolumeTrendChart.destroy();
         }
         // this.RadiologyVolumeTrendChart = new Chart('RadiologyVolumeTrendChart', {
-debugger
+        debugger
         return new Chart('RadiologyVolumeTrendChart', {
             type: 'line',
             data: {
