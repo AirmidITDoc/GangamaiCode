@@ -91,6 +91,7 @@ export class TestFormMasterComponent implements OnInit {
             this.TemplateId = this.registerObj.TemplateId;
             this.isActive = this.registerObj.isActive;
             this.vsuggestionNote = this.registerObj?.suggestionNote || '';
+            this.ServiceID=this.registerObj.serviceID;
 
 
             if (this.registerObj.isTemplateTest === "0" && !this.registerObj.isSubTest) {

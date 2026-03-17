@@ -800,7 +800,7 @@ export class NewLabresultEntryComponent {
       unitId: [item.UnitId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       normalRange: [item.NormalRange || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       printOrder: [this.pathologyResultArray.length + 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      pisNumeric: [item.ParaIsNumeric || item.PIsNumeric, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pisNumeric: [item.ParaIsNumeric || item.PIsNumeric || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdipdid: [item.OPD_IPD_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opdipdtype: [4, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       categoryName: [item.CategoryName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],

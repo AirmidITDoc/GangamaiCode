@@ -41,6 +41,7 @@ import { HomeCollectionComponent } from './home-collection/home-collection.compo
 import { LabRadiologyComponent } from './lab-radiology/lab-radiology.component';
 import { LabRadApprovallistComponent } from './lab-rad-approvallist/lab-rad-approvallist.component';
 import { DiscountApprovalComponent } from './discount-approval/discount-approval.component';
+import { LabAppointmentComponent } from './lab-appointment/lab-appointment.component';
 
 
 const appRoutes: Routes = [
@@ -119,7 +120,8 @@ const appRoutes: Routes = [
     HomeCollectionComponent,
     LabRadiologyComponent,
     LabRadApprovallistComponent,
-    DiscountApprovalComponent
+    DiscountApprovalComponent,
+    LabAppointmentComponent
   ],
   imports: [
     RouterModule.forChild(appRoutes),
