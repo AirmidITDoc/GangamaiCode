@@ -33,8 +33,8 @@
   .metrics-grid {
     display: flex;
     height: fit-content;
-    gap: 16px;
-    padding: 10px;
+    gap: 8px;
+    padding: 8px;
     flex-wrap: wrap;
     width: 100%;
     align-items: stretch;
@@ -62,16 +62,16 @@
     /* allow chart callouts/labels to be visible */
   }
 
-    .metric-card1 {
-    flex: 1 1 200px;
-    /* fluid card width; 3-5 per row depending on space */
-    min-width: 200px;
-    max-width: 200px;
-    height: fit-content;
-    border-radius: 14px;
-    overflow: visible;
-    /* allow chart callouts/labels to be visible */
-  }
+  // .metric-card1 {
+  //   flex: 1 1 200px;
+  //   /* fluid card width; 3-5 per row depending on space */
+  //   min-width: 200px;
+  //   max-width: 200px;
+  //   height: fit-content;
+  //   border-radius: 14px;
+  //   overflow: visible;
+  //   /* allow chart callouts/labels to be visible */
+  // }
 
   .metric-content {
     display: flex;
@@ -107,12 +107,12 @@
 
 
    .metric-value1 {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
     line-height: 1.1;
     margin-left: 20px;
+      color: purple;
   }
-
 
   /* Soft color themes */
   .theme-lavender {
@@ -190,14 +190,14 @@
   }
 
   .chart-card {
-    flex: 1 1 420px;
-    min-width: 280px;
+    // flex: 1 1 450px;
+    min-width: 80px;
     overflow: hidden;
     /* keep legend within card bounds */
   }
 
   .chart-content {
-    padding: 16px !important;
+    padding: 5px !important;
     overflow: hidden;
   }
 
@@ -350,6 +350,34 @@
     }
   }
 
+  :host ::ng-deep .chart-wrapper ngx-charts-bar-vertical {
+    width: 100% !important;
+    height: 100% !important;
+
+    .ngx-charts {
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden;
+    }
+
+    svg {
+      width: 100% !important;
+      height: 100% !important;
+      overflow: visible;
+    }
+
+    /* Ensure data labels are positioned correctly */
+    .bar-label-text {
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    /* Add padding to chart area to prevent label cutoff */
+    .chart {
+      margin-right: 20px;
+      margin-left: 10px;
+    }
+  }
   /* Override Angular Material card overflow for metric cards only */
   :host ::ng-deep .metric-card.mat-card {
     overflow: visible;
@@ -381,9 +409,9 @@
   }
 
   /* Prevent unexpected overflow from long labels/values */
-  .metric-content {
-    flex-wrap: wrap;
-  }
+  // .metric-content {
+  //   flex-wrap: wrap;
+  // }
 
   .metric-label,
   .metric-value {
@@ -482,16 +510,16 @@
     .legend-mini {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 5px;
       justify-content: center;
       margin-top: 12px;
-      padding: 0 8px;
+      padding: 0 4px;
     }
 
     .legend-item {
       display: flex;
       align-items: center;
-      font-size: 10px;
+      font-size: 5px;
       font-weight: 600;
       color: #555;
       gap: 5px;
@@ -870,7 +898,8 @@
       }
     }
   }
-.chart-header {
+
+  .chart-header {
     margin-bottom: 16px;
     text-align: center;
 
@@ -892,6 +921,136 @@
       text-align: center;
     }
   }
+
+
+  //new rs
+  .chart-container {
+    height: 380px;
+    min-height: 320px;
+    width: 100%;
+     padding-right: 10px;
+    
+  }
+
+  /* Optional: make sure mat-card-content doesn't fight the height */
+  mat-card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // .chart-container ngx-charts-bar-vertical {
+  //   display: block;
+  //   height: 100% !important;
+  //   width: 100% !important;
+  //   padding-right: 10px;
+  // }
+
+  .metric-card1 {
+    flex: 1 1 140px;
+    /* fluid card width; 3-5 per row depending on space */
+    min-width: 140px;
+    max-width: 140px;
+    height: fit-content;
+    border-radius: 14px;
+    overflow: visible;
+    background-color: #e6f4ff;
+    /* allow chart callouts/labels to be visible */
+  }
+
+  //age
+//   .chart-container {
+//   height: 360px;           /* adjust to taste: 320–420px usually ideal for 5 bars */
+//   min-height: 300px;
+//   width: 100%;
+// }
+
+
+
+/* Optional: better label readability */
+:host ::ng-deep .bar-label {
+  font-size: 13px !important;
+  font-weight: 500;
+}
+
+//pay
+  // Payment Details Section
+    .payment-details-header {
+        padding-bottom: 6px;
+        border-bottom: 2px solid #e9ecef;
+        text-align: center;
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #283593;
+            margin: 8px 0;
+            padding: 0;
+        }
+    }
+
+    .payment-cards {
+        margin-top: 16px;
+    }
+
+    .payment-card {
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        background: #ffffff;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        mat-card-content {
+            padding: 16px !important;
+            text-align: center;
+        }
+
+        .payment-mode-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6c757d;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .payment-amount {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .payment-percentage {
+            font-size: 11px;
+            color: #28a745;
+            font-weight: 500;
+        }
+    }
+
+    // Color coding for payment cards
+    .payment-card-1 .payment-amount {
+        color: #FF3784;
+    }
+
+    .payment-card-2 .payment-amount {
+        color: #36A2EB;
+    }
+
+    .payment-card-3 .payment-amount {
+        color: #4BC0C0;
+    }
+
+    .payment-card-4 .payment-amount {
+        color: #F77825;
+    }
+
+    
 }
 
 // end .new-dashboard-section

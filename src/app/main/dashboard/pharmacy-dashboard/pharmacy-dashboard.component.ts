@@ -261,8 +261,8 @@ export class PharmacyDashboardComponent implements OnInit {
             { name: 'This Month', value: this.pharmacyData?.expiringMedicines[0]?.expMonth ?? 0 },
             { name: 'Count', value: this.pharmacyData?.expiringMedicines[0]?.cnt ?? 0 }
         ];
-        return new Chart('pathologyStatusPieChart', {
-            // this.pathologyStatusPieChart = new Chart('pathologyStatusPieChart', {
+        return new Chart('MexpiryStatusPieChart', {
+            // this.MexpiryStatusPieChart = new Chart('MexpiryStatusPieChart', {
 
             type: 'doughnut',
             data: {

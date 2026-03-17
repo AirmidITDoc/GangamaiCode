@@ -222,6 +222,7 @@
     }
   }
 
+
   .chart-header {
     margin-bottom: 16px;
     text-align: center;
@@ -292,6 +293,18 @@
     color: #721c24;
     font-weight: 500;
     font-size: 12px;
+  }
+
+    .metric-card1 {
+    flex: 1 1 140px;
+    /* fluid card width; 3-5 per row depending on space */
+    min-width: 140px;
+    max-width: 140px;
+    height: fit-content;
+    border-radius: 14px;
+    overflow: visible;
+    background-color: #e6f4ff;
+    /* allow chart callouts/labels to be visible */
   }
 
   // Equipment Utilization Cards
@@ -1963,6 +1976,14 @@
     .sample-stat-count {
       color: #ff5a8a;
     }
+  }
+
+    .metric-value1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-left: 20px;
+      color: purple;
   }
 }
 

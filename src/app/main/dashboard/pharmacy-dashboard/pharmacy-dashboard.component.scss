@@ -56,7 +56,7 @@
 
     // Dashboard Container - Matching Daily Dashboard
     .dashboard-container {
-        padding: 12px;
+        padding: 10px;
     }
 
     // Gap utility
@@ -589,8 +589,8 @@
   .metrics-grid {
     display: flex;
     height: fit-content;
-    gap: 16px;
-    padding: 10px;
+    gap: 10px;
+    padding: 5px;
     flex-wrap: wrap;
     width: 100%;
     align-items: stretch;
@@ -619,10 +619,10 @@
   }
 
     .metric-card1 {
-    flex: 1 1 180px;
+    flex: 1 1 150px;
     /* fluid card width; 3-5 per row depending on space */
-    min-width: 180px;
-    max-width: 180px;
+    min-width: 150px;
+    max-width: 150px;
     height: fit-content;
     border-radius: 14px;
     overflow: visible;
@@ -667,11 +667,26 @@
 
 
    .metric-value1 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     line-height: 1.1;
-    margin-left: 20px;
+    margin-left: 10px;
       color: purple;
+  }
+
+  .chart-container {
+    height: 380px;
+    min-height: 320px;
+    width: 100%;
+     padding-right: 10px;
+    
+  }
+
+  /* Optional: make sure mat-card-content doesn't fight the height */
+  mat-card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
 }

@@ -161,6 +161,14 @@ export class LabFinancialDashboardComponent {
   // ]);
 
 
+
+  metrics = [
+    { label: 'Todays Registration', value: 0, color: 'green', icon: 'user-plus' },
+    { label: 'Todays Sales', value: 0, color: 'rose', icon: 'hourglass' },
+    { label: 'Todays Test', value: 0, color: 'sky', icon: 'logout' },
+    { label: 'Business', value: 0, color: 'butter', icon: 'user-plus' }
+  ];
+
   cpTotalPatient = 8;
   cpTotalSales = 14196.0;
 
@@ -556,6 +564,16 @@ export class LabFinancialDashboardComponent {
       // this.pendingTests = 0;
       this.labBusinessLabel = 'Lab Business';
 
+
+       this.metrics = [
+    { label: 'Todays Registration', value: this.Billdetaildatasource.data[0]['patientCount'] ?? 0, color: 'green', icon: 'user-plus' },
+    { label: 'Todays Sales', value: this.Billdetaildatasource.data[0]['totalRevenue']??0, color: 'rose', icon: 'hourglass' },
+    { label: 'Todays Test', value: 0, color: 'sky', icon: 'logout' },
+    { label: 'Business', value: 0, color: 'butter', icon: 'user-plus' }
+  ];
+
+
+
       this.paydata = [];
 
       // if (this.paymentModeChart) {
@@ -646,6 +664,28 @@ export class LabFinancialDashboardComponent {
       this.packages.data = this.Financedata.pathologyWorkloads;
     });
   }
+
+    getMatIcon(icon: string): string {
+    switch (icon) {
+      case 'assignment':
+        return 'assignment';
+      case 'user-plus':
+        return 'person_add';
+      case 'calendar':
+        return 'calendar_today';
+      case 'check-circle':
+        return 'check_circle';
+      case 'logout':
+        return 'exit_to_app';
+      case 'hourglass':
+        return 'hourglass_empty';
+      case 'ambulance':
+        return 'local_hospital';
+      default:
+        return 'dashboard';
+    }
+  }
+  
 }
 
 export class WardCount {

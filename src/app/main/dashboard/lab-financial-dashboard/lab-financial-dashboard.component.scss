@@ -648,4 +648,90 @@ ngx-charts-bar-vertical {
   &:hover {
     background: #aaa;
   }
+  //rs
+  
+  .metrics-grid {
+    display: flex;
+    height: fit-content;
+    gap: 8px;
+    padding: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  /* (reverted) */
+
+  /* Prevent flex-items from overflowing and getting clipped */
+  .metrics-grid>.mat-card,
+  .charts-row>.mat-card,
+  .tables-row>.mat-card,
+  .finance-grid>.mat-card {
+    min-width: 0;
+  }
+
+  .metric-card {
+    flex: 1 1 140px;
+    /* fluid card width; 3-5 per row depending on space */
+    min-width: 140px;
+    max-width: 140px;
+    height: fit-content;
+    border-radius: 14px;
+    overflow: visible;
+    /* allow chart callouts/labels to be visible */
+  }
+
+  // .metric-card1 {
+  //   flex: 1 1 200px;
+  //   /* fluid card width; 3-5 per row depending on space */
+  //   min-width: 200px;
+  //   max-width: 200px;
+  //   height: fit-content;
+  //   border-radius: 14px;
+  //   overflow: visible;
+  //   /* allow chart callouts/labels to be visible */
+  // }
+
+  .metric-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .metric-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 1px;
+    display: grid;
+    place-items: center;
+    margin-right: 6px;
+  }
+
+  .metric-icon .mat-icon {
+    font-size: 32px;
+    width: 10px;
+    height: 10px;
+  }
+
+  .metric-label {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.75;
+  }
+
+  .metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+
+   .metric-value1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-left: 20px;
+      color: purple;
+  }
+
 }
