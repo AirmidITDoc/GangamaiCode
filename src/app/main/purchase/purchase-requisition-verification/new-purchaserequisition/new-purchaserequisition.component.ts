@@ -98,13 +98,11 @@ export class NewPurchaserequisitionComponent {
       this.PrequiSaveFrom.get("toStoreId").setValue(this.registerObj.toStoreId)
       this.PrequiSaveFrom.get("comments").setValue(this.registerObj.remarks)
 
-
-      if (this.registerObj.priority == 'True') {
-        this.status = '1'
+debugger
+      if (this.registerObj.priority == true) { 
         this.PrequiSaveFrom.get('priority').setValue(true)
       }
-      else {
-        this.status = '0'
+      else { 
         this.PrequiSaveFrom.get('priority').setValue(false)
       }
       this.getupdateList(this.registerObj.purchaseRequisitionId);
@@ -305,11 +303,11 @@ export class NewPurchaserequisitionComponent {
       this.PrequidetailArray.push(this.createdetailInsert(item));
     });
 
-
-    if (this.status == "1")
-      this.PrequiSaveFrom.get('priority').setValue(true)
-    else
-      this.PrequiSaveFrom.get('priority').setValue(false)
+debugger
+    // if (this.status == "1")
+    //   this.PrequiSaveFrom.get('priority').setValue(true)
+    // else
+    //   this.PrequiSaveFrom.get('priority').setValue(false)
 
     if (!this.PrequiSaveFrom.invalid) {
       this.PrequiSaveFrom.get("purchaseRequisitionId").setValue(this.purchaseRequisitionId)

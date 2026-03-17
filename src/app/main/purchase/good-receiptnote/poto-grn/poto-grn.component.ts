@@ -176,7 +176,7 @@ export class POtoGRNComponent implements OnInit {
     const PurchaseId = this.SelectedObj?.purchaseId || 0
       var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "PurchaseID",
             "sortOrder": 0,
             "filters": [{ "fieldName": "PurchaseID", "fieldValue": String(PurchaseId), "opType": "Equals" }],
