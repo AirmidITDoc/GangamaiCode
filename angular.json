@@ -50,7 +50,7 @@
                             "@angularclass/hmr",
                             "jspdf-autotable",
                             "file-saver",
-                            "@ckeditor/ckeditor5-build-classic",
+                            "@ckeditor/ckeditor5-angular",
                             "crypto-js",
                             "lodash",
                             "prismjs/prism",
@@ -152,6 +152,7 @@
                         ],
                         "styles": [
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+                            "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
                             "src/styles.scss"
                         ],
                         "scripts": []
@@ -173,6 +174,10 @@
         }
     },
     "cli": {
+        "cache": {
+            "enabled": true,
+            "environment": "all"
+        },
         "analytics": false
     }
 }
