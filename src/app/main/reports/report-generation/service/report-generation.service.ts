@@ -52,7 +52,10 @@ export class ReportService {
             expCategoryId:[""],
             expHeadId:[""],
             HospitalId:[""],
-            ExecutiveId:[""]
+            ExecutiveId:[""],
+            LoginUserId:[""],
+            LabPatientId:[""],
+            RegNo:[""]
             // 
         });
     }

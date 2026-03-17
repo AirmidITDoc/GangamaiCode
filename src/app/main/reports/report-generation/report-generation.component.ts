@@ -70,6 +70,9 @@ export class ReportGenerationComponent implements OnInit {
     ToStoreId: any;
     HospitalId: any;
     ExecutiveId:any;
+    LoginUserId:any;
+    LabPatientId:any;
+    RegNo:any;
     ExpHeadId: any;
     ExpCatId: any;
     SupplierId: any;
@@ -136,6 +139,9 @@ export class ReportGenerationComponent implements OnInit {
     flagToStoreSelected: boolean = false;
     flagUnitSelected: boolean = false;
     flagExecSelected: boolean = false;
+    flagLoginUserSelected:boolean=false;
+    flagPatientSelected:boolean=false;
+    flagRegSelected:boolean=false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -284,6 +290,12 @@ export class ReportGenerationComponent implements OnInit {
             this.flagUnitSelected = true;
         if (controllerPermission.filter(x => x == "Executive")?.length > 0)
             this.flagExecSelected = true;
+        if (controllerPermission.filter(x => x == "LoginUser")?.length > 0)
+            this.flagLoginUserSelected = true;
+        if (controllerPermission.filter(x => x == "PatientSearch")?.length > 0)
+            this.flagPatientSelected = true;
+        if (controllerPermission.filter(x => x == "RegNo")?.length > 0)
+            this.flagRegSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -355,6 +367,15 @@ export class ReportGenerationComponent implements OnInit {
     SelectedExecObj(obj) {
         this.ExecutiveId = obj.value;
     }
+    SelectedLoginUserObj(obj) {
+        this.LoginUserId = obj.value;
+    }
+    SelectedPatientObj(obj) {
+        this.LabPatientId = obj.value;
+    }
+    SelectedRegObj(obj){
+        this.RegNo=obj.value
+    }
     // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
@@ -381,6 +402,9 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('expCategoryId').setValue('');
         this._ReportService.userForm.get('HospitalId').setValue('');
         this._ReportService.userForm.get('ExecutiveId').setValue('');
+        this._ReportService.userForm.get('LoginUserId').setValue('');
+        this._ReportService.userForm.get('LabPatientId').setValue('');
+        this._ReportService.userForm.get('RegNo').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -403,6 +427,9 @@ export class ReportGenerationComponent implements OnInit {
         this.dischargeTypeId = 0;
         this.HospitalId = 0;
         this.ExecutiveId=0;
+        this.LoginUserId=0;
+        this.LabPatientId=0;
+        this.RegNo=0;
         this.flagDoctorSelected = false;
         this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
@@ -419,6 +446,9 @@ export class ReportGenerationComponent implements OnInit {
         this.flagToStoreSelected = false;
         this.flagUnitSelected = false;
         this.flagExecSelected=false;
+        this.flagLoginUserSelected=false;
+        this.flagPatientSelected=false;
+        this.flagRegSelected=false;
         this.flagSupplierelected = false;
         this.flagPaymentSelected = false;
         this.flagDrugTypeSelected = false;
@@ -608,6 +638,24 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "ExecutiveId",
                     "fieldValue": this.ExecutiveId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagLoginUserSelected)
+                paramFilterList.push({
+                    "fieldName": "UserId",
+                    "fieldValue": this.LoginUserId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagPatientSelected)
+                paramFilterList.push({
+                    "fieldName": "LabPatientId",
+                    "fieldValue": this.LabPatientId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagRegSelected)
+                paramFilterList.push({
+                    "fieldName": "LabPatientId",
+                    "fieldValue": this.RegNo.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   

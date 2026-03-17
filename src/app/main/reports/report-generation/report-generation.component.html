@@ -333,6 +333,39 @@
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
+                                    
+                                     <ng-container *ngIf="flagLoginUserSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Login User Name"
+                                                [formGroup]="_ReportService.userForm" formControlName="LoginUserId"
+                                                placeholderText="Select Login User"
+                                                ApiUrl="Report/LoginUser/auto-complete?Keyword="
+                                                (selectionChange)="SelectedLoginUserObj($event)">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagPatientSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Patient Name"
+                                                [formGroup]="_ReportService.userForm" formControlName="LabPatientId"
+                                                placeholderText="Select Patient"
+                                                ApiUrl="Report/SearchPatient/auto-complete?Keyword="
+                                                (selectionChange)="SelectedPatientObj($event)">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
+
+                                     <ng-container *ngIf="flagRegSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Reg No"
+                                                [formGroup]="_ReportService.userForm" formControlName="RegNo"
+                                                placeholderText="Select RegNo"
+                                                ApiUrl="Report/SearchRegNo/auto-complete?Keyword="
+                                                (selectionChange)="SelectedRegObj($event)">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
                                     <!-- sales dd remaining -->
                                 </div>
 
