@@ -1,0 +1,141 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Lab Appointment</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body resize-form-fields" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container calender-header input-error-hidden">
+                        <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
+                            <div fxFlex="50%" fxFlex.xs="100%">
+                                <div fxLayout="row" fxLayoutGap="8px">
+                                    <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
+                                        [formGroup]="myFilterform" TextField="doctorName" ValueField="doctorId"
+                                        ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                                        (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
+                                </div>
+                            </div>
+                            <div fxFlex="60%" fxFlex.xs="100%">
+                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" *ngIf="vRefDocId > 0">
+                                    <button mat-raised-button (click)="bindData()">Refresh</button>
+                                    <h3 #dateDisplay class="m-0">{{ viewDate | calendarDate : view + 'ViewTitle' : 'en'
+                                        }}</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="mt-12 mb-2"
+                            *ngIf="vRefDocId > 0" [gdAlignRows.xs]="">
+                            <div class="button-row-group">
+                                <button mat-raised-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                                    (viewDateChange)="closeOpenMonthViewDay()">Previous</button>
+                                <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate"
+                                    (viewDateChange)="closeOpenMonthViewDay()">Today</button>
+                                <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                                    (viewDateChange)="closeOpenMonthViewDay()">Next</button>
+                            </div>
+                            <div class="button-row-group">
+                                <button mat-raised-button (click)="setView(CalendarView.Month)"
+                                    [color]="view === CalendarView.Month ? 'primary' : undefined">Month</button>
+                                <button mat-raised-button (click)="setView(CalendarView.Week)"
+                                    [color]="view === CalendarView.Week ? 'primary' : undefined">Week</button>
+                                <!-- <button mat-raised-button (click)="setView(CalendarView.Day)" [color]="view === CalendarView.Day ? 'primary' : undefined">Day</button> -->
+                            </div>
+                        </div>
+
+                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="16px" *ngIf="false">
+
+                            <!-- Doctor -->
+                            <div fxFlex.gt-sm="40%" fxFlex="100%" style="padding-top: 12px">
+                                <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
+                                    [formGroup]="myFilterform" TextField="doctorName" ValueField="doctorId"
+                                    ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                                    (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
+                            </div>
+
+                            <!-- Calendar Controls -->
+                            <div fxFlex.gt-sm="50%" fxFlex="100%" *ngIf="vRefDocId > 0">
+                                <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start center">
+                                    <!-- Navigation Buttons -->
+                                    <div fxFlex="100%" fxFlex.gt-sm="auto">
+                                        <button mat-raised-button mwlCalendarPreviousView [view]="view"
+                                            [(viewDate)]="viewDate"
+                                            (viewDateChange)="closeOpenMonthViewDay()">Previous</button>
+                                        <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate"
+                                            (viewDateChange)="closeOpenMonthViewDay()">Today</button>
+                                        <button mat-raised-button mwlCalendarNextView [view]="view"
+                                            [(viewDate)]="viewDate"
+                                            (viewDateChange)="closeOpenMonthViewDay()">Next</button>
+                                    </div>
+
+                                    <!-- View Title and Refresh -->
+                                    <div fxFlex="100%" fxFlex.gt-sm="auto"
+                                        style="display: flex; align-items: center; gap: 8px">
+                                        <h3 style="margin: 0">{{ viewDate | calendarDate : view + 'ViewTitle' : 'en' }}
+                                        </h3>
+                                        <button mat-raised-button (click)="bindData()">Refresh</button>
+                                    </div>
+
+                                    <!-- View Switch Buttons -->
+                                    <div fxFlex="100%" fxFlex.gt-sm="auto">
+                                        <div class="btn-group">
+                                            <button mat-raised-button (click)="setView(CalendarView.Month)"
+                                                [class.active]="view === CalendarView.Month">Month</button>
+                                            <button mat-raised-button (click)="setView(CalendarView.Week)"
+                                                [class.active]="view === CalendarView.Week">Week</button>
+                                            <button mat-raised-button (click)="setView(CalendarView.Day)"
+                                                [class.active]="view === CalendarView.Day">Day</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-card-container overflow-auto">
+                        <div class="calendar-scroll-container" [ngSwitch]="view" *ngIf="vRefDocId > 0">
+                            <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate"
+                                [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen"
+                                (dayClicked)="dayClicked($event.day)"
+                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                (eventTimesChanged)="eventTimesChanged($event)"></mwl-calendar-month-view>
+                            <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate"
+                                [events]="events" [refresh]="refresh"
+                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="30" [dayStartHour]="8"
+                                [hourSegmentTemplate]="weekViewHourSegmentTemplate"></mwl-calendar-week-view>
+                            <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate"
+                                [events]="events" [refresh]="refresh"
+                                (eventClicked)="handleEvent('Clicked', $event.event)"
+                                (eventTimesChanged)="eventTimesChanged($event)"
+                                [hourSegments]="30"></mwl-calendar-day-view>
+                        </div>
+                        <ng-template #weekViewHourSegmentTemplate let-segment="segment" let-locale="locale"
+                            let-segmentHeight="segmentHeight" let-isTimeLabel="isTimeLabel">
+                            <div #segmentElement class="cal-hour-segment" [style.height.px]="segmentHeight"
+                                [class.cal-hour-start]="segment.isStart" [class.cal-after-hour-start]="!segment.isStart"
+                                [ngClass]="segment.cssClass"
+                                (mousedown)="startDragToCreate(segment, $event, segmentElement)"
+                                [ngClass]="{ 'cal-disabled-segment': !isTimeLabel && segment.date < now }">
+                                <div class="cal-time" *ngIf="isTimeLabel">
+                                    {{ segment.date | date : 'hh:mm a' }}
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

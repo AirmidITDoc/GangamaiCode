@@ -41,13 +41,16 @@ import { HomeCollectionComponent } from './home-collection/home-collection.compo
 import { LabRadiologyComponent } from './lab-radiology/lab-radiology.component';
 import { LabRadApprovallistComponent } from './lab-rad-approvallist/lab-rad-approvallist.component';
 import { DiscountApprovalComponent } from './discount-approval/discount-approval.component';
-import { LabAppointmentComponent } from './lab-appointment/lab-appointment.component';
 
 
 const appRoutes: Routes = [
   {
     path: "home-collection",
     loadChildren: () => import("./home-collection/home-collection.module").then((m) => m.HomeCollectionModule),
+  },
+  {
+    path: "lab-appointment",
+    loadChildren: () => import("./lab-appointment/lab-appointment.module").then((m) => m.LabAppointmentModule),
   },
   {
     path: "lab-patientreg",
@@ -120,8 +123,7 @@ const appRoutes: Routes = [
     HomeCollectionComponent,
     LabRadiologyComponent,
     LabRadApprovallistComponent,
-    DiscountApprovalComponent,
-    LabAppointmentComponent
+    DiscountApprovalComponent
   ],
   imports: [
     RouterModule.forChild(appRoutes),

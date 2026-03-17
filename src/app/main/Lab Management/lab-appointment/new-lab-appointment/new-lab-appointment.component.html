@@ -1,0 +1,297 @@
+<div class="modal-wrapper grid-container labpatientMain resize-form-fields">
+    <!-- Modal header -->
+    <div class="modal-header accent labpatientHeader">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                    New Appointment
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body labpatientMiddle">
+        <div class="modal-body-container">
+            <mat-drawer-container class="main-container h-100-p">
+                <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
+                    <div class="top-form-row" style="margin-top: 5px;">
+                        <form [formGroup]="myForm">
+                            <div fxLayout="row wrap" fxLayoutGap="4px">
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Unit / Branch Name" formControlName="unitId"
+                                        [value]="data?.unitId" [readonly]="true"
+                                        [validations]="getValidationMessages().UnitId" [formGroup]="myForm"
+                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="PatientType" formControlName="patientType"
+                                        [formGroup]="myForm" [mode]="autocompleteModeLabPatientType"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label=" Self / Payer / Corp." formControlName="patientTypeId"
+                                        [formGroup]="myForm" [validations]="getValidationMessages().patientTypeId"
+                                        [mode]="autocompleteModepatienttype"
+                                        (selectionChange)="onChangePatient($event)"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
+                                        [formGroup]="myForm" [value]="data?.companyId" ValueField="companyId"
+                                        TextField="companyName" [validations]="getValidationMessages().companyId"
+                                        ApiUrl="LabPatientRegistration/CompanyComboList?keywoard="
+                                        (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
+                                        [validations]="getValidationMessages().refDocId" [formGroup]="myForm"
+                                        TextField="doctorName" ValueField="doctorId"
+                                        ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                                        (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId" [formGroup]="myForm"
+                                        [mode]="autocompleteModedoctor">
+                                    </airmid-dropdown>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="main-content" fxLayout="row" fxLayoutAlign="start stretch">
+                        <div class="left-panel">
+                            <div class="personal-panel">
+                                <mat-accordion multi>
+                                    <mat-expansion-panel expanded>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>Personal Details</mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div>
+                                            <form [formGroup]="myForm">
+                                                <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="6px">
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="MobileNo" formControlName="mobileNo"
+                                                                [validations]="getValidationMessages().mobileNo"
+                                                                (keypress)="keyPressAlphanumeric($event)"
+                                                                [formGroup]="myForm" [maxLength]="10"
+                                                                [value]="registerObj?.mobileNo"
+                                                                (valueChange)="handleInputChangeDebounced('mobileNo')">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-dropdown label="Prefix" formControlName="prefixId"
+                                                                [formGroup]="myForm" ValueField="prefixId"
+                                                                TextField="prefixName" [value]="registerObj?.prefixId"
+                                                                (selectionChange)="onChangePrefix($event)"
+                                                                ApiUrl="Prefix/get-prefixs">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-dropdown label="Gender" formControlName="genderId"
+                                                                [formGroup]="myForm" [value]="registerObj?.genderId"
+                                                                #ddlGender [readonly]="true"
+                                                                [mode]="autocompleteModegender">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="First Name"
+                                                                formControlName="firstName"
+                                                                [value]="registerObj.firstName" [formGroup]="myForm"
+                                                                [validations]="getValidationMessages().firstName"
+                                                                [maxLength]="100"
+                                                                (valueChange)="handleInputChangeDebounced('firstName')"></airmid-textbox>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="Middle Name"
+                                                                formControlName="middleName" [formGroup]="myForm"
+                                                                [maxLength]="50" [value]="registerObj?.middleName">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="Last Name" formControlName="lastName"
+                                                                [formGroup]="myForm" [maxLength]="50"
+                                                                [validations]="getValidationMessages().lastName"
+                                                                [value]="registerObj?.lastName"
+                                                                (valueChange)="handleInputChangeDebounced('lastName')">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="70">
+                                                            <app-airmid-dateofbirth-v2 [formGroup]="myForm"
+                                                                [(value)]="registerObj.dateofBirth" dateStyle="Year"
+                                                                formControlName="DateOfBirth"></app-airmid-dateofbirth-v2>
+                                                        </div>
+                                                        <div fxFlex="30">
+                                                            <airmid-dropdown label="City" formControlName="cityId"
+                                                                [formGroup]="myForm" ValueField="cityId"
+                                                                TextField="cityName"
+                                                                [value]="registerObj?.cityId ?? registerObj?.location"
+                                                                (selectionChange)="onChangecity($event)"
+                                                                ApiUrl="CityMaster/get-cities">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="100">
+                                                            <airmid-textbox label="Address" formControlName="address"
+                                                                [validations]="getValidationMessages().address"
+                                                                [formGroup]="myForm" [value]="registerObj?.address">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </div>
+                        </div>
+                        <div fxFlex="50">
+                            <div class="detail-container billing-flex-layout">
+
+                                <div style="align-items: start center; height: 40px;margin-top: 5px;">
+                                    <h3 style="font-weight: bold;">List Of Examination</h3>
+                                </div>
+                                <div class="billing-top-zone">
+
+                                    <form [formGroup]="myForm">
+                                        <airmid-autocomplete #serviceInput label="Enter Service Name"
+                                            [formGroup]="myForm" formControlName="ServiceId"
+                                            placeholderText="Enter Service Name" fxFlex="50%" ApiUrl="{{ApiURL}}"
+                                            (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
+                                            ValueField="serviceId"></airmid-autocomplete>
+                                    </form>
+                                </div>
+
+                                <!-- Zone 2: Flexible Middle - Table -->
+                                <div class="billing-middle-zone" [dynamicTableHeight]="120">
+                                    <div class="airmid-table-container resize-form-fields">
+                                        <mat-table #table1 matSort [dataSource]="dstable1"
+                                            [@animateStagger]="{ value: '50' }" class="lab-modern-table">
+
+                                            <!-- Service Name Column -->
+                                            <ng-container matColumnDef="ServiceName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
+                                                    <span class="header-text">Service Name</span>
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-300">
+                                                    <span class="service-name-text" [matTooltip]="contact.ServiceName">
+                                                        {{contact.ServiceName}}
+                                                    </span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <!-- Price Column -->
+                                            <ng-container matColumnDef="Price">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                    class="w-100">
+                                                    <span class="header-text">Price</span>
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                                    <span class="service-name-text" [matTooltip]="contact.Price">
+                                                        {{contact.Price}}
+                                                    </span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <!-- Action Column -->
+                                            <ng-container matColumnDef="buttons" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef class="w-100 action-col">
+                                                    <span class="header-text">Actions</span>
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-100 action-cell">
+                                                    <div class="action-buttons">
+                                                        <button mat-icon-button color="warn" matTooltip="Delete"
+                                                            class="action-btn delete-btn"
+                                                            (click)="deleteTableRow(contact)">
+                                                            <mat-icon>delete_outline</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <!-- Table Header & Rows -->
+                                            <mat-header-row class="lab-table-header"
+                                                *matHeaderRowDef="displayedServiceselected; sticky: true">
+                                            </mat-header-row>
+                                            <mat-row
+                                                *matRowDef="let contact; columns: displayedServiceselected; let i = index"
+                                                class="lab-table-row" tabindex="999"
+                                                [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight>
+                                            </mat-row>
+
+                                        </mat-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-drawer-content>
+                <mat-drawer #serviceDrawer mode="side" [opened]="filteredOptions.length > 0" position="end"
+                    class="service-drawer" style="min-width: 430px;">
+                    <mat-card class="sidebar h-100-p">
+                        <div class="airmid-table-container overflow-hidden">
+                            <mat-table class="airmid-table" [dataSource]="filteredOptions">
+
+                                <ng-container matColumnDef="firstName">
+                                    <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let element"><span>{{ element.firstName+ ' ' +
+                                            element.middleName + ' ' + element.lastName}}</span></mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="mobileNo">
+                                    <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo
+                                            }}</span></mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NoData">
+                                    <mat-footer-cell *matFooterCellDef>
+                                        <span>No Data Found</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="['firstName', 'mobileNo']; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: ['firstName', 'mobileNo']"
+                                    (click)="onSelectPatient(row)"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['NoData']"
+                                    [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+                            </mat-table>
+                        </div>
+                    </mat-card>
+                </mat-drawer>
+            </mat-drawer-container>
+        </div>
+    </div>
+
+    <div class="modal-footer labpatientfooter">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-container p-8 labpatientbtn gap-4" fxLayoutAlign="end">
+                <div>
+                    <button class="btn btn-primary" (click)="BillSave()">Save </button>
+                </div>
+                <div>
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

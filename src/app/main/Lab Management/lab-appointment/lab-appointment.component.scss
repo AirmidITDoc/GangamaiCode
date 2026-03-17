@@ -1,0 +1,37 @@
+.calendar-scroll-container {
+    // max-height: 500px;
+    // /* or whatever fits your modal */
+    // overflow-y: auto;
+
+    .cal-day-headers,.cal-cell-row.cal-header{
+        background-color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 99999;
+    }
+}
+
+.cal-week-view .cal-hour-segment.cal-after-hour-start .cal-time {
+    display: block !important;
+}
+
+.cal-disabled-day {
+    background-color: #f0f0f0;
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.cal-disabled-segment {
+    background-color: #f0f0f0 !important;
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.cal-disabled-segment .cal-event-actions {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
