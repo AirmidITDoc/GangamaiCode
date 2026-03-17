@@ -72,8 +72,8 @@ export class LabPatientRegService {
   }
 
   public labPatientSave(Param: any) {
-    if (Param.LabPatRegId) {
-      return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.LabPatRegId, Param);
+    if (Param.labPatientRegistrationMaster.LabPatRegId) {
+      return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.labPatientRegistrationMaster.LabPatRegId, Param);
     }
   }
 

@@ -69,6 +69,7 @@ export class ReportGenerationComponent implements OnInit {
     FromStoreId: any;
     ToStoreId: any;
     HospitalId: any;
+    ExecutiveId:any;
     ExpHeadId: any;
     ExpCatId: any;
     SupplierId: any;
@@ -134,6 +135,7 @@ export class ReportGenerationComponent implements OnInit {
     flagFromStoreSelected: boolean = false;
     flagToStoreSelected: boolean = false;
     flagUnitSelected: boolean = false;
+    flagExecSelected: boolean = false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -280,6 +282,8 @@ export class ReportGenerationComponent implements OnInit {
             this.FlaExpCategorySelected = true;
         if (controllerPermission.filter(x => x == "Hospital")?.length > 0)
             this.flagUnitSelected = true;
+        if (controllerPermission.filter(x => x == "Executive")?.length > 0)
+            this.flagExecSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -348,6 +352,9 @@ export class ReportGenerationComponent implements OnInit {
     SelectedHospitalObj(obj) {
         this.HospitalId = obj.value;
     }
+    SelectedExecObj(obj) {
+        this.ExecutiveId = obj.value;
+    }
     // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
@@ -373,6 +380,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('expHeadId').setValue('');
         this._ReportService.userForm.get('expCategoryId').setValue('');
         this._ReportService.userForm.get('HospitalId').setValue('');
+        this._ReportService.userForm.get('ExecutiveId').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -394,6 +402,7 @@ export class ReportGenerationComponent implements OnInit {
         this.ItemId = 0;
         this.dischargeTypeId = 0;
         this.HospitalId = 0;
+        this.ExecutiveId=0;
         this.flagDoctorSelected = false;
         this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
@@ -409,6 +418,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagFromStoreSelected = false;
         this.flagToStoreSelected = false;
         this.flagUnitSelected = false;
+        this.flagExecSelected=false;
         this.flagSupplierelected = false;
         this.flagPaymentSelected = false;
         this.flagDrugTypeSelected = false;
@@ -592,6 +602,12 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "HospitalId",
                     "fieldValue": this.HospitalId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagExecSelected)
+                paramFilterList.push({
+                    "fieldName": "ExecutiveId",
+                    "fieldValue": this.ExecutiveId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   

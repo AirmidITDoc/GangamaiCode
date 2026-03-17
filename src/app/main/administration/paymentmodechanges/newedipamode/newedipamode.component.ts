@@ -334,7 +334,7 @@ export class NewedipamodeComponent {
             });
             return;
           }else {
-          this.setflag = true}
+          this.setflag = false}
         }
         if ((item.bankName == '' || item.bankName == null || item.bankName == undefined)) {
           this.toastr.warning('Please Select Card Bank Name', 'Warning ! for ' + item.receiptNo + '  Amount:' + item.payAmount, {

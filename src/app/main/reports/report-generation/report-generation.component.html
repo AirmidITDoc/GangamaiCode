@@ -322,6 +322,17 @@
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
+
+                                     <ng-container *ngIf="flagExecSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Executive Name"
+                                                [formGroup]="_ReportService.userForm" formControlName="ExecutiveId"
+                                                placeholderText="Select Executive"
+                                                ApiUrl="Report/MCompanyEmployeInfo/auto-complete?Keyword="
+                                                (selectionChange)="SelectedExecObj($event)">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
                                     <!-- sales dd remaining -->
                                 </div>
 

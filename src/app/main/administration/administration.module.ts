@@ -36,10 +36,6 @@ const appRoutes: Routes = [
     loadChildren: () => import("./cancellation/cancellation.module").then((m) => m.CancellationModule),
   },
   {
-    path:"labcancellation",
-    loadChildren: () => import("./lab-cancellation/lab-cancellation.module").then((m) => m.LabCancellationModule),
-   },
-  {
     path: "reportconfiguration",
     loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },
@@ -92,7 +88,15 @@ const appRoutes: Routes = [
   {
     path: "import-excel",
     loadChildren: () => import("./import-excel/import-excel.module").then((m) => m.ImportExcelModule),
-  }
+  },
+  {
+    path:"labcancellation",
+    loadChildren: () => import("./lab-cancellation/lab-cancellation.module").then((m) => m.LabCancellationModule),
+   },
+  {
+    path:"lab-paymentmodechanges",
+    loadChildren: () => import("./lab-paymentmodechanges/lab-paymentmodechanges.module").then((m) => m.LabPaymentmodechangesModule),
+   },
 
 ];
 

@@ -51,7 +51,8 @@ export class ReportService {
             type:["0"],
             expCategoryId:[""],
             expHeadId:[""],
-            HospitalId:[""]
+            HospitalId:[""],
+            ExecutiveId:[""]
             // 
         });
     }

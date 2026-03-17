@@ -29,6 +29,7 @@ import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
 import { ReportDispatchComponent } from '../report-dispatch/report-dispatch.component';
 import { EmailorSMSHistoryComponent } from '../emailor-smshistory/emailor-smshistory.component';
 import { LabTrackingDetailsComponent } from './lab-tracking-details/lab-tracking-details.component';
+import { EditPatientRegComponent } from './edit-patient-reg/edit-patient-reg.component';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -351,12 +352,13 @@ export class LabPatientRegComponent {
   }
 
   OnEditRegistration(row: any = null) {
-    const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
+    const dialogRef = this._matDialog.open(EditPatientRegComponent,
       {
         maxWidth: "90vw",
         maxHeight: '90vh',
         width: '95%',
-        data: { row, mode: 'edit' }
+        data: row
+        // data: { row, mode: 'edit' }
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();

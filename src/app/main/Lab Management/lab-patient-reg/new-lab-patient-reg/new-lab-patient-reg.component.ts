@@ -224,22 +224,6 @@ export class NewLabPatientRegComponent {
           });
         });
       }
-    } else if (this.data.mode == 'edit') {
-      if (this.data?.row?.labPatRegId) {
-        this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatRegId).subscribe((response) => {
-          this.registerObj = response;
-          this.myForm.get('doctorId').setValue(this.registerObj.doctorId);
-          this.myForm.get('refDocId').setValue(this.registerObj.refDocId);
-          this.VlabPatRegId = this.registerObj.labPatRegId
-          console.log("retrive Data:", this.registerObj)
-          this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
-            this.registerObj = response;
-            console.log("Master Data:", this.registerObj)
-            this.myForm.patchValue(this.registerObj)
-          });
-        });
-      }
-
     } else if (this.data.mode == 'home') {
       if (this.data?.row?.homeCollectionId) {
         this.regNo = this.data?.row?.homeSeqNo
@@ -664,15 +648,16 @@ export class NewLabPatientRegComponent {
 
     } else if (value.text == "Self") {
       // this.isCompanySelected = false;      
-      this.myForm.get('companyId').disable()
-      this.myForm.get('companyId').clearValidators();
-      this.myForm.get('companyId').updateValueAndValidity();
       this.patienttype = 1;
+      this.myForm.get('refDocId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
       this.myForm.get('refDocId').enable()
       this.OPFooterForm.get('paymentType').setValue('CashPay')
       this.myForm.get('companyId').setValue(0);
       this.myForm.get('tariffId').setValue(1);
       this.isTariffSelect = false //tariff not readonly
+      this.myForm.get('companyId').disable()
+      this.myForm.get('companyId').clearValidators();
+      this.myForm.get('companyId').updateValueAndValidity();
     }
   }
 
@@ -1699,89 +1684,60 @@ export class NewLabPatientRegComponent {
   }
 
   BillSave() {
+    Swal.fire({
+      title: 'Confirm Save',
+      text: 'Are you sure you want to save this Lab Bill?',
+      icon: 'warning', // or 'question'
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6', // Blue
+      cancelButtonColor: '#d33',     // Red
+      confirmButtonText: 'Yes, save it!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(this.myForm.value)
+        let priceflag = this.dstable1.data.filter(row => row.Price == 0);
 
-    if (this.mode === 'edit') {
-      Swal.fire({
-        title: 'Confirm Save',
-        text: 'Are you sure you want to update registration?',
-        icon: 'warning', // or 'question'
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6', // Blue
-        cancelButtonColor: '#d33',     // Red
-        confirmButtonText: 'Yes, save it!',
-        cancelButtonText: 'No, cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // update registration api call here
-          this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId);
-          const formValue = { ...this.myForm.value };
-          const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-            'paymentType', 'servicedoctorId'];
-          controlsToRemove.forEach(key => delete formValue[key]);
-          console.log(formValue)
-          this._labPatientRegService.labPatientSave(formValue).subscribe((response) => {
-            this._matDialog.closeAll();
+        if (priceflag.length) {
+          this.toastrService.warning('Please Enter Price For Service', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
           });
-          console.log("Api pending")
           return;
         }
-      });
-    } else {
-      Swal.fire({
-        title: 'Confirm Save',
-        text: 'Are you sure you want to save this Lab Bill?',
-        icon: 'warning', // or 'question'
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6', // Blue
-        cancelButtonColor: '#d33',     // Red
-        confirmButtonText: 'Yes, save it!',
-        cancelButtonText: 'No, cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log(this.myForm.value)
-          let priceflag = this.dstable1.data.filter(row => row.Price == 0);
+        // debugger
+        this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
+        this.myForm.get('stateId').setValue(this.stateId)
+        this.myForm.get('countryId').setValue(String(this.counryId))
+        if (!this.myForm.invalid)
+          this.OnSave();
 
-          if (priceflag.length) {
-            this.toastrService.warning('Please Enter Price For Service', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-          }
-          // debugger
-          this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
-          this.myForm.get('stateId').setValue(this.stateId)
-          this.myForm.get('countryId').setValue(String(this.counryId))
-          if (!this.myForm.invalid)
-            this.OnSave();
+        else {
+          let invalidFields = [];
+          if (this.myForm.invalid) {
+            for (const controlName in this.myForm.controls) {
+              const control = this.myForm.get(controlName);
 
-          else {
-            let invalidFields = [];
-            if (this.myForm.invalid) {
-              for (const controlName in this.myForm.controls) {
-                const control = this.myForm.get(controlName);
-
-                if (control instanceof FormGroup || control instanceof FormArray) {
-                  for (const nestedKey in control.controls) {
-                    if (control.get(nestedKey)?.invalid) {
-                      invalidFields.push(`Lab Register Bill Data : ${controlName}.${nestedKey}`);
-                    }
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`Lab Register Bill Data : ${controlName}.${nestedKey}`);
                   }
-                } else if (control?.invalid) {
-                  invalidFields.push(`Lab Register Bill From: ${controlName}`);
                 }
+              } else if (control?.invalid) {
+                invalidFields.push(`Lab Register Bill From: ${controlName}`);
               }
             }
-            if (invalidFields.length > 0) {
-              invalidFields.forEach(field => {
-                this.toastrService.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-                );
-              });
-              return
-            }
+          }
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastrService.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+              );
+            });
+            return
           }
         }
-      });
-    }
+      }
+    });
   }
 
   OnSave() {
@@ -2153,7 +2109,8 @@ export class NewLabPatientRegComponent {
 
   viewgetOPBillReportPdf(element) {
     // this.commonService.Onprint("BillNo", element, "LabregisterBillReceipt");
-    this.commonService.Onprint("BillNo", element, "LabMoneyReceipt");
+    // this.commonService.Onprint("BillNo", element, "LabMoneyReceipt");
+    this.commonService.Onprint("BillNo", element, "LabMoneyReceiptPatientCopy");
   }
   filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
     const { firstName, lastName, mobileNo } = fields;

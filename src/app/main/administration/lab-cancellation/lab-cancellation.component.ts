@@ -31,7 +31,7 @@ export class LabCancellationComponent {
 
   VReason: any = '';
   f_name: any = ""
-  regNo: any = "0"
+  regNo: any = ""
   l_name: any = ""
   PBillNo: any = "%"
   lable: any = '';
@@ -88,7 +88,7 @@ export class LabCancellationComponent {
     { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },//not there in payload
     { heading: "Balance Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
     {
-      heading: "Action", key: "action", align: "right", width: 350, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
@@ -98,7 +98,7 @@ export class LabCancellationComponent {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals }, //year from 2021 to 2025
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
     { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
@@ -118,7 +118,7 @@ export class LabCancellationComponent {
     this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterbillform.get('FirstName').value + "%"
     this.l_name = this.myFilterbillform.get('LastName').value + "%"
-    this.regNo = this.myFilterbillform.get('RegNo').value || "0"
+    this.regNo = this.myFilterbillform.get('RegNo').value || ""
     this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
     this.CompanyId = this.myFilterbillform.get('CompanyId').value || "0"
     this.UnitId = this.myFilterbillform.get('UnitId').value || "0"
@@ -191,20 +191,6 @@ export class LabCancellationComponent {
     });
   }
 
-  OnUpdatepayment(contact) {
-    const dialogRef = this._matDialog.open(DateUpdateComponent,
-      {
-        height: "35%",
-        width: '35%',
-        data: contact
-
-      });
-    dialogRef.afterClosed().subscribe(result => {
-    });
-    this.grid.bindGridData();
-    this.grid2.bindGridData();
-  }
-
   OnSaveCancelBill() {
     if (this.VReason == '' || this.VReason == null || this.VReason == undefined) {
       this.toastr.warning('Please Enter a Reason', 'Warning !', {
@@ -272,7 +258,7 @@ export class LabCancellationComponent {
   ////////////////////// lab refund ////////////////
   myFilterrefundform: FormGroup;
   rf_name: any = ""
-  rregNo: any = "0"
+  rregNo: any = ""
   rl_name: any = ""
   rPBillNo: any = "%"
   rrefundNo = "0"
@@ -284,7 +270,7 @@ export class LabCancellationComponent {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
     { fieldName: "RefundNo", fieldValue: "0", opType: OperatorComparer.Contains },
     { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -293,6 +279,7 @@ export class LabCancellationComponent {
   allOPRefundColumns = [
     { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "RefundNo", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -317,7 +304,7 @@ export class LabCancellationComponent {
     this.rtoDate = this.datePipe.transform(this.myFilterrefundform.get('enddate').value, "yyyy-MM-dd")
     this.rf_name = this.myFilterrefundform.get('FirstName').value + "%"
     this.rl_name = this.myFilterrefundform.get('LastName').value + "%"
-    this.rregNo = this.myFilterrefundform.get('RegNo').value || "0"
+    this.rregNo = this.myFilterrefundform.get('RegNo').value || ""
     this.UnitId = this.myFilterrefundform.get('UnitId').value || "0"
     this.rrefundNo = this.myFilterrefundform.get('RefundNo').value || "0"
     this.CompanyId2 = this.myFilterrefundform.get('CompanyId').value || "0"

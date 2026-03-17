@@ -49,7 +49,7 @@ export class BrowseLabBillsComponent {
   vpaidamt: any;
   vOPIPId = 0;
   f_name: any = ""
-  regNo: any = "0"
+  regNo: any = ""
   l_name: any = ""
   CompanyId = 0
   isSettlement: boolean = false;
@@ -64,7 +64,7 @@ export class BrowseLabBillsComponent {
   pPBillNo: any = "%"
 
   rf_name: any = ""
-  rregNo: any = "0"
+  rregNo: any = ""
   rl_name: any = ""
   rPBillNo: any = "%"
   rrefundNo = "0"
@@ -92,7 +92,7 @@ export class BrowseLabBillsComponent {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
     { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
     { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
@@ -184,7 +184,7 @@ export class BrowseLabBillsComponent {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
     { fieldName: "RefundNo", fieldValue: "0", opType: OperatorComparer.Contains },
     { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -728,7 +728,7 @@ export class BrowseLabBillsComponent {
     this.rtoDate = this.datePipe.transform(this.myFilterrefundform.get('enddate').value, "yyyy-MM-dd")
     this.rf_name = this.myFilterrefundform.get('FirstName').value + "%"
     this.rl_name = this.myFilterrefundform.get('LastName').value + "%"
-    this.rregNo = this.myFilterrefundform.get('RegNo').value || "0"
+    this.rregNo = this.myFilterrefundform.get('RegNo').value || ""
     this.UnitId = this.myFilterrefundform.get('UnitId').value || "0"
     this.rrefundNo = this.myFilterrefundform.get('RefundNo').value || "0"
     this.CompanyId2 = this.myFilterrefundform.get('CompanyId').value || "0"

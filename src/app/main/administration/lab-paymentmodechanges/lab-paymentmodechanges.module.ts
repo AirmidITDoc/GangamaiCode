@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -34,35 +34,21 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTimepickerModule } from 'mat-timepicker';
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatSliderModule } from '@angular/material/slider';
-import { MatTreeModule } from '@angular/material/tree';
-import { LabPatientRegComponent } from './lab-patient-reg.component';
-import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
-import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
-import { EstimateForPatientComponent } from './estimate-for-patient/estimate-for-patient.component';
-import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbill/discount-after-final-labbill.component';
-import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
-import { PrevlabHistoryComponent } from './prevlab-history/prevlab-history.component';
-import { LabTrackingDetailsComponent } from './lab-tracking-details/lab-tracking-details.component';
-import { EditPatientRegComponent } from './edit-patient-reg/edit-patient-reg.component';
+import { LabPaymentmodechangesComponent } from './lab-paymentmodechanges.component';
+import { LabPaymentmodechangesService } from './lab-paymentmodechanges.service';
 
 const routes: Routes = [
   {
     path: '**',
-    component: LabPatientRegComponent
+    component: LabPaymentmodechangesComponent,
   },
 ];
 
 @NgModule({
-  declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent, EstimateForPatientComponent, DiscountAfterFinalLabbillComponent, 
-    EditLabregComponent, PrevlabHistoryComponent, LabTrackingDetailsComponent, EditPatientRegComponent],
+  declarations: [LabPaymentmodechangesComponent],
   imports: [
-    CommonModule,
     RouterModule.forChild(routes),
+    CommonModule,
     MatExpansionModule,
     MatSlideToggleModule,
     MatListModule,
@@ -98,16 +84,11 @@ const routes: Routes = [
     MatSelectModule,
     MatSelectModule,
     MatChipsModule,
-    MatGridListModule,
-    MatSidenavModule,
-    MatTimepickerModule,
-    MatTooltipModule,
-    MatButtonToggleModule,
-    MatSliderModule,
-    MatTreeModule,
+    // NgMultiSelectDropDownModule.forRoot(),
+    MatTooltipModule
   ],
   providers: [
-    DatePipe,
+    DatePipe, LabPaymentmodechangesService
   ]
 })
-export class LabPatientRegModule { }
+export class LabPaymentmodechangesModule { }

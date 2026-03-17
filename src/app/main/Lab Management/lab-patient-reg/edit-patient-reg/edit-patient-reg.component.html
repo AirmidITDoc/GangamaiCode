@@ -1,0 +1,291 @@
+<div class="modal-wrapper grid-container labpatientMain resize-form-fields">
+    <!-- Modal header -->
+    <div class="modal-header accent labpatientHeader">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                    Edit Lab Registration
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body labpatientMiddle">
+        <div class="modal-body-container">
+            <mat-drawer-container class="main-container h-100-p">
+                <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
+                    <div class="top-form-row" style="margin-top: 5px;">
+                        <form [formGroup]="FinalForm">
+                            <div fxLayout="row wrap" fxLayoutGap="4px">
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Unit / Branch Name" formControlName="unitId"
+                                        [value]="data?.unitId" [readonly]="true"
+                                        [validations]="getValidationMessages().UnitId" [formGroup]="FinalForm"
+                                        [mode]="autocompleteModeunit"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="PatientType" formControlName="patientType"
+                                        [formGroup]="FinalForm"
+                                        [mode]="autocompleteModeLabPatientType"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label=" Self / Payer / Corp." formControlName="patientTypeId"
+                                        [formGroup]="FinalForm" [validations]="getValidationMessages().patientTypeId"
+                                        [mode]="autocompleteModepatienttype"
+                                        (selectionChange)="onChangePatient($event)"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
+                                        [formGroup]="FinalForm" [value]="data?.companyId" ValueField="companyId"
+                                        TextField="companyName" [validations]="getValidationMessages().companyId"
+                                        ApiUrl="LabPatientRegistration/CompanyComboList?keywoard="
+                                        (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
+                                        [validations]="getValidationMessages().refDocId" [formGroup]="FinalForm"
+                                        TextField="doctorName" ValueField="doctorId"
+                                        ApiUrl="Doctor/RefdoctorComboList?keywoard="
+                                        (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                        [formGroup]="FinalForm" [mode]="autocompleteModedoctor">
+                                    </airmid-dropdown>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="main-content" fxLayout="row" fxLayoutAlign="start stretch">
+                        <div class="left-panel">
+                            <div class="personal-panel">
+                                <mat-accordion multi>
+                                    <mat-expansion-panel expanded>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>Personal Details</mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div>
+                                            <form [formGroup]="myForm">
+                                                <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="6px">
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="MobileNo" formControlName="mobileNo"
+                                                                [validations]="getValidationMessages().mobileNo"
+                                                                (keypress)="keyPressAlphanumeric($event)"
+                                                                [formGroup]="myForm" [maxLength]="10"
+                                                                [value]="registerObj?.mobileNo"
+                                                                (valueChange)="handleInputChangeDebounced('mobileNo')">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-dropdown label="Prefix" formControlName="prefixId"
+                                                                [formGroup]="myForm" ValueField="prefixId"
+                                                                TextField="prefixName" [value]="registerObj?.prefixId"
+                                                                (selectionChange)="onChangePrefix($event)"
+                                                                ApiUrl="Prefix/get-prefixs">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-dropdown label="Gender" formControlName="genderId"
+                                                                [formGroup]="myForm" [value]="registerObj?.genderId"
+                                                                #ddlGender [readonly]="true"
+                                                                [mode]="autocompleteModegender">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="First Name"
+                                                                formControlName="firstName"
+                                                                [value]="registerObj.firstName" [formGroup]="myForm"
+                                                                [validations]="getValidationMessages().firstName"
+                                                                [maxLength]="100"
+                                                                (valueChange)="handleInputChangeDebounced('firstName')"></airmid-textbox>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="Middle Name"
+                                                                formControlName="middleName" [formGroup]="myForm"
+                                                                [maxLength]="50" [value]="registerObj?.middleName">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-textbox label="Last Name" formControlName="lastName"
+                                                                [formGroup]="myForm" [maxLength]="50"
+                                                                [validations]="getValidationMessages().lastName"
+                                                                [value]="registerObj?.lastName"
+                                                                (valueChange)="handleInputChangeDebounced('lastName')">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                    </div>
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="100">
+                                                            <app-airmid-dateofbirth-v2 [formGroup]="myForm"
+                                                                [(value)]="registerObj.dateofBirth" dateStyle="Year"
+                                                                formControlName="DateOfBirth"></app-airmid-dateofbirth-v2>
+                                                        </div>
+                                                        <div fxFlex="50">
+                                                            <airmid-textbox label="Address" formControlName="address"
+                                                                [validations]="getValidationMessages().address"
+                                                                [formGroup]="myForm" [value]="registerObj?.address">
+                                                            </airmid-textbox>
+                                                        </div>
+                                                        <div fxFlex="50">
+                                                            <airmid-textbox label="Aadhaar No. / National ID"
+                                                                formControlName="adharCardNo"
+                                                                [value]="registerObj.adharCardNo ?? ''"
+                                                                [formGroup]="myForm"
+                                                                (keypress)="keyPressAlphanumeric($event)"
+                                                                [validations]="getValidationMessages().adharCardNo"></airmid-textbox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div fxLayout="row" fxLayoutGap="4px">
+                                                        <div fxFlex="30">
+                                                            <airmid-dropdown label="City" formControlName="cityId"
+                                                                [formGroup]="myForm" ValueField="cityId"
+                                                                TextField="cityName"
+                                                                [value]="registerObj?.cityId ?? registerObj?.location"
+                                                                (selectionChange)="onChangecity($event)"
+                                                                ApiUrl="CityMaster/get-cities">
+                                                            </airmid-dropdown>
+                                                        </div>
+                                                        <form [formGroup]="FinalForm" fxFlex="70" class="gap-4">
+                                                            <div fxFlex="50">
+                                                                <airmid-textbox label="ReferByName"
+                                                                    formControlName="ReferByName"
+                                                                    [validations]="getValidationMessages().ReferByName"
+                                                                    [formGroup]="FinalForm">
+                                                                </airmid-textbox>
+                                                            </div>
+                                                            <div fxFlex="50">
+                                                                <airmid-textbox label="Comments"
+                                                                    formControlName="Comments"
+                                                                    [validations]="getValidationMessages().Comments"
+                                                                    [formGroup]="FinalForm">
+                                                                </airmid-textbox>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </mat-expansion-panel>
+                                    <mat-expansion-panel expanded class="mt-8" [(expanded)]="isExpanded2">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>ABHA</mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <form [formGroup]="abhaForm" class="mat-form-field-100">
+                                            <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="8px grid">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="HIP Code" formControlName="hipCode"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Abha Address" formControlName="abhaAddress"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Abha Number" formControlName="abhaNumber"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Full Name" formControlName="fullName"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                    <airmid-textbox label="Token #" formControlName="token"
+                                                        [formGroup]="abhaForm"></airmid-textbox>
+                                                </div>
+
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                    <mat-radio-group formControlName="nameFormat" fxLayout="row"
+                                                        fxLayoutGap="10px">
+                                                        <mat-radio-button value="F_M_L">F_M_L Name</mat-radio-button>
+                                                        <mat-radio-button value="L_M_F">L_M_F Name</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                                                    <button type="button" class="btn btn-primary">Create ABHA</button>
+                                                    <button type="button" class="btn btn-primary">Verify ABHA</button>
+                                                    <button type="button" class="btn btn-primary">HIP QR Q</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-drawer-content>
+                <mat-drawer #serviceDrawer mode="side" [opened]="filteredOptions.length > 0" position="end"
+                    class="service-drawer" style="min-width: 430px;">
+                    <mat-card class="sidebar h-100-p">
+                        <div class="airmid-table-container overflow-hidden">
+                            <mat-table class="airmid-table" [dataSource]="filteredOptions">
+
+                                <ng-container matColumnDef="firstName">
+                                    <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let element"><span>{{ element.firstName+ ' ' +
+                                            element.middleName + ' ' + element.lastName}}</span></mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="mobileNo">
+                                    <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo
+                                            }}</span></mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="NoData">
+                                    <mat-footer-cell *matFooterCellDef>
+                                        <span>No Data Found</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent"
+                                    *matHeaderRowDef="['firstName', 'mobileNo']; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: ['firstName', 'mobileNo']"
+                                    (click)="onSelectPatient(row)"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['NoData']"
+                                    [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+                            </mat-table>
+                        </div>
+                    </mat-card>
+                </mat-drawer>
+            </mat-drawer-container>
+        </div>
+    </div>
+
+    <div class="modal-footer labpatientfooter">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-container p-8 labpatientbtn gap-4" fxLayoutAlign="end">
+                <div>
+                    <button class="btn btn-primary" (click)="BillSave()">Save </button>
+                </div>
+                <div>
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
