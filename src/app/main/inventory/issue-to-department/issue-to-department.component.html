@@ -70,8 +70,8 @@
                     <form [formGroup]="IssueSearchGroup" fxLayout="column">
                         <airmid-datepicker [formGroup]="IssueSearchGroup" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig.filters[0].fieldValue" (dateChange)="ListView($event)"
-                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                            [(fromValue)]="gridConfig.filters[2].fieldValue" (dateChange)="ListView($event)"
+                            [(toValue)]="gridConfig.filters[3].fieldValue">
                         </airmid-datepicker>
 
                         <airmid-dropdown label="From Store Name" formControlName="FromStoreId"

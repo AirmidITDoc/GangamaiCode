@@ -779,6 +779,40 @@ export class TestApprovalListComponent {
       return;
     }
   }
+ 
+  VReason:any='';
+  UnVerifyList:any
+  @ViewChild('CancelReasone') CancelReasone!: TemplateRef<any>;
+  OnUnverifyResultEntry() {
+    if (this.VReason == '' || this.VReason == null || this.VReason == undefined) {
+      this.toastr.warning('Please Enter a Reason', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    let SubmitDate = {
+      "PathReportID": this.UnVerifyList?.pathReportID || 0,
+      "UnVerifyId": this.accountService.currentUserValue.userId,
+      "UnVerifyComment": this.VReason,
+      "UnVerifyDateTime": this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01'
+    }
+    console.log("Json:", SubmitDate)
+    this._LabResultListService.UnVerifyLabReport(SubmitDate).subscribe(response => {
+      this.UnVerifyList = '';
+       this.VReason = '';
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+    this._matDialog.closeAll()
+    });
+  }
+
+  UnVerifyresultEntry(element) { 
+    this.UnVerifyList=element;
+    this._matDialog.open(this.CancelReasone, {
+      width: '50%',
+      height: '45%' 
+    })
+  }
 
   // onVerify(row) {
   //   Swal.fire({

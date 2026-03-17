@@ -55,5 +55,6 @@ export class LabmanagementService {
    public getModeType(type) {
     return this._httpClient.GetData("LabPatientRegistration/GetMConstant?ConstantType=" + type);
   }
+
 }
 

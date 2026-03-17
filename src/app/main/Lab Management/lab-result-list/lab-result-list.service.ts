@@ -254,4 +254,7 @@ export class LabResultListService {
   public getReportLog(employee) {
     return this._httpClient1.PostData("ReportLog", employee)
   }
+      public UnVerifyLabReport(param) {    
+    return this._httpClient1.PostData("Pathology/PathologyUnverify", param) 
+  }
 }

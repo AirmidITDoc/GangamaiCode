@@ -109,4 +109,7 @@ export class LabOtherServicesService {
   public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
   }
+      public UnVerifyLabReport(param) {    
+    return this._httpClient1.PostData("Radiology/RadiologyUnverify", param) 
+  }
 }

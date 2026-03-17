@@ -72,11 +72,11 @@ export class LabRegBillDeatilsComponent {
             heading: "-", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
             template: this.ColorCode
         },
-        { heading: "--", key: "icon", align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80, template: this.icons },
+        { heading: "--", key: "icon", align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60, template: this.icons },
         // { heading: "--", key: "isPathology",align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
         // { heading: "--", key: "isRadiology", align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
         { heading: "Bill Date", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Charges Date", key: "chargesTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
