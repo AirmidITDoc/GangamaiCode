@@ -473,6 +473,15 @@
     //   padding: 12px !important;
     // }
 
+      .chart-container {
+    height: 300px;
+    min-height: 300px;
+    width: 100%;
+     padding-right: 10px;
+    
+  }
+
+
     .chart-card mat-card-content {
       padding: 16px !important;
     }

@@ -24,7 +24,7 @@ export class NewDashboardComponent implements OnInit {
   UnitId: any = this._accountServices.currentUserValue.user.unitId;
   public patientOverviewChart: any;
   public opdOverviewChart: any;
-  public PatientOverviewDoughnut: any;
+  // public PatientOverviewDoughnut: any;
   public OPDDrOverviewDoughnut: any;
   constructor(private dashboardService: DashboardService, public _accountServices: AuthenticationService,
     private accountService: AuthenticationService, public datePipe: DatePipe,
@@ -71,17 +71,17 @@ export class NewDashboardComponent implements OnInit {
     this.getdrwiseList()
     // Re-initialize charts with new date range
     setTimeout(() => {
-      // if (document.getElementById('PatientOverviewDoughnut')) {
-      //   this.patientOverviewChart = this.getPatientOverviewChart();
-      // }
+      if (document.getElementById('PatientOverviewDoughnut')) {
+        this.patientOverviewChart = this.getPatientOverviewChart();
+      }
       if (document.getElementById('OPDDrOverviewDoughnut')) {
         this.OPDDrOverviewDoughnut = this.getDrPatientOverviewChart();
       }
       if (document.getElementById('PatientOverviewDoughnut')) {
-        if (this.PatientOverviewDoughnut) {
-        this.PatientOverviewDoughnut.destroy();
-       }
-        this.PatientOverviewDoughnut = this.getPatientOverviewChart();
+      //   if (this.PatientOverviewDoughnut) {
+      //   this.PatientOverviewDoughnut.destroy();
+      //  }
+        // this.PatientOverviewDoughnut = this.getPatientOverviewChart();
       }
     });
   }
@@ -204,7 +204,7 @@ export class NewDashboardComponent implements OnInit {
             reference: this.DailydashData.patientSummary.referencePatients,
             total: this.DailydashData.patientSummary.totalPatients
           };
-
+debugger
 
           this.trendSeries = [
             {
@@ -234,12 +234,12 @@ export class NewDashboardComponent implements OnInit {
           ];
 
 
-          this.financeSummary = [
-            { label: 'Today Revenue', value: this.DailydashData.dashboardSummary?.todayRevenue || 0, color: 'mint', icon: 'check-circle' },
-            { label: 'Pending Dues', value: this.DailydashData.dashboardSummary?.pendingDues || 0, color: 'rose', icon: 'hourglass' },
-            { label: 'Refunds', value: this.DailydashData.dashboardSummary?.refunds || 0, color: 'sky', icon: 'logout' },
-            { label: 'Advances', value: this.DailydashData.dashboardSummary?.advances || 0, color: 'butter', icon: 'user-plus' }
-          ];
+          // this.financeSummary = [
+          //   { label: 'Today Revenue', value: this.DailydashData.dashboardSummary?.todayRevenue || 0, color: 'mint', icon: 'check-circle' },
+          //   { label: 'Pending Dues', value: this.DailydashData.dashboardSummary?.pendingDues || 0, color: 'rose', icon: 'hourglass' },
+          //   { label: 'Refunds', value: this.DailydashData.dashboardSummary?.refunds || 0, color: 'sky', icon: 'logout' },
+          //   { label: 'Advances', value: this.DailydashData.dashboardSummary?.advances || 0, color: 'butter', icon: 'user-plus' }
+          // ];
         }
 
 
@@ -279,23 +279,25 @@ export class NewDashboardComponent implements OnInit {
     }
       ;
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-
+debugger
       let apiData = res && res.length ? res[0] : {};
       console.log("==api data", apiData);
       console.log(res)
 
-      // this.financeSummary = [
-      //   { label: 'Today Revenue', value: apiData.dashboardSummary?.todayRevenue || 0, color: 'mint', icon: 'check-circle' },
-      //   { label: 'Pending Dues', value: apiData.dashboardSummary?.pendingDues || 0, color: 'rose', icon: 'hourglass' },
-      //   { label: 'Refunds', value: apiData.dashboardSummary?.refunds || 0, color: 'sky', icon: 'logout' },
-      //   { label: 'Advances', value: apiData.dashboardSummary?.advances || 0, color: 'butter', icon: 'user-plus' }
-      // ];
+      if(apiData){
+      this.financeSummary = [
+        { label: 'Today Revenue',value: apiData && apiData.Net_Revenue > 0 ? apiData.Net_Revenue : 0, color: 'mint', icon: 'check-circle' },
+        { label: 'Pending Dues', value:  apiData && apiData.PendingDues > 0 ?apiData?.PendingDues : 0, color: 'rose', icon: 'hourglass' },
+        { label: 'Refunds', value:  apiData && apiData.RefundAmount > 0 ?apiData?.RefundAmount : 0, color: 'sky', icon: 'logout' },
+        { label: 'Advances', value:  apiData && apiData.AdvPay > 0 ?apiData?.AdvPay : 0, color: 'butter', icon: 'user-plus' }
+      ];
       this.paymentData = [
         { name: 'Cash', value: apiData?.CashPay || 0 },
         { name: 'Online', value: apiData?.OnlinePay || 0 },
         { name: 'Card', value: apiData?.CardPay || 0 },
         { name: 'Cheque', value: apiData?.ChequePay || 0 }
       ];
+    }
     }, err => {
       this.financeSummary = [
         { label: 'Today Revenue', value: 0, color: 'mint', icon: 'check-circle' },
@@ -357,6 +359,16 @@ export class NewDashboardComponent implements OnInit {
     })
   }
 
+
+  ageData = [
+    { name: '0-15 Years',  value: 0 },
+    { name: '16-25 Years', value: 0 },
+    { name: '26-40 Years', value: 0 },
+    { name: '41-60 Years', value: 0  },
+    { name: '60+ Years',   value: 0  }
+  ];
+
+
   getDashRegistrationAgeWiseCount() {
     const payload = {
       "searchFields": [
@@ -380,7 +392,15 @@ export class NewDashboardComponent implements OnInit {
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : {};
-      return apiData;
+      // return apiData;
+ debugger
+       this.ageData = [
+        { name: '0-15 Years', value: apiData[0].value || 0 },
+        { name: '16-25 Years', value: apiData[1].value || 0},
+        { name: '16-25 Years', value: apiData[2].value || 0 },
+        { name: '41-60 Years', value: apiData[3].value || 0 },
+         { name: '60+ Years', value: apiData[4].value || 0 }
+      ];
 
     }, err => {
       return []
@@ -438,30 +458,7 @@ export class NewDashboardComponent implements OnInit {
         return 'dashboard';
     }
   }
-  // getMatIcon(icon: string): string {
-  //       switch (icon) {
-  //           case 'assignment':
-  //               return 'assignment';
-  //           case 'check_circle':
-  //               return 'check_circle';
-  //           case 'pending':
-  //               return 'hourglass_empty';
-  //           case 'collected':
-  //               return 'local_shipping';
-  //           case 'notcollected':
-  //               return 'work_off';
-  //           case 'verified':
-  //               return 'verified_user';
-  //           case 'unpublished':
-  //               return 'error_outline';
-  //           case 'local_shipping':
-  //               return 'local_shipping';
-  //           case 'pending_actions':
-  //               return 'backspace';
-  //           default:
-  //               return 'dashboard';
-  //       }
-  //   }
+  
   labelFormatting(c: any): string {
     return `${c.value}`;
   }
@@ -572,14 +569,14 @@ export class NewDashboardComponent implements OnInit {
   ];
 
 
-  recentColumns = ['name', 'type', 'dept', 'time'];
-  recentPatients = [
-    { name: 'Anita Deshmukh', type: 'OPD', department: 'Medicine', time: '09:10 AM' },
-    { name: 'Ravi Patil', type: 'OPD', department: 'Orthopedics', time: '09:25 AM' },
-    { name: 'Meera Joshi', type: 'IPD', department: 'Gynaecology', time: '09:40 AM' },
-    { name: 'Suresh Kulkarni', type: 'OPD', department: 'ENT', time: '10:05 AM' },
-    { name: 'Priya Malhotra', type: 'OPD', department: 'Pediatrics', time: '10:20 AM' }
-  ];
+  // recentColumns = ['name', 'type', 'dept', 'time'];
+  // recentPatients = [
+  //   { name: 'Anita Deshmukh', type: 'OPD', department: 'Medicine', time: '09:10 AM' },
+  //   { name: 'Ravi Patil', type: 'OPD', department: 'Orthopedics', time: '09:25 AM' },
+  //   { name: 'Meera Joshi', type: 'IPD', department: 'Gynaecology', time: '09:40 AM' },
+  //   { name: 'Suresh Kulkarni', type: 'OPD', department: 'ENT', time: '10:05 AM' },
+  //   { name: 'Priya Malhotra', type: 'OPD', department: 'Pediatrics', time: '10:20 AM' }
+  // ];
 
   // Patient Mix
   patientStats = {
@@ -736,10 +733,6 @@ export class NewDashboardComponent implements OnInit {
         return null;
       }
 
-      debugger
-
-
-      
       console.log(apiData)
       // const chart = new Chart('PatientOverviewDoughnut', {
       return new Chart('PatientOverviewDoughnut', {
@@ -994,7 +987,7 @@ export class NewDashboardComponent implements OnInit {
       this.drcountdata = res
         this.trendData = res
           
-debugger
+
       console.log(res)
       if (this.trendData) {
 
@@ -1471,25 +1464,25 @@ debugger
         {
           name: 'OPD',
           series: [
-            { name: 'Mon', value: 110 },
-            { name: 'Tue', value: 135 },
-            { name: 'Wed', value: 128 },
-            { name: 'Thu', value: 160 },
-            { name: 'Fri', value: 148 },
-            { name: 'Sat', value: 120 },
-            { name: 'Sun', value: 90 }
+            { name: 'Mon', value: 0 },
+            { name: 'Tue', value: 0 },
+            { name: 'Wed', value: 0 },
+            { name: 'Thu', value: 0 },
+            { name: 'Fri', value: 0 },
+            { name: 'Sat', value: 0 },
+            { name: 'Sun', value: 0 }
           ]
         },
         {
           name: 'IPD',
           series: [
-            { name: 'Mon', value: 60 },
-            { name: 'Tue', value: 72 },
-            { name: 'Wed', value: 68 },
-            { name: 'Thu', value: 75 },
-            { name: 'Fri', value: 80 },
-            { name: 'Sat', value: 70 },
-            { name: 'Sun', value: 55 }
+            { name: 'Mon', value: 0 },
+            { name: 'Tue', value: 0 },
+            { name: 'Wed', value: 0 },
+            { name: 'Thu', value: 0 },
+            { name: 'Fri', value: 0 },
+            { name: 'Sat', value: 0 },
+            { name: 'Sun', value: 0 }
           ]
         }
       ];
@@ -1500,9 +1493,9 @@ debugger
 
   updateDateFilteredCharts(): void {
     // Update charts that are affected by date filter
-    if (this.PatientOverviewDoughnut) {
-      this.PatientOverviewDoughnut.destroy();
-    }
+    // if (this.PatientOverviewDoughnut) {
+    //   this.PatientOverviewDoughnut.destroy();
+    // }
     if (this.opdOverviewChart) {
       this.opdOverviewChart.destroy();
     }
