@@ -1,10 +1,8 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, EventEmitter, Input, Optional, Output, Self, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
-//import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Subject, takeUntil } from 'rxjs';
 import { LanguageOption, SpeechRecognitionService } from '../../services/speech-recognition.service';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {
     type EditorConfig,
     ClassicEditor,
