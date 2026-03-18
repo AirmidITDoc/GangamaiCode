@@ -55,7 +55,9 @@ export class ReportService {
             ExecutiveId:[""],
             LoginUserId:[""],
             LabPatientId:[""],
-            RegNo:[""]
+            RegNo:[""],
+            PatientType:[""],
+            status:[""]
             // 
         });
     }

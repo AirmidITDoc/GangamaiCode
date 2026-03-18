@@ -46,10 +46,15 @@ export class LabAppointmentComponent {
   weekStartsOn: 0 = 0;
   vRefDocId = 0
   vRefDocName = ''
+  categoryId = 0
+  CateName = ''
   CalendarView = CalendarView;
 
   viewDate: Date = new Date();
   @ViewChild('dateDisplay', { read: ElementRef }) dateDisplay: ElementRef;
+  radiologyTests = ['CT SCAN', 'MRI', 'XRAY', 'USG', 'ECG'];
+  autocompleteRadioDD: string = "RadioCategory";
+  autocompleteRefDoctorDD: string = "RefDoctor";
   now: Date = new Date();
 
   modalData: {
@@ -66,7 +71,10 @@ export class LabAppointmentComponent {
     public datePipe: DatePipe
   ) {
     this.myFilterform = this._formBuilder.group({
-      refDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      categoryId: [0],
+      refDocId:[0]
     });
   }
 
@@ -104,13 +112,22 @@ export class LabAppointmentComponent {
   };
 
   onChangeRefdoc(value) {
-    this.vRefDocId = value.doctorId
-    this.vRefDocName = value.doctorName
+    // this.vRefDocId = value.doctorId
+    // this.vRefDocName = value.doctorName
+    this.vRefDocId = value.value
+    this.vRefDocName = value.text
+  }
+
+  selectChangeCategory(obj: any) {
+    this.categoryId = obj.value
+    this.CateName = obj.text
   }
 
   bindData() {
     debugger
     let fromDate, toDate;
+    fromDate = this.myFilterform.get('fromDate').value
+    toDate = this.myFilterform.get('enddate').value
     if (this.dateDisplay) {
       var dates = this.dateDisplay.nativeElement.textContent.split('-');
       if (this.view == CalendarView.Week) {
@@ -140,6 +157,27 @@ export class LabAppointmentComponent {
 
     // });
   }
+
+  assignToTestColumn(date: Date, test: string): Date {
+    const index = this.radiologyTests.indexOf(test);
+    const newDate = new Date(this.viewDate);
+
+    newDate.setDate(this.viewDate.getDate() + index);
+
+    newDate.setHours(date.getHours());
+    newDate.setMinutes(date.getMinutes());
+
+    return newDate;
+  }
+
+  isPastTime(segmentDate: Date): boolean {
+  const now = new Date();
+
+  const segmentMinutes = segmentDate.getHours() * 60 + segmentDate.getMinutes();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  return segmentMinutes < currentMinutes;
+}
 
   actions: CalendarEventAction[] = [
     {
@@ -288,7 +326,7 @@ export class LabAppointmentComponent {
         toDate = new Date(event.end);
       } else {
         toDate = new Date(fromDate);
-        toDate.setMinutes(toDate.getMinutes() + 10);
+        toDate.setMinutes(toDate.getMinutes() + 2);
       }
 
       const dialogRef = this._matDialog.open(NewLabAppointmentComponent, {
@@ -298,8 +336,8 @@ export class LabAppointmentComponent {
         data: {
           fromDate: fromDate,
           toDate: toDate,
-          doctorName: this.vRefDocName,
-          refdoctorId: this.vRefDocId
+          categoryId:this.categoryId,
+          refDoctorId:this.vRefDocId,
         }
       });
 

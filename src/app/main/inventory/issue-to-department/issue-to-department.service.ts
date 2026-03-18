@@ -63,7 +63,7 @@ export class IssueToDepartmentService {
       end: [(new Date()).toISOString()],
       FromStoreId:[0,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ToStoreId:[this.accountService.currentUserValue.user.storeId | 0 [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      Status:['1']
+      Status:['0']
      
     });
   }

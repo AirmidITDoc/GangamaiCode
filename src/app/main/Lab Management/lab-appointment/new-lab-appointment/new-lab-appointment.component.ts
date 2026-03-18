@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -31,20 +31,8 @@ export class NewLabAppointmentComponent {
   screenFromString = 'ExternalLab-form';
   registerObj = new LabPatientList({});
 
-  autocompleteModepatienttype: string = "PatientType";
   autocompleteModegender: string = "Gender";
   autocompleteModecountry: string = "Country";
-  autocompleteModeDepartment: string = "Department";
-  autocompleteModerefdoc: string = "RefDoctor";
-  autocompleteModeunit: string = "Hospital";
-  autocompleteModeClass: string = "Class";
-  autocompleteModetariff: string = "Tariff";
-  autocompleteModecompany: string = "Company";
-  autocompleteModesubcompany: string = "SubCompany";
-  autocompleteModecamp: string = "CampMaster";
-  autocompleteModedoctor: string = "ConDoctor";
-  autocompleteModeConcession: string = "Concession";
-  autocompleteModeLabPatientType: string = "LabPatientType";
 
   vFirstNameConfig: any;
   vmiddleNameConfig: any;
@@ -82,14 +70,24 @@ export class NewLabAppointmentComponent {
   labPatientId = 0
   doctorID = 0
   refDocID = 0
+  timeflag = 0
+  isTimeChanged: boolean = false;
+  phdatetime: any;
+  @Output() dateTimeEventEmitter = new EventEmitter<{}>();
+  isDatePckrDisabled: boolean = false;
+  fromDate: Date;
+  toDate: Date;
+  isEditMode: boolean = false;
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
   @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
   @ViewChild('ddlcompanyExec') ddlcompanyExec: AirmidDropDownComponent;
+  autocompleteRadioDD: string = "RadioCategory";
+  autocompleteRefDoctorDD: string = "RefDoctor";
 
-   displayedServiceselected: string[] = [
+  displayedServiceselected: string[] = [
     'ServiceName',
     'Price',
     'buttons'
@@ -113,24 +111,32 @@ export class NewLabAppointmentComponent {
   ngOnInit(): void {
     this.myForm = this.CreateMyForm();
     this.myForm.markAllAsTouched();
-
-    const Type = 'LabPatientType'
-    this._appointmentService.getPatientType(Type).subscribe(res => {
-      this.patientTypeList = res;
-      const normalType = this.patientTypeList.find(
-        (item: any) => item.name === 'Normal'
-      );
-
-      if (normalType) {
-        this.myForm.get('patientType')?.setValue(normalType.constantId);
-      }
-    });
+    this.minDate = new Date();
 
     console.log("retrive Data:", this.data)
 
-    this.myForm.get('refDocId').setValue(this.data?.refdoctorId);
+    if (this.data) {
+      this.isEditMode = true;
+      console.log(this.data)
+      this.myForm.get('phAppDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
+      this.myForm.get('phAppTime').setValue(this.data.fromDate);
+      this.myForm.get('startTime').setValue(this.data.fromDate);
+      this.myForm.get('endTime').setValue(this.data.toDate);
+      this.myForm.get('categoryId').setValue(this.data.categoryId);
+      this.myForm.get('refDocId').setValue(this.data.refDoctorId);
+      this.fromDate = this.data.fromDate;
+      this.toDate = this.data.toDate;
+    } else {
+      this.isEditMode = false;
+      const currentDateTime = new Date();
+      const today = new Date();
+      const utcMidnight = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+      this.myForm.get('phAppDate').setValue(utcMidnight.toISOString());
+      this.myForm.get('phAppTime')?.setValue(currentDateTime);
+      this.myForm.get('endTime')?.setValue(currentDateTime);
+      this.myForm.get('startTime').setValue(currentDateTime);
 
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+    }
 
     // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
     const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
@@ -175,10 +181,7 @@ export class NewLabAppointmentComponent {
 
   CreateMyForm() {
     return this._formbuilder.group({
-      ServiceId: [''],
       LabPatRegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      regDate: [new Date()],
-      regTime: [],
       unitId: this.accountService.currentUserValue.user.unitId,
       prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
@@ -194,12 +197,12 @@ export class NewLabAppointmentComponent {
       cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      patientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      tariffId: [this.vTariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],//this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId], // need to ask sir what value to pass
-      doctorId: [0],
-      refDocId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      patientType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      phAppDate: [(new Date()).toISOString(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
+      phAppTime: ['', [Validators.required]],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      categoryId:[0],
+      refDocId:[0]
     })
   }
 
@@ -207,6 +210,18 @@ export class NewLabAppointmentComponent {
   onChangePrefix(e) {
     this.prefixName = e.prefixName
     this.ddlGender.SetSelection(e.sexId);
+  }
+
+  onChangeRefdoc(value) {
+    // this.vRefDocId = value.doctorId
+    // this.vRefDocName = value.doctorName
+    this.vRefDocId = value.value
+    this.vRefDocName = value.text
+  }
+
+  selectChangeCategory(obj: any) {
+    // this.categoryId = obj.value
+    // this.CateName = obj.text
   }
 
   onChangecity(e) {
@@ -219,80 +234,6 @@ export class NewLabAppointmentComponent {
       this.counryId = Response.countryId
     });
   }
-
-  SrvcName1: any = "";
-  serviceId: any;
-  vQty: any;
-  chkIsEditable: boolean = true;
-  serviceSelct = false
-  @ViewChild('serviceInput', { read: ElementRef }) serviceInput!: ElementRef;
-
-  getSelectedserviceObj(obj) {
-    console.log(obj)
-    this.SrvcName1 = obj.serviceName;
-    this.serviceId = obj.serviceId;
-    this.vQty = 1;
-    this.serviceSelct = true
-    this.onSaveEntry(obj);
-
-    this.myForm.get('ServiceId')?.reset();
-
-    setTimeout(() => {
-      const input = this.serviceInput.nativeElement.querySelector('input');
-      input?.focus();
-    }, 150);
-  }
-
-  onSaveEntry(row) {
-    // debugger
-    let doctorid = 0;
-    const formValue = this.myForm.value
-
-    const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
-    if (!isDuplicate) {
-      this.onAddCharges(row)
-    }
-    else {
-      this.toastrService.warning('Selected Item already added in the list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-  }
-
-  public packageList: ChargesList[] = [];
-  public chargeList: ChargesList[] = [];
-  public dstable1 = new MatTableDataSource<ChargesList>();
-  onAddCharges(row): void {
-    // debugger
-    const newRow = {
-      ServiceId: row.serviceId,
-      ServiceName: row.serviceName,
-      Price: row.price ?? 0,
-      serviceCode: 0,//formValue.serviceName.companyCode, 
-      isInclusionExclusion: true,//formValue.serviceName.isInclusionOrExclusion
-    };
-    const newCharge = new ChargesList(newRow);
-    this.chargeList.push(newCharge);
-    this.dstable1.data = this.chargeList;
-  }
-
-  chargeslist: any = [];
-  deleteTableRow(element) {
-    debugger
-    this.chargeslist = this.dstable1.data;
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-
-      this.chargeslist.splice(index, 1);
-      this.dstable1.data = [];
-      this.dstable1.data = this.chargeslist;
-    }
-    this.toastrService.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
-    });
-  }
-
 
   regflag = false
   showPrevBtn: boolean = false
@@ -463,65 +404,79 @@ export class NewLabAppointmentComponent {
     }
   }
 
+  onChangeDate(value: any) {
+    debugger;
+    if (value) {
+      const inputDate = new Date(value);
+
+      const dateOfReg = new Date(Date.UTC(
+        inputDate.getFullYear(),
+        inputDate.getMonth(),
+        inputDate.getDate()
+      ));
+
+      // Optional: Emit localized date and time
+      const [datePart, timePart] = dateOfReg
+        .toLocaleString("en-US")
+        .split(',')
+        .map(part => part.trim());
+
+      this.eventEmitForParent(datePart, timePart);
+
+      const isoDateString = dateOfReg.toISOString();
+      this.myForm.get('phAppDate').setValue(isoDateString);
+    }
+  }
+
+  onChangeTime(event: any) {
+    this.timeflag = 1;
+
+    if (event) {
+      const selectedTime = new Date(event);
+
+      const localeString = selectedTime.toLocaleString("en-US");
+      const [datePart, timePart] = localeString.split(',').map(part => part.trim());
+
+      this.isTimeChanged = true;
+      this.phdatetime = timePart;
+      console.log(this.phdatetime);
+
+      this.myForm.get('phAppTime').setValue(selectedTime);
+      this.myForm.get('startTime').setValue(selectedTime);
+
+      this.eventEmitForParent(datePart, timePart);
+    }
+  }
+
+  onChangeTime1(event: any) {
+    this.timeflag = 1;
+
+    if (event) {
+      const selectedTime = new Date(event);
+
+      const localeString = selectedTime.toLocaleString("en-US");
+      const [datePart, timePart] = localeString.split(',').map(part => part.trim());
+
+      this.isTimeChanged = true;
+      this.phdatetime = timePart;
+      console.log(this.phdatetime);
+      this.myForm.get('endTime').setValue(selectedTime);
+      this.eventEmitForParent(datePart, timePart);
+    }
+  }
+
+  eventEmitForParent(actualDate, actualTime) {
+    let localaDateValues = actualDate.split('/');
+    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
+  }
+
   BillSave() {
 
   }
   onClose() {
     this.myForm.reset();
     this.dialogRef.close();
-  }
-
-  onChangeRefdoc(value) {
-    this.vRefDocId = value.doctorId
-    this.vRefDocName = value.doctorName
-    this.myForm.get('refDocId').setValue(value.doctorId);
-  }
-
-  onChangeCompany(value) {
-    this.companyId = value.companyId
-    this.companyName = value.companyName
-    if (this.companyId) {
-      this.isTariffSelect = true
-    }
-    this._appointmentService.getCompanyById(value.companyId).subscribe((response) => {
-      this.companyDet = response;
-      this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
-      this.vTariffId = this.companyDet.traiffId
-
-      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
-    });
-  }
-
-  onChangeTariff(value) {
-    this.vTariffId = value.value
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
-  }
-
-  onChangePatient(value) {
-    var mode = "Company"
-    if (value.text != "Self") {
-      this._appointmentService.getMaster(mode, 1);
-      this.myForm.get('companyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
-      // this.isCompanySelected = true;
-      this.myForm.get('companyId').enable()
-      this.myForm.get('refDocId').setValue(0);
-      this.patienttype = 2;
-      this.myForm.get('refDocId').disable()
-      this.myForm.get('refDocId').clearValidators();
-      this.myForm.get('refDocId').updateValueAndValidity();
-
-    } else if (value.text == "Self") {
-      // this.isCompanySelected = false;      
-      this.patienttype = 1;
-      this.myForm.get('refDocId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
-      this.myForm.get('refDocId').enable()
-      this.myForm.get('companyId').setValue(0);
-      this.myForm.get('tariffId').setValue(1);
-      this.isTariffSelect = false //tariff not readonly
-      this.myForm.get('companyId').disable()
-      this.myForm.get('companyId').clearValidators();
-      this.myForm.get('companyId').updateValueAndValidity();
-    }
   }
 
   getValidationMessages() {
@@ -581,24 +536,6 @@ export class NewLabAppointmentComponent {
       ],
       MaritalStatusId: [
         { Message: "Mstatus Name is required" }
-      ],
-      patientTypeId: [
-        { name: "required", Message: "Country Name is required" }
-      ],
-      tariffId: [
-        { name: "required", Message: "Mstatus Name is required" }
-      ],
-      DoctorID: [
-        { name: "required", Message: "Doctor Name is required" }
-      ],
-      refDocId: [
-        { name: "required", Message: "Ref Doctor Name is required" }
-      ],
-      companyId: [
-        { name: "required", Message: "Company Name is required" }
-      ],
-      patientTypeValue: [
-        { name: "required", Message: "PatientType is required" }
       ],
       UnitId: [
         { name: "required", Message: "Unit Name is required" }
