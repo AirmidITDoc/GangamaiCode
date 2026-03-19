@@ -216,6 +216,6 @@ app-stock-management {
  
      
 }body.theme-default .accent{
-    background-color: #0479b4 !important;
+    background-color: var(--app-primary) !important;
     // color: black !important;
 }

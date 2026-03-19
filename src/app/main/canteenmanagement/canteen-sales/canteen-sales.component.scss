@@ -79,8 +79,8 @@
     border: 1px solid #dce1f7;
 
     &:hover {
-      background-color: #3f51b5;
-      border-color: #3f51b5;
+      background-color: var(--app-primary);
+      border-color: var(--app-primary);
       transform: translateY(-1px);
       box-shadow: 0 3px 8px rgba(63, 81, 181, 0.3);
 
@@ -93,7 +93,7 @@
       font-size: 20px;
       width: 20px;
       height: 20px;
-      color: #3f51b5;
+      color: var(--app-primary);
       transition: color 0.2s ease;
     }
   }
@@ -202,7 +202,7 @@
   padding: 6px 8px;
   font-size: 18px;
   font-weight: 600;
-  color: #3f51b5;
+  color: var(--app-primary);
 }
 
 // --- Slider Styles ---

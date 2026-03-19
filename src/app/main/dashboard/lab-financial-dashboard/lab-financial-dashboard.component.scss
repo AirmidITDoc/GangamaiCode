@@ -395,7 +395,7 @@
 }
 
 .month-row {
-  background: linear-gradient(90deg, #283593, #3f51b5);
+  background: linear-gradient(90deg, #283593, var(--app-primary));
   color: #fff;
 }
 

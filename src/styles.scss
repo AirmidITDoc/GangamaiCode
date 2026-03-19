@@ -10,9 +10,24 @@
 @import "app/main/shared/custom/table.scss";
 // @import '~font-awesome/css/font-awesome.min.css';
 @import "./assets/scss/airmid"; // Airmid layout css
+@import "./assets/scss/themes/variable";
 @import "./assets/scss/components/cards";
 /* angular-cli file: src/styles.css */
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+:root {
+    --app-primary: #{$primary-600};
+    --app-primary-900: #{$primary-900};
+    --app-primary-800: #{$primary-800};
+    --app-primary-700: #{$primary-700};
+    --app-primary-600: #{$primary-600};
+    --app-primary-500: #{$primary-500};
+    --app-primary-400: #{$primary-400};
+    --app-primary-300: #{$primary-300};
+    --app-primary-200: #{$primary-200};
+    --app-primary-100: #{$primary-100};
+    --app-primary-50: #{$primary-50};
+}
 
 .mat-card {
     width: 100%;
@@ -163,7 +178,7 @@ html {
     text-align: center;
     color: white;
     border-radius: 16px;
-    border: 1px solid #0093b8;
+    border: 1px solid var(--app-primary);
     background-color: blue;
 }
 
@@ -175,7 +190,7 @@ html {
 }
 
 .search-btn:hover {
-    background-color: #0093b8;
+    background-color: var(--app-primary);
     color: white;
 }
 
@@ -204,9 +219,9 @@ html {
     font-weight: 700px;
     padding: 10px;
     margin-right: 5px;
-    color: #0093b8;
+    color: var(--app-primary);
     border-radius: 16px;
-    border: 1px solid #0093b8;
+    border: 1px solid var(--app-primary);
     background-color: white;
     // background-color: hsl(204, 92%, 38%);
     //border:2px solid #0430c2;
@@ -214,7 +229,7 @@ html {
     cursor: pointer;
 }
 .next-btn:hover {
-    background-color: #0093b8;
+    background-color: var(--app-primary);
     // border: 1px solid rgb(247, 97, 97);
     color: white;
 }
