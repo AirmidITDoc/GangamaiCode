@@ -48,7 +48,9 @@ export class RadiologyDashboardComponent implements OnInit {
     trendData: TopTest1[] = [];
     trendData1: TopTest1[] = [];
     dsCountsummary: testcountsummary[] = [];
-
+  modalityData = [
+    { name: '', value: 0 }
+  ];
     metrics = [
         { label: 'Total Report', value: 0, color: 'lavender', icon: 'assignment' },
         { label: 'Completed', value: 0, color: 'green', icon: 'check_circle' },
@@ -106,11 +108,11 @@ export class RadiologyDashboardComponent implements OnInit {
 
 
     // Pathology Table Column Definitions
-    pathologyReportsColumns: string[] = ['Date','PatientName', 'TestName', 'Pathologist','Status' ];
+    pathologyReportsColumns: string[] = ['Date', 'PatientName', 'TestName', 'Pathologist', 'Status'];
     pathologyTopTestsColumns: string[] = ['TestName', 'Count'];
     pathologistWorkloadColumns: string[] = ['PathologistName', 'TestsReported'];
     // Radiology Table Column Definitions
-    recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Radiologist','Status'];
+    recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Radiologist', 'Status'];
     topTestsColumns: string[] = ['TestName', 'Count'];
     radiologistPerformanceColumns: string[] = ['RadiologistName', 'ReportsCompleted'];
     // Pathology Table Data Sources
@@ -145,21 +147,17 @@ export class RadiologyDashboardComponent implements OnInit {
     ngOnInit(): void {
 
         this.myFilterform = this.dashboardService.filterFormfinance();
-
-
         this.loadTableData();
-        // this.getHomeDashboardAPI();
-
+        
         setTimeout(() => {
             this.initializePathologyCharts();
             this.initializeRadiologyCharts();
         }, 500);
 
-
+        
     }
 
     onGo(): void {
-        // this.ngOnDestroy()
         this.loadTableData()
     }
 
@@ -248,19 +246,20 @@ export class RadiologyDashboardComponent implements OnInit {
 
     }
     getRadiologyReportData() {
-        debugger
+        
         this.dashboardService.getRadiologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
             this.RadiologyData = res;
             console.log('Radiology Reports:', res);
-            debugger
+            
             if (this.RadiologyData) {
                 this.dsRadiologyRecentReports.data = res.recentRadiologyReports;
                 this.dsTopTests.data = res.topOrderedTests;
                 this.dsRadiologistPerformance.data = res.radiologyWorkloads
-
+debugger
                 if (this.RadiologyData.radiologyVolumes.length > 0)
                     this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart()
-                this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart()
+                if (this.RadiologyData.countSummary)
+                    this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart()
                 if (this.RadiologyData.dailyTestCounts.length > 0)
                     this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart()
             }
@@ -290,7 +289,7 @@ export class RadiologyDashboardComponent implements OnInit {
         this.completedReports = 0;
         this.pendingReports = 0;
         this.cancelledScans = 0;
-        
+
         this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
             this.dsRadiologyCount.data = res || [];
             this.dsRadiologyRecentReports.data = res || [];
@@ -320,7 +319,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     }
                 });
             }
-         
+
         });
     }
 
@@ -388,57 +387,7 @@ export class RadiologyDashboardComponent implements OnInit {
         });
     }
 
-    ngOnDestroy() {
-
-        // if (this.modalityChart) {
-        //     this.modalityChart.destroy();
-        // }
-        // if (this.modalityChart1) {
-        //     this.modalityChart1.destroy();
-        // }
-        // if (this.statusPieChart) {
-        //     this.statusPieChart.destroy();
-        // }
-        // if (this.statusPieChart1) {
-        //     this.statusPieChart1.destroy();
-        // }
-        if (this.pathologyDepartmentChart) {
-            this.pathologyDepartmentChart.destroy();
-        }
-        if (this.pathologyStatusPieChart) {
-            this.pathologyStatusPieChart.destroy();
-        }
-        if (this.pathologyVolumeTrendChart) {
-            this.pathologyVolumeTrendChart.destroy();
-        }
-        // if (this.pathologyTotalTestsChart) {
-        //     this.pathologyTotalTestsChart.destroy();
-        // }
-
-
-        // if (this.RadiologytotalTestsChart) {
-        //     this.RadiologytotalTestsChart.destroy();
-        // }
-        //  if (this.RadiologycompletedReportsChart) {
-        //     this.RadiologycompletedReportsChart.destroy();
-        // } if (this.RadiologypendingReportsChart) {
-        //     this.RadiologypendingReportsChart.destroy();
-        // } if (this.RadiologycancelledScansChart) {
-        //     this.RadiologycancelledScansChart.destroy();
-        // }
-
-        if (this.RadiologyDepartmentChart) {
-            this.RadiologyDepartmentChart.destroy();
-        }
-        if (this.RadiologyStatusPieChart) {
-            this.RadiologyStatusPieChart.destroy();
-        }
-        if (this.RadiologyVolumeTrendChart) {
-            this.RadiologyVolumeTrendChart.destroy();
-        }
-
-    }
-
+   
     // Volume Trend Line Chart
     getVolumeTrendChart() {
         return new Chart('volumeTrendChart', {
@@ -511,28 +460,28 @@ export class RadiologyDashboardComponent implements OnInit {
         // Department Bar Chart
         if (document.getElementById('pathologyTotalTestsChart')) {
             this.pathologyTotalTestsChart = this.getpathologyTotalTestsChart();
-        }else if (document.getElementById('pathologyCompletedChart')) {
+        } else if (document.getElementById('pathologyCompletedChart')) {
             this.pathologyCompletedChart = this.getpathologyCompletedChart();
-        }else
-        if (document.getElementById('pathologyPendingChart')) {
-            this.pathologyPendingChart = this.getpathologyPendingChart();
-        }else if (document.getElementById('pathologyRejectedChart')) {
-            this.pathologyRejectedChart = this.getpathologyRejectedChart();
-        }else if (document.getElementById('pathologyDepartmentChart')) {
-            // this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
-        }else // Status Pie Chart
-        if (document.getElementById('pathologyStatusPieChart')) {
-            // this.pathologyStatusPieChart = this.getPathologyStatusPieChart();
-        }else // Volume Trend Chart
-        if (document.getElementById('pathologyVolumeTrendChart')) {
-            // this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart();
-        }
+        } else
+            if (document.getElementById('pathologyPendingChart')) {
+                this.pathologyPendingChart = this.getpathologyPendingChart();
+            } else if (document.getElementById('pathologyRejectedChart')) {
+                this.pathologyRejectedChart = this.getpathologyRejectedChart();
+            } else if (document.getElementById('pathologyDepartmentChart')) {
+                // this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
+            } else // Status Pie Chart
+                if (document.getElementById('pathologyStatusPieChart')) {
+                    // this.pathologyStatusPieChart = this.getPathologyStatusPieChart();
+                } else // Volume Trend Chart
+                    if (document.getElementById('pathologyVolumeTrendChart')) {
+                        // this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart();
+                    }
     }
     bartotalTests = []
 
     getpathologyTotalTestsChart() {
 
-        
+
         if (this.pathologyData.weeklyTestReport) {
             this.bartotalTests = this.pathologyData.weeklyTestReport.map(day => day.totalTests);
         }
@@ -549,7 +498,7 @@ export class RadiologyDashboardComponent implements OnInit {
     barCompletTests = []
     getpathologyCompletedChart() {
 
-        debugger
+        
         if (this.pathologyData.weeklyTestReport) {
             this.barCompletTests = this.pathologyData.weeklyTestReport.map(day => day.completedReports);
         }
@@ -567,7 +516,7 @@ export class RadiologyDashboardComponent implements OnInit {
     barpendingTests = []
     getpathologyPendingChart() {
 
-        
+
         if (this.pathologyData.weeklyTestReport) {
             this.barpendingTests = this.pathologyData.weeklyTestReport.map(day => day.pendingReports);
         }
@@ -585,7 +534,7 @@ export class RadiologyDashboardComponent implements OnInit {
     barrejectedTests = []
     getpathologyRejectedChart() {
 
-        
+
         if (this.pathologyData.weeklyTestReport) {
             this.barrejectedTests = this.pathologyData.weeklyTestReport.map(day => day.cancelledReports);
         }
@@ -617,7 +566,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Number of Tests',
                         data: this.pathologyData.pathologyValumes.map(d => d.categoryCount),
-                        backgroundColor: ['#179ee2', '#ff6b9d', '#c364c7', '#6bcf7f'],
+                        backgroundColor: ['#4c52f8','#497df7',  '#1347b0', '#9827e4'],
                         borderRadius: 6
                     }
                 ]
@@ -664,7 +613,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: pathologyStatusData.map(d => d.status),
                 datasets: [
                     {
-                        backgroundColor: ['#497df7', '#28af28', '#ff5a8a'],
+                        backgroundColor: ['#bb65f5','#6366f1', '#497df7', '#4c52f8', '#5287f0',  '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         data: pathologyStatusData.map(d => d.count),
                         borderWidth: 2
                     }
@@ -688,7 +637,7 @@ export class RadiologyDashboardComponent implements OnInit {
                                 if (label) {
                                     label += ': ';
                                 }
-                                label += context.parsed + ' tests';
+                                label += context.parsed + ' Status';
                                 return label;
                             }
                         }
@@ -774,22 +723,22 @@ export class RadiologyDashboardComponent implements OnInit {
 
         if (document.getElementById('RadiologytotalTestsChart')) {
             this.RadiologytotalTestsChart = this.getradiologyTotalTestsChart();
-        }else if (document.getElementById('RadiologycompletedReportsChart')) {
+        } else if (document.getElementById('RadiologycompletedReportsChart')) {
             this.RadiologycompletedReportsChart = this.getradiologyCompletTestsChart();
-        }else if (document.getElementById('RadiologypendingReportsChart')) {
+        } else if (document.getElementById('RadiologypendingReportsChart')) {
             this.RadiologypendingReportsChart = this.getradiologyPendingTestsChart();
-        }else if (document.getElementById('RadiologycancelledScansChart')) {
+        } else if (document.getElementById('RadiologycancelledScansChart')) {
             this.RadiologycancelledScansChart = this.getradiologyCancleTestsChart();
-        }else // Department Bar Chart
-        if (document.getElementById('RadiologyDepartmentChart')) {
-            // this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart();
-        }else // Status Pie Chart
-        if (document.getElementById('RadiologyStatusPieChart')) {
-            // this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart();
-        }else // Volume Trend Chart
-        if (document.getElementById('RadiologyVolumeTrendChart')) {
-            // this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart();
-        }
+        } else // Department Bar Chart
+            if (document.getElementById('RadiologyDepartmentChart')) {
+                // this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart();
+            } else // Status Pie Chart
+                if (document.getElementById('RadiologyStatusPieChart')) {
+                    // this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart();
+                } else // Volume Trend Chart
+                    if (document.getElementById('RadiologyVolumeTrendChart')) {
+                        // this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart();
+                    }
     }
 
 
@@ -797,7 +746,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyTotalTestsChart() {
 
-        
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobartotalTests = this.RadiologyData.radWeeklyTestReport.map(day => day.totalTests);
         }
@@ -815,7 +764,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyCompletTestsChart() {
 
-        debugger
+        
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarcomplTests = this.RadiologyData.radWeeklyTestReport.map(day => day.completedReports);
         }
@@ -834,7 +783,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyPendingTestsChart() {
 
-        
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarpendingTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
         }
@@ -853,7 +802,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     getradiologyCancleTestsChart() {
 
-        
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarcancleTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
         }
@@ -883,7 +832,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Number of Tests',
                         data: this.RadiologyData.radiologyVolumes.map(d => d.categoryCount),
-                        backgroundColor: ['#179ee2', '#ff6b9d', '#c364c7', '#6bcf7f'],
+                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         borderRadius: 6
                     }
                 ]
@@ -916,7 +865,7 @@ export class RadiologyDashboardComponent implements OnInit {
             this.RadiologyStatusPieChart.destroy();
         }
 
-
+debugger
         // Pathology Status Data
         let RadiologyStatusData = [
             { status: 'Completed', count: this.RadiologyData?.countSummary?.completedCount ?? 0 },
@@ -931,7 +880,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: RadiologyStatusData.map(d => d.status),
                 datasets: [
                     {
-                        backgroundColor: ['#497df7', '#28af28', '#ff5a8a'],
+                        backgroundColor: ['#bb65f5','#6366f1', '#497df7', '#4c52f8', '#5287f0',  '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         data: RadiologyStatusData.map(d => d.count),
                         borderWidth: 2
                     }
@@ -955,7 +904,7 @@ export class RadiologyDashboardComponent implements OnInit {
                                 if (label) {
                                     label += ': ';
                                 }
-                                label += context.parsed + ' tests';
+                                label += context.parsed + ' Status';
                                 return label;
                             }
                         }
@@ -972,7 +921,7 @@ export class RadiologyDashboardComponent implements OnInit {
             this.RadiologyVolumeTrendChart.destroy();
         }
         // this.RadiologyVolumeTrendChart = new Chart('RadiologyVolumeTrendChart', {
-debugger
+        
         return new Chart('RadiologyVolumeTrendChart', {
             type: 'line',
             data: {

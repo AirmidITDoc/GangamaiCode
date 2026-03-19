@@ -257,7 +257,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             data: {
                 datasets: [
                     {
-                        backgroundColor: ['#FF3784', '#36A2EB', '#4BC0C0', '#F77825', '#9966FF'],
+                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3' ,],
                         data: [this.totalOccupied, this.totalAvailable, 8, 3, 1]
                     }
                 ]
@@ -388,7 +388,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         || [],
                     datasets: [
                         {
-                            backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e'],
+                            backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3' ],
                             data: Object.entries(apiData)
                                 .filter(([key]) => key !== 'TotalBedCount') // skip that key
                                 .map(([_, value]) => value) || []
