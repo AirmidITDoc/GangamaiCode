@@ -14,6 +14,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { DatePipe } from '@angular/common';
 import { LabAppointmentService } from './lab-appointment.service';
 import { NewLabAppointmentComponent } from './new-lab-appointment/new-lab-appointment.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -49,6 +50,7 @@ export class LabAppointmentComponent {
   categoryId = 0
   CateName = ''
   CalendarView = CalendarView;
+  unitId = 0
 
   viewDate: Date = new Date();
   @ViewChild('dateDisplay', { read: ElementRef }) dateDisplay: ElementRef;
@@ -67,6 +69,7 @@ export class LabAppointmentComponent {
   constructor(private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
     private _service: LabAppointmentService,
+    private accountService: AuthenticationService,
     public _matDialog: MatDialog, private cdr: ChangeDetectorRef, public toastr: ToastrService,
     public datePipe: DatePipe
   ) {
@@ -74,10 +77,13 @@ export class LabAppointmentComponent {
       fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       categoryId: [0],
-      refDocId:[0]
+      refDocId: [0],
     });
   }
 
+  ngOnInit(): void {
+    this.unitId = this.accountService.currentUserValue.user.unitId
+  }
   getWeekRange(date = new Date()) {
     // Clone the date to avoid modifying the original
     const d = new Date(date);
@@ -126,36 +132,25 @@ export class LabAppointmentComponent {
   bindData() {
     debugger
     let fromDate, toDate;
-    fromDate = this.myFilterform.get('fromDate').value
-    toDate = this.myFilterform.get('enddate').value
-    if (this.dateDisplay) {
-      var dates = this.dateDisplay.nativeElement.textContent.split('-');
-      if (this.view == CalendarView.Week) {
-        fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
-        toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
-      }
-      else if (this.view == CalendarView.Day) {
-        fromDate = new Date(dates[0].split(',')[2], this.months[dates[0].split(',')[1].trim().split(' ')[0].substring(0, 3)], dates[0].split(',')[1].trim().split(' ')[1]);
-      }
-      else {
-        fromDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)], 1);
-        toDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)] + 1, 0);
-      }
-    }
-    else {
-      var d = this.getWeekRange();
-      fromDate = d.sunday; toDate = d.saturday;
-    }
-    // this._service.getAppoinments(this.vRefDocId, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
-    //   this.events = data;
-    //   this.events = this.events.map(obj => ({
-    //     ...obj,
-    //     start: new Date(obj.start),
-    //     end: new Date(obj.end),
-    //     actions: this.actions.filter(x => x.a11yLabel == "Delete"),
-    //   }));
+    fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
 
-    // });
+    this._service.getAppoinments(this.vRefDocId, fromDate, toDate, this.categoryId).subscribe((data) => {
+      this.events = data;
+      console.log(this.events)
+      this.events = this.events.map(obj => ({
+        ...obj,
+        start: new Date(obj.start),
+        end: new Date(obj.end),
+        // draggable: false,
+        // resizable: {
+        //   beforeStart: false,
+        //   afterEnd: false,
+        // },
+        actions: this.actions.filter(x => x.a11yLabel == "Delete"),
+      }));
+
+    });
   }
 
   assignToTestColumn(date: Date, test: string): Date {
@@ -171,46 +166,91 @@ export class LabAppointmentComponent {
   }
 
   isPastTime(segmentDate: Date): boolean {
-  const now = new Date();
+    const now = new Date();
 
-  const segmentMinutes = segmentDate.getHours() * 60 + segmentDate.getMinutes();
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const segmentMinutes = segmentDate.getHours() * 60 + segmentDate.getMinutes();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  return segmentMinutes < currentMinutes;
-}
+    return segmentMinutes < currentMinutes;
+  }
+
+  // actions: CalendarEventAction[] = [
+  //   {
+  //     label: '<i class="fas fa-fw fa-plus"></i>',
+  //     a11yLabel: 'Add',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       this.handleEvent('CellClicked', event);
+  //     },
+  //   },
+  //   {
+  //     label: '<i class="fas fa-fw fa-pencil-alt"></i>',
+  //     a11yLabel: 'Edit',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       this.handleEvent('CellClicked', event);
+  //     },
+  //   },
+  //   {
+  //     label: '<i class="fas fa-fw fa-trash-alt"></i>',
+  //     a11yLabel: 'Delete',
+  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //       debugger
+  //       this.confirmDialogRef = this._matDialog.open(
+  //         FuseConfirmDialogComponent,
+  //         {
+  //           disableClose: false,
+  //         }
+  //       );
+  //       this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to cancel this appointment?";
+  //       this.confirmDialogRef.afterClosed().subscribe((result) => {
+  //         if (result) {
+  //           this._service.appointmentCancle(event.id).subscribe((response: any) => {
+  //             this.toastr.success(response.message);
+  //             this.bindData();
+  //           });
+  //         }
+  //         this.confirmDialogRef = null;
+  //       });
+  //     },
+  //   },
+  // ];
 
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-plus"></i>',
       a11yLabel: 'Add',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event, sourceEvent }) => {
+        sourceEvent.stopPropagation();   // ✅ ADD THIS
         this.handleEvent('CellClicked', event);
       },
     },
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event, sourceEvent }) => {
+        sourceEvent.stopPropagation();   // ✅ ADD THIS
         this.handleEvent('CellClicked', event);
       },
     },
     {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event, sourceEvent }) => {
+        sourceEvent.stopPropagation();   // ✅ VERY IMPORTANT
+
         this.confirmDialogRef = this._matDialog.open(
           FuseConfirmDialogComponent,
-          {
-            disableClose: false,
-          }
+          { disableClose: false }
         );
-        this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to cancel this appointment?";
+
+        this.confirmDialogRef.componentInstance.confirmMessage =
+          "Are you sure you want to cancel this appointment?";
+
         this.confirmDialogRef.afterClosed().subscribe((result) => {
           if (result) {
-            // this._service.phoneMasterCancle(event.id).subscribe((response: any) => {
-            //   this.toastr.success(response.message);
-            //   this.bindData();
-            // });
+            this._service.appointmentCancle(event.id).subscribe((response: any) => {
+              this.toastr.success(response.message);
+              this.bindData();
+            });
           }
           this.confirmDialogRef = null;
         });
@@ -219,8 +259,7 @@ export class LabAppointmentComponent {
   ];
 
   refresh = new Subject<void>();
-  events: CalendarEvent[] = [
-  ];
+  events: CalendarEvent[] = [];
 
   floorToNearest(amount: number, precision: number) {
     return Math.floor(amount / precision) * precision;
@@ -304,14 +343,38 @@ export class LabAppointmentComponent {
     }
   }
 
+  // eventTimesChanged({
+  //   event,
+  //   newStart,
+  //   newEnd,
+  // }: CalendarEventTimesChangedEvent): void {
+  //   event.start = newStart;
+  //   event.end = newEnd;
+  //   this.handleEvent('Dropped or resized', event);
+  // }
   eventTimesChanged({
     event,
     newStart,
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
-    event.start = newStart;
-    event.end = newEnd;
+
+    const fixedStart = this.fixToCurrentDate(newStart);
+    const fixedEnd = this.fixToCurrentDate(newEnd);
+
+    event.start = fixedStart;
+    event.end = fixedEnd;
+
     this.handleEvent('Dropped or resized', event);
+  }
+
+  fixToCurrentDate(date: Date): Date {
+    const baseDate = new Date(this.viewDate); // or new Date() if always today
+
+    baseDate.setHours(date.getHours());
+    baseDate.setMinutes(date.getMinutes());
+    baseDate.setSeconds(0);
+
+    return baseDate;
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -319,11 +382,11 @@ export class LabAppointmentComponent {
       const buttonElement = document.activeElement as HTMLElement;
       buttonElement?.blur();
 
-      const fromDate = new Date(event.start);
+      // const fromDate = new Date(event.start);
+      const fromDate = this.fixToCurrentDate(new Date(event.start));
       let toDate: Date;
-
       if (event.end) {
-        toDate = new Date(event.end);
+        toDate = this.fixToCurrentDate(new Date(event.end));
       } else {
         toDate = new Date(fromDate);
         toDate.setMinutes(toDate.getMinutes() + 2);
@@ -336,28 +399,29 @@ export class LabAppointmentComponent {
         data: {
           fromDate: fromDate,
           toDate: toDate,
-          categoryId:this.categoryId,
-          refDoctorId:this.vRefDocId,
+          categoryId: this.categoryId,
+          refDoctorId: this.vRefDocId,
         }
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.bindData();
-        }
+        // if (result) {
+        this.bindData();
+        // }
       });
     }
     else if (action == "Dropped or resized") {
+      debugger
       if (Number(event.id) > 0) {
         const data = {
-          phoneAppId: event.id,
-          startDate: event.start,
-          endDate: event.end
+          labAppId: event.id,
+          startTime: event.start,
+          endTime: event.end
         };
-        // this._service.getDateTimeChange(data).subscribe(response => {
-        //   this.bindData();
-        //   this._matDialog.closeAll();
-        // });
+        this._service.getDateTimeChange(data).subscribe(response => {
+          this.bindData();
+          this._matDialog.closeAll();
+        });
       }
     }
   }

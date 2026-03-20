@@ -18,7 +18,7 @@ export class HospitalService {
   createHospitalForm(): FormGroup {
     return this._formBuilder.group({
       hospitalId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      hospitalHeaderLine: ["",[Validators.required]],
+      hospitalHeaderLine: [""],
       hospitalName: ["",[Validators.required]],
       hospitalShortName: [""],
       hospitalAddress:  ["",[Validators.required]],

@@ -447,19 +447,19 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             FirstName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
+                // Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             MiddleName: ['', [
                 // Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
+                // Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
             ]],
             LastName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
+                // Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             DateOfBirth: [{ value: new Date() }],

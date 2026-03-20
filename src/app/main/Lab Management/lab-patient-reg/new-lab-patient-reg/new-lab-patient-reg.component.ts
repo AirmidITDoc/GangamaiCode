@@ -366,7 +366,7 @@ export class NewLabPatientRegComponent {
       patientName: [''],
       servicedoctorId: [0],
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-      appointmentId:0
+      appointmentId: 0
     })
   }
 
@@ -1111,6 +1111,11 @@ export class NewLabPatientRegComponent {
     this.IsOtherService = obj.isOtherService;
     this.vIsPackage = obj.isPackage;
     this.serviceSelct = true
+    if (obj?.isEditable == true) {
+      this.chkIsEditable = false; //price should not get edit
+    } else {
+      this.chkIsEditable = true; //price should get edit
+    }
     this.onSaveEntry(obj);
 
     this.myForm.get('ServiceId')?.reset();
@@ -1807,7 +1812,7 @@ export class NewLabPatientRegComponent {
 
     const formValue = { ...this.myForm.value };
     const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-      'paymentType', 'servicedoctorId','appointmentId'];
+      'paymentType', 'servicedoctorId', 'appointmentId'];
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
 

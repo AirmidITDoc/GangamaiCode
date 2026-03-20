@@ -49,8 +49,8 @@ export class NewLabAppointmentComponent {
   isTariffSelect: boolean = false;
   patienttype = 0
   UnitId: any = this.accountService.currentUserValue.user.unitId;
-  vRefDocId: any = 0
-  vRefDocName: any = ''
+  vdoctorId: any = 0
+  vdoctorName: any = ''
   companyId = 0;
   companyName = '';
   companyDet = new LabPatientList({});
@@ -68,8 +68,6 @@ export class NewLabAppointmentComponent {
   minDate = new Date();
   CityName: '';
   labPatientId = 0
-  doctorID = 0
-  refDocID = 0
   timeflag = 0
   isTimeChanged: boolean = false;
   phdatetime: any;
@@ -78,6 +76,7 @@ export class NewLabAppointmentComponent {
   fromDate: Date;
   toDate: Date;
   isEditMode: boolean = false;
+  public now: Date = new Date();
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -97,7 +96,6 @@ export class NewLabAppointmentComponent {
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<NewLabAppointmentComponent>,
     public datePipe: DatePipe,
-    private commonService: PrintserviceService,
     public _formbuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
@@ -105,7 +103,7 @@ export class NewLabAppointmentComponent {
     public toastrService: ToastrService, public _ConfigService: ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _configue: ConfigService,
-    private apiCaller: ApiCaller,
+    public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -118,12 +116,12 @@ export class NewLabAppointmentComponent {
     if (this.data) {
       this.isEditMode = true;
       console.log(this.data)
-      this.myForm.get('phAppDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
-      this.myForm.get('phAppTime').setValue(this.data.fromDate);
+      this.myForm.get('labAppDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
+      this.myForm.get('labAppTime').setValue(this.data.fromDate);
       this.myForm.get('startTime').setValue(this.data.fromDate);
       this.myForm.get('endTime').setValue(this.data.toDate);
       this.myForm.get('categoryId').setValue(this.data.categoryId);
-      this.myForm.get('refDocId').setValue(this.data.refDoctorId);
+      this.myForm.get('doctorId').setValue(this.data.refDoctorId);
       this.fromDate = this.data.fromDate;
       this.toDate = this.data.toDate;
     } else {
@@ -131,8 +129,8 @@ export class NewLabAppointmentComponent {
       const currentDateTime = new Date();
       const today = new Date();
       const utcMidnight = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-      this.myForm.get('phAppDate').setValue(utcMidnight.toISOString());
-      this.myForm.get('phAppTime')?.setValue(currentDateTime);
+      this.myForm.get('labAppDate').setValue(utcMidnight.toISOString());
+      this.myForm.get('labAppTime')?.setValue(currentDateTime);
       this.myForm.get('endTime')?.setValue(currentDateTime);
       this.myForm.get('startTime').setValue(currentDateTime);
 
@@ -181,28 +179,33 @@ export class NewLabAppointmentComponent {
 
   CreateMyForm() {
     return this._formbuilder.group({
-      LabPatRegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      labAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: this.accountService.currentUserValue.user.unitId,
+      appDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      appTime: [''],
       prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       firstName: ['', [Validators.required, Validators.maxLength(50)]],
       middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-      genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      ageYear: ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
-      ageMonth: ['', [Validators.pattern("^[0-9]*$")]],
-      ageDay: ['', [Validators.pattern("^[0-9]*$")]],
-      address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      phAppDate: [(new Date()).toISOString(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
-      phAppTime: ['', [Validators.required]],
+      address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      doctorId: [0],
+      categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      labAppDate: [(new Date()).toISOString(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
+      labAppTime: ['', [Validators.required]],
+      addedBy: this.accountService.currentUserValue.userId,
+      updatedBy: 0,
+      isCancelled: false,
+      isCancelledBy: [0],
+      isCancelledDate: ['1900-01-01'],
+      labPatRegId: [0],
       startTime: ['', [Validators.required]],
       endTime: ['', [Validators.required]],
-      categoryId:[0],
-      refDocId:[0]
     })
   }
 
@@ -215,8 +218,8 @@ export class NewLabAppointmentComponent {
   onChangeRefdoc(value) {
     // this.vRefDocId = value.doctorId
     // this.vRefDocName = value.doctorName
-    this.vRefDocId = value.value
-    this.vRefDocName = value.text
+    this.vdoctorId = value.value
+    this.vdoctorName = value.text
   }
 
   selectChangeCategory(obj: any) {
@@ -424,7 +427,7 @@ export class NewLabAppointmentComponent {
       this.eventEmitForParent(datePart, timePart);
 
       const isoDateString = dateOfReg.toISOString();
-      this.myForm.get('phAppDate').setValue(isoDateString);
+      this.myForm.get('labAppDate').setValue(isoDateString);
     }
   }
 
@@ -441,7 +444,7 @@ export class NewLabAppointmentComponent {
       this.phdatetime = timePart;
       console.log(this.phdatetime);
 
-      this.myForm.get('phAppTime').setValue(selectedTime);
+      this.myForm.get('labAppTime').setValue(selectedTime);
       this.myForm.get('startTime').setValue(selectedTime);
 
       this.eventEmitForParent(datePart, timePart);
@@ -471,9 +474,38 @@ export class NewLabAppointmentComponent {
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
-  BillSave() {
+  OnSubmit() {
+    debugger
+    this.myForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.myForm.get('appTime').setValue(this.datePipe.transform(this.now, 'HH:mm'));
+    this.myForm.get('labPatRegId').setValue(this.VlabPatRegId ?? 0);
+    this.myForm.get('stateId').setValue(this.stateId)
+    this.myForm.get('countryId').setValue(String(this.counryId))
+    console.log(this.myForm.value);
 
+    if (!this.myForm.invalid) {
+      this._appointmentService.appointmentMasterSave(this.myForm.value).subscribe((response) => {
+        this.onClose();
+      });
+    } else {
+      let invalidFields = [];
+      if (this.myForm.invalid) {
+        for (const controlName in this.myForm.controls) {
+          if (this.myForm.controls[controlName].invalid) {
+            invalidFields.push(`Appointment Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
+    }
   }
+
   onClose() {
     this.myForm.reset();
     this.dialogRef.close();

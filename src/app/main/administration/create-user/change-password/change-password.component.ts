@@ -77,6 +77,7 @@ export class ChangePasswordComponent implements OnInit {
     return this.formBuilder.group({
       userId: this.accountService.currentUserValue.userId,
       userName: this.accountService.currentUserValue.user.userName,
+      oldpassword:[this.accountService.currentUserValue.user.password], // extra 
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)
       //  , Validators.pattern(this.passwordPattern)
       ]],
@@ -106,6 +107,7 @@ export class ChangePasswordComponent implements OnInit {
     if (!this.changePasswordFormGroup.invalid) {
 
       this.changePasswordFormGroup.removeControl('confirmpassword')
+      this.changePasswordFormGroup.removeControl('oldpassword')
       console.log(this.changePasswordFormGroup.value)
       this._CreateUserService.getpasswwordChange(this.changePasswordFormGroup.value).subscribe(data => {
         if (data) {

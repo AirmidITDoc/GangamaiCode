@@ -760,7 +760,7 @@ export class ReportGenerationComponent implements OnInit {
                 });
             if (this.flagPatientSelected)
                 paramFilterList.push({
-                    "fieldName": "LabPatientId",
+                    "fieldName": "LabPatRegId",
                     "fieldValue": this.LabPatientId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });

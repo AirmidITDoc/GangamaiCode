@@ -48,4 +48,17 @@ export class LabAppointmentService {
   public getMaster(mode, Id) {
     return this._httpClient.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
   }
+  public appointmentMasterSave(Param: any) {
+    return this._httpClient.PostData("LabAppointment/Insert", Param);
+  }
+  public getAppoinments(Id: number, fromDate: string, toDate: string, categoryId: number) {
+    // return this._httpClient.PostData("LabAppointment/LabAppointmentList", param);
+    return this._httpClient.GetData("LabAppointment/get-Labappoinments?DocId=" + Id + "&FromDate=" + fromDate + "&ToDate=" + toDate + "&CategoryId=" + categoryId);
+  }
+  public getDateTimeChange(m_data) {
+    return this._httpClient.PutData("LabAppointment/RescheduleLabAppointment", m_data);
+  }
+  public appointmentCancle(Param: any) {
+    return this._httpClient.DeleteData("LabAppointment?Id=" + Param.toString());
+  }
 }
