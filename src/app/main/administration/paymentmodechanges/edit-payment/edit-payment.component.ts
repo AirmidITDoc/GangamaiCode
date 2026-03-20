@@ -128,7 +128,7 @@ debugger
   TotalpaidAmt: any = 0;
   getbalAmt() {
 
-    let totalAmountAdded: any = ((this.vcashpay ? parseFloat(this.vcashpay) : 0)
+    const totalAmountAdded: any = ((this.vcashpay ? parseFloat(this.vcashpay) : 0)
       + (this.vcardpay ? parseFloat(this.vcardpay) : 0)
       + (this.vchequepay ? parseFloat(this.vchequepay) : 0)
       + (this.vneftpay ? parseFloat(this.vneftpay) : 0)
@@ -154,7 +154,7 @@ debugger
       this.vbalanceAmt = this.vnetPayAmt;
     }
     else {
-      let balamt = (parseFloat(this.vnetPayAmt) - parseFloat(totalAmountAdded)).toFixed(2);
+      const balamt = (parseFloat(this.vnetPayAmt) - parseFloat(totalAmountAdded)).toFixed(2);
       this.vbalanceAmt = balamt;
       this.amount = parseInt(balamt)
     }
@@ -501,7 +501,7 @@ debugger
   amount: any = 0;
 
   getPaidAmount(event) {
-    let amount = this.registerObj.paidAmount
+    const amount = this.registerObj.paidAmount
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
     //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
@@ -538,7 +538,7 @@ debugger
     }
   }
   getCardPayAmount(event) {
-    let amount = this.registerObj.paidAmount
+    const amount = this.registerObj.paidAmount
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
     //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
@@ -582,7 +582,7 @@ debugger
 
   }
   getCheckPayAmount(event) {
-    let amount = this.registerObj.paidAmount
+    const amount = this.registerObj.paidAmount
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
     //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
@@ -626,7 +626,7 @@ debugger
 
   }
   getNFTPayAmount(event) {
-    let amount = this.registerObj.paidAmount
+    const amount = this.registerObj.paidAmount
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
     //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {
@@ -669,7 +669,7 @@ debugger
 
   }
   getPayTMPayAmount(event) {
-    let amount = this.registerObj.paidAmount
+    const amount = this.registerObj.paidAmount
     // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
     //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;
     if (event.checked == true) {

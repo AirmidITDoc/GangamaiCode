@@ -17,7 +17,7 @@ export class EditConfigurationComponent {
   isPatientSelected: boolean = false;
   autocompleteModeItem: string = "PatientType";
   autocompleteModeCashcounter: string = "CashCounter";
-  autocompleteModeDepartment: String = "Department";
+  autocompleteModeDepartment: string = "Department";
   autocompleteModedoctorty: string = "ConDoctor";
   screenFromString = 'Common-form';
   autocompleteModeClass: string = "Class";
@@ -96,7 +96,7 @@ export class EditConfigurationComponent {
 
     getServiceList() {
 
-    var param = {
+    const param = {
       "searchFields": [
 
       ],
@@ -188,7 +188,7 @@ onChangeprintphar(event) {
 
 
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

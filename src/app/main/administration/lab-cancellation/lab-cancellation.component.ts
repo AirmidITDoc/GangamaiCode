@@ -210,7 +210,7 @@ export class LabCancellationComponent {
     }).then((result) => {
 
       if (result.isConfirmed) {
-        let SubmitDate = {
+        const SubmitDate = {
           "billNo": this.billcancelList.billNo || 0,
           "discComments": this.VReason || ''
         }
@@ -236,7 +236,7 @@ export class LabCancellationComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

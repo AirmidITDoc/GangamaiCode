@@ -216,9 +216,9 @@ export class OTNoteComponent {
 }
 
 export class otNote {
-  RegId: Number;
-  regId: Number;
-  RegID: Number;
+  RegId: number;
+  regId: number;
+  RegID: number;
   PatientName: string;
   patientName: string;
   firstName: string;
@@ -248,7 +248,7 @@ export class otNote {
   cityId: number;
   MaritalStatusId: number;
   maritalStatusId: number;
-  IsCharity: Boolean;
+  IsCharity: boolean;
   ReligionId: number;
   religionId: number;
   AreaId: number;

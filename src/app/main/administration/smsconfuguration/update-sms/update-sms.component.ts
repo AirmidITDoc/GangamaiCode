@@ -65,7 +65,7 @@ export class UpdateSMSComponent implements OnInit {
         this.OnClose();
       }); 
     }else{
-        let invalidFields = [];
+        const invalidFields = [];
       if (this.SearchGroupForm.invalid) {
         for (const controlName in this.SearchGroupForm.controls) {
           if (this.SearchGroupForm.controls[controlName].invalid) {
@@ -104,7 +104,7 @@ export class UpdateSMSComponent implements OnInit {
     };
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -115,7 +115,7 @@ export class UpdateSMSComponent implements OnInit {
 }
 export class TemplateList { 
   MgsCategory:string;
-  Code: Number;
+  Code: number;
   IsBlock:number;
   TemplateId:number; 
   constructor(TemplateList) {

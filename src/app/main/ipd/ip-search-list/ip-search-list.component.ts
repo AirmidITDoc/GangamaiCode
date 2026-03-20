@@ -235,7 +235,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(DischargeSummaryComponent,
                 {
                     maxWidth: "95vw",
@@ -253,7 +253,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(DischargeSummaryTemplateComponent,
                 {
                     maxWidth: "95vw",
@@ -271,7 +271,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
                 {
                     maxWidth: "100%",
@@ -289,7 +289,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(IPRefundofBillComponent,
                 {
                     maxWidth: "100%",
@@ -306,7 +306,7 @@ export class IPSearchListComponent implements OnInit {
         else if (m == "Refund of Advance") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button 
-            let that = this;
+            const that = this;
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             console.log(this.advanceDataStored.storage)
             const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
@@ -347,7 +347,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             const dialogRef = this._matDialog.open(IPBillingComponent,
                 {
@@ -374,7 +374,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(BedTransferComponent,
                 {
                     maxHeight: '95vh',
@@ -471,7 +471,7 @@ export class IPSearchListComponent implements OnInit {
         };
     }
     SubMenu(contact) {
-        let xx = {
+        const xx = {
             RegNo: contact.RegNo,
             AdmissionID: contact.AdmissionID,
             PatientName: contact.PatientName,
@@ -661,7 +661,7 @@ export class IPSearchListComponent implements OnInit {
 
 
 export class Bed {
-    BedId: Number;
+    BedId: number;
     BedName: string;
 
     /**
@@ -679,7 +679,7 @@ export class Bed {
 
 
 export class AdvanceDetail {
-    AdvanceDetailID: Number;
+    AdvanceDetailID: number;
     Date: Date;
     Time: Time;
     AdvanceId: number;
@@ -731,8 +731,8 @@ export class AdvanceDetail {
 }
 
 export class AdvanceDetailObj {
-    RegNo: Number;
-    AdmissionID: Number;
+    RegNo: number;
+    AdmissionID: number;
     PatientName: string;
     Doctorname: string;
     AdmDateTime: string;
@@ -740,8 +740,8 @@ export class AdvanceDetailObj {
     AgeMonth: number;
     AgeDay: number;
     ClassId: number;
-    ClassName: String;
-    TariffName: String;
+    ClassName: string;
+    TariffName: string;
     TariffId: number;
     IsDischarged: boolean;
     opD_IPD_Type: number;
@@ -752,8 +752,8 @@ export class AdvanceDetailObj {
     IPDNo: any;
     DoctorId: number;
     BedId: any;
-    BedName: String;
-    WardName: String;
+    BedName: string;
+    WardName: string;
     CompanyId: string;
     SubCompanyId: any;
     IsBillGenerated: any;
@@ -865,7 +865,7 @@ export class ChargesList {
     ChargesId: any
     chargesId: number;
     ServiceId: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: number;
     Qty: number;
     TotalAmt: number;
@@ -873,7 +873,7 @@ export class ChargesList {
     DiscAmt: number;
     NetAmount: number;
     DoctorId: number;
-    ChargeDoctorName: String;
+    ChargeDoctorName: string;
     ChargesDate: Date;
     IsPathology: boolean;
     IsRadiology: boolean;
@@ -955,7 +955,7 @@ export class ChargesList {
     }
 }
 export class AdvanceHeader {
-    AdvanceId: Number;
+    AdvanceId: number;
     Date: Date;
     RefId: number;
     OPD_IPD_Type: number;
@@ -992,7 +992,7 @@ export class AdvanceHeader {
     }
 }
 export class Payment {
-    PaymentId: Number;
+    PaymentId: number;
     BillNo: number;
     ReceiptNo: string;
     PaymentDate: Date;
@@ -1075,8 +1075,8 @@ export class Payment {
 }
 
 export class Discharge {
-    DischargeId: Number;
-    AdmissionID: Number;
+    DischargeId: number;
+    AdmissionID: number;
     DischargeDate: Date;
     DischargeTime: Date;
     DischargeTypeId: string;
@@ -1113,11 +1113,11 @@ export class Bedtransfer {
     ToDate: Date;
     ToTime: Date;
     ToBedId: number;
-    ToWardID: Number;
-    ToClassId: Number;
+    ToWardID: number;
+    ToClassId: number;
     AddedBy: number;
     IsCancelled: boolean;
-    IsCancelledBy: Number;
+    IsCancelledBy: number;
 
     /**
     * Constructor

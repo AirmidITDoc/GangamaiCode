@@ -47,7 +47,7 @@ export class LabrefundBillComponent {
   registerObj = new LabPatientList({});
   PatientName: any = "";
   RegId: any;
-  RegNo: any;;
+  RegNo: any;
   billNo: any;
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();
   UnitId: any = this.accountService.currentUserValue.user.unitId;
@@ -304,8 +304,8 @@ export class LabrefundBillComponent {
   }
 
   calculateTotalAmount(): void {
-    let RefundAmount = this.dataSource2.data.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
-    let RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+    const RefundAmount = this.dataSource2.data.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
+    const RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
 
     this.RefundOfBillFormFooter.patchValue({
       TotalRefundAmount: RefundAmount,
@@ -380,7 +380,7 @@ export class LabrefundBillComponent {
         }
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
 
       if (this.RefundOfBillFormFooter.invalid) {
         for (const controlName in this.RefundOfBillFormFooter.controls) {
@@ -439,7 +439,7 @@ export class LabrefundBillComponent {
       return;
     }
 
-    var datePipe = new DatePipe("en-US");
+    const datePipe = new DatePipe("en-US");
     this.billNo = row.billNo;
     this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)
     this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId)
@@ -456,7 +456,7 @@ export class LabrefundBillComponent {
     this.calculateTotalAmount();
   }
   getservicedtailList(row) {
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 10,
       "sortField": "BillNo",
@@ -493,7 +493,7 @@ export class LabrefundBillComponent {
     this.dateTimeObj = dateTimeObj;
   }
   getWhatsappshareRefundbill(el, vmono) {
-    var m_data = {
+    const m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
         "smsString": '',
@@ -529,7 +529,7 @@ export class LabrefundBillComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -540,13 +540,13 @@ export class LabrefundBillComponent {
 }
 
 export class InsertRefundDetail {
-  RefundID: any;;
+  RefundID: any;
   ServiceId: number;
   serviceName: any;
   ServiceAmount: number;
   refundAmount: number;
   doctorId: number;
-  Remark: String;
+  Remark: string;
   AddBy: number;
   chargesId: number;
   ChargesDate: Date;

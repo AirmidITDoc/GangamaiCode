@@ -36,7 +36,7 @@ export class UpdateRegPatientInfoComponent {
   isCompanySelected: boolean = false;
   IsPhoneAppflag: boolean = true;
 
-  VisitTime: String;
+  VisitTime: string;
   registration: any;
   Patientnewold: any = 1;
 
@@ -132,7 +132,7 @@ export class UpdateRegPatientInfoComponent {
       this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
       this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
 
-    let submitData = {
+    const submitData = {
       "appReistrationUpdate": this.personalFormGroup.value,
       "visit": this.VisitFormGroup.value
     };
@@ -157,7 +157,7 @@ export class UpdateRegPatientInfoComponent {
 
   onChangePatient(value) {
     
-    var mode = "Company"
+    const mode = "Company"
     if (value.text == "Company") {
       this._AppointmentlistService.getMaster(mode, 1);
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);

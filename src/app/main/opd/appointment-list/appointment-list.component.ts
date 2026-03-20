@@ -347,7 +347,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
                 maxWidth: "95vw",
@@ -365,7 +365,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewAppointmentwihBillComponent,
             {
                 maxWidth: "95vw",
@@ -382,7 +382,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(EditAppointmentComponent,
             {
                 maxWidth: "65vw",
@@ -408,7 +408,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
@@ -459,7 +459,7 @@ export class AppointmentListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
                 {
                     maxWidth: "90vw",
@@ -477,7 +477,7 @@ export class AppointmentListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
                 {
                     maxWidth: "70vw",
@@ -495,7 +495,7 @@ export class AppointmentListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(TestingTableComponent,
                 {
                     maxWidth: "90vw",
@@ -520,7 +520,7 @@ export class AppointmentListComponent implements OnInit {
                 confirmButtonText: "Yes"
             }).then((flag) => {
                 if (flag.isConfirmed) {
-                    let Convert = {
+                    const Convert = {
                         "visitId": element.visitId,
                         "isConvertRequestForIp": true
                     }
@@ -584,7 +584,7 @@ export class AppointmentListComponent implements OnInit {
     }
     OnPaitentFinalPrint(element) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" },
                     { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
@@ -609,7 +609,7 @@ export class AppointmentListComponent implements OnInit {
     }
     OnPaitentDraftPrint(element) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" }
                     // { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
@@ -654,7 +654,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCasepaperComponent,
             {
                 maxWidth: "95vw",
@@ -675,7 +675,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(GastrologyEmrComponent,
             {
                 maxWidth: "95vw",
@@ -696,7 +696,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         this.advanceDataStored.storage = new SearchInforObj1(row);
-        let that = this;
+        const that = this;
         console.log("Row Selected Appointment Page : ", this.advanceDataStored.storage)
         const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
             maxWidth: "99vw",
@@ -728,7 +728,7 @@ export class AppointmentListComponent implements OnInit {
     viewgetOPBillThermalReportPdf(BillNo) {
 
         debugger
-        let param = {
+        const param = {
             "searchFields": [
                 {
                     "fieldName": 'BillNo',
@@ -850,7 +850,7 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         console.log(element)
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
@@ -928,7 +928,7 @@ export class AppointmentListComponent implements OnInit {
         }).then((flag) => {
 
             if (flag.isConfirmed) {
-                let submitData = {
+                const submitData = {
                     "visitId": contact.visitId
                 };
                 console.log(submitData);
@@ -1082,7 +1082,7 @@ export class AppointmentListComponent implements OnInit {
         //     second: '2-digit',
         //     hour12: false
         // });
-        var data = {
+        const data = {
             "visitId": patientId,
             "conStartTime": patientTimer.checkIn?.toLocaleTimeString() //"10:00:00AM"
         }
@@ -1106,7 +1106,7 @@ export class AppointmentListComponent implements OnInit {
 
         //Save updated timer state to localStorage
         this.saveTimersToLocalStorage();
-        var data = {
+        const data = {
             "visitId": patientId,
             "conEndTime": patientTimer.checkOut?.toLocaleTimeString(),
             "checkOutTime": patientTimer.checkOut?.toLocaleTimeString()
@@ -1123,7 +1123,7 @@ export class AppointmentListComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -1140,10 +1140,10 @@ export class AppointmentListComponent implements OnInit {
         this.VCrossConscount = 0;
         // let fromDateControl = "1900-01-01"
         // let toDateControl = "1900-01-01"
-        let fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
-        let toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
+        const fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
 
-        let filters: any[] = [];
+        const filters: any[] = [];
 
         // Handle date range
         if (fromDateControl && toDateControl) {
@@ -1202,7 +1202,7 @@ export class AppointmentListComponent implements OnInit {
             }
         );
 
-        let data = {
+        const data = {
             "first": 0,
             "rows": 999999,
             "sortField": "AdmissionId",
@@ -1609,7 +1609,7 @@ export class AppointmentListComponent implements OnInit {
 
 
 export class VisitMaster1 {
-    visitId: Number;
+    visitId: number;
     regId: number;
     RegID: number;
     visitDate: any;
@@ -1691,8 +1691,8 @@ export class VisitMaster1 {
 
 
 export class Regdetail {
-    RegId: Number;
-    regId: Number;
+    RegId: number;
+    regId: number;
     RegDate: Date;
     RegTime: Date;
     PrefixId: number;
@@ -1710,7 +1710,7 @@ export class Regdetail {
     RegNo: string;
     DateofBirth: Date;
     Age: any;
-    GenderId: Number;
+    GenderId: number;
     PhoneNo: string;
     MobileNo: string;
     AddedBy: number;
@@ -1721,7 +1721,7 @@ export class Regdetail {
     StateId: number;
     CityId: number;
     MaritalStatusId: number;
-    IsCharity: Boolean;
+    IsCharity: boolean;
     ReligionId: number;
     AreaId: number;
     VillageId: number;
@@ -1799,7 +1799,7 @@ export class ChargesList {
     ChargesId: number;
     ServiceId: number;
     serviceId: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: any;
     Qty: any;
     TotalAmt: number;
@@ -1807,7 +1807,7 @@ export class ChargesList {
     DiscAmt: number;
     NetAmount: number;
     DoctorId: number;
-    ChargeDoctorName: String;
+    ChargeDoctorName: string;
     ChargesDate: Date;
     IsPathology: boolean;
     IsRadiology: boolean;

@@ -181,7 +181,7 @@ export class RadioReportDispatchComponent {
   viewgetRadioloyTemplateReportPdf(contact) {
     debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",

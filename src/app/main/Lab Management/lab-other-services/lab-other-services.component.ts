@@ -219,7 +219,7 @@ export class LabOtherServicesComponent {
       });
       return;
     }
-    let SubmitDate = {
+    const SubmitDate = {
       "RadReportId": this.UnVerifyList?.radReportId || 0,
       "UnVerifyId": this.accountService.currentUserValue.userId,
       "UnVerifyComment": this.VReason,
@@ -244,7 +244,7 @@ export class LabOtherServicesComponent {
     })
   }
   onSave(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
       {
         // maxHeight: '99vh',
@@ -263,7 +263,7 @@ export class LabOtherServicesComponent {
   }
 
    onView(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
       {
         maxWidth: "95vw",
@@ -307,7 +307,7 @@ export class LabOtherServicesComponent {
   viewgetRadioloyTemplateReportPdf(contact) {
     this.OnPrintReportLogSave('RadiolologyPrint', contact) // log save
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",
@@ -344,7 +344,7 @@ export class LabOtherServicesComponent {
   viewgetRadioloyTemplateReportPdf1(contact) {
     this.OnPrintReportLogSave('RadiolologyPrint', contact) // log save
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",
@@ -416,7 +416,7 @@ export class LabOtherServicesComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
 
           "radReportId": row.radReportId,
           "isVerifyId": this.accountService.currentUserValue.userId,
@@ -686,7 +686,7 @@ export class LabOtherServicesComponent {
         // this.GetSampleCollectiondetail();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.reportlogFormGroup.invalid) {
         for (const controlName in this.reportlogFormGroup.controls) {
           const control = this.reportlogFormGroup.get(controlName);

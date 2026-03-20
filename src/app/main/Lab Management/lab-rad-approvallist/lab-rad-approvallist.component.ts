@@ -268,7 +268,7 @@ export class LabRadApprovallistComponent {
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
 
-    let data =
+    const data =
     {
       "first": 0,
       "rows": 150,
@@ -321,7 +321,7 @@ export class LabRadApprovallistComponent {
   }
 
   onSave(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
       {
         maxWidth: "95vw",
@@ -346,7 +346,7 @@ export class LabRadApprovallistComponent {
       });
       return;
     }
-    let SubmitDate = {
+    const SubmitDate = {
       "RadReportId": this.UnVerifyList?.radReportId || 0,
       "UnVerifyId": this.accountService.currentUserValue.userId,
       "UnVerifyComment": this.VReason,
@@ -397,7 +397,7 @@ export class LabRadApprovallistComponent {
 
   viewgetRadioloyTemplateReportPdf(contact) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",
@@ -433,7 +433,7 @@ export class LabRadApprovallistComponent {
 
   viewgetRadioloyTemplateReportPdf1(contact) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",

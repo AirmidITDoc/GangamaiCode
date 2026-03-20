@@ -76,7 +76,7 @@ export class PharmacyClearenceComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   getRefSearchList() {
-    var m_data = {
+    const m_data = {
       "Keyword": `${this._PharmacyClearenceService.userFormGroup.get('RegID').value}%`
     }
     if (this._PharmacyClearenceService.userFormGroup.get('RegID').value.length >= 1) {
@@ -127,7 +127,7 @@ export class PharmacyClearenceComponent implements OnInit {
   
   getSalesList(obj) {
     this.sIsLoading = 'loading';
-    var m_data = {
+    const m_data = {
       "AdmissionId": obj.AdmissionId
     }
     console.log(m_data)
@@ -163,7 +163,7 @@ export class PharmacyClearenceComponent implements OnInit {
     return netAmt;
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

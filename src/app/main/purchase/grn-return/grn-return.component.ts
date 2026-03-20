@@ -211,7 +211,7 @@ export class GRNReturnComponent implements OnInit {
   GetDetails1(data: any): void {
     // debugger
     console.log("detailList:", data)
-    let grnReturnId = data.grnReturnId;
+    const grnReturnId = data.grnReturnId;
 
     this.gridConfig1 = {
       apiUrl: "GRNReturn/GRNReturnList",
@@ -253,7 +253,7 @@ export class GRNReturnComponent implements OnInit {
 
   onClear() { }
   getVerify(row) {
-    let submitObj = {
+    const submitObj = {
       "grnreturnId": row.grnReturnId,
       "isVerified": 1
     }
@@ -860,7 +860,7 @@ export class ItemNameList {
       this.DebitNote = ItemNameList.DebitNote || 0;
       this.CreditNote = ItemNameList.CreditNote || 0;
       this.RoundingAmt = ItemNameList.RoundingAmt || 0;
-      this.InvDate = ItemNameList.InvDate || this.CurrentDate;;
+      this.InvDate = ItemNameList.InvDate || this.CurrentDate;
       this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
       this.totalVATAmount = ItemNameList.totalVATAmount || 0;
       this.ReceivedBy = ItemNameList.ReceivedBy || ''

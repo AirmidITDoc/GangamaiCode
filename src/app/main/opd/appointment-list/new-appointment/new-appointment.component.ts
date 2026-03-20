@@ -59,7 +59,7 @@ export class NewAppointmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     isCompanySelected: boolean = false;
     IsPhoneAppflag: boolean = true;
-    VisitTime: String;
+    VisitTime: string;
     AgeYear: any;
     AgeMonth: any;
     AgeDay: any;
@@ -438,7 +438,7 @@ export class NewAppointmentComponent implements OnInit {
 
     onChangePatient(value) {
 
-        var mode = "Company"
+        const mode = "Company"
         if (value.text != "Self") {
             this._AppointmentlistService.getMaster(mode, 1);
             this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
@@ -470,7 +470,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     getregdetails() {
-        let RegId = this.searchFormGroup.get("RegId").value
+        const RegId = this.searchFormGroup.get("RegId").value
         if (RegId > 0) {
             setTimeout(() => {
                 this._AppointmentlistService.getRegistraionById(RegId).subscribe((response) => {
@@ -486,7 +486,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     WhatsAppAppointmentSend(el, vmono) {
-        var m_data = {
+        const m_data = {
             "insertWhatsappsmsInfo": {
                 "mobileNumber": vmono || 0,
                 "smsString": '',
@@ -768,7 +768,7 @@ export class NewAppointmentComponent implements OnInit {
                 }
 
 
-                let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+                const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
                 if (DateOfBirth1) {
                     const todayDate = new Date();
                     const dob = new Date(DateOfBirth1);
@@ -844,7 +844,7 @@ export class NewAppointmentComponent implements OnInit {
                     }
 
                 } else {
-                    let invalidFields = [];
+                    const invalidFields = [];
                     if (this.personalFormGroup.invalid) {
                         for (const controlName in this.personalFormGroup.controls) {
                             if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
@@ -890,7 +890,7 @@ export class NewAppointmentComponent implements OnInit {
         //         this.personalFormGroup.get('RegTime').setValue(this.personalFormGroup.get('RegDate').value)
 
 
-        let submitData = {
+        const submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value,
             "patientPolicy": this.policyFormGroup.value
@@ -1007,7 +1007,7 @@ doctorName=''
         this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
         this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
 
-        let submitData = {
+        const submitData = {
             // "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value,
             "patientPolicy": this.policyFormGroup.value
@@ -1381,7 +1381,7 @@ departmentName=''
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

@@ -292,7 +292,7 @@ export class NursingnoteComponent implements OnInit {
 
 
   onTemplate(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewTemplateComponent,
       {
         maxHeight: '90vh',
@@ -391,7 +391,7 @@ export class NursingnoteComponent implements OnInit {
   // 1
   getSchedulerlist() {
     // debugger
-    var param = {
+    const param = {
       "first": 0,
       "rows": 10,
       "sortField": "MedChartId",
@@ -484,7 +484,7 @@ export class NursingnoteComponent implements OnInit {
         this.ViewNusrsingNote(this.OP_IP_Id)
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.myNursingForm.invalid) {
         for (const controlName in this.myNursingForm.controls) {
@@ -538,7 +538,7 @@ export class NursingnoteComponent implements OnInit {
         this.OnHandOverPrint(response)
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.myHandOverForm.invalid) {
         for (const controlName in this.myHandOverForm.controls) {
@@ -694,7 +694,7 @@ timename='';
       const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
       if (!iscekDuplicate) {
         // this.dsItemList.data = [];
-        let newEntry = {
+        const newEntry = {
           itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
           itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
           doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
@@ -723,7 +723,7 @@ timename='';
 
   deleteTableRow(event, element) {
 
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsItemList.data = [];
@@ -736,7 +736,7 @@ timename='';
 
   getPrescription(AdmissionId) {
     console.log(AdmissionId)
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionId",
@@ -786,7 +786,7 @@ timename='';
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

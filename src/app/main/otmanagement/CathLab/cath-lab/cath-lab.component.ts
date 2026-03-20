@@ -101,9 +101,9 @@ export class CathLabComponent implements OnInit {
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
-    ;
+    
     this.minDate = new Date();
-    var D_data= {
+    const D_data= {
      
         "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
         "ToDate":  this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
@@ -149,9 +149,9 @@ export class CathLabComponent implements OnInit {
 
    
   getCathLabBookingList() {
-    ;
+    
     this.sIsLoading = 'loading-data';
-    var m_data ={
+    const m_data ={
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "ToDate":  this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
@@ -173,7 +173,7 @@ export class CathLabComponent implements OnInit {
 
 
   addNewCathlabBooking(){
-;   
+   
    const dialogRef = this._matDialog.open(NewCathLabComponent,
      {
        maxWidth: "70%",
@@ -206,13 +206,13 @@ ngOnChanges(changes: SimpleChanges) {
 }
 
 onEdit(contact){
-  ;
+  
  console.log(contact);
 
  if(contact.AnesthType)
  this.AnesthType =contact.AnesthType.trim();
 
- let PatInforObj = {};
+ const PatInforObj = {};
  PatInforObj['OTCathLabBokingID'] = contact.OTCathLabBokingID,
 
  PatInforObj['PatientName'] = contact.PatientName,
@@ -309,7 +309,7 @@ export class CathLabBookingDetail {
   OPDate: Date;
   OPTime: Date;
   Duration: number;
-  OTTableID: Number;
+  OTTableID: number;
   OTTableName: any;
   SurgeonId: number;
   SurgeonId1:number;

@@ -101,7 +101,7 @@ IsPoverify=0;
   GetDetails1(data: any): void {
     debugger
     console.log("detailList:", data)
-    let ID = data.purchaseID;
+    const ID = data.purchaseID;
 
     this.gridConfig1 = {
       apiUrl: "Purchase/PurchaseItemList",
@@ -226,7 +226,7 @@ IsPoverify=0;
   }
   // Verify Purchase
   onVerify(row) {
-    let submitData = {
+    const submitData = {
       "purchaseId": row.purchaseID,
       "isVerifiedId": 1
     };
@@ -236,7 +236,7 @@ IsPoverify=0;
   }
   //Add New Purchase
   AddPurchase(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewPurchaseorderComponent,
       {
         maxWidth: "100%",
@@ -251,7 +251,7 @@ IsPoverify=0;
   }
     //Add New Purchase
   AddPRtoPurchase(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(PurchaseRequisitionComponent,
       {
         maxWidth: "100%",

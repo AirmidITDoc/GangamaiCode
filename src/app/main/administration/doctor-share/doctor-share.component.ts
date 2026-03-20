@@ -131,8 +131,8 @@ export class DoctorShareComponent implements OnInit {
 
   getfilterdata() {
     // debugger
-    let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
-    let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
+    const fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
+    const toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
     this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
     this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
     this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
@@ -191,8 +191,8 @@ allColumns1 = [
 
   getfilterdata1() {
     // debugger
-    let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
-    let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
+    const fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
+    const toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
     this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
     this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
     this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
@@ -228,7 +228,7 @@ allColumns1 = [
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
+    const that = this;
     // const dialogRef = this._matDialog.open(NewconfigComponent,
     //     {
     //         maxWidth: "95vw",
@@ -317,7 +317,7 @@ allColumns1 = [
   onClear() {
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -326,7 +326,7 @@ allColumns1 = [
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

@@ -146,7 +146,7 @@ export class NewEmergencyComponent {
 
   onNewSave() {
     if (!this.myForm.invalid) {
-      let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+      const DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
       console.log("DOB Raw:", DateOfBirth1);
 
       if (DateOfBirth1) {
@@ -197,7 +197,7 @@ export class NewEmergencyComponent {
         this.onClose()
       })
     } else {
-      let invalidfields = [];
+      const invalidfields = [];
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
           if (this.myForm.controls[controlName].invalid) {
@@ -224,7 +224,7 @@ export class NewEmergencyComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

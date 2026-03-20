@@ -38,7 +38,7 @@ export class NewCurrencyComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.currencyForm.invalid) {
         for (const controlName in this.currencyForm.controls) {
           if (this.currencyForm.controls[controlName].invalid) {

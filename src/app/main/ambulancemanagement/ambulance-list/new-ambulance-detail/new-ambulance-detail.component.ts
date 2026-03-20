@@ -183,8 +183,8 @@ export class NewAmbulanceDetailComponent {
    onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this.AmbulanceFormGroup.get('reportingDate').value.toLocaleString("en-US").split(',');
+      const splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      const splitTime = this.AmbulanceFormGroup.get('reportingDate').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
@@ -200,16 +200,16 @@ export class NewAmbulanceDetailComponent {
     
     if (event) {
 
-      let selectedDate = new Date(this.AmbulanceFormGroup.get('reportingTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this.AmbulanceFormGroup.get('reportingTime').value.toLocaleString("en-US").split(',');
+      const selectedDate = new Date(this.AmbulanceFormGroup.get('reportingTime').value);
+      const splitDate = selectedDate.toLocaleString("en-US").split(',');
+      const splitTime = this.AmbulanceFormGroup.get('reportingTime').value.toLocaleString("en-US").split(',');
       
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 }

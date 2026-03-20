@@ -67,7 +67,7 @@ export class SalesReturnComponent implements OnInit {
   ]
 
   isLoadingStr: string = '';
-  isLoading: String = ''; 
+  isLoading: string = ''; 
   @ViewChild('billSalesReturn') billSalesReturn:ElementRef; 
   autocompletestore: string = "Store"; 
   dateTimeObj: any; 
@@ -316,7 +316,7 @@ getbillllist(){
     this.dssaleDetailList.data = [];
     this.selectedssaleDetailList.data = []; 
     this.Itemselectedlist = [];   
-    var vdata = { 
+    const vdata = { 
     "first": 0,
     "rows": 9999,
     "sortField": "SalesId",
@@ -358,7 +358,7 @@ getbillllist(){
     this.Itemselectedlist =[]; 
     this.PaymentType=Parama.paidType
  
-    let storeID = this.SearchForm.get('StoreId').value 
+    const storeID = this.SearchForm.get('StoreId').value 
     const Filters = [  
       { "fieldName": "SalesId", "fieldValue": String(Parama?.salesId), "opType": "Equals" },
       { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
@@ -420,12 +420,12 @@ getbillllist(){
       }
     }
 
-    let totalAmt = contact?.Qty *  contact?.UnitMRP || 0
-    let NetAmount = totalAmt -  contact?.DiscAmount || 0
-    let TotalLandedAmount = contact?.Qty *  contact?.LandedPrice || 0
-    let CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
-    let SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
-    let IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(contact.Qty)).toFixed(2);
+    const totalAmt = contact?.Qty *  contact?.UnitMRP || 0
+    const NetAmount = totalAmt -  contact?.DiscAmount || 0
+    const TotalLandedAmount = contact?.Qty *  contact?.LandedPrice || 0
+    const CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
+    const SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
+    const IGSTAmount = ((((parseFloat(contact.UnitMRP) * (parseFloat(contact.IGSTPer))) / 100)) * parseInt(contact.Qty)).toFixed(2);
     this.Itemselectedlist.push(
       {
         ItemId: contact.ItemId,
@@ -464,7 +464,7 @@ getbillllist(){
       this.getCellCalculation(contact, contact.Qty)
   }
   deleteTableRow(element) {
-    let index = this.Itemselectedlist.indexOf(element);
+    const index = this.Itemselectedlist.indexOf(element);
     if (index >= 0) {
       this.Itemselectedlist.splice(index, 1);
       this.selectedssaleDetailList.data = [];
@@ -475,10 +475,10 @@ getbillllist(){
   }
   getUpdateTotalAmtSum() { 
     const itemlist = this.selectedssaleDetailList.data
-    let TotalAmt= itemlist.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2);
-    let NetAmt = itemlist.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0).toFixed(2);
-    let DiscAmount = itemlist.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0).toFixed(2);
-    let GSTAmount = itemlist.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0).toFixed(2);
+    const TotalAmt= itemlist.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2);
+    const NetAmt = itemlist.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0).toFixed(2);
+    const DiscAmount = itemlist.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0).toFixed(2);
+    const GSTAmount = itemlist.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0).toFixed(2);
     this.IPSalesRetFooterform.patchValue({
       NetAmt: NetAmt,
       ReturnAmt: NetAmt,
@@ -620,7 +620,7 @@ getbillllist(){
         this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
         this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
 
-                        let ModePaymentObj = [];
+                        const ModePaymentObj = [];
                 ModePaymentObj.push({ 
                      billNo: this.selcteditemObj?.SalesId,
                      paymentDate: formattedDate,
@@ -655,7 +655,7 @@ getbillllist(){
         });
       }
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.IpSalesReturnForm.invalid) {
         for (const controlName in this.IpSalesReturnForm.controls) {
           const control = this.IpSalesReturnForm.get(controlName);
@@ -695,7 +695,7 @@ getbillllist(){
     return this.selectedssaleDetailList.data.every((i) => i.ReturnQty > 0);
   }  
   transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
+    const datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
   }  
@@ -703,7 +703,7 @@ getbillllist(){
     this.dateTimeObj = dateTimeObj;
   }  
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -740,7 +740,7 @@ getbillllist(){
   //print 
   OnSalesReturnprint(SalesID, OP_IP_Type) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "SalesID", "fieldValue": String(SalesID || 0), "opType": "13" },
           { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
@@ -809,7 +809,7 @@ export class SaleBillList {
   }
 }
 export class SalesDetailList {
-  SalesId: Number;
+  SalesId: number;
   SalesDetId: number;
   SalesNo: string;
   OP_IP_ID: string;

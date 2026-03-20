@@ -147,7 +147,7 @@ export class PrescriptionComponent implements OnInit {
     GetDetails1(data: any): void {
 
         console.log("detailList:", data)
-        let ipMedID = data.medicalRecoredId;
+        const ipMedID = data.medicalRecoredId;
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
@@ -174,7 +174,7 @@ export class PrescriptionComponent implements OnInit {
     viewgetIpprescriptionReportPdf(response) {
         console.log(response)
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     {
                         "fieldName": "OP_IP_ID",
@@ -223,7 +223,7 @@ export class PrescriptionComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -245,7 +245,7 @@ export class PrescriptionComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                let sub = {
+                const sub = {
                     "ippreId": data.ippreId
                 }
                 this._PrescriptionService.PrescriptionCancle(sub).subscribe((response: any) => {

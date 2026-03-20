@@ -209,7 +209,7 @@ FBillNo=0
 
     this.AdmissionTaskForm = this.CreateAdmissionForm()
     this.AdmissionTaskForm.get('RegID').setValue('');
-    var now = new Date();
+    const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
 
@@ -274,7 +274,7 @@ FBillNo=0
 
   getOpPatientdata() {
 
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -323,7 +323,7 @@ FBillNo=0
 //       this.VistId = element.AdmissionID
 
 
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -352,7 +352,7 @@ FBillNo=0
   GetPaymentData(element) {
     
     this.FBillNo=element
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -375,7 +375,7 @@ FBillNo=0
   GetRefundData() {
 
 
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -405,7 +405,7 @@ FBillNo=0
   GetAdvanceData() {
 
 
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -445,7 +445,7 @@ FBillNo=0
     }).then((result) => {
       if (result.isConfirmed) {
 
-        let SubmitDate = {
+        const SubmitDate = {
           "admissionID": contact.VisAdmId
         }
         console.log(SubmitDate)
@@ -471,7 +471,7 @@ FBillNo=0
     }).then((result) => {
       if (result.isConfirmed) {
 
-        let SubmitDate = {
+        const SubmitDate = {
           "admissionID": contact.VisAdmId
         }
         console.log(SubmitDate)
@@ -528,7 +528,7 @@ FBillNo=0
     }).then((result) => {
 
       if (result.isConfirmed) {
-        let SubmitDate = {
+        const SubmitDate = {
           "billNo": contact.BillNo || 0
         }
 
@@ -555,7 +555,7 @@ FBillNo=0
     }).then((result) => {
 
       if (result.isConfirmed) {
-        let SubmitDate = {
+        const SubmitDate = {
           "billNo": contact.BillNo || 0
         }
 
@@ -582,7 +582,7 @@ FBillNo=0
     }).then((result) => {
 
       if (result.isConfirmed) {
-        let SubmitDate = {
+        const SubmitDate = {
           "advanceId": contact.advanceId || 0,
           "advanceDetailId": contact.advanceDetailID || 0,
           "addedBy": contact.addedBy || 0,
@@ -672,11 +672,11 @@ debugger
         const formattedDate = this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd");
         const formattedTime = this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionTime').value, "HH:mm:ss");
         this.AdmissionTaskForm.get('AdmissionDate').setValue(formattedDate);
-        let Admissiontime = formattedDate + ' ' + formattedTime
+        const Admissiontime = formattedDate + ' ' + formattedTime
 
 
         if (!this.AdmissionTaskForm.invalid) {
-          var data = {
+          const data = {
             'admissionID': this.AdmissionId,
             'admissionDate': formattedDate,// this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd"),
             'admissionTime': Admissiontime,// this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionTime').value, 'yyyy-MM-dd HH:mm'),
@@ -690,7 +690,7 @@ debugger
             }
           });
         } else {
-          let invalidFields = [];
+          const invalidFields = [];
 
           if (this.AdmissionTaskForm.invalid) {
             for (const controlName in this.AdmissionTaskForm.controls) {
@@ -715,24 +715,24 @@ debugger
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
+      const splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      const splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
   onChangeTime(event) {
     if (event) {
-      let selectedDate = new Date(this.AdmissionTaskForm.get('AdmissionDate').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
+      const selectedDate = new Date(this.AdmissionTaskForm.get('AdmissionDate').value);
+      const splitDate = selectedDate.toLocaleString("en-US").split(',');
+      const splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     // this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
   @Input() isDisableFuture: boolean = false;
@@ -761,16 +761,16 @@ debugger
   onChangeDate1(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US").split(',');
+      const splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      const splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
   onChangeTime1(event) {
     if (event) {
-      let selectedDate = new Date(this.VisitForm.get('VisitDate').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US").split(',');
+      const selectedDate = new Date(this.VisitForm.get('VisitDate').value);
+      const splitDate = selectedDate.toLocaleString("en-US").split(',');
+      const splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
@@ -794,9 +794,9 @@ debugger
 
         // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.VisitForm.get('VisitDate').setValue(formattedDate);
-        let VisitTime = formattedDate + ' ' + formattedTime
+        const VisitTime = formattedDate + ' ' + formattedTime
 
-        var data2 = {
+        const data2 = {
           "visitId": this.VistId,
           "visitDate": formattedDate,// this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
           "visitTime": VisitTime//formattedDate + this.dateTimeObj.time
@@ -871,7 +871,7 @@ debugger
       if (result.isConfirmed) {
 
         if (this.BillNo) {
-          var data = {
+          const data = {
             'billNo': this.BillNo,
             'billDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             'billTime': this.formattedDate + this.dateTimeObj.time
@@ -883,7 +883,7 @@ debugger
           });
 
         } else if (this.AdvanceDetailId) {
-          var data1 = {
+          const data1 = {
             "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             "time": this.formattedDate + this.dateTimeObj.time,
             "advanceDetailId": this.AdvanceDetailId
@@ -901,7 +901,7 @@ debugger
             Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
             return;
           } else {
-            var data2 = {
+            const data2 = {
               "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
               "refundTime": this.formattedDate + this.dateTimeObj.time,
               "refundId": this.RefundId

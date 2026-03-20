@@ -94,7 +94,7 @@ export class AddAutoServiceComponent {
   }
  
   deleteTableRow(element) {
-    let index = this.chargelist.indexOf(element);
+    const index = this.chargelist.indexOf(element);
     if (index >= 0) {
       this.chargelist.splice(index, 1);
       this.dsServicelist.data = [];

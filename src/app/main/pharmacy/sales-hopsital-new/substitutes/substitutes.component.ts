@@ -70,7 +70,7 @@ export class SubstitutesComponent implements OnInit {
     this.getItemList(obj);
   }
   getItemList(Param) {
-    var data = {
+    const data = {
       "first": 0,
       "rows": 25,
       "sortField": "ItemId",

@@ -70,7 +70,7 @@ export class NewBarcodeComponent implements OnInit {
                 this.onClose();
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.TemplateSaveForm.invalid) {
                 for (const controlName in this.TemplateSaveForm.controls) {
                     if (this.TemplateSaveForm.controls[controlName].invalid) { invalidFields.push(`Template Form: ${controlName}`); }

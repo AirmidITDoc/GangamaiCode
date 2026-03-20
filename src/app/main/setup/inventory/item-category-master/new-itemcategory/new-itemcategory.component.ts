@@ -38,7 +38,7 @@ export class NewItemcategoryComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.categoryForm.invalid) {
                 for (const controlName in this.categoryForm.controls) {
                     if (this.categoryForm.controls[controlName].invalid) {

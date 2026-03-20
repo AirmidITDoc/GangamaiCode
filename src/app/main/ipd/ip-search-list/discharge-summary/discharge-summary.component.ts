@@ -250,7 +250,7 @@ export class DischargeSummaryComponent implements OnInit {
           if (this.DischargesumInsertForm.get('dischargModel.dischargeSummaryId')?.value) {
             this.DischargesumInsertForm.get('dischargModel.updatedBy').setValue(this.accountService.currentUserValue.userId);
 
-            let updateData = {
+            const updateData = {
               "dischargModel": this.DischargesumInsertForm.value.dischargModel,
               "prescriptionDischarge": this.DischargesumInsertForm.value.prescriptionDischarge
             };
@@ -264,7 +264,7 @@ export class DischargeSummaryComponent implements OnInit {
           else {
             this.DischargesumInsertForm.get('dischargModel.addedBy').setValue(this.accountService.currentUserValue.userId);
 
-            let insertData = {
+            const insertData = {
               "dischargModel": this.DischargesumInsertForm.value.dischargModel,
               "prescriptionDischarge": this.DischargesumInsertForm.value.prescriptionDischarge
             };
@@ -275,7 +275,7 @@ export class DischargeSummaryComponent implements OnInit {
             });
           }
         } else {
-          let invalidFields: string[] = [];
+          const invalidFields: string[] = [];
           // checks nested error 
           if (this.DischargesumInsertForm.invalid) {
             for (const controlName in this.DischargesumInsertForm.controls) {
@@ -359,7 +359,7 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargeslist.indexOf(element);
+    const index = this.Chargeslist.indexOf(element);
     if (index >= 0) {
       this.Chargeslist.splice(index, 1);
       this.dsItemList.data = [];
@@ -372,7 +372,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   getPrescription(AdmissionId) {
 
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 999,
       "sortField": "AdmissionId",
@@ -403,7 +403,7 @@ export class DischargeSummaryComponent implements OnInit {
 
   getDischargeSummaryData(AdmissionId) {
 
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 999,
       "sortField": "AdmissionId",
@@ -705,7 +705,7 @@ export class DischargeSummaryComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -714,7 +714,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

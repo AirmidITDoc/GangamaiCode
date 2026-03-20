@@ -260,7 +260,7 @@ export class ResultEntryComponent implements OnInit {
         this.viewgetRadioloyTemplateReportPdf(this.regObj);
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.RaioInsertForm.invalid) {
         for (const controlName in this.RaioInsertForm.controls) {
@@ -284,7 +284,7 @@ export class ResultEntryComponent implements OnInit {
   viewgetRadioloyTemplateReportPdf(contact) {
     // debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",
@@ -350,7 +350,7 @@ export class RadiologyPatienInsert {
   RadResultDr1: number;
   RadResultDr2: number;
   RadResultDr3: number;
-  SuggestionNotes: String;
+  SuggestionNotes: string;
   AdmVisitDoctorID: number;
   RefDoctorID: number;
   ResultEntry: string;

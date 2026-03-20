@@ -115,7 +115,7 @@ export class ReviewcompanyBillComponent {
     //  private _loggedService: AuthenticationService,
     public _ConfigService: ConfigService,
     public dialogRef: MatDialogRef<ReviewcompanyBillComponent>
-  ) { this.OpBillEditSaveForm = this.createTotalChargeForm(); };
+  ) { this.OpBillEditSaveForm = this.createTotalChargeForm(); }
 
   ngOnInit() {
     console.log(this.accountService.currentUserValue.user.isBillReview)
@@ -385,7 +385,7 @@ export class ReviewcompanyBillComponent {
   }
   getPrevCompanyBillList(billNo, Label) {
     debugger
-    var param = {
+    const param = {
       "first": 0,
       "rows": 999,
       "sortField": "ServiceId",
@@ -436,7 +436,7 @@ export class ReviewcompanyBillComponent {
       { "fieldName": "OPIPId", "fieldValue": String(this.OPDIPDID), "opType": "Equals" },
       { "fieldName": "OPIPType", "fieldValue": String(this.opD_IPD_Type), "opType": "Equals" },
     ]
-    var param = {
+    const param = {
       "searchFields": Filters,
       "mode": "BillList"
     }
@@ -472,10 +472,10 @@ export class ReviewcompanyBillComponent {
 
 
   calculateTotalAmount(): void {
-    let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
-    let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
-    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
-    let totalNet = totalSum - totalDiscount;
+    const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
+    const DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
+    const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
+    const totalNet = totalSum - totalDiscount;
 
 
 
@@ -598,7 +598,7 @@ export class ReviewcompanyBillComponent {
 // }
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.OpBillEditSaveForm.invalid) {
         for (const controlName in this.OpBillEditSaveForm.controls) {
           const control = this.OpBillEditSaveForm.get(controlName);
@@ -665,7 +665,7 @@ export class ReviewcompanyBillComponent {
       this.resetform();
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.salesUpdateForm.invalid) {
         for (const controlName in this.salesUpdateForm.controls) {
           const control = this.salesUpdateForm.get(controlName);
@@ -711,11 +711,11 @@ export class ReviewcompanyBillComponent {
 
     }).then((flag) => {
       if (flag.isConfirmed) {
-        let Chargescancle = {};
+        const Chargescancle = {};
         Chargescancle['chargesId'] = contact.chargesId;
         Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
 
-        let submitData = {
+        const submitData = {
           "deleteCharges": Chargescancle
         };
         console.log(submitData);
@@ -1110,8 +1110,8 @@ export class ReviewcompanyBillComponent {
 
 
   calculateTotalCharge(row: any = null): void {
-    let qty = +this.chargeForm.get("qty").value;
-    let price = +this.chargeForm.get("price").value;
+    const qty = +this.chargeForm.get("qty").value;
+    const price = +this.chargeForm.get("price").value;
     let total = 0
     if (qty > 0 && price > 0) {
       total = qty * price;
@@ -1137,10 +1137,10 @@ export class ReviewcompanyBillComponent {
       this.toastrService.error("Enter discount % between 0-100");
       return;
     }
-    let percentage = perControl.value;
-    let totalAmount = this.chargeForm.get("totalAmount").value;
-    let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
-    let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+    const percentage = perControl.value;
+    const totalAmount = this.chargeForm.get("totalAmount").value;
+    const discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
+    const netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
 
     this.chargeForm.patchValue({
       discountAmount: discountAmount,
@@ -1154,8 +1154,8 @@ export class ReviewcompanyBillComponent {
     if (this.isUpdating) return;
     this.isUpdating = true;
 
-    let discountAmount = this.chargeForm.get("discountAmount").value;
-    let totalAmount = this.chargeForm.get("totalAmount").value;
+    const discountAmount = this.chargeForm.get("discountAmount").value;
+    const totalAmount = this.chargeForm.get("totalAmount").value;
 
     if (discountAmount < 0 || discountAmount > totalAmount) {
       this.chargeForm.get("discountAmount").setValue(0);
@@ -1167,8 +1167,8 @@ export class ReviewcompanyBillComponent {
     // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
     // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
 
-    let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-    let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+    const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+    const netAmount = Number((totalAmount - discountAmount).toFixed(2));
     this.chargeForm.patchValue({
       discountPer: percent,
       netAmount: netAmount
@@ -1198,7 +1198,7 @@ export class ChargesList {
   ChargesId: number;
   ServiceId: number;
   serviceId: number;
-  ServiceName: String;
+  ServiceName: string;
   qty: any;
   storeId: any = 0;
   isInclusionExclusion: any;
@@ -1208,7 +1208,7 @@ export class ChargesList {
   DiscAmt: number;
   netAmount: number;
   DoctorId: number;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ChargesDate: Date;
   IsPathology: any;
   IsRadiology: any;

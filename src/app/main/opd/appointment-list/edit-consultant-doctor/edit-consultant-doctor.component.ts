@@ -66,7 +66,7 @@ export class EditConsultantDoctorComponent implements OnInit {
         this.onClear(true);
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.ConsdrForm.invalid) {
         for (const controlName in this.ConsdrForm.controls) {
           if (this.ConsdrForm.controls[controlName].invalid) { invalidFields.push(`Edit Doctor Form: ${controlName}`); }

@@ -144,33 +144,33 @@ export class CommonDateComponent implements OnInit {
     onChangeDate(value) {
         if (value) {
             const dateOfReg = new Date(value);
-            let splitDate = dateOfReg.toLocaleString('en-US').split(',');
-            let splitTime = this.dateForm.get('timeController').value.toLocaleString().split(',');
+            const splitDate = dateOfReg.toLocaleString('en-US').split(',');
+            const splitTime = this.dateForm.get('timeController').value.toLocaleString().split(',');
             this.eventEmitForParent(splitDate[0], splitTime[1]);
         }
     }
     onChangeTime(event) {
         if (event) {
-            let selectedDate = new Date(this.dateForm.get('dateController').value);
-            let splitDate = selectedDate.toLocaleString('en-US').split(',');
-            let splitTime = this.dateForm.get('timeController').value.toLocaleString().split(',');
+            const selectedDate = new Date(this.dateForm.get('dateController').value);
+            const splitDate = selectedDate.toLocaleString('en-US').split(',');
+            const splitTime = this.dateForm.get('timeController').value.toLocaleString().split(',');
             this.isTimeChanged = true;
             this.eventEmitForParent(splitDate[0], splitTime[1]);
         }
     }
     onChangeTime2(event) {
         if (event) {
-            let selectedDate = new Date(this.dateForm.get('dateController').value);
-            let splitDate = selectedDate.toLocaleString('en-US').split(',');
-            let splitTime = this.dateForm.get('timeController2').value.toLocaleString().split(',');
+            const selectedDate = new Date(this.dateForm.get('dateController').value);
+            const splitDate = selectedDate.toLocaleString('en-US').split(',');
+            const splitTime = this.dateForm.get('timeController2').value.toLocaleString().split(',');
             this.isTimeChanged = true;
             this.eventEmitForParent(splitDate[0], splitTime[1]);
         }
     }
 
     eventEmitForParent(actualDate, actualTime) {
-        let localaDateValues = actualDate.split('/');
-        let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+        const localaDateValues = actualDate.split('/');
+        const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
         this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
     }
 

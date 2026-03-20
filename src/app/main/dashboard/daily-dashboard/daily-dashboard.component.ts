@@ -171,7 +171,7 @@ export class DailyDashboardComponent implements OnInit {
   }
   
 getOPDCoutList(){
-  var vadat={
+  const vadat={
     'FromDate':this.datePipe.transform(this._dashboardServices.DailyUseFrom.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/2020',
     'ToDate': this.datePipe.transform(this._dashboardServices.DailyUseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
   }
@@ -233,7 +233,7 @@ getBedOccupancyList(){
   // })
 }
 getServicetotSum(element) {
-  let DepartmentOPDCount = (element.reduce((sum, { vCount }) => sum += +(vCount || 0), 0));
+  const DepartmentOPDCount = (element.reduce((sum, { vCount }) => sum += +(vCount || 0), 0));
   return DepartmentOPDCount;
 }
   showOPDayGroupWiseSummary() {
@@ -302,8 +302,8 @@ getServicetotSum(element) {
     //   }
     // });
   }
-  public getIPChartDataAPI(params: Object): Observable<any> {
-    var subject = new Subject<string>();
+  public getIPChartDataAPI(params: object): Observable<any> {
+    const subject = new Subject<string>();
     this._dashboardServices.getIPDashChart(params).subscribe((data: any) => {
       // this.sIsLoading = '';
       data.map(response => {
@@ -354,11 +354,11 @@ getServicetotSum(element) {
   getSurveyChart() {
     const canvas = <HTMLCanvasElement>document.getElementById('surveyChart');
     const ctx = canvas.getContext('2d');
-    var gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
+    const gradient1 = ctx.createLinearGradient(0, 0, 0, 400);
     gradient1.addColorStop(0, 'rgba(10,10,10,.2)');
     gradient1.addColorStop(1, 'rgba(255,255,255,1)');
 
-    var gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
+    const gradient2 = ctx.createLinearGradient(0, 0, 0, 400);
     gradient2.addColorStop(0, 'rgb(183 115 208 / 20%)');
     gradient2.addColorStop(1, 'rgba(255,255,255,1)');
     return new Chart("surveyChart", {

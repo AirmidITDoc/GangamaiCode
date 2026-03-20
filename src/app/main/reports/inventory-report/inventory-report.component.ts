@@ -88,7 +88,7 @@ export class InventoryReportComponent implements OnInit {
   }
 
   bindReportData() {
-   var data={
+   const data={
   ReportSection:'Inventory Reports'
   }
     this._OPReportsService.getDataByQuery(data).subscribe(data => {
@@ -900,8 +900,8 @@ export class InventoryReportComponent implements OnInit {
      }, 100);
    }
    viewgetItemexpiryPdf() {
-   let ExpMonth =0
-   let ExpYear =0
+   const ExpMonth =0
+   const ExpYear =0
    let StoreId =0
 
    if (this._OPReportsService.userForm.get('StoreId').value)
@@ -1506,7 +1506,7 @@ export class InventoryReportComponent implements OnInit {
 
 
   GetUserList() {
-    var data = {
+    const data = {
           "StoreId": this._loggedUser.currentUserValue.storeId
         }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
@@ -1544,7 +1544,7 @@ export class InventoryReportComponent implements OnInit {
     }
   }
 getSearchItemList() {   
-      var m_data = {
+      const m_data = {
         "ItemName": '%',//`${this._OPReportsService.userForm.get('ItemId').value}%`,
       //  "StoreId": this._loggedUser.currentUserValue.storeId
       }
@@ -1568,7 +1568,7 @@ getSearchItemList() {
     }
 
   getSuppliernameList() {
-    var m_data = {
+    const m_data = {
       'SupplierName': `${this._OPReportsService.userForm.get('SupplierName').value}%`
     }
     this._OPReportsService.getSupplierList(m_data).subscribe(data => {

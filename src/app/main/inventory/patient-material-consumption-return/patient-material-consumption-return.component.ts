@@ -92,7 +92,7 @@ export class PatientMaterialConsumptionReturnComponent implements OnInit {
 
   getIndentID() {
     // this.sIsLoading = 'loading-data';
-    var Param = {
+    const Param = {
       
       "ToStoreId": this._IndentID.IndentSearchGroup.get('ToStoreId').value.StoreId || 1,
        "From_Dt": this.datePipe.transform(this._IndentID.IndentSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -113,7 +113,7 @@ export class PatientMaterialConsumptionReturnComponent implements OnInit {
 
   getIndentList(Params){
     // this.sIsLoading = 'loading-data';
-    var Param = {
+    const Param = {
       "IndentId": Params.IndentId
     }
       this._IndentID.getIndentList(Param).subscribe(data => {
@@ -171,7 +171,7 @@ export class IndentList {
   }
 }
 export class IndentID {
-  IndentNo: Number;
+  IndentNo: number;
   IndentDate: number;
   FromStoreName:string;
   ToStoreName:string;

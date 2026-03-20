@@ -167,16 +167,16 @@ export class MLCInformationComponent implements OnInit {
   onSubmit() {
     debugger
 
-    let selectedDate = this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate')?.value, 'yyyy-MM-dd');
-    let timeValue = this.MlcInfoFormGroup.get('reportingTime')?.value;
-    let time = new Date(timeValue);
+    const selectedDate = this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate')?.value, 'yyyy-MM-dd');
+    const timeValue = this.MlcInfoFormGroup.get('reportingTime')?.value;
+    const time = new Date(timeValue);
 
     // extract hours and minutes
-    let hours = time.getHours();
-    let minutes = time.getMinutes();
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
 
     // combine reportingDate + reportingTime
-    let combinedDateTime = new Date(
+    const combinedDateTime = new Date(
       selectedDate + 'T' + this.pad(hours) + ':' + this.pad(minutes) + ':00'
     );
 
@@ -192,7 +192,7 @@ export class MLCInformationComponent implements OnInit {
         this._matDialog.closeAll();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.MlcInfoFormGroup.invalid) {
         for (const controlName in this.MlcInfoFormGroup.controls) {
@@ -242,8 +242,8 @@ export class MLCInformationComponent implements OnInit {
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this.MlcInfoFormGroup.get('reportingDate').value.toLocaleString("en-US").split(',');
+      const splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      const splitTime = this.MlcInfoFormGroup.get('reportingDate').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
@@ -252,9 +252,9 @@ export class MLCInformationComponent implements OnInit {
     this.timeflag = 1
     if (event) {
 
-      let selectedDate = new Date(this.MlcInfoFormGroup.get('reportingTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this.MlcInfoFormGroup.get('reportingTime').value.toLocaleString("en-US").split(',');
+      const selectedDate = new Date(this.MlcInfoFormGroup.get('reportingTime').value);
+      const splitDate = selectedDate.toLocaleString("en-US").split(',');
+      const splitTime = this.MlcInfoFormGroup.get('reportingTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.phdatetime = splitTime[1]
       console.log(this.phdatetime)
@@ -263,8 +263,8 @@ export class MLCInformationComponent implements OnInit {
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
   onClear() { }

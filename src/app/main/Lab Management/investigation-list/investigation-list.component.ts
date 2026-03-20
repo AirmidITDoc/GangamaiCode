@@ -281,14 +281,14 @@ export class InvestigationListComponent {
 
   GetSampleCollectiondetail() {
 
-    let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
-    let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
+    const fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
+    const toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
 
     this.Vtotalcount = 0;
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
     // debugger
-    let filters: any[] = [];
+    const filters: any[] = [];
 
     // Handle date range
     if (fromDateControl && toDateControl) {
@@ -344,7 +344,7 @@ export class InvestigationListComponent {
       }
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "RegNo",
@@ -413,7 +413,7 @@ export class InvestigationListComponent {
   @ViewChild('parentSamplePaginator') parentSamplePaginator: MatPaginator;
 
   bindSampleParentGridData() {
-    let gridDataRequest: gridRequest = {
+    const gridDataRequest: gridRequest = {
       sortField: this.gridConfig.sortField,
       sortOrder: this.gridConfig.sortOrder,
       filters: this.gridConfig.filters,
@@ -467,12 +467,12 @@ export class InvestigationListComponent {
 
   getSampledetailList(row) {
     this.sampleDetailDS.data = [];
-    let formattedDate = formatDate(row.pathDate);
+    const formattedDate = formatDate(row.pathDate);
     // let formattedDate = `${day}`
 
     console.log(formattedDate);
 
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 20,
       "sortField": "BillNo",
@@ -509,7 +509,7 @@ export class InvestigationListComponent {
   }
 
   onSave(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
       {
         maxHeight: '80vh',
@@ -525,7 +525,7 @@ export class InvestigationListComponent {
   }
 
   onSavedemo(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(LabsampleNewFromComponent,
       {
         height: '85vh',
@@ -768,7 +768,7 @@ export class InvestigationListComponent {
     // let fromDateControl = this.datePipe.transform(this.ReceviedformSearch.get('start').value, "yyyy-MM-dd");
     // let toDateControl = this.datePipe.transform(this.ReceviedformSearch.get('end').value, "yyyy-MM-dd");
     // debugger
-    let filters: any[] = [];
+    const filters: any[] = [];
 
     // Handle date range
     // if (fromDateControl && toDateControl) {
@@ -823,7 +823,7 @@ export class InvestigationListComponent {
       }
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "LabPatientId",
@@ -1137,12 +1137,12 @@ export class InvestigationListComponent {
     this.dataSource1.data = [];
     this.selection.clear();
 
-    let regno = this.ResultmyformSearch.get("RegNoSearch").value || "0";
+    const regno = this.ResultmyformSearch.get("RegNoSearch").value || "0";
     let fromDate = this.ResultmyformSearch.get("start").value || "";
     let toDate = this.ResultmyformSearch.get("end").value || "";
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-    let status = this.ResultmyformSearch.get("ResultStatusSearch").value || "0";
+    const status = this.ResultmyformSearch.get("ResultStatusSearch").value || "0";
 
     this.GetResultdetail()
     // Update the filters dynamically
@@ -1198,7 +1198,7 @@ export class InvestigationListComponent {
   parentResultsLength = 0;
 
   bindParentGridData() {
-    let gridDataRequest: gridRequest = {
+    const gridDataRequest: gridRequest = {
       sortField: this.ResultgridConfig.sortField,
       sortOrder: this.ResultgridConfig.sortOrder,
       filters: this.ResultgridConfig.filters,
@@ -1225,14 +1225,14 @@ export class InvestigationListComponent {
 
   getSampledetailList1(row) {
     this.dataSource1.data = [];
-    let rawDate = row.pathDate;
+    const rawDate = row.pathDate;
 
-    let formattedDate = formatDate(row.pathDate);
+    const formattedDate = formatDate(row.pathDate);
     // let formattedDate = `${day}`
 
     console.log(formattedDate);
 
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 20,
       "sortField": "PathDate",
@@ -1363,7 +1363,7 @@ export class InvestigationListComponent {
       }
       else {
         setTimeout(() => {
-          let data = [];
+          const data = [];
 
           this.selection.selected.forEach(element => {
             console.log(element)
@@ -1442,7 +1442,7 @@ export class InvestigationListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 0) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -1528,7 +1528,7 @@ export class InvestigationListComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
           "pathReportID": row.pathReportID
         };
         console.log(submitData);
@@ -1637,7 +1637,7 @@ export class InvestigationListComponent {
   PrintresultentryTop(row: any = null) {
     debugger
     console.log(row);
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     this.selectedItem = this.selection.selected[0];
     this.OnPrintReportLogSave('Lab Print', this.selectedItem)  // log save
@@ -1670,7 +1670,7 @@ export class InvestigationListComponent {
     // debugger
     console.log(row);
     this.OnPrintReportLogSave('Lab Print', row) // log save
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
 
@@ -1727,7 +1727,7 @@ export class InvestigationListComponent {
 
   PrintresultentrywithheaderTop(row: any = null) {
     debugger
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     this.selectedItem = this.selection.selected[0];
     this.OnPrintReportLogSave('Lab Print', this.selectedItem) // log save
@@ -1751,7 +1751,7 @@ export class InvestigationListComponent {
 
   Printresultentrywithheader(row: any = null) {
     this.OnPrintReportLogSave('Lab Print', row) // log save
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
 
@@ -1804,14 +1804,14 @@ export class InvestigationListComponent {
 
   whatsappresultentry() {
     console.log(this.selection.selected)
-    let pathologyDelete = [];
+    const pathologyDelete = [];
     this.selection.selected.forEach((element) => {
       this.SOPIPtype = element["OPD_IPD_Type"]
-      let pathologyDeleteObj = {};
+      const pathologyDeleteObj = {};
       pathologyDeleteObj['pathReportId'] = element["PathReportID"]
       pathologyDelete.push(pathologyDeleteObj);
     });
-    let submitData = {
+    const submitData = {
       "printInsert": pathologyDelete,
     };
     console.log(submitData);
@@ -1871,7 +1871,7 @@ export class InvestigationListComponent {
     this.ResultVCompletedcount = 0;
     this.ResultVpendingcount = 0;
 
-    let data =
+    const data =
     {
       "first": 0,
       "rows": 150,
@@ -2004,7 +2004,7 @@ export class InvestigationListComponent {
     return this.selection.selected.length > 0;
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -2460,7 +2460,7 @@ export class InvestigationListComponent {
     this.ApprovalVCompletedcount = 0;
     this.ApprovalVpendingcount = 0;
 
-    let data =
+    const data =
     {
       "first": 0,
       "rows": 150,
@@ -2525,7 +2525,7 @@ export class InvestigationListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 0) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -2581,7 +2581,7 @@ export class InvestigationListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 1) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -2708,7 +2708,7 @@ export class InvestigationListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 0) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -2763,7 +2763,7 @@ export class InvestigationListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 1) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -2840,7 +2840,7 @@ export class InvestigationListComponent {
         // this.GetSampleCollectiondetail();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.reportlogFormGroup.invalid) {
         for (const controlName in this.reportlogFormGroup.controls) {
           const control = this.reportlogFormGroup.get(controlName);
@@ -2956,8 +2956,8 @@ export class InvestigationListComponent {
 export class ReceSampleList {
   VADate: Date;
   VATime: Date;
-  PathTestID: Number;
-  ServiceName: String;
+  PathTestID: number;
+  ServiceName: string;
   IsSampleCollection: boolean;
   isSampleCollection: any;
   SampleCollectionTime: Date;

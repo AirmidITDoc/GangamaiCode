@@ -80,7 +80,7 @@ showTable = false;
     }
 
     onSubmit() {
-        var data = { TariffId: 1, Data: this.ServiceList, Columns: [] };
+        const data = { TariffId: 1, Data: this.ServiceList, Columns: [] };
         this._serviceMasterService.saveServicesNew(data).subscribe(() => {
             
         });

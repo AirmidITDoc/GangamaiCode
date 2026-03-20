@@ -53,9 +53,9 @@ export class NUserComponent implements OnInit {
   hidePassword = true;
 
   autocompleteModeUnitName: string = "Hospital";
-  autocompleteModeRoleName: String = "Role";
-  autocompleteModeStoreName: String = "Store";
-  autocompleteModeWebRoleName: String = "WebRole";
+  autocompleteModeRoleName: string = "Role";
+  autocompleteModeStoreName: string = "Store";
+  autocompleteModeWebRoleName: string = "WebRole";
   autocompleteModedoctor: string = "ConDoctor";
 
   displayedColumn: string[] = [
@@ -166,7 +166,7 @@ export class NUserComponent implements OnInit {
 
   getAccessDetail(row) {
     // debugger
-    var SelectQuery = {
+    const SelectQuery = {
       "first": 0,
       "rows": 100,
       "sortField": "AccessValueId",
@@ -193,7 +193,7 @@ export class NUserComponent implements OnInit {
   RtrvStoreList: any = [];
   getUnitDetail(row) {
     // debugger
-    var SelectQuery = {
+    const SelectQuery = {
       "first": 0,
       "rows": 10,
       "sortField": "LoginUnitDetId",
@@ -240,7 +240,7 @@ export class NUserComponent implements OnInit {
 
 
   getStoreDetail(row) {
-    var SelectQuery = {
+    const SelectQuery = {
       "first": 0,
       "rows": 10,
       "sortField": "LoginStoreDetId",
@@ -405,13 +405,13 @@ export class NUserComponent implements OnInit {
   }
 
   removeUnit(item) {
-    let removedIndex = this.myuserApprovalform1.value.multipleUnitId.findIndex(x => x.value == item.value);
+    const removedIndex = this.myuserApprovalform1.value.multipleUnitId.findIndex(x => x.value == item.value);
     this.myuserApprovalform1.value.multipleUnitId.splice(removedIndex, 1);
     this.ddlUnit.SetSelection(this.myuserApprovalform1.value.multipleUnitId.map(x => x.value));
   }
 
   removeStore(item) {
-    let removedIndex = this.myuserApprovalform1.value.multipleStoreId.findIndex(x => x.value == item.value);
+    const removedIndex = this.myuserApprovalform1.value.multipleStoreId.findIndex(x => x.value == item.value);
     this.myuserApprovalform1.value.multipleStoreId.splice(removedIndex, 1);
     this.ddlStore.SetSelection(this.myuserApprovalform1.value.multipleStoreId.map(x => x.value));
   }
@@ -421,7 +421,7 @@ export class NUserComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -494,7 +494,7 @@ export class NUserComponent implements OnInit {
       // this.myuserApprovalform1.removeControl('multipleStoreId')
       this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
       debugger
-      let formData = { ...this.myuserApprovalform.value };
+      const formData = { ...this.myuserApprovalform.value };
 
       formData.pharExtOpt = formData.pharExtOpt === true ? 1 : 0;
       formData.pharOpopt = formData.pharOpopt === true ? 1 : 0;
@@ -522,8 +522,8 @@ export class NUserComponent implements OnInit {
       });
     }
     else {
-      let invalidFields = [];
-      let invalidFields1 = [];
+      const invalidFields = [];
+      const invalidFields1 = [];
       if (this.myuserApprovalform.invalid) {
         for (const controlName in this.myuserApprovalform.controls) {
           if (this.myuserApprovalform.controls[controlName].invalid) { invalidFields.push(`User Form: ${controlName}`); }

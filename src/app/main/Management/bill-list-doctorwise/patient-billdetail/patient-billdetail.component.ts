@@ -84,7 +84,7 @@ export class PatientBilldetailComponent {
   }
 
   getBilldetailList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "DoctorId",
@@ -135,7 +135,7 @@ export class PatientBilldetailComponent {
 
   calculateshare() {
     debugger
-    var data = {
+    const data = {
       billNo: this.pBillNo,
       doctorId: parseInt(this.DoctorId)
     }
@@ -148,9 +148,9 @@ export class PatientBilldetailComponent {
   }
 
   Save() {
-    let Billdetsarr = [];
+    const Billdetsarr = [];
     this.Billdetaildatasource.data.forEach((element) => {
-      let BillDetailsInsertObj = {};
+      const BillDetailsInsertObj = {};
       BillDetailsInsertObj['docAmt'] = element.docAmt;
       BillDetailsInsertObj['hospitalAmt'] = element.hospitalAmt;
       BillDetailsInsertObj['chargesId'] = element.chargesId;
@@ -158,7 +158,7 @@ export class PatientBilldetailComponent {
     });
 
 
-    let data = {
+    const data = {
       "shareDoctAddCharge": Billdetsarr
     }
     console.log(data)

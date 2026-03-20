@@ -43,7 +43,7 @@ export class NewCashCounterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.cashcounterForm.invalid) {
                 for (const controlName in this.cashcounterForm.controls) {
                     if (this.cashcounterForm.controls[controlName].invalid) {

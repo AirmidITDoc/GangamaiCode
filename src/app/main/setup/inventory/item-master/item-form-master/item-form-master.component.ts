@@ -112,7 +112,7 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
     onNewItemWiseSupprate(row: any = null) {
-        let that = this;
+        const that = this;
 
         const dialogRef = this._matDialog.open(ItemWiseSupplierRateComponent,
             {
@@ -126,7 +126,7 @@ export class ItemFormMasterComponent implements OnInit {
     }
     
     AddNewManufactur(row: any = null) {
-        let that = this; 
+        const that = this; 
         const dialogRef = this._matDialog.open(NewManufactureComponent,
             {
                 height: '45%',
@@ -139,7 +139,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     showDoseDropdownRefresh = true;
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
 
         const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
             {
@@ -157,7 +157,7 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
     removestore(item) {
-        let removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
+        const removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
         this.itemForm.value.mAssignItemToStores.splice(removedIndex, 1);
         this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
     }
@@ -170,7 +170,7 @@ export class ItemFormMasterComponent implements OnInit {
 
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

@@ -121,7 +121,7 @@ export class EditpackageComponent implements OnInit {
   }
 
   getRtevPackageDetList(obj) {
-    var vdata =
+    const vdata =
     {
       "first": 0,
       "rows": 10,
@@ -263,7 +263,7 @@ export class EditpackageComponent implements OnInit {
   }
 
   deleteTableRowPackage(element) {
-    let index = this.PacakgeServiceList.indexOf(element);
+    const index = this.PacakgeServiceList.indexOf(element);
     if (index >= 0) {
       this.PacakgeServiceList.splice(index, 1);
       this.dsPackageDet.data = [];
@@ -272,7 +272,7 @@ export class EditpackageComponent implements OnInit {
   }
 
   deleteTableRowPackageGroup(element) {
-    let index = this.PacakgeGroupList.indexOf(element);
+    const index = this.PacakgeGroupList.indexOf(element);
     if (index >= 0) {
       this.PacakgeGroupList.splice(index, 1);
       this.dsPackagegroupDet.data = [];
@@ -315,7 +315,7 @@ export class EditpackageComponent implements OnInit {
         this.onClose()
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.serviceForm.invalid) {
         for (const controlName in this.serviceForm.controls) {
@@ -346,7 +346,7 @@ export class EditpackageComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -356,8 +356,8 @@ export class EditpackageComponent implements OnInit {
   }
 
   keyPressAmount(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    var currentValue = (event.target as HTMLInputElement).value;
+    const inp = String.fromCharCode(event.keyCode);
+    const currentValue = (event.target as HTMLInputElement).value;
     if (/^\d$/.test(inp)) {
       return true;
     }
@@ -379,7 +379,7 @@ export class EditpackageComponent implements OnInit {
 }
 export class PacakgeList {
   ServiceId: number;
-  ServiceName: String;
+  ServiceName: string;
   PackageServiceId: any;
   PacakgeServiceName: any;
   groupId: any;

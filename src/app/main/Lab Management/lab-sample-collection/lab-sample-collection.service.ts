@@ -86,10 +86,10 @@ export class LabSampleCollectionService {
     this._httpClient = new HttpClient(this.handler);
 
 
-    let headers = new HttpHeaders()
+    const headers = new HttpHeaders()
       .set("Content-Type", "application/json")
       .set("Accept", "application/json")
-    let httpOptions = {
+    const httpOptions = {
 
       headers: headers,
     };

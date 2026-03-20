@@ -42,11 +42,11 @@ export class TestsPopupComponent {
     this.OpdIpdID = this.registerObj.labPatientId
     this.vBillNo = this.registerObj.billNo
 
-    let rawDate = this.registerObj.pathDate;
-    let day = rawDate.split("T")[0];
-    let rest = rawDate.split("T")[1].split("-");
-    let month = rest[0];
-    let year = rest[1];
+    const rawDate = this.registerObj.pathDate;
+    const day = rawDate.split("T")[0];
+    const rest = rawDate.split("T")[1].split("-");
+    const month = rest[0];
+    const year = rest[1];
 
     this.formattedDate = `${day}`
 

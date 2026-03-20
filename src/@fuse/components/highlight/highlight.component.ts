@@ -17,11 +17,11 @@ export class FuseHighlightComponent implements OnInit, OnDestroy
     source: ElementRef;
 
     // Lang
-    @Input('lang')
+    @Input()
     lang: string;
 
     // Path
-    @Input('path')
+    @Input()
     path: string;
 
     // Private

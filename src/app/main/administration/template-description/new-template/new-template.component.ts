@@ -68,7 +68,7 @@ export class NewTemplateComponent implements OnInit {
   }
 
   getCategoryData(categoryId) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "TemplateId",
@@ -143,7 +143,7 @@ export class NewTemplateComponent implements OnInit {
         this.onClose();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.TemplateSaveForm.invalid) {
         for (const controlName in this.TemplateSaveForm.controls) {
           if (this.TemplateSaveForm.controls[controlName].invalid) { invalidFields.push(`Template Form: ${controlName}`); }

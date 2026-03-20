@@ -62,7 +62,7 @@ export class PharCollecionGraphComponent {
 
         this.fromDate =this.data.fdate
         this.toDate = this.data.tdate
-        var vadat = {
+        const vadat = {
             "UnitId": this.unitId,
             'FromDate': this.fromDate,
             'ToDate': this.toDate

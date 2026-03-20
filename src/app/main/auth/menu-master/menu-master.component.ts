@@ -122,7 +122,7 @@ Clearfilter(event) {
 
       
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewMenuComponent,
             {
                 maxWidth: "55vw",

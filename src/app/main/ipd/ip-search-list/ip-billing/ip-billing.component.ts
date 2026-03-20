@@ -170,7 +170,7 @@ export class IPBillingComponent implements OnInit {
     screenFromString = 'Common-form';
     isLoadingStr: string = '';
     vMobileNo: any;
-    isLoading: String = '';
+    isLoading: string = '';
     selectedAdvanceObj: any;
     private nextPage$ = new Subject();
     public subscription: Array<Subscription> = [];
@@ -292,8 +292,8 @@ export class IPBillingComponent implements OnInit {
             this.IpbillFooterform.get('CreditBill').setValue(false);
         }
 
-        let id = this.route.snapshot.queryParamMap.get('Id');
-        let mode = this.route.snapshot.queryParamMap.get('Mode');
+        const id = this.route.snapshot.queryParamMap.get('Id');
+        const mode = this.route.snapshot.queryParamMap.get('Mode');
         if (mode == "Bill" && Number(id) > 0) {
             setTimeout(() => {
                 this.openServiceTable();
@@ -326,8 +326,8 @@ export class IPBillingComponent implements OnInit {
         this.isOpen = !this.isOpen;
     }
     calculateTotalCharge(row: any = null): void {
-        let qty = +this.Serviceform.get("qty").value;
-        let price = +this.Serviceform.get("price").value;
+        const qty = +this.Serviceform.get("qty").value;
+        const price = +this.Serviceform.get("price").value;
         let total = 0
         if (qty > 0 && price > 0) {
             total = qty * price;
@@ -353,10 +353,10 @@ export class IPBillingComponent implements OnInit {
             this.toastr.warning("Enter discount % between 0-100");
             return;
         }
-        let discPer = perControl.value;
-        let totalAmount = this.Serviceform.get("totalAmt").value;
-        let discountAmount = parseFloat((totalAmount * discPer / 100).toFixed(2));
-        let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+        const discPer = perControl.value;
+        const totalAmount = this.Serviceform.get("totalAmt").value;
+        const discountAmount = parseFloat((totalAmount * discPer / 100).toFixed(2));
+        const netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
 
         this.Serviceform.patchValue({
             concessionAmount: discountAmount,
@@ -370,8 +370,8 @@ export class IPBillingComponent implements OnInit {
         if (this.isUpdating) return;
         this.isUpdating = true;
 
-        let discountAmount = this.Serviceform.get("concessionAmount").value;
-        let totalAmount = this.Serviceform.get("totalAmt").value;
+        const discountAmount = this.Serviceform.get("concessionAmount").value;
+        const totalAmount = this.Serviceform.get("totalAmt").value;
 
         if (discountAmount < 0 || discountAmount > totalAmount) {
             this.Serviceform.get("concessionAmount").setValue(0);
@@ -381,8 +381,8 @@ export class IPBillingComponent implements OnInit {
             return;
         }
 
-        let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-        let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+        const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+        const netAmount = Number((totalAmount - discountAmount).toFixed(2));
         this.Serviceform.patchValue({
             concessionPercentage: percent,
             netAmount: netAmount
@@ -866,7 +866,7 @@ export class IPBillingComponent implements OnInit {
                 this.getChargesList();
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.Serviceform.invalid) {
                 for (const controlName in this.Serviceform.controls) {
                     if (this.Serviceform.controls[controlName].invalid) {
@@ -929,11 +929,11 @@ export class IPBillingComponent implements OnInit {
 
         }).then((flag) => {
             if (flag.isConfirmed) {
-                let Chargescancle = {};
+                const Chargescancle = {};
                 Chargescancle['chargesId'] = contact.chargesId;
                 Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
 
-                let submitData = {
+                const submitData = {
                     "deleteCharges": Chargescancle
                 };
                 console.log(submitData);
@@ -983,7 +983,7 @@ export class IPBillingComponent implements OnInit {
     //Advance list
     getadvancelist(AdmissionId) {
         if (AdmissionId > 0) {
-            var vdata = {
+            const vdata = {
                 "first": 0,
                 "rows": 999,
                 "sortField": "AdmissionID",
@@ -1017,12 +1017,12 @@ export class IPBillingComponent implements OnInit {
     getbillbalamt() {
         this.AdvanceBalAmt = this.checkAdvBalAmt
         if (this.AdvanceBalAmt > 0) {
-            let netAmt = this.IpbillFooterform.get('FinalAmount').value || 0
+            const netAmt = this.IpbillFooterform.get('FinalAmount').value || 0
             if (netAmt > this.AdvanceBalAmt) {
                 this.AdvanceBalAmt = this.checkAdvBalAmt
                 this.BillBalAmount = netAmt - this.checkAdvBalAmt
             } else {
-                let balamt = this.AdvanceBalAmt - netAmt
+                const balamt = this.AdvanceBalAmt - netAmt
                 this.AdvanceBalAmt = balamt
                 this.BillBalAmount = 0;
             }
@@ -1058,7 +1058,7 @@ export class IPBillingComponent implements OnInit {
     getChargesList() {
         this.chargeslist = [];
         this.dataSource.data = [];
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 999,
             "sortField": "ServiceId",
@@ -1131,9 +1131,9 @@ export class IPBillingComponent implements OnInit {
     CalculateAdminCharge() {
         let finalNetAmt = 0
         let finalDiscAmt = 0
-        let discPer = this.IpbillFooterform.get('totaldiscPer').value || 0;
+        const discPer = this.IpbillFooterform.get('totaldiscPer').value || 0;
        
-        let AdminPer = this.IpbillFooterform.get('AdminPer').value || 0;
+        const AdminPer = this.IpbillFooterform.get('AdminPer').value || 0;
         if (AdminPer > 10) {
             Swal.fire({
                 title: 'Do you want to Give Disc More Than 10% Generate Request ',
@@ -1151,10 +1151,10 @@ export class IPBillingComponent implements OnInit {
             })
         } else {
             const perControl = this.IpbillFooterform.get("AdminPer");
-            let adminPer = perControl.value;
-            let totalAmount = this.TotalShowAmt;
-            let adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
-            let finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2));
+            const adminPer = perControl.value;
+            const totalAmount = this.TotalShowAmt;
+            const adminAmt = parseFloat((totalAmount * adminPer / 100).toFixed(2));
+            const finalTotalAmt = parseFloat((totalAmount + adminAmt).toFixed(2));
 
             if (!perControl.valid || perControl.value == 0) {
                 if (discPer > 0) {
@@ -1212,11 +1212,11 @@ export class IPBillingComponent implements OnInit {
             }
         }  
 
-        let netAmount = this.FinalNetAmt;
+        const netAmount = this.FinalNetAmt;
         const perControl = this.IpbillFooterform.get("totaldiscPer");
-        let discper = perControl.value;
-        let totalAmount = this.TotalShowAmt;
-        let AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
+        const discper = perControl.value;
+        const totalAmount = this.TotalShowAmt;
+        const AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
         let discountAmt = 0;
         let finalNetAmt
         let FinalTotalAmt 
@@ -1262,10 +1262,10 @@ export class IPBillingComponent implements OnInit {
     vTotalAmount: any;
     getDiscAmtCal() {
         const perControl = this.IpbillFooterform.get("totalconcessionAmt");
-        let netAmount = this.FinalNetAmt;
-        let totalAmount = this.TotalShowAmt;
-        let discAmt = perControl.value;
-        let AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
+        const netAmount = this.FinalNetAmt;
+        const totalAmount = this.TotalShowAmt;
+        const discAmt = perControl.value;
+        const AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
         let discper = ''
         let finalNetAmt
         let FinalTotalAmt
@@ -1307,7 +1307,7 @@ export class IPBillingComponent implements OnInit {
     }
     //Save PopUp MSG
     onSave() {
-        let invalidFields = [];
+        const invalidFields = [];
         if (this.IpbillFooterform.invalid) {
             for (const controlName in this.IpbillFooterform.controls) {
                 if (this.IpbillFooterform.controls[controlName].invalid) {
@@ -1411,7 +1411,7 @@ export class IPBillingComponent implements OnInit {
                 this.openWaitingScreen();
             }
             else {
-                let PatientHeaderObj = {};
+                const PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.dateTimeObj.date;
                 PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName || '';
                 PatientHeaderObj['AdvanceAmount'] = this.IpbillFooterform.get('FinalAmount')?.value;
@@ -1493,7 +1493,7 @@ export class IPBillingComponent implements OnInit {
                 });
             }
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.IPBillMyForm.invalid) {
                 for (const controlName in this.IPBillMyForm.controls) {
                     const control = this.IPBillMyForm.get(controlName);
@@ -1604,7 +1604,7 @@ export class IPBillingComponent implements OnInit {
             this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
         });
 
-        let ModePaymentObj = [];
+        const ModePaymentObj = [];
         ModePaymentObj.push({
             paymentDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
             paymentTime: this.dateTimeObj.time,
@@ -1663,7 +1663,7 @@ export class IPBillingComponent implements OnInit {
             maxHeight: '60vh'
         })
         //424929  this.vOPIPId
-        let Data = {
+        const Data = {
             "first": 0,
             "rows": 999,
             "sortField": "Id",
@@ -1736,7 +1736,7 @@ export class IPBillingComponent implements OnInit {
         if (event.checked) {
             this.interimArray.push(element);
         } else if (this.interimArray.length > 0) {
-            let index = this.interimArray.indexOf(element);
+            const index = this.interimArray.indexOf(element);
             if (index !== -1) {
                 this.interimArray.splice(index, 1);
             }
@@ -1768,7 +1768,7 @@ export class IPBillingComponent implements OnInit {
     PacakgeList: any = [];
     ////Pacakge Section
     getRtrvpackagedetList() {
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 999,
             "sortField": "ChargesId",
@@ -1813,7 +1813,7 @@ export class IPBillingComponent implements OnInit {
     }
     //Pacakge list  with serviceId     
     getpackagedetList(obj) {
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 999,
             "sortField": "ServiceId",
@@ -1872,7 +1872,7 @@ export class IPBillingComponent implements OnInit {
     getLabRequestChargelist() {
         this.chargeslist1 = [];
         this.dataSource1.data = [];
-        var m =
+        const m =
         // OP_IP_ID: this.selectedAdvanceObj.AdmissionID,
         {
             "first": 0,
@@ -1897,7 +1897,7 @@ export class IPBillingComponent implements OnInit {
     //Admin Charge retreiving 
     getBillheaderList() {
         this.isLoadingStr = 'loading';
-        let Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId=" + this.selectedAdvanceObj.AdmissionID
+        const Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId=" + this.selectedAdvanceObj.AdmissionID
 
         this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
             this.billheaderlist = data[0].AdminPer;
@@ -1914,7 +1914,7 @@ export class IPBillingComponent implements OnInit {
     }
     //nursing Service List added
     AddList(m) {
-        var m_data = {
+        const m_data = {
             "opdIpdId": m.opipid,
             "classID": this.selectedAdvanceObj.classId || 0,
             "serviceId": m.serviceId,
@@ -1950,7 +1950,7 @@ export class IPBillingComponent implements OnInit {
     getWhatsappshareIPFinalBill(el, vmono) {
 
         if (vmono != '' && vmono != "0") {
-            var m_data = {
+            const m_data = {
                 "insertWhatsappsmsInfo": {
                     "mobileNumber": vmono || 0,
                     "smsString": '',
@@ -2112,7 +2112,7 @@ export class IPBillingComponent implements OnInit {
         } else {
             DoctorId = element.doctorId
         }
-        let addCharge = {
+        const addCharge = {
             "chargesId": element.chargesId,
             "price": element.price,
             "qty": element.qty || 1,
@@ -2184,7 +2184,7 @@ export class IPBillingComponent implements OnInit {
         this.getbillbalamt();
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -2193,7 +2193,7 @@ export class IPBillingComponent implements OnInit {
         }
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -2212,7 +2212,7 @@ export class IPBillingComponent implements OnInit {
     }
     //Pharamcy Amount 
     getPharmacyAmount() {
-        let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
+        const Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
         this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) => {
 
             this.PharmacyAmont = data[0].PhBillCredit;
@@ -2298,7 +2298,7 @@ export class IPBillingComponent implements OnInit {
             confirmButtonText: "Yes,it !"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                var submitData = {
+                const submitData = {
                     "opdIpdId": this.opD_IPD_Id
                 }
                 console.log(submitData)
@@ -2629,7 +2629,7 @@ export class IPBillingComponent implements OnInit {
       UserDicPerLimit: any = 0;
     getAccessDetail() {
         // debugger
-        var SelectQuery = {
+        const SelectQuery = {
             "first": 0,
             "rows": 999,
             "sortField": "AccessValueId",
@@ -2683,7 +2683,7 @@ export class Bill {
     ConcessionAuthorizationName: any;
     TaxPer: any;
     TaxAmount: any;
-    DiscComments: String;
+    DiscComments: string;
     vCashCounterID: any;
     Bdate: any;
     PBillNo: any;

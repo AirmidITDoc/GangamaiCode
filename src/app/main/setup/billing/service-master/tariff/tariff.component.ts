@@ -74,7 +74,7 @@ export class TariffComponent implements OnInit {
   }
 
   removeTariff(item) {
-    let removedIndex = this.serviceForm.value.newTariffId.findIndex(x => x.value == item.value);
+    const removedIndex = this.serviceForm.value.newTariffId.findIndex(x => x.value == item.value);
     this.serviceForm.value.newTariffId.splice(removedIndex, 1);
     this.ddltariff.SetSelection(this.serviceForm.value.newTariffId.map(x => x.value));
   }
@@ -89,7 +89,7 @@ export class TariffComponent implements OnInit {
         this.onClear();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.serviceForm.invalid) {
         for (const controlName in this.serviceForm.controls) {
@@ -142,7 +142,7 @@ export class TariffComponent implements OnInit {
       // });
 
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.serviceTariffForm.invalid) {
         for (const controlName in this.serviceTariffForm.controls) {

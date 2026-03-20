@@ -39,7 +39,7 @@ export class ConfigurationComponent implements OnInit {
   ActionByName = ""
   autocompleteModeItem: string = "PatientType";
   autocompleteModeCashcounter: string = "CashCounter";
-  autocompleteModeDepartment: String = "Department";
+  autocompleteModeDepartment: string = "Department";
   autocompleteModedoctorty: string = "ConDoctor";
   screenFromString = 'Common-form';
   autocompleteModeClass: string = "Class";
@@ -255,7 +255,7 @@ export class ConfigurationComponent implements OnInit {
 
   getServiceList() {
 
-    var param = {
+    const param = {
       "searchFields": [
 
       ],
@@ -278,7 +278,7 @@ export class ConfigurationComponent implements OnInit {
     this.DoctorId = event.value
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -419,7 +419,7 @@ export class ConfigurationComponent implements OnInit {
   OnEditSms(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(EditSMSConfigComponent,
       {
         maxWidth: "60vw",
@@ -436,7 +436,7 @@ export class ConfigurationComponent implements OnInit {
   OnEditEmail(row) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(EditEmailconfigComponent,
       {
          maxWidth: "60vw",

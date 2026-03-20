@@ -325,7 +325,7 @@ export class UserDetailComponent implements OnInit {
       this.mobileno = parseInt(this.UserForm.get('MobileNo').value) ||  0;
       if (this.vUserId == 0) {
         this.isLoading = 'submit'; 
-        var m_data = {
+        const m_data = {
           "loginInsert": {
             "FirstName": this.UserForm.get('FirstName').value || '',
             "LastName": this.UserForm.get('LastName').value || '',
@@ -384,7 +384,7 @@ export class UserDetailComponent implements OnInit {
       }
       else {
   
-        var m_data1 = {
+        const m_data1 = {
           "loginUpdate": {
             "UserId": this.vUserId,
             "FirstName": this.UserForm.get('FirstName').value || '',
@@ -448,7 +448,7 @@ export class UserDetailComponent implements OnInit {
       this.snackmessage = s;
       console.log(s);
       console.log(this.snackmessage);
-      var x = document.getElementById("snackbar");
+      const x = document.getElementById("snackbar");
       x.className = "show";
       setTimeout(function () { x.className = x.className.replace("show", ""); }, 5000);
     }

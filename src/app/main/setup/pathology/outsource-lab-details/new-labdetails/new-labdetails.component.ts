@@ -90,7 +90,7 @@ export class NewLabdetailsComponent {
         this._matDialog.closeAll()
             });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.LabFormGroup.invalid) {
         for (const controlName in this.LabFormGroup.controls) {
@@ -109,7 +109,7 @@ export class NewLabdetailsComponent {
   }
 
      keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

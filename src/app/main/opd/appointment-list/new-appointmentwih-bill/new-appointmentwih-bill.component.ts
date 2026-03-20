@@ -675,7 +675,7 @@ export class NewAppointmentwihBillComponent {
   }
 
   onChangePatient(value) {
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._AppointmentlistService.getMaster(mode, 1);
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
@@ -1088,10 +1088,10 @@ export class NewAppointmentwihBillComponent {
   // Calculation of total amount.
   calculateTotalAmount(): void {
     debugger
-    let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
-    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
-    let totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
-    let totalNet = totalSum - totalDiscount;
+    const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+    const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    const totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
+    const totalNet = totalSum - totalDiscount;
 
     this.myForm.patchValue({
       totalAmt: totalSum,
@@ -1111,10 +1111,10 @@ export class NewAppointmentwihBillComponent {
   }
 
   getServiceList() {
-    let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
-    let IsPathRad = 3
+    const ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
+    const IsPathRad = 3
     // this.myForm.get("IsPathRad").value || "1"
-    var param = {
+    const param = {
       "first": 0,
       "rows": 10,
       "sortField": "ServiceId",
@@ -1251,7 +1251,7 @@ export class NewAppointmentwihBillComponent {
 
   onSaveEntry(row) {
     // debugger
-    let doctorid = 0;
+    const doctorid = 0;
     const formValue = this.myForm.value
 
     const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
@@ -1275,7 +1275,7 @@ export class NewAppointmentwihBillComponent {
     );
 
     let discountAmt = Number(this.myForm.get('discountAmt')?.value) || 0;
-    let discountPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
+    const discountPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
 
     if (source === 'PER') {
       // Discount % entered
@@ -1524,7 +1524,7 @@ export class NewAppointmentwihBillComponent {
   OriginalPackageService: any = [];
   TotalPrice: any = 0;
   getRtevPackageDetList(obj) {
-    var vdata =
+    const vdata =
     {
       "first": 0,
       "rows": 10,
@@ -1662,7 +1662,7 @@ export class NewAppointmentwihBillComponent {
 
   deleteTableRow(element) {
     this.chargeslist = this.dstable1.data;
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dstable1.data = [];
@@ -1727,7 +1727,7 @@ export class NewAppointmentwihBillComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1738,7 +1738,7 @@ export class NewAppointmentwihBillComponent {
   BillSave() {
 
     console.log(this.myForm.getRawValue())
-    let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+    const DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {
 
       const todayDate = new Date();
@@ -1849,7 +1849,7 @@ export class NewAppointmentwihBillComponent {
         console.log("form values", this.OpBillForm.value)
 
         if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-          let PatientHeaderObj = {};
+          const PatientHeaderObj = {};
           PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
             PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
           PatientHeaderObj['RegNo'] = this.regNo;
@@ -1921,7 +1921,7 @@ export class NewAppointmentwihBillComponent {
         }
       }
       else {
-        let invalidFields = [];
+        const invalidFields = [];
         if (this.OpBillForm.invalid) {
           for (const controlName in this.OpBillForm.controls) {
             const control = this.OpBillForm.get(controlName);
@@ -1962,7 +1962,7 @@ export class NewAppointmentwihBillComponent {
         console.log("form values", this.OpBillForm.value)
 
         if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-          let PatientHeaderObj = {};
+          const PatientHeaderObj = {};
           PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
             PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
           PatientHeaderObj['RegNo'] = this.regNo;
@@ -2049,7 +2049,7 @@ export class NewAppointmentwihBillComponent {
         }
       }
       else {
-        let invalidFields = [];
+        const invalidFields = [];
         if (this.OpBillForm.invalid) {
           for (const controlName in this.OpBillForm.controls) {
             const control = this.OpBillForm.get(controlName);

@@ -39,7 +39,7 @@ export class LabTrackingDetailsComponent {
 
   trackerList: any[] = [];
   gettrackerList(Obj) {
-    var vdata = {
+    const vdata = {
       "searchFields": [
         {
           "fieldName": "OpipId",

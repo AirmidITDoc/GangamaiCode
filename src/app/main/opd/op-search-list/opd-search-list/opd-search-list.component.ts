@@ -89,7 +89,7 @@ export class OpdSearchListComponent implements OnInit {
     });
   }  
   getSearchList() { 
-    var m_data = {
+    const m_data = {
       "Keyword": `${this.searchFormGroup.get('RegId').value}`
     }
     if (this.searchFormGroup.get('RegId').value.length >= 1) {
@@ -156,7 +156,7 @@ getregdetails(obj){
   } 
   getCreditBillDetails() { 
     this.sIsLoading = 'loading-data'; 
-    var Vdata={
+    const Vdata={
       'RegId':this.RegId
     } 
     console.log(Vdata)
@@ -182,7 +182,7 @@ getregdetails(obj){
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     console.log(contact)
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
     PatientHeaderObj['Date'] = formattedDate,
     PatientHeaderObj['RegNo'] = contact.RegNo;
     PatientHeaderObj['PatientName'] = this.PatientName;
@@ -213,11 +213,11 @@ getregdetails(obj){
           this.vpaidamt = result.PaidAmt;
           this.vbalanceamt = result.BalAmt
 
-          let updateBillobj = {};
+          const updateBillobj = {};
           updateBillobj['BillNo'] = contact.BillNo;
           updateBillobj['BillBalAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;  //result.BalAmt;
        
-          let Data = {
+          const Data = {
             "updateBill": updateBillobj,
             "paymentCreditUpdate": result.submitDataPay.ipPaymentInsert
           };
@@ -244,7 +244,7 @@ getregdetails(obj){
   viewgetOPPayemntPdf(Id,value) {
     setTimeout(() => {
 
-      let param = {
+      const param = {
 
           "searchFields": [
               {
@@ -317,16 +317,16 @@ export class CreditBilldetail {
 }
 export class SearchInforObj
 {
-    RegNo : Number;
-    AdmissionID: Number;
+    RegNo : number;
+    AdmissionID: number;
     PatientName: string;
     Doctorname: string;
     AdmDateTime: string;
     AgeYear: number;
     ClassId: number;
-    ClassName:String;
-    TariffName: String;
-    Tariffname: String;
+    ClassName:string;
+    TariffName: string;
+    Tariffname: string;
     TariffId : number;
     IsDischarged:boolean;
     opD_IPD_Type:number;
@@ -337,8 +337,8 @@ export class SearchInforObj
     IPDNo:any;
     DoctorId:number;
     BedId:any;
-    BedName:String;
-    WardName:String;
+    BedName:string;
+    WardName:string;
     CompanyId:string;
     SubCompanyId:any;
     IsBillGenerated:any;
@@ -550,7 +550,7 @@ export class ChargesList{
   ChargesId: number;
   ServiceId: number;
   serviceId: number;
-  ServiceName : String;
+  ServiceName : string;
   Price:any;
   Qty: any;
   TotalAmt: number;
@@ -558,7 +558,7 @@ export class ChargesList{
   DiscAmt: number;
   NetAmount: number;
   DoctorId:number;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ChargesDate: Date;
   IsPathology:boolean;
   IsRadiology:boolean;

@@ -169,14 +169,14 @@ myForm:FormGroup
   }
   onSubmit() {
     
-    let MLCId = 0//this.registerObj1.OTCathLabBokingID;
+    const MLCId = 0//this.registerObj1.OTCathLabBokingID;
    
 
     console.log()
     // if (this.Adm_Vit_ID) {
 
       if (!MLCId) {
-        var m_data = {
+        const m_data = {
           "certificateDelete":{
             "certificateId":0
           },

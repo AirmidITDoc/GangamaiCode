@@ -418,7 +418,7 @@ export class CompanysettlementComponent implements OnInit {
         this.getmultiplePaymentList();
     } 
     openPaymentpopup(contact) {
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
         PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
         PatientHeaderObj['PatientName'] = this.registerObj?.patientName || ''
@@ -462,7 +462,7 @@ export class CompanysettlementComponent implements OnInit {
                         this.viewgetOPPayemntPdf(response, true);
                     });
                 } else {
-                    let invalidFields = []
+                    const invalidFields = []
                     if (this.OpSettlementForm.invalid) {
                         for (const controlName in this.OpSettlementForm.controls) {
                             const control = this.OpSettlementForm.get(controlName);
@@ -559,7 +559,7 @@ export class CompanysettlementComponent implements OnInit {
         this.getmultiplePaymentList();
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -734,7 +734,7 @@ export class CompanysettlementComponent implements OnInit {
         let toDate = this.OPMultipleSettlForm.get("enddate").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 9999,
             "sortField": "RegNo",
@@ -986,7 +986,7 @@ export class CompanysettlementComponent implements OnInit {
             element.CompanyDisc = 0;
             element.tds = 0;
 
-            let index = this.SelectedList.indexOf(element);
+            const index = this.SelectedList.indexOf(element);
             if (index >= 0) {
                 this.SelectedList.splice(index, 1);
             }
@@ -1084,7 +1084,7 @@ export class CompanysettlementComponent implements OnInit {
                 this.OPMulSetBillLoopArray.push(this.CreateOPMultipleSettlBillLoopInsertForm(item))
             });
 
-                let ModePaymentObj = [];
+                const ModePaymentObj = [];
                 this.SelectedList.forEach(item => {
                  ModePaymentObj.push({  
                     billNo:item?.billNo,

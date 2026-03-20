@@ -398,7 +398,7 @@ export class NewLabAppointmentComponent {
     this.prevResults = [];
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -469,8 +469,8 @@ export class NewLabAppointmentComponent {
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
@@ -488,7 +488,7 @@ export class NewLabAppointmentComponent {
         this.onClose();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
           if (this.myForm.controls[controlName].invalid) {

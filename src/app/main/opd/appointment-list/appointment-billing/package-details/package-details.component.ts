@@ -142,7 +142,7 @@ export class PackageDetailsComponent {
   //OPD Package list
   getOPDpackagedetList(obj) {
     this.PacakgeList = [];
-    var vdata =
+    const vdata =
     {
       "first": 0,
       "rows": 999,
@@ -181,7 +181,7 @@ export class PackageDetailsComponent {
   getIPDpackagedetList(obj) {
     debugger
     this.PacakgeList = [];
-    var vdata =
+    const vdata =
     {
       "first": 0,
       "rows": 999,
@@ -326,10 +326,10 @@ export class PackageDetailsComponent {
     }).then((flag) => {
       if (flag.isConfirmed) {
         if (this.data.FormName == 'IPD Package') {
-          let Chargescancle = {};
+          const Chargescancle = {};
           Chargescancle['chargesId'] = contact.chargesId;
           Chargescancle['isCancelledBy'] = this._loggedService.currentUserValue.userId;
-          let submitData = {
+          const submitData = {
             "deleteCharges": Chargescancle
           };
           console.log(submitData);
@@ -337,7 +337,7 @@ export class PackageDetailsComponent {
             this.getIPDpackagedetList(this.registerObj)
           });
         } else {
-          let index = this.PacakgeList.indexOf(contact);
+          const index = this.PacakgeList.indexOf(contact);
           if (index >= 0) {
             this.PacakgeList.splice(index, 1);
             this.dsPackageDet.data = [];
@@ -377,8 +377,8 @@ export class PackageDetailsComponent {
   }
   //Total amt
   getTotalAmtSum(element) {
-    let Finalnetamt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
-    let TotalPrice = element.reduce((sum, { price }) => sum += +(price || 0), 0).toFixed(2); 
+    const Finalnetamt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
+    const TotalPrice = element.reduce((sum, { price }) => sum += +(price || 0), 0).toFixed(2); 
     this.PackageForm.patchValue({
       Finalnetamt: Finalnetamt,
       TotalPrice: TotalPrice,
@@ -456,7 +456,7 @@ export class PackageDetailsComponent {
       });
     } else {
       this.dsPackageDet.data.forEach((element) => {
-        let OpPacakgesave = {}
+        const OpPacakgesave = {}
         OpPacakgesave['ServiceId'] = element.serviceId;
         OpPacakgesave['ServiceName'] = element.serviceName || '';
         OpPacakgesave['Price'] = element.price || 0;
@@ -520,7 +520,7 @@ export class PackageDetailsComponent {
     this.ChargesDoctorname = event.text
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -529,7 +529,7 @@ export class PackageDetailsComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -541,7 +541,7 @@ export class PackageDetailsComponent {
 export class ChargesList {
   ChargesId: number;
   ServiceId: number;
-  ServiceName: String;
+  ServiceName: string;
   Price: number;
   Qty: number;
   TotalAmt: number;
@@ -549,7 +549,7 @@ export class ChargesList {
   DiscAmt: number;
   NetAmount: number;
   DoctorId: number;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ChargesDate: Date;
   IsPathology: boolean;
   IsRadiology: boolean;
@@ -564,7 +564,7 @@ export class ChargesList {
   EditDoctor: any;
   ConcessionPercentage: any;
   ConcessionAmount: any;
-  serviceName: String;
+  serviceName: string;
   serviceId: number;
   doctorName: any;
   doctorId: any;

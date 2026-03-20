@@ -72,7 +72,7 @@ export class GSTReportComponent implements OnInit {
 
 
   bindReportData() {
-    var data={
+    const data={
    ReportSection:'GST REPORT'
    }
      this._GstReportService.getDataByQuery(data).subscribe(data => {
@@ -779,7 +779,7 @@ export class GSTReportComponent implements OnInit {
      }
 
   GetUserList() {
-    var data = {
+    const data = {
           "StoreId": this._loggedUser.currentUserValue.storeId
         }
     this._GstReportService.getUserdetailList(data).subscribe(data => {

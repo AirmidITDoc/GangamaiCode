@@ -177,7 +177,7 @@ PrescriptionFrom:FormGroup;
       Op_ip_Id = this.SelectedObj?.ipMedID
       patientType = 1
     } 
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "ItemId",

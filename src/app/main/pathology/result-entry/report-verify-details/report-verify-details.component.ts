@@ -58,7 +58,7 @@ export class ReportVerifyDetailsComponent {
       this.IsVerified = this.data.isVerified || true
 
     }
-    var now = new Date();
+    const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   }
@@ -91,7 +91,7 @@ export class ReportVerifyDetailsComponent {
         this._matDialog.closeAll()
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.VerifyFormGroup.invalid) {
         for (const controlName in this.VerifyFormGroup.controls) {
@@ -110,7 +110,7 @@ export class ReportVerifyDetailsComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

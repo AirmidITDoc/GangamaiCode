@@ -126,7 +126,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
 
 
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
             {
                maxHeight: '95vh',
@@ -147,7 +147,7 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     }
 
     EditConsumption(row:any=null) { 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
             {
                 maxWidth: "90vw",

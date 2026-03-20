@@ -179,20 +179,20 @@ export class NewGRNReturnComponent implements OnInit {
 
       if (inputDate.includes('-')) {
         // dd-MM-yyyy → convert to yyyy-MM-dd
-        let parts = inputDate.split('-');
-        let year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
+        const parts = inputDate.split('-');
+        const year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
         ExpDate = `${year}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
       }
       else if (inputDate.includes('/')) {
         // dd/MM/yyyy → convert to yyyy-MM-dd
-        let parts = inputDate.split('/');
-        let year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
+        const parts = inputDate.split('/');
+        const year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
         ExpDate = `${year}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
       }
     }
 
-    let mrpTotal = element.returnQty * element.mrp;
-    let PurchaseTotalAmt = element.returnQty * element.Rate;
+    const mrpTotal = element.returnQty * element.mrp;
+    const PurchaseTotalAmt = element.returnQty * element.Rate;
 
     return this._formbuilder.group({
 
@@ -242,7 +242,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnQtyInsert(element: any = {}): FormGroup {
-    let issueqty = element.BalQty - element.returnQty
+    const issueqty = element.BalQty - element.returnQty
     return this._formbuilder.group({
       grndetId: [element.GRNDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       // returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
@@ -265,7 +265,7 @@ export class NewGRNReturnComponent implements OnInit {
   getGrnItemDetailList(Params) {
     // debugger;
     this.chargeslist = [];
-    var Param = {
+    const Param = {
       "first": 0,
       "rows": 9999,
       "sortField": "GRNID",
@@ -371,7 +371,7 @@ export class NewGRNReturnComponent implements OnInit {
 
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -381,7 +381,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   getGRNreturnlist() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "GRNReturnId",
@@ -425,7 +425,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.vFinalVatAmount = (element.reduce((sum, { gstAmount }) => sum += +(gstAmount || 0), 0)).toFixed(2);
     this.vFinalDiscAmount = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
 
-    let finalAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
+    const finalAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
     this.vFinalNetAmount = Math.round(finalAmt).toFixed(2);
     this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
 
@@ -477,7 +477,7 @@ export class NewGRNReturnComponent implements OnInit {
       contact.landedTotalAmount = (parseFloat(contact.returnQty) * parseFloat(contact.landedRate)).toFixed(2);
       contact.gstAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.gstPercentage)) / 100).toFixed(2);
       contact.discAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.discPercentage)) / 100).toFixed(2);
-      let GrossAmt = (parseFloat(contact.landedTotalAmount) - parseFloat(contact.discAmount)).toFixed(2);
+      const GrossAmt = (parseFloat(contact.landedTotalAmount) - parseFloat(contact.discAmount)).toFixed(2);
       contact.netAmount = (parseFloat(GrossAmt) + parseFloat(contact.gstAmount)).toFixed(2);
 
       // ✅ GST condition

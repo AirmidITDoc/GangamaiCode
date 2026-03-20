@@ -326,7 +326,7 @@ export class LabPatientRegComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -386,7 +386,7 @@ export class LabPatientRegComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(EditLabregComponent,
       {
         maxWidth: "65vw",
@@ -401,7 +401,7 @@ export class LabPatientRegComponent {
 
   openPaymentpopup(contact) {
     console.log(contact)
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['RegNo'] = contact.labRequestNo;
     PatientHeaderObj['PatientName'] = contact.patientName;
@@ -447,7 +447,7 @@ export class LabPatientRegComponent {
             this.grid.bindGridData();
           });
         } else {
-          let invalidFields = []
+          const invalidFields = []
           if (this.OpSettlementForm.invalid) {
             for (const controlName in this.OpSettlementForm.controls) {
               const control = this.OpSettlementForm.get(controlName);
@@ -518,7 +518,7 @@ export class LabPatientRegComponent {
   OnallList() {
     setTimeout(() => {
 
-      let param = {
+      const param = {
 
         "searchFields": [
           {
@@ -708,7 +708,7 @@ export class LabPatientRegComponent {
   isSettlement: boolean = false;
   getAccessDetail() {
     // debugger
-    var SelectQuery = {
+    const SelectQuery = {
       "searchFields": [{
         "fieldName": "LoginId",
         "fieldValue": String(this._loggedService.currentUserValue.userId),
@@ -948,7 +948,7 @@ export class LabPatientRegComponent {
 export class LabPatientList {
 
   PatientName: string;
-  Date: Number;
+  Date: number;
   RegNo: number;
   MobileNo: number;
   Doctorname: number;
@@ -1141,7 +1141,7 @@ export class ChargesList {
   ConcessionAmt: any;
   ServiceId: number;
   serviceId: number;
-  ServiceName: String;
+  ServiceName: string;
   Price: any;
   Qty: any;
   isInclusionExclusion: any;
@@ -1151,7 +1151,7 @@ export class ChargesList {
   DiscAmt: number;
   NetAmount: number;
   DoctorId: number;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ChargesDate: Date;
   IsPathology: any;
   IsRadiology: any;
@@ -1255,9 +1255,9 @@ export class ChargesList {
 }
 
 export class RegInsert {
-  RegId: Number;
-  regId: Number;
-  RegID: Number;
+  RegId: number;
+  regId: number;
+  RegID: number;
   RegDate: Date;
   regDate: Date;
   PatientName: string;
@@ -1284,7 +1284,7 @@ export class RegInsert {
   DateofBirth: Date;
   Age: any;
   age: any;
-  GenderId: Number;
+  GenderId: number;
   genderId: any;
   PhoneNo: string;
   phoneNo: string;
@@ -1305,7 +1305,7 @@ export class RegInsert {
   cityId: number;
   MaritalStatusId: number;
   maritalStatusId: number;
-  IsCharity: Boolean;
+  IsCharity: boolean;
   ReligionId: number;
   religionId: number;
   AreaId: number;

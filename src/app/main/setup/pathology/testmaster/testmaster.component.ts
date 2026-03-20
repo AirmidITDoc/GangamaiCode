@@ -201,7 +201,7 @@ export class TestmasterComponent implements OnInit {
 export class TestMaster {
   TestId: number;
   TestName: string;
-  PrintTestName: String;
+  PrintTestName: string;
   CategoryId: number;
   IsSubTest: boolean;
   TechniqueName: string;

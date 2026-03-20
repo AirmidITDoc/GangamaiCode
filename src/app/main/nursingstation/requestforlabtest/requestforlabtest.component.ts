@@ -146,7 +146,7 @@ export class RequestforlabtestComponent implements OnInit {
     getSelectedRow(row: any): void {
 
         console.log("Selected row : ", row);
-        let vRequestId = row.requestId
+        const vRequestId = row.requestId
         // debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
@@ -189,7 +189,7 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -211,7 +211,7 @@ export class RequestforlabtestComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                let sub = {
+                const sub = {
                     "requestId": data.requestId
                 }
                 this._RequestforlabtestService.labreqCancle(sub).subscribe((response: any) => {
@@ -252,7 +252,7 @@ export class RequestforlabtestComponent implements OnInit {
     Printresultentry(row) {
         // debugger
         console.log("WithHeader", row);
-        let pathologyDelete = [{
+        const pathologyDelete = [{
             pathReportId: row.pathReportID
         }];
 
@@ -276,7 +276,7 @@ export class RequestforlabtestComponent implements OnInit {
     Printresultentrywithheader(row: any) {
 
         console.log("WithHeader", row);
-        let pathologyDelete = [{
+        const pathologyDelete = [{
             pathReportId: row.pathReportID
         }];
 

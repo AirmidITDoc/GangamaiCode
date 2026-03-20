@@ -204,7 +204,7 @@ export class LabRadiologyComponent {
   }
 
   onSave(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewRadResultTemplateComponent,
       {
         // maxHeight: '99vh',
@@ -250,7 +250,7 @@ export class LabRadiologyComponent {
   viewgetRadioloyTemplateReportPdf(contact) {
     this.OnPrintReportLogSave('RadiolologyPrint', contact) // log save
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",
@@ -287,7 +287,7 @@ export class LabRadiologyComponent {
   viewgetRadioloyTemplateReportPdf1(contact) {
     this.OnPrintReportLogSave('RadiolologyPrint', contact) // log save
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "RadReportId",
@@ -358,7 +358,7 @@ export class LabRadiologyComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
 
           "radReportId": row.radReportId,
           "isVerifyId": this.accountService.currentUserValue.userId,
@@ -627,7 +627,7 @@ export class LabRadiologyComponent {
         // this.GetSampleCollectiondetail();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.reportlogFormGroup.invalid) {
         for (const controlName in this.reportlogFormGroup.controls) {
           const control = this.reportlogFormGroup.get(controlName);
@@ -658,13 +658,13 @@ export class RadioPatientList {
   RadDate: Date;
   RadTime: Date;
   RegNo: any;
-  PatientName: String;
+  PatientName: string;
   PatientType: number;
-  TestName: String;
+  TestName: string;
   ConsultantDoctor: any;
-  CategoryName: String;
+  CategoryName: string;
   AgeYear: number;
-  GenderName: String;
+  GenderName: string;
   PBillNo: number;
   OPD_IPD_ID: any;
   OP_Ip_Type: any;
@@ -710,14 +710,14 @@ export class RadioPatientList {
 
 export class Templateinfo {
 
-  RegNo: Number;
-  AdmissionID: Number;
+  RegNo: number;
+  AdmissionID: number;
   PatientName: string;
   Doctorname: string;
   AdmDateTime: string;
   AgeYear: number;
   RadReportId: number;
-  RadTestID: String;
+  RadTestID: string;
 
 
   /**
@@ -741,21 +741,21 @@ export class Templateinfo {
 
 
 export class RadiologyPrint {
-  RegNo: Number;
-  AdmissionID: Number;
+  RegNo: number;
+  AdmissionID: number;
   PatientName: string;
   Doctorname: string;
   AdmDateTime: string;
   AgeYear: number;
   RadReportId: number;
-  RadTestID: String;
+  RadTestID: string;
   RadDate: Date;
   RadTime: Date;
   PatientType: any;
-  TestName: String;
+  TestName: string;
   ConsultantDoctor: any;
-  CategoryName: String;
-  GenderName: String;
+  CategoryName: string;
+  GenderName: string;
   PBillNo: number;
   AdmissionDate: Date;
   VisitDate: Date;
@@ -764,7 +764,7 @@ export class RadiologyPrint {
   IPDNo: number;
   ReportDate: Date;
   ReportTime: Date;
-  ResultEntry: String;
+  ResultEntry: string;
   RadiologyDocName: string;
   RefDoctorName: any;
   SuggestionNotes: string;
@@ -773,7 +773,7 @@ export class RadiologyPrint {
   Education: string;
   AgeDay: any;
   ChargeId: number;
-  ServiceName: String;
+  ServiceName: string;
   OP_IP_Type: any;
   OP_IP_Number: any;
   CompanyName: any;

@@ -133,7 +133,7 @@ export class EmergencyHistoryComponent {
   }
 
   gethistory(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "EmgId",
@@ -228,7 +228,7 @@ export class EmergencyHistoryComponent {
       })
 
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
       if (this.historyForm.invalid) {
         for (const controlName in this.historyForm.controls) {
           if (this.historyForm.controls[controlName].invalid) {
@@ -269,7 +269,7 @@ export class EmergencyHistoryComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -279,7 +279,7 @@ export class EmergencyHistoryComponent {
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -289,7 +289,7 @@ export class EmergencyHistoryComponent {
   }
 
   keyPressOk(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
       return true;
     } else {

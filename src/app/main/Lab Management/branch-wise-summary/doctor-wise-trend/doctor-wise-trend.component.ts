@@ -100,7 +100,7 @@ export class DoctorWiseTrendComponent {
 
   getDoctorList() {
     this.monthValue = this.filterType === 'Month' ? 'Months' : 'Day';
-    var param = {
+    const param = {
       "first": 0,
       "rows": 9999,
       "sortField": "DoctorId",

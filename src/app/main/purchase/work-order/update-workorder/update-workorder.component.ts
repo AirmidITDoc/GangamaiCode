@@ -168,7 +168,7 @@ export class UpdateWorkorderComponent implements OnInit {
 
   getWorkOrderItemDetailList(Id) {
 
-    var Param = {
+    const Param = {
 
       "first": 0,
       "rows": 10,
@@ -367,7 +367,7 @@ export class UpdateWorkorderComponent implements OnInit {
   }
 
   deleteTableRow(element) {
-    let index = this.dsItemNameList.data.findIndex(x => x.ItemId === element.ItemId);
+    const index = this.dsItemNameList.data.findIndex(x => x.ItemId === element.ItemId);
     if (index >= 0) {
       this.dsItemNameList.data.splice(index, 1);
       this.dsItemNameList.data = [...this.dsItemNameList.data]; // refresh table
@@ -453,7 +453,7 @@ export class UpdateWorkorderComponent implements OnInit {
   }
 
   calculateDiscperAmount() {
-    let disc = this.WorkorderItemForm.get('Disc').value || 0;
+    const disc = this.WorkorderItemForm.get('Disc').value || 0;
     this.vGST = this.WorkorderItemForm.get('GST').value || 0;
     if (disc >= 100) {
       this.toastr.warning('Enter Discount less than 100', 'Warning !', {
@@ -468,7 +468,7 @@ export class UpdateWorkorderComponent implements OnInit {
       if (this.WorkOrderStoreForm.get('GSTType').value.Name == "GST After Disc") {
 
         this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
-        let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2);
+        const totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2);
 
         this.vGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vGST)) / 100).toFixed(2);
 
@@ -477,13 +477,13 @@ export class UpdateWorkorderComponent implements OnInit {
       } else {
         this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
         this.vGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vGST)) / 100).toFixed(2);
-        let totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(2);
+        const totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(2);
         this.vNetAmount = ((parseFloat(totalamt)) - parseFloat(this.vDiscAmt)).toFixed(2);
       }
     } else {
       this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
       this.vGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vGST)) / 100).toFixed(2);
-      let totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(2);
+      const totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(2);
       this.vNetAmount = ((parseFloat(totalamt)) - parseFloat(this.vDiscAmt)).toFixed(2);
     }
   }
@@ -528,7 +528,7 @@ export class UpdateWorkorderComponent implements OnInit {
 
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -537,7 +537,7 @@ export class UpdateWorkorderComponent implements OnInit {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -556,10 +556,10 @@ export class UpdateWorkorderComponent implements OnInit {
         contact.TotalAmount = parseFloat((qty * rate).toFixed(2));
         contact.DiscAmount = parseFloat(((contact.TotalAmount * discPer) / 100).toFixed(2));
 
-        let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+        const TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
 
         contact.GSTAmount = parseFloat(((TotalAmt * gst) / 100).toFixed(2));
-        contact.NetAmount = ((TotalAmt) + parseFloat(contact.GSTAmount)).toFixed(2);;
+        contact.NetAmount = ((TotalAmt) + parseFloat(contact.GSTAmount)).toFixed(2);
 
       }
       else if (this.GSTTypeName == 'GST Before Disc') {
@@ -567,10 +567,10 @@ export class UpdateWorkorderComponent implements OnInit {
         contact.TotalAmount = parseFloat((qty * rate).toFixed(2));
         contact.GSTAmount = parseFloat(((contact.TotalAmount * gst) / 100).toFixed(2));
 
-        let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.GSTAmount));
+        const totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.GSTAmount));
 
         contact.DiscAmount = parseFloat(((contact.TotalAmount * discPer) / 100).toFixed(2));
-        contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);;
+        contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);
       }
     }
     else {

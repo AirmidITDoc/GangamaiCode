@@ -199,7 +199,7 @@ public dateValue: Date = new Date();
 
       setTimeout(function(){
        
-        let element:HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
+        const element:HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
         element.click();
        
       },1000);
@@ -222,7 +222,7 @@ public dateValue: Date = new Date();
 
 
   getSearchList() {
-    var m_data = {
+    const m_data = {
       "Keyword": `${this.myForm.get('RegID').value}%`
     }
     if (this.myForm.get('RegID').value.length >= 1) {
@@ -293,7 +293,7 @@ public dateValue: Date = new Date();
 
   
   setDropdownObjs1() {
-    ;
+    
     
     this._OtManagementService.populateFormpersonal(this.registerObj1);
     
@@ -551,14 +551,14 @@ public dateValue: Date = new Date();
 
 
   onSubmit() {
-    ;
-    let OTEndoscopyBookingID = this.registerObj1.OTEndoscopyBookingID;
+    
+    const OTEndoscopyBookingID = this.registerObj1.OTEndoscopyBookingID;
 
     this.isLoading = 'submit';
-;
+
 // if(this.Adm_Vit_ID){
     if (!OTEndoscopyBookingID) {
-      var m_data = {
+      const m_data = {
         "otEndoscopyInsert": {
           "OTEndoscopyBookingID": 0,// this._registerService.mySaveForm.get("RegId").value || "0",
           "tranDate": this.dateTimeObj.date, //this.datePipe.transform(this.dateTimeObj.date,"yyyy-Mm-dd") || opdRegistrationSave"2021-03-31",// this.dateTimeObj.date,//
@@ -601,8 +601,8 @@ public dateValue: Date = new Date();
       });
     }
     else {
-      ;
-      var m_data1 = {
+      
+      const m_data1 = {
         "otEndoscopyUpdate": {
                  
           "OTBookingID": OTEndoscopyBookingID,

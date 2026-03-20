@@ -41,7 +41,7 @@ autocompleteModesSubQuesiontatus: string = "SubQuestionMaster";
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.SubresultvaluesForm.invalid) {
         for (const controlName in this.SubresultvaluesForm.controls) {
           if (this.SubresultvaluesForm.controls[controlName].invalid) {

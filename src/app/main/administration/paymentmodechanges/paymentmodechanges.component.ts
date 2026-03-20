@@ -633,7 +633,7 @@ export class PaymentChange {
   CardAmt: number;
   User: any;
 
-  Date: Number;
+  Date: number;
   ReceiptNo: number;
   SalesNo: number;
   patientName: string;

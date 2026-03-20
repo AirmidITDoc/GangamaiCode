@@ -48,7 +48,7 @@ export class NewStateMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.stateForm.invalid) {
                 for (const controlName in this.stateForm.controls) {
                     if (this.stateForm.controls[controlName].invalid) {

@@ -217,13 +217,13 @@ export class ReportDispatchComponent {
     this.dataSource1.data = [];
     this.selection.clear();
 
-    let regno = this.myformSearch.get("RegNoSearch").value || "0";
+    const regno = this.myformSearch.get("RegNoSearch").value || "0";
     let fromDate = this.myformSearch.get("start").value || "";
     let toDate = this.myformSearch.get("end").value || "";
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-    let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
-    let status = "1";
+    const patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
+    const status = "1";
 
     this.GetResultdetail()
     // Update the filters dynamically
@@ -273,13 +273,13 @@ export class ReportDispatchComponent {
   getSampledetailList1(row) {
     // debugger
     this.dataSource1.data = [];
-    let rawDate = row.pathDate;
-    let day = rawDate.split("T")[0];
-    let rest = rawDate.split("T")[1].split("-");
-    let month = rest[0];
-    let year = rest[1];
+    const rawDate = row.pathDate;
+    const day = rawDate.split("T")[0];
+    const rest = rawDate.split("T")[1].split("-");
+    const month = rest[0];
+    const year = rest[1];
 
-    let formattedDate = `${day}`
+    const formattedDate = `${day}`
 
     console.log(formattedDate);
 
@@ -296,7 +296,7 @@ export class ReportDispatchComponent {
     if (this.opipType == '4')
       OPIP = "4"
 
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 10,
       "sortField": "RegNo",
@@ -344,7 +344,7 @@ export class ReportDispatchComponent {
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
 
-    let data =
+    const data =
     {
       "first": 0,
       "rows": 150,

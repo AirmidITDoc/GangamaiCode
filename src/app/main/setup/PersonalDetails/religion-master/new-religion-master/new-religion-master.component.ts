@@ -41,7 +41,7 @@ export class NewReligionMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.religionForm.invalid) {
                 for (const controlName in this.religionForm.controls) {
                     if (this.religionForm.controls[controlName].invalid) {

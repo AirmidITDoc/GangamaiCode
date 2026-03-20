@@ -110,7 +110,7 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
     if (!this.vCustomerId) {
       this.Savebtn = true;
       this.sIsLoading = 'loading-data';
-      let customerInformationInsertObj = {};
+      const customerInformationInsertObj = {};
       customerInformationInsertObj['customerId'] = 0;
       customerInformationInsertObj['customerName'] = this._CustomerInfo.myform.get('CustomerName').value || '';
       customerInformationInsertObj['customerAddress'] = this._CustomerInfo.myform.get('Address').value || '';
@@ -123,7 +123,7 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
       customerInformationInsertObj['createdBy'] = this._loggedService.currentUserValue.userId || 0;
 
 
-      let submitData = {
+      const submitData = {
         "customerInformationInsert": customerInformationInsertObj,
       };
       console.log(submitData);
@@ -150,7 +150,7 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
  
         this.Savebtn = true;
         this.sIsLoading = 'loading-data';
-        let customerInformationUpdate = {};
+        const customerInformationUpdate = {};
         customerInformationUpdate['customerId'] = this.registerObj.CustomerId;
         customerInformationUpdate['customerName'] = this._CustomerInfo.myform.get('CustomerName').value || '';
         customerInformationUpdate['customerAddress'] = this._CustomerInfo.myform.get('Address').value || '';
@@ -166,7 +166,7 @@ if ((this.vMobileNo == '' || this.vMobileNo == null || this.vMobileNo == undefin
         customerInformationUpdate['modifieddatetime'] = this._CustomerInfo.myform.get('InstallationDate').value;
   
   
-        let submitData = {
+        const submitData = {
           "customerInformationUpdate": customerInformationUpdate,
         };
         console.log(submitData);

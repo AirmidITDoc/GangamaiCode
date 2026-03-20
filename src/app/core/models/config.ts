@@ -1,7 +1,7 @@
 export class ConfigSettingParams {
     ConfigId: number;
     PrintRegAfterReg: number;
-    IPDPrefix: String;
+    IPDPrefix: string;
     OTCharges: number;
     PrintOPDCaseAfterVisit: number;
     PrintIPDAfterAdm: number;
@@ -16,19 +16,19 @@ export class ConfigSettingParams {
     MandatoryAge: number;
     MandatoryPhoneNo: any;
     OPBillCounter: any;
-    OPReceiptCounter: String;
-    OPRefundOfBillCounter: String;
-    IPAdvanceCounter: String;
-    IPBillCounter: String
+    OPReceiptCounter: string;
+    OPRefundOfBillCounter: string;
+    IPAdvanceCounter: string;
+    IPBillCounter: string
     IPReceiptCounter: any;
     IPRefundBillCounter: any;
     IPRefofAdvCounter: any
-    RegPrefix: String;
-    RegNo: String;
-    IPPrefix: String;
-    IPNo: String
-    OPPrefix: String;
-    OPNo: String
+    RegPrefix: string;
+    RegNo: string;
+    IPPrefix: string;
+    IPNo: string
+    OPPrefix: string;
+    OPNo: string
     PathDepartment: number;
     IsPathologistDr: number;
     OPD_Billing_CounterId: number;
@@ -49,18 +49,18 @@ export class ConfigSettingParams {
     ChkPharmacyDue: any;
     chkPharmacyDue:any;
     G_IsPharmacyPaperSetting: any;
-    PharmacyPrintName: String;
-    G_PharmacyPaperName: String;
-    G_IsOPPaperSetting: String;
-    G_PharmacyPrintName: String
-    G_OPPaperName: String
+    PharmacyPrintName: string;
+    G_PharmacyPaperName: string;
+    G_IsOPPaperSetting: string;
+    G_PharmacyPrintName: string
+    G_OPPaperName: string
     TariffId: number;
     DepartmentId: number;
     DoctorId: number;
     G_IsIPPaperSetting: any;
-    G_IPPrintName: String;
-    G_IPPaperName: String;
-    G_OPPrintName: String;
+    G_IPPrintName: string;
+    G_IPPaperName: string;
+    G_OPPrintName: string;
     IsOPSaleDisPer: any;
     OPSaleDisPer: number;
     IsIPSaleDisPer: any;
@@ -248,15 +248,15 @@ this.IsOPBillProceed=ConfigSettingParams.IsOPBillProceed;
 
 export class HospitalConfigSettingParams {
     HospitalId: number;
-    HospitalHeaderLine:String; 
-    HospitalName: String; 
-    HospitalAddress: String;
-    City: String;
-    Pin: String;
-    Phone: String;
-    EmailID: String;
-    WebSiteInfo: String;
-    Header: String;
+    HospitalHeaderLine:string; 
+    HospitalName: string; 
+    HospitalAddress: string;
+    City: string;
+    Pin: string;
+    Phone: string;
+    EmailID: string;
+    WebSiteInfo: string;
+    Header: string;
     IsActive: any; 
     OPD_Billing_CounterId: number;
     OPD_Receipt_CounterId: number;

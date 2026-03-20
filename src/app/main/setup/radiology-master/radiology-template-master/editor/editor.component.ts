@@ -117,7 +117,7 @@ export class EditorComponent implements OnInit {
   // }
 
   getTemplateList() {
-    let Id=1;
+    const Id=1;
    // this._radiologytemplateService.gettemplateCombo(Id).subscribe(data => { this.templatelist = data; })
   }
 
@@ -181,7 +181,7 @@ export class EditorComponent implements OnInit {
 
   
   onEdit(row) {
-    var m_data = {
+    const m_data = {
       // "TemplateId": row.TemplateId,
       // "TemplateName": row.TemplateName.trim(),
       // "TemplateDesc": row.TemplateDesc.trim(),
@@ -240,7 +240,7 @@ export class RadiologyPatienInsert{
   RadResultDr1: number;
   RadResultDr2:number;
   RadResultDr3: number;
-  SuggestionNotes:String;
+  SuggestionNotes:string;
   AdmVisitDoctorID:number;
   RefDoctorID:number;
   ResultEntry: string;

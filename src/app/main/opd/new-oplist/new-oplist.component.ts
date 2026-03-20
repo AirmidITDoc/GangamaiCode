@@ -295,7 +295,7 @@ export class NewOPListComponent implements OnInit {
     viewgetOPBillThermalReportPdf(BillNo) {
  
         debugger
-        let param = {
+        const param = {
             "searchFields": [
                 {
                     "fieldName": 'BillNo',
@@ -388,7 +388,7 @@ export class NewOPListComponent implements OnInit {
     }
     OnPaitentFinalPrint(element) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     { "fieldName": "OPIPId", "fieldValue": String(element.opdipdid), "opType": "13" },
                     { "fieldName": "OPIPType", "fieldValue": String(element.opD_IPD_Type), "opType": "13" }
@@ -414,7 +414,7 @@ export class NewOPListComponent implements OnInit {
 
     openPaymentpopup(contact) {
         console.log(contact)
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
         PatientHeaderObj['RegNo'] = contact.regNo || 0;
         PatientHeaderObj['PatientName'] = contact.patientName || '';
@@ -442,17 +442,17 @@ export class NewOPListComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result.IsSubmitFlag == true) {
-                let PaymentObj = result.submitDataPay.ipPaymentInsert 
+                const PaymentObj = result.submitDataPay.ipPaymentInsert 
                 
                 this.vpaidamt = result.PaidAmt;
                 this.vbalanceamt = result.BalAmt
                 PaymentObj['BillNo'] = contact.billNo;
-                let updateBillobj = {};
+                const updateBillobj = {};
                 updateBillobj['BillNo'] = contact.billNo;
                 updateBillobj['balanceAmt'] = result.BillBalanceAmount;
                 console.log(result.submitDataPay.ipPaymentInsert) 
 
-                let data = {
+                const data = {
                     opCreditPayment: PaymentObj,
                     "billUpdate": {
                         "billNo": contact.billNo,
@@ -1068,7 +1068,7 @@ export class NewOPListComponent implements OnInit {
         });
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -1082,7 +1082,7 @@ export class NewOPListComponent implements OnInit {
 }
 
 export class BrowseOPDBill {
-    BillNo: Number;
+    BillNo: number;
     RegNo: any;
     PatientName: any;  
     ConcessionAmount: any; 
@@ -1101,7 +1101,7 @@ export class BrowseOPDBill {
     ConcessionAmt: number; 
     BillDate: any;
     IPDNo: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: number;
     price: number;
     Qty: number;

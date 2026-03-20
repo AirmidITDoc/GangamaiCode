@@ -130,7 +130,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
   isShowDetailTable: boolean = false;
   GetDetails1(data) {
     debugger
-    let IssueId = data.issueId
+    const IssueId = data.issueId
     this.gridConfig1 = {
       apiUrl: "IssueToDepartment/MaterialreceiveddetailList",
       columnsList: [
@@ -170,7 +170,7 @@ export class MaterialReceivedFromDepartmentComponent implements OnInit {
 
   barcodeItemfetch() {
     this.Addflag = true;
-    var d = {
+    const d = {
       // "StockId": this._IssueToDep.NewIssueGroup.get("Barcode").value || 0,
       // "StoreId": this._loggedService.currentUserValue.user.storeId || 0
     }

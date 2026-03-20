@@ -32,7 +32,7 @@ export class NewMenuComponent implements OnInit {
         this.menuForm = this._MenuMasterService.createMenuForm();
         console.log("EditData:", this.data)
         if ((this.data?.id ?? 0) > 0) {
-            var m_data = {
+            const m_data = {
                 id: this.data?.id,
                 Menuid: this.data?.id,
                 upId: this.data?.upId,

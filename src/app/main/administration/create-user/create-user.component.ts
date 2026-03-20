@@ -29,8 +29,8 @@ export class CreateUserComponent implements OnInit {
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Login, permissionType.Add);
      
   myuserform: FormGroup;
-  autocompleteModeStoreName: String = "Store";
-  autocompleteModeWebRoleName: String = "WebRole";
+  autocompleteModeStoreName: string = "Store";
+  autocompleteModeWebRoleName: string = "WebRole";
   statusOptions = [
     { text: 'All', value: '' },
     { text: 'IsActive', value: '1' },
@@ -240,7 +240,7 @@ export class CreateUserComponent implements OnInit {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NUserComponent,
       {
         maxWidth: "95vw",
@@ -263,7 +263,7 @@ export class CreateUserComponent implements OnInit {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NUserComponent,
       {
         maxWidth: "95vw",
@@ -297,7 +297,7 @@ export class CreateUserComponent implements OnInit {
       if (flag.isConfirmed) {
         console.log(data)
         debugger
-        var data1 = {
+        const data1 = {
           userId: data.userId
         }
         this._CreateUserService.deactivateTheStatus(data1).subscribe((response: any) => {
@@ -324,7 +324,7 @@ export class CreateUserComponent implements OnInit {
       confirmButtonText: "Reset Password"
     }).then((flag) => {
       if (flag.isConfirmed) {
-        let submitData = {
+        const submitData = {
           "userId": contact.userId,
           "userName": contact.userLoginName,
           "password": this.Password

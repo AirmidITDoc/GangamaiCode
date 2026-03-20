@@ -162,7 +162,7 @@ export class ExpensesComponent {
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           expId: data.expID,
           isCancelledBy: this._loggedService.currentUserValue.userId
         };

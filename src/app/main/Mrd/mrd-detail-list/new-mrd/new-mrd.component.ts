@@ -124,10 +124,10 @@ export class NewMrdComponent {
     public dialogRef: MatDialogRef<NewMrdComponent>,
     public datePipe: DatePipe) {
 
-    let mydate = new Date()
+    const mydate = new Date()
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
 
-    var now = new Date();
+    const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   }
@@ -178,7 +178,7 @@ export class NewMrdComponent {
         toastClass: 'tostr-tost custom-toast-success',
       });
 
-      var now = new Date();
+      const now = new Date();
       now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
       this.date = now.toISOString().slice(0, 16);
 
@@ -279,7 +279,7 @@ export class NewMrdComponent {
         this._matDialog.closeAll();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.NewMrdForm.invalid) {
         for (const controlName in this.NewMrdForm.controls) {

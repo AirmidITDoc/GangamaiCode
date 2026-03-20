@@ -197,7 +197,7 @@ export class AirmidDatepickerComponent extends BaseFormControlComponent implemen
 
     ngOnInit() {
         if (!this.isRangePicker) {
-            let date = this.datePipe.transform(this.formGroup.controls[this.formControlName].value, this.format);
+            const date = this.datePipe.transform(this.formGroup.controls[this.formControlName].value, this.format);
             this.formGroup.controls[this.formControlName].setValue(date);
         }
     }

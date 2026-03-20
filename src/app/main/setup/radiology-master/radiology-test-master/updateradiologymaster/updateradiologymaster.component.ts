@@ -192,7 +192,7 @@ export class UpdateradiologymasterComponent implements OnInit {
 
     gettemplateMasterServicewise(row) {
         debugger
-        var param = {
+        const param = {
             "first": 0,
             "rows": 10,
             "sortField": "TemplateId",

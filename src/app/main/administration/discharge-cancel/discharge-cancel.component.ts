@@ -77,7 +77,7 @@ export class DischargeCancelComponent implements OnInit {
 
   ngOnInit(): void {
     this._DischargeCancelService.DischargeForm.get('RegID').setValue('');
-    var now = new Date();
+    const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
 
@@ -135,8 +135,8 @@ export class DischargeCancelComponent implements OnInit {
       this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
+      const nameField = obj.formattedText;
+      const extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.AdmissionId = obj.admissionID
 
@@ -179,7 +179,7 @@ export class DischargeCancelComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        let SubmitDate = {
+        const SubmitDate = {
           "admissionID": this.AdmissionId
         }
         console.log(SubmitDate)
@@ -207,7 +207,7 @@ export class DischargeCancelComponent implements OnInit {
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        var data = {
+        const data = {
           'admissionID': this.AdmissionId,
           // 'admissionDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
           // 'admissionTime':formattedDate+this.dateTimeObj.time
@@ -246,13 +246,13 @@ export class DischargeCancelComponent implements OnInit {
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(formattedDate);
         // this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(formattedDate + ' ' + formattedTime);
-        let Admissiontime=formattedDate + ' ' + formattedTime
+        const Admissiontime=formattedDate + ' ' + formattedTime
 
 
 
         debugger
         if (!this._DischargeCancelService.DischargeForm.invalid) {
-          var data = {
+          const data = {
             'admissionID': this.AdmissionId,
             'admissionDate':formattedDate,// this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, "yyyy-MM-dd"),
             'admissionTime':Admissiontime,// this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionTime').value, 'yyyy-MM-dd HH:mm'),
@@ -264,7 +264,7 @@ export class DischargeCancelComponent implements OnInit {
 
           });
         } else {
-          let invalidFields = [];
+          const invalidFields = [];
 
           if (this._DischargeCancelService.DischargeForm.invalid) {
             for (const controlName in this._DischargeCancelService.DischargeForm.controls) {
@@ -287,24 +287,24 @@ export class DischargeCancelComponent implements OnInit {
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
+      const splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      const splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
   onChangeTime(event) {
     if (event) {
-      let selectedDate = new Date(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
+      const selectedDate = new Date(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value);
+      const splitDate = selectedDate.toLocaleString("en-US").split(',');
+      const splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     // this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 

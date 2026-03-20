@@ -45,7 +45,7 @@ export class NewBedComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.bedForm.invalid) {
         for (const controlName in this.bedForm.controls) {
           if (this.bedForm.controls[controlName].invalid) {

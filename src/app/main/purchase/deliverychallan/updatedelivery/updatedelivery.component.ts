@@ -304,7 +304,7 @@ export class UpdatedeliveryComponent implements OnInit {
   }
   gePharStoreList() {
 
-    var vdata = {
+    const vdata = {
       Id: this.accountService.currentUserValue.storeId
     }
     this._DeliveryService.getLoggedStoreList(vdata).subscribe(data => {
@@ -314,7 +314,7 @@ export class UpdatedeliveryComponent implements OnInit {
     });
   }
   getGSTtypeList() {
-    var vdata = {
+    const vdata = {
       'ConstanyType': 'GST_CALC_TYPE',
     }
     this._DeliveryService.getGSTtypeList(vdata).subscribe(data => {
@@ -349,7 +349,7 @@ export class UpdatedeliveryComponent implements OnInit {
       this.vsupplierName = this._DeliveryService.userFormGroup.get('SupplierId').value;
     }
 
-    var m_data = {
+    const m_data = {
       'SupplierName': `${this.vsupplierName}%`
     }
     this._DeliveryService.getSupplierSearchList(m_data).subscribe(data => {
@@ -391,7 +391,7 @@ export class UpdatedeliveryComponent implements OnInit {
   }
 
   getDeliveryItemList() {
-    var m_data = {
+    const m_data = {
       "ItemName": `${this._DeliveryService.userFormGroup.get('ItemName').value}%`,
       "StoreId": this._DeliveryService.DeliveryStoreForm.get('StoreId').value.storeid
     }
@@ -436,7 +436,7 @@ export class UpdatedeliveryComponent implements OnInit {
   }
 
   getGRNItemDetailList(el) {
-    var Param = {
+    const Param = {
       "GRNID": el.GRNID,
     }
     this._DeliveryService.getGrnItemDetailList(Param).subscribe(data => {
@@ -473,7 +473,7 @@ export class UpdatedeliveryComponent implements OnInit {
     }
     
     if (contact.ReceiveQty > 0 && contact.Rate > 0) {
-      let IGSTPer =contact.IGSTPer ||  0;
+      const IGSTPer =contact.IGSTPer ||  0;
       contact.IGSTPer = IGSTPer;
       if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
 
@@ -482,7 +482,7 @@ export class UpdatedeliveryComponent implements OnInit {
         contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //disc
         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100);
-        let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+        const TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         //Gst
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((TotalAmt) * parseFloat(contact.CGSTPer)) / 100);
@@ -505,7 +505,7 @@ export class UpdatedeliveryComponent implements OnInit {
         contact.SGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.SGSTPer)) / 100);
         contact.IGSTAmt = ((parseFloat(contact.TotalAmount) * parseFloat(contact.IGSTPer)) / 100);
         contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPercentage)) / 100);
-        let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatAmount));
+        const totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatAmount));
         //disc
         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100);
         contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount));
@@ -524,10 +524,10 @@ export class UpdatedeliveryComponent implements OnInit {
         contact.TotalAmount = parseFloat(contact.ReceiveQty) * parseFloat(contact.Rate);
         //disc 1
         contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100)
-        let totalamt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+        const totalamt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         //disc 2
         contact.DiscAmt2 = (((totalamt) * parseFloat(contact.DiscPer2)) / 100);
-        let totalamt2 = ((totalamt) - parseFloat(contact.DiscAmt2));
+        const totalamt2 = ((totalamt) - parseFloat(contact.DiscAmt2));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((totalamt2) * parseFloat(contact.CGSTPer)) / 100);
@@ -544,8 +544,8 @@ export class UpdatedeliveryComponent implements OnInit {
         // contact.UnitMRP = ((contact.MRP) / (contact.ConversionFactor));
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
-        let mrpTotal = (parseFloat(contact.TotalQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
-        let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
+        const mrpTotal = (parseFloat(contact.TotalQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
+        const Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((Totalmrp) * parseFloat(contact.CGSTPer)) / 100);
@@ -553,23 +553,23 @@ export class UpdatedeliveryComponent implements OnInit {
         contact.IGSTAmt = (((Totalmrp) * parseFloat(contact.IGSTPer)) / 100);
         // this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
         contact.VatAmount = ((Totalmrp * parseFloat(contact.VatPercentage)) / 100);
-        let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+        const GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         contact.NetAmount = ((GrossAmt) + parseFloat(contact.VatAmount));
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty") {
-        let TotalPurWf = (parseFloat(contact.TotalQty) * parseFloat(contact.Rate));
+        const TotalPurWf = (parseFloat(contact.TotalQty) * parseFloat(contact.Rate));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((TotalPurWf) * parseFloat(contact.CGSTPer)) / 100);
         contact.SGSTAmt = (((TotalPurWf) * parseFloat(contact.SGSTPer)) / 100);
         contact.IGSTAmt = (((TotalPurWf) * parseFloat(contact.IGSTPer)) / 100);
         contact.VatAmount = ((TotalPurWf * parseFloat(contact.VatPercentage)) / 100);
-        let GrossAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatPercentage));
+        const GrossAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.VatPercentage));
         contact.NetAmount = ((GrossAmt) - parseFloat(contact.DiscAmount));
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
-        let mrpTotal = (parseFloat(contact.ReceiveQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
-        let Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
+        const mrpTotal = (parseFloat(contact.ReceiveQty) * parseFloat(contact.ConversionFactor) * parseFloat(contact.MRP));
+        const Totalmrp = ((mrpTotal * 100) / (100 + contact.VatPercentage));
         //GST cal
         contact.VatPercentage = (parseFloat(contact.CGSTPer) + parseFloat(contact.SGSTPer) + parseFloat(contact.IGSTPer))
         contact.CGSTAmt = (((Totalmrp) * parseFloat(contact.CGSTPer)) / 100);
@@ -577,7 +577,7 @@ export class UpdatedeliveryComponent implements OnInit {
         contact.IGSTAmt = (((Totalmrp) * parseFloat(contact.IGSTPer)) / 100);
 
         contact.VatAmount = ((Totalmrp * parseFloat(contact.VatPercentage)) / 100);
-        let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
+        const GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
         contact.NetAmount = ((GrossAmt) + parseFloat(contact.VatAmount));
       }
 
@@ -602,8 +602,8 @@ export class UpdatedeliveryComponent implements OnInit {
     }
   }
   calculateTotalamt() {
-    let Qty = this._DeliveryService.userFormGroup.get('Qty').value;
-    let freeqty = this._DeliveryService.userFormGroup.get('FreeQty').value;
+    const Qty = this._DeliveryService.userFormGroup.get('Qty').value;
+    const freeqty = this._DeliveryService.userFormGroup.get('FreeQty').value;
     this.FinalTotalQty = ((parseInt(Qty) + parseInt(freeqty)) * parseInt(this.vConversionFactor));
 
     if (Qty > 0 && this.vRate > 0) {
@@ -624,9 +624,9 @@ export class UpdatedeliveryComponent implements OnInit {
     this.calculateDiscperAmount();
   }
   calculateDiscperAmount() {
-    let IGSTPer = 0;
+    const IGSTPer = 0;
     this.vIGST = IGSTPer
-    let disc = this._DeliveryService.userFormGroup.get('Disc').value || 0;
+    const disc = this._DeliveryService.userFormGroup.get('Disc').value || 0;
     if (disc >= 100) {
       //Swal.fire("Enter Discount less than 100");
       this.toastr.warning('Enter Discount less than 100', 'Warning !', {
@@ -635,7 +635,7 @@ export class UpdatedeliveryComponent implements OnInit {
       this._DeliveryService.userFormGroup.get('Disc').setValue('');
     }
     if (disc >= 0) {
-      let disc = this._DeliveryService.userFormGroup.get('Disc').value;
+      const disc = this._DeliveryService.userFormGroup.get('Disc').value;
       let TotalAmt = 0, TotalAmt2 = "0";
       this.vGST = parseFloat(this.vCGST) + parseFloat(this.vSGST) + parseFloat(this.vIGST);
       if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
@@ -648,21 +648,21 @@ export class UpdatedeliveryComponent implements OnInit {
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST After TwoTime Disc") {
         this.isDisc2Selected = true;
-        let dics2 = this.vDisc2 || 0;
+        const dics2 = this.vDisc2 || 0;
         this.vDisAmount = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
         TotalAmt2 = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
         this.vDisAmount2 = ((parseFloat(TotalAmt2) * parseFloat(dics2)) / 100).toFixed(2);
         TotalAmt = parseFloat(TotalAmt2) - parseFloat(this.vDisAmount2);
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on MRP Plus FreeQty") {
-        let mrpTotal = (parseFloat(this.FinalTotalQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
+        const mrpTotal = (parseFloat(this.FinalTotalQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
         TotalAmt = (mrpTotal * 100) / (100 + this.vGST);
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty") {
-        let TotalAmt = (parseFloat(this.FinalTotalQty) * parseFloat(this.vRate)).toFixed(2);
+        const TotalAmt = (parseFloat(this.FinalTotalQty) * parseFloat(this.vRate)).toFixed(2);
       }
       else if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
-        let mrpTotal = (parseFloat(this.vQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
+        const mrpTotal = (parseFloat(this.vQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
         TotalAmt = (mrpTotal * 100) / (100 + this.vGST);
       }
       //Gst
@@ -681,7 +681,7 @@ export class UpdatedeliveryComponent implements OnInit {
         this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST on Pur Plus FreeQty" ||
         this._DeliveryService.userFormGroup.get('GSTType').value.Name == "GST On MRP") {
         this.vGSTAmount = ((TotalAmt * parseFloat(this.vGST)) / 100).toFixed(2);
-        let GrossAmt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+        const GrossAmt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
         this.vNetAmount = (parseFloat(GrossAmt) + parseFloat(this.vGSTAmount)).toFixed(2);
       }
     }
@@ -693,9 +693,9 @@ export class UpdatedeliveryComponent implements OnInit {
     // this.addbutton.nativeElement.focus();
   }
   calculateDiscAmount() {
-    let IGSTPer = 0;
+    const IGSTPer = 0;
     this.vIGST = IGSTPer
-    let discAmount1 = this._DeliveryService.userFormGroup.get('DisAmount').value;
+    const discAmount1 = this._DeliveryService.userFormGroup.get('DisAmount').value;
     if (discAmount1 >= 100) {
       //Swal.fire("Enter Discount less than 100");
       this.toastr.warning('Enter Discount less than 100', 'Warning !', {
@@ -704,11 +704,11 @@ export class UpdatedeliveryComponent implements OnInit {
       this._DeliveryService.userFormGroup.get('Disc').setValue('');
     }
     if (discAmount1 >= 0) {
-      let discAmount1 = this._DeliveryService.userFormGroup.get('DisAmount').value;
+      const discAmount1 = this._DeliveryService.userFormGroup.get('DisAmount').value;
       if (this._DeliveryService.userFormGroup.get('GSTType').value.Name == 'GST After Disc') {
         //disc
         this.vDisc = ((parseFloat(discAmount1) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
-        let TotalAmt = (parseFloat(this.vTotalAmount) - parseFloat(discAmount1)).toFixed(2);
+        const TotalAmt = (parseFloat(this.vTotalAmount) - parseFloat(discAmount1)).toFixed(2);
         //Gst
         this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
         this.vCGSTAmount = ((parseFloat(TotalAmt) * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -724,7 +724,7 @@ export class UpdatedeliveryComponent implements OnInit {
         this.vIGSTAmount = ((parseFloat(this.vTotalAmount) * parseFloat(this.vIGST)) / 100).toFixed(2);
         this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
 
-        let TotalAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
+        const TotalAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
 
         this.vDisc = ((parseFloat(discAmount1) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
 
@@ -737,9 +737,9 @@ export class UpdatedeliveryComponent implements OnInit {
   }
 
   calculateDiscAmt() {
-    let discamt1 = ((parseFloat(this.vDisAmount) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
+    const discamt1 = ((parseFloat(this.vDisAmount) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
     this.vDisc = discamt1;
-    let discamt2 = ((parseFloat(this.vDisAmount2) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
+    const discamt2 = ((parseFloat(this.vDisAmount2) / parseFloat(this.vTotalAmount)) * 100).toFixed(2);
     this.vDisc2 = discamt2;
   }
 
@@ -802,15 +802,15 @@ export class UpdatedeliveryComponent implements OnInit {
     this.vFinalDisAmount2 = (element.reduce((sum, { DiscAmt2 }) => sum += +(DiscAmt2 || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
 
-    let Othercharge = this._DeliveryService.DeliveryFinalForm.get("OtherCharge").value || 0;
+    const Othercharge = this._DeliveryService.DeliveryFinalForm.get("OtherCharge").value || 0;
     FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(Othercharge));
 
-    let DebitAmount = this._DeliveryService.DeliveryFinalForm.get("DebitAmount").value || 0;
+    const DebitAmount = this._DeliveryService.DeliveryFinalForm.get("DebitAmount").value || 0;
     FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
 
-    let CreditAmount = this._DeliveryService.DeliveryFinalForm.get("CreditAmount").value || 0;
+    const CreditAmount = this._DeliveryService.DeliveryFinalForm.get("CreditAmount").value || 0;
     FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
-    let FinalnetAmt = FinalRoundAmt;
+    const FinalnetAmt = FinalRoundAmt;
     this.vFinalNetAmount = Math.round(FinalnetAmt).toFixed(2); //(element.reduce((sum, { RoundNetAmt }) => sum += +(RoundNetAmt || 0), 0)).toFixed(2) || Math.round(this.FinalNetAmount);
     this.vDiffNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalnetAmt)).toFixed(2);
 
@@ -834,12 +834,12 @@ export class UpdatedeliveryComponent implements OnInit {
   calculateDiscper2Amt() {
 
     //disc 1
-    let disc2 = this.vDisc2 || 0;
-    let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+    const disc2 = this.vDisc2 || 0;
+    const totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
     console.log(totalamt)
     //disc 2
     this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(disc2)) / 100).toFixed(2);
-    let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
+    const totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
     console.log(this.vDisAmount2)
     //let discamt = this.vDisAmount + this.vDisAmount2 
     //GST cal
@@ -857,7 +857,7 @@ export class UpdatedeliveryComponent implements OnInit {
 
       // this._GRNList.userFormGroup.get('').disabled();
       this.vIGST = 0;
-      let totalamt = this.vTotalAmount - this._DeliveryService.userFormGroup.get('DisAmount').value
+      const totalamt = this.vTotalAmount - this._DeliveryService.userFormGroup.get('DisAmount').value
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
 
       this.vCGSTAmount = ((totalamt * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -881,8 +881,8 @@ export class UpdatedeliveryComponent implements OnInit {
       this._DeliveryService.userFormGroup.get('NetAmount').setValue(this.vNetAmount);
     }
     else if (event.value.Name == "GST on MRP Plus FreeQty") {
-      let mrpTotal = (parseFloat(this.FinalTotalQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
-      let Totalmrp = ((mrpTotal * 100) / (100 + this.vGST));
+      const mrpTotal = (parseFloat(this.FinalTotalQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
+      const Totalmrp = ((mrpTotal * 100) / (100 + this.vGST));
       //GST cal
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
       this.vCGSTAmount = ((Totalmrp * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -891,11 +891,11 @@ export class UpdatedeliveryComponent implements OnInit {
       this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
       //
       this.vGSTAmount = ((Totalmrp * parseFloat(this.vGST)) / 100).toFixed(2);
-      let GrossAmt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+      const GrossAmt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
       this.vNetAmount = (parseFloat(GrossAmt) + parseFloat(this.vGSTAmount)).toFixed(2);
     }
     else if (event.value.Name == "GST on Pur Plus FreeQty") {
-      let TotalPurWf = (parseFloat(this.FinalTotalQty) * parseFloat(this.vRate));
+      const TotalPurWf = (parseFloat(this.FinalTotalQty) * parseFloat(this.vRate));
       //GST cal
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
       this.vCGSTAmount = ((TotalPurWf * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -904,12 +904,12 @@ export class UpdatedeliveryComponent implements OnInit {
       this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
       //
       this.vGSTAmount = ((TotalPurWf * parseFloat(this.vGST)) / 100).toFixed(2);
-      let GrossAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
+      const GrossAmt = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
       this.vNetAmount = (parseFloat(GrossAmt) - parseFloat(this.vDisAmount)).toFixed(2);
     }
     else if (event.value.Name == "GST On MRP") {
-      let mrpTotal = (parseFloat(this.vQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
-      let Totalmrp = ((mrpTotal * 100) / (100 + this.vGST));
+      const mrpTotal = (parseFloat(this.vQty) * parseFloat(this.vConversionFactor) * parseFloat(this.vMRP));
+      const Totalmrp = ((mrpTotal * 100) / (100 + this.vGST));
       //GST cal
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
       this.vCGSTAmount = ((Totalmrp * parseFloat(this.vCGST)) / 100).toFixed(2);
@@ -918,19 +918,19 @@ export class UpdatedeliveryComponent implements OnInit {
       this.vGSTAmount = ((parseFloat(this.vCGSTAmount)) + (parseFloat(this.vSGSTAmount)) + (parseFloat(this.vIGSTAmount))).toFixed(2);
 
       this.vGSTAmount = ((Totalmrp * parseFloat(this.vGST)) / 100).toFixed(2);
-      let GrossAmt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+      const GrossAmt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
       this.vNetAmount = (parseFloat(GrossAmt) + parseFloat(this.vGSTAmount)).toFixed(2);
     }
     else if (event.value.Name == "GST After TwoTime Disc") {
       this.isDisc2Selected = true;
       //disc 1
       this.vDisAmount = (((this.vTotalAmount) * (this.vDisc)) / 100);
-      let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
+      const totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDisAmount)).toFixed(2);
       //disc 2
       let disc2: any = 0;
       disc2 = this.vDisc2;
       this.vDisAmount2 = ((parseFloat(totalamt) * parseFloat(disc2)) / 100).toFixed(2);
-      let totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
+      const totalamt2 = (parseFloat(totalamt) - parseFloat(this.vDisAmount2)).toFixed(2);
 
       //GST cal
       this.vGST = ((parseFloat(this.vCGST)) + (parseFloat(this.vSGST)) + (parseFloat(this.vIGST)));
@@ -1088,7 +1088,7 @@ export class UpdatedeliveryComponent implements OnInit {
         toastClass: 'tostr-tost custom-toast-success',
       });
     } else {
-      let index = this.chargeslist.indexOf(element);
+      const index = this.chargeslist.indexOf(element);
       if (index >= 0) {
         this.chargeslist.splice(index, 1);
         this.dsItemNameList.data = [];
@@ -1101,7 +1101,7 @@ export class UpdatedeliveryComponent implements OnInit {
 
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp)) {
       return true;
     } else {
@@ -1143,12 +1143,12 @@ export class UpdatedeliveryComponent implements OnInit {
       });
       return;
     }
-    let nowDate = new Date();
-    let nowDate1 = nowDate.toLocaleString("en-US").split(',');
+    const nowDate = new Date();
+    const nowDate1 = nowDate.toLocaleString("en-US").split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     //
     this.Savebtn = true;
-    let grnSaveObj = {};
+    const grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
     grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
@@ -1182,7 +1182,7 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
     grnSaveObj['grnid'] = 0;
 
-    let SavegrnDetailObj = [];
+    const SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
       if (element.BatchExpDate && element.BatchExpDate.length === 10) {
@@ -1193,7 +1193,7 @@ export class UpdatedeliveryComponent implements OnInit {
         this.vExpDate = `${year}/${this.pad(month)}/${day}`;
       }
 
-      let grnDetailSaveObj = {};
+      const grnDetailSaveObj = {};
       grnDetailSaveObj['grnId'] = 0;
       grnDetailSaveObj['itemId'] = element.ItemId || 0;
       grnDetailSaveObj['uomId'] = element.UOMId || 0;
@@ -1236,9 +1236,9 @@ export class UpdatedeliveryComponent implements OnInit {
 
     });
 
-    let updateItemMasterGSTPerObjarray = [];
+    const updateItemMasterGSTPerObjarray = [];
     this.dsItemNameList.data.forEach((element) => {
-      let updateItemMasterGSTPerObj = {};
+      const updateItemMasterGSTPerObj = {};
       updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
       updateItemMasterGSTPerObj['cgst'] = element.CGSTPer || 0;
       updateItemMasterGSTPerObj['sgst'] = element.SGSTPer || 0;
@@ -1247,9 +1247,9 @@ export class UpdatedeliveryComponent implements OnInit {
       updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
     });
 
-    let update_PO_STATUS_AganistGRN = [];
+    const update_PO_STATUS_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
-      let update_PO_STATUS_AganistGRNObj = {};
+      const update_PO_STATUS_AganistGRNObj = {};
       update_PO_STATUS_AganistGRNObj['poId'] = element.PurchaseId || 0;
       update_PO_STATUS_AganistGRNObj['purDetID'] = element.PurDetId || 0;
       update_PO_STATUS_AganistGRNObj['isClosed'] = true;
@@ -1257,15 +1257,15 @@ export class UpdatedeliveryComponent implements OnInit {
       update_PO_STATUS_AganistGRN.push(update_PO_STATUS_AganistGRNObj);
     });
 
-    let update_POHeader_Status_AganistGRN = [];
+    const update_POHeader_Status_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
-      let update_POHeader_Status_AganistGRNObj = {};
+      const update_POHeader_Status_AganistGRNObj = {};
       update_POHeader_Status_AganistGRNObj['poId'] = element.PurchaseId || 0;
       update_POHeader_Status_AganistGRNObj['isClosed'] = true;
       update_POHeader_Status_AganistGRN.push(update_POHeader_Status_AganistGRNObj);
     });
 
-    let submitData = {
+    const submitData = {
       "grnSave": grnSaveObj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray,
@@ -1307,12 +1307,12 @@ export class UpdatedeliveryComponent implements OnInit {
       });
       return;
     }
-    let nowDate = new Date();
-    let nowDate1 = nowDate.toLocaleString("en-US").split(',');
+    const nowDate = new Date();
+    const nowDate1 = nowDate.toLocaleString("en-US").split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     //
     this.Savebtn = true;
-    let grnSaveObj = {};
+    const grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
     grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
@@ -1346,7 +1346,7 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
     grnSaveObj['grnid'] = this.registerObj.GRNID;
 
-    let SavegrnDetailObj = [];
+    const SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
       if (element.BatchExpDate && element.BatchExpDate.length === 10) {
@@ -1357,7 +1357,7 @@ export class UpdatedeliveryComponent implements OnInit {
         this.vExpDate = `${year}/${this.pad(month)}/${day}`;
       }
 
-      let grnDetailSaveObj = {};
+      const grnDetailSaveObj = {};
       grnDetailSaveObj['grnDetID'] = 0;
       grnDetailSaveObj['grnId'] = this.registerObj.GRNID;
       grnDetailSaveObj['itemId'] = element.ItemId || 0;
@@ -1401,9 +1401,9 @@ export class UpdatedeliveryComponent implements OnInit {
 
     });
 
-    let updateItemMasterGSTPerObjarray = [];
+    const updateItemMasterGSTPerObjarray = [];
     this.dsItemNameList.data.forEach((element) => {
-      let updateItemMasterGSTPerObj = {};
+      const updateItemMasterGSTPerObj = {};
       updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
       updateItemMasterGSTPerObj['cgst'] = element.CGSTPer || 0;
       updateItemMasterGSTPerObj['sgst'] = element.SGSTPer || 0;
@@ -1412,9 +1412,9 @@ export class UpdatedeliveryComponent implements OnInit {
       updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
     });
 
-    let update_PO_STATUS_AganistGRN = [];
+    const update_PO_STATUS_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
-      let update_PO_STATUS_AganistGRNObj = {};
+      const update_PO_STATUS_AganistGRNObj = {};
       update_PO_STATUS_AganistGRNObj['poId'] = element.PurchaseId || 0;
       update_PO_STATUS_AganistGRNObj['purDetID'] = element.PurDetId || 0;
       update_PO_STATUS_AganistGRNObj['isClosed'] = true;
@@ -1422,18 +1422,18 @@ export class UpdatedeliveryComponent implements OnInit {
       update_PO_STATUS_AganistGRN.push(update_PO_STATUS_AganistGRNObj);
     });
 
-    let update_POHeader_Status_AganistGRN = [];
+    const update_POHeader_Status_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
-      let update_POHeader_Status_AganistGRNObj = {};
+      const update_POHeader_Status_AganistGRNObj = {};
       update_POHeader_Status_AganistGRNObj['poId'] = element.PurchaseId || 0;
       update_POHeader_Status_AganistGRNObj['isClosed'] = true;
       update_POHeader_Status_AganistGRN.push(update_POHeader_Status_AganistGRNObj);
     });
 
-    let delete_GRNDetailsobj = {}
+    const delete_GRNDetailsobj = {}
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
 
-    let submitData = {
+    const submitData = {
       //"updateGRNHeader": updateGRNHeaderObj,
       "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj,
@@ -1477,11 +1477,11 @@ export class UpdatedeliveryComponent implements OnInit {
       });
       return;
     }
-    let nowDate = new Date();
-    let nowDate1 = nowDate.toLocaleString("en-US").split(',');
+    const nowDate = new Date();
+    const nowDate1 = nowDate.toLocaleString("en-US").split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     this.Savebtn = true;
-    let grnSaveObj = {};
+    const grnSaveObj = {};
     grnSaveObj['grnDate'] = this.dateTimeObj.date;
     grnSaveObj['grnTime'] = this.dateTimeObj.time;
     grnSaveObj['storeId'] = this.accountService.currentUserValue.storeId;
@@ -1515,11 +1515,11 @@ export class UpdatedeliveryComponent implements OnInit {
     grnSaveObj['BillDiscAmt'] = this.vFinalDisAmount2 || 0;
     grnSaveObj['grnid'] = 0;
 
-    let SavegrnDetailObj = [];
+    const SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
       // console.log(element);
 
-      let grnDetailSaveObj = {};
+      const grnDetailSaveObj = {};
       grnDetailSaveObj['grnId'] = 0;
       grnDetailSaveObj['itemId'] = element.ItemId || 0;
       grnDetailSaveObj['uomId'] = element.UOMId || 0;
@@ -1573,9 +1573,9 @@ export class UpdatedeliveryComponent implements OnInit {
 
     });
 
-    let updateItemMasterGSTPerObjarray = [];
+    const updateItemMasterGSTPerObjarray = [];
     this.dsItemNameList.data.forEach((element) => {
-      let updateItemMasterGSTPerObj = {};
+      const updateItemMasterGSTPerObj = {};
       updateItemMasterGSTPerObj['itemId'] = element.ItemId || 0;
       updateItemMasterGSTPerObj['cgst'] = element.CGSTPer || 0;
       updateItemMasterGSTPerObj['sgst'] = element.SGSTPer || 0;
@@ -1584,7 +1584,7 @@ export class UpdatedeliveryComponent implements OnInit {
       updateItemMasterGSTPerObjarray.push(updateItemMasterGSTPerObj);
     });
 
-    let submitData = {
+    const submitData = {
       "grnSave": grnSaveObj,
       "grnDetailSave": SavegrnDetailObj,
       "updateItemMasterGSTPer": updateItemMasterGSTPerObjarray
@@ -1624,7 +1624,7 @@ export class UpdatedeliveryComponent implements OnInit {
       return;
     }
     this.Savebtn = true;
-    let updateGRNHeaderObj = {};
+    const updateGRNHeaderObj = {};
     updateGRNHeaderObj['grnid'] = this.registerObj.GRNID;
     updateGRNHeaderObj['grnDate'] = this.dateTimeObj.date;
     updateGRNHeaderObj['grnTime'] = this.dateTimeObj.time;
@@ -1654,7 +1654,7 @@ export class UpdatedeliveryComponent implements OnInit {
     updateGRNHeaderObj['tranProcessMode'] = this._DeliveryService.userFormGroup.get('GSTType').value.Name || '';
     updateGRNHeaderObj['billDiscAmt'] = this.vFinalDisAmount2 || 0;
 
-    let SavegrnDetailObj = [];
+    const SavegrnDetailObj = [];
     this.dsItemNameList.data.forEach((element) => {
 
       if (element.BatchExpDate && element.BatchExpDate.length === 10) {
@@ -1665,7 +1665,7 @@ export class UpdatedeliveryComponent implements OnInit {
         this.vExpDate = `${year}/${this.pad(month)}/${day}`;
       }
 
-      let grnDetailSaveObj = {};
+      const grnDetailSaveObj = {};
       grnDetailSaveObj['grnDetID'] = 0;
       grnDetailSaveObj['grnId'] = this.registerObj.GRNID;
       grnDetailSaveObj['itemId'] = element.ItemId || 0;
@@ -1711,12 +1711,12 @@ export class UpdatedeliveryComponent implements OnInit {
 
       SavegrnDetailObj.push(grnDetailSaveObj);
     });
-    let delete_GRNDetailsobj = {}
+    const delete_GRNDetailsobj = {}
     delete_GRNDetailsobj["GRNId"] = this.registerObj.GRNID;
 
-    let update_PO_STATUS_AganistGRN = [];
+    const update_PO_STATUS_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
-      let update_PO_STATUS_AganistGRNObj = {};
+      const update_PO_STATUS_AganistGRNObj = {};
       update_PO_STATUS_AganistGRNObj['poId'] = element.PurchaseId || 0;
       update_PO_STATUS_AganistGRNObj['purDetID'] = element.PurDetId || 0;
       update_PO_STATUS_AganistGRNObj['isClosed'] = true;
@@ -1724,16 +1724,16 @@ export class UpdatedeliveryComponent implements OnInit {
       update_PO_STATUS_AganistGRN.push(update_PO_STATUS_AganistGRNObj);
     });
 
-    let update_POHeader_Status_AganistGRN = [];
+    const update_POHeader_Status_AganistGRN = [];
     this.dsItemNameList.data.forEach((element) => {
-      let update_POHeader_Status_AganistGRNObj = {};
+      const update_POHeader_Status_AganistGRNObj = {};
       update_POHeader_Status_AganistGRNObj['poId'] = element.PurchaseId || 0;
       update_POHeader_Status_AganistGRNObj['isClosed'] = true;
       update_POHeader_Status_AganistGRN.push(update_POHeader_Status_AganistGRNObj);
     });
 
 
-    let submitData = {
+    const submitData = {
       "updateGRNHeader": updateGRNHeaderObj,
       "delete_GRNDetails": delete_GRNDetailsobj,
       "grnDetailSave": SavegrnDetailObj,
@@ -1980,7 +1980,7 @@ export class UpdatedeliveryComponent implements OnInit {
     }
   }
   getLastThreeItemInfo() {
-    var vdata = {
+    const vdata = {
       'ItemId': this._DeliveryService.userFormGroup.get('ItemName').value.ItemID || 0,
     }
     this._DeliveryService.getLastThreeItemInfo(vdata).subscribe(data => {
@@ -2024,7 +2024,7 @@ export class UpdatedeliveryComponent implements OnInit {
       this.vPurchaseId = result[0].PurchaseID;
       this.vpoBalQty = result[0].ReceiveQty;
       this.vPurchaseOrderSupplierId = result[0].SupplierName
-      let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
+      const other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
       this._DeliveryService.DeliveryFinalForm.get('OtherCharge').setValue(other);
       this._DeliveryService.DeliveryFinalForm.get('Remark').setValue(result[0].Remarks);
 
@@ -2032,8 +2032,8 @@ export class UpdatedeliveryComponent implements OnInit {
 
       this.dsItemNameList1.data = result;
       this.dsItemNameList1.data.forEach((element) => {
-        let Qty = element.Qty;
-        let freeqty = element.FreeQty || 0;
+        const Qty = element.Qty;
+        const freeqty = element.FreeQty || 0;
         this.FinalTotalQty1 = (((element.Qty) + (freeqty)) * (element.ConversionFactor));
         this.FinalLandedrate1 = (element.NetAmount) / (this.FinalTotalQty1);
         this.FinalpurUnitRate1 = (((element.ItemTotalAmount) / (element.Qty)) * (element.ConversionFactor))
@@ -2133,7 +2133,7 @@ export class UpdatedeliveryComponent implements OnInit {
   }
   msg:any;
   checkInvoice(){
-    let Query = "select InvoiceNo from T_GRNHeader Where SupplierId="+this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.storeId;
+    const Query = "select InvoiceNo from T_GRNHeader Where SupplierId="+this.vcheckSupplierId + "and StoreId=" + this.accountService.currentUserValue.storeId;
     console.log(Query)
     this._DeliveryService.getCheckInvoiceNo(Query).subscribe(data =>{
       this.msg = data

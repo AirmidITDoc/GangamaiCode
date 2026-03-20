@@ -193,7 +193,7 @@ export class EmgSettlementComponent {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
     PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = this.PatientName;
     PatientHeaderObj['AdvanceAmount'] = contact.balanceAmt;

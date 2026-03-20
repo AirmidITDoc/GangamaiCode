@@ -123,7 +123,7 @@ export class DoctorShareListComponent {
  
   getDocSharelist(doctorId) {
     const sharetype = this.Doctorshare.get('shrTypeSerOrGrp')?.value || 0
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "DoctorShareId",
@@ -379,7 +379,7 @@ export class DoctorShareListComponent {
     // this.Doctorshare.get('opIpType').setValue('0');
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -388,7 +388,7 @@ export class DoctorShareListComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -398,7 +398,7 @@ export class DoctorShareListComponent {
   }
          // it allowed only Digit 
        keyPressDigitsOnly(event) {
-           var inp = String.fromCharCode(event.keyCode);
+           const inp = String.fromCharCode(event.keyCode);
            if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
                return true;
            } else {

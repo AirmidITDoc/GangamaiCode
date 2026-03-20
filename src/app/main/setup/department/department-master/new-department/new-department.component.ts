@@ -40,7 +40,7 @@ export class NewDepartmentComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.departmentForm.invalid) {
         for (const controlName in this.departmentForm.controls) {
           if (this.departmentForm.controls[controlName].invalid) {

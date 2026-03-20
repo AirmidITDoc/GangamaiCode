@@ -369,7 +369,7 @@ export class CanteenSalesComponent implements OnInit {
 
   getItemTable1List() {
 
-    var vdata = this._CanteenmanagementService.userFormGroup.get('ItemID').value
+    const vdata = this._CanteenmanagementService.userFormGroup.get('ItemID').value
 
     this._CanteenmanagementService.getItemTable1List(vdata).subscribe(data => {
       this.dsItemTable1.data = data as ItemTable1List[];
@@ -467,7 +467,7 @@ export class CanteenSalesComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   CalculateDiscount() {
-    let disc = this._CanteenmanagementService.userFormGroup.get('Discount').value;
+    const disc = this._CanteenmanagementService.userFormGroup.get('Discount').value;
 
     if (disc >= 100 && disc > 0) {
       Swal.fire('Enter Disount Less Than 100')
@@ -477,7 +477,7 @@ export class CanteenSalesComponent implements OnInit {
       this.vTotalFinalAmount.toFixed(2);
     }
     if (disc) {
-      let dis = this._CanteenmanagementService.userFormGroup.get('Discount').value;
+      const dis = this._CanteenmanagementService.userFormGroup.get('Discount').value;
       this.vDiscAmt = ((dis * parseInt(this.vTotalFinalAmount)) / 100).toFixed(2);
       this.vTotalFinalAmount = this.vTotalFinalAmount - this.vDiscAmt;
       //  total = this.vTotalFinalAmount.toFixed(2);
@@ -506,7 +506,7 @@ export class CanteenSalesComponent implements OnInit {
   //BillList
   getBillListData() {
 
-    let filters: any[] = [];
+    const filters: any[] = [];
 
 
     filters.push(
@@ -543,7 +543,7 @@ export class CanteenSalesComponent implements OnInit {
       },
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "ReqId",
@@ -563,7 +563,7 @@ export class CanteenSalesComponent implements OnInit {
   //BillDetailList ReqId
   getBillDetList(Param) {
     debugger
-    let filters: any[] = [];
+    const filters: any[] = [];
     this.chargeslist = []
     filters.push(
 
@@ -574,7 +574,7 @@ export class CanteenSalesComponent implements OnInit {
       }
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "ReqId",
@@ -611,7 +611,7 @@ export class CanteenSalesComponent implements OnInit {
   // //Nursing List
   getNursingBillList() {
     this.sIsLoading = 'loading-data';
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._CanteenmanagementService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       'ToDate': this.datePipe.transform(this._CanteenmanagementService.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       'Reg_No': 0,
@@ -677,7 +677,7 @@ export class CanteenSalesComponent implements OnInit {
 
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -775,7 +775,7 @@ export class CanteenSalesComponent implements OnInit {
 export class ItemTable1List {
 
   ItemName: string;
-  Code: Number;
+  Code: number;
   Price: number;
   Qty: any;
   // ReturnQty:any;
@@ -809,7 +809,7 @@ export class ItemDetTable2List {
 export class BillList {
 
   CustomerName: string;
-  PBillNo: Number;
+  PBillNo: number;
   BDate: number;
   NetAmount: number;
   PaidAmount: number;
@@ -829,7 +829,7 @@ export class BillList {
 export class BillDetailList {
 
   ItemName: string;
-  Qty: Number;
+  Qty: number;
   NetAmount: number;
 
   constructor(BillDetailList) {
@@ -843,7 +843,7 @@ export class BillDetailList {
 export class NursingBillList {
 
   WardName: string;
-  Date: Number;
+  Date: number;
 
   constructor(NursingBillList) {
     {

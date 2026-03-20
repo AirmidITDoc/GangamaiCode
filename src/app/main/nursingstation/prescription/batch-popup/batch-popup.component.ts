@@ -22,7 +22,7 @@ export class BatchPopupComponent {
     'LandedRate'
     // 'ItemName',
     // 'ItemCode',
-  ];;
+  ];
   isLoadingStr: string = '';
   dataSource = new MatTableDataSource<SalesList>();
   selectedRowIndex: number = 0;
@@ -55,12 +55,12 @@ export class BatchPopupComponent {
   }
 
   arrowUpEvent(row: object, index: number) {
-    var nextrow = this.dataSource.data[index - 2];
+    const nextrow = this.dataSource.data[index - 2];
     this.highlight(nextrow);
   }
 
   arrowDownEvent(row: object, index: number) {
-    var nextrow = this.dataSource.data[index];
+    const nextrow = this.dataSource.data[index];
     this.highlight(nextrow);
   }
 
@@ -77,7 +77,7 @@ export class BatchPopupComponent {
  
   getSalesData(obj) {
     this.isLoadingStr = 'loading';
-    var reqData = {
+    const reqData = {
       // "ItemId": this.data.ItemId,
       // "StoreId": this.data.StoreId,
       // "OP_IP_Id":this.data.OP_IP_Id
@@ -116,7 +116,7 @@ export class BatchPopupComponent {
 
   onTableClick() {
     debugger
-    let focusId = 'ele-'+this.selectedRowIndex;
+    const focusId = 'ele-'+this.selectedRowIndex;
     document.getElementById(focusId).focus();
     console.log("focusId:",focusId)
   }

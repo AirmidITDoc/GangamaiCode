@@ -174,9 +174,9 @@ export class NewreportConfigComponent {
     if (!this.myform.get('reportSpname').value) {
       this.toastr.warning('Enter Procedure to Retrive List')
     }
-    let Procedure = this.myform.get('reportSpname').value
+    const Procedure = this.myform.get('reportSpname').value
     console.log(Procedure)
-    var SelectQuery = {
+    const SelectQuery = {
       "searchFields": [
         {
           "fieldName": "ProcedureName",
@@ -197,7 +197,7 @@ export class NewreportConfigComponent {
 
   retriveData(row){
     // debugger
-    var SelectQuery = {
+    const SelectQuery = {
       "searchFields": [
         {
           "fieldName": "ReportId",
@@ -301,7 +301,7 @@ export class NewreportConfigComponent {
       });
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.myform.invalid) {
         for (const controlName in this.myform.controls) {
           if (this.myform.controls[controlName].invalid) { invalidFields.push(`Report Form: ${controlName}`); }
@@ -410,7 +410,7 @@ export class NewreportConfigComponent {
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

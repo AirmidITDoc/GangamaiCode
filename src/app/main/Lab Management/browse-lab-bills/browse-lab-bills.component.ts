@@ -283,7 +283,7 @@ export class BrowseLabBillsComponent {
 
   getAccessDetail() {
     // debugger
-    var SelectQuery = {
+    const SelectQuery = {
       "searchFields": [{
         "fieldName": "LoginId",
         "fieldValue": String(this.accountService.currentUserValue.userId),
@@ -490,7 +490,7 @@ export class BrowseLabBillsComponent {
 
   openPaymentpopup(contact) {
     console.log(contact)
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['RegNo'] = contact.labRequestNo;
     PatientHeaderObj['PatientName'] = contact.patientName;
@@ -536,7 +536,7 @@ export class BrowseLabBillsComponent {
             this.grid.bindGridData();
           });
         } else {
-          let invalidFields = []
+          const invalidFields = []
           if (this.OpSettlementForm.invalid) {
             for (const controlName in this.OpSettlementForm.controls) {
               const control = this.OpSettlementForm.get(controlName);
@@ -968,7 +968,7 @@ export class BrowseLabBillsComponent {
     }
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1007,7 +1007,7 @@ export class BrowseLabBillsComponent {
 }
 
 export class BrowseOPDBill {
-  BillNo: Number;
+  BillNo: number;
 
   RegId: number;
   RegNo: number;
@@ -1021,7 +1021,7 @@ export class BrowseOPDBill {
   NetPayableAmt: number;
   BillDate: any;
   IPDNo: number;
-  ServiceName: String;
+  ServiceName: string;
   Price: number;
   price: number;
   Qty: number;

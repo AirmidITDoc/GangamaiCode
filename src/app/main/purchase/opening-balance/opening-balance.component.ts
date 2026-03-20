@@ -83,7 +83,7 @@ export class OpeningBalanceComponent {
   isShowDetailTable: boolean = false;
   GetDetails1(data: any): void {
     console.log("detailList:", data)
-    let ID = data.openingHId;
+    const ID = data.openingHId;
 
     this.gridConfig1 = {
       apiUrl: "OpeningBalance/OpeningBalnceItemDetailList",
@@ -124,7 +124,7 @@ export class OpeningBalanceComponent {
 
 
   viewgetReportPdf(element) {
-    var Param = {
+    const Param = {
       "searchFields": [
         {
           "fieldName": "OpeningHId",
@@ -154,7 +154,7 @@ export class OpeningBalanceComponent {
 
 
   onSave(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
       {
         maxWidth: "100%",

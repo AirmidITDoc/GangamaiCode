@@ -27,7 +27,7 @@ export class ReorderlevelsummaryComponent implements OnInit {
   dateTimeObj: any;
   sIsLoading:string ='';
   isLoadingStr: string = "";
-  isLoading: String = '';
+  isLoading: string = '';
   RaisedIndentList:any=[];
   autocompleteReorderType:'ConstantType'
   autocompleteReorderQty:'ConstantType'
@@ -50,7 +50,7 @@ export class ReorderlevelsummaryComponent implements OnInit {
   }
   getReorderlvlList(){
     debugger
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 25,
       "sortField": "ItemName",

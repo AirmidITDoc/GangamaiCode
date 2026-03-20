@@ -40,7 +40,7 @@ export class NewCountryMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.countryForm.invalid) {
                 for (const controlName in this.countryForm.controls) {
                     if (this.countryForm.controls[controlName].invalid) {

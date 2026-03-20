@@ -59,7 +59,7 @@ export class TestingTableComponent  implements OnInit{
   }
 
   getMenuMasterList() {
-   var mdat=
+   const mdat=
     {
       "first": 0,
       "rows": 20,

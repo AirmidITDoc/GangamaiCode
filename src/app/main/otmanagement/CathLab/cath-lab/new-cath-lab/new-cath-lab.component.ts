@@ -165,7 +165,7 @@ export class NewCathLabComponent implements OnInit {
   
     setTimeout(function () {
 
-      let element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
+      const element: HTMLElement = document.getElementById('auto_trigger') as HTMLElement;
       element.click();
 
     }, 1000);
@@ -188,7 +188,7 @@ export class NewCathLabComponent implements OnInit {
 
 
   getSearchList() {
-    var m_data = {
+    const m_data = {
       "Keyword": `${this.myForm.get('RegID').value}%`
     }
     if (this.myForm.get('RegID').value.length >= 1) {
@@ -259,7 +259,7 @@ export class NewCathLabComponent implements OnInit {
 
 
   setDropdownObjs1() {
-    ;
+    
 
     this._OtManagementService.populateFormpersonal(this.registerObj1);
 
@@ -568,15 +568,15 @@ public onEnterAnesthType(event): void {
 }
 
   onSubmit() {
-    ;
-    let OTCathLabBokingID = this.registerObj1.OTCathLabBokingID;
+    
+    const OTCathLabBokingID = this.registerObj1.OTCathLabBokingID;
     this.isLoading = 'submit';
 
     console.log()
     // if(this.Adm_Vit_ID){
 
     if (!OTCathLabBokingID) {
-      var m_data = {
+      const m_data = {
         "cathLabBookingDetailInsert": {
           "OTCathLabBokingID": 0,
           "tranDate": this.dateTimeObj.date,
@@ -618,8 +618,8 @@ public onEnterAnesthType(event): void {
       });
     }
     else {
-      ;
-      var m_data1 = {
+      
+      const m_data1 = {
         "cathLabBookingDetailUpdate": {
           "OTCathLabBokingID": OTCathLabBokingID,
           "tranDate": this.dateTimeObj.date,

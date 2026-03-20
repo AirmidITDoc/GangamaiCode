@@ -132,7 +132,7 @@ export class PurchaseRequisitionlistComponent implements OnInit {
     this.GetReqisitionlist();
   }
   GetReqisitionlist(){
-        var data =
+        const data =
     {
       "first": 0,
       "rows": 999,
@@ -291,7 +291,7 @@ CreatePoReqHeader(item:any){
 //     }, 1000);
 // }
      getPOReqDetList(contact,addItem=false){
-        var data =
+        const data =
     {
       "first": 0,
       "rows": 999,

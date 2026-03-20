@@ -600,7 +600,7 @@ export class RadiologyDashboardComponent implements OnInit {
         }
 
         // Pathology Status Data
-        let pathologyStatusData = [
+        const pathologyStatusData = [
             { status: 'Completed', count: this.pathologyData?.countSummary?.completedCount ?? 0 },
             { status: 'Pending', count: this.pathologyData?.countSummary?.pendingCount ?? 0 },
             { status: 'Rejected', count: this.pathologyData?.countSummary?.rejectedCount ?? 0 }
@@ -867,7 +867,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
         debugger
         // Pathology Status Data
-        let RadiologyStatusData = [
+        const RadiologyStatusData = [
             { status: 'Completed', count: this.RadiologyData?.countSummary?.completedCount ?? 0 },
             { status: 'Pending', count: this.RadiologyData?.countSummary?.pendingCount ?? 0 },
             { status: 'Rejected', count: this.RadiologyData?.countSummary?.rejectedCount ?? 0 }
@@ -1019,7 +1019,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 this.pathologyData = res;
                 console.log('Pathology Reports:', res);
 
-                let apiData = this.pathologyData.pathologyReportStatus && this.pathologyData.pathologyReportStatus.length ? this.pathologyData.pathologyReportStatus[0] : {};
+                const apiData = this.pathologyData.pathologyReportStatus && this.pathologyData.pathologyReportStatus.length ? this.pathologyData.pathologyReportStatus[0] : {};
                 this.metrics = [
                     { label: 'Total Report', value: apiData?.totalReports || 0, color: 'cream', icon: 'assignment' },
                     { label: 'Completed', value: apiData?.completedReports || 0, color: 'cream', icon: 'check_circle' },

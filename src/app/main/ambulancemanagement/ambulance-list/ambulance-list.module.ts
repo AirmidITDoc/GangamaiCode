@@ -37,7 +37,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AmbulanceListComponent } from './ambulance-list.component';
 import { NewAmbulanceDetailComponent } from './new-ambulance-detail/new-ambulance-detail.component';
 import { MatTimepickerModule } from 'mat-timepicker';
-;
+
  
 const routes: Routes = [
   { 

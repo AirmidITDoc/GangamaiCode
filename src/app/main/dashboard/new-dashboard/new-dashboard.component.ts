@@ -163,7 +163,7 @@ export class NewDashboardComponent implements OnInit {
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
 
-      let apiData = res && res.length ? res[0] : {};
+      const apiData = res && res.length ? res[0] : {};
       console.log(apiData)
       
       this.metrics = [
@@ -291,7 +291,7 @@ debugger
       ;
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       
-      let apiData = res && res.length ? res[0] : {};
+      const apiData = res && res.length ? res[0] : {};
       console.log("==api data", apiData);
       console.log(res)
 
@@ -355,7 +355,7 @@ debugger
       "mode": "DashOPDepatmentWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      let apiData = res && res.length ? res : {};
+      const apiData = res && res.length ? res : {};
       console.log(res)
 
       debugger
@@ -418,7 +418,7 @@ debugger
       "mode": "DashRegistrationAgeWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      let apiData = res && res.length ? res : {};
+      const apiData = res && res.length ? res : {};
           if (apiData) {
 
 this.modalityData1=apiData
@@ -517,7 +517,7 @@ this.modalityData1=apiData
       "mode": "DashOPConsultantWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      let apiData1 = res && res.length ? res : {};
+      const apiData1 = res && res.length ? res : {};
       console.log(res)
       return apiData1;
 
@@ -794,7 +794,7 @@ this.modalityData1=apiData
       "mode": "DashRegistrationAgeWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      let apiData = res && res.length ? res : [];
+      const apiData = res && res.length ? res : [];
       console.log("apiDataapiDataapiData", apiData)
 
       // Check if data is empty or all values are zero
@@ -957,7 +957,7 @@ this.modalityData1=apiData
       "mode": "DashOPConsultantWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      let apiData = res && res.length ? res : [];
+      const apiData = res && res.length ? res : [];
       console.log("apiDataapiDataapiData", apiData)
 
       // Check if data is empty or all values are zero
@@ -1558,7 +1558,7 @@ this.modalityData1=apiData
       "mode": "DashOPDepatmentWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      let apiData = res && res.length ? res : {};
+      const apiData = res && res.length ? res : {};
       console.log(res)
 
 

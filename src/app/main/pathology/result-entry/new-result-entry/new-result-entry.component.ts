@@ -246,12 +246,12 @@ getValidatetabledata(){
     onResultUp(data) {
 debugger
 //Changes done by Ambadas 07-03-2026
-        let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+        const items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
-            let formulas = this.getShortNames(formula);
+            const formulas = this.getShortNames(formula);
             formulas.forEach(e => {
-                let itm = this.dataSource.data.find(x => x.ParameterShortName == e);
+                const itm = this.dataSource.data.find(x => x.ParameterShortName == e);
                 if (itm)
                     //formula = formula.replaceAll("{{" + e + "}}", itm.ResultValue || 0)
                     formula = formula.replaceAll("{{" + e + "}}",  String(Number(itm?.ResultValue) || 0));
@@ -271,9 +271,9 @@ try {
         data.ParaBoldFlag = '';
         if (data.ParaIsNumeric || data.PIsNumeric) {
 
-            let a = parseFloat(data.ResultValue);
-            let b = parseFloat(data.MinValue);
-            let c = parseFloat(data.MaxValue);
+            const a = parseFloat(data.ResultValue);
+            const b = parseFloat(data.MinValue);
+            const c = parseFloat(data.MaxValue);
 
             if (b != null && c != null && a != null) {
                 if (a < b || a > c) {
@@ -435,7 +435,7 @@ try {
 
     getResultListIP(obj, rbj) {
 
-        var SelectQuery =
+        const SelectQuery =
         {
             "searchFields": [
                 {
@@ -497,7 +497,7 @@ try {
         const pathReportIds = rbj.map(r => String(r.PathReportId));
 
 
-        var SelectQuery =
+        const SelectQuery =
         {
             "searchFields": [
                 {
@@ -564,7 +564,7 @@ try {
         const pathReportIds = rbj.map(r => String(r.PathReportId));
 
 
-        var SelectQuery =
+        const SelectQuery =
         {
             "searchFields": [
                 {
@@ -947,7 +947,7 @@ try {
             // debugger
             if (flag.isConfirmed) {
 
-                let submitData = {
+                const submitData = {
                     "pathReportId": this.vPathReportId,
                     "isVerifyid": this.accountService.currentUserValue.userId,
                     "isVerifySign": true,
@@ -964,7 +964,7 @@ try {
 
     Printresultentry() {
 
-        let pathologyDelete = [];
+        const pathologyDelete = [];
 
         this.data.RIdData.forEach((element) => {
             pathologyDelete.push({ pathReportId: element.PathReportId });
@@ -1220,7 +1220,7 @@ try {
 }
 
 export class Pthologyresult {
-    TestName: String;
+    TestName: string;
     SubTestName: boolean;
     ParameterName: Date;
     NormalRange: any;
@@ -1279,8 +1279,8 @@ export class Pthologyresult {
 
 export class PthologyTemplateresult {
 
-    TemplateDesc: String;
-    PrintTestName: String;
+    TemplateDesc: string;
+    PrintTestName: string;
     PathReportID: any;
     TestId: any;
     PathResultDr1: any;
@@ -1311,7 +1311,7 @@ export class PthologyresultInsert {
     TestName: any;
     SubTestName: any;
     ParameterName: any;
-    UnitName: String;
+    UnitName: string;
     PatientName: any;
     RegNo: any;
     SampleID: any;

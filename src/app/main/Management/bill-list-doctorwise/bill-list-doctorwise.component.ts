@@ -367,7 +367,7 @@ export class BillListDoctorwiseComponent {
       this.fromDate = this.datePipe.transform(this.DocSummaryfilterForm.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.DocSummaryfilterForm.get('enddate').value, "yyyy-MM-dd")
 
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 200,
       "sortField": "DoctorId",
@@ -427,7 +427,7 @@ export class BillListDoctorwiseComponent {
   onClear() {
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -436,7 +436,7 @@ export class BillListDoctorwiseComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

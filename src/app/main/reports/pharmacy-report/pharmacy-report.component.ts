@@ -189,7 +189,7 @@ export class PharmacyReportComponent implements OnInit {
 
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
-var data={
+const data={
   ReportSection:"Pharm Reports"
 }
     this._PharmacyreportService.getDataByQuery(data).subscribe(data => {
@@ -352,7 +352,7 @@ var data={
   }
 
   GetUserList() {
-    var data = {
+    const data = {
       "StoreId": this._loggedUser.currentUserValue.storeId
     }
     this._PharmacyreportService.getUserdetailList(data).subscribe(data => {
@@ -387,7 +387,7 @@ var data={
 
   getSearchItemList() {   
     
-    var m_data = {
+    const m_data = {
       "ItemName": '%'//`${this._OPReportsService.userForm.get('ItemId').value}%`,
     //  "StoreId": this._loggedUser.currentUserValue.storeId
     }
@@ -620,8 +620,8 @@ var data={
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
     
-      let Frdate=this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-      let Todate =  this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      const Frdate=this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      const Todate =  this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
       
       this._PharmacyreportService.getSalesDetail_Patientwise(Frdate,Todate,    
         0, 0, AddUserId, this._loggedUser.currentUserValue.storeId
@@ -678,8 +678,8 @@ var data={
     setTimeout(() => {
       this.sIsLoading = 'loading-data';
       this.AdList = true;
-      let frdate= this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-      let Todate =this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      const frdate= this.datePipe.transform(this._PharmacyreportService.userForm.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+      const Todate =this.datePipe.transform(this._PharmacyreportService.userForm.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
    
       this._PharmacyreportService.getSalesReturnPatientwise(frdate,Todate,0, 0,this._loggedUser.currentUserValue.storeId
       ).subscribe(res => {
@@ -1024,7 +1024,7 @@ var data={
 
 
   transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
+    const datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
   }

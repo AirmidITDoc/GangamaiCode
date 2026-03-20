@@ -327,7 +327,7 @@ export class IPSettlementComponent implements OnInit {
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
         const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate;
         PatientHeaderObj['PatientName'] = this.PatientName || '';
         PatientHeaderObj['AdvanceAmount'] = contact?.balanceAmt || 0;
@@ -435,7 +435,7 @@ export class IPSettlementComponent implements OnInit {
             let toDate = this.IPMultipleSettlForm.get("enddate").value || "";
             fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
             toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-            var vdata = {
+            const vdata = {
                 "first": 0,
                 "rows": 999,
                 "sortField": "RegNo",
@@ -575,7 +575,7 @@ export class IPSettlementComponent implements OnInit {
             element.CompanyDisc = 0;
             element.tds = 0;
 
-            let index = this.SelectedList.indexOf(element);
+            const index = this.SelectedList.indexOf(element);
             if (index >= 0) {
                 this.SelectedList.splice(index, 1);
             }
@@ -869,7 +869,7 @@ export class IPSettlementComponent implements OnInit {
                 this.IPMulSetBillLoopArray.push(this.CreateIPMultipleSettlBillLoopInsertForm(item))
             });
 
-                let ModePaymentObj = [];
+                const ModePaymentObj = [];
                 this.SelectedList.forEach(item => {
                  ModePaymentObj.push({  
                     billNo:item?.billNo,
@@ -917,7 +917,7 @@ export class IPSettlementComponent implements OnInit {
         this.getmultiplePaymentListNew();
     }
         keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

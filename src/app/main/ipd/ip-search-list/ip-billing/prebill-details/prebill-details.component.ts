@@ -73,7 +73,7 @@ export class PrebillDetailsComponent implements OnInit {
   }
 }
 export class PreDetailsList {
-  AdmissionID: Number;
+  AdmissionID: number;
   BillNo: any;
   BillDate: Date;
   concessionReasonId: number;

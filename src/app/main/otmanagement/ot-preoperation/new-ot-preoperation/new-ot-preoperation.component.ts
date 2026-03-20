@@ -34,13 +34,13 @@ export class NewOtPreoperationComponent {
   vsurgeryType: any = "1";
 
   isActive: boolean = true;
-  autocompleteModeSurgeryCategory: String = "OttypeMaster";
-  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
-  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
+  autocompleteModeSurgeryCategory: string = "OttypeMaster";
+  autocompleteModeDoctorSurgeon: string = "DoctorSurgion";
+  autocompleteModeSurgeryMaster: string = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
-  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeConDoctor: string = "ConDoctor";
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
-  autocompleteModeRefDoctor: String = "RefDoctor";
+  autocompleteModeRefDoctor: string = "RefDoctor";
 
   vRegNo: any;
   vPatientName: any;
@@ -90,10 +90,10 @@ export class NewOtPreoperationComponent {
   registerObj1 = new OtReqInsert({});
   BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   surgeryTypeNames: string[] = ["Normal", "Emergency"];
-  autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeOTTable: string = "OttableMaster";
   autocompleteModeLocation: string = "Location";
   autocompleteModeResourseType: string = "ResourcesTypes";
-  autocompleteModeSiteDescription: String = "SiteDescription";
+  autocompleteModeSiteDescription: string = "SiteDescription";
   autocompleteModeDepartment: string = "Department";
 
   dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
@@ -376,7 +376,7 @@ export class NewOtPreoperationComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -424,7 +424,7 @@ export class NewOtPreoperationComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -463,7 +463,7 @@ export class NewOtPreoperationComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -500,7 +500,7 @@ export class NewOtPreoperationComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'CathLabDiagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'CathLabDiagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addcathLabDiagnolist.push(
@@ -610,7 +610,7 @@ export class NewOtPreoperationComponent {
       return;
     }
 
-    let newEntry = {
+    const newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.preOperationFinalForm.get('surgeryCategoryId').value,
       surgeryId: this.preOperationFinalForm.get('surgeryId').value,//
@@ -676,7 +676,7 @@ export class NewOtPreoperationComponent {
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dssurgeryDetailList.data = [];
@@ -769,7 +769,7 @@ export class NewOtPreoperationComponent {
 
   FetchList: any = [];
   getReservationSurgeryDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",
@@ -817,7 +817,7 @@ export class NewOtPreoperationComponent {
   }
 
   getPreOperSurgeryDetList() {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTPreOperationId",
@@ -882,7 +882,7 @@ export class NewOtPreoperationComponent {
       return;
     }
 
-    let newEntry = {
+    const newEntry = {
       doctorTypeId: this.preOperationFinalForm.get('doctorTypeId').value,//
       doctorType: this.doctorType,
       doctorId: this.preOperationFinalForm.get('doctorId').value, //
@@ -908,7 +908,7 @@ export class NewOtPreoperationComponent {
 
   deleteTableRow1(event, element) {
 
-    let index = this.Chargelist1.indexOf(element);
+    const index = this.Chargelist1.indexOf(element);
     if (index >= 0) {
       this.Chargelist1.splice(index, 1);
       this.dsattendentDetailList.data = [];
@@ -961,7 +961,7 @@ export class NewOtPreoperationComponent {
 
   FetchList1: any = [];
   getReservationAttendentDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",
@@ -992,7 +992,7 @@ export class NewOtPreoperationComponent {
   }
 
   getPreOperAttendentDetList() {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTPreOperationId",
@@ -1393,7 +1393,7 @@ export class NewOtPreoperationComponent {
   OnViewPreOprationReportPdf() {
     debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             fieldName: "OPIPID",
@@ -1430,7 +1430,7 @@ export class NewOtPreoperationComponent {
   OnViewReportPdf(element: any) {
 
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "ConsentId",

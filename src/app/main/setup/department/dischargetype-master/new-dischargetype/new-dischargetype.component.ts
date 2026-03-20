@@ -37,7 +37,7 @@ export class NewDischargetypeComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.dischargetypeForm.invalid) {
                 for (const controlName in this.dischargetypeForm.controls) {
                     if (this.dischargetypeForm.controls[controlName].invalid) {

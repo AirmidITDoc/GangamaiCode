@@ -188,7 +188,7 @@ export class NewRadResultTemplateComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
 
           "radReportId": this.data.data.radReportId,
           "isVerifyId": this.accountService.currentUserValue.userId,
@@ -266,7 +266,7 @@ export class NewRadResultTemplateComponent {
         // this.viewgetRadioloyTemplateReportPdf(this.regObj);
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.RaioInsertForm.invalid) {
         for (const controlName in this.RaioInsertForm.controls) {
@@ -317,7 +317,7 @@ export class RadiologyPatienInsert {
   RadResultDr1: number;
   RadResultDr2: number;
   RadResultDr3: number;
-  SuggestionNotes: String;
+  SuggestionNotes: string;
   AdmVisitDoctorID: number;
   RefDoctorID: number;
   ResultEntry: string;
@@ -343,21 +343,21 @@ export class RadiologyPatienInsert {
 }
 
 export class RadiologyPrint {
-  RegNo: Number;
-  AdmissionID: Number;
+  RegNo: number;
+  AdmissionID: number;
   PatientName: string;
   Doctorname: string;
   AdmDateTime: string;
   AgeYear: number;
   RadReportId: number;
-  RadTestID: String;
+  RadTestID: string;
   RadDate: Date;
   RadTime: Date;
   PatientType: any;
-  TestName: String;
+  TestName: string;
   ConsultantDoctor: any;
-  CategoryName: String;
-  GenderName: String;
+  CategoryName: string;
+  GenderName: string;
   PBillNo: number;
   AdmissionDate: Date;
   VisitDate: Date;
@@ -366,7 +366,7 @@ export class RadiologyPrint {
   IPDNo: number;
   ReportDate: Date;
   ReportTime: Date;
-  ResultEntry: String;
+  ResultEntry: string;
   RadiologyDocName: string;
   RefDoctorName: any;
   SuggestionNotes: string;
@@ -375,7 +375,7 @@ export class RadiologyPrint {
   Education: string;
   AgeDay: any;
   ChargeId: number;
-  ServiceName: String;
+  ServiceName: string;
   OP_IP_Type: any;
   OP_IP_Number: any;
   CompanyName: any;

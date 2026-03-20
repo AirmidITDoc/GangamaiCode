@@ -115,7 +115,7 @@ export class NewPhoneAppoinmentCalendarComponent {
     bindData() {
         let fromDate, toDate;
         if (this.dateDisplay) {
-            var dates = this.dateDisplay.nativeElement.textContent.split('-');
+            const dates = this.dateDisplay.nativeElement.textContent.split('-');
             if (this.view == CalendarView.Week) {
                 fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
                 toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
@@ -129,7 +129,7 @@ export class NewPhoneAppoinmentCalendarComponent {
             }
         }
         else {
-            var d = this.getWeekRange();
+            const d = this.getWeekRange();
             fromDate = d.sunday; toDate = d.saturday;
         }
         this._service.getAppoinments(this.DoctorId, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {

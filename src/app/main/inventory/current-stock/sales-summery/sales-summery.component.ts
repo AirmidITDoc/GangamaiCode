@@ -33,7 +33,7 @@ export class SalesSummeryComponent implements OnInit {
   ];
 
   isLoadingStr: string = '';
-  isLoading: String = '';
+  isLoading: string = '';
   sIsLoading: string = "";
   registerObj: any;
   itemId = "0";
@@ -84,7 +84,7 @@ export class SalesSummeryComponent implements OnInit {
   }
 
   getSalesSummeryList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "StoreID",
@@ -153,7 +153,7 @@ export class SalesSummeryComponent implements OnInit {
   // }
 
   getSalesSummeryDetailsList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "StoreID",

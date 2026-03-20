@@ -76,7 +76,7 @@ export class MyprofileComponent implements OnInit {
        console.log(this.accountService.currentUserValue);
   
       this.sIsLoading = 'loading-data';
-      var m_data = {
+      const m_data = {
         "UserName": this.accountService.currentUserValue.user.userName || '%',
       }
       console.log(m_data);

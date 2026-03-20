@@ -226,7 +226,7 @@ export class ItemMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
                 maxWidth: "95vw",
@@ -276,7 +276,7 @@ export class ItemMaster {
     reOrder: number;
     isNursingFlag: boolean;
     hsNcode: string;
-    hsncode: String;
+    hsncode: string;
     cgst: any;
     sgst: any;
     igst: any;

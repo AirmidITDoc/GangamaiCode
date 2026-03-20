@@ -104,7 +104,7 @@ export class NewBillRaiseComponent implements OnInit {
     return option && option.CustomerName ? option.CustomerName : '';
   }
   getCustomerSearch() { 
-      var m_data = {
+      const m_data = {
         'CustomerName': this._CustomerBill.myform.get('CustomerId').value || "%"
       }
       console.log(m_data)
@@ -146,7 +146,7 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
 }
   if(!this.registerObj.CustomerId){
   this.Savebtn = true;
-  let customerInvoiceRaiseInsert = {};
+  const customerInvoiceRaiseInsert = {};
   customerInvoiceRaiseInsert['invNumber'] = this._CustomerBill.myform.get('InvoiceNo').value || 0;
   customerInvoiceRaiseInsert['invDate'] = this.datePipe.transform(this._CustomerBill.myform.get('InvoiceDate').value, 'MM/dd/YYYY');
   customerInvoiceRaiseInsert['customerId'] = this._CustomerBill.myform.get('CustomerId').value.CustomerId ||  0;
@@ -155,7 +155,7 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
   customerInvoiceRaiseInsert['createdBy'] = this._loggedService.currentUserValue.userId || 0;
 
 
-  let submitData = {
+  const submitData = {
     "customerInvoiceRaiseInsert": customerInvoiceRaiseInsert,
   };
   console.log(submitData);
@@ -181,7 +181,7 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
 }else{
 
   this.Savebtn = true;
-  let customerInvoiceRaiseUpdate = {};
+  const customerInvoiceRaiseUpdate = {};
   customerInvoiceRaiseUpdate['invNumber'] = this._CustomerBill.myform.get('InvoiceNo').value || 0;
   customerInvoiceRaiseUpdate['invDate'] = this.datePipe.transform(this._CustomerBill.myform.get('InvoiceDate').value, 'MM/dd/YYYY');
   customerInvoiceRaiseUpdate['customerId'] = this._CustomerBill.myform.get('CustomerId').value.CustomerId ||  0;
@@ -193,7 +193,7 @@ if ((this.vAmount == '' || this.vAmount == null || this.vAmount == undefined)) {
   customerInvoiceRaiseUpdate['invoiceRaisedId'] = 0;
 
 
-  let submitData = {
+  const submitData = {
     "customerInvoiceRaiseUpdate": customerInvoiceRaiseUpdate,
   };
   console.log(submitData);

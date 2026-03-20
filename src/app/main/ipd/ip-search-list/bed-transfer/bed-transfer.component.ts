@@ -291,7 +291,7 @@ export class BedTransferComponent implements OnInit {
       });
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.Bedtransfer.invalid) {
         for (const controlName in this.Bedtransfer.controls) {
@@ -313,7 +313,7 @@ export class BedTransferComponent implements OnInit {
   PrintPdf(response) {
     // debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "AdmissionId",

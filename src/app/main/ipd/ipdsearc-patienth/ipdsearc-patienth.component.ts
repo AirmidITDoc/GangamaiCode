@@ -75,7 +75,7 @@ export class IPDSearcPatienthComponent implements OnInit {
   // @Output() parentFunction:EventEmitter<any> = new EventEmitter();
 
   dataSource = new MatTableDataSource<OPIPPatientModel>();
-  isLoading: String = '';
+  isLoading: string = '';
 
   constructor(
     private _IpSearchListService: IPSearchListService,
@@ -95,7 +95,7 @@ export class IPDSearcPatienthComponent implements OnInit {
   }
 
   getOPIPPatientList() {
-    ;
+    
     this.sIsLoading = 'loading-data';
     this.PatientType = this._AdmissionService.myFilterform.get("PatientType").value;
 
@@ -205,9 +205,9 @@ export class IPDSearcPatienthComponent implements OnInit {
 
 
   onEdit(contact) {
-    ;
+    
     console.log(contact)
-    var m_data = {
+    const m_data = {
       "RegNo":contact.RegNo,
       "RegId":contact.RegId,
       "PrefixID":contact.PrefixID,
@@ -279,7 +279,7 @@ export class OPIPPatientModel {
   Adm_DoctorName: string;
   ClassName: any;
   TariffName: any;
-  CompanyName: Number;
+  CompanyName: number;
   IPNumber: any;
   Adm_Vit_Date: Date;
   Adm_Vit_Time: Date;

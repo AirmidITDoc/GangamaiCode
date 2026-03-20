@@ -42,20 +42,20 @@ export class NewReservationComponent implements OnInit {
   vequipmentsRequired: any = "1";
   vinfective: any = "1";
 
-  autocompleteModeDepartment: String = "Department";
-  autocompleteModeSiteDescription: String = "SiteDescription";
-  autocompleteModeotTableCategory: String = "OttypeMaster";
-  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
-  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
+  autocompleteModeDepartment: string = "Department";
+  autocompleteModeSiteDescription: string = "SiteDescription";
+  autocompleteModeotTableCategory: string = "OttypeMaster";
+  autocompleteModeDoctorSurgeon: string = "DoctorSurgion";
+  autocompleteModeSurgeryMaster: string = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
-  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeConDoctor: string = "ConDoctor";
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
-  autocompleteModeRefDoctor: String = "RefDoctor";
+  autocompleteModeRefDoctor: string = "RefDoctor";
   autocompleteModeResourseType: string = "ResourcesTypes";
   autocompleteModebloodGroup: string = "BloodGroupTypes";
   autocompleteModestatus: string = "State";
-  autocompleteModeSurgery: String = "SurgeryMaster";
-  autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeSurgery: string = "SurgeryMaster";
+  autocompleteModeOTTable: string = "OttableMaster";
   autocompleteModeLocation: string = "Location";
 
   vRegNo: any;
@@ -436,7 +436,7 @@ export class NewReservationComponent implements OnInit {
 
   FetchotRequestList: any = [];
   getRequestSurgeryDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTRequestId",
@@ -491,7 +491,7 @@ export class NewReservationComponent implements OnInit {
 
   FetchotRequestList1: any = [];
   getRequestAttendentDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTRequestId",
@@ -540,7 +540,7 @@ export class NewReservationComponent implements OnInit {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -597,8 +597,8 @@ export class NewReservationComponent implements OnInit {
       console.log("Visite Patient:", this.registerObj1)
       this.vRegNo = obj.regNo
       this.vOPDNo = obj.opdNo
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
+      const nameField = obj.formattedText;
+      const extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
     }
@@ -612,8 +612,8 @@ export class NewReservationComponent implements OnInit {
       this.registerObj1 = obj
       this.vRegNo = obj.regNo
       this.vIPDNo = obj.ipdNo
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
+      const nameField = obj.formattedText;
+      const extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.isDischarge = obj.isDischarged
       this.opIpId = obj.admissionID;
@@ -687,7 +687,7 @@ export class NewReservationComponent implements OnInit {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -810,7 +810,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -901,7 +901,7 @@ export class NewReservationComponent implements OnInit {
     }
 
 
-    let newEntry = {
+    const newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.reservationForm.get('surgeryCategoryId').value,
       surgeryId: this.reservationForm.get('surgeryId').value,//
@@ -968,7 +968,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dssurgeryDetailList.data = [];
@@ -1036,7 +1036,7 @@ export class NewReservationComponent implements OnInit {
 
   FetchList: any = [];
   getReservationSurgeryDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",
@@ -1099,7 +1099,7 @@ export class NewReservationComponent implements OnInit {
       });
       return;
     }
-    let newEntry = {
+    const newEntry = {
       doctorTypeId: this.reservationForm.get('doctorTypeId').value,//
       doctorType: this.doctorType,
       doctorId: this.reservationForm.get('doctorId').value, //
@@ -1124,7 +1124,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   deleteTableRow1(event, element) {
-    let index = this.Chargelist1.indexOf(element);
+    const index = this.Chargelist1.indexOf(element);
     if (index >= 0) {
       this.Chargelist1.splice(index, 1);
       this.dsattendentDetailList.data = [];
@@ -1204,7 +1204,7 @@ export class NewReservationComponent implements OnInit {
 
   FetchList1: any = [];
   getReservationAttendentDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",
@@ -1429,7 +1429,7 @@ export class NewReservationComponent implements OnInit {
         this.onClear(true);
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
 
       const validateFormGroup = (formGroup: FormGroup | FormArray, parentKey: string = '') => {
         Object.keys(formGroup.controls).forEach(key => {
@@ -1503,7 +1503,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   OnPrint(Param) {
-    let opip = this.opIpType == true ? 1 : 0
+    const opip = this.opIpType == true ? 1 : 0
     const param = {
       searchFields: [
         {

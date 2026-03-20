@@ -266,7 +266,7 @@ export class EditPatientRegComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+        const DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
         if (DateOfBirth1) {
 
           const todayDate = new Date();
@@ -320,7 +320,7 @@ export class EditPatientRegComponent {
           });
         }
         else {
-          let invalidFields = [];
+          const invalidFields = [];
           if (this.myForm.invalid) {
             for (const controlName in this.myForm.controls) {
               const control = this.myForm.get(controlName);
@@ -349,7 +349,7 @@ export class EditPatientRegComponent {
   }
 
   onChangePatient(value) {
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._labPatientRegService.getMaster(mode, 1);
       this.FinalForm.get('companyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
@@ -700,7 +700,7 @@ export class EditPatientRegComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

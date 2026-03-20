@@ -26,7 +26,7 @@ export class NewConfigurationComponent implements OnInit {
     isPatientSelected: boolean = false;
     autocompleteModeItem: string = "PatientType";
     autocompleteModeCashcounter: string = "CashCounter";
-    autocompleteModeDepartment: String = "Department";
+    autocompleteModeDepartment: string = "Department";
     autocompleteModedoctorty: string = "ConDoctor";
     screenFromString = 'Common-form';
     autocompleteModeClass: string = "Class";

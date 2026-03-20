@@ -15,7 +15,7 @@ export class DischargeCancelService {
     public _httpClient:HttpClient
   )
    { this.DischargeForm = this.CreateDischargeForm()
-     var now = new Date();
+     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   

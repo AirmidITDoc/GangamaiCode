@@ -207,7 +207,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(TariffComponent,
             {
                 maxWidth: "50vw",
@@ -229,7 +229,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(EditpackageComponent,
             {
                 // maxWidth: "90vw",

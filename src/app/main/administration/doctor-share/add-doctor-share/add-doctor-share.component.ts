@@ -281,7 +281,7 @@ export class AddDoctorShareComponent implements OnInit {
     const docShareType = this._DoctorShareService.DocFormGroup.get('DocShareType').value;
     const docShrTypeS = docShareType === 'P' ? 'P' : 'A';
     if (!this.doctorShareId) {
-      let submitData = {
+      const submitData = {
         "doctorShareId": 0,
         "doctorId": this.doctorId || 0,
         "serviceId": this.serviceId || 0,
@@ -310,7 +310,7 @@ export class AddDoctorShareComponent implements OnInit {
       });
     }
     else {
-      let updatedate = {
+      const updatedate = {
         "doctorShareId": this.doctorShareId,
         "doctorId": this.doctorId || 0,
         "serviceId": this.serviceId || 0,
@@ -359,7 +359,7 @@ export class AddDoctorShareComponent implements OnInit {
     this._DoctorShareService.DocFormGroup.get('PatientType').setValue('0');
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -368,7 +368,7 @@ export class AddDoctorShareComponent implements OnInit {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

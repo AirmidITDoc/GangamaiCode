@@ -127,8 +127,8 @@ export class DoctorshareProcessComponent {
 
   getfilterdata() {
     debugger
-    let fromD = this.DocProcessfilterForm.get("fromDate").value || "";
-    let toD = this.DocProcessfilterForm.get("enddate").value || "";
+    const fromD = this.DocProcessfilterForm.get("fromDate").value || "";
+    const toD = this.DocProcessfilterForm.get("enddate").value || "";
     this.fromDate = fromD ? this.datePipe.transform(this.DocProcessfilterForm.get('fromDate').value, "yyyy-MM-dd") : "";
     this.toDate = toD ? this.datePipe.transform(this.DocProcessfilterForm.get('enddate').value, "yyyy-MM-dd") : "";
 
@@ -151,7 +151,7 @@ export class DoctorshareProcessComponent {
 
   OnPaymentdetail(element){
     console.log(element)
-let PatientHeaderObj = {};
+const PatientHeaderObj = {};
             PatientHeaderObj['Date'] = this.datePipe.transform(element.processDate, 'yyyy-MM-dd') || '01/01/1900',
             PatientHeaderObj['PatientName'] =element.PatientName;
             // PatientHeaderObj['RegNo'] = element.RegNo;
@@ -178,7 +178,7 @@ let PatientHeaderObj = {};
                 // this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount ||0)
                 // this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
                 
-                var d={
+                const d={
                   
                 }
                 this._DoctorShareService.DoctorProcPayment(d).subscribe(response => { 

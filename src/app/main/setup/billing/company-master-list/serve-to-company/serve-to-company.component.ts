@@ -310,8 +310,8 @@ export class ServeToCompanyComponent {
             this.pageSize = 10; 
         }
         
-        let classId = this.companyForm.get("ClassId2").value || 0
-        var param = {
+        const classId = this.companyForm.get("ClassId2").value || 0
+        const param = {
             // "first": 0,
             // "rows": 10,
             "first": this.pageIndex * this.pageSize,
@@ -430,7 +430,7 @@ export class ServeToCompanyComponent {
     // }
 
     getsubtpaList() {
-        var param = {
+        const param = {
             "searchFields": [
                 {
                     "fieldName": "CompanyId",
@@ -442,7 +442,7 @@ export class ServeToCompanyComponent {
         }
         console.log(param)
         this._CompanyMasterService.getsubtpaListRetrive(param).subscribe(data => {
-            this.subtpaList.data = data as SubTpaCompanyMaster[];;
+            this.subtpaList.data = data as SubTpaCompanyMaster[];
             console.log(this.subtpaList.data)
         });
 
@@ -477,7 +477,7 @@ export class ServeToCompanyComponent {
                 type = 3
             }
 
-            var param = {
+            const param = {
                 "first": 0,
                 "rows": 10,
                 "sortField": "ServiceId",
@@ -532,7 +532,7 @@ export class ServeToCompanyComponent {
             this.chargeList = this.DSServicedetailMainList.data
         }
 
-        let Serv = row.ServiceName
+        const Serv = row.ServiceName
         const newRow = (
             {
                 GroupId: row.GroupId,
@@ -660,7 +660,7 @@ export class ServeToCompanyComponent {
 
     maindeleteTableRow(element) {
         this.servlist = this.DSServicedetailMainList.data;
-        let index = this.servlist.indexOf(element);
+        const index = this.servlist.indexOf(element);
         if (index >= 0) {
             this.servlist.splice(index, 1);
             this.DSServicedetailMainList.data = [];
@@ -673,7 +673,7 @@ export class ServeToCompanyComponent {
 
 
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

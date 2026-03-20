@@ -38,10 +38,10 @@ export class NewOtnotesComponent {
   registerObj = new otNote({});
 
   autocompleteModestatus: string = "State";
-  autocompleteModeSurgery: String = "SurgeryMaster";
-  autocompleteModeConDoctor: String = "ConDoctor";
-  autocompleteModeRefDoctor: String = "RefDoctor";
-  autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeSurgery: string = "SurgeryMaster";
+  autocompleteModeConDoctor: string = "ConDoctor";
+  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompleteModeOTTable: string = "OttableMaster";
 
   constructor(
     public _otNoteService: OtNoteService,
@@ -122,8 +122,8 @@ export class NewOtnotesComponent {
     //     DetSpecLab = row[1]
     //   }
     // })
-    let description = this.OTNoteform.get('description')?.value || '';
-    let ID = description.split('<br><br>');
+    const description = this.OTNoteform.get('description')?.value || '';
+    const ID = description.split('<br><br>');
 
     let row: string[];
 
@@ -137,8 +137,8 @@ export class NewOtnotesComponent {
       row = element.split(':');
       if (row.length < 2) return;
 
-      let key = row[0].trim();
-      let value = row[1].trim();
+      const key = row[0].trim();
+      const value = row[1].trim();
 
       if (key === 'Incision') {
         IncisionNew = value;
@@ -201,7 +201,7 @@ export class NewOtnotesComponent {
         this.onClose();
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.OTNoteform.invalid) {
         for (const controlName in this.OTNoteform.controls) {
           if (this.OTNoteform.controls[controlName].invalid) {

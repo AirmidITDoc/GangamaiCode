@@ -44,7 +44,7 @@ export class NewGendermasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.genderForm.invalid) {
                 for (const controlName in this.genderForm.controls) {
                     if (this.genderForm.controls[controlName].invalid) {

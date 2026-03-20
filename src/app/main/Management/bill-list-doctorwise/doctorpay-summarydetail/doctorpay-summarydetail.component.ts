@@ -127,7 +127,7 @@ export class DoctorpaySummarydetailComponent {
 
   getBilldetailList() {
 
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "DoctorId",
@@ -188,7 +188,7 @@ export class DoctorpaySummarydetailComponent {
   calculateshare() {
     //  if (!this.MlcInfoFormGroup.invalid) {
     // console.log(this.MlcInfoFormGroup.value)
-    var data = {}
+    const data = {}
     this._DoctorShareService.DoctorCalculateshare(data).subscribe((response) => {
       console.log(response)
 
@@ -265,7 +265,7 @@ debugger
         this.onClose();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.ProcessForm.invalid) {
         for (const controlName in this.ProcessForm.controls) {

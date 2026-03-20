@@ -27,15 +27,15 @@ export class NewOtPostOperationComponent {
   vequipmentsRequired: any = "1";
   vinfective: any = "1";
 
-  autocompleteModeSiteDescription: String = "SiteDescription";
-  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
-  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
-  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
+  autocompleteModeSiteDescription: string = "SiteDescription";
+  autocompleteModeSurgeryCategory: string = "SurgeryCategory";
+  autocompleteModeDoctorSurgeon: string = "DoctorSurgion";
+  autocompleteModeSurgeryMaster: string = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
-  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeConDoctor: string = "ConDoctor";
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
-  autocompleteModeRefDoctor: String = "RefDoctor";
-  autocompletePaymentMode: String = "PaymentMode";
+  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompletePaymentMode: string = "PaymentMode";
 
   vRegNo: any;
   vPatientName: any;
@@ -72,9 +72,9 @@ export class NewOtPostOperationComponent {
   Chargelist: any[] = [];
   Chargelist1: any[] = [];
   surgeryTypeNames: string[] = ["Normal", "Emergency"];
-  autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeOTTable: string = "OttableMaster";
   autocompleteModeLocation: string = "Location";
-  autocompleteModeotTableCategory: String = "OttypeMaster";
+  autocompleteModeotTableCategory: string = "OttypeMaster";
   addDiagnolist: any = [];
   surgCategoryName: any;
 
@@ -174,7 +174,7 @@ export class NewOtPostOperationComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -209,7 +209,7 @@ export class NewOtPostOperationComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -275,7 +275,7 @@ export class NewOtPostOperationComponent {
     }
     debugger
 
-    let newEntry = {
+    const newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.postOperationForm.get('surgeryCategoryId').value,
       surgeryId: this.postOperationForm.get('surgeryId').value,//
@@ -328,7 +328,7 @@ export class NewOtPostOperationComponent {
 
   deleteTableRow(event, element) {
 
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsDetailList.data = [];
@@ -453,7 +453,7 @@ export class NewOtPostOperationComponent {
 
   FetchList: any = [];
   getReservationSurgeryDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",
@@ -505,7 +505,7 @@ export class NewOtPostOperationComponent {
 
   FetchList1: any = [];
   getReservationAttendentDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",

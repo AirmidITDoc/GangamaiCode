@@ -109,7 +109,7 @@ export class AddformulaComponent implements OnInit {
         this.onClose();
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this._ParameterService.formulaform.invalid) {
         for (const controlName in this._ParameterService.formulaform.controls) {
           if (this._ParameterService.formulaform.controls[controlName].invalid) {

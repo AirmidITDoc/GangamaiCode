@@ -23,16 +23,16 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 })
 export class NewTheaterInComponent {
   theaterInForm: FormGroup;
-  autocompleteModeDepartment: String = "Department";
-  autocompleteModeSiteDescriptionId: String = "SiteDescription";
-  autocompleteModeotTableCategory: String = "OttypeMaster";
-  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
-  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
+  autocompleteModeDepartment: string = "Department";
+  autocompleteModeSiteDescriptionId: string = "SiteDescription";
+  autocompleteModeotTableCategory: string = "OttypeMaster";
+  autocompleteModeDoctorSurgeon: string = "DoctorSurgion";
+  autocompleteModeSurgeryMaster: string = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
-  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeConDoctor: string = "ConDoctor";
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
-  autocompleteModeRefDoctor: String = "RefDoctor";
-  autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompleteModeOTTable: string = "OttableMaster";
   autocompleteModeLocation: string = "Location";
 
   vRegNo: any;
@@ -163,7 +163,7 @@ export class NewTheaterInComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -261,7 +261,7 @@ export class NewTheaterInComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -302,7 +302,7 @@ export class NewTheaterInComponent {
 
   FetchList: any = [];
   getReservationSurgeryDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",
@@ -370,7 +370,7 @@ export class NewTheaterInComponent {
   }
   FetchList1: any = [];
   getReservationAttendentDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",

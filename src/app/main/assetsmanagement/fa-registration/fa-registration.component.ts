@@ -100,7 +100,7 @@ export class FARegistrationComponent {
   onNewfaregistration(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewFARegistrationComponent,
       {
         maxWidth: "95vw",
@@ -125,7 +125,7 @@ export class FARegistrationComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -136,7 +136,7 @@ export class FARegistrationComponent {
 
 }
 export class assetsInsert {
-  assertId: Number;
+  assertId: number;
   assetsName: any;
   assetCode: any;
   categoryId: any;

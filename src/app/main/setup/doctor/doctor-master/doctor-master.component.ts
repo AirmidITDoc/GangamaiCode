@@ -471,7 +471,7 @@ export class DoctorMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(DoctorExecutiveComponent,
             {
                 maxWidth: "50vw",
@@ -519,7 +519,7 @@ export class DoctorMaster {
     MahRegDate1: any;
     UpdatedBy: number;
     refDocHospitalName: string;
-    AddedBy: String;
+    AddedBy: string;
     CurrentDate = new Date();
     IsDeletedSearch: number;
     Age: any;

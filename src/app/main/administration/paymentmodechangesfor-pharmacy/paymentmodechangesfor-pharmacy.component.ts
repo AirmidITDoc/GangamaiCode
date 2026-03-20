@@ -286,7 +286,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
         maxHeight: "35vh",
@@ -310,7 +310,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
 
   onEdit(m) {
     console.log(m)
-    let xx = {
+    const xx = {
       UserId: m.UserId,
       FirstName: m.FirstName,
       LastName: m.LastName,
@@ -507,7 +507,7 @@ this.onChangeTpay();
   }
 }
 export class PaymentPharmayList {
-  Date: Number;
+  Date: number;
   ReceiptNo: number;
   SalesNo: number;
   patientName: string;

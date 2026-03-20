@@ -358,12 +358,12 @@ balQty=0
     // if (this.dsNewIssueList3.data.length > 0) {
     //   this.chargeslist = this.dsNewIssueList3.data;
     // } 
-    let TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
-    let PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
+    const TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
+    const PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
 
-    let LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
+    const LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
 
-    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
+    const GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
     // let  CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
     // let  SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
     // let  IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2); 
@@ -554,7 +554,7 @@ balQty=0
         this.OnNewSave();
       }
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.IssueFinalForm.invalid) {
         for (const controlName in this.IssueFinalForm.controls) {
@@ -578,11 +578,11 @@ balQty=0
     const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
 
     if (isChecked) {
-      let isertItemdetailsObj = [];
+      const isertItemdetailsObj = [];
       this.dsNewIssueList3.data.forEach(element => {
         console.log(element)
 
-        let insertitemdetail = {};
+        const insertitemdetail = {};
         insertitemdetail['issueDepId'] = 0;
         insertitemdetail['issueId'] = 0;
         insertitemdetail['itemId'] = element.ItemId;
@@ -600,9 +600,9 @@ balQty=0
         insertitemdetail['stkId'] = element.StockId;
         isertItemdetailsObj.push(insertitemdetail);
       });
-      let updateissuetoDepartmentStock = [];
+      const updateissuetoDepartmentStock = [];
       this.dsNewIssueList3.data.forEach(element => {
-        let updateitemdetail = {};
+        const updateitemdetail = {};
         updateitemdetail['itemId'] = element.ItemId;
         updateitemdetail['issueQty'] = element.Qty;
         updateitemdetail['stkId'] = element.StockId;
@@ -611,7 +611,7 @@ balQty=0
       });
 
       console.log(this.IssueFinalForm.value)
-      let submitData = {
+      const submitData = {
         issue: {
           "issueId": 0,
           "issueDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
@@ -693,7 +693,7 @@ balQty=0
   OnSaveAgaintIndent() {
     debugger
     this.vsaveflag = true;
-    let isertItemdetailsObj = [];
+    const isertItemdetailsObj = [];
 
     const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
     if (isChecked) {
@@ -760,12 +760,12 @@ debugger
   OnSaveAgaintIndent1() {
 
     this.vsaveflag = true;
-    let isertItemdetailsObj = [];
+    const isertItemdetailsObj = [];
 
     const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
     if (isChecked) {
       // this.savebtn = true;
-      let insertheaderObj = {};
+      const insertheaderObj = {};
       insertheaderObj['issueDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
         insertheaderObj['issueTime'] = this.dateTimeObj.time,
         insertheaderObj['fromStoreId'] = this.accountService.currentUserValue.userId
@@ -785,7 +785,7 @@ debugger
       this.dsNewIssueList3.data.forEach(element => {
         console.log(element)
 
-        let insertitemdetail = {};
+        const insertitemdetail = {};
         insertitemdetail['issueId'] = 0;
         insertitemdetail['itemId'] = element.ItemId;
         insertitemdetail['batchNo'] = element.BatchNo;
@@ -803,10 +803,10 @@ debugger
         isertItemdetailsObj.push(insertitemdetail);
       });
 
-      let updateissuetoDepartmentStock = [];
+      const updateissuetoDepartmentStock = [];
       this.dsNewIssueList3.data.forEach(element => {
 
-        let updateitemdetail = {};
+        const updateitemdetail = {};
         updateitemdetail['itemId'] = element.ItemId;
         updateitemdetail['issueQty'] = element.Qty;
         updateitemdetail['stkId'] = element.StockId;
@@ -815,22 +815,22 @@ debugger
       });
 
 
-      let update_IndentHeader_StatusObj = {};
+      const update_IndentHeader_StatusObj = {};
       update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
       update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk || true;
 
 
-      let updateIndentStatusIndentDetails = [];
+      const updateIndentStatusIndentDetails = [];
       this.dsNewIssueList3.data.forEach(element => {
         console.log(element)
         debugger
-        let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+        const balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
         if (balQty == 0) {
           this.Isclosedchk = false;
         } else {
           this.Isclosedchk = true;
         }
-        let updateIndentStatusIndentDetailsObj = {};
+        const updateIndentStatusIndentDetailsObj = {};
         updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
         updateIndentStatusIndentDetailsObj['indDetID'] = element.IndentDetailsId;
         updateIndentStatusIndentDetailsObj['isClosed'] = this.Isclosedchk;
@@ -838,7 +838,7 @@ debugger
         updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
       });
 
-      let submitData = {
+      const submitData = {
         updateIndent: insertheaderObj,
         // tIssueToDepartmentDetails: isertItemdetailsObj,
         tCurStockModel: updateissuetoDepartmentStock,
@@ -877,7 +877,7 @@ debugger
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -887,7 +887,7 @@ debugger
   }
 
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsNewIssueList3.data = [];
@@ -997,7 +997,7 @@ debugger
       this.Itemchargeslist1 = [];
       this.QtyBalchk = 0;
       debugger
-      var m_data = {
+      const m_data = {
         "ItemId": contact.itemId,
         "StoreId": this.accountService.currentUserValue.user.storeId || 0
       }
@@ -1015,7 +1015,7 @@ debugger
           let bal_qnt = 0;
           this.Itemchargeslist1.forEach((element) => {
 
-            let IndQty = remaing_qty;
+            const IndQty = remaing_qty;
             if (IndQty > 0) {
 
               if (ItemID != element.itemId) {
@@ -1059,21 +1059,21 @@ debugger
 
     this.RQty = parseInt(DraftQty);
     if (this.RQty && contact.unitMRP) {
-      let TotalMRP = (parseInt(this.RQty) * (contact.unitMRP)).toFixed(2);
+      const TotalMRP = (parseInt(this.RQty) * (contact.unitMRP)).toFixed(2);
 
-      let LandedRateandedTotal = (parseInt(this.RQty) * (contact.landedRate)).toFixed(2);
-      let PurTotAmt = (parseInt(this.RQty) * (contact.purchaseRate)).toFixed(2);
+      const LandedRateandedTotal = (parseInt(this.RQty) * (contact.landedRate)).toFixed(2);
+      const PurTotAmt = (parseInt(this.RQty) * (contact.purchaseRate)).toFixed(2);
 
-      let v_marginamt = (parseFloat(LandedRateandedTotal) - parseFloat(LandedRateandedTotal)).toFixed(2);
+      const v_marginamt = (parseFloat(LandedRateandedTotal) - parseFloat(LandedRateandedTotal)).toFixed(2);
 
-      let GSTAmount = (((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
-      let CGSTAmt = (((contact.landedRate) * (contact.cgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      let SGSTAmt = (((contact.landedRate) * (contact.sgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      let IGSTAmt = (((contact.landedRate) * (contact.igstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+      const GSTAmount = (((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
+      const CGSTAmt = (((contact.landedRate) * (contact.cgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+      const SGSTAmt = (((contact.landedRate) * (contact.sgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+      const IGSTAmt = (((contact.landedRate) * (contact.igstPer) / 100) * parseInt(this.RQty)).toFixed(2);
 
-      let NetAmt = ((parseFloat(LandedRateandedTotal) + parseFloat(GSTAmount))).toFixed(2);
+      const NetAmt = ((parseFloat(LandedRateandedTotal) + parseFloat(GSTAmount))).toFixed(2);
 
-      let BQty = contact.balanceQty - this.RQty;
+      const BQty = contact.balanceQty - this.RQty;
 
 
       if (contact.DiscPer > 0) {

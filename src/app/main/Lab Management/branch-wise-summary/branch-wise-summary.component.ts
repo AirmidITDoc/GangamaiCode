@@ -419,7 +419,7 @@ export class BranchWiseSummaryComponent {
   viewgetReportPdf() {
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
-    var vdata = {
+    const vdata = {
       "searchFields": [
         {
           "fieldName": "UnitId",
@@ -460,7 +460,7 @@ export class BranchWiseSummaryComponent {
     this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
 
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 200,
       "sortField": "UnitId",

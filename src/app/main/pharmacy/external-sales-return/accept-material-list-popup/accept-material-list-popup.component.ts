@@ -61,7 +61,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
   }
   getItemList(Params) {
    // 
-    var Param = {
+    const Param = {
       "IssueId": Params
     }
     this._SalesReturn.getItemdetailList(Param).subscribe(data => {
@@ -111,15 +111,15 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       this.Acceptedchk = 0;
     }
    
-    let materialAcceptIssueHeader = {};
+    const materialAcceptIssueHeader = {};
     materialAcceptIssueHeader['issueId'] = parseInt(this.registerObj.IssueId);
     materialAcceptIssueHeader['acceptedBy'] =this._loggedService.currentUserValue.userId;
     materialAcceptIssueHeader['IsAccepted'] = this.Acceptedchk;
 
     
-    let materialAcceptIssueDetails = [];
+    const materialAcceptIssueDetails = [];
     this.tempItemlist.forEach((element) => { 
-      let materialAcceptIssueDetailsObj = {};
+      const materialAcceptIssueDetailsObj = {};
       materialAcceptIssueDetailsObj['issueId'] = element.IssueId;
       materialAcceptIssueDetailsObj['issueDetId'] = element.IssueDepId;
       let selectedchk="0";
@@ -134,10 +134,10 @@ export class AcceptMaterialListPopupComponent implements OnInit {
       materialAcceptIssueDetails.push(materialAcceptIssueDetailsObj);
     });
 
-    let materialAcceptStockUpdate = {};
+    const materialAcceptStockUpdate = {};
     materialAcceptStockUpdate['issueId'] = parseInt(this.registerObj.IssueId); 
 
-    let submitData = {
+    const submitData = {
       "materialAcceptIssueHeader": materialAcceptIssueHeader,
       "materialAcceptIssueDetails": materialAcceptIssueDetails,
       "materialAcceptStockUpdate":materialAcceptStockUpdate 

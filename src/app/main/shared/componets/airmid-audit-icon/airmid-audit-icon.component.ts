@@ -31,7 +31,7 @@ export class AirmidAuditIconComponent implements OnInit, OnDestroy {
     OpenAudit() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        let row = { "EntityName": this.EntityName ?? '', "EntityId": this.EntityId ?? '', "ApiUrl": this.ApiUrl };
+        const row = { "EntityName": this.EntityName ?? '', "EntityId": this.EntityId ?? '', "ApiUrl": this.ApiUrl };
         const dialogRef = this._matDialog.open(AirmidAuditComponent,
             {
                 maxWidth: "100vw",

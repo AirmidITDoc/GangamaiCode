@@ -85,7 +85,7 @@ export class NewReportConfigurationComponent implements OnInit{
             });
         } 
        else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.myform.invalid) {
                 for (const controlName in this.myform.controls) {
                     if (this.myform.controls[controlName].invalid) { invalidFields.push(`Report Form: ${controlName}`); }

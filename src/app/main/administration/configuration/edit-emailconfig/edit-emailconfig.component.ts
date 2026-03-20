@@ -101,7 +101,7 @@ export class EditEmailconfigComponent {
       });
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.EmailForm.invalid) {
         for (const controlName in this.EmailForm.controls) {

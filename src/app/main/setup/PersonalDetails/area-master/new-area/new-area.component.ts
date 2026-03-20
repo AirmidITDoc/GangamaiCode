@@ -47,7 +47,7 @@ export class NewAreaComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.areaForm.invalid) {
                 for (const controlName in this.areaForm.controls) {
                     if (this.areaForm.controls[controlName].invalid) {

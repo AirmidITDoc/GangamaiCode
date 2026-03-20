@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.invalid) {
             return;
         }
-        var data = {
+        const data = {
             CaptchaToken: this.captchaToken, Username: this.encryptionService.encrypt(this.obj.Username),
             Password: this.encryptionService.encrypt(this.obj.Password),
             CaptchaCode: this.loginForm.value.CaptchaCode,

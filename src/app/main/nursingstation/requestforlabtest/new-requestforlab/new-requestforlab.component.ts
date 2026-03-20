@@ -31,7 +31,7 @@ export class NewRequestforlabComponent implements OnInit {
   RegId: any;
   DoctorName: any;
   registration: any;
-  isLoading: String = '';
+  isLoading: string = '';
   sIsLoading: string = "";
   CompanyName: any;
   vTariffId: any = 0;
@@ -163,10 +163,10 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   getServiceList() {
-    let ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
-    let IsPathRad = this.myFormGroup.get("IsPathRad").value || "3"
+    const ServiceName = this.myFormGroup.get("ServiceId").value + "%" || "%";
+    const IsPathRad = this.myFormGroup.get("IsPathRad").value || "3"
     if (this.vRegNo) {
-      var param = {
+      const param = {
         "first": 0,
         "rows": 999,
         "sortField": "ServiceId",
@@ -267,7 +267,7 @@ export class NewRequestforlabComponent implements OnInit {
         }
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
 
       if (this.labRequestInsert.invalid) {
         for (const controlName in this.labRequestInsert.controls) {
@@ -362,7 +362,7 @@ export class NewRequestforlabComponent implements OnInit {
     this.isLoading = 'save';
     this.dstable1.data = [];
     if (this.chargeslist && this.chargeslist.length > 0) {
-      let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.serviceId);
+      const duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.serviceId);
       if (duplicateItem && duplicateItem.length == 0) {
         this.addChargList(row);
         return;
@@ -398,7 +398,7 @@ export class NewRequestforlabComponent implements OnInit {
 
   deleteTableRow(element) {
     this.chargeslist = this.dstable1.data;
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dstable1.data = [];

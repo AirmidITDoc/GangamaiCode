@@ -124,7 +124,7 @@ export class IpReportComponent implements OnInit {
 
   bindReportData() {
     // let qry = "SELECT * FROM ReportConfigMaster WHERE IsActive=1 AND IsDeleted=0 AND ReportType=1";
-var data={
+const data={
   ReportSection:this.Reportsection//"IP Reports"
 }
     this._IPReportService.getDataByQuery(data).subscribe(data => {
@@ -600,7 +600,7 @@ var data={
   }
 
   GetUserList() {
-    var data = {
+    const data = {
       "StoreId": this._loggedUser.currentUserValue.storeId
     }
     this._IPReportService.getUserdetailList(data).subscribe(data => {
@@ -987,7 +987,7 @@ viewgetIPAdvanceReportPdf() {
   }
 
   getMaterialConsumptionpdf() {
-    let MaterialConsumptionId=this._IPReportService.userForm.get('MaterialConsumptionId').value || 0;
+    const MaterialConsumptionId=this._IPReportService.userForm.get('MaterialConsumptionId').value || 0;
     setTimeout(() => {
       this.SpinLoading =true;
     //  this.AdList=true;
@@ -1546,7 +1546,7 @@ viewgetIPAdvanceReportPdf() {
   
   viewgetMaterialConsumptionPdf() {
     this.sIsLoading = 'loading-data';
-   let MaterialConsumptionId=0
+   const MaterialConsumptionId=0
      setTimeout(() => {
        this.AdList = true;
        this._IPReportService.getMaterialConsumptionReport(

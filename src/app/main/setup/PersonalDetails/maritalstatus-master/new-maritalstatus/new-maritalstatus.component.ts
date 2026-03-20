@@ -38,7 +38,7 @@ export class NewMaritalstatusComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.maritalForm.invalid) {
                 for (const controlName in this.maritalForm.controls) {
                     if (this.maritalForm.controls[controlName].invalid) {

@@ -53,7 +53,7 @@ export class DoctorExecutiveComponent {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.executiveForm.invalid) {
         for (const controlName in this.executiveForm.controls) {
           if (this.executiveForm.controls[controlName].invalid) {

@@ -26,7 +26,7 @@ export class JwtInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         // add authorization header with jwt token if available
-        let currentUser = this.authenticationService.currentUserValue;
+        const currentUser = this.authenticationService.currentUserValue;
         const ctx = this.contextSvc.getContext();
         if (currentUser && currentUser.token) {
             if (request.body instanceof FormData)
@@ -94,7 +94,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     }
                 }
                 else {
-                    let errorMessage = 'An unknown error occurred. Please try again after sometime';
+                    const errorMessage = 'An unknown error occurred. Please try again after sometime';
                     this.toastr.error(errorMessage, 'Error !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });

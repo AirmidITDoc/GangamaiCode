@@ -206,7 +206,7 @@ export class ServiceMasterFormComponent implements OnInit {
     getClassList() {
 debugger
         if (this.ServiceId) {
-            var param = {
+            const param = {
                 "first": 0,
                 "rows": 999,
                 "sortField": "ServiceDetailId",
@@ -221,12 +221,12 @@ debugger
             console.log(param)
             this._serviceMasterService.getClassMasterListRetrive(param).subscribe(Menu => {
 
-                this.DSServicedetailList.data = Menu.data as Servicedetail[];;
+                this.DSServicedetailList.data = Menu.data as Servicedetail[];
                 console.log(this.DSServicedetailList.data)
             });
         } else {
 
-            var param1 = {
+            const param1 = {
                 "first": 0,
                 "rows": 999,
                 "sortField": "ClassId",
@@ -333,7 +333,7 @@ debugger
             });
 
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
 
             if (this.serviceForm.invalid) {
                 for (const controlName in this.serviceForm.controls) {
@@ -484,7 +484,7 @@ debugger
     }
 
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

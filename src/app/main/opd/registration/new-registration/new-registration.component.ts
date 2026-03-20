@@ -166,7 +166,7 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     OnSubmit() {
-        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+        const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth1);
@@ -188,7 +188,7 @@ export class NewRegistrationComponent implements OnInit {
             }
         }
 
-        let Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
+        const Bdate = this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd")
         this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
         this.personalFormGroup.get('City').setValue(this.CityName)
 
@@ -223,7 +223,7 @@ export class NewRegistrationComponent implements OnInit {
                 this.OnPrint(response);
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
 
             if (this.personalFormGroup.invalid) {
                 for (const controlName in this.personalFormGroup.controls) {
@@ -289,7 +289,7 @@ export class NewRegistrationComponent implements OnInit {
 
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -495,7 +495,7 @@ export class NewRegistrationComponent implements OnInit {
 
     CalcDOB(mode, e) {
         // debugger
-        let d = new Date();
+        const d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
             this.value = d;
@@ -523,8 +523,8 @@ export class NewRegistrationComponent implements OnInit {
     }
 
     getDate(dateStr: string) {
-        let dtStr = dateStr.split('-');
-        var newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];
+        const dtStr = dateStr.split('-');
+        const newDate = dtStr[1] + '/' + dtStr[0] + '/' + dtStr[2];
         return new Date(newDate);
     }
     dateTimeObj: any;

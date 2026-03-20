@@ -45,7 +45,7 @@ debugger
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.CategoryForm.invalid) {
         for (const controlName in this.CategoryForm.controls) {
           if (this.CategoryForm.controls[controlName].invalid) {

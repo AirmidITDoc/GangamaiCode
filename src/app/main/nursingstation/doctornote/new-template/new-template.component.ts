@@ -59,7 +59,7 @@ export class NewTemplateComponent implements OnInit {
                 this.onClose()
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
 
             if (this.Templateform.invalid) {
                 for (const controlName in this.Templateform.controls) {

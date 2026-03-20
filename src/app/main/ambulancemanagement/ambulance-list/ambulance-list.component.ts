@@ -106,7 +106,7 @@ export class AmbulanceListComponent implements OnInit {
       OnNew(row: any = null) {
           const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
           buttonElement.blur(); // Remove focus from the button 
-          let that = this;
+          const that = this;
           const dialogRef = this._matDialog.open(NewAmbulanceDetailComponent,
               {
                   maxWidth: "95vw",
@@ -134,7 +134,7 @@ export class AmbulanceListComponent implements OnInit {
       onNew(row: any = null) {
           const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
           buttonElement.blur(); // Remove focus from the button
-          let that = this;
+          const that = this;
           const dialogRef = this._matDialog.open(NewAmbulanceDetailComponent,
               {
                   maxWidth: "95vw",
@@ -202,7 +202,7 @@ export class AmbulanceListComponent implements OnInit {
       }
   
       keyPressAlphanumeric(event) {
-          var inp = String.fromCharCode(event.keyCode);
+          const inp = String.fromCharCode(event.keyCode);
           if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
               return true;
           } else {

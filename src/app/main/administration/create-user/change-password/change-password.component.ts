@@ -20,9 +20,9 @@ import { ToastrService } from 'ngx-toastr';
 export class ChangePasswordComponent implements OnInit {
 
   hasSelectedContacts: boolean;
-  fname: String;
-  lname: String;
-  Uname: String;
+  fname: string;
+  lname: string;
+  Uname: string;
   changePasswordFormGroup: FormGroup;
   hide = true;
   UserId: any;
@@ -49,7 +49,7 @@ export class ChangePasswordComponent implements OnInit {
     this.changePasswordFormGroup = this.createchangePasswordForm();
     this.changePasswordFormGroup.markAllAsTouched()
 
-    var mdata = {
+    const mdata = {
       userName: this.accountService.currentUserValue?.user.userName,
     };
     this.changePasswordFormGroup.patchValue(mdata);
@@ -121,7 +121,7 @@ export class ChangePasswordComponent implements OnInit {
         }
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.changePasswordFormGroup.invalid) {
         for (const controlName in this.changePasswordFormGroup.controls) {
           if (this.changePasswordFormGroup.controls[controlName].invalid) {

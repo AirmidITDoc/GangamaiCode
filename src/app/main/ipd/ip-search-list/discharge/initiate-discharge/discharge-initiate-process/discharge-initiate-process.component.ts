@@ -96,7 +96,7 @@ this.deptname=event.text
 
   }
   deleteTableRow(element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsDepartmentlist.data = [];
@@ -113,9 +113,9 @@ this.deptname=event.text
       return;
     }
 
-    let saveDischargeInitiateParam = [];
+    const saveDischargeInitiateParam = [];
     this.dsDepartmentlist.data.forEach(element => {
-      let saveDischargeInitiateParamObj = {
+      const saveDischargeInitiateParamObj = {
         "admID": this.registerObj.AdmissionID || 0,
         "departmentName": element.DepartmentName || '',
         "departmentID": element.DepartmentID || 0,
@@ -126,17 +126,17 @@ this.deptname=event.text
       saveDischargeInitiateParam.push(saveDischargeInitiateParamObj)
     })
 
-    let updateDischargeInitiateParam = {
+    const updateDischargeInitiateParam = {
       "admID":this.registerObj.AdmissionID || 0,
       "isInitinatedDischarge": 1
     }
 
-    let submitData = {
+    const submitData = {
       "saveDischargeInitiateParam": saveDischargeInitiateParam,
       "updateDischargeInitiateParam":updateDischargeInitiateParam
     }
 
-    var submitData1={
+    const submitData1={
 "initateDiscId": 0,
   "admId": 210,
   "departmentName": "D",
@@ -148,7 +148,7 @@ this.deptname=event.text
   "comments": "string"
     }
 
-    var data={
+    const data={
       initiateDischarge:submitData1
     }
     

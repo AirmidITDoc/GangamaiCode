@@ -240,7 +240,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onAdd() {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
             {
                 maxWidth: "96%",
@@ -314,7 +314,7 @@ export class PathparameterMaster {
     ParameterName: string;
     PrintParameterName: string;
     UnitId: number;
-    IsNumeric: Number;
+    IsNumeric: number;
     Isdeleted: boolean;
     AddedBy: number;
     UpdatedBy: number;

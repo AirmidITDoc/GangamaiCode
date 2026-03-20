@@ -63,8 +63,8 @@ export class RadioLabOutsourceComponent {
     console.log(this.data);
     this.LabFormGroup = this.createLabForm();
     this.LabFormGroup.markAllAsTouched();
-    var now = new Date();
-    var now1 = new Date()
+    const now = new Date();
+    const now1 = new Date()
     debugger
     if (this.data) {
       this.vradReportId = this.data.radReportId
@@ -218,7 +218,7 @@ export class RadioLabOutsourceComponent {
         this._matDialog.closeAll()
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.LabFormGroup.invalid) {
         for (const controlName in this.LabFormGroup.controls) {
@@ -237,7 +237,7 @@ export class RadioLabOutsourceComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -264,8 +264,8 @@ export class RadioLabOutsourceComponent {
     }
   }
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
@@ -286,8 +286,8 @@ export class RadioLabOutsourceComponent {
     }
   }
   eventEmitForParent1(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 

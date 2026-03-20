@@ -272,12 +272,12 @@ export class LabResultListComponent {
     this.dataSource1.data = [];
     this.selection.clear();
 
-    let regno = this.myformSearch.get("RegNoSearch").value || "0";
+    const regno = this.myformSearch.get("RegNoSearch").value || "0";
     let fromDate = this.myformSearch.get("start").value || "";
     let toDate = this.myformSearch.get("end").value || "";
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-    let status = this.myformSearch.get("StatusSearch").value || "0";
+    const status = this.myformSearch.get("StatusSearch").value || "0";
 
     this.GetResultdetail()
     // Update the filters dynamically
@@ -327,14 +327,14 @@ export class LabResultListComponent {
 
   getSampledetailList1(row) {
     this.dataSource1.data = [];
-    let rawDate = row.pathDate;
+    const rawDate = row.pathDate;
 
-    let formattedDate = formatDate(row.pathDate);
+    const formattedDate = formatDate(row.pathDate);
     // let formattedDate = `${day}`
 
     console.log(formattedDate);
 
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 20,
       "sortField": "PathDate",
@@ -415,7 +415,7 @@ export class LabResultListComponent {
   }
 
   bindParentGridData() {
-    let gridDataRequest: gridRequest = {
+    const gridDataRequest: gridRequest = {
       sortField: this.gridConfig.sortField,
       sortOrder: this.gridConfig.sortOrder,
       filters: this.gridConfig.filters,
@@ -492,7 +492,7 @@ export class LabResultListComponent {
       }
       else {
         setTimeout(() => {
-          let data = [];
+          const data = [];
 
           this.selection.selected.forEach(element => {
             console.log(element)
@@ -569,7 +569,7 @@ export class LabResultListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 0) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -655,7 +655,7 @@ export class LabResultListComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
           "pathReportID": row.pathReportID
         };
         console.log(submitData);
@@ -763,7 +763,7 @@ export class LabResultListComponent {
   PrintresultentryTop(row: any = null) {
     debugger
     console.log(row);
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     this.selectedItem = this.selection.selected[0];
     this.OnPrintReportLogSave('Lab Print', this.selectedItem)  // log save
@@ -796,7 +796,7 @@ export class LabResultListComponent {
     // debugger
     console.log(row);
     this.OnPrintReportLogSave('Lab Print', row) // log save
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
 
@@ -853,7 +853,7 @@ export class LabResultListComponent {
 
   PrintresultentrywithheaderTop(row: any = null) {
     debugger
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     this.selectedItem = this.selection.selected[0];
     this.OnPrintReportLogSave('Lab Print', this.selectedItem) // log save
@@ -877,7 +877,7 @@ export class LabResultListComponent {
 
   Printresultentrywithheader(row: any = null) {
     this.OnPrintReportLogSave('Lab Print', row) // log save
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
 
@@ -926,7 +926,7 @@ export class LabResultListComponent {
         // this.GetSampleCollectiondetail();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.reportlogFormGroup.invalid) {
         for (const controlName in this.reportlogFormGroup.controls) {
           const control = this.reportlogFormGroup.get(controlName);
@@ -988,14 +988,14 @@ export class LabResultListComponent {
 
   whatsappresultentry() {
     console.log(this.selection.selected)
-    let pathologyDelete = [];
+    const pathologyDelete = [];
     this.selection.selected.forEach((element) => {
       this.SOPIPtype = element["OPD_IPD_Type"]
-      let pathologyDeleteObj = {};
+      const pathologyDeleteObj = {};
       pathologyDeleteObj['pathReportId'] = element["PathReportID"]
       pathologyDelete.push(pathologyDeleteObj);
     });
-    let submitData = {
+    const submitData = {
       "printInsert": pathologyDelete,
     };
     console.log(submitData);
@@ -1033,7 +1033,7 @@ export class LabResultListComponent {
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
 
-    let data =
+    const data =
     {
       "first": 0,
       "rows": 150,
@@ -1240,7 +1240,7 @@ export class LabResultListComponent {
     return this.selection.selected.length > 0;
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1638,25 +1638,25 @@ export class AdmissionPersonl {
   Address: any;
   PrefixId: any;
   opD_IPD_Type: any;
-  Age: Number;
+  Age: number;
   AgeDay: any;
   AgeMonth: any;
   AgeYear: any;
   ageDay: any;
   ageMonth: any;
   ageYear: any;
-  AreaId: Number;
+  AreaId: number;
   CityName: string;
-  CityId: Number;
-  CountryId: Number;
+  CityId: number;
+  CountryId: number;
   DateofBirth: any;
   Expr1: any;
   FirstName: string;
-  GenderId: Number;
+  GenderId: number;
   GenderName: string;
   IsCharity: any;
-  LastName: String;
-  MaritalStatusId: Number;
+  LastName: string;
+  MaritalStatusId: number;
   MiddleName: string;
   MobileNo: string;
   PanCardNo: any;
@@ -1669,17 +1669,17 @@ export class AdmissionPersonl {
   PrefixName: string;
   RDate: any;
   RegDate: any;
-  RegId: Number;
-  RegNo: Number;
-  regNo: Number;
+  RegId: number;
+  RegNo: number;
+  regNo: number;
   RegNoWithPrefix: string;
   RegTime: string;
   RegTimeDate: string;
-  ReligionId: Number;
-  StateId: Number;
-  TalukaId: Number;
+  ReligionId: number;
+  StateId: number;
+  TalukaId: number;
   TalukaName: string;
-  VillageId: Number;
+  VillageId: number;
   VillageName: string;
   Departmentid: any;
   currentDate = new Date();
@@ -1690,8 +1690,8 @@ export class AdmissionPersonl {
   AdmissionID: any;
   AdmissionDate: Date;
   AdmissionTime: Date;
-  RelativeName: String;
-  relativeName: String;
+  RelativeName: string;
+  relativeName: string;
   DoctorId: number;
   RelatvieMobileNo: any;
   MaritalStatusName: string;

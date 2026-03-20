@@ -552,7 +552,7 @@ VReason:any='';
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 console.log(row)
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
         maxHeight: "35vh",
@@ -599,7 +599,7 @@ console.log(row)
     }).then((result) => {
 
       if (result.isConfirmed) {
-        let SubmitDate = {
+        const SubmitDate = {
           "billNo": contact.billNo || 0,
           "discComments":this.VReason || ''
         }
@@ -629,7 +629,7 @@ console.log(row)
     }).then((result) => {
 
       if (result.isConfirmed) {
-        let SubmitDate = {
+        const SubmitDate = {
           "billNo": contact.billNo || 0,
           "discComments":this.VReason || ''
         }
@@ -684,7 +684,7 @@ console.log(row)
     }).then((result) => {
       debugger
       if (result.isConfirmed) {
-        let SubmitDate = {
+        const SubmitDate = {
           "advanceId": contact.advanceId || 0,
           "advanceDetailId": contact.advanceDetailID || 0,
           "addedBy": contact.addedBy || 0,
@@ -732,7 +732,7 @@ export class CancellationList {
   RegNo: any;
   PatientName: string;
   BillAmt: number;
-  ConAmt: Number;
+  ConAmt: number;
   NetpayableAmt: number;
   BillDate: number;
   PBillNo: number;

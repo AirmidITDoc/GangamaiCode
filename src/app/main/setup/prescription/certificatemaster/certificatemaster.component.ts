@@ -101,7 +101,7 @@ export class CertificatemasterComponent implements OnInit {
 
     onSave(row: any = null) {
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCertificateComponent,
             {
                 maxWidth: "95vw",

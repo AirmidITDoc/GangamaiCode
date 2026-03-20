@@ -169,7 +169,7 @@ export class NewedipamodeComponent {
   chargelist: any = [];
   getPaylist() {
     debugger
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 100,
       "sortField": "BillNo",
@@ -262,7 +262,7 @@ export class NewedipamodeComponent {
   //   }
   // }
   keyPressDigitsOnly(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

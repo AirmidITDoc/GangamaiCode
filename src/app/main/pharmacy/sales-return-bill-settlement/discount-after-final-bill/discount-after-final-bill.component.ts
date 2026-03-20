@@ -126,7 +126,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   }
   CalcDiscAmt() {
     debugger
-    let DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0; 
+    const DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0; 
     let DiscPer2; 
 
     if (DiscAmt2) {
@@ -188,7 +188,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         }
       },);
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.saveform.invalid) {
         for (const controlName in this.saveform.controls) {
           if (this.saveform.controls[controlName].invalid) {
@@ -210,7 +210,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     this.MyFrom.reset();
   }
   keyPressCharater(event){
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -222,7 +222,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
           UserDicPerLimit: any = 0;
         getAccessDetail() {
             // debugger
-            var SelectQuery = {
+            const SelectQuery = {
                 "first": 0,
                 "rows": 999,
                 "sortField": "AccessValueId",

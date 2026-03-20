@@ -122,7 +122,7 @@ export class TestFormMasterComponent implements OnInit {
         }
 
         this.getParameterList();
-        var m_data = {
+        const m_data = {
             TestId: this.data?.testId,
             TestName: this.data?.testName,
             PrintTestName: this.data?.printTestName,
@@ -252,7 +252,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTestlist(obj) {
-        var m_data =
+        const m_data =
         {
             "first": 0,
             "rows": 9999,
@@ -394,7 +394,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTemplate(obj) {
-        var m_data = {
+        const m_data = {
             "first": 0,
             "rows": 999,
             "sortField": "TemplateId",
@@ -520,8 +520,8 @@ export class TestFormMasterComponent implements OnInit {
 
     getParameterList() {
         // debugger
-        let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
-        var param = {
+        const parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
+        const param = {
             "first": 0,
             "rows": 999,
             "sortField": "ParameterId",
@@ -548,7 +548,7 @@ export class TestFormMasterComponent implements OnInit {
         }
         this._TestmasterService.getParameterMasterList(param).subscribe(data => {
 
-            this.paramterList.data = data.data as TestList[];;
+            this.paramterList.data = data.data as TestList[];
             this.paramterList.sort = this.sort;
             this.paramterList.paginator = this.paginator;
         });
@@ -556,8 +556,8 @@ export class TestFormMasterComponent implements OnInit {
 
     // isSubtest checkbox list 
     getSubTestMasterList() {
-        let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
-        var param = {
+        const parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
+        const param = {
             "first": 0,
             "rows": 999,
             "sortField": "TestId",
@@ -574,7 +574,7 @@ export class TestFormMasterComponent implements OnInit {
         }
         this._TestmasterService.getIsSubTestList(param).subscribe(data => {
 
-            this.paramterList.data = data.data as TestList[];;
+            this.paramterList.data = data.data as TestList[];
             this.paramterList.sort = this.sort;
             this.paramterList.paginator = this.paginator;
         });
@@ -614,7 +614,7 @@ export class TestFormMasterComponent implements OnInit {
     // }
 
     onDeleteRow(event) {
-        let paraid = event.parameterID ?? event.parameterId
+        const paraid = event.parameterID ?? event.parameterId
         // PARAMETER delete
         if (paraid && !event.testId) {
 
@@ -694,7 +694,7 @@ export class TestFormMasterComponent implements OnInit {
             this.chargeslist = [];
 
         if (this.chargeslist.length > 0 && this.chargeslist.length != 1) {
-            let isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
+            const isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected Parameter already added in the list', 'Warning!', {
@@ -717,7 +717,7 @@ export class TestFormMasterComponent implements OnInit {
         debugger
         this.ChargeList = this.DSTestList.data || [];
 
-        let exists = this.ChargeList.some(item => item.ParameterID === row.parameterId);
+        const exists = this.ChargeList.some(item => item.ParameterID === row.parameterId);
         if (!exists) {
             this.ChargeList.push({
                 parameterId: row.parameterId,
@@ -741,7 +741,7 @@ export class TestFormMasterComponent implements OnInit {
             this.chargeslist = [];
         }
         if (this.chargeslist.length > 0) {
-            let isDuplicate = this.chargeslist.some(ele => ele.testId === row.testId);
+            const isDuplicate = this.chargeslist.some(ele => ele.testId === row.testId);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected SubTest already added in the list', 'Warning!', {
@@ -782,7 +782,7 @@ export class TestFormMasterComponent implements OnInit {
             console.log('API returned:', apiData);
             if (!this.ChargeList) this.ChargeList = [];
 
-            let newItems = apiData.length > 0 ? apiData : [{
+            const newItems = apiData.length > 0 ? apiData : [{
                 parameterID: row.parameterId || 0,
                 parameterName: row.parameterName,
                 subTestID: row.subTestID || 0,

@@ -69,7 +69,7 @@ export class EndoscopyComponent implements OnInit {
     this.searchFormGroup = this.createSearchForm();
   
 
-    var D_data= {
+    const D_data= {
      
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "ToDate":  this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
@@ -104,7 +104,7 @@ export class EndoscopyComponent implements OnInit {
 
     
      this.sIsLoading = 'loading-data';
-     var m_data = {
+     const m_data = {
       "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
       "ToDate":  this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
        "OTTableID": this.searchFormGroup.get("OTTableID").value || 0
@@ -178,7 +178,7 @@ export class EndoscopyComponent implements OnInit {
       if(contact.AnesthType)
       this.AnesthType =contact.AnesthType.trim();
       
-     let PatInforObj = {};
+     const PatInforObj = {};
      PatInforObj['OTEndoscopyBookingID'] = contact.OTEndoscopyBookingID,
     
      PatInforObj['PatientName'] = contact.PatientName,
@@ -250,7 +250,7 @@ export class OTEndoscopydetail {
   OPDate: Date;
   OPTime: Date;
   Duration: number;
-  OTTableID: Number;
+  OTTableID: number;
   OTTableName: any;
   SurgeonId: number;
   SurgeonId1:number;

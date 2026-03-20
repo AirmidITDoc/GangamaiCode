@@ -11,7 +11,7 @@ export interface GRNItemResponseType {
   umoId: number;
   itemCompanyName: string;
   formattedText: string;
-  umoName:String;
+  umoName:string;
 }
 
 export interface PurchaseFormModel {
@@ -22,7 +22,7 @@ export interface PurchaseFormModel {
   // Item Details
   ItemName: GRNItemResponseType | null;
   UOMId: string;
-   umoName:String;
+   umoName:string;
   HSNCode: string;
   BatchNo: string;
   ConversionFactor: number;

@@ -532,7 +532,7 @@ this.Is9_Digit_National_Id = id === "1";
     if (this.Patientnewold == 2 && this.RegId == 0)
       this.toastr.warning("Please Select Registered Patient  ...");
     else {
-      let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+      const DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
       if (DateOfBirth1) {
         const todayDate = new Date();
         const dob = new Date(DateOfBirth1);
@@ -616,7 +616,7 @@ this.Is9_Digit_National_Id = id === "1";
         }
     }	
       else {
-        let invalidFields = [];
+        const invalidFields = [];
 
         if (this.personalFormGroup.invalid) {
           for (const controlName in this.personalFormGroup.controls) {
@@ -654,7 +654,7 @@ this.Is9_Digit_National_Id = id === "1";
 
   onChangePatient(value) {
 
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._AdmissionService.getMaster(mode, 1);
       this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
@@ -784,7 +784,7 @@ this.Is9_Digit_National_Id = id === "1";
     if (!this.admissionFormGroup.invalid) {
       
       if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
-        let submitData = {
+        const submitData = {
           "admissionReg": this.personalFormGroup.value,
           "admission": this.admissionFormGroup.value,
           "patientPolicy":this.policyFormGroup.value
@@ -808,7 +808,7 @@ this.Is9_Digit_National_Id = id === "1";
       }
       else { 
         // console.log(submitData);
-        let submitData = {
+        const submitData = {
           "admission": this.admissionFormGroup.value,
           "patientPolicy":this.policyFormGroup.value
         };
@@ -825,7 +825,7 @@ this.Is9_Digit_National_Id = id === "1";
         });
       }
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.personalFormGroup.invalid) {
         for (const controlName in this.personalFormGroup.controls) {
           if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
@@ -855,7 +855,7 @@ this.Is9_Digit_National_Id = id === "1";
       cancelButtonText: 'No'
     }).then((flag) => {
       if (flag.isConfirmed) {
-        let submitData = {
+        const submitData = {
           "emgId": this.EmgId,
           "newAdmissionId": admissionId
         }
@@ -1205,7 +1205,7 @@ this.Is9_Digit_National_Id = id === "1";
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1252,7 +1252,7 @@ this.Is9_Digit_National_Id = id === "1";
       }
     });
 
-    let Data = {
+    const Data = {
       "first": 0,
       "rows": 100,
       "sortField": "IsConvertRequestForIP",
@@ -1367,7 +1367,7 @@ export class OpList {
   DoctorId: number;
   departmentId: number;
   patientName: string;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ClassId: number;
   ClassName: string;
   DoctorName: any;

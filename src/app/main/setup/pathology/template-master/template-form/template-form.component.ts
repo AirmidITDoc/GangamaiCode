@@ -70,7 +70,7 @@ export class TemplateFormComponent implements OnInit {
                 this.dialogRef.close()
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.templateForm.invalid) {
                 for (const controlName in this.templateForm.controls) {
                     if (this.templateForm.controls[controlName].invalid) {

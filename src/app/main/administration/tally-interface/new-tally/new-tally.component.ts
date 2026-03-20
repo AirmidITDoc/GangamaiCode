@@ -192,7 +192,7 @@ export class NewTallyComponent implements OnInit {
 
 
   getoplist() {
-    var vdata = {
+    const vdata = {
       'From_Dt': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdate').value, 'MM/dd/yyyy') || '01/01/1999',
       'To_Dt': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddate').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -206,7 +206,7 @@ export class NewTallyComponent implements OnInit {
     })
   }
   getOpRefundist() {
-    var vdata = {
+    const vdata = {
       'From_Dt': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdate').value, 'MM/dd/yyyy') || '01/01/1999',
       'To_Dt': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddate').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -220,7 +220,7 @@ export class NewTallyComponent implements OnInit {
   }
   //Advance lsit
   getAdvancelist() {
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdateAdv').value, 'MM/dd/yyyy') || '01/01/1999',
       'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddateAdv').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -234,7 +234,7 @@ export class NewTallyComponent implements OnInit {
     this.getAdvanceReflist();
   }
   getAdvanceReflist() {
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdateAdv').value, 'MM/dd/yyyy') || '01/01/1999',
       'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddateAdv').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -248,7 +248,7 @@ export class NewTallyComponent implements OnInit {
   }
   //ip list
   getipBIlllist() {
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdateIP').value, 'MM/dd/yyyy') || '01/01/1999',
       'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddateIP').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -262,7 +262,7 @@ export class NewTallyComponent implements OnInit {
     this.getipbillRefundlist();
   }
   getippaymentwiselist() {
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdateIP').value, 'MM/dd/yyyy') || '01/01/1999',
       'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddateIP').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -274,7 +274,7 @@ export class NewTallyComponent implements OnInit {
   }
 
   getipbillcashcounterlist() {
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdateIP').value, 'MM/dd/yyyy') || '01/01/1999',
       'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddateIP').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -286,7 +286,7 @@ export class NewTallyComponent implements OnInit {
   }
 
   getipbillRefundlist() {
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdateIP').value, 'MM/dd/yyyy') || '01/01/1999',
       'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddateIP').value, 'MM/dd/yyyy') || '01/01/1999'
     }
@@ -298,7 +298,7 @@ export class NewTallyComponent implements OnInit {
   }
 //Purchase list
 getPurcahselist() {
-  var vdata = {
+  const vdata = {
     'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdatePurchase').value, 'MM/dd/yyyy') || '01/01/1999',
     'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddatePurchase').value, 'MM/dd/yyyy') || '01/01/1999',
     'StoreID':this._TallyInterfaceService.myformSearch.get('PurStoreId').value.StoreId || 0
@@ -313,7 +313,7 @@ getPurcahselist() {
 }
   //Phamacy list
   getPharmacylist() {
-    var vdata = {
+    const vdata = {
       'FromDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('startdatePharma').value, 'MM/dd/yyyy') || '01/01/1999',
       'ToDate': this.datePipe.transform(this._TallyInterfaceService.myformSearch.get('enddatePharma').value, 'MM/dd/yyyy') || '01/01/1999',
       'StoreId':this._TallyInterfaceService.myformSearch.get('StoreId').value.StoreId || 0
@@ -343,14 +343,14 @@ getPurcahselist() {
   //op execl export
   getopbilllexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['BillDate', 'CashCounterName', 'NetPayableAmt', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
+    const exportHeaders = ['BillDate', 'CashCounterName', 'NetPayableAmt', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
     this.reportDownloadService.getExportJsonData(this.dsOplist.data, exportHeaders, ' OP Cash Counter Wise');
     this.dsOplist.data = [];
     this.sIsLoading = '';
   }
   getopbilllrefexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['BillDate', 'RefundAmount', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
+    const exportHeaders = ['BillDate', 'RefundAmount', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
     this.reportDownloadService.getExportJsonData(this.dsOpRefundList.data, exportHeaders, ' OP Daily Wise Refund');
     this.dsOpRefundList.data = [];
     this.sIsLoading = '';
@@ -358,28 +358,28 @@ getPurcahselist() {
   //ip execl export
   getibilllexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['BillDate', 'PatientName', 'RegNo', 'IPDNo', 'PBillNo', 'CashCounterName', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'ConcessionReason'];
+    const exportHeaders = ['BillDate', 'PatientName', 'RegNo', 'IPDNo', 'PBillNo', 'CashCounterName', 'TotalAmt', 'ConcessionAmt', 'NetPayableAmt', 'ConcessionReason'];
     this.reportDownloadService.getExportJsonData(this.dsipbilllist.data, exportHeaders, ' IP Bill Patient Wise');
     //this.dsipbilllist.data = [];
     this.sIsLoading = '';
   }
   getipPaymentexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['PaymentDate', 'PatientName', 'RegNo', 'PBillNo', 'CashCounterName', 'ReceiptNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
+    const exportHeaders = ['PaymentDate', 'PatientName', 'RegNo', 'PBillNo', 'CashCounterName', 'ReceiptNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
     this.reportDownloadService.getExportJsonData(this.dsipPaymentList.data, exportHeaders, ' IP Payment Patient Wise');
    // this.dsipPaymentList.data = [];
     this.sIsLoading = '';
   }
   getibilllCashCounterexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['BillDate', 'CashCounterName', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount', 'AdvanceUsedAmount'];
+    const exportHeaders = ['BillDate', 'CashCounterName', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount', 'AdvanceUsedAmount'];
     this.reportDownloadService.getExportJsonData(this.dsipbillcashcounterwise.data, exportHeaders, '  IP Cash Counter Wise');
    // this.dsipbillcashcounterwise.data = [];
     this.sIsLoading = '';
   }
   getiprefundexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['PaymentDate', 'PatientName', 'RegNo', 'IPDNo', 'RefundNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount', 'ConcessionReason'];
+    const exportHeaders = ['PaymentDate', 'PatientName', 'RegNo', 'IPDNo', 'RefundNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount', 'ConcessionReason'];
     this.reportDownloadService.getExportJsonData(this.dsiprefundlist.data, exportHeaders, ' IP Patient Wise Refund');
    // this.dsOpRefundList.data = [];
     this.sIsLoading = '';
@@ -387,14 +387,14 @@ getPurcahselist() {
   //ip Advance execl export
   getIPAdvancelexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['AdvDate', 'PatientName', 'RegNo', 'IPDNo', 'AdvanceNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
+    const exportHeaders = ['AdvDate', 'PatientName', 'RegNo', 'IPDNo', 'AdvanceNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount'];
     this.reportDownloadService.getExportJsonData(this.dsAdvlist.data, exportHeaders, ' Advance Patient Wise');
    // this.dsAdvlist.data = [];
     this.sIsLoading = '';
   }
   getIPAdvanceRefundexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['PaymentDate', 'PatientName', 'RegNo', 'IPDNo', 'RefundNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount', 'ConcessionReason'];
+    const exportHeaders = ['PaymentDate', 'PatientName', 'RegNo', 'IPDNo', 'RefundNo', 'CashPayAmount', 'ChequePayAmount', 'CardPayAmount', 'NEFTPayAmount', 'PayTMAmount', 'ConcessionReason'];
     this.reportDownloadService.getExportJsonData(this.dsAdvRefList.data, exportHeaders, 'Advance Refund Patient Wise');
     // this.dsAdvRefList.data = [];
     this.sIsLoading = '';
@@ -402,7 +402,7 @@ getPurcahselist() {
   //Purchase excel export
   getPurchaseexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['SupplierName', 'GRNDate', 'GrnNumber', 'InvoiceNo', 'CGSTPer', 'CGSTAmt', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'VatPercentage','VatAmount','MRP','PTR','DISCOUNTAMOUNT','TOTALBILLAMOUNT'];
+    const exportHeaders = ['SupplierName', 'GRNDate', 'GrnNumber', 'InvoiceNo', 'CGSTPer', 'CGSTAmt', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'VatPercentage','VatAmount','MRP','PTR','DISCOUNTAMOUNT','TOTALBILLAMOUNT'];
     this.reportDownloadService.getExportJsonData(this.dsPurchaselist.data, exportHeaders, 'Purchase Wise Supplier');
     // this.dsPurchaselist.data = [];
     this.sIsLoading = '';
@@ -410,28 +410,28 @@ getPurcahselist() {
    //Pharmacy sales excel export
    getPhSalesexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    const exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
     this.reportDownloadService.getExportJsonData(this.dsPharmaSaleslist.data, exportHeaders, 'Pharmacy sales list');
     // this.dsPharmaSaleslist.data = [];
     this.sIsLoading = '';
   }
   getPhPaymentexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    const exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
     this.reportDownloadService.getExportJsonData(this.dsPharmaSalesPaymentlist.data, exportHeaders, 'Pharmacy Payment list');
     // this.dsPharmaSalesPaymentlist.data = [];
     this.sIsLoading = '';
   }
   getPhSalesReturnexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    const exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
     this.reportDownloadService.getExportJsonData(this.dsPharmaSalesReturnlist.data, exportHeaders, 'Pharmacy Sales Retrun list');
     // this.dsPharmaSalesReturnlist.data = [];
     this.sIsLoading = '';
   }
   getPhSalesReceiptexcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
+    const exportHeaders = ['MDate', 'DEBIT', 'CREDIT', 'CashPay', 'SrNo' ];
     this.reportDownloadService.getExportJsonData(this.  dsPharmaSalesReceiptlist.data, exportHeaders, 'Pharmacy Sales Receipt list');
     // this.dsPharmaSalesReceiptlist.data = [];
     this.sIsLoading = '';
@@ -486,7 +486,7 @@ export class TallyInterfacelist{
   PaymentDate:any;
   CashCounterName:string;
   ReceiptNo:number;
-  CashPayAmount: Number;
+  CashPayAmount: number;
   CardPayAmount: number;
   ChequePayAmount:number;
   NEFTPayAmount:number;
@@ -512,7 +512,7 @@ export class TallyInterfacelist{
   paymentDate:any;
   cashCounterName:string;
   receiptNo:number;
-  cashPayAmount: Number;
+  cashPayAmount: number;
   cardPayAmount: number;
   chequePayAmount:number;
   nEFTPayAmount:number;

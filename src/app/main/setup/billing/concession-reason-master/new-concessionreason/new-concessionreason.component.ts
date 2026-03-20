@@ -43,7 +43,7 @@ export class NewConcessionreasonComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.concessionForm.invalid) {
                 for (const controlName in this.concessionForm.controls) {
                     if (this.concessionForm.controls[controlName].invalid) {

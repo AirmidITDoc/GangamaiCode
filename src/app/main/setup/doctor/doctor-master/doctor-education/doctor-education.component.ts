@@ -138,7 +138,7 @@ export class DoctorEducationComponent {
     if (!this.EducationForm.invalid) {
       this.dialogRef.close(this.EducationForm.value)
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.EducationForm.invalid) {
         for (const controlName in this.EducationForm.controls) {
           if (this.EducationForm.controls[controlName].invalid) { invalidFields.push(`Education Form: ${controlName}`); }

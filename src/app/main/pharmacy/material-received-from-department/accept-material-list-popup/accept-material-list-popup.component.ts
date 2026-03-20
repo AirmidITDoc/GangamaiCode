@@ -107,7 +107,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
 
   getItemList(IssueId) {
 debugger
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "IssueId",
@@ -158,7 +158,7 @@ checkboxgflag=0
     }
     else if (this.masterSelected) {
       if (contact.selected == false) {
-        let index = this.tempItemlist.indexOf(contact);
+        const index = this.tempItemlist.indexOf(contact);
         if (index >= 0) {
           this.checklist.splice(index, 1);
           this.tempItemlist = [];

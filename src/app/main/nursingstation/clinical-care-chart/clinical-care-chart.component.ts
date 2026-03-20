@@ -126,7 +126,7 @@ export class ClinicalCareChartComponent implements OnInit {
     'IsActive',
     'Action'
   ]
-  isLoading: String = '';
+  isLoading: string = '';
   sIsLoading: string = "";
   WardList: any = [];
   isRegIdSelected: boolean = false;
@@ -339,7 +339,7 @@ export class ClinicalCareChartComponent implements OnInit {
 
   getpainAssesmentList() { //required from deleting
     const admid = this.vAdmission ?? 19000101
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionId",
@@ -380,7 +380,7 @@ export class ClinicalCareChartComponent implements OnInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           painAssessmentId: data.painAssessmentId,
           isActive: true,
           reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
@@ -413,7 +413,7 @@ export class ClinicalCareChartComponent implements OnInit {
         this.getpainAssesmentList();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.PainAssessForm.invalid) {
         for (const controlName in this.PainAssessForm.controls) {
           if (this.PainAssessForm.controls[controlName].invalid) {
@@ -437,7 +437,7 @@ export class ClinicalCareChartComponent implements OnInit {
 
   getpainAssesmentWeightList() {
     const admid = this.vAdmission ?? 19001010
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionId",
@@ -499,7 +499,7 @@ export class ClinicalCareChartComponent implements OnInit {
         this.vDailyWeight = '';
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.PainAssessWeightForm.invalid) {
         for (const controlName in this.PainAssessWeightForm.controls) {
           if (this.PainAssessWeightForm.controls[controlName].invalid) {
@@ -536,7 +536,7 @@ export class ClinicalCareChartComponent implements OnInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           patWeightId: element.patWeightId,
           isActive: true,
           reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
@@ -550,7 +550,7 @@ export class ClinicalCareChartComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -812,7 +812,7 @@ export class ClinicalCareChartComponent implements OnInit {
 
   GetDetails1(data: any): void {
     console.log("detailList:", data)
-    let ipMedID = data.ippreId;
+    const ipMedID = data.ippreId;
     this.gridConfig1 = {
       apiUrl: "IPPrescription/PrescriptionDetailList",
       columnsList: [
@@ -836,7 +836,7 @@ export class ClinicalCareChartComponent implements OnInit {
   viewgetIpprescriptionReportPdf(response) {
     console.log(response)
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "OP_IP_ID",
@@ -914,7 +914,7 @@ export class ClinicalCareChartComponent implements OnInit {
 
   getSelectedRow(row: any): void {
     console.log("Selected row : ", row);
-    let vRequestId = row.requestId
+    const vRequestId = row.requestId
     this.gridConfig3 = {
       apiUrl: "IPPrescription/LabRadRequestDetailList",
       columnsList: [
@@ -970,7 +970,7 @@ export class ClinicalCareChartComponent implements OnInit {
   vsuctionType: any = "0";
   getRtrvVitallist() {
     const admid = this.vAdmission ?? 19001010
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionId",
@@ -1012,7 +1012,7 @@ export class ClinicalCareChartComponent implements OnInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           vitalId: element.vitalId,
           isActive: true,
           reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
@@ -1048,7 +1048,7 @@ export class ClinicalCareChartComponent implements OnInit {
         this.OnClosevital()
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.VitalsForm.invalid) {
         for (const controlName in this.VitalsForm.controls) {
           if (this.VitalsForm.controls[controlName].invalid) {
@@ -1088,7 +1088,7 @@ export class ClinicalCareChartComponent implements OnInit {
   Sugarlevellist: any;
   getRtrvSugarlevellist() {
     const admid = this.vAdmission ?? 19001010
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionId",
@@ -1130,7 +1130,7 @@ export class ClinicalCareChartComponent implements OnInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           id: element.id,
           isActive: true,
           reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
@@ -1170,7 +1170,7 @@ export class ClinicalCareChartComponent implements OnInit {
         this.OnCloseSugar()
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.SugarForm.invalid) {
         for (const controlName in this.SugarForm.controls) {
           if (this.SugarForm.controls[controlName].invalid) {
@@ -1196,7 +1196,7 @@ export class ClinicalCareChartComponent implements OnInit {
   onEditSuugarlevel(row) {
     console.log(row)
     this.vid = row.id
-    var m_data = row
+    const m_data = row
     this.SugarForm.patchValue(m_data);
   }
 
@@ -1206,7 +1206,7 @@ export class ClinicalCareChartComponent implements OnInit {
   OxygenventiList: any;
   getRtrvOxygenlist() {
     const admid = this.vAdmission ?? 19001010
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "AdmissionId",
@@ -1252,7 +1252,7 @@ export class ClinicalCareChartComponent implements OnInit {
         this.OnCloseOxygen()
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.OxygenForm.invalid) {
         for (const controlName in this.OxygenForm.controls) {
           if (this.OxygenForm.controls[controlName].invalid) {
@@ -1293,7 +1293,7 @@ export class ClinicalCareChartComponent implements OnInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           id: element.id,
           isActive: true,
           reason: `User: ${this._loggedService.currentUserValue.userName}, Reason: ${result.value}`
@@ -1310,7 +1310,7 @@ export class ClinicalCareChartComponent implements OnInit {
   onEditOxygen(row) {
     console.log(row)
     this.vOxyid = row.id
-    var m_data = row
+    const m_data = row
     this.OxygenForm.patchValue(m_data);
   }
   //////////////////////////////////////// Oxygen/Venti code end ////////////////////////////////////////

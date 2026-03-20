@@ -109,7 +109,7 @@ currency:any='';
       this.AdmissionId = this.registerObj?.admissionId
 
       if (this.AdmissionId > 0) {
-        var vdata = {
+        const vdata = {
           "first": 0,
           "rows": 999,
           "sortField": "AdmissionID",
@@ -243,7 +243,7 @@ currency:any='';
 
     if (this.AdvFormGroup.valid) {
       console.log(this.AdvFormGroup.value)
-      let PatientHeaderObj = {};
+      const PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
       PatientHeaderObj['PatientName'] = this.registerObj?.patientName || '';
       PatientHeaderObj['RegNo'] = this.registerObj?.regNo || 0,
@@ -271,7 +271,7 @@ currency:any='';
       dialogRef.afterClosed().subscribe(result => {
         console.log('Payment Details', result);
         if (!this.AdvFormGroup.get('advanceupdate.advanceId').value) {  
-          let submitData = {
+          const submitData = {
             "advance": this.AdvFormGroup.value.advance,
             "advanceDetail": this.AdvFormGroup.value.advanceDetail,
             "advancePayment": result.submitDataPay.ipPaymentInsert,
@@ -286,7 +286,7 @@ currency:any='';
           });
         }
         else {
-          let submitData = {
+          const submitData = {
             "advance": this.AdvFormGroup.value.advanceupdate,
             "advanceDetail": this.AdvFormGroup.value.advanceDetail,
             "advancePayment": result.submitDataPay.ipPaymentInsert,
@@ -301,7 +301,7 @@ currency:any='';
         }
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       // if (this.AdvFormGroup.invalid) {
       //   for (const controlName in this.AdvFormGroup.controls) {
       //     if (this.AdvFormGroup.controls[controlName].invalid) {
@@ -357,7 +357,7 @@ currency:any='';
   }
   getWhatsappsAdvance(el, vmono) {
     if (vmono != '' && vmono != "0") {
-      var m_data = {
+      const m_data = {
         "insertWhatsappsmsInfo": {
           "mobileNumber": vmono || 0,
           "smsString": '',
@@ -394,7 +394,7 @@ currency:any='';
     this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID || data, "IpAdvanceReceipt");
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

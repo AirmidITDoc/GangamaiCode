@@ -276,7 +276,7 @@ export class PharmItemSummaryComponent implements OnInit {
     const Filters = [
       { "fieldName": "ItemId", "fieldValue": String(row?.itemId ?? 0), "opType": "Equals" },
     ]
-    var param = {
+    const param = {
       "searchFields": Filters,
       "mode": "ItemSupplierDetails"
     }
@@ -325,7 +325,7 @@ export class PharmItemSummaryComponent implements OnInit {
 }
 
 export class Itemmovment {
-  ItemName: Number;
+  ItemName: number;
   DaySales: number;
   BatchExpDate: string;
   BalanceQty: string;
@@ -346,10 +346,10 @@ export class DayWiseStockList {
 
   ItemName: string;
   ToStoreName: string;
-  IssueQty: Number;
+  IssueQty: number;
   BalanceQty: number;
   ReceivedQty: number;
-  BatchNo: Number;
+  BatchNo: number;
   BatchExpDate: number;
   UnitMRP: number;
   LedgerDate: any;
@@ -371,10 +371,10 @@ export class ItemWiseStockList {
 
   ItemName: string;
   ToStoreName: string;
-  IssueQty: Number;
+  IssueQty: number;
   BalanceQty: number;
   ReceivedQty: number;
-  BatchNo: Number;
+  BatchNo: number;
   BatchExpDate: number;
   UnitMRP: number;
   LedgerDate: any;

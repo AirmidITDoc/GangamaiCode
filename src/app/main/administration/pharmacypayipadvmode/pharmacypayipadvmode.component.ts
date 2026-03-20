@@ -66,7 +66,7 @@ export class PharmacypayipadvmodeComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         
-        let that = this;
+        const that = this;
         // const dialogRef = this._matDialog.open(NewTallyComponent,
         //     {
         //         maxWidth: "45vw",

@@ -40,7 +40,7 @@ export class NewSpecimumMasterComponent {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.specimenForm.invalid) {
         for (const controlName in this.specimenForm.controls) {
           if (this.specimenForm.controls[controlName].invalid) {

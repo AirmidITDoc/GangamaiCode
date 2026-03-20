@@ -75,7 +75,7 @@ export class BillDateUpdateComponent implements OnInit {
       if (result.isConfirmed) {
 debugger
         if (this.BillNo) {
-          var data = {
+          const data = {
             'billNo': this.BillNo,
             'billDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             'billTime': formattedDate + this.dateTimeObj.time
@@ -86,7 +86,7 @@ debugger
           });
 
         } else if (this.AdvanceDetailId) {
-          var data1 = {
+          const data1 = {
             "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             "time": formattedDate + this.dateTimeObj.time,
             "advanceDetailId": this.AdvanceDetailId
@@ -103,7 +103,7 @@ debugger
             Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
             return;
           } else {
-            var data2 = {
+            const data2 = {
               "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
               "refundTime": formattedDate + this.dateTimeObj.time,
               "refundId": this.RefundId
@@ -179,7 +179,7 @@ debugger
             Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
             return;
           } else {
-            var data5 = {
+            const data5 = {
               "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
               "paymentTime":  formattedDate + this.dateTimeObj.time,
               "paymentId": this.PaymentId

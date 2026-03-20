@@ -41,7 +41,7 @@ export class NewCompanyTypeComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.companttypeForm.invalid) {
                 for (const controlName in this.companttypeForm.controls) {
                     if (this.companttypeForm.controls[controlName].invalid) {

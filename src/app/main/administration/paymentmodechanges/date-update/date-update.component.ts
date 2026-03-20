@@ -73,7 +73,7 @@ export class DateUpdateComponent implements OnInit {
           return;
         } else {
           if (this.FormId == 1) {
-            var data = {
+            const data = {
               'paymentId': this.PaymentId,
               'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
               'paymentTime': formattedDate + this.dateTimeObj.time
@@ -147,7 +147,7 @@ export class DateUpdateComponent implements OnInit {
           Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.BillDate, "yyyy-MM-dd"))
           return;
         } else {
-          var data = {
+          const data = {
             'paymentId': this.PaymentId,
             'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             'paymentTime': formattedDate + this.dateTimeObj.time

@@ -62,7 +62,7 @@ export class OTReservationComponent implements OnInit {
     msg: any;
     RequestName: any = "";
     tOtbookingRequestsForm: FormGroup;
-    autocompleteModeOTTable: String = "OttableMaster";
+    autocompleteModeOTTable: string = "OttableMaster";
     registerObj2 = new OtReserInsert({});
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -204,7 +204,7 @@ export class OTReservationComponent implements OnInit {
                 this.onClear();
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.statusFormFinal.invalid) {
                 for (const controlName in this.statusFormFinal.controls) {
                     if (this.statusFormFinal.controls[controlName].invalid) {
@@ -230,7 +230,7 @@ export class OTReservationComponent implements OnInit {
     onNewotReservation(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewReservationComponent,
             {
                 maxWidth: "90vw",
@@ -377,7 +377,7 @@ export class OTReservationComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(OtOperativeNoteComponent,
             {
                 maxWidth: "90vw",
@@ -543,7 +543,7 @@ export class OTReservationComponent implements OnInit {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                let submitData = {
+                const submitData = {
                     otReservationId: data.otReservationId,
                     reason: result.value,
                     isCancelledBy: this._loggedService.currentUserValue.userId
@@ -615,7 +615,7 @@ export class OTReservationComponent implements OnInit {
         debugger
         let fromDate, toDate;
         if (this.dateDisplay) {
-            var dates = this.dateDisplay.nativeElement.textContent.split('-');
+            const dates = this.dateDisplay.nativeElement.textContent.split('-');
             if (this.view == CalendarView.Week) {
                 fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
                 toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
@@ -629,7 +629,7 @@ export class OTReservationComponent implements OnInit {
             }
         }
         else {
-            var d = this.getWeekRange();
+            const d = this.getWeekRange();
             fromDate = d.sunday; toDate = d.saturday;
         }
         // this._service.getAppoinments(this.TableId, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
@@ -918,7 +918,7 @@ export class OTReservationComponent implements OnInit {
 }
 
 export class OtReserInsert {
-    regId: Number;
+    regId: number;
     regDate: Date;
     patientName: string;
     prefixId: number;
@@ -931,7 +931,7 @@ export class OtReserInsert {
     dateOfBirth: Date;
     dateofBirth: Date;
     age: any;
-    GenderId: Number;
+    GenderId: number;
     genderId: any;
     PhoneNo: string;
     phoneNo: string;

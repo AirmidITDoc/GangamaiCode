@@ -139,7 +139,7 @@ export class CompanyMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(ComptoservComponent,
             {
                 maxWidth: "100vw",
@@ -158,7 +158,7 @@ export class CompanyMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
 
@@ -182,11 +182,11 @@ export class CompanyMaster {
     compTypeId: number;
     companyName: string;
     address: string;
-    cityId: String;
-    pinNo: String;
-    phoneNo: String;
-    mobileNo: String;
-    faxNo: String;
+    cityId: string;
+    pinNo: string;
+    phoneNo: string;
+    mobileNo: string;
+    faxNo: string;
     traiffId: any;
     isDeleted: boolean;
     AddedBy: number;

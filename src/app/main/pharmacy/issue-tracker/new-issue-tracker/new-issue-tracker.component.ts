@@ -86,7 +86,7 @@ export class NewIssueTrackerComponent implements OnInit {
   }
 
   getIssueStatusList() {
-    var vdata = {
+    const vdata = {
       'ConstanyType': 'ISSUE_STATUS',
     }
     this._IssueTracker.getConstantsList(vdata).subscribe(data => {
@@ -101,7 +101,7 @@ export class NewIssueTrackerComponent implements OnInit {
   }
 
   getIssueAssignedList() {
-    var vdata = {
+    const vdata = {
       'ConstanyType': 'ISSUE_ASSIGNED',
     }
     this._IssueTracker.getConstantsList(vdata).subscribe(data => {
@@ -115,7 +115,7 @@ export class NewIssueTrackerComponent implements OnInit {
     });
   }
   getIssueRaisedList() {
-    var vdata = {
+    const vdata = {
       'ConstanyType': 'ISSUE_RAISED',
     }
     this._IssueTracker.getConstantsList(vdata).subscribe(data => {
@@ -146,7 +146,7 @@ export class NewIssueTrackerComponent implements OnInit {
     
 
     if (Imgflag != " ") {
-      let filesAmount = event.target.files.length;
+      const filesAmount = event.target.files.length;
       // for (let i = 0; i < filesAmount; i++) {
       // this.imgArr.push(file.name);
       this.images.push({ url: file, name: file.name, Id: 0 });
@@ -192,7 +192,7 @@ export class NewIssueTrackerComponent implements OnInit {
   OnSave() {
     if (!this.registerObj.IssueTrackerId) {
       this.sIsLoading = 'loading-data';
-      let insertIssueTracker = {};
+      const insertIssueTracker = {};
       insertIssueTracker['issueRaisedDate'] = this.dateTimeObj.date;
       insertIssueTracker['issueRaisedTime'] = this.dateTimeObj.time;
       insertIssueTracker['issueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
@@ -205,7 +205,7 @@ export class NewIssueTrackerComponent implements OnInit {
       insertIssueTracker['addedby'] = this._loggedService.currentUserValue.userId || 0;
 
 
-      let submitData = {
+      const submitData = {
         "insertIssueTracker": insertIssueTracker,
       };
       console.log(submitData);
@@ -232,7 +232,7 @@ export class NewIssueTrackerComponent implements OnInit {
 
     else {
       this.sIsLoading = 'loading-data';
-      let updateIssueTracker = {};
+      const updateIssueTracker = {};
       updateIssueTracker['operation'] = "UPDATE";
       updateIssueTracker['issueTrackerId'] = this.registerObj.IssueTrackerId;
       updateIssueTracker['issueSummary'] = this._IssueTracker.userFormGroup.get('IssueSummary').value || '';
@@ -244,7 +244,7 @@ export class NewIssueTrackerComponent implements OnInit {
       updateIssueTracker['issueAssigned'] = this._IssueTracker.userFormGroup.get('IssueAssigned').value.Name || '';
       updateIssueTracker['updatedBy'] = this._loggedService.currentUserValue.userId || 0;
 
-      let submitData = {
+      const submitData = {
         "updateIssueTracker": updateIssueTracker
       };
 

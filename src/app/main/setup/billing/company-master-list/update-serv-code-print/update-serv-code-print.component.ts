@@ -104,7 +104,7 @@ export class UpdateServCodePrintComponent {
       this.pageIndex = event.pageIndex;
       this.pageSize = event.pageSize;
     }
-    var param = {
+    const param = {
       // "first": 0,
       // "rows": 10,
       "first": this.pageIndex * this.pageSize,

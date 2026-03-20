@@ -56,7 +56,7 @@ leaveForm: FormGroup;
      if (!this.leaveForm.invalid) {
       this.dialogRef.close(this.leaveForm.value)
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.leaveForm.invalid) {
         for (const controlName in this.leaveForm.controls) {
           if (this.leaveForm.controls[controlName].invalid) { invalidFields.push(`Leave Form: ${controlName}`); }

@@ -103,7 +103,7 @@ debugger
       });
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.SmsForm.invalid) {
         for (const controlName in this.SmsForm.controls) {

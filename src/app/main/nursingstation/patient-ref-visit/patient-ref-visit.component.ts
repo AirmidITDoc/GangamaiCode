@@ -87,7 +87,7 @@ export class PatientRefVisitComponent implements OnInit {
   // @Output() parentFunction:EventEmitter<any> = new EventEmitter();
 
   dataSource = new MatTableDataSource<OPIPPatientModel>();
-  isLoading: String = '';
+  isLoading: string = '';
   
   constructor(
     // private _IpSearchListService: IpSearchListService,
@@ -107,7 +107,7 @@ export class PatientRefVisitComponent implements OnInit {
     // ;
     this.sIsLoading = 'loading-data';
    
-    var m_data = {
+    const m_data = {
       "OP_IP_Type":1,
       "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value).trim() + '%' || '%',
       "L_Name": (this._AdmissionService.myFilterform.get("LastName").value).trim() + '%'  || '%',
@@ -163,7 +163,7 @@ export class PatientRefVisitComponent implements OnInit {
    // ;
     this.sIsLoading = 'loading-data';
    
-    var m_data={
+    const m_data={
       "F_Name": (this._AdmissionService.myFilterform.get("FirstName").value) + '%' || '%',
       "L_Name": (this._AdmissionService.myFilterform.get("LastName").value) + '%'  || '%',
       "Reg_No":this._AdmissionService.myFilterform.get("RegNo").value || 0,
@@ -222,7 +222,7 @@ export class PatientRefVisitComponent implements OnInit {
    onEdit(row){
     // ;
   //  console.log(row);
-   var m_data = {
+   const m_data = {
     "Adm_Vit_ID":row.Adm_Vit_ID,
     "PatientName": row.PatientName.trim(),
     "RegNoWithPrefix": row.RegNoWithPrefix,
@@ -251,7 +251,7 @@ export class OPIPPatientModel {
   Adm_DoctorName: string;
   ClassName: any;
   TariffName: any;
-  CompanyName: Number;
+  CompanyName: number;
   IPNumber: any;
   Bedname:any;
   TariffId:any;

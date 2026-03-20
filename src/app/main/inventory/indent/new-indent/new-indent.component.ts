@@ -202,7 +202,7 @@ export class NewIndentComponent implements OnInit {
   }
 
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsIndentNameList.data = [];
@@ -233,7 +233,7 @@ export class NewIndentComponent implements OnInit {
     this.IndentForm.markAsUntouched();
   }
   getupdateIndentList(Id) {
-    var Param = {
+    const Param = {
 
       "first": 0,
       "rows": 9999,
@@ -307,7 +307,7 @@ export class NewIndentComponent implements OnInit {
 
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.IndentSaveFrom.invalid) {
         for (const controlName in this.IndentSaveFrom.controls) {
           if (this.IndentSaveFrom.controls[controlName].invalid) { invalidFields.push(`Indent Form: ${controlName}`); }
@@ -410,7 +410,7 @@ export class NewIndentComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

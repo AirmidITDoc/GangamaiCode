@@ -213,7 +213,7 @@ export class NewPrescriptionTemplateComponent {
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsItemList.data = [];
@@ -225,7 +225,7 @@ export class NewPrescriptionTemplateComponent {
   }
 
   gettemplatePrecList(row) {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "Presid",
@@ -305,7 +305,7 @@ export class NewPrescriptionTemplateComponent {
     const iscekDuplicate = this.dsItemList.data.some(item => item.DrugId == this.durgId)
     if (!iscekDuplicate) {
 
-      let newEntry = {
+      const newEntry = {
         classId: 0,
         genericId: this.vItemGenericNameId,
         drugId: this.MedicineItemForm.get('drugId').value.itemId,
@@ -402,7 +402,7 @@ export class NewPrescriptionTemplateComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -411,7 +411,7 @@ export class NewPrescriptionTemplateComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

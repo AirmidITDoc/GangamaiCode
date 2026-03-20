@@ -114,7 +114,7 @@ export class IndentComponent implements OnInit {
 
   GetDetails1(data) {
 
-    let IndentId = data.indentId
+    const IndentId = data.indentId
     this.gridConfig1 = {
       apiUrl: "Indent/IndentDetailsList",
       columnsList: [
@@ -228,7 +228,7 @@ export class IndentComponent implements OnInit {
 
 
   onSave(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewIndentComponent,
       {
         maxWidth: "97vw",
@@ -287,7 +287,7 @@ export class IndentComponent implements OnInit {
   }
   onVerify(row) {
     debugger
-    let submitData = {
+    const submitData = {
       "indentId": row.indentId,
       "isInchargeVerifyId": this.accountService.currentUserValue.userId
 

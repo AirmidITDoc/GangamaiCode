@@ -231,7 +231,7 @@ export class AdmissionComponent implements OnInit {
     console.log(data)
     this.Vtotalcount;
 
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
 
       if (data[i].IsOpToIPconv == true) {
         this.VOPtoIPcount = this.VOPtoIPcount + 1;
@@ -313,7 +313,7 @@ export class AdmissionComponent implements OnInit {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(IPBillingComponent,
         {
           maxWidth: "70vw",
@@ -331,7 +331,7 @@ export class AdmissionComponent implements OnInit {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(BedTransferComponent,
         {
           maxWidth: "70vw",
@@ -349,7 +349,7 @@ export class AdmissionComponent implements OnInit {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(DischargeComponent,
         {
           maxWidth: "85vw",
@@ -367,7 +367,7 @@ export class AdmissionComponent implements OnInit {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(MLCInformationComponent,
         {
           maxWidth: "85vw",
@@ -385,7 +385,7 @@ export class AdmissionComponent implements OnInit {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(DischargeSummaryComponent,
         {
           maxWidth: "70vw",
@@ -403,7 +403,7 @@ export class AdmissionComponent implements OnInit {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(SubCompanyTPAInfoComponent,
         {
           maxWidth: "85vw",
@@ -423,7 +423,7 @@ export class AdmissionComponent implements OnInit {
   }
   OnPaitentFinalPrint(element) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "OPIPId", "fieldValue": String(element.admissionId), "opType": "13" },
           { "fieldName": "OPIPType", "fieldValue": String(1), "opType": "13" }
@@ -526,7 +526,7 @@ export class AdmissionComponent implements OnInit {
   getAdmittedPatientListview() {
     setTimeout(() => {
 
-      let param = {
+      const param = {
 
         "searchFields": [
           {
@@ -740,7 +740,7 @@ export class AdmissionComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -796,8 +796,8 @@ export class AdmissionComponent implements OnInit {
   GetAdmissiondetail() {
     // debugger
     // Format date values
-    let fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
-    let toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
+    const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
+    const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
 
     // Reset counts
     this.Vtotalcount = 0;
@@ -807,7 +807,7 @@ export class AdmissionComponent implements OnInit {
     this.VOPtoIPcount = 0;
     this.VEmgcount = 0;
 
-    let filters: any[] = [];
+    const filters: any[] = [];
 
     // Handle date range
     if (fromDateControl && toDateControl) {
@@ -867,7 +867,7 @@ export class AdmissionComponent implements OnInit {
       }
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "AdmissionId",
@@ -899,7 +899,7 @@ export class AdmissionComponent implements OnInit {
         ).length;
 
         // Example: count today’s admissions
-        let today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
+        const today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
         this.VNewcount = this.dataSource.data.filter(
           (element: any) => this.datePipe.transform(element.admissionDate, "yyyy-MM-dd") === today
         ).length;
@@ -1139,7 +1139,7 @@ export class AdmissionComponent implements OnInit {
 }
 
 export class Bed {
-  BedId: Number;
+  BedId: number;
   BedName: string;
 
   /**
@@ -1161,25 +1161,25 @@ export class AdmissionPersonlModel {
   Address: any;
   PrefixId: any;
   opD_IPD_Type: any;
-  Age: Number;
+  Age: number;
   AgeDay: any;
   AgeMonth: any;
   AgeYear: any;
   ageDay: any;
   ageMonth: any;
   ageYear: any;
-  AreaId: Number;
+  AreaId: number;
   CityName: string;
-  CityId: Number;
-  CountryId: Number;
+  CityId: number;
+  CountryId: number;
   DateofBirth: any;
   Expr1: any;
   FirstName: string;
-  GenderId: Number;
+  GenderId: number;
   GenderName: string;
   IsCharity: any;
-  LastName: String;
-  MaritalStatusId: Number;
+  LastName: string;
+  MaritalStatusId: number;
   MiddleName: string;
   MobileNo: string;
   PanCardNo: any;
@@ -1192,17 +1192,17 @@ export class AdmissionPersonlModel {
   PrefixName: string;
   RDate: any;
   RegDate: any;
-  RegId: Number;
-  RegNo: Number;
-  regNo: Number;
+  RegId: number;
+  RegNo: number;
+  regNo: number;
   RegNoWithPrefix: string;
   RegTime: string;
   RegTimeDate: string;
-  ReligionId: Number;
-  StateId: Number;
-  TalukaId: Number;
+  ReligionId: number;
+  StateId: number;
+  TalukaId: number;
   TalukaName: string;
-  VillageId: Number;
+  VillageId: number;
   VillageName: string;
   Departmentid: any;
   currentDate = new Date();
@@ -1213,8 +1213,8 @@ export class AdmissionPersonlModel {
   AdmissionID: any;
   AdmissionDate: Date;
   AdmissionTime: Date;
-  RelativeName: String;
-  relativeName: String;
+  RelativeName: string;
+  relativeName: string;
   DoctorId: number;
   RelatvieMobileNo: any;
   MaritalStatusName: string;
@@ -1621,9 +1621,9 @@ isReimbursement:any;
 }
 
 export class RegInsert {
-  RegId: Number;
-  regId: Number;
-  RegID: Number;
+  RegId: number;
+  regId: number;
+  RegID: number;
   RegDate: Date;
   regDate: Date;
   PatientName: string;
@@ -1651,7 +1651,7 @@ export class RegInsert {
   DateofBirth: Date;
   Age: any;
   age: any;
-  GenderId: Number;
+  GenderId: number;
   genderId: any;
   PhoneNo: string;
   phoneNo: string;
@@ -1672,7 +1672,7 @@ export class RegInsert {
   cityId: number;
   MaritalStatusId: number;
   maritalStatusId: number;
-  IsCharity: Boolean;
+  IsCharity: boolean;
   ReligionId: number;
   religionId: number;
   AreaId: number;

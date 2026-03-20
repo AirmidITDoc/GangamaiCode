@@ -236,7 +236,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   deleteTableRow1(event, element) {
-    let index = this.PresItemlist.indexOf(element);
+    const index = this.PresItemlist.indexOf(element);
     if (index >= 0) {
       this.PresItemlist.splice(index, 1);
       this.dsPresList.data = [];
@@ -310,7 +310,7 @@ export class NewPrescriptionComponent implements OnInit {
     const iscekDuplicate = 0
     //  this.dsItemList.data.some(item => item.Presid == this.ItemForm.get('TemplateId').value)
     if (!iscekDuplicate) {
-      var vdata = {
+      const vdata = {
         "first": 0,
         "rows": 999,
         "sortField": "Presid",
@@ -387,7 +387,7 @@ export class NewPrescriptionComponent implements OnInit {
         return;
       }
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.ItemForm.invalid) {
         for (const controlName in this.ItemForm.controls) {
           if (this.ItemForm.controls[controlName].invalid) {
@@ -472,7 +472,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsItemList.data = [];
@@ -561,7 +561,7 @@ export class NewPrescriptionComponent implements OnInit {
 
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
@@ -585,7 +585,7 @@ export class NewPrescriptionComponent implements OnInit {
   viewgetIpprescriptionReportPdf(response) {
     // debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "OP_IP_ID",
@@ -632,7 +632,7 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

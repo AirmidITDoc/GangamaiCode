@@ -38,7 +38,7 @@ opdipdno:any
 
   OnSave() {
     debugger
-    let submitData = {
+    const submitData = {
       "fromDate": this.datePipe.transform(this._AppointmentlistService.FollowupFormGroup.get("followupdate").value, "yyyy-MM-dd") || "1900/01/01",
 
     }
