@@ -67,6 +67,11 @@
                                         [mode]="autocompleteModedoctor">
                                     </airmid-dropdown>
                                 </div>
+                                <!-- <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Lab Appointment" formControlName="appointmentId"
+                                        [formGroup]="myForm" [mode]="autocompleteModedoctor">
+                                    </airmid-dropdown>
+                                </div> -->
                             </div>
                         </form>
                     </div>
@@ -399,9 +404,9 @@
                                                         <mat-cell *matCellDef="let contact" class="w-100">
                                                             <mat-form-field floatLabel="never" appearance="fill"
                                                                 class="compact-input">
-                                                                <input matInput type="text" pattern="[0-9]*"
-                                                                 [min]="0" [max]="contact.TotalAmt"
-                                                                    inputmode="numeric" [(ngModel)]="contact.DiscAmt"
+                                                                <input matInput type="text" pattern="[0-9]*" [min]="0"
+                                                                    [max]="contact.TotalAmt" inputmode="numeric"
+                                                                    [(ngModel)]="contact.DiscAmt"
                                                                     (ngModelChange)="onDiscountAmtChange(contact)">
                                                             </mat-form-field>
                                                         </mat-cell>
@@ -672,7 +677,7 @@
                     <div fxFlex="850px" fxLayout="row" fxLayoutAlign="space-between center">
 
                         <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4"
-                             (change)="onChangeReg($event)">
+                            (change)="onChangeReg($event)">
                             <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
                             <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
                             <mat-radio-button value="PayOption">Pay Option</mat-radio-button>

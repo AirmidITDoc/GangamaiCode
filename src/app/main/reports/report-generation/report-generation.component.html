@@ -78,7 +78,8 @@
                                             <airmid-autocomplete label="User" [formGroup]="_ReportService.userForm"
                                                 formControlName="UserId" placeholderText="Enter User"
                                                 ApiUrl="Report/UserList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedUserObj($event)">
+                                                (selectionChange)="SelectedUserObj($event)"
+                                                (onClearSelection)="clearUser()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -87,7 +88,8 @@
                                             <airmid-autocomplete label="Doctor" [formGroup]="_ReportService.userForm"
                                                 formControlName="DoctorId" placeholderText="Enter Doctor"
                                                 ApiUrl="Report/DoctorList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedDoctorObj($event)">
+                                                (selectionChange)="SelectedDoctorObj($event)"
+                                                (onClearSelection)="clearDoctor()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -96,7 +98,8 @@
                                             <airmid-autocomplete label="RefDoctor" [formGroup]="_ReportService.userForm"
                                                 formControlName="RefDoctorId" placeholderText="Enter RefDoctor"
                                                 ApiUrl="Report/RefDoctorList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedRefDoctorObj($event)">
+                                                (selectionChange)="SelectedRefDoctorObj($event)"
+                                                (onClearSelection)="clearRefDoctor()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -106,7 +109,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="ServiceId"
                                                 placeholderText="Enter Service Name"
                                                 ApiUrl="Report/ServiceList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedServiceObj($event)">
+                                                (selectionChange)="SelectedServiceObj($event)"
+                                                (onClearSelection)="clearService()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -116,7 +120,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="DepartmentId"
                                                 placeholderText="Enter Department Name"
                                                 ApiUrl="Report/DepartmentList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedDepartmentObj($event)">
+                                                (selectionChange)="SelectedDepartmentObj($event)"
+                                                (onClearSelection)="clearDepartment()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -126,7 +131,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="CashCounterId"
                                                 placeholderText="Enter Cash Counter"
                                                 ApiUrl="Report/CashCounterList/auto-complete?Keyword="
-                                                (selectionChange)="SelecteCashCounterObj($event)">
+                                                (selectionChange)="SelecteCashCounterObj($event)"
+                                                (onClearSelection)="clearCashCounter()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -137,7 +143,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="GroupId"
                                                 placeholderText="Select Group Name"
                                                 ApiUrl="Report/GroupMasterList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedGroupObj($event)">
+                                                (selectionChange)="SelectedGroupObj($event)"
+                                                (onClearSelection)="clearGroup()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -148,7 +155,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="ClassId"
                                                 placeholderText="Select Class Name"
                                                 ApiUrl="Report/ClassMasterList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedClassObj($event)">
+                                                (selectionChange)="SelectedClassObj($event)"
+                                                (onClearSelection)="clearClass()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -158,7 +166,8 @@
                                             <airmid-autocomplete label="Ward Name" [formGroup]="_ReportService.userForm"
                                                 formControlName="WardId" placeholderText="Select Ward Name"
                                                 ApiUrl="Report/WardList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedWardObj($event)">
+                                                (selectionChange)="SelectedWardObj($event)"
+                                                (onClearSelection)="clearWard()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -169,7 +178,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="dischargeTypeId"
                                                 placeholderText="Select Discharge Type"
                                                 ApiUrl="Report/DischargeTypeList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedDischargeObj($event)">
+                                                (selectionChange)="SelectedDischargeObj($event)"
+                                                 (onClearSelection)="clearDischarge()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -180,7 +190,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="CompanyId"
                                                 placeholderText="Select Company Name"
                                                 ApiUrl="Report/CompanyList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedCompanyObj($event)">
+                                                (selectionChange)="SelectedCompanyObj($event)"
+                                                 (onClearSelection)="clearCompany()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -212,7 +223,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="SupplierId"
                                                 placeholderText="Select Supplier Name"
                                                 ApiUrl="Report/MSupplierMasterList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedSupplierObj($event)">
+                                                (selectionChange)="SelectedSupplierObj($event)"
+                                                (onClearSelection)="clearSupplier()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -223,7 +235,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="PaymentId"
                                                 placeholderText="Select Payment Mode"
                                                 ApiUrl="Report/PaymentList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedPaymentObj($event)">
+                                                (selectionChange)="SelectedPaymentObj($event)"
+                                                (onClearSelection)="clearPayment()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -233,7 +246,8 @@
                                             <airmid-autocomplete label="Drug Type" [formGroup]="_ReportService.userForm"
                                                 formControlName="DrugTypeId" placeholderText="Select Drug Type"
                                                 ApiUrl="Report/MItemDrugTypeMasterList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedDrugTypeObj($event)">
+                                                (selectionChange)="SelectedDrugTypeObj($event)"
+                                                (onClearSelection)="cleardrugType()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -243,7 +257,8 @@
                                             <airmid-autocomplete label="Item Name" [formGroup]="_ReportService.userForm"
                                                 formControlName="ItemId" placeholderText="Select Item Name"
                                                 ApiUrl="Report/MItemMasterList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedItemObj($event)">
+                                                (selectionChange)="SelectedItemObj($event)"
+                                                (onClearSelection)="clearItem()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -254,7 +269,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="CreditId"
                                                 placeholderText="Select Credit Reason"
                                                 ApiUrl="Report/MCreditReasonMasterList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedCreditObj($event)">
+                                                (selectionChange)="SelectedCreditObj($event)"
+                                                (onClearSelection)="clearCredit()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -265,7 +281,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="paymentId"
                                                 placeholderText="Select Payment Mode"
                                                 ApiUrl="Report/MModeOfPaymentList/auto-complete?Keyword="
-                                                (selectionChange)="SelectedPaymentObj($event)">
+                                                (selectionChange)="SelectedPaymentObj($event)"
+                                                (onClearSelection)="clearPayment()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -294,7 +311,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="HospitalId"
                                                 placeholderText="Select Hospital"
                                                 ApiUrl="Report/HospitalMaster/auto-complete?Keyword="
-                                                (selectionChange)="SelectedHospitalObj($event)">
+                                                (selectionChange)="SelectedHospitalObj($event)"
+                                                (onClearSelection)="ClearHospital()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -329,7 +347,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="ExecutiveId"
                                                 placeholderText="Select Executive"
                                                 ApiUrl="Report/MCompanyEmployeInfo/auto-complete?Keyword="
-                                                (selectionChange)="SelectedExecObj($event)">
+                                                (selectionChange)="SelectedExecObj($event)"
+                                                (onClearSelection)="clearExecutive()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -340,7 +359,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="LoginUserId"
                                                 placeholderText="Select Login User"
                                                 ApiUrl="Report/LoginUser/auto-complete?Keyword="
-                                                (selectionChange)="SelectedLoginUserObj($event)">
+                                                (selectionChange)="SelectedLoginUserObj($event)"
+                                                (onClearSelection)="clearLoginUser()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -351,7 +371,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="LabPatientId"
                                                 placeholderText="Select Patient"
                                                 ApiUrl="Report/SearchPatient/auto-complete?Keyword="
-                                                (selectionChange)="SelectedPatientObj($event)">
+                                                (selectionChange)="SelectedPatientObj($event)"
+                                                (onClearSelection)="clearPatientSearch()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -362,7 +383,32 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="RegNo"
                                                 placeholderText="Select RegNo"
                                                 ApiUrl="Report/SearchRegNo/auto-complete?Keyword="
-                                                (selectionChange)="SelectedRegObj($event)">
+                                                (selectionChange)="SelectedRegObj($event)"
+                                                (onClearSelection)="clearRegNo()">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagPatientTypeSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Patient Type"
+                                                [formGroup]="_ReportService.userForm" formControlName="PatientType"
+                                                placeholderText="Select PatientType"
+                                                ApiUrl="Report/PatientTypeMaster/auto-complete?Keyword="
+                                                (selectionChange)="SelectedPatientTypeObj($event)"
+                                                (onClearSelection)="clearPatientType()">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagstatusSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="status"
+                                                [formGroup]="_ReportService.userForm" formControlName="status"
+                                                placeholderText="Select status"
+                                                ApiUrl="Report/LabReportStatus/auto-complete?Keyword="
+                                                (selectionChange)="SelectedstatusObj($event)"
+                                                (onClearSelection)="clearstatus()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>

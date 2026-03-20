@@ -6,6 +6,7 @@ import Chart, { Color } from 'chart.js/auto';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from "../dashboard.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { SignalRService } from "app/core/services/signalr.service";
 
 @Component({
     selector: 'app-radiology-dashboard',
@@ -109,9 +110,11 @@ export class RadiologyDashboardComponent implements OnInit {
 
     // Pathology Table Column Definitions
     pathologyReportsColumns: string[] = ['Date', 'PatientName', 'TestName', 'Pathologist', 'Status'];
+    pathologyReportsColumns: string[] = ['Date', 'PatientName', 'TestName', 'Pathologist', 'Status'];
     pathologyTopTestsColumns: string[] = ['TestName', 'Count'];
     pathologistWorkloadColumns: string[] = ['PathologistName', 'TestsReported'];
     // Radiology Table Column Definitions
+    recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Radiologist', 'Status'];
     recentReportsColumns: string[] = ['Date', 'PatientName', 'patientType', 'Radiologist', 'Status'];
     topTestsColumns: string[] = ['TestName', 'Count'];
     radiologistPerformanceColumns: string[] = ['RadiologistName', 'ReportsCompleted'];
@@ -138,6 +141,7 @@ export class RadiologyDashboardComponent implements OnInit {
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder, public _accountServices: AuthenticationService,
         private dashboardService: DashboardService,
+        private signalRService: SignalRService
     ) {
 
         // this.initializeDateRange();
@@ -145,7 +149,13 @@ export class RadiologyDashboardComponent implements OnInit {
     pathologyData: any;
     RadiologyData: any;
     ngOnInit(): void {
-
+        this.signalRService.startConnection();
+        this.signalRService.addReceiveInvestigationDashboardListener((data, user) => {
+            if (data == "Investigation_Bill") {
+                var old = this.metrics.find(x => x.label == "Total Report");
+                this.metrics.find(x => x.label == "Total Report").value = old.value + user.BillCount;
+            }
+        });
         this.myFilterform = this.dashboardService.filterFormfinance();
         this.loadTableData();
         
@@ -290,6 +300,7 @@ debugger
         this.pendingReports = 0;
         this.cancelledScans = 0;
 
+
         this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
             this.dsRadiologyCount.data = res || [];
             this.dsRadiologyRecentReports.data = res || [];
@@ -319,6 +330,7 @@ debugger
                     }
                 });
             }
+
 
         });
     }
@@ -461,7 +473,22 @@ debugger
         if (document.getElementById('pathologyTotalTestsChart')) {
             this.pathologyTotalTestsChart = this.getpathologyTotalTestsChart();
         } else if (document.getElementById('pathologyCompletedChart')) {
+        } else if (document.getElementById('pathologyCompletedChart')) {
             this.pathologyCompletedChart = this.getpathologyCompletedChart();
+        } else
+            if (document.getElementById('pathologyPendingChart')) {
+                this.pathologyPendingChart = this.getpathologyPendingChart();
+            } else if (document.getElementById('pathologyRejectedChart')) {
+                this.pathologyRejectedChart = this.getpathologyRejectedChart();
+            } else if (document.getElementById('pathologyDepartmentChart')) {
+                // this.pathologyDepartmentChart = this.getPathologyDepartmentChart();
+            } else // Status Pie Chart
+                if (document.getElementById('pathologyStatusPieChart')) {
+                    // this.pathologyStatusPieChart = this.getPathologyStatusPieChart();
+                } else // Volume Trend Chart
+                    if (document.getElementById('pathologyVolumeTrendChart')) {
+                        // this.pathologyVolumeTrendChart = this.getPathologyVolumeTrendChart();
+                    }
         } else
             if (document.getElementById('pathologyPendingChart')) {
                 this.pathologyPendingChart = this.getpathologyPendingChart();
@@ -480,6 +507,7 @@ debugger
     bartotalTests = []
 
     getpathologyTotalTestsChart() {
+
 
 
         if (this.pathologyData.weeklyTestReport) {
@@ -517,6 +545,7 @@ debugger
     getpathologyPendingChart() {
 
 
+
         if (this.pathologyData.weeklyTestReport) {
             this.barpendingTests = this.pathologyData.weeklyTestReport.map(day => day.pendingReports);
         }
@@ -533,6 +562,7 @@ debugger
 
     barrejectedTests = []
     getpathologyRejectedChart() {
+
 
 
         if (this.pathologyData.weeklyTestReport) {
@@ -724,11 +754,24 @@ debugger
         if (document.getElementById('RadiologytotalTestsChart')) {
             this.RadiologytotalTestsChart = this.getradiologyTotalTestsChart();
         } else if (document.getElementById('RadiologycompletedReportsChart')) {
+        } else if (document.getElementById('RadiologycompletedReportsChart')) {
             this.RadiologycompletedReportsChart = this.getradiologyCompletTestsChart();
+        } else if (document.getElementById('RadiologypendingReportsChart')) {
         } else if (document.getElementById('RadiologypendingReportsChart')) {
             this.RadiologypendingReportsChart = this.getradiologyPendingTestsChart();
         } else if (document.getElementById('RadiologycancelledScansChart')) {
+        } else if (document.getElementById('RadiologycancelledScansChart')) {
             this.RadiologycancelledScansChart = this.getradiologyCancleTestsChart();
+        } else // Department Bar Chart
+            if (document.getElementById('RadiologyDepartmentChart')) {
+                // this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart();
+            } else // Status Pie Chart
+                if (document.getElementById('RadiologyStatusPieChart')) {
+                    // this.RadiologyStatusPieChart = this.getRadiologyStatusPieChart();
+                } else // Volume Trend Chart
+                    if (document.getElementById('RadiologyVolumeTrendChart')) {
+                        // this.RadiologyVolumeTrendChart = this.getRadiologyVolumeTrendChart();
+                    }
         } else // Department Bar Chart
             if (document.getElementById('RadiologyDepartmentChart')) {
                 // this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart();
@@ -745,6 +788,7 @@ debugger
     radiobartotalTests = []
 
     getradiologyTotalTestsChart() {
+
 
 
         if (this.RadiologyData.radWeeklyTestReport) {
@@ -784,6 +828,7 @@ debugger
     getradiologyPendingTestsChart() {
 
 
+
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarpendingTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
         }
@@ -801,6 +846,7 @@ debugger
     radiobarcancleTests = []
 
     getradiologyCancleTestsChart() {
+
 
 
         if (this.RadiologyData.radWeeklyTestReport) {

@@ -27,6 +27,11 @@ export class SignalRService {
             callback(JSON.parse(data), user);
         });
     }
+    public addReceiveInvestigationDashboardListener(callback: any): void {
+        this.hubConnection.on('ReceiveInvestigationDashboard', (data, user) => {
+              callback(data, JSON.parse(user));
+        });
+    }
 
     public sendMessage(user: string, message: string): void {
         this.hubConnection.invoke('SendMessage', user, message)

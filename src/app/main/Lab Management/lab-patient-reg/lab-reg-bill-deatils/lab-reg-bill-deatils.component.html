@@ -52,14 +52,19 @@
                     <ng-template #icons let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                            <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
+                            <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Test" class="s-20 mr-4"
                                 style="color: #9c27b0;">
                                 <img width="50px" height="50px" src="assets/images/logos/pathology.png">
                             </mat-icon>
 
-                            <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
+                            <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Test" class="s-20 mr-4"
                                 style="color: #4a6be6;">
                                 <img width="50px" height="50px" src="assets/images/logos/radiology.png">
+                            </mat-icon> 
+
+                            <mat-icon *ngIf="element.testType==1" matTooltip="Other Test" class="s-20 mr-4"
+                                style="color: #4a6be6;">
+                                <img width="50px" height="50px" src="/assets/images/logos/otherService.png">
                             </mat-icon> 
                         </div>
                     </ng-template>

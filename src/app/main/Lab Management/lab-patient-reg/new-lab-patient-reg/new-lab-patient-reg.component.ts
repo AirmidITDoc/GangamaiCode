@@ -366,6 +366,7 @@ export class NewLabPatientRegComponent {
       patientName: [''],
       servicedoctorId: [0],
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      appointmentId:0
     })
   }
 
@@ -1806,7 +1807,7 @@ export class NewLabPatientRegComponent {
 
     const formValue = { ...this.myForm.value };
     const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-      'paymentType', 'servicedoctorId'];
+      'paymentType', 'servicedoctorId','appointmentId'];
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
 

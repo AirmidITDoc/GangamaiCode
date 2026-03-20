@@ -69,10 +69,10 @@ export class ReportGenerationComponent implements OnInit {
     FromStoreId: any;
     ToStoreId: any;
     HospitalId: any;
-    ExecutiveId:any;
-    LoginUserId:any;
-    LabPatientId:any;
-    RegNo:any;
+    ExecutiveId: any;
+    LoginUserId: any;
+    LabPatientId: any;
+    RegNo: any;
     ExpHeadId: any;
     ExpCatId: any;
     SupplierId: any;
@@ -83,6 +83,8 @@ export class ReportGenerationComponent implements OnInit {
     paymentId: any;
     OPIPType: any = '2';
     type: any = '0';
+    PatientType: any;
+    status: any;
     // 
     rid: number = 0;
     UId: any = 0;
@@ -139,9 +141,11 @@ export class ReportGenerationComponent implements OnInit {
     flagToStoreSelected: boolean = false;
     flagUnitSelected: boolean = false;
     flagExecSelected: boolean = false;
-    flagLoginUserSelected:boolean=false;
-    flagPatientSelected:boolean=false;
-    flagRegSelected:boolean=false;
+    flagLoginUserSelected: boolean = false;
+    flagPatientSelected: boolean = false;
+    flagRegSelected: boolean = false;
+    flagPatientTypeSelected: boolean = false;
+    flagstatusSelected: boolean = false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -296,6 +300,10 @@ export class ReportGenerationComponent implements OnInit {
             this.flagPatientSelected = true;
         if (controllerPermission.filter(x => x == "RegNo")?.length > 0)
             this.flagRegSelected = true;
+        if (controllerPermission.filter(x => x == "PatientType")?.length > 0)
+            this.flagPatientTypeSelected = true;
+        if (controllerPermission.filter(x => x == "Status")?.length > 0)
+            this.flagstatusSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -326,7 +334,7 @@ export class ReportGenerationComponent implements OnInit {
         this.WardId = obj.value;
     }
     SelectedDischargeObj(obj) {
-        this.WardId = obj.value;
+        this.dischargeTypeId = obj.value;
     }
     SelectedCompanyObj(obj) {
         this.CompanyId = obj.value;
@@ -373,8 +381,113 @@ export class ReportGenerationComponent implements OnInit {
     SelectedPatientObj(obj) {
         this.LabPatientId = obj.value;
     }
-    SelectedRegObj(obj){
-        this.RegNo=obj.value
+    SelectedRegObj(obj) {
+        this.RegNo = obj.value
+    }
+    SelectedPatientTypeObj(obj) {
+        this.PatientType = obj.value
+    }
+    SelectedstatusObj(obj) {
+        this.status = obj.value
+    }
+
+    ///// clear data
+    clearUser() {
+        this._ReportService.userForm.get("UserId").setValue('');
+        this.UserId = "0"
+    }
+    clearDoctor() {
+        this._ReportService.userForm.get("DoctorId").setValue('');
+        this.DoctorId = "0"
+    }
+    clearRefDoctor() {
+        this._ReportService.userForm.get("RefDoctorId").setValue('');
+        this.RefDoctorId = "0"
+    }
+    clearService() {
+        this._ReportService.userForm.get("ServiceId").setValue('');
+        this.ServiceId = "0"
+    }
+    clearDepartment() {
+        this._ReportService.userForm.get("DepartmentId").setValue('');
+        this.DepartmentId = "0"
+    }
+    clearCashCounter() {
+        this._ReportService.userForm.get("CashCounterId").setValue('');
+        this.CashCounterId = "0"
+    }
+    clearGroup() {
+        this._ReportService.userForm.get("GroupId").setValue('');
+        this.GroupId = "0"
+    }
+    clearClass() {
+        this._ReportService.userForm.get("ClassId").setValue('');
+        this.ClassId = "0"
+    }
+    clearWard() {
+        this._ReportService.userForm.get("WardId").setValue('');
+        this.WardId = "0"
+    }
+    clearDischarge() {
+        this._ReportService.userForm.get("dischargeTypeId").setValue('');
+        this.dischargeTypeId = "0"
+    }
+    clearCompany() {
+        this._ReportService.userForm.get('CompanyId').setValue('');
+        this.CompanyId = "0"
+    }
+    clearSupplier() {
+        this._ReportService.userForm.get('SupplierId').setValue('');
+        this.SupplierId = "0"
+    }
+    clearPayment() {
+        this._ReportService.userForm.get('PaymentId').setValue('');
+        this.PaymentId = "0"
+    }
+    cleardrugType() {
+        this._ReportService.userForm.get('DrugTypeId').setValue('');
+        this.DrugTypeId = "0"
+    }
+    clearItem() {
+        this._ReportService.userForm.get('ItemId').setValue('');
+        this.ItemId = "0"
+    }
+    clearCredit() {
+        this.CreditId = "0"
+    }
+    ClearHospital() {
+        this._ReportService.userForm.get('HospitalId').setValue('');
+        this.HospitalId = "0"
+    }
+    resetExpHead() {
+        this._ReportService.userForm.get('expHeadId').setValue('');
+        this.ExpHeadId = 0;
+    }
+    resetExpCat() {
+        this._ReportService.userForm.get('expCategoryId').setValue('');
+        this.ExpCatId = 0;
+    }
+    clearExecutive() {
+        this._ReportService.userForm.get('ExecutiveId').setValue('');
+        this.ExecutiveId = "0"
+    }
+    clearLoginUser() {
+        this._ReportService.userForm.get('LoginUserId').setValue('');
+        this.LoginUserId = "0"
+    }
+    clearPatientSearch() {
+        this._ReportService.userForm.get('LabPatientId').setValue('');
+        this.LabPatientId = "0"
+    }
+    clearRegNo() {
+        this._ReportService.userForm.get('RegNo').setValue('');
+        this.RegNo = "0"
+    }
+    clearPatientType() {
+        this.PatientType = "0"
+    }
+    clearstatus() {
+        this.status = "0"
     }
     // 
     OnClose() {
@@ -405,6 +518,8 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('LoginUserId').setValue('');
         this._ReportService.userForm.get('LabPatientId').setValue('');
         this._ReportService.userForm.get('RegNo').setValue('');
+        this._ReportService.userForm.get('PatientType').setValue('');
+        this._ReportService.userForm.get('status').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -426,10 +541,12 @@ export class ReportGenerationComponent implements OnInit {
         this.ItemId = 0;
         this.dischargeTypeId = 0;
         this.HospitalId = 0;
-        this.ExecutiveId=0;
-        this.LoginUserId=0;
-        this.LabPatientId=0;
-        this.RegNo=0;
+        this.ExecutiveId = 0;
+        this.LoginUserId = 0;
+        this.LabPatientId = 0;
+        this.PatientType = 0;
+        this.status = 0;
+        this.RegNo = 0;
         this.flagDoctorSelected = false;
         this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
@@ -445,10 +562,10 @@ export class ReportGenerationComponent implements OnInit {
         this.flagFromStoreSelected = false;
         this.flagToStoreSelected = false;
         this.flagUnitSelected = false;
-        this.flagExecSelected=false;
-        this.flagLoginUserSelected=false;
-        this.flagPatientSelected=false;
-        this.flagRegSelected=false;
+        this.flagExecSelected = false;
+        this.flagLoginUserSelected = false;
+        this.flagPatientSelected = false;
+        this.flagRegSelected = false;
         this.flagSupplierelected = false;
         this.flagPaymentSelected = false;
         this.flagDrugTypeSelected = false;
@@ -459,15 +576,10 @@ export class ReportGenerationComponent implements OnInit {
         this.flagPaymentModeSelected = false;
         this.FlaExpCategorySelected = false;
         this.FlaExpHeadSelected = false;
+        this.flagPatientTypeSelected = false;
+        this.flagstatusSelected = false;
     }
-    resetExpHead() {
-        this._ReportService.userForm.get('expHeadId').setValue('');
-        this.ExpHeadId = 0;
-    }
-    resetExpCat() {
-        this._ReportService.userForm.get('expCategoryId').setValue('');
-        this.ExpCatId = 0;
-    }
+
     CallReportData(type) {
         this.StoreId = this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
@@ -656,6 +768,18 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "LabPatientId",
                     "fieldValue": this.RegNo.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagPatientTypeSelected)
+                paramFilterList.push({
+                    "fieldName": "PatientType",
+                    "fieldValue": this.PatientType.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagstatusSelected)
+                paramFilterList.push({
+                    "fieldName": "status",
+                    "fieldValue": this.status.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   

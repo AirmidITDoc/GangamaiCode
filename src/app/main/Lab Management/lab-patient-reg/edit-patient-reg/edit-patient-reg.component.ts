@@ -266,6 +266,45 @@ export class EditPatientRegComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+        if (DateOfBirth1) {
+
+          const todayDate = new Date();
+          const dob = new Date(DateOfBirth1);
+          let ageYear = (todayDate.getFullYear() - dob.getFullYear());
+          let ageMonth = (todayDate.getMonth() - dob.getMonth());
+          let ageDay = (todayDate.getDate() - dob.getDate());
+
+          this.ageYear = ageYear
+          this.ageMonth = ageMonth
+          this.ageDay = ageDay
+
+          if (ageDay < 0) {
+            (ageMonth)--;
+            const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+            ageDay += previousMonth.getDate();
+          }
+
+          if (ageMonth < 0) {
+            ageYear--;
+            ageMonth += 12;
+          }
+          if (
+            (!ageYear || ageYear == 0) &&
+            (!ageMonth || ageMonth == 0) &&
+            (!ageDay || ageDay == 0)
+          ) {
+            this.toastrService.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+          this.myForm.get('ageYear')?.setValue(String(ageYear), { emitEvent: false });
+          this.myForm.get('ageMonth')?.setValue(String(ageMonth), { emitEvent: false });
+          this.myForm.get('ageDay')?.setValue(String(ageDay), { emitEvent: false });
+
+        }
+
         this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId);
         this.FinalForm.get('labPatientId').setValue(this.labPatientId);
 
