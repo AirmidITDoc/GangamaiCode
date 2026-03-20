@@ -454,67 +454,242 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     //Table Exp Date change
     lastDay1: any;
-    CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
-        const numericPattern = /^[0-9]+$/;
-        const CurrentDate = new Date();
-        const currentMonth = CurrentDate.getMonth();
-        const currentYear = CurrentDate.getFullYear();
+        CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
+        //debugger 
+    //     const NextExpiryDate = new Date();
+    //     const Months = 3 
+    //     const numericPattern = /^[0-9]+$/;
+    //     const CurrentDate = new Date();
+    //     const currentMonth = CurrentDate.getMonth() + 1;
+    //     const currentYear = CurrentDate.getFullYear();
+    //     const NxtMonths = ((currentMonth) + (Months));
+    //     NextExpiryDate.setMonth(NxtMonths);
+    //     const newNextDate = new Date(NextExpiryDate)
 
-        if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
-            const month = +inputDate.substring(0, 2);
-            const year = +inputDate.substring(2, 6);
-            if (year <= currentYear) {
-                if (month <= currentMonth) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '⚠️ Expired Item Alert',
-                        html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
-                        showConfirmButton: false,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        background: '#fff',
-                        width: '400px',
-                        padding: '1.5em',
-                    });
-                    this.lastDay1 = '';
-                    contact.ExpDate = '';
-                    return
-                }
-                if (month > 12 && month <= 0) {
-                    this.lastDay1 = '';
-                    contact.ExpDate = '';
-                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    return;
-                }
-                const lastDay1 = this.getLastDayOfMonth(month, year);
-                this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-                contact.ExpDate = this.lastDay1;
-            } else {
-                if (month > 12 && month <= 0) {
-                    this.lastDay1 = '';
-                    contact.ExpDate = '';
-                    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    return;
-                }
-                const lastDay1 = this.getLastDayOfMonth(month, year);
-                this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-                this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-                contact.ExpDate = this.lastDay1;
-            }
-        } else {
-            this.lastDay1 = '';
-            contact.ExpDate = '';
-            this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+
+    //     if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
+    //         const month = +inputDate.substring(0, 2);
+    //         const year = +inputDate.substring(2, 6);
+
+    //         if (year >= currentYear) { 
+    // const inputFullDate = new Date(year, month - 1, 1);
+    // const today = new Date(CurrentDate.getFullYear(), CurrentDate.getMonth(), 1); 
+    //               if (inputFullDate < today)  {
+    //                 Swal.fire({
+    //                     icon: 'warning',
+    //                     title: '⚠️ Expired Item Alert',
+    //                     html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+    //                     showConfirmButton: false,
+    //                     timer: 2000,
+    //                     timerProgressBar: true,
+    //                     background: '#fff',
+    //                     width: '400px',
+    //                     padding: '1.5em',
+    //                 });
+    //                 this.lastDay1 = '';
+    //                 contact.ExpDate = '';
+    //                 return
+    //             }
+    //            if (month > 12 || month <= 0) {
+    //                 this.lastDay1 = '';
+    //                 contact.ExpDate = '';
+    //                 this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+    //                     toastClass: 'tostr-tost custom-toast-warning',
+    //                 });
+    //                 return;
+    //             } 
+    //             const lastDay1 = this.getLastDayOfMonth(month, year);
+    //             this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+    //             contact.ExpDate = this.lastDay1; 
+
+    //             // Get values as strings in dd/MM/yyyy format
+    //             const NewNextExpiray = this.datePipe.transform(newNextDate, "dd/MM/yyyy");
+    //             const NewCurrentDate = this.lastDay1
+    //             if (NewNextExpiray && NewCurrentDate) {
+    //                 // Convert to Date objects
+    //                 const [sDay, sMonth, sYear] = NewNextExpiray.split('/').map(Number);
+    //                 const [aDay, aMonth, aYear] = NewCurrentDate.split('/').map(Number);
+
+    //                 const NewNextExpiray_1 = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
+    //                 const NewCurrentDate_1 = new Date(aYear, aMonth - 1, aDay);
+
+    //                 if (NewCurrentDate_1 < NewNextExpiray_1) {
+    //                     Swal.fire({
+    //                         icon: 'warning',
+    //                         title: '⚠️ Upcoming Expiry Alert',
+    //                         html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
+    //                         showConfirmButton: true,
+    //                         confirmButtonText: 'OK',
+    //                         confirmButtonColor: '#f39c12',
+    //                         width: '400px',
+    //                         padding: '1.5em',
+    //                         background: '#fff',
+    //                         timer: 4000,
+    //                         timerProgressBar: true,
+    //                     });
+                    
+    //                 }
+    //             }
+    //         } else {
+    //             Swal.fire({
+    //                 icon: 'warning',
+    //                 title: '⚠️ Expired Item Alert',
+    //                 html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+    //                 showConfirmButton: false,
+    //                 timer: 2000,
+    //                 timerProgressBar: true,
+    //                 background: '#fff',
+    //                 width: '400px',
+    //                 padding: '1.5em',
+    //             });
+    //                 this.lastDay1 = '';
+    //                 contact.ExpDate = '';
+    //             return
+    //         }
+    //     } else {
+    //                 this.lastDay1 = '';
+    //                 contact.ExpDate = '';
+    //         this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+
+
+
+
+   
+  const numericPattern = /^[0-9]+$/;
+  const currentDate = new Date();
+
+  const nextExpiryDate = new Date();
+  nextExpiryDate.setMonth(currentDate.getMonth() + 3);
+
+  // ✅ Validate input format
+  if (!(inputDate && inputDate.length === 6 && numericPattern.test(inputDate))) {
+    this.lastDay1 = '';
+    contact.ExpDate = '';
+    this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !');
+    return;
+  }
+
+  const month = +inputDate.substring(0, 2);
+  const year = +inputDate.substring(2, 6);
+
+  // ✅ Validate month
+  if (month < 1 || month > 12) {
+    this.lastDay1 = '';
+    contact.ExpDate = '';
+    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !');
+    return;
+  }
+
+  // ✅ Create input date (1st day of month)
+  const inputDateObj = new Date(year, month - 1, 1);
+
+  // ✅ Current month start
+  const today = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+  // ❌ Expired check
+  if (inputDateObj < today) {
+    Swal.fire({
+      icon: 'warning',
+      title: '⚠️ Expired Item Alert',
+      html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+      timer: 2000,
+      showConfirmButton: false
+    });
+
+    this.lastDay1 = '';
+    contact.ExpDate = '';
+    return;
+  }
+
+  // ✅ Get last day of month
+  const lastDay = this.getLastDayOfMonth(month, year);
+
+  this.lastDay1 = `${lastDay}/${this.pad(month)}/${year}`;
+  this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+
+  contact.ExpDate = this.lastDay1;
+
+  // ⚠️ Near expiry check (within 3 months)
+  const expiryFullDate = new Date(year, month - 1, lastDay);
+
+  if (expiryFullDate <= nextExpiryDate) {
+    Swal.fire({
+      icon: 'warning',
+      title: '⚠️ Upcoming Expiry Alert',
+      html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#f39c12',
+      timer: 4000
+    }); 
+}
     }
+    // CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
+    //     debugger
+    //     const numericPattern = /^[0-9]+$/;
+    //     const CurrentDate = new Date();
+    //     const currentMonth = CurrentDate.getMonth();
+    //     const currentYear = CurrentDate.getFullYear();
+
+    //     if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
+    //         const month = +inputDate.substring(0, 2);
+    //         const year = +inputDate.substring(2, 6);
+    //         if (year <= currentYear) {
+    //             if (month <= currentMonth) {
+    //                 Swal.fire({
+    //                     icon: 'warning',
+    //                     title: '⚠️ Expired Item Alert',
+    //                     html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+    //                     showConfirmButton: false,
+    //                     timer: 2000,
+    //                     timerProgressBar: true,
+    //                     background: '#fff',
+    //                     width: '400px',
+    //                     padding: '1.5em',
+    //                 });
+    //                 this.lastDay1 = '';
+    //                 contact.ExpDate = '';
+    //                 return
+    //             }
+    //             if (month > 12 && month <= 0) {
+    //                 this.lastDay1 = '';
+    //                 contact.ExpDate = '';
+    //                 this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+    //                     toastClass: 'tostr-tost custom-toast-warning',
+    //                 });
+    //                 return;
+    //             }
+    //             const lastDay1 = this.getLastDayOfMonth(month, year);
+    //             this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+    //             contact.ExpDate = this.lastDay1;
+    //         } else {
+    //             if (month > 12 && month <= 0) {
+    //                 this.lastDay1 = '';
+    //                 contact.ExpDate = '';
+    //                 this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+    //                     toastClass: 'tostr-tost custom-toast-warning',
+    //                 });
+    //                 return;
+    //             }
+    //             const lastDay1 = this.getLastDayOfMonth(month, year);
+    //             this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+    //             contact.ExpDate = this.lastDay1;
+    //         }
+    //     } else {
+    //         this.lastDay1 = '';
+    //         contact.ExpDate = '';
+    //         this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    // }
     //Add item list
     onAddGRNItem() {
         debugger

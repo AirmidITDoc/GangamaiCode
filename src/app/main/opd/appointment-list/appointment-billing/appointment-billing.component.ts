@@ -630,6 +630,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             tariffId: [this.vTariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     createBillDetails(item: any): FormGroup {

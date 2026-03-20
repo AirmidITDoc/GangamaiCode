@@ -628,6 +628,8 @@ totalQty:any;
     hospitalAmt:any
     DocAmt:any
     Price:any
+    unitofMeasurementName:any;
+    SupplierId:any;
   /**
    * Constructor
    *
@@ -713,6 +715,7 @@ totalQty:any;
       this.specification = ItemNameList.specification || 0;
       this.itemId = ItemNameList.itemId || 0;
       this.uomid = ItemNameList.uomid || 0;
+         this.UOMID = ItemNameList.UOMID || 0;
       this.freightAmount = ItemNameList.freightAmount || 0;
       this.transportChanges = ItemNameList.transportChanges || 0;
       this.handlingCharges = ItemNameList.handlingCharges || 0;
@@ -724,8 +727,8 @@ totalQty:any;
       this.hospitalAmt = ItemNameList.hospitalAmt || "";
       this.DocAmt= ItemNameList.DocAmt || "";
 this.Price= ItemNameList.Price || "";
-
-      
+this.SupplierId = ItemNameList.SupplierId || 0;
+this.unitofMeasurementName= ItemNameList.unitofMeasurementName || ""; 
     }
   }
 }

@@ -152,6 +152,9 @@ export class PurchaseOrderService {
     else
       return this._httpClient1.PutData("Purchase/Edit/" + Param.purchaseId, Param)
   }
+  public InsertPRtoPurchaseSave(Param) { 
+      return this._httpClient1.PostData("PurchaseRequisitionFinal/PRToPOInsert", Param); 
+  }
 
 
   public InsertPurchaseUpdate(employee, Id) {

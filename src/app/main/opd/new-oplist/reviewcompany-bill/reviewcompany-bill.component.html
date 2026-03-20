@@ -224,7 +224,8 @@
 
                                                 <airmid-textbox label="Gov.Company Amount"
                                                     formControlName="govtApprovedAmt" [formGroup]="CompanyForm"
-                                                    [validations]="getValidationMessages().govtApprovedAmt">
+                                                    [validations]="getValidationMessages().govtApprovedAmt" 
+                                                     (keyup)="validateGovtAmount()"  (keypress)="keyPressDigitDecimalOnly($event)" >
                                                 </airmid-textbox>
 
                                                 <airmid-textbox label="Reference No" formControlName="referenceNo"
@@ -245,7 +246,8 @@
 
                                                 <airmid-textbox label="Company Amount"
                                                     formControlName="companyApprovedAmt" [formGroup]="CompanyForm"
-                                                    [validations]="getValidationMessages().companyApprovedAmt">
+                                                    [validations]="getValidationMessages().companyApprovedAmt"
+                                                     (keyup)="validateGovtAmount()"  (keypress)="keyPressDigitDecimalOnly($event)">
                                                 </airmid-textbox>
 
                                                 <airmid-textbox label="Reference No1" formControlName="referenceNo_1"

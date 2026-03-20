@@ -485,7 +485,7 @@ export class NewCasepaperComponent implements OnInit {
             daysOption2: [0],
             doseOption3: [0],
             daysOption3: [0],
-            instructionId: [element.instructionId ?? 0],
+            instructionId: [element.instructionId || 0],
             qtyPerDay: [element.QtyPerDay ?? element.qtyPerDay ?? 0],
             totalQty: [(element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],

@@ -991,6 +991,36 @@ export class ReviewcompanyBillComponent {
       contact.EditDoctor = false
     }
   }
+  validateGovtAmount() {
+    debugger
+    const govtAmt = Number(this.CompanyForm.get('govtApprovedAmt')?.value || 0);
+    const CompanyAmt = Number(this.CompanyForm.get('companyApprovedAmt')?.value || 0);
+
+    if (govtAmt) {
+      if (govtAmt > this.FinalBillBalAmt) {
+        this.toastr.warning('Approval Amt cannot be greater than Balance amount');
+        // Optional: reset value
+        this.CompanyForm.get('govtApprovedAmt')?.setValue(this.FinalBillBalAmt);
+      }
+    }
+    if (CompanyAmt) {
+      if (CompanyAmt > this.FinalBillBalAmt) {
+        this.toastr.warning('Approval Amt cannot be greater than Balance amount');
+        // Optional: reset value
+        this.CompanyForm.get('companyApprovedAmt')?.setValue(this.FinalBillBalAmt);
+      }
+    }
+  }
+      // it allowed only Digit & decimal
+    keyPressDigitDecimalOnly(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
   onAddCharges(): void {
 
     const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === this.chargeForm.get('serviceName')?.value.serviceId);

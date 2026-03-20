@@ -237,6 +237,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
 
         const qty = this.doseQtyPerDay || 0;
         const days = this.medicineForm.get('Day').value || this.vDay;
+         const Instruction = this.instruction || this.medicineForm.get('Instruction')?.value || ''
 
         row.DrugId = this.drugId || 0;
         row.DrugName = this.drugName || '';
@@ -247,7 +248,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         row.Days = days;
         row.QtyPerDay = this.doseQtyPerDay || 0;
         row.totalQty = qty * days;
-        row.instruction = this.instruction || '';
+        row.instruction = Instruction;
         row.instructionId = this.instructionId || '';
         // row.instruction = this.medicineForm.get('Instruction').value || '';
         row.editable = false;
@@ -266,10 +267,17 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.dsItemList.data = [...this.dsItemList.data];
 
         const drugControlValue = this.buildDrugAutocompleteValue(row);
+        let Instruction = ''
+        // if(row.instructionId > 0)
+        //    Instruction = row.instructionId
+        // else
+           Instruction = row.instruction
+
+
         this.medicineForm.patchValue({
             ItemId: drugControlValue,
             Day: row.Days ?? row.days ?? '',
-            Instruction: (row.instructionId ?? '').toString(),
+             Instruction:Instruction, // (row.instructionId ?? '').toString() || row.instruction,
             // Instruction: row.instruction ?? row.Instruction ?? '',
             ItemGenericNameId: (row.GenericId ?? row.genericId ?? row.genericid ?? '').toString(),
             DoseId: (row.DoseId ?? row.doseId ?? '').toString()
@@ -575,6 +583,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     onInsetSelected(row: any): void {
         this.instructionId = row.value;
         this.instruction=row.text
+         this.medicineForm.get('Instruction')?.setValue(this.instruction)
     }
 
     onInstSelectionChange(event: MatSelectChange): void {

@@ -494,7 +494,8 @@ export class IPBillingComponent implements OnInit {
             classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceName: item?.serviceName,
-            chargesId: 0
+            chargesId: 0,
+             salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     // Getters 

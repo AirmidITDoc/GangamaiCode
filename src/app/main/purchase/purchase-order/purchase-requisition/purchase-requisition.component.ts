@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component,Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator'; 
 import { MatSort } from '@angular/material/sort';
@@ -48,6 +48,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
     'IGSTPer',
     'IGSTAmount', 
     'NetAmt',
+    'Specification',
     'Action'
   ]
     displayedColumnsPRHeader: string[] = [ 
@@ -115,7 +116,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
      this.userFormGroup.markAllAsTouched(); 
      this.onChangeFirst(); 
   
-this.PRTOPoSaveForm  =this.CreatePRToPoSaveForm();
+    this.PRTOPoSaveForm  =this.CreatePRToPoSaveForm();
   }
   SearchFilterForm(): FormGroup {
     return this._FormBuilder.group({
@@ -269,8 +270,8 @@ this.PRTOPoSaveForm  =this.CreatePRToPoSaveForm();
         SupplierName:contact?.supplierName,
         itemId:row.itemId ,
         ItemName:row.itemName ,
-        UMOName:contact?.uomid || 0,
-        UMOId:contact?.unitofMeasurementName || '',
+        UMOName:contact?.unitofMeasurementName || '',
+        UMOId:contact?.uomid || 0,
         Qty:qty,
         FreeQty:0,
         ConversionFactor:1,
@@ -399,36 +400,41 @@ debugger
 
 
 
-  CreatePRToPoSaveForm() {
+  CreatePRToHeader(item:any) {
+    const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
+    const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');  
+    const prdate = formattedDate + 'T00:00:00';
+    const prtime = formattedDate + 'T' + formattedTime;
+    const formValue = this.userFormGroup.value
+
     return this._FormBuilder.group({
       purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purchaseNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purchaseDate: new Date(),
-      purchaseTime: new Date(),
-      storeId: [this.accountService.currentUserValue.user.storeId [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      supplierId: [this.vSupplierId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-     // totalAmount: [this.FinalTotalAmt[this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-     // discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      //taxAmount: [parseFloat(this.GSTAmount) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      purchaseNo: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purchaseDate: prdate,
+      purchaseTime: prtime,
+      storeId: [this.accountService.currentUserValue.user.storeId ,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      supplierId: [item?.SupplierId || 0,[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalAmount: [item?.TotalAmt.toFixed(2),[this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      discAmount: [item?.DiscAmt.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      taxAmount: [parseFloat(item?.GSTAmount).toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       freightAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       octriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      //grandTotal: [this.FinalNetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      grandTotal: [item?.NetAmt.toFixed(2), [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       isclosed: [false],
       isVerified: [false],
-      remarks: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      remarks: [formValue?.Remark || '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       taxId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // paymentTermId: this.paymentterm || 0,
-      // modeofPayment: this.paymentmode || 0,
+      paymentTermId: [formValue?.PaymentTerm || 0 ,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      modeofPayment: [formValue?.PaymentMode || 0 ,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       worrenty: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
       roundVal: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      prefix: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      prefix: ['PUR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       isVerifiedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
-      // totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
-      // totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
-      // totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
-      transportChanges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      handlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totCgstamt: [(parseFloat(item?.CGSTAmount).toFixed(2)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      totSgstamt: [(parseFloat(item?.SGSTAmount).toFixed(2)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      totIgstamt: [(parseFloat(item?.IGSTAmount).toFixed(2)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+      transportChanges: [formValue?.TransportCharges || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      handlingCharges: [formValue?.HandlingCharges ||  0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       isCancelled: [false],
       tPurchaseDetails: this._FormBuilder.array([])
@@ -438,31 +444,192 @@ debugger
   createPurchasedetailForm(item: any = {}): FormGroup {
     return this._FormBuilder.group({
       purchaseId: [item.PurchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      uomid: [item.UOM || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [item.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      uomid: [item.UMOId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       freeQty: [item.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      rate: [item.Rate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      totalAmount: [item.TotalAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discAmount: [item.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      rate: [item.Price || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalAmount: [item.TotalAmt.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discAmount: [item.DiscAmt.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discPer: [item.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      vatAmount: [item.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      vatPer: [item.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      grandTotalAmount: [item.NetAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatAmount: [item.GSTAmount.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      vatPer: [item.GSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      grandTotalAmount: [item.NetAmt.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       mrp: [item.MRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       specification: [item.Specification || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       cgstper: [item.CGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      cgstamt: [item.CGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cgstamt: [item.CGSTAmount.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       sgstper: [item.SGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      sgstamt: [item.SGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      sgstamt: [item.SGSTAmount.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       igstper: [item.IGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      igstamt: [item.IGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      igstamt: [item.IGSTAmount.toFixed(2) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalQty:[item.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       defRate: [item.DefRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       vendDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
     });
   }
+
+CreatePRToPoSaveForm() {
+return this._FormBuilder.group({
+    tPurchaseHeader: this._FormBuilder.array([]), 
+  });
+}
+  get purchaseHeaderArray(): FormArray {
+    return this.PRTOPoSaveForm.get('tPurchaseHeader') as FormArray;
+  }
+ 
+onsave1(){  
+debugger
+
+ if (!this.isValidForm()) {
+             //  Swal.fire('Please enter valid table data.');
+               return;
+           }
+
+  // if (this.userFormGroup.valid) {
+  //   this.purchaseHeaderArray.clear();
+  //   this.dsPRFinalitemlist.data.forEach(element => {
+
+
+  //     const header = this.CreatePRToHeader(element);
+  //     const detailsArray = header.get('tPurchaseDetails') as FormArray;
+  //     detailsArray.push(this.createPurchasedetailForm(element));
+  //     this.purchaseHeaderArray.push(header)
+  //   })
+
+  //   console.log(this.PRTOPoSaveForm.value.tPurchaseHeader)
+  //   this._PurchaseOrder.InsertPRtoPurchaseSave(this.PRTOPoSaveForm.value.tPurchaseHeader).subscribe(response => {
+  //     if (response) {
+  //       this._matDialog.closeAll();
+  //     }
+  //   });
+  // } else {
+  //   let invalidFields = [];
+  //   if (this.userFormGroup.invalid) {
+  //     for (const controlName in this.userFormGroup.controls) {
+  //       if (this.userFormGroup.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
+  //     }
+  //   }
+  //   if (invalidFields.length > 0) {
+  //     invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+  //   }
+  // }
+
+
+  if (this.userFormGroup.valid) { 
+  this.purchaseHeaderArray.clear(); 
+  const groupedData = {};
+
+  this.dsPRFinalitemlist.data.forEach(item => {
+    const supplierId = item.SupplierId || 0;
+
+    if (!groupedData[supplierId]) {
+      groupedData[supplierId] = [];
+    } 
+    groupedData[supplierId].push(item);
+  });
+
+ 
+  Object.keys(groupedData).forEach(supplierId => {
+
+    const items = groupedData[supplierId]; 
+    const header = this.CreatePRToHeader(items[0]); 
+    const detailsArray = header.get('tPurchaseDetails') as FormArray; 
+ 
+    items.forEach(element => {
+      detailsArray.push(this.createPurchasedetailForm(element));
+    }); 
+  
+    this.purchaseHeaderArray.push(header);
+  }); 
+  console.log(this.PRTOPoSaveForm.value.tPurchaseHeader);
+
+  this._PurchaseOrder.InsertPRtoPurchaseSave(
+    this.PRTOPoSaveForm.value.tPurchaseHeader
+  ).subscribe(response => {
+    if (response) {
+      this._matDialog.closeAll();
+    }
+  }); 
+} else {
+    let invalidFields = [];
+    if (this.userFormGroup.invalid) {
+      for (const controlName in this.userFormGroup.controls) {
+        if (this.userFormGroup.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
+      }
+    }
+    if (invalidFields.length > 0) {
+      invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+    }
+  }
+
+  // // ✅ Create ONE header
+  // const header = this.CreatePRToHeader(this.dsPRFinalitemlist.data[0]);
+
+  // const detailsArray = header.get('tPurchaseDetails') as FormArray;
+
+  // // ✅ Add all items as details
+  // this.dsPRFinalitemlist.data.forEach(element => {
+  //   detailsArray.push(this.createPurchasedetailForm(element));
+  // });
+
+  // // ✅ Push header into array
+  // this.purchaseHeaderArray.push(header);
+
+  // // ✅ FINAL OUTPUT (matches your JSON)
+  // const finalPayload = this.PRTOPoSaveForm.value.tPurchaseHeader;
+
+  // console.log(finalPayload);
+ 
+}
+
+
+
+isValidForm(): boolean {
+    const invalidItem = this.dsPRFinalitemlist.data.find((item, index) => { 
+debugger
+        if (item.Qty <= 0) {
+            this.toastr.warning(
+                `Row ${index + 1}: Quantity must be greater than 0`, 'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+        if (item.TotalQty <= 0) {
+            this.toastr.warning(
+                `Row ${index + 1}: Total Quantity must be greater than 0`,  'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+         if (item.ConversionFactor <= 0 || item.ConversionFactor.toString() == '' || item.ConversionFactor == null) {
+            this.toastr.warning(
+                `Row ${index + 1}: Conversion Factor must be greater than 0`, 'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+        if (item.Price <= 0) {
+            this.toastr.warning(
+                `Row ${index + 1}: Price must be greater than 0`, 'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        } 
+
+        return false;
+    });
+
+    return !invalidItem; // valid only if no invalid row
+}
+
+
+
+
+
 
 
 

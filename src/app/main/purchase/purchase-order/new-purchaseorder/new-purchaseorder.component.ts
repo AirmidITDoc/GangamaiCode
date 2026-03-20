@@ -257,14 +257,14 @@ export class NewPurchaseorderComponent {
         console.log(response)
         this.SupplierObj = response;
         this.userFormGroup.patchValue({
-          Address: this.SupplierObj.address,
-          Mobile: this.SupplierObj.mobile,
-          Contact: this.SupplierObj.contactPerson,
-          GSTNo: this.SupplierObj.gstNo,
-          Email: this.SupplierObj.email,
+          Address: this.SupplierObj?.address || '',
+          Mobile: this.SupplierObj?.mobile || '',
+          Contact: this.SupplierObj?.contactPerson || '',
+          GSTNo: this.SupplierObj?.gstNo || '',
+          Email: this.SupplierObj?.email || '',
         })
         let SupplierRate = 0;
-        SupplierRate = this.supplierRateList[0].SupplierRate;
+        SupplierRate = this.supplierRateList[0]?.SupplierRate || 0;
         this.vDefRate = SupplierRate;
       });
       this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
@@ -426,7 +426,7 @@ export class NewPurchaseorderComponent {
     return this._formBuilder.group({
       purchaseId: [item.PurchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      uomid: [item.UOM || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      uomid: [item.UOMID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       freeQty: [item.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       rate: [item.Rate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -494,7 +494,7 @@ export class NewPurchaseorderComponent {
           ItemName: formValues.ItemName.itemName,
           TotalQty: totalQty,
           ItemId: formValues.ItemName.itemId,
-          UOM: this.UmoId,// formValues.UOMId || 0,
+          UOM: formValues.UOMId || '' , //this.UmoId,// formValues.UOMId || 0,
           UOMID: this.UmoId,//formValues.UOMId || 0,
           Rate: formValues.Rate,
           Qty: formValues.Qty || 0,
@@ -1207,6 +1207,8 @@ export class NewPurchaseorderComponent {
       "columns": []
     }
     this._PurchaseOrder.getPurchaseOrderDetail(Param).subscribe(data => {
+      debugger
+      console.log(data)
       this.dsItemNameList.data = data.data as ItemNameList[];
       this.chargeslist = data as ItemNameList[];
       this.dsItemNameList.data.forEach(element => {
@@ -1234,7 +1236,8 @@ export class NewPurchaseorderComponent {
           element.IGSTAmount = element.igstAmt
         element.DefRate = element.defRate,
           element.Specification = element.specification
-        element.UOM = element.uomid
+          element.UOM =element.unitofMeasurementName 
+         element.UOMID =  element.uomid
         element.TotalQty = element.totalQty
       });
     });
