@@ -124,6 +124,7 @@ $font-size-base: 14px; //12px Change this size to effect all over project
 // @include media-breakpoint-down(sm) {
 //   $font-size-base: 0.8rem;
 // }
+$calibri: 'Calibri', sans-serif;
 $font-family-base: $calibri;
 
 $font-primary: $calibri;

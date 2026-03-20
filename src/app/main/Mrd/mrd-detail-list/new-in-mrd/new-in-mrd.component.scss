@@ -420,7 +420,7 @@
     &.mat-tab-label-active {
       opacity: 1;
       font-weight: 600;
-      color: #3f51b5;
+      color: var(--app-primary);
     }
   }
 

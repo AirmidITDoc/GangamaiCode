@@ -30,12 +30,12 @@ export class RoleTemplateService {
             roleId: [0],
             roleName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z0-9 @#&_-]+$"), // space,symbol,numbers
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     initializeFormGroup() {
@@ -45,20 +45,26 @@ export class RoleTemplateService {
     public roleMasterSave(Param: any) {
         if (Param.roleId) {
             return this._httpClient.PutData("RoleMaster/" + Param.roleId, Param);
-        }else return this._httpClient.PostData("RoleMaster", Param);
+        } else return this._httpClient.PostData("RoleMaster", Param);
     }
     getPermissionList(roleId: any) {
-        return this._httpClient.GetData("RoleMaster/get-permissions?RoleId="+roleId);
+        return this._httpClient.GetData("RoleMaster/get-permissions?RoleId=" + roleId);
     }
 
     public deactivateTheStatus(m_data) {
-        
+
         return this._httpClient.DeleteData("RoleMaster?Id=" + m_data.toString());
     }
     public savePermission(Param) {
         return this._httpClient.PostData("RoleMaster/save-permission", Param);
     }
-    
+    public getFavMenus() {
+        return this._httpClient.GetData("Favourite/List");
+    }
+    public setFavMenus(menuid) {
+        return this._httpClient.PostData("Favourite/", { MenuId: menuid });
+    }
+
     populateForm(param) {
         this.myform.patchValue(param);
     }
