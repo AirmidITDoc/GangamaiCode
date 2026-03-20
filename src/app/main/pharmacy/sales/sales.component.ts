@@ -82,8 +82,8 @@ export class SalesComponent implements OnInit {
     FinalNetAmount: any = 0;
     FinalGSTAmt: any = 0;
     BalQty: any = 0;
-    ConShow: Boolean = false;
-    add1: Boolean = false;
+    ConShow: boolean = false;
+    add1: boolean = false;
 
     ItemObj: IndentList;
     v_marginamt: any = 0;
@@ -258,9 +258,9 @@ export class SalesComponent implements OnInit {
     vStockId: any = 0;
     Itemflag: boolean = false;
 
-    opflag: Boolean = false;
-    ipflag: Boolean = false;
-    externalflag: Boolean = false;
+    opflag: boolean = false;
+    ipflag: boolean = false;
+    externalflag: boolean = false;
 
     displayedColumns = [
         'FromStoreId',
@@ -307,7 +307,7 @@ export class SalesComponent implements OnInit {
     ];
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -316,7 +316,7 @@ export class SalesComponent implements OnInit {
         }
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -985,7 +985,7 @@ export class SalesComponent implements OnInit {
 
 
     getPharItemList() {
-        var m_data = {
+        const m_data = {
             "ItemName": `${this._salesService.IndentSearchGroup.get('ItemId').value}%`,
             "StoreId": this._loggedService.currentUserValue.storeId || 0
         }
@@ -1020,7 +1020,7 @@ export class SalesComponent implements OnInit {
     }
 
     gePharStoreList() {
-        var vdata = {
+        const vdata = {
             Id: this._loggedService.currentUserValue.storeId
         }
         this._salesService.getLoggedStoreList(vdata).subscribe(data => {
@@ -1032,7 +1032,7 @@ export class SalesComponent implements OnInit {
 
     salesIdWiseObj: any;
     getTopSalesDetailsList(MobileNo) {
-        var vdata = {
+        const vdata = {
             ExtMobileNo: MobileNo
         }
         this.sIsLoading = 'get-sales-data'
@@ -1067,11 +1067,11 @@ export class SalesComponent implements OnInit {
 
     getTopSalesDetailsprint() {
         // 
-        var strrowslist = "";
-        let onlySalesId = [];
+        let strrowslist = "";
+        const onlySalesId = [];
         this.reportPrintObjItemList.forEach(ele => onlySalesId.push(ele.SalesId));
 
-        let SalesidNamesArr = [...new Set(onlySalesId)];
+        const SalesidNamesArr = [...new Set(onlySalesId)];
         SalesidNamesArr.forEach(ele => this.dummySalesIdNameArr.push({ SalesId: ele, isHidden: false }));
 
         this.SalesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
@@ -1084,9 +1084,9 @@ export class SalesComponent implements OnInit {
         // console.log(this.SalesIdWiseObj);
 
         for (let i = 1; i <= this.reportPrintObjItemList.length; i++) {
-            var objreportPrint = this.reportPrintObjItemList[i - 1];
+            const objreportPrint = this.reportPrintObjItemList[i - 1];
 
-            var strabc = this.getSalesIdName(objreportPrint.SalesId) + `
+            const strabc = this.getSalesIdName(objreportPrint.SalesId) + `
   <div style="display:flex;margin:8px 0">
   <div style="display:flex;width:80px;margin-left:20px;">
       <div>`+ objreportPrint.ItemShortName + `</div>
@@ -1099,11 +1099,11 @@ export class SalesComponent implements OnInit {
     }
 
 
-    getSalesIdName(SalesId: String) {
+    getSalesIdName(SalesId: string) {
         let groupDiv;
         for (let i = 0; i < this.dummySalesIdNameArr.length; i++) {
             if (this.dummySalesIdNameArr[i].SalesId == SalesId && !this.dummySalesIdNameArr[i].isHidden) {
-                let groupHeader = `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
+                const groupHeader = `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
           <div> <h3>`+ SalesId + `</h3></div>
            </div>`;
                 this.dummySalesIdNameArr[i].isHidden = true;
@@ -1139,7 +1139,7 @@ export class SalesComponent implements OnInit {
     loadingarry: any = [];
     getWhatsappshare() {
 
-        var m_data = {
+        const m_data = {
             "insertWhatsappsmsInfo": {
                 "mobileNumber": this.MobileNo,
                 // "smsString": 'PatientDetail' || '',
@@ -1190,7 +1190,7 @@ export class SalesComponent implements OnInit {
 
 
         // 
-        let Qty = this._salesService.IndentSearchGroup.get('Qty').value
+        const Qty = this._salesService.IndentSearchGroup.get('Qty').value
         if (Qty > this.BalanceQty) {
             Swal.fire("Enter Qty less than Balance");
             this.ItemFormreset();
@@ -1362,15 +1362,15 @@ export class SalesComponent implements OnInit {
         this.repeatItemList = row.value;
         this.Itemchargeslist = [];
         this.repeatItemList.forEach((element) => {
-            let Qty = parseInt(element.Qty.toString())
-            let UnitMrp = element.UnitMRP.split('|')[0];
+            const Qty = parseInt(element.Qty.toString())
+            const UnitMrp = element.UnitMRP.split('|')[0];
             // this.LandedRateandedTotal = (parseInt(element.Qty) * (element.LandedRate)).toFixed(2);
             // this.v_marginamt = (parseFloat(this.TotalMRP) - parseFloat(this.LandedRateandedTotal)).toFixed(2);
             // this.PurTotAmt = (parseInt(element.Qty) * (this.PurchaseRate)).toFixed(2);
-            let GSTAmount = (((element.UnitMRP) * (this.GSTPer) / 100) * (Qty)).toFixed(2);
-            let CGSTAmt = (((element.UnitMRP) * (this.CgstPer) / 100) * (Qty)).toFixed(2);
-            let SGSTAmt = (((element.UnitMRP) * (this.SgstPer) / 100) * (Qty)).toFixed(2);
-            let IGSTAmt = (((element.UnitMRP) * (this.IgstPer) / 100) * (Qty)).toFixed(2);
+            const GSTAmount = (((element.UnitMRP) * (this.GSTPer) / 100) * (Qty)).toFixed(2);
+            const CGSTAmt = (((element.UnitMRP) * (this.CgstPer) / 100) * (Qty)).toFixed(2);
+            const SGSTAmt = (((element.UnitMRP) * (this.SgstPer) / 100) * (Qty)).toFixed(2);
+            const IGSTAmt = (((element.UnitMRP) * (this.IgstPer) / 100) * (Qty)).toFixed(2);
 
 
             this.NetAmt = ((UnitMrp) * (element.Qty)).toFixed(2);
@@ -1427,7 +1427,7 @@ export class SalesComponent implements OnInit {
         if (!this.vBarcodeflag) {
 
             this.sIsLoading = 'save';
-            let Qty = this._salesService.IndentSearchGroup.get('Qty').value
+            const Qty = this._salesService.IndentSearchGroup.get('Qty').value
             if (this.ItemName && (parseInt(Qty) != 0) && this.MRP > 0 && this.NetAmt > 0) {
                 // this.saleSelectedDatasource.data = [];
 
@@ -1490,8 +1490,8 @@ export class SalesComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result1 => {
             // 
-            let result = result1.selectedData
-            let vescflag = result1.vEscflag
+            const result = result1.selectedData
+            const vescflag = result1.vEscflag
             console.log(result);
 
             if (vescflag) {
@@ -1608,10 +1608,10 @@ export class SalesComponent implements OnInit {
     }
 
     calculateDiscAmt() {
-        let ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
+        const ItemDiscAmount = this._salesService.IndentSearchGroup.get('DiscAmt').value;
         // let PurTotalAmount = this.PurTotAmt;
-        let LandedTotalAmount = this.LandedRateandedTotal;
-        let m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
+        const LandedTotalAmount = this.LandedRateandedTotal;
+        const m_marginamt = (parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
         this.v_marginamt = ((parseFloat(this.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(LandedTotalAmount))).toFixed(2);
 
         if (parseFloat(this.DiscAmt) > 0 && (parseFloat(this.DiscAmt)) < parseFloat(this.TotalMRP)) {
@@ -1649,7 +1649,7 @@ export class SalesComponent implements OnInit {
     }
     checkdisc1: boolean = false;
     getDiscPer() {
-        let DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
+        const DiscPer = this._salesService.IndentSearchGroup.get('DiscPer').value
         if (this.DiscPer > 0) {
             this.ItemSubform.get('FinalDiscPer').disable();
             this.chkdiscper = true;
@@ -1665,8 +1665,8 @@ export class SalesComponent implements OnInit {
     }
 
     getFinalDiscperAmt() {
-        let Disc = this.ItemSubform.get('FinalDiscPer').value;
-        let DiscAmt = this.ItemSubform.get('FinalDiscAmt').value;
+        const Disc = this.ItemSubform.get('FinalDiscPer').value;
+        const DiscAmt = this.ItemSubform.get('FinalDiscAmt').value;
 
         if (Disc > 0 || DiscAmt > 0) {
             this.ConShow = true
@@ -1692,7 +1692,7 @@ export class SalesComponent implements OnInit {
 
     getFinalDiscAmount() {
         // console.log("total disc");
-        let totDiscAmt = this.ItemSubform.get('FinalDiscAmt').value
+        const totDiscAmt = this.ItemSubform.get('FinalDiscAmt').value
         // console.log(totDiscAmt);
         // console.log(this.FinalDiscAmt);
         if (totDiscAmt > 0) {
@@ -1792,13 +1792,13 @@ export class SalesComponent implements OnInit {
 
 
     transform2(value: string) {
-        var datePipe = new DatePipe("en-US");
+        const datePipe = new DatePipe("en-US");
         value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
         return value;
     }
 
     transform1(value: string) {
-        var datePipe = new DatePipe("en-US");
+        const datePipe = new DatePipe("en-US");
         value = datePipe.transform((new Date), 'dd/MM/yyyy');
         return value;
     }
@@ -1835,7 +1835,7 @@ export class SalesComponent implements OnInit {
 
     deleteTableRow(event, element) {
         // if (this.key == "Delete") {
-        let index = this.Itemchargeslist.indexOf(element);
+        const index = this.Itemchargeslist.indexOf(element);
         if (index >= 0) {
             this.Itemchargeslist.splice(index, 1);
             this.saleSelectedDatasource.data = [];
@@ -1883,7 +1883,7 @@ export class SalesComponent implements OnInit {
     // }
 
     DeleteDraft() {
-        let Query = "delete T_SalesDraftHeader where DSalesId=" + this.DraftID + "";
+        const Query = "delete T_SalesDraftHeader where DSalesId=" + this.DraftID + "";
         this._salesService.getDelDrat(Query).subscribe(data => {
             if (data) {
                 this.getDraftorderList();
@@ -1893,7 +1893,7 @@ export class SalesComponent implements OnInit {
 
     onSave(event) {
         event.srcElement.setAttribute('disabled', true);
-        let patientTypeValue1 = this.ItemSubform.get('PatientType').value;
+        const patientTypeValue1 = this.ItemSubform.get('PatientType').value;
         if (this.ItemSubform.get('PatientType').value == 'External') {
             if (this.PatientName == "" || this.MobileNo == "" || this.DoctorName == "") {
                 this.toastr.warning('Please select Customer Detail', 'Warning !', {
@@ -1911,7 +1911,7 @@ export class SalesComponent implements OnInit {
             event.srcElement.removeAttribute('disabled');
             return;
         }
-        let patientTypeValue = this.ItemSubform.get('PatientType').value;
+        const patientTypeValue = this.ItemSubform.get('PatientType').value;
         if ((patientTypeValue == 'OP' || patientTypeValue == 'IP')
             && (this.registerObj.RegNo == '' || this.registerObj.RegNo == null || this.registerObj.RegNo == undefined)) {
             this.toastr.warning('Please select Patient Type.', 'Warning !', {
@@ -1936,7 +1936,7 @@ export class SalesComponent implements OnInit {
         event.srcElement.removeAttribute('disabled');
     }
     openPaymentpopup() {
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.dateTimeObj.date;
         PatientHeaderObj['PatientName'] = this.PatientName;
         PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
@@ -1959,17 +1959,17 @@ export class SalesComponent implements OnInit {
 
     isLoading123 = false;
     onCashOnlinePaySave() {
-        let nowDate = new Date();
-        let nowDate1 = nowDate.toLocaleString("en-US").split(',');
+        const nowDate = new Date();
+        const nowDate1 = nowDate.toLocaleString("en-US").split(',');
         this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
         // console.log(this.newDateTimeObj);
 
-        let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+        const NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
         let ConcessionId = 0;
         if (this.ItemSubform.get('ConcessionId').value)
             ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
-        let SalesInsert = {};
+        const SalesInsert = {};
         SalesInsert['Date'] = this.newDateTimeObj.date;
         SalesInsert['time'] = this.newDateTimeObj.time;
 
@@ -2013,10 +2013,10 @@ export class SalesComponent implements OnInit {
         SalesInsert['extMobileNo'] = this.MobileNo || 0;
         SalesInsert['extAddress'] = this.vextAddress || '';
 
-        let salesDetailInsertarr = [];
+        const salesDetailInsertarr = [];
         this.saleSelectedDatasource.data.forEach((element) => {
             console.log(element);
-            let salesDetailInsert = {};
+            const salesDetailInsert = {};
             salesDetailInsert['salesID'] = 0;
             salesDetailInsert['itemId'] = element.ItemId;
             salesDetailInsert['batchNo'] = element.BatchNo;
@@ -2044,9 +2044,9 @@ export class SalesComponent implements OnInit {
             salesDetailInsertarr.push(salesDetailInsert);
         });
 
-        let updateCurStkSalestarr = [];
+        const updateCurStkSalestarr = [];
         this.saleSelectedDatasource.data.forEach((element) => {
-            let updateCurStkSales = {};
+            const updateCurStkSales = {};
             updateCurStkSales['itemId'] = element.ItemId;
             updateCurStkSales['issueQty'] = element.Qty;
             updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId,
@@ -2054,18 +2054,18 @@ export class SalesComponent implements OnInit {
             updateCurStkSalestarr.push(updateCurStkSales);
         });
 
-        let cal_DiscAmount_Sales = {};
+        const cal_DiscAmount_Sales = {};
         cal_DiscAmount_Sales['salesID'] = 0;
 
-        let cal_GSTAmount_Sales = {};
+        const cal_GSTAmount_Sales = {};
         cal_GSTAmount_Sales['salesID'] = 0;
 
-        let salesDraftStatusUpdate = {};
+        const salesDraftStatusUpdate = {};
         console.log(this.DraftID);
         salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
         salesDraftStatusUpdate['IsClosed'] = 1
 
-        let PaymentInsertobj = {};
+        const PaymentInsertobj = {};
 
         PaymentInsertobj['BillNo'] = 0,
             PaymentInsertobj['ReceiptNo'] = '',
@@ -2098,7 +2098,7 @@ export class SalesComponent implements OnInit {
             PaymentInsertobj['PayTMTranNo'] = '',
             PaymentInsertobj['PayTMDate'] = '01/01/1900'
 
-        let submitData = {
+        const submitData = {
             "salesInsert": SalesInsert,
             "salesDetailInsert": salesDetailInsertarr,
             "updateCurStkSales": updateCurStkSalestarr,
@@ -2109,7 +2109,7 @@ export class SalesComponent implements OnInit {
         };
 
         console.log(submitData)
-        let vMobileNo = this.MobileNo;
+        const vMobileNo = this.MobileNo;
 
         this._salesService.InsertCashSales(submitData).subscribe(response => {
             if (response) {
@@ -2156,7 +2156,7 @@ export class SalesComponent implements OnInit {
     }
     onSavePayOption() {
         this.vPatientType = this.ItemSubform.get('PatientType').value;
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.dateTimeObj.date;
         PatientHeaderObj['PatientName'] = this.PatientName;
         PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
@@ -2179,23 +2179,23 @@ export class SalesComponent implements OnInit {
             //   if(this.dateTimeObj.date == result.submitDataPay.ipPaymentInsert.PaymentDate)
             // {
             if (result?.IsSubmitFlag == true) {
-                let cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
-                let chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
-                let cardpay = result.submitDataPay.ipPaymentInsert.CardPayAmount;
-                let Neftpay = result.submitDataPay.ipPaymentInsert.NEFTPayAmount;
-                let onlinepay = result.submitDataPay.ipPaymentInsert.PayTMAmount;
+                const cashpay = result.submitDataPay.ipPaymentInsert.CashPayAmount;
+                const chequepay = result.submitDataPay.ipPaymentInsert.ChequePayAmount;
+                const cardpay = result.submitDataPay.ipPaymentInsert.CardPayAmount;
+                const Neftpay = result.submitDataPay.ipPaymentInsert.NEFTPayAmount;
+                const onlinepay = result.submitDataPay.ipPaymentInsert.PayTMAmount;
 
                 if ((cashpay == 0 && chequepay == 0 && cardpay == 0 && Neftpay == 0 && onlinepay == 0) == false) {
-                    let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+                    const NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
                     let ConcessionId = 0;
                     if (this.ItemSubform.get('ConcessionId').value)
                         ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
-                    let nowDate = new Date();
-                    let nowDate1 = nowDate.toLocaleString("en-US").split(',');
+                    const nowDate = new Date();
+                    const nowDate1 = nowDate.toLocaleString("en-US").split(',');
                     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
 
-                    let SalesInsert = {};
+                    const SalesInsert = {};
                     SalesInsert['Date'] = this.newDateTimeObj.date;
                     SalesInsert['time'] = this.newDateTimeObj.time;
 
@@ -2239,10 +2239,10 @@ export class SalesComponent implements OnInit {
                     SalesInsert['extMobileNo'] = this.MobileNo || 0;
                     SalesInsert['extAddress'] = this.vextAddress || '';
 
-                    let salesDetailInsertarr = [];
+                    const salesDetailInsertarr = [];
                     this.saleSelectedDatasource.data.forEach((element) => {
                         // console.log(element);
-                        let salesDetailInsert = {};
+                        const salesDetailInsert = {};
                         salesDetailInsert['salesID'] = 0;
                         salesDetailInsert['itemId'] = element.ItemId;
                         salesDetailInsert['batchNo'] = element.BatchNo;
@@ -2269,9 +2269,9 @@ export class SalesComponent implements OnInit {
                         salesDetailInsert['stkID'] = element.StockId;
                         salesDetailInsertarr.push(salesDetailInsert);
                     });
-                    let updateCurStkSalestarr = [];
+                    const updateCurStkSalestarr = [];
                     this.saleSelectedDatasource.data.forEach((element) => {
-                        let updateCurStkSales = {};
+                        const updateCurStkSales = {};
                         updateCurStkSales['itemId'] = element.ItemId;
                         updateCurStkSales['issueQty'] = element.Qty;
                         updateCurStkSales['storeID'] = this._loggedService.currentUserValue.storeId,
@@ -2279,18 +2279,18 @@ export class SalesComponent implements OnInit {
                         updateCurStkSalestarr.push(updateCurStkSales);
                     });
 
-                    let cal_DiscAmount_Sales = {};
+                    const cal_DiscAmount_Sales = {};
                     cal_DiscAmount_Sales['salesID'] = 0;
 
-                    let cal_GSTAmount_Sales = {};
+                    const cal_GSTAmount_Sales = {};
                     cal_GSTAmount_Sales['salesID'] = 0;
 
 
-                    let salesDraftStatusUpdate = {};
+                    const salesDraftStatusUpdate = {};
                     salesDraftStatusUpdate['DSalesId'] = this.DraftID || 0;
                     salesDraftStatusUpdate['IsClosed'] = 1
 
-                    let submitData = {
+                    const submitData = {
                         "salesInsert": SalesInsert,
                         "salesDetailInsert": salesDetailInsertarr,
                         "updateCurStkSales": updateCurStkSalestarr,
@@ -2299,7 +2299,7 @@ export class SalesComponent implements OnInit {
                         "salesDraftStatusUpdate": salesDraftStatusUpdate,
                         "salesPayment": result.submitDataPay.ipPaymentInsert
                     };
-                    let vMobileNo = this.MobileNo;
+                    const vMobileNo = this.MobileNo;
                     console.log(submitData)
                     this._salesService.InsertCashSales(submitData).subscribe(response => {
                         if (response) {
@@ -2370,7 +2370,7 @@ export class SalesComponent implements OnInit {
     console.log(response)
     
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "SalesID",
@@ -2430,7 +2430,7 @@ export class SalesComponent implements OnInit {
     // }
 
     getWhatsappshareSales(el, vmono) {
-        var m_data = {
+        const m_data = {
             "insertWhatsappsmsInfo": {
                 "mobileNumber": vmono || 0,
                 "smsString": "Dear" + vmono + ",Your Sales Bill has been successfully completed. UHID is " + el + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
@@ -2503,7 +2503,7 @@ export class SalesComponent implements OnInit {
 
         // let DiscOld=DiscPer;
         let DiscAmt;
-        let TotalMRP = contact.TotalMRP;
+        const TotalMRP = contact.TotalMRP;
 
         if (DiscPer > 0) {
             this.ItemSubform.get('ConcessionId').reset();
@@ -2512,7 +2512,7 @@ export class SalesComponent implements OnInit {
             this.ConShow = true;
 
             DiscAmt = ((contact.TotalMRP * (DiscPer)) / 100).toFixed(2);
-            let NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+            const NetAmt = (parseFloat(contact.TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
             if (parseFloat(DiscAmt) > parseFloat(NetAmt)) {
                 Swal.fire('Check Discount Amount !')
@@ -2524,20 +2524,20 @@ export class SalesComponent implements OnInit {
             contact.DiscAmt = DiscAmt || 0,
                 contact.NetAmt = NetAmt
         } else {
-            let DiscAmt = 0;
-            let NetAmt = (parseFloat(contact.TotalMRP)).toFixed(2);
+            const DiscAmt = 0;
+            const NetAmt = (parseFloat(contact.TotalMRP)).toFixed(2);
 
             contact.DiscAmt = DiscAmt || 0,
                 contact.NetAmt = NetAmt
         }
 
 
-        let ItemDiscAmount = DiscAmt// this._salesService.IndentSearchGroup.get('DiscAmt').value;
+        const ItemDiscAmount = DiscAmt// this._salesService.IndentSearchGroup.get('DiscAmt').value;
         // let PurTotalAmount = this.PurTotAmt;
-        let LandedTotalAmount = (parseInt(contact.Qty) * (contact.LandedRate)).toFixed(2);
+        const LandedTotalAmount = (parseInt(contact.Qty) * (contact.LandedRate)).toFixed(2);
         // this.LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-        let m_marginamt = (parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
-        let v_marginamt = ((parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(LandedTotalAmount))).toFixed(2);
+        const m_marginamt = (parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)).toFixed(2);
+        const v_marginamt = ((parseFloat(contact.TotalMRP) - parseFloat(ItemDiscAmount)) - (parseFloat(LandedTotalAmount))).toFixed(2);
 
         if (parseFloat(DiscAmt) > 0 && (parseFloat(DiscAmt)) < parseFloat(TotalMRP)) {
 
@@ -2546,7 +2546,7 @@ export class SalesComponent implements OnInit {
 
                 contact.DiscPer = this.DiscOld;
                 DiscAmt = 0// ((contact.TotalMRP * (this.DiscOld)) / 100).toFixed(2);
-                let NetAmt = parseFloat(contact.TotalMRP);
+                const NetAmt = parseFloat(contact.TotalMRP);
 
                 contact.DiscAmt = DiscAmt || 0,
                     contact.NetAmt = NetAmt
@@ -2562,7 +2562,7 @@ export class SalesComponent implements OnInit {
 
     getCellCalculation(contact, Qty) {
         // 
-        let Qtyfinal = this.Qty;
+        const Qtyfinal = this.Qty;
         console.log(contact)
         this.StockId = contact.StockId;
         this.Qty = Qty;
@@ -2572,7 +2572,7 @@ export class SalesComponent implements OnInit {
             this.StoreId = this._loggedService.currentUserValue.storeId
 
             // let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + " AND  BatchNo='" + contact.BatchNo + "' AND  StockId=" + contact.StockId + ""
-            let SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + ""
+            const SelectQuery = "select isnull(BalanceQty,0) as BalanceQty from lvwCurrentBalQtyCheck where StoreId = " + this.StoreId + " AND ItemId = " + contact.ItemId + ""
 
 
             console.log(SelectQuery);
@@ -2658,8 +2658,8 @@ export class SalesComponent implements OnInit {
         this.RQty = parseInt(contact.Qty) || 1;
         if (this.RQty && contact.UnitMRP) {
             TotalMRP = (parseInt(this.RQty) * (contact.UnitMRP)).toFixed(2);
-            let LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
-            let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+            const LandedRateandedTotal = (parseInt(this.RQty) * (contact.LandedRate)).toFixed(2);
+            const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
             // 
             this.PurTotAmt = (parseInt(this.RQty) * (contact.PurchaseRate)).toFixed(2);
             let NetAmt
@@ -2695,12 +2695,12 @@ export class SalesComponent implements OnInit {
 
     onCreditpaySave() {
         // if (this._salesService.IndentSearchGroup.get('PatientType').value == "External" && this.PatientName  != null && this.MobileNo != null) {
-        let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+        const NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
         let ConcessionId = 0;
         if (this.ItemSubform.get('ConcessionId').value)
             ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
-        let salesInsertCredit = {};
+        const salesInsertCredit = {};
         salesInsertCredit['Date'] = this.dateTimeObj.date;
         salesInsertCredit['time'] = this.dateTimeObj.time;
         if (this.ItemSubform.get('PatientType').value == 'External') {
@@ -2743,9 +2743,9 @@ export class SalesComponent implements OnInit {
         salesInsertCredit['extMobileNo'] = this.MobileNo || 0;
         salesInsertCredit['extAddress'] = this.vextAddress || '';
 
-        let salesDetailInsertCreditarr = [];
+        const salesDetailInsertCreditarr = [];
         this.saleSelectedDatasource.data.forEach((element) => {
-            let salesDetailInsertCredit = {};
+            const salesDetailInsertCredit = {};
             salesDetailInsertCredit['salesID'] = 0;
             salesDetailInsertCredit['itemId'] = element.ItemId;
             salesDetailInsertCredit['batchNo'] = element.BatchNo;
@@ -2773,9 +2773,9 @@ export class SalesComponent implements OnInit {
             salesDetailInsertCreditarr.push(salesDetailInsertCredit);
         });
 
-        let updateCurStkSalesCreditarray = [];
+        const updateCurStkSalesCreditarray = [];
         this.saleSelectedDatasource.data.forEach((element) => {
-            let updateCurStkSalesCredit = {};
+            const updateCurStkSalesCredit = {};
             updateCurStkSalesCredit['itemId'] = element.ItemId;
             updateCurStkSalesCredit['issueQty'] = element.Qty;
             updateCurStkSalesCredit['storeID'] = this._loggedService.currentUserValue.storeId,
@@ -2784,15 +2784,15 @@ export class SalesComponent implements OnInit {
             updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
         });
 
-        let cal_DiscAmount_SalesCredit = {};
+        const cal_DiscAmount_SalesCredit = {};
         cal_DiscAmount_SalesCredit['salesID'] = 0;
 
-        let cal_GSTAmount_SalesCredit = {};
+        const cal_GSTAmount_SalesCredit = {};
         cal_GSTAmount_SalesCredit['salesID'] = 0;
 
         // console.log("Procced with Payment Option");
 
-        let submitData = {
+        const submitData = {
             "salesInsertCredit": salesInsertCredit,
             "salesDetailInsertCredit": salesDetailInsertCreditarr,
             "updateCurStkSalesCredit": updateCurStkSalesCreditarray,
@@ -2800,7 +2800,7 @@ export class SalesComponent implements OnInit {
             "cal_GSTAmount_SalesCredit": cal_GSTAmount_SalesCredit
         };
         console.log(submitData)
-        let vMobileNo = this.mobileno;
+        const vMobileNo = this.mobileno;
         this._salesService.InsertCreditSales(submitData).subscribe(response => {
             if (response) {
                 this.toastr.success('Record Saved Successfully.', 'Credit Save !', {
@@ -2850,8 +2850,8 @@ export class SalesComponent implements OnInit {
     getDraftorderList() {
         this.chargeslist1 = [];
         this.dataSource1.data = [];
-        let currentDate = new Date();
-        var m = {
+        const currentDate = new Date();
+        const m = {
             "FromDate": this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
             "ToDate": this.datePipe.transform(currentDate, "MM/dd/yyyy") || "01/01/1900",
         }
@@ -2865,7 +2865,7 @@ export class SalesComponent implements OnInit {
 
     m_getBalAvaListStore(Param) {
         this.dataSource1.data = [];
-        var m = {
+        const m = {
             "ItemId": Param
         }
         this._salesService.getBalAvaListStore(m).subscribe(data => {
@@ -2881,7 +2881,7 @@ export class SalesComponent implements OnInit {
         this.saleSelectedDatasource.data = [];
         this.Itemchargeslist1 = [];
         this.Itemchargeslist = [];
-        let strSql = "Select ItemId,Qty from m_vSalesListforRepeat where SalesId=" + contact.value[0].vSalesId + " Order by ItemId "
+        const strSql = "Select ItemId,Qty from m_vSalesListforRepeat where SalesId=" + contact.value[0].vSalesId + " Order by ItemId "
         this._salesService.getchargesList(strSql).subscribe(data => {
             this.tempDatasource.data = data as any;
             // console.log(this.tempDatasource.data);
@@ -2904,7 +2904,7 @@ export class SalesComponent implements OnInit {
         this.Itemchargeslist1 = [];
         this.Itemchargeslist = [];
 
-        let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
+        const strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired from Get_SalesDraftBillItemDet where DSalesId=" + contact.DSalesId + " Order by ItemId "
         this._salesService.getchargesList(strSql).subscribe(data => {
             this.tempDatasource.data = data as any;
             // console.log(this.tempDatasource.data);
@@ -2924,7 +2924,7 @@ export class SalesComponent implements OnInit {
         this.Itemchargeslist1 = [];
         this.QtyBalchk = 0;
 
-        var m_data = {
+        const m_data = {
             "ItemId": contact.ItemId,
             "StoreId": this._loggedService.currentUserValue.storeId || 0
         }
@@ -3036,12 +3036,12 @@ export class SalesComponent implements OnInit {
     // }
 
     onSaveDraftBill() {
-        let NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
+        const NetAmt = (this.ItemSubform.get('FinalNetAmount').value);
         let ConcessionId = 0;
         if (this.ItemSubform.get('ConcessionId').value)
             ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
-        let SalesInsert = {};
+        const SalesInsert = {};
         SalesInsert['Date'] = this.dateTimeObj.date;
         SalesInsert['time'] = this.dateTimeObj.time;
 
@@ -3080,10 +3080,10 @@ export class SalesComponent implements OnInit {
 
         SalesInsert['DsalesId'] = 0;
 
-        let salesDetailInsertarr = [];
+        const salesDetailInsertarr = [];
         this.saleSelectedDatasource.data.forEach((element) => {
 
-            let salesDetailInsert = {};
+            const salesDetailInsert = {};
             salesDetailInsert['DsalesID'] = 0;
             salesDetailInsert['itemId'] = element.ItemId;
             salesDetailInsert['batchNo'] = element.BatchNo;
@@ -3106,7 +3106,7 @@ export class SalesComponent implements OnInit {
         });
 
 
-        let submitData = {
+        const submitData = {
             "salesDraftbillInsert": SalesInsert,
             "salesDraftbillDetailInsert": salesDetailInsertarr
 
@@ -3148,7 +3148,7 @@ export class SalesComponent implements OnInit {
         this.saleSelectedDatasource.data = [];
     }
 
-    add: Boolean = false;
+    add: boolean = false;
     @ViewChild('discamt') discamt: ElementRef;
     @ViewChild('doctorname') doctorname: ElementRef;
     @ViewChild('mobileno') mobileno: ElementRef;
@@ -3209,7 +3209,7 @@ export class SalesComponent implements OnInit {
     }
 
     public onF6Reset(event): void {
-        ;
+        
         if (event.which === 117) {
             this.onClose();
         }
@@ -3298,7 +3298,7 @@ export class SalesComponent implements OnInit {
 
     getSearchListIP() {
         debugger
-        var m_data = {
+        const m_data = {
             "Keyword": `${this.ItemSubform.get('RegID').value}%`
         }
         if (this.ItemSubform.get('PatientType').value == 'OP') {
@@ -3410,7 +3410,7 @@ export class SalesComponent implements OnInit {
     }
 
     barcodeItemfetch() {
-        var d = {
+        const d = {
             "StockId": this._salesService.IndentSearchGroup.get("Barcode").value || 0,
             "StoreId": this._loggedService.currentUserValue.storeId || 0
         }
@@ -3471,25 +3471,25 @@ export class SalesComponent implements OnInit {
                     }
 
 
-                    let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
-                    let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
-                    let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
-                    let LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
-                    let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-                    let PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
+                    const TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
+                    const Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
+                    const vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
+                    const LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
+                    const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+                    const PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
 
-                    let CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * (this.DraftQty)).toFixed(2);
-                    let SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * (this.DraftQty)).toFixed(2);
-                    let IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * (this.DraftQty)).toFixed(2);
+                    const CGSTAmt = (((contact.UnitMRP) * (contact.CgstPer) / 100) * (this.DraftQty)).toFixed(2);
+                    const SGSTAmt = (((contact.UnitMRP) * (contact.SgstPer) / 100) * (this.DraftQty)).toFixed(2);
+                    const IGSTAmt = (((contact.UnitMRP) * (contact.IgstPer) / 100) * (this.DraftQty)).toFixed(2);
 
                     // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
 
-                    let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-                    let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+                    const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+                    const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
 
 
-                    let BalQty = contact.BalanceQty - this.DraftQty
+                    const BalQty = contact.BalanceQty - this.DraftQty
 
                     this.saleSelectedDatasource.data[i].Qty = this.DraftQty;
                     this.saleSelectedDatasource.data[i].VatAmount = Vatamount;
@@ -3544,19 +3544,19 @@ export class SalesComponent implements OnInit {
             }
 
 
-            let TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
-            let Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
-            let TotalNet = (parseFloat(TotalMRP + Vatamount)).toFixed(2)
-            let LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
-            let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-            let PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
+            const TotalMRP = (parseInt(this.DraftQty) * (contact.UnitMRP)).toFixed(2);
+            const Vatamount = ((parseFloat(TotalMRP) * (contact.VatPercentage)) / 100).toFixed(2)
+            const TotalNet = (parseFloat(TotalMRP + Vatamount)).toFixed(2)
+            const LandedRateandedTotal = (parseInt(this.DraftQty) * (contact.LandedRate)).toFixed(2);
+            const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+            const PurTotAmt = (parseInt(this.DraftQty) * (contact.PurUnitRateWF)).toFixed(2);
 
-            let CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * (this.DraftQty)).toFixed(2);
-            let SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * (this.DraftQty)).toFixed(2);
-            let IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * (this.DraftQty)).toFixed(2);
+            const CGSTAmt = (((contact.UnitMRP) * (contact.CGSTPer) / 100) * (this.DraftQty)).toFixed(2);
+            const SGSTAmt = (((contact.UnitMRP) * (contact.SGSTPer) / 100) * (this.DraftQty)).toFixed(2);
+            const IGSTAmt = (((contact.UnitMRP) * (contact.IGSTPer) / 100) * (this.DraftQty)).toFixed(2);
 
-            let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-            let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+            const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+            const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
 
             this.chargeslistBarcode.push(
@@ -3632,7 +3632,7 @@ export class SalesComponent implements OnInit {
 
             this.dsItemNameList1.data = result;
             this.dsItemNameList1.data.forEach((contact) => {
-                var m_data = {
+                const m_data = {
                     "ItemId": contact.ItemId,
                     "StoreId": this._loggedService.currentUserValue.storeId || 0
                 }
@@ -3763,7 +3763,7 @@ export class IndentList {
     }
 }
 export class IndentID {
-    IndentNo: Number;
+    IndentNo: number;
     IndentDate: number;
     FromStoreName: string;
     ToStoreName: string;

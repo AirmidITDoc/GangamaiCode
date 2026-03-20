@@ -243,7 +243,7 @@ export class LabSettlementComponent {
   isSettlement: boolean = false;
   getAccessDetail() {
     // debugger
-    var SelectQuery = {
+    const SelectQuery = {
       "searchFields": [{
         "fieldName": "LoginId",
         "fieldValue": String(this.accountService.currentUserValue.userId),
@@ -269,7 +269,7 @@ export class LabSettlementComponent {
 
   openPaymentpopup(contact) {
     console.log(contact)
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['RegNo'] = contact.labRequestNo;
     PatientHeaderObj['PatientName'] = contact.patientName;
@@ -315,7 +315,7 @@ export class LabSettlementComponent {
             this.grid.bindGridData();
           });
         } else {
-          let invalidFields = []
+          const invalidFields = []
           if (this.OpSettlementForm.invalid) {
             for (const controlName in this.OpSettlementForm.controls) {
               const control = this.OpSettlementForm.get(controlName);

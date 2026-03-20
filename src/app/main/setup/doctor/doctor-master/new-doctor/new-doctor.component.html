@@ -74,24 +74,24 @@
                                                         <airmid-textbox label="First Name" formControlName="FirstName"
                                                             [value]="registerObj.firstName" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().FirstName"
-                                                            [maxLength]="50"
-                                                            (keypress)="keyPressAlpha($event)"></airmid-textbox>
+                                                            [maxLength]="50"></airmid-textbox>
+                                                            <!-- (keypress)="keyPressAlpha($event)" -->
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Middle Name" formControlName="MiddleName"
                                                             [value]="registerObj.middleName" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().MiddleName"
-                                                            [maxLength]="50"
-                                                            (keypress)="keyPressAlpha($event)"></airmid-textbox>
+                                                            [maxLength]="50" ></airmid-textbox>
+                                                            <!-- (keypress)="keyPressAlpha($event)" -->
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Last Name" formControlName="LastName"
                                                             [value]="registerObj.lastName" [formGroup]="myForm"
                                                             [validations]="getValidationMessages().LastName"
-                                                            [maxLength]="50"
-                                                            (keypress)="keyPressAlpha($event)"></airmid-textbox>
+                                                            [maxLength]="50" ></airmid-textbox>
+                                                            <!-- (keypress)="keyPressAlpha($event)" -->
                                                     </div>
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-dropdown label="Gender" formControlName="GenderId"

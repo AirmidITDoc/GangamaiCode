@@ -42,7 +42,7 @@ export class NewRelationshipComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.relationshipForm.invalid) {
                 for (const controlName in this.relationshipForm.controls) {
                     if (this.relationshipForm.controls[controlName].invalid) {

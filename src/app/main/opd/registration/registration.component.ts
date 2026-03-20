@@ -113,7 +113,7 @@ export class RegistrationComponent implements OnInit {
     OnNewAppointment(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
                 maxWidth: "95vw",
@@ -144,7 +144,7 @@ export class RegistrationComponent implements OnInit {
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
@@ -242,7 +242,7 @@ export class RegistrationComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -255,10 +255,10 @@ export class RegistrationComponent implements OnInit {
 
 
 export class RegInsert {
-    RegId: Number;
-    regId: Number;
+    RegId: number;
+    regId: number;
     emailId: string;
-    RegID: Number;
+    RegID: number;
     RegDate: Date;
     regDate: Date;
     PatientName: string;
@@ -285,7 +285,7 @@ export class RegInsert {
     DateofBirth: Date;
     Age: any;
     age: any;
-    GenderId: Number;
+    GenderId: number;
     genderId: any;
     PhoneNo: string;
     phoneNo: string;
@@ -306,7 +306,7 @@ export class RegInsert {
     cityId: number;
     MaritalStatusId: number;
     maritalStatusId: number;
-    IsCharity: Boolean;
+    IsCharity: boolean;
     ReligionId: number;
     religionId: number;
     AreaId: number;

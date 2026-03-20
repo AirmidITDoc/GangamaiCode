@@ -164,7 +164,7 @@ advanceDetailId:any=0;
     }
   } 
   getRefundAdvanceList(obj) {
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 9999,
       "sortField": "AdmissionId",
@@ -204,8 +204,8 @@ advanceDetailId:any=0;
   } 
   getAdvaceSum(ItemList) { 
     const Itemlist = ItemList
-    let balAmt = Itemlist.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0).toFixed(2);
-    let RefundAmt = Itemlist.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0).toFixed(2); 
+    const balAmt = Itemlist.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0).toFixed(2);
+    const RefundAmt = Itemlist.reduce((sum, { refundAmount }) => sum += +(refundAmount || 0), 0).toFixed(2); 
    
     this.RefundFooterForm.patchValue({
       ToatalRefunfdAmt:RefundAmt,
@@ -239,7 +239,7 @@ advanceDetailId:any=0;
         this.AdvRefundDetailsArray.push(this.CreatePhAdvRefundDetail(element))
         this.AdvRefundBalDetArray.push(this.CreatePhAdvRefundBalDet(element))
       })
-      let PatientHeaderObj = {};
+      const PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.vPatienName || ';'
       PatientHeaderObj['RegNo'] = this.regObj?.regNo || 0;
@@ -276,7 +276,7 @@ advanceDetailId:any=0;
         });
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
       // checks nested error 
       if (this.RefundSaveForm?.invalid) {
         for (const controlName in this.RefundSaveForm.controls) {
@@ -315,7 +315,7 @@ advanceDetailId:any=0;
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

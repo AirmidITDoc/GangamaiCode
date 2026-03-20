@@ -207,7 +207,7 @@ export class NewAdvanceComponent implements OnInit {
   vAdvanceId: any = 0;
   vAdvanceDetailID: any = 0;
   getAdvanceList(obj) {
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 9999,
       "sortField": "AdmissionID",
@@ -310,7 +310,7 @@ export class NewAdvanceComponent implements OnInit {
         }
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
       if (this._PharAdvanceService.CreaterNewAdvanceForm().invalid) {
         for (const controlName in this._PharAdvanceService.CreaterNewAdvanceForm().controls) {
           if (this._PharAdvanceService.CreaterNewAdvanceForm().controls[controlName].invalid) {
@@ -356,7 +356,7 @@ export class NewAdvanceComponent implements OnInit {
     this.commonService.Onprint("AdvanceDetailID", contact, "PharamcyAdvanceReceipt");
   }  
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

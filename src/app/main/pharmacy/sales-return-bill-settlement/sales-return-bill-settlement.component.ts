@@ -379,7 +379,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   }
   getdata() {
     debugger
-    let opiptype = this.userFormGroup.get('PatientType').value
+    const opiptype = this.userFormGroup.get('PatientType').value
     this.gridConfig = {
       apiUrl: "Sales/PharSalesSettlemet",
       columnsList: this.AllColumns,
@@ -431,8 +431,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     // this.grid.bindGridData();
 
     // this.SelectedList = [];
-     let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
-  var vdata = {
+     const opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
+  const vdata = {
     "first": 0,
     "rows": 9999,
     "sortField": "SalesId",
@@ -460,7 +460,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       const formattedTime = datePipe.transform(currentDate, 'shortTime');
       const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-      let PatientHeaderObj = {};
+      const PatientHeaderObj = {};
       PatientHeaderObj['Date'] = formattedDate;
       PatientHeaderObj['PatientName'] = contact?.patientName || '';
       PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
@@ -497,7 +497,7 @@ if (result && result.IsSubmitFlag) {
   let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
   UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 
-  let SalesDataArray = [];
+  const SalesDataArray = [];
   SalesDataArray.push({ salesID: contact?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
 
   this.AdvanceDetailsArray.clear();
@@ -611,8 +611,8 @@ getSelectedObjOpMultiple(obj) {
 }
 getdataMultiple() {
   this.SelectedList = [];
-  let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
-  var vdata = {
+  const opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0
+  const vdata = {
     "first": 0,
     "rows": 9999,
     "sortField": "SalesId",
@@ -745,7 +745,7 @@ MultiplePaySave() {
   }
   console.log(this.SelectedList)
 
-  let PatientHeaderObj = {};
+  const PatientHeaderObj = {};
   PatientHeaderObj['Date'] = formattedDate;
   PatientHeaderObj['PatientName'] = this.mPatientName;
   PatientHeaderObj['NetPayAmount'] = Math.round(this.MutliSettlemForm.get('FinalBalanceAmt').value);
@@ -776,7 +776,7 @@ MultiplePaySave() {
     console.log(result)
     debugger
     if (result && result.IsSubmitFlag) {
-      let SalesDataArray = [];
+      const SalesDataArray = [];
       this.SelectedList.forEach(item => {
         SalesDataArray.push({ salesID: item?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
       });
@@ -939,7 +939,7 @@ onChangeglobledisc(event){
   this.getdataMultiple();
 }
 keyPressCharater(event) {
-  var inp = String.fromCharCode(event.keyCode);
+  const inp = String.fromCharCode(event.keyCode);
   if (/^\d*\.?\d*$/.test(inp)) {
     return true;
   } else {
@@ -950,7 +950,7 @@ keyPressCharater(event) {
 //print  
 OnSalessettlemtnprint(SalesID, OP_IP_Type) {
   setTimeout(() => {
-    let param = {
+    const param = {
       "searchFields": [
         { "fieldName": "OP_IP_ID", "fieldValue": String(SalesID), "opType": "13" },
         { "fieldName": "StoreId", "fieldValue": String(OP_IP_Type), "opType": "13" }
@@ -1023,7 +1023,7 @@ onApplyDiscount() {
   const globlediscPer = formvalue?.globlediscPer || 0;
   if (globlediscPer > 0 && globlediscPer <= 100) {
     this.templist = this.templist.map(element => {
-      let discamt1 = 0;
+      const discamt1 = 0;
       let discountAmt = '0';
       let netAmt = '0';
 
@@ -1092,7 +1092,7 @@ OnSaveGlobelDisc() {
       this.MutliSettlemForm.get('ConcessionId').reset();
     })
   } else {
-    let invalidFields = [];
+    const invalidFields = [];
     if (this.globleDiscFrom.invalid) {
       for (const controlName in this.globleDiscFrom.controls) {
         const control = this.globleDiscFrom.get(controlName);
@@ -1117,8 +1117,8 @@ OnSaveGlobelDisc() {
 }
 
 getCellCalculation(item: PaidItemList): void {
-  let discPer = +item?.discper;
-  let totalMrp = +item?.totalAmount;
+  const discPer = +item?.discper;
+  const totalMrp = +item?.totalAmount;
 
   if(discPer < 0 || discPer > 100) {
   this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
@@ -1138,7 +1138,7 @@ item.balanceAmount = item.netAmount;
 
 // it allowed only Digit 
 keyPressDigitsOnly(event) {
-  var inp = String.fromCharCode(event.keyCode);
+  const inp = String.fromCharCode(event.keyCode);
   if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
     return true;
   } else {
@@ -1148,7 +1148,7 @@ keyPressDigitsOnly(event) {
 }
 // it allowed only Digit & decimal
 keyPressDigitDecimalOnly(event) {
-  var inp = String.fromCharCode(event.keyCode);
+  const inp = String.fromCharCode(event.keyCode);
   if (/^\d*\.?\d*$/.test(inp)) {
     return true;
   } else {

@@ -71,7 +71,7 @@ export class DrwisecollectionComponent {
     public chargeList: modilitydata[] = [];
     getdrwiseList() {
         debugger
-        var vadat = {
+        const vadat = {
             "UnitId": this.unitId,
             'FromDate': this.data.fdate,
             'ToDate': this.data.tdate

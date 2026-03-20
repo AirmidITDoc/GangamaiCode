@@ -121,7 +121,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         public _ConfigService: ConfigService,
         private cdr: ChangeDetectorRef,
         @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
-    ) { };
+    ) { }
 
     ngOnInit() {
         this.isModal = !!this.dialogRef;
@@ -214,7 +214,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             width: '40%',
             height: '60%',
         })
-        let Data = {
+        const Data = {
             "first": 0,
             "rows": 999,
             "sortField": "RequestTranId",
@@ -255,7 +255,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             maxHeight: '60vh'
         })
         //424929  this.vOPIPId
-        let Data = {
+        const Data = {
             "first": 0,
             "rows": 999,
             "sortField": "Id",
@@ -339,8 +339,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     calculateTotalCharge(row: any = null): void {
-        let qty = +this.chargeForm.get("qty").value;
-        let price = +this.chargeForm.get("price").value;
+        const qty = +this.chargeForm.get("qty").value;
+        const price = +this.chargeForm.get("price").value;
         let total = 0
         if (qty > 0 && price > 0) {
             total = qty * price;
@@ -366,13 +366,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.toastrService.error("Enter discount % between 0-100");
             return;
         }
-        let percentage = perControl.value;
-        let totalAmount = this.chargeForm.get("totalAmount").value;
+        const percentage = perControl.value;
+        const totalAmount = this.chargeForm.get("totalAmount").value;
 
         // let discountAmount = this.getFixedDecimal(totalAmount * percentage / 100);
         // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
-        let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
-        let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+        const discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
+        const netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
 
         this.chargeForm.patchValue({
             discountAmount: discountAmount,
@@ -386,8 +386,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         if (this.isUpdating) return;
         this.isUpdating = true;
 
-        let discountAmount = this.chargeForm.get("discountAmount").value;
-        let totalAmount = this.chargeForm.get("totalAmount").value;
+        const discountAmount = this.chargeForm.get("discountAmount").value;
+        const totalAmount = this.chargeForm.get("totalAmount").value;
 
         if (discountAmount < 0 || discountAmount > totalAmount) {
             this.chargeForm.get("discountAmount").setValue(0);
@@ -399,8 +399,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
         // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
 
-        let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-        let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+        const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+        const netAmount = Number((totalAmount - discountAmount).toFixed(2));
         this.chargeForm.patchValue({
             discountPer: percent,
             netAmount: netAmount
@@ -419,7 +419,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     UserDicPerLimit: any = 0;
     getAccessDetail() {
         // debugger
-        var SelectQuery = {
+        const SelectQuery = {
             "first": 0,
             "rows": 999,
             "sortField": "AccessValueId",
@@ -735,7 +735,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.doctorName = event.text
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -858,7 +858,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     getRtevPackageDetList(obj) {
         debugger
-        var vdata =
+        const vdata =
         {
             "first": 0,
             "rows": 999,
@@ -1003,9 +1003,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     // Calculation of total amount.
     calculateTotalAmount(): void {
-        let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
-        let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
-        let totalNet = totalSum - totalDiscount;
+        const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+        const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+        const totalNet = totalSum - totalDiscount;
 
         this.OPFooterForm.patchValue({
             totalAmt: totalSum,
@@ -1319,7 +1319,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
 
             if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-                let PatientHeaderObj = {};
+                const PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                     PatientHeaderObj['PatientName'] = this.PatientName;
                 PatientHeaderObj['RegNo'] = this.RegNo || 0;
@@ -1375,7 +1375,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 });
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
-                let ModePaymentObj = [];
+                const ModePaymentObj = [];
                 ModePaymentObj.push({
                     paymentDate: formattedDate,
                     paymentTime: formattedTime,
@@ -1425,7 +1425,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 });
             }
             else if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {
-                let ModePaymentObj = [];
+                const ModePaymentObj = [];
                 ModePaymentObj.push({
                     paymentDate: formattedDate,
                     paymentTime: formattedTime,
@@ -1529,7 +1529,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
         }
         else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.OpBillForm.invalid) {
                 for (const controlName in this.OpBillForm.controls) {
                     const control = this.OpBillForm.get(controlName);
@@ -1589,7 +1589,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     reportPrintObjList: ChargesList[] = [];
     viewgetOPBillThermalReportPdf(BillNo) {
         debugger
-        let param = {
+        const param = {
             "searchFields": [
                 {
                     "fieldName": 'BillNo',
@@ -1824,7 +1824,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id || 0);
         this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
-        let ModePaymentObj = [];
+        const ModePaymentObj = [];
         ModePaymentObj.push({
             paymentDate: formattedDate,
             paymentTime: formattedTime,
@@ -1948,7 +1948,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                         this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
                         this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
-                        let ModePaymentObj = [];
+                        const ModePaymentObj = [];
                         ModePaymentObj.push({
                             paymentDate: formattedDate,
                             paymentTime: formattedTime,
@@ -1989,7 +1989,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     }
                 }
                 else {
-                    let invalidFields = [];
+                    const invalidFields = [];
                     if (this.OpBillForm.invalid) {
                         for (const controlName in this.OpBillForm.controls) {
                             const control = this.OpBillForm.get(controlName);
@@ -2192,7 +2192,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     }
                 }
                 else {
-                    let invalidFields = [];
+                    const invalidFields = [];
                     if (this.OpDraftSaveForm.invalid) {
                         for (const controlName in this.OpDraftSaveForm.controls) {
                             const control = this.OpDraftSaveForm.get(controlName);
@@ -2219,7 +2219,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
     }
     getdraftlist() {
-        var param = {
+        const param = {
             "first": 0,
             "rows": 999,
             "sortField": "DRBNo",
@@ -2239,7 +2239,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     DraftbillCancel(drbno) {
         debugger
-        var vdata = {
+        const vdata = {
             "drbno": drbno || 0,
             "isCancelled": true,
             "isCancelledBy": this.accountService.currentUserValue.userId || 0,
@@ -2255,7 +2255,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     DraftdetObj: any;
     getdraftchargelist(contact) {
         this.DraftdetObj = contact
-        var param = {
+        const param = {
             "first": 0,
             "rows": 999,
             "sortField": "ChargesId",
@@ -2403,7 +2403,7 @@ export class ChargesList {
     ConcessionAmt: any;
     ServiceId: number;
     serviceId: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: any;
     Qty: any;
     isInclusionExclusion: any;
@@ -2413,7 +2413,7 @@ export class ChargesList {
     DiscAmt: number;
     NetAmount: number;
     DoctorId: number;
-    ChargeDoctorName: String;
+    ChargeDoctorName: string;
     ChargesDate: Date;
     IsPathology: any;
     IsRadiology: any;
@@ -2522,36 +2522,36 @@ export class ChargesList {
 export class PaymentInsert {
     PaymentId: number;
     BillNo: number;
-    ReceiptNo: String;
+    ReceiptNo: string;
     PaymentDate: any;
     PaymentTime: any;
     CashPayAmount: number;
     ChequePayAmount: number;
-    ChequeNo: String;
-    BankName: String;
+    ChequeNo: string;
+    BankName: string;
     ChequeDate: any;
     CardPayAmount: number;
-    CardNo: String;
-    CardBankName: String;
+    CardNo: string;
+    CardBankName: string;
     CardDate: any;
     AdvanceUsedAmount: number;
     AdvanceId: number;
     RefundId: number;
     TransactionType: number;
-    Remark: String;
+    Remark: string;
     AddBy: number;
-    IsCancelled: Boolean;
+    IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: any;
     CashCounterId: number;
     IsSelfORCompany: number;
     CompanyId: number;
     NEFTPayAmount: any;
-    NEFTNo: String;
-    NEFTBankMaster: String;
+    NEFTNo: string;
+    NEFTBankMaster: string;
     NEFTDate: any;
     PayTMAmount: number;
-    PayTMTranNo: String;
+    PayTMTranNo: string;
     PayTMDate: any;
 
     /**

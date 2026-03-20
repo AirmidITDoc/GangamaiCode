@@ -746,7 +746,7 @@ export class NewAppointmentwithBillComponent {
 
   onSaveEntry(row) {
     debugger
-    let doctorid = 0;
+    const doctorid = 0;
     const formValue = this.myForm.value
 
     const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
@@ -769,7 +769,7 @@ export class NewAppointmentwithBillComponent {
     );
 
     let discountAmt = Number(this.OPFooterForm.get('discountAmt')?.value) || 0;
-    let discountPer = Number(this.OPFooterForm.get('totalDiscountPer')?.value) || 0;
+    const discountPer = Number(this.OPFooterForm.get('totalDiscountPer')?.value) || 0;
 
     if (source === 'PER') {
       // Discount % entered
@@ -1043,7 +1043,7 @@ export class NewAppointmentwithBillComponent {
 
 
   getRtevPackageDetList(obj) {
-    var vdata =
+    const vdata =
     {
       "first": 0,
       "rows": 10,
@@ -1086,7 +1086,7 @@ export class NewAppointmentwithBillComponent {
   serivcedoctorId: any;
   deleteTableRow(element) {
     this.chargeslist = this.dstable1.data;
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dstable1.data = [];
@@ -1217,7 +1217,7 @@ export class NewAppointmentwithBillComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1243,7 +1243,7 @@ export class NewAppointmentwithBillComponent {
       if (result.isConfirmed) {
         console.log(this.myForm.value)
 
-        let priceflag = this.dstable1.data.filter(row => row.Price == 0 || row.Price == '');
+        const priceflag = this.dstable1.data.filter(row => row.Price == 0 || row.Price == '');
 
         if (priceflag.length) {
           this.toastr.warning('Please Enter Price For Service', 'Warning !', {
@@ -1253,7 +1253,7 @@ export class NewAppointmentwithBillComponent {
         }
 
         debugger
-        let docflag = this.dstable1.data.filter(row => row.Doctorflag == true && row.DoctorId == 0);
+        const docflag = this.dstable1.data.filter(row => row.Doctorflag == true && row.DoctorId == 0);
 
         if (docflag.length) {
           this.toastr.warning('Please Select Doctor For Service', 'Warning !', {
@@ -1278,7 +1278,7 @@ export class NewAppointmentwithBillComponent {
           this.OnSave();
 
         else {
-          let invalidFields = [];
+          const invalidFields = [];
           if (this.myForm.invalid) {
             for (const controlName in this.myForm.controls) {
               const control = this.myForm.get(controlName);
@@ -1316,7 +1316,7 @@ export class NewAppointmentwithBillComponent {
 
 
     console.log(this.myForm.getRawValue())
-    let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+    const DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {
 
       const todayDate = new Date();
@@ -1432,7 +1432,7 @@ export class NewAppointmentwithBillComponent {
         console.log("form values", this.OpBillForm.value)
         debugger
         if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-          let PatientHeaderObj = {};
+          const PatientHeaderObj = {};
           PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
             PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
           PatientHeaderObj['RegNo'] = this.regNo;
@@ -1568,7 +1568,7 @@ export class NewAppointmentwithBillComponent {
         console.log("form values", this.OpBillForm.value)
 
         if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-          let PatientHeaderObj = {};
+          const PatientHeaderObj = {};
           PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
             PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
           PatientHeaderObj['RegNo'] = this.regNo;
@@ -1653,7 +1653,7 @@ export class NewAppointmentwithBillComponent {
             this.savebtn = true
           });
         } else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
-          let ModePaymentObj = [];
+          const ModePaymentObj = [];
           ModePaymentObj.push({
             paymentDate: formattedDate,
             paymentTime: formattedTime,
@@ -1729,7 +1729,7 @@ export class NewAppointmentwithBillComponent {
 
       //form valid
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
           if (this.myForm.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
@@ -1844,10 +1844,10 @@ export class NewAppointmentwithBillComponent {
 
   calculateTotalAmount(): void {
     // 
-    let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
-    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
-    let totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
-    let totalNet = totalSum - totalDiscount;
+    const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+    const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    const totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
+    const totalNet = totalSum - totalDiscount;
 
     this.myForm.patchValue({
       totalAmt: totalSum,
@@ -1868,8 +1868,8 @@ export class NewAppointmentwithBillComponent {
 
   calculateTotalCharge(row: any = null): void {
 
-    let qty = +this.chargeForm.get("qty").value;
-    let price = +this.chargeForm.get("price").value;
+    const qty = +this.chargeForm.get("qty").value;
+    const price = +this.chargeForm.get("price").value;
     let total = 0
     if (qty > 0 && price > 0) {
       total = qty * price;
@@ -1895,13 +1895,13 @@ export class NewAppointmentwithBillComponent {
       this.toastr.error("Enter discount % between 0-100");
       return;
     }
-    let percentage = perControl.value;
-    let totalAmount = this.chargeForm.get("totalAmount").value;
+    const percentage = perControl.value;
+    const totalAmount = this.chargeForm.get("totalAmount").value;
 
     // let discountAmount = this.getFixedDecimal(totalAmount * percentage / 100);
     // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
-    let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
-    let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+    const discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
+    const netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
 
     this.chargeForm.patchValue({
       discountAmount: discountAmount,
@@ -1915,8 +1915,8 @@ export class NewAppointmentwithBillComponent {
     if (this.isUpdating) return;
     this.isUpdating = true;
 
-    let discountAmount = this.chargeForm.get("discountAmount").value;
-    let totalAmount = this.chargeForm.get("totalAmount").value;
+    const discountAmount = this.chargeForm.get("discountAmount").value;
+    const totalAmount = this.chargeForm.get("totalAmount").value;
 
     if (discountAmount < 0 || discountAmount > totalAmount) {
       this.chargeForm.get("discountAmount").setValue(0);
@@ -1928,8 +1928,8 @@ export class NewAppointmentwithBillComponent {
     // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
     // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
 
-    let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-    let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+    const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+    const netAmount = Number((totalAmount - discountAmount).toFixed(2));
     this.chargeForm.patchValue({
       discountPer: percent,
       netAmount: netAmount
@@ -1957,7 +1957,7 @@ export class NewAppointmentwithBillComponent {
       width: '40%',
       height: '60%',
     })
-    let Data = {
+    const Data = {
       "first": 0,
       "rows": 100,
       "sortField": "RequestTranId",
@@ -1989,7 +1989,7 @@ export class NewAppointmentwithBillComponent {
   }
 
       keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -2389,7 +2389,7 @@ export class NewAppointmentwithBillComponent {
 
   onChangePatient(value) {
 
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._AppointmentlistService.getMaster(mode, 1);
       this.VisitFormGroup.get('companyId').setValidators([Validators.required]);

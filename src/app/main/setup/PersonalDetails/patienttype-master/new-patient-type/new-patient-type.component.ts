@@ -45,7 +45,7 @@ export class NewPatientTypeComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.patienttypeForm.invalid) {
                 for (const controlName in this.patienttypeForm.controls) {
                     if (this.patienttypeForm.controls[controlName].invalid) {

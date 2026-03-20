@@ -94,7 +94,7 @@ export class NewCompanyMasterComponent {
                 this.dialogRef.close()
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.companyFormDemo.invalid) {
                 for (const controlName in this.companyFormDemo.controls) {
                     if (this.companyFormDemo.controls[controlName].invalid) {
@@ -170,7 +170,7 @@ export class NewCompanyMasterComponent {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -180,7 +180,7 @@ export class NewCompanyMasterComponent {
     }
     // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

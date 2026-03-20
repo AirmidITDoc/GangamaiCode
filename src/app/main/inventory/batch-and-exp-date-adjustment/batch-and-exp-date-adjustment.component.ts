@@ -74,7 +74,7 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   gePharStoreList() {
-    var vdata = {
+    const vdata = {
       Id: this._loggedService.currentUserValue.storeId
     }
     this._BatchAndExpDateService.getLoggedStoreList(vdata).subscribe(data => {
@@ -83,7 +83,7 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
     });
   }
   getItemList() {
-    var vdata = {
+    const vdata = {
       "ItemName": `${this._BatchAndExpDateService.SearchGroup.get('ItemID').value}%`
     }
     this._BatchAndExpDateService.getItemlist(vdata).subscribe(resData => {
@@ -111,7 +111,7 @@ export class BatchAndExpDateAdjustmentComponent implements OnInit {
 
   getBatchAndAdjList(Param) {
     this.sIsLoading = 'loading-data';
-    var vdata = {
+    const vdata = {
       "StoreId": this._BatchAndExpDateService.StoreFrom.get('StoreId').value.storeid,
       "ItemId":this._BatchAndExpDateService.SearchGroup.get('ItemID').value.ItemID// Param.ItemID
     }

@@ -39,7 +39,7 @@ export class NewQuestionComponent {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.QuestionForm.invalid) {
         for (const controlName in this.QuestionForm.controls) {
           if (this.QuestionForm.controls[controlName].invalid) {

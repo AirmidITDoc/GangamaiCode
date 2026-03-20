@@ -45,7 +45,7 @@ export class NewTermofpaymentComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.termsofpaymentForm.invalid) {
                 for (const controlName in this.termsofpaymentForm.controls) {
                     if (this.termsofpaymentForm.controls[controlName].invalid) {

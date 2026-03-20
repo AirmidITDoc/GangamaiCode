@@ -139,7 +139,7 @@ export class PhoneappointmentComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent,
             {
                 maxWidth: "95vw",
@@ -157,7 +157,7 @@ export class PhoneappointmentComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewPhoneAppoinmentCalendarComponent,
             {
                 maxWidth: "95vw",

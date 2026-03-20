@@ -24,7 +24,7 @@ export class ProcessDoctorshareComponent {
 
   OnSave() {
     debugger
-    let submitData = {
+    const submitData = {
       "fromDate": this.datePipe.transform(this._DoctorShareService.DocPrecessForm.get("startdate").value, "yyyy-MM-dd") || "1900/01/01",
       "toDate": this.datePipe.transform(this._DoctorShareService.DocPrecessForm.get("enddate").value, "yyyy-MM-dd") || "1900/01/01",
     }

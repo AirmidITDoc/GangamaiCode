@@ -138,7 +138,7 @@ export class PatientvitalInformationComponent {
   getBMIcalculation() {
     // debugger
     if (this.vHeight > 0 && this.vWeight > 0) {
-      let Height = (this.vHeight / 100)
+      const Height = (this.vHeight / 100)
       this.vBMI = String(Math.round((this.vWeight) / ((Height) * (Height))));
     }
     else if (this.vHeight <= 0) {
@@ -155,7 +155,7 @@ export class PatientvitalInformationComponent {
 
     debugger
     if (!this.MyFormGroup.invalid) {
-      let visitId = this.data.visitId
+      const visitId = this.data.visitId
       // this.MyFormGroup.get('bmi').setValue(String(this.MyFormGroup.get('bmi')?.value)),
       this.MyFormGroup.get("bsl").setValue(this.vBSL || "")
       this.MyFormGroup.get("spO2").setValue(this.vSpO2 || "")
@@ -167,7 +167,7 @@ export class PatientvitalInformationComponent {
         this._matDialog.closeAll();
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
       if (this.MyFormGroup.invalid) {
         for (const controlName in this.MyFormGroup.controls) {
           if (this.MyFormGroup.controls[controlName].invalid) {
@@ -200,7 +200,7 @@ onEnter(event: KeyboardEvent, nextInputId: string) {
 }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -209,7 +209,7 @@ onEnter(event: KeyboardEvent, nextInputId: string) {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -219,7 +219,7 @@ onEnter(event: KeyboardEvent, nextInputId: string) {
   }
 
   keyPressOk(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
       return true;
     } else {
@@ -229,7 +229,7 @@ onEnter(event: KeyboardEvent, nextInputId: string) {
   }
       // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

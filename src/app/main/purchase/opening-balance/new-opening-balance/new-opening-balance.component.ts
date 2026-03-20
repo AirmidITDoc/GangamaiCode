@@ -431,7 +431,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsItemNameList.data = [];
@@ -466,7 +466,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         this._matDialog.closeAll();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.StoreForm.invalid) {
         for (const controlName in this.StoreForm.controls) {
@@ -486,7 +486,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   viewgetReportPdf(element) {
-    var Param = {
+    const Param = {
       "searchFields": [
         {
           "fieldName": "OpeningHId",
@@ -587,7 +587,7 @@ CalculatePerUnit(){
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -596,7 +596,7 @@ CalculatePerUnit(){
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -606,7 +606,7 @@ CalculatePerUnit(){
   }
          // it allowed only Digit & decimal
        keyPressDigitDecimalOnly(event) {
-           var inp = String.fromCharCode(event.keyCode);
+           const inp = String.fromCharCode(event.keyCode);
            if (/^\d*\.?\d*$/.test(inp)) {
                return true;
            } else {

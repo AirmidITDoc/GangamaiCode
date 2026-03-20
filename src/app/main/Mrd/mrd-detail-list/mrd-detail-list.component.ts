@@ -112,7 +112,7 @@ export class MrdDetailListComponent {
     OnNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewMrdComponent,
             {
                 maxWidth: "95vw",
@@ -129,7 +129,7 @@ export class MrdDetailListComponent {
     OnEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewMrdComponent,
             {
                 maxWidth: "95vw",
@@ -147,7 +147,7 @@ export class MrdDetailListComponent {
     OnInFile(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewINMrdComponent,
             {
                 maxWidth: "55vw",
@@ -165,7 +165,7 @@ export class MrdDetailListComponent {
     OnOutFile(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewOutMrdComponent,
             {
                maxWidth: "55vw",
@@ -208,7 +208,7 @@ export class MrdDetailListComponent {
 
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

@@ -36,7 +36,7 @@ export class ReScheduleComponent {
   }
 
    ScheduleDate() {
-      var data = {
+      const data = {
         "phoneAppId": this.PhoneAppId,
         "phAppDate":this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
         "phAppTime": this.dateTimeObj.time

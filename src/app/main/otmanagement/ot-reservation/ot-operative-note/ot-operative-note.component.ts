@@ -132,7 +132,7 @@ export class OtOperativeNoteComponent {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.OperativeFormSave.invalid) {
         for (const controlName in this.OperativeFormSave.controls) {
           if (this.OperativeFormSave.controls[controlName].invalid) {

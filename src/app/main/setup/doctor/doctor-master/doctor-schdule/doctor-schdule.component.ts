@@ -116,7 +116,7 @@ debugger
       if (!this.DrschduleForm.invalid)
         this.dialogRef.close(this.DrschduleForm.value)
       else {
-        let invalidFields = [];
+        const invalidFields = [];
         if (this.DrschduleForm.invalid) {
           for (const controlName in this.DrschduleForm.controls) {
             if (this.DrschduleForm.controls[controlName].invalid) { invalidFields.push(`Schdule Form: ${controlName}`); }
@@ -132,7 +132,7 @@ debugger
         this.dialogRef.close(this.DrAdhocschduleForm.value)
       }
       else {
-        let invalidFields = [];
+        const invalidFields = [];
         if (this.DrAdhocschduleForm.invalid) {
           for (const controlName in this.DrAdhocschduleForm.controls) {
             if (this.DrAdhocschduleForm.controls[controlName].invalid) { invalidFields.push(`Adhoc Form: ${controlName}`); }
@@ -147,7 +147,7 @@ debugger
 
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

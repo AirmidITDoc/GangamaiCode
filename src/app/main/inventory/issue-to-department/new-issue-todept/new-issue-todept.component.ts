@@ -569,11 +569,11 @@ export class NewIssueTodeptComponent {
         return;
       }
     }
-    let TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
-    let PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
-    let LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
-    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(4);
-    let gstper = 0
+    const TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
+    const PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
+    const LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
+    const GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(4);
+    const gstper = 0
 
     this.chargeslist.push(
       {
@@ -738,7 +738,7 @@ export class NewIssueTodeptComponent {
   getIndentItemDetList() {
     debugger
     this.sIsLoading = 'loading-data';
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "IndentId",
@@ -810,7 +810,7 @@ export class NewIssueTodeptComponent {
     this.Itemchargeslist1 = [];
     this.QtyBalchk = 0;
 
-    var m_data = {
+    const m_data = {
       "ItemId": contact.itemId,
       "StoreId": this.accountService.currentUserValue.user.storeId || 0
     }
@@ -822,13 +822,13 @@ export class NewIssueTodeptComponent {
         Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
       }
       else if (this.Itemchargeslist1.length > 0) {
-        let ItemID = contact.itemId;
+        const ItemID = contact.itemId;
 
         let remaing_qty = contact.balanceQty;
         let bal_qnt = 0;
         this.Itemchargeslist1.forEach((element) => {
 
-          let IndQty = remaing_qty;
+          const IndQty = remaing_qty;
           if (IndQty > 0) {
 
             if (contact.itemId != element.itemId) {
@@ -990,7 +990,7 @@ export class NewIssueTodeptComponent {
       }
 
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.IssueFinalForm.invalid) {
         for (const controlName in this.IssueFinalForm.controls) {
@@ -1098,7 +1098,7 @@ export class NewIssueTodeptComponent {
       if (this.CellCalculation == 0)
         console.log(element)
       debugger
-      let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+      const balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
 
       if (balQty == 0)
         element.IsClosed = true;
@@ -1156,7 +1156,7 @@ export class NewIssueTodeptComponent {
       if (this.CellCalculation == 0)
         console.log(element)
       debugger
-      let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+      const balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
 
       if (balQty == 0)
         element.IsClosed = true;
@@ -1243,7 +1243,7 @@ export class NewIssueTodeptComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1253,7 +1253,7 @@ export class NewIssueTodeptComponent {
   }
 
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsNewIssueItemList.data = [];

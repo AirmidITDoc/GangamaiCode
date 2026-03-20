@@ -27,10 +27,10 @@ import { RoleTemplateService } from "./role-template.service";
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: RoleTemplateMasterComponent,
-  },
+    {
+        path: "**",
+        component: RoleTemplateMasterComponent,
+    },
 ];
 @NgModule({
     declarations: [RoleTemplateMasterComponent, RolePermissionComponent, NewRoletemplateComponent],

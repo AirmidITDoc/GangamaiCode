@@ -272,12 +272,12 @@ export class NewLabresultEntryComponent {
 
   onResultUp(data) {
 
-    let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+    const items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
     for (let i = 0; i < items.length; i++) {
       let formula = items[i].Formula;
-      let formulas = this.getShortNames(formula);
+      const formulas = this.getShortNames(formula);
       formulas.forEach(e => {
-        let itm = this.dataSource.data.find(x => x.ParameterShortName == e);
+        const itm = this.dataSource.data.find(x => x.ParameterShortName == e);
         if (itm)
           formula = formula.replace("{{" + e + "}}", itm.ResultValue)
       });
@@ -291,9 +291,9 @@ export class NewLabresultEntryComponent {
     data.RangeStatus = ''; // 'low' | 'high' | ''
 
     if (data.ParaIsNumeric || data.PIsNumeric) {
-      let a = parseFloat(data.ResultValue);
-      let b = parseFloat(data.MinValue);
-      let c = parseFloat(data.MaxValue);
+      const a = parseFloat(data.ResultValue);
+      const b = parseFloat(data.MinValue);
+      const c = parseFloat(data.MaxValue);
 
       if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
         if (a < b) {
@@ -399,7 +399,7 @@ export class NewLabresultEntryComponent {
   ///////////////// end ///////////////////
   getResultList1(rbj) {
     // debugger
-    var param = {
+    const param = {
       "searchFields": [
         {
           "fieldName": "PathReportId",
@@ -444,9 +444,9 @@ export class NewLabresultEntryComponent {
 
     if (data.ParaIsNumeric || data.PIsNumeric) {
 
-      let a = parseFloat(data.ResultValue);
-      let b = parseFloat(data.MinValue);
-      let c = parseFloat(data.MaxValue);
+      const a = parseFloat(data.ResultValue);
+      const b = parseFloat(data.MinValue);
+      const c = parseFloat(data.MaxValue);
 
       if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
         if (a < b) {
@@ -466,7 +466,7 @@ export class NewLabresultEntryComponent {
     const pathReportIds = rbj.map(r => String(r.PathReportId));
 
 
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -540,7 +540,7 @@ export class NewLabresultEntryComponent {
     console.log(this.selectedAdvanceObj2)
     console.log(this.regObj)
 
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -618,7 +618,7 @@ export class NewLabresultEntryComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
           "pathReportId": this.vPathReportId,
           "isVerifyid": this.accountService.currentUserValue.userId,
           "isVerifySign": true,
@@ -635,7 +635,7 @@ export class NewLabresultEntryComponent {
 
   Printresultentry() {
 
-    let pathologyDelete = [];
+    const pathologyDelete = [];
 
     this.data.RIdData.forEach((element) => {
       pathologyDelete.push({ pathReportId: element.PathReportId });
@@ -831,7 +831,7 @@ export class NewLabresultEntryComponent {
 }
 
 export class Pthologyresult {
-  TestName: String;
+  TestName: string;
   SubTestName: boolean;
   ParameterName: Date;
   NormalRange: any;
@@ -890,8 +890,8 @@ export class Pthologyresult {
 
 export class PthologyTemplateresult {
 
-  TemplateDesc: String;
-  PrintTestName: String;
+  TemplateDesc: string;
+  PrintTestName: string;
   PathReportID: any;
   TestId: any;
   PathResultDr1: any;
@@ -922,7 +922,7 @@ export class PthologyresultInsert {
   TestName: any;
   SubTestName: any;
   ParameterName: any;
-  UnitName: String;
+  UnitName: string;
   PatientName: any;
   labRequestNo: any;
   SampleID: any;

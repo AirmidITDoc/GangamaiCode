@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ApiCaller } from './services/apiCaller';
 
 @Injectable({
@@ -23,6 +23,6 @@ export class NotificationService {
         return this._httpClient1.GetData("Notification/List");
     }
     public readNotifications(data) {
-        return this._httpClient1.PostData("Notification/read",data);
+        return this._httpClient1.PostData("Notification/read", data);
     }
 }

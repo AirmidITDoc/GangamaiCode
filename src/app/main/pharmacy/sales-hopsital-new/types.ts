@@ -293,7 +293,7 @@ export class IndentList {
   }
 }
 export class IndentID {
-  IndentNo: Number;
+  IndentNo: number;
   IndentDate: number;
   FromStoreName: string;
   ToStoreName: string;

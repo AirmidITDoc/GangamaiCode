@@ -37,7 +37,7 @@ export class NewLocationComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.locationForm.invalid) {
                 for (const controlName in this.locationForm.controls) {
                     if (this.locationForm.controls[controlName].invalid) {

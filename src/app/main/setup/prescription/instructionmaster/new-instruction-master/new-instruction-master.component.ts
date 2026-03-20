@@ -40,7 +40,7 @@ export class NewInstructionMasterComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.instructionForm.invalid) {
         for (const controlName in this.instructionForm.controls) {
           if (this.instructionForm.controls[controlName].invalid) {

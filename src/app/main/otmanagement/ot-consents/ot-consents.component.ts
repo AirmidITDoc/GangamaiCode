@@ -143,7 +143,7 @@ export class OtConsentsComponent {
   OnViewReportPdf(element: any) {
 
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "ConsentId",

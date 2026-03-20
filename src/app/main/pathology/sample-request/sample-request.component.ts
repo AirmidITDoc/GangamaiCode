@@ -123,8 +123,8 @@ export class SampleRequestComponent implements OnInit {
 
   GetDetails1(data) {
     debugger
-    let requestId = data.requestId;
-    let isPathOrRad = this.myformSearch.get('IsPathOrRad').value;
+    const requestId = data.requestId;
+    const isPathOrRad = this.myformSearch.get('IsPathOrRad').value;
 
     this.gridConfig1 = {
       apiUrl: "PathlogySampleCollection/LabOrRadRequestDetailList",
@@ -207,10 +207,10 @@ export class SampleRequestComponent implements OnInit {
     this.Vtotalcount = 0;
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
-    let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
-    let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
+    const fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
+    const toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
 
-    let filters: any[] = [];
+    const filters: any[] = [];
 
     // Handle date range
     if (fromDateControl && toDateControl) {
@@ -250,7 +250,7 @@ export class SampleRequestComponent implements OnInit {
       }
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "RegNo",
@@ -315,7 +315,7 @@ export class SampleRequestComponent implements OnInit {
 export class LabOrRadRequestList {
 
   RegNo: any;
-  PatientName: String;
+  PatientName: string;
   AdmDate: Date;
   WardName: string;
   IsOnFileTest: boolean;

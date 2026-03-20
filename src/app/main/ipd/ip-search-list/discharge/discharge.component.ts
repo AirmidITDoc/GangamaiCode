@@ -180,7 +180,7 @@ export class DischargeComponent implements OnInit {
       if (this.DischargeInsertForm.get("admission.isDischarged")?.value == 0) {
         this.DischargeInsertForm.get('discharge.addedBy')?.setValue(this.accountService.currentUserValue.userId);
         this.DischargeInsertForm.get("admission.isDischarged")?.setValue(1)
-        let insertData = {
+        const insertData = {
           "discharge": this.DischargeInsertForm.value.discharge,
           "admission": this.DischargeInsertForm.value.admission,
           "bed": this.DischargeInsertForm.value.bed
@@ -194,7 +194,7 @@ export class DischargeComponent implements OnInit {
       else {
         this.DischargeInsertForm.get('discharge.modifiedBy')?.setValue(this.accountService.currentUserValue.userId);
         this.DischargeInsertForm.get('discharge.dischargeId')?.setValue(this.DischargeId);
-        let updateData = {
+        const updateData = {
           "discharge": this.DischargeInsertForm.value.discharge,
           "admission": this.DischargeInsertForm.value.admission
         };
@@ -207,7 +207,7 @@ export class DischargeComponent implements OnInit {
       }
       this.DischargeInsertForm.reset();
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.DischargeInsertForm.invalid) {
         for (const controlName in this.DischargeInsertForm.controls) {
           const control = this.DischargeInsertForm.get(controlName);
@@ -258,7 +258,7 @@ export class DischargeComponent implements OnInit {
   vApproved_Cnt: any;
   vDeptCount: any;
   getchkConfigInitiate() {
-    var data = {}
+    const data = {}
     this._IpSearchListService.getchkConfigInitiate(data).subscribe((data) => {
       console.log(data)
       if (data) {

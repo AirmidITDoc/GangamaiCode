@@ -376,6 +376,7 @@
                                                             <mat-form-field appearance="fill" class="compact-input">
                                                                 <input matInput type="text" pattern="[0-9]*"
                                                                     inputmode="numeric" [(ngModel)]="contact.Price"
+                                                                    [readonly]="chkIsEditable"
                                                                     (ngModelChange)="getCellCalculation(contact)">
                                                             </mat-form-field>
                                                         </mat-cell>

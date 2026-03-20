@@ -92,7 +92,7 @@ export class CrossConsultationComponent implements OnInit {
   onSubmit() {
     console.log(this.crossconForm.value);
 
-    let data = this.crossconForm.value;
+    const data = this.crossconForm.value;
     data.departmentId = Number(this.crossconForm.get('departmentId').value)
     data.consultantDocId = parseInt(this.crossconForm.get('consultantDocId').value)
     this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitDate').value, 'yyyy-MM-dd'))
@@ -105,7 +105,7 @@ export class CrossConsultationComponent implements OnInit {
     this.onClear(true);
     });
   }else {
-    let invalidFields = [];
+    const invalidFields = [];
     if (this.crossconForm.invalid) {
         for (const controlName in this.crossconForm.controls) {
             if (this.crossconForm.controls[controlName].invalid) { invalidFields.push(`Cross Consultation Form: ${controlName}`); }

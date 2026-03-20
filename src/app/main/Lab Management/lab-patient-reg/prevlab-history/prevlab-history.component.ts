@@ -59,7 +59,7 @@ export class PrevlabHistoryComponent {
   }
 
   getLastCreditList(Obj) {
-    var vdata = {
+    const vdata = {
       "searchFields": [
         {
           "fieldName": "LabPatRegId",
@@ -77,7 +77,7 @@ export class PrevlabHistoryComponent {
 
   uniqueBillNo: any[] = [];
   getLastBillHistoryList(Obj) {
-    var vdata = {
+    const vdata = {
       "searchFields": [
         {
           "fieldName": "LabPatRegId",

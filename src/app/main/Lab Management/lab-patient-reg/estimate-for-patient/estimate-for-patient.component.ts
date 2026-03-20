@@ -244,7 +244,7 @@ export class EstimateForPatientComponent {
 
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -281,7 +281,7 @@ export class EstimateForPatientComponent {
     }
 
     onSaveEntry(row) {
-        let doctorid = 0;
+        const doctorid = 0;
         const formValue = this.estimateform.value
         const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
         if (!isDuplicate) {
@@ -357,7 +357,7 @@ export class EstimateForPatientComponent {
 
         debugger
         this.estimateform.get('ServiceId').setValue(0)
-        let DateOfBirth1 = this.estimateform.get("DateOfBirth").value
+        const DateOfBirth1 = this.estimateform.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
             const dob = new Date(DateOfBirth1);
@@ -408,7 +408,7 @@ debugger
 
 
         } else {
-            let invalidFields: string[] = [];
+            const invalidFields: string[] = [];
 
             if (this.estimateform.invalid) {
 
@@ -433,7 +433,7 @@ debugger
 
     deleteTableRow(event, element) {
         // if (this.key == "Delete") {
-        let index = this.chargeList.indexOf(element);
+        const index = this.chargeList.indexOf(element);
         if (index >= 0) {
             this.chargeList.splice(index, 1);
             this.dstable1.data = [];

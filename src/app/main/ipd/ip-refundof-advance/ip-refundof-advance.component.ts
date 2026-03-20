@@ -174,7 +174,7 @@ currency:any='';
       });
       //console.log('Saved Form Data:', this.RefundOfAdvanceFormGroup.value);
 
-      let PatientHeaderObj = {};
+      const PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
       PatientHeaderObj['PatientName'] = this.registerObj?.patientName || '';
       PatientHeaderObj['RegNo'] = this.registerObj?.regNo || 0,
@@ -201,7 +201,7 @@ currency:any='';
         });
       dialogRef.afterClosed().subscribe(result => { 
         if (result && result.IsSubmitFlag) { 
-          let submitData = {
+          const submitData = {
             "refund": this.RefundOfAdvanceFormGroup.value.refundHeader,
             "advanceHeaderupdate": this.RefundOfAdvanceFormGroup.value.advanceHeaderupdate,
             "advDetailRefund": this.RefundOfAdvanceFormGroup.value.AdvDetailsnew,
@@ -218,7 +218,7 @@ currency:any='';
         }  
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       // if (this.RefundOfAdvanceFormGroup.invalid) {
       //   for (const controlName in this.RefundOfAdvanceFormGroup.controls) {
       //     if (this.RefundOfAdvanceFormGroup.controls[controlName].invalid) {
@@ -260,7 +260,7 @@ currency:any='';
 
 
   getRefundofAdvanceListRegIdwise() {
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 999,
       "sortField": "AdvanceId",
@@ -306,9 +306,9 @@ currency:any='';
     this.getRefundSum();
   }
   getRefundSum() {
-    let totalRefAmt = this.dsrefundlist.data.reduce((sum, { refundAmt }) => sum += +(refundAmt || 0), 0);
+    const totalRefAmt = this.dsrefundlist.data.reduce((sum, { refundAmt }) => sum += +(refundAmt || 0), 0);
     const newBalAmt = this.dsrefundlist.data.filter(i => i.isCancelled == false)
-    let totalBalAmt = newBalAmt.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+    const totalBalAmt = newBalAmt.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
 
     this.RefundOfAdvanceFormGroup.patchValue({
       refundAmount: totalRefAmt,
@@ -321,7 +321,7 @@ currency:any='';
     this.commonService.Onprint("RefundId", RefundId, "IpAdvanceRefundReceipt");
   }
   getWhatsappsRefundAdvance(el, vmono) {
-    var m_data = {
+    const m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
         "smsString": '',
@@ -351,7 +351,7 @@ currency:any='';
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp)) {
       return true;
     } else {
@@ -360,7 +360,7 @@ currency:any='';
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

@@ -130,7 +130,7 @@ export class StockAdjustmentComponent implements OnInit {
     }
 
     getStockList() {
-        var Param = {
+        const Param = {
             "first": 0,
             "rows": 9999,
             "sortField": "ItemId",
@@ -509,7 +509,7 @@ export class StockAdjustmentComponent implements OnInit {
     }
 
      keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -588,7 +588,7 @@ export class StockAdjustmentComponent implements OnInit {
                 this.getStockList();
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.StockUpdateForm.invalid) {
                 for (const controlName in this.StockUpdateForm.controls) {
                     if (this.StockUpdateForm.controls[controlName].invalid) {

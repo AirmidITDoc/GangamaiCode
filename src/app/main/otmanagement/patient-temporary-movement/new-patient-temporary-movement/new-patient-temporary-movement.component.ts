@@ -38,7 +38,7 @@ export class NewPatientTemporaryMovementComponent {
   isDatePckrDisabled: boolean = false;
   movedatetime: any;
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
-  autocompleteModeDepartment: String = "Department";
+  autocompleteModeDepartment: string = "Department";
   minDate: Date;
 
   constructor(
@@ -120,8 +120,8 @@ export class NewPatientTemporaryMovementComponent {
       console.log("Visite Patient:", this.registerObj1)
       this.vRegNo = obj.regNo
       this.vOPDNo = obj.opdNo
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
+      const nameField = obj.formattedText;
+      const extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
     }
@@ -169,8 +169,8 @@ export class NewPatientTemporaryMovementComponent {
     }
   }
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 

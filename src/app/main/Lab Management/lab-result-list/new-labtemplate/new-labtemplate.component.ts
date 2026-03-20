@@ -133,7 +133,7 @@ export class NewLabtemplateComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
           "pathReportId": this.reportIdData,
           "isVerifyid": this.accountService.currentUserValue.userId,
           "isVerifySign": true,
@@ -299,7 +299,7 @@ export class NewLabtemplateComponent {
   viewgetPathologyTemplateReportPdf(contact) {
     // debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "PathReportId",
@@ -334,7 +334,7 @@ export class NewLabtemplateComponent {
   }
 
   onEdit(row) {
-    var m_data = {
+    const m_data = {
       "TemplateId": row.TemplateId,
       "TemplateName": row.TemplateName.trim(),
       "TemplateDesc": row.TemplateDesc.trim(),

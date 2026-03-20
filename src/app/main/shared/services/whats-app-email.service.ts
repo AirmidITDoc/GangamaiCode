@@ -28,7 +28,7 @@ export class WhatsAppEmailService {
  
   OnWhatsAppMsgSent(params: { mobileNo: any; patientName: string; billNo: any; smsType: string, patientId:any }){
     setTimeout(() => {
-      let param = {
+      const param = {
         "mobileNumber": params?.mobileNo,
         "smsString": "Dear " + params?.patientName + ",Your Bill has been successfully Generated. Thank You" || '',
         "isSent": true,
@@ -53,7 +53,7 @@ export class WhatsAppEmailService {
   }
 
   OnEmailMsgSent(params: { toEmail: string; cc: string; mailSubject: string; mailBody: string; billNo: any; emailType: string, patientId:any }): Observable<any> {
-  let param = {
+  const param = {
     "fromEmail": "support@airmidtechinnovations.com",
     "fromName": "AirmidTech",
     "toEmail": params?.toEmail,

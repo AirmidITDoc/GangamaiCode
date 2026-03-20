@@ -62,13 +62,13 @@ outputWords=''
     
    
   getPrint(el) {
-     ;
-     var OPIPType;
+     
+     let OPIPType;
      if(el.PatientType=="OP")
      OPIPType =0;
      else OPIPType=1;
  
-      var D_data = {
+      const D_data = {
             "PathReportID":el.PathReportID,// 743674,//el,//82371,
              "OP_IP_Type":OPIPType,//el.OPD_IPD_Type,     
           }

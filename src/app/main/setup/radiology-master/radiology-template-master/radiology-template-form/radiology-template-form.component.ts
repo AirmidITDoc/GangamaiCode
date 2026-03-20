@@ -78,7 +78,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
                 });
             } else Swal.fire("Enter Data In Editor..")
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.templateForm.invalid) {
                 for (const controlName in this.templateForm.controls) {
                     if (this.templateForm.controls[controlName].invalid) {

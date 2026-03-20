@@ -257,7 +257,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             data: {
                 datasets: [
                     {
-                        backgroundColor: ['#FF3784', '#36A2EB', '#4BC0C0', '#F77825', '#9966FF'],
+                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3' ,],
                         data: [this.totalOccupied, this.totalAvailable, 8, 3, 1]
                     }
                 ]
@@ -375,7 +375,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         };
 
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
-            let apiData = res && res.length ? res[0] : {};
+            const apiData = res && res.length ? res[0] : {};
             this.dashBedStatistics = apiData;
             console.log("apiDataapiDataapiData", apiData)
 
@@ -388,7 +388,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         || [],
                     datasets: [
                         {
-                            backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e'],
+                            backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3' ],
                             data: Object.entries(apiData)
                                 .filter(([key]) => key !== 'TotalBedCount') // skip that key
                                 .map(([_, value]) => value) || []
@@ -418,7 +418,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             "mode": "DashAdmissionDateWiseCount"
         };
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
-            let apiData = res && res.length ? res : {};
+            const apiData = res && res.length ? res : {};
             console.log(res)
             return new Chart('BedAdmissionsLine', {
                 type: 'line',
@@ -471,7 +471,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         };
 
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
-            let apiData = res && res.length ? res : {};
+            const apiData = res && res.length ? res : {};
                 console.log(res)
             return new Chart('BedDischargeLine', {
                 type: 'line',
@@ -529,7 +529,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
 
     getWardDetails(item: any) {
         this.isTableLoading = true;
-        let reqParam = {
+        const reqParam = {
             WardId: item
         }
         this._dashboardServices.getWardDetails(reqParam).subscribe(data => {

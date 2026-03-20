@@ -100,7 +100,7 @@ export class PharmacyBIllEditComponent {
     private toastrService: ToastrService,
     public _ConfigService: ConfigService,
     public dialogRef: MatDialogRef<PharmacyBIllEditComponent>
-  ) { this.OpBillEditSaveForm = this.createTotalChargeForm(); };
+  ) { this.OpBillEditSaveForm = this.createTotalChargeForm(); }
 
   ngOnInit() {
     // console.log(this.accountService.currentUserValue.user.isBillReview)
@@ -251,7 +251,7 @@ export class PharmacyBIllEditComponent {
   }
   getPrevCompanyBillList(billNo, Label) {
     debugger
-    var param = {
+    const param = {
       "first": 0,
       "rows": 100,
       "sortField": "ServiceId",
@@ -303,7 +303,7 @@ export class PharmacyBIllEditComponent {
       { "fieldName": "OPIPId", "fieldValue": String(this.OPDIPDID), "opType": "Equals" },
       { "fieldName": "OPIPType", "fieldValue": String(this.opD_IPD_Type), "opType": "Equals" },
     ]
-    var param = {
+    const param = {
       "searchFields": Filters,
       "mode": "BillList"
     }
@@ -317,10 +317,10 @@ export class PharmacyBIllEditComponent {
     })
   }
   calculateTotalAmount(): void {
-    let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
-    let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
-    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
-    let totalNet = totalSum - totalDiscount;
+    const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
+    const DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
+    const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
+    const totalNet = totalSum - totalDiscount;
 
 
 
@@ -418,7 +418,7 @@ export class PharmacyBIllEditComponent {
       });
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.OpBillEditSaveForm.invalid) {
         for (const controlName in this.OpBillEditSaveForm.controls) {
           const control = this.OpBillEditSaveForm.get(controlName);
@@ -485,7 +485,7 @@ export class PharmacyBIllEditComponent {
       this.resetform();
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.salesUpdateForm.invalid) {
         for (const controlName in this.salesUpdateForm.controls) {
           const control = this.salesUpdateForm.get(controlName);
@@ -523,11 +523,11 @@ export class PharmacyBIllEditComponent {
 
     }).then((flag) => {
       if (flag.isConfirmed) {
-        let Chargescancle = {};
+        const Chargescancle = {};
         Chargescancle['chargesId'] = contact.chargesId;
         Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
 
-        let submitData = {
+        const submitData = {
           "deleteCharges": Chargescancle
         };
         console.log(submitData);
@@ -807,7 +807,7 @@ export class PharmacyBIllEditComponent {
 
    getsaleslist() {
     debugger
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 1000,
       "sortField": "SalesId",
@@ -839,7 +839,7 @@ export class ChargesList {
   ChargesId: number;
   ServiceId: number;
   serviceId: number;
-  ServiceName: String;
+  ServiceName: string;
   qty: any;
   storeId: any = 0;
   isInclusionExclusion: any;
@@ -849,7 +849,7 @@ export class ChargesList {
   DiscAmt: number;
   netAmount: number;
   DoctorId: number;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ChargesDate: Date;
   IsPathology: any;
   IsRadiology: any;

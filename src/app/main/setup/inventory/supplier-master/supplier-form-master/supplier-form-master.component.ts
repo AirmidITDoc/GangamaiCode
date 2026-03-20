@@ -81,7 +81,7 @@ export class SupplierFormMasterComponent implements OnInit {
     }
   // }
   removestore(item) {
-    let removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
+    const removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
     this.supplierForm.value.mAssignSupplierToStores.splice(removedIndex, 1);
     this.ddlStore.SetSelection(this.supplierForm.value.mAssignSupplierToStores.map(x => x.storeId));
   }

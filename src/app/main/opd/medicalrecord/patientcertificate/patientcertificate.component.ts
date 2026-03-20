@@ -137,7 +137,7 @@ export class PatientcertificateComponent {
       });
     }
     else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
       if (this.mycertificateForm.invalid) {
         for (const controlName in this.mycertificateForm.controls) {
           if (this.mycertificateForm.controls[controlName].invalid) {

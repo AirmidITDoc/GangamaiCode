@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { SchdulerService } from './scheduler.service';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { ManageschedulerComponent } from './managescheduler/managescheduler.component';
+import { SchdulerService } from './scheduler.service';
 
 @Component({
   selector: 'app-scheduler',
@@ -67,7 +67,7 @@ export class SchdulerComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
             
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(ManageschedulerComponent,
                 {
                     maxWidth: "90vw",

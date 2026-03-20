@@ -339,7 +339,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
 
   }
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsNewmaterialList.data = [];
@@ -569,7 +569,7 @@ export class NewMaterialConsumptionComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

@@ -58,7 +58,7 @@ export class AddItemComponent {
     this.myform = this.CreateMyform();
 
     this.itemForm = this.createItemmasterForm();
-    this.itemForm.markAllAsTouched();;
+    this.itemForm.markAllAsTouched();
     // this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
   }
   CreateMyform() {
@@ -119,9 +119,9 @@ export class AddItemComponent {
   onSave() {
     debugger
     if (!this.itemForm.invalid) {
-      var data2 = [];
+      const data2 = [];
       this.selectedItems.forEach(element => {
-        let data = {
+        const data = {
           assignId: 0, //element.assignId ?? 0,
           storeId: element.storeId ?? 0,
           itemId: 0, //element.itemId ?? 0,
@@ -137,7 +137,7 @@ export class AddItemComponent {
           this.onClose();
         });
       }else {
-        let invalidFields: string[] = [];
+        const invalidFields: string[] = [];
 
         if(this.itemForm.invalid) {
         for (const controlName in this.itemForm.controls) {
@@ -163,7 +163,7 @@ export class AddItemComponent {
 
 
  removestore(item) {
-    let removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId === item.storeId);
+    const removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId === item.storeId);
     if (removedIndex !== -1) {
       this.itemForm.value.mAssignItemToStores.splice(removedIndex, 1);
       this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));

@@ -118,7 +118,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewSubtapComponent,
             {
                 maxWidth: "70vw",
@@ -145,10 +145,10 @@ export class SubTpaCompanyMaster {
     cityId: any;
     stateId: any;
     countryId: any;
-    pinNo: String;
-    phoneNo: String;
-    mobileNo: String;
-    faxNo: String;
+    pinNo: string;
+    phoneNo: string;
+    mobileNo: string;
+    faxNo: string;
     traiffId: any;
     isDeleted: boolean;
     AddedBy: number;

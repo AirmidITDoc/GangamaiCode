@@ -38,7 +38,7 @@ export class AirmidDateofbirthV2Component extends BaseFormControlComponent imple
     }
 
     CalcDOB(mode: string, e: any) {
-        let d = new Date();
+        const d = new Date();
         if (mode == "Day") {
             d.setDate(d.getDate() - Number(e.target.value));
             this.value = d;

@@ -70,7 +70,7 @@ export class OPIPCollectiongraphComponent {
 
         this.fromDate = this.data.fdate// this.datePipe.transform(this.data.fdate.toISOString(), "yyyy-MM-dd")
         this.toDate = this.data.tdate//this.datePipe.transform(this.data.tdate.toISOString(), "yyyy-MM-dd")
-        var vadat = {
+        const vadat = {
             "UnitId": this.unitId,
             'FromDate': this.fromDate,
             'ToDate': this.toDate

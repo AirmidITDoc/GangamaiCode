@@ -89,7 +89,7 @@ export class DoctornoteComponent implements OnInit {
   showDropdown = true;
 
   NewTemplate(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewTemplateComponent,
       {
         maxHeight: '90vh',
@@ -186,7 +186,7 @@ export class DoctornoteComponent implements OnInit {
   }
 
   initializeGridConfig() {
-    permissionCode: permissionCodes.DoctorNote,
+    permissionCodes.DoctorNote,
       this.gridConfig = {
         apiUrl: "Nursing/DoctorsNotesList",
         columnsList: this.allColumns,
@@ -292,7 +292,7 @@ export class DoctornoteComponent implements OnInit {
         this.ViewDoctorNote(this.OP_IP_Id);
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.myNoteform.invalid) {
         for (const controlName in this.myNoteform.controls) {
@@ -324,7 +324,7 @@ export class DoctornoteComponent implements OnInit {
 
     if (!this.myHandOverform.invalid) {
       console.log(this.myHandOverform.value)
-      let data = this.myHandOverform.value;
+      const data = this.myHandOverform.value;
       data.admId = this.OP_IP_Id;
       data.tdate = this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         data.ttime = this.datePipe.transform(new Date(), 'shortTime'),
@@ -336,7 +336,7 @@ export class DoctornoteComponent implements OnInit {
         this.OnHandOverPrint(response)
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.myHandOverform.invalid) {
         for (const controlName in this.myHandOverform.controls) {

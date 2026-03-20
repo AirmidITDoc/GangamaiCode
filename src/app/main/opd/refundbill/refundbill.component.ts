@@ -80,7 +80,7 @@ export class RefundbillComponent implements OnInit {
   registerObj = new RegInsert({});
   PatientName: any = "";
   RegId: any;     
-  RegNo: any; ;  
+  RegNo: any;   
   billNo:any;
 
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();   
@@ -306,8 +306,8 @@ debugger
   }
 
   calculateTotalAmount(): void { 
-    let RefundAmount = this.dataSource2.data.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
-    let RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+    const RefundAmount = this.dataSource2.data.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
+    const RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
 
     this.RefundOfBillFormFooter.patchValue({
       TotalRefundAmount: RefundAmount,
@@ -380,7 +380,7 @@ debugger
         }
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
 
       if (this.RefundOfBillFormFooter.invalid) {
         for (const controlName in this.RefundOfBillFormFooter.controls) {
@@ -426,7 +426,7 @@ debugger
   }
   onEdit(row) { 
     console.log(row);
-    var datePipe = new DatePipe("en-US"); 
+    const datePipe = new DatePipe("en-US"); 
     this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)  
     this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId)
     //Testing
@@ -441,7 +441,7 @@ debugger
       this.calculateTotalAmount();
   }
   getservicedtailList(row) { 
-     var m_data = {
+     const m_data = {
       "first": 0,
       "rows": 9999,
       "sortField": "BillNo",
@@ -478,7 +478,7 @@ debugger
     this.dateTimeObj = dateTimeObj;
   } 
   getWhatsappshareRefundbill(el, vmono) { 
-    var m_data = {
+    const m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
         "smsString": '',
@@ -514,7 +514,7 @@ debugger
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -533,7 +533,7 @@ export class InsertRefund {
   OPD_IPD_Type: number;
   OPD_IPD_ID: number;
   RefundAmount: any;
-  Remark: String;
+  Remark: string;
   TransactionId: number;
   AddedBy: number;
   IsCancelled: boolean;
@@ -564,13 +564,13 @@ export class InsertRefund {
   }
 } 
 export class InsertRefundDetail {
-  RefundID: any;;
+  RefundID: any;
   ServiceId: number;
   serviceName: any;
   ServiceAmount: number;
   refundAmount: number;
   doctorId: number;
-  Remark: String;
+  Remark: string;
   AddBy: number;
   chargesId: number;
   ChargesDate: Date;

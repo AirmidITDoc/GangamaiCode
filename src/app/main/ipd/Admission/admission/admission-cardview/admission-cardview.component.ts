@@ -253,7 +253,7 @@ export class AdmissionCardviewComponent {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
 
-    let that = this;
+    const that = this;
     // const dialogRef = this._matDialog.open(NewRegistrationComponent,
     //   {
     //     maxWidth: "95vw",

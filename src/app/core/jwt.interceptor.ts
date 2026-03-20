@@ -1,15 +1,15 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
+import { Error0Component } from "app/main/shared/APIerrorpages/error-0/error-0.component";
+import { StoreUnitContextService } from "app/main/shared/services/storeunit-context.service";
 import { ToastrService } from 'ngx-toastr';
 import { EMPTY, Observable, throwError } from "rxjs";
 import { catchError, finalize, map } from 'rxjs/operators';
 import { APP_CONFIG, AppConfig } from './../app-config.module';
 import { LoaderService } from "./components/loader/loader.service";
 import { AuthenticationService } from "./services/authentication.service";
-import { MatDialog } from "@angular/material/dialog";
-import { Error0Component } from "app/main/shared/APIerrorpages/error-0/error-0.component";
-import { StoreUnitContextService } from "app/main/shared/services/storeunit-context.service";
 
 
 @Injectable()
@@ -26,7 +26,7 @@ export class JwtInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         // add authorization header with jwt token if available
-        let currentUser = this.authenticationService.currentUserValue;
+        const currentUser = this.authenticationService.currentUserValue;
         const ctx = this.contextSvc.getContext();
         if (currentUser && currentUser.token) {
             if (request.body instanceof FormData)
@@ -34,8 +34,8 @@ export class JwtInterceptor implements HttpInterceptor {
                     setHeaders: {
                         Authorization: `Bearer ${currentUser.token}`,
                         "Access-Control-Allow-Origin": "*",
-                        'X-Store-Id': ctx?.storeId?.toString()??"",
-                        'X-Unit-Id': ctx?.unitId?.toString()??""
+                        'X-Store-Id': ctx?.storeId?.toString() ?? "",
+                        'X-Unit-Id': ctx?.unitId?.toString() ?? ""
                     },
                 });
             else
@@ -44,8 +44,8 @@ export class JwtInterceptor implements HttpInterceptor {
                         Authorization: `Bearer ${currentUser.token}`,
                         "Access-Control-Allow-Origin": "*",
                         "Content-Type": "application/json; charset=utf-8",
-                        'X-Store-Id': ctx?.storeId?.toString()??"",
-                        'X-Unit-Id': ctx?.unitId?.toString()??""
+                        'X-Store-Id': ctx?.storeId?.toString() ?? "",
+                        'X-Unit-Id': ctx?.unitId?.toString() ?? ""
                     },
                 });
         }
@@ -94,7 +94,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     }
                 }
                 else {
-                    let errorMessage = 'An unknown error occurred. Please try again after sometime';
+                    const errorMessage = 'An unknown error occurred. Please try again after sometime';
                     this.toastr.error(errorMessage, 'Error !', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });

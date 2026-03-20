@@ -64,22 +64,22 @@ export class NewOtBillingComponent {
   Chargelist: any[] = [];
   Chargelist1: any[] = [];
   surgeryTypeNames: string[] = ["Normal", "Emergency"];
-  autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeOTTable: string = "OttableMaster";
   autocompleteModeLocation: string = "Location";
-  autocompleteModeotTableCategory: String = "OttypeMaster";
+  autocompleteModeotTableCategory: string = "OttypeMaster";
   addDiagnolist: any = [];
   surgCategoryName: any;
   dateTimeObj: any;
  isDatePckrDisabled: boolean = false;
-  autocompleteModeSiteDescription: String = "SiteDescription";
-  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
-  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
-  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
+  autocompleteModeSiteDescription: string = "SiteDescription";
+  autocompleteModeSurgeryCategory: string = "SurgeryCategory";
+  autocompleteModeDoctorSurgeon: string = "DoctorSurgion";
+  autocompleteModeSurgeryMaster: string = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
-  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeConDoctor: string = "ConDoctor";
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
-  autocompleteModeRefDoctor: String = "RefDoctor";
-  autocompletePaymentMode: String = "PaymentMode";
+  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompletePaymentMode: string = "PaymentMode";
 
   displayedColumns1: string[] = [
     'surgeryCategoryName',
@@ -171,7 +171,7 @@ export class NewOtBillingComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -227,7 +227,7 @@ export class NewOtBillingComponent {
     }
     debugger
 
-    let newEntry = {
+    const newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.billForm.get('surgeryCategoryId').value,
       surgeryId: this.billForm.get('surgeryId').value,//
@@ -313,10 +313,10 @@ export class NewOtBillingComponent {
     console.log(row, i)
     const surgeonDiscountPerc = row.basePer || 0;
 
-    let baseAmt = this.dsattendentDetailList.data[0].baseRs
+    const baseAmt = this.dsattendentDetailList.data[0].baseRs
 
     // if(row.s)
-    let baseperAmt = (baseAmt * row.basePer) / 100;
+    const baseperAmt = (baseAmt * row.basePer) / 100;
     // row.grossAmt = baseAmt - baseperAmt;
     // row.netAmt = baseAmt - baseperAmt;
 
@@ -372,7 +372,7 @@ export class NewOtBillingComponent {
 
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsDetailList.data = [];
@@ -494,7 +494,7 @@ export class NewOtBillingComponent {
 
   FetchList: any = [];
   getReservationSurgeryDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",
@@ -546,7 +546,7 @@ export class NewOtBillingComponent {
 
   FetchList1: any = [];
   getReservationAttendentDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTReservationId",

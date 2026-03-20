@@ -79,7 +79,7 @@ export class ItemMovementSummeryComponent implements OnInit {
   ItemListfilteredOptions: any;
   noOptionFound: boolean = false;
   isLoadingStr: string = '';
-  isLoading: String = '';
+  isLoading: string = '';
   sIsLoading: string = "";
   registerObj: any;
   fiveDaysAgo: any;
@@ -154,7 +154,7 @@ ngAfterViewInit() {
     this.dateTimeObj = dateTimeObj;
   }
   gePharStoreList() {
-    var vdata = {
+    const vdata = {
       Id: this._loggedService.currentUserValue.storeId
     }
     // this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
@@ -164,7 +164,7 @@ ngAfterViewInit() {
   }
   //itemMovement Summery
   getItemMovementSummeryList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "ItemId",
@@ -208,7 +208,7 @@ ngAfterViewInit() {
   }
   //batchExpwiseList
   getBatchExpWiseList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "ItemId",
@@ -248,7 +248,7 @@ ngAfterViewInit() {
   }
   //Purchase SupplierwiseList 
   getPueSupplierWiseList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "SalesId",
@@ -291,7 +291,7 @@ ngAfterViewInit() {
   }
   //Sales List 
   getSalesList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "ItemId",
@@ -330,7 +330,7 @@ ngAfterViewInit() {
   //SalesReturn List 
   getSalesReturnList() {
     this.sIsLoading = 'loading-data';
-    var vdata = {
+    const vdata = {
       "ItemId": this.registerObj.ItemId || 0,
       "StoreId": this.registerObj.StoreId || 0
     }

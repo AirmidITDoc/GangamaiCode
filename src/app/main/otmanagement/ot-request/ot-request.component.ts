@@ -143,7 +143,7 @@ export class OTRequestComponent implements OnInit {
   onNewotrequest(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewRequestComponent,
       {
         maxWidth: "90vw",
@@ -228,7 +228,7 @@ export class OTRequestComponent implements OnInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           otrequestId: data.otrequestId,
           reason: result.value,
           isCancelledBy: this._loggedService.currentUserValue.userId
@@ -248,7 +248,7 @@ export class OTRequestComponent implements OnInit {
 }
 
 export class OtReqInsert {
-  regId: Number;
+  regId: number;
   regDate: Date;
   patientName: string;
   prefixId: number;
@@ -261,7 +261,7 @@ export class OtReqInsert {
   dateOfBirth: Date;
   dateofBirth: Date;
   age: any;
-  GenderId: Number;
+  GenderId: number;
   genderId: any;
   PhoneNo: string;
   phoneNo: string;

@@ -87,10 +87,10 @@ export class SampleCollOldMethodComponent {
     dialogRef.disableClose = true;
     this.type = data?.type;
 
-    let mydate = new Date()
+    const mydate = new Date()
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
 
-    var now = new Date();
+    const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   }
@@ -114,7 +114,7 @@ export class SampleCollOldMethodComponent {
       if (event.checked) {
         this.interimArray.push(element);
       } else if (this.interimArray.length > 0) {
-        let index = this.interimArray.indexOf(element);
+        const index = this.interimArray.indexOf(element);
         if (index !== -1) {
           this.interimArray.splice(index, 1);
         }
@@ -128,11 +128,11 @@ export class SampleCollOldMethodComponent {
   getSampledetailListLab(row) {
     // debugger
 
-    let formattedDate = formatDate(row.pathDate);
+    const formattedDate = formatDate(row.pathDate);
 
     console.log(formattedDate);
 
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 10,
       "sortField": "PathTestID",
@@ -317,8 +317,8 @@ export class SampleCollOldMethodComponent {
 export class SampleList {
   VADate: Date;
   VATime: Date;
-  PathTestID: Number;
-  ServiceName: String;
+  PathTestID: number;
+  ServiceName: string;
   IsSampleCollection: boolean;
   isSampleCollection: any;
   SampleCollectionTime: Date;

@@ -193,14 +193,14 @@ export class LabSampleReceivedComponent {
 
   GetSampleCollectiondetail() {
 
-    let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
-    let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
+    const fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
+    const toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
 
     this.Vtotalcount = 0;
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
     // debugger
-    let filters: any[] = [];
+    const filters: any[] = [];
 
     // Handle date range
     if (fromDateControl && toDateControl) {
@@ -255,7 +255,7 @@ export class LabSampleReceivedComponent {
       }
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "LabPatientId",
@@ -285,7 +285,7 @@ export class LabSampleReceivedComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -372,7 +372,7 @@ export class LabSampleReceivedComponent {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           pathReportId: data.pathReportID,
           sampleReceviedCancelReason: result.value,
         };
@@ -579,8 +579,8 @@ export class LabSampleReceivedComponent {
 export class SampleList {
   VADate: Date;
   VATime: Date;
-  PathTestID: Number;
-  ServiceName: String;
+  PathTestID: number;
+  ServiceName: string;
   IsSampleCollection: boolean;
   isSampleCollection: any;
   SampleCollectionTime: Date;

@@ -569,7 +569,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
 export class IpdAdvanceBrowseModel {
-    RegNo: Number;
+    RegNo: number;
     PatientName: string;
     date: Date;
     AdvanceNo: string;

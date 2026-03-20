@@ -20,7 +20,7 @@ export class PrintserviceService {
      */
     Onprint(field, Id, data) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     {
                         "fieldName": field,
@@ -49,7 +49,7 @@ export class PrintserviceService {
     }
  OnprintOld(field, Id, data) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     {
                         "fieldName": field,
@@ -88,7 +88,7 @@ export class PrintserviceService {
     OnThermalPrintNew(field: string, id: any, mode: string) {
         //this.Onprint(field, id, mode);
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     {
                         "fieldName": field,

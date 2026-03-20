@@ -110,7 +110,7 @@ export class InPatientReturnComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   getSearchList() {
-    var m_data = {
+    const m_data = {
       "Keyword": `${this._InPatientReturnService.userFormGroup.get('RegID').value}%`
     }
     if (this._InPatientReturnService.userFormGroup.get('RegID').value.length >= 1) {
@@ -277,7 +277,7 @@ export class InPatientReturnComponent implements OnInit {
      }
      deleteTableRow(event, element) {
       // if (this.key == "Delete") {
-      let index = this.chargeslist.indexOf(element);
+      const index = this.chargeslist.indexOf(element);
       if (index >= 0) {
         this.chargeslist.splice(index, 1);
         this.dsIpSaleItemList.data = [];
@@ -341,7 +341,7 @@ export class InPatientReturnComponent implements OnInit {
       return this.vFinalNetAmount;
     }
     keyPressAlphanumeric(event) {
-      var inp = String.fromCharCode(event.keyCode);
+      const inp = String.fromCharCode(event.keyCode);
       if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
         return true;
       } else {
@@ -385,7 +385,7 @@ export class InPatientReturnComponent implements OnInit {
       const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
   
       this.savebtn=true;  
-      let salesReturnHeader = {};
+      const salesReturnHeader = {};
       salesReturnHeader['Date'] = formattedDate;
       salesReturnHeader['Time'] = formattedTime;
       salesReturnHeader['SalesId'] = this.vSalesID;
@@ -415,9 +415,9 @@ export class InPatientReturnComponent implements OnInit {
       salesReturnHeader['Narration'] = "";
       salesReturnHeader['SalesReturnId'] = 0
   
-      let salesReturnDetailInsertCreditarr = [];
+      const salesReturnDetailInsertCreditarr = [];
       this.dsIpSaleItemList.data.forEach((element) => {
-        let salesReturnDetailCredit = {};
+        const salesReturnDetailCredit = {};
         salesReturnDetailCredit['SalesReturnId'] = 0;
         salesReturnDetailCredit['itemId'] = element.ItemId;
         salesReturnDetailCredit['batchNo'] = element.BatchNo;
@@ -454,9 +454,9 @@ export class InPatientReturnComponent implements OnInit {
       });
   
       console.log(salesReturnDetailInsertCreditarr);
-      let updateCurStkSalesCreditarray = [];
+      const updateCurStkSalesCreditarray = [];
       this.dsIpSaleItemList.data.forEach((element) => {
-        let updateCurStkSalesCredit = {};
+        const updateCurStkSalesCredit = {};
         updateCurStkSalesCredit['itemId'] = element.ItemId;
         updateCurStkSalesCredit['issueQty'] = element.ReturnQty;
         updateCurStkSalesCredit['storeID'] = this.accountService.currentUserValue.storeId,
@@ -464,25 +464,25 @@ export class InPatientReturnComponent implements OnInit {
         updateCurStkSalesCreditarray.push(updateCurStkSalesCredit);
       });
   
-      let Update_SalesReturnQtySalesTblarray = [];
+      const Update_SalesReturnQtySalesTblarray = [];
       this.dsIpSaleItemList.data.forEach((element) => {
-        let Update_SalesReturnQtySalesTbl = {};
+        const Update_SalesReturnQtySalesTbl = {};
         Update_SalesReturnQtySalesTbl['SalesDetId'] = element.SalesDetId;
         Update_SalesReturnQtySalesTbl['ReturnQty'] = element.ReturnQty;
         Update_SalesReturnQtySalesTblarray.push(Update_SalesReturnQtySalesTbl);
       });
   
-      let Update_SalesRefundAmt_SalesHeader = {};
+      const Update_SalesRefundAmt_SalesHeader = {};
       Update_SalesRefundAmt_SalesHeader['SalesReturnId'] = 0;
   
-      let Cal_GSTAmount_SalesReturn = {};
+      const Cal_GSTAmount_SalesReturn = {};
       Cal_GSTAmount_SalesReturn['SalesReturnID'] = 0;
   
-      let Insert_ItemMovementReport_Cursor = {};
+      const Insert_ItemMovementReport_Cursor = {};
       Insert_ItemMovementReport_Cursor['Id'] = 0;
       Insert_ItemMovementReport_Cursor['TypeId'] = 2;
   
-      let PaymentInsertobj = {};
+      const PaymentInsertobj = {};
       PaymentInsertobj['BillNo'] = 0,
       PaymentInsertobj['ReceiptNo'] = '',
       PaymentInsertobj['PaymentDate'] = formattedDate;
@@ -517,7 +517,7 @@ export class InPatientReturnComponent implements OnInit {
   
    if(this._InPatientReturnService.userFormGroup.get('TypeofPay').value == 'CashPay'){
   
-    let submitData = {
+    const submitData = {
       "salesReturnHeader": salesReturnHeader,
       "salesReturnDetail": salesReturnDetailInsertCreditarr,
       "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
@@ -549,7 +549,7 @@ export class InPatientReturnComponent implements OnInit {
     }); 
    }
    else{ 
-    let submitData = {
+    const submitData = {
       "salesReturnHeader": salesReturnHeader,
       "salesReturnDetail": salesReturnDetailInsertCreditarr,
       "salesReturn_CurStk_Upt": updateCurStkSalesCreditarray,
@@ -624,12 +624,12 @@ export class InPatientReturnComponent implements OnInit {
   }
 }
 export class IPSalesItemList {
-  SalesNo: Number;
+  SalesNo: number;
   ExpDate: number;
   ItemName: string;
   BatchNo: string;
   MRP: number;
-  Qty: any;;
+  Qty: any;
   ReturnQty: any;
   TotalAmt: any;
   GST:any;

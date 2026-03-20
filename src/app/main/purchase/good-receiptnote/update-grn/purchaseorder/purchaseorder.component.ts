@@ -99,7 +99,7 @@ export class PurchaseorderComponent implements OnInit {
     }
   }
   getSupplierSearchCombo() {
-    var vdata={
+    const vdata={
       'SupplierName':`${this._GRNList.POFrom.get('SupplierId').value}%`,
     }
     this._GRNList.getSupplierSearchList(vdata).subscribe(data => {
@@ -115,7 +115,7 @@ export class PurchaseorderComponent implements OnInit {
     return option && option.SupplierName ? option.SupplierName : '';
   } 
   gePharStoreList() {
-    var vdata = {
+    const vdata = {
       Id: this.accountService.currentUserValue.storeId
     }
     this._GRNList.getLoggedStoreList(vdata).subscribe(data => {
@@ -125,7 +125,7 @@ export class PurchaseorderComponent implements OnInit {
     });
   }
   getDirectPOList(){
-      var Param = {
+      const Param = {
         "ToStoreId": this.accountService.currentUserValue.storeId,// this._GRNService.GRNSearchGroup.get('ToStoreId').value.storeid,
         "From_Dt": this.datePipe.transform(this._GRNList.POFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
         "To_Dt": this.datePipe.transform(this._GRNList.POFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -143,7 +143,7 @@ export class PurchaseorderComponent implements OnInit {
         });
   }
   getPOList(Params){
-      var data1 = {
+      const data1 = {
         "PurchaseID": Params.PurchaseID
       }
       this._GRNList.getPurchaseItemList(data1).subscribe(data => {

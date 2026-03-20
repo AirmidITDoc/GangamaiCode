@@ -1,8 +1,7 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -33,70 +32,70 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { ConfigurationComponent } from './configuration.component';
-import { ConfigurationService } from './configuration.service';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { EditConfigurationComponent } from './edit-configuration/edit-configuration.component';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
 import { AllConfigDetailsComponent } from './all-config-details/all-config-details.component';
-import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
+import { ConfigurationComponent } from './configuration.component';
+import { ConfigurationService } from './configuration.service';
+import { EditConfigurationComponent } from './edit-configuration/edit-configuration.component';
 import { EditEmailconfigComponent } from './edit-emailconfig/edit-emailconfig.component';
-import { SharedModule } from 'app/main/shared/shared.module';
+import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
+import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
 
 
 const routes: Routes = [
-  {
-      path: '**',
-      component: ConfigurationComponent,
-  },
+    {
+        path: '**',
+        component: ConfigurationComponent,
+    },
 ];
 @NgModule({
-  declarations: [ConfigurationComponent,NewConfigurationComponent, EditConfigurationComponent, AddAutoServiceComponent, AllConfigDetailsComponent, EditSMSConfigComponent, EditEmailconfigComponent],
-  imports: [
-    RouterModule.forChild(routes),
-   MatChipsModule,
-                MatButtonModule,
-                MatCheckboxModule,
-                MatDatepickerModule,
-                MatFormFieldModule,
-                MatIconModule,
-                MatInputModule,
-                MatMenuModule,
-                MatRippleModule,
-                MatTableModule,
-                MatToolbarModule,
-                MatPaginatorModule,
-                MatSortModule,
-                MatSelectModule,
-                MatRadioModule,
-                MatTabsModule,
-                FuseSidebarModule,
-                MatListModule,
-                MatSlideToggleModule,
-                MatDividerModule,
-                MatDialogModule,
-                FuseSharedModule,
-                FuseConfirmDialogModule,
-                ReactiveFormsModule,
-                MatSnackBarModule,
-                MatStepperModule,
-                MatAutocompleteModule,
-                MatProgressSpinnerModule,
-                SharedModule,
-                NgxMatSelectSearchModule,
-                MatCardModule,
-                MatListModule,
-                MatTooltipModule,
-                MatExpansionModule,
-                MatListModule,
-                ScrollingModule,
-                MatSidenavModule,
-               MatButtonToggleModule,
-  ],
-   providers: [ DatePipe, ConfigurationService]
+    declarations: [ConfigurationComponent, NewConfigurationComponent, EditConfigurationComponent, AddAutoServiceComponent, AllConfigDetailsComponent, EditSMSConfigComponent, EditEmailconfigComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        MatChipsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        FuseSidebarModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatListModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatListModule,
+        ScrollingModule,
+        MatSidenavModule,
+        MatButtonToggleModule,
+    ],
+    providers: [DatePipe, ConfigurationService]
 })
 export class ConfigurationModule { }

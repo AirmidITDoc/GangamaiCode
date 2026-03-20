@@ -261,7 +261,7 @@ custflag=0
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsItemList.data = [];
@@ -273,7 +273,7 @@ custflag=0
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -329,7 +329,7 @@ debugger
         this.onClose();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.CanteenInsertForm.invalid) {
         for (const controlName in this.CanteenInsertForm.controls) {

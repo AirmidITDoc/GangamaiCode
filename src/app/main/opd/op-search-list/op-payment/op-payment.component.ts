@@ -49,8 +49,8 @@ export class OpPaymentComponent implements OnInit {
     // this.opService.getPaymentModes().subscribe((data) => {
     //     this.paymentArr1 = data;
     // });
-    let full = this.opService.getPaymentArr();
-    let final = [];
+    const full = this.opService.getPaymentArr();
+    const final = [];
     full.forEach((item) => {
       if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
         final.push(item);
@@ -149,7 +149,7 @@ export class OpPaymentComponent implements OnInit {
 
     if (this.patientDetailsFormGrp.invalid) {
 
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.patientDetailsFormGrp.invalid) {
         for (const controlName in this.patientDetailsFormGrp.controls) {
           const control = this.patientDetailsFormGrp.get(controlName);
@@ -187,7 +187,7 @@ export class OpPaymentComponent implements OnInit {
       Swal.fire('Already record added with same details');
       return;
     }
-    let tmp = this.Payments.data;
+    const tmp = this.Payments.data;
     tmp.push({
       Id: this.getNewId(),
       PaymentType: this.selectedPaymnet1, Amount: this.amount1,
@@ -224,7 +224,7 @@ export class OpPaymentComponent implements OnInit {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        let tmp = this.Payments.data;
+        const tmp = this.Payments.data;
         tmp.splice(this.Payments.data.findIndex(x => x.Id == payment.Id), 1);
         this.Payments.data = tmp;
         this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
@@ -442,7 +442,7 @@ export class OpPaymentComponent implements OnInit {
   onSubmit() {
     let transactionType = 0;
     let opdipdtype = 0;
-    let result = this.OnCheckFormValidity();
+    const result = this.OnCheckFormValidity();
     if (result === 0) return; // stop execution if invalid
 
 
@@ -460,14 +460,14 @@ export class OpPaymentComponent implements OnInit {
     // -------------- If you comment this code -- OP Billing and Browse List - you can't do the parital payment
     if (this.amount1 != 0 && this.data?.FromName == 'OP-Bill' && this.data?.FromName != 'OP-SETTLEMENT' 
       && this.data?.FromName == 'LAB-Bill' && this.data?.FromName != 'LAB-SETTLEMENT') {
-      let balamt = this.netPayAmt - this.paidAmt
+      const balamt = this.netPayAmt - this.paidAmt
       // Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
       this.patientDetailsFormGrp.get("balanceAmountController").setValue(balamt);
       // return
     }
     if (this.amount1 != 0 && this.data?.FromName != 'OP-Bill' && this.data?.FromName != 'OP-SETTLEMENT' 
       && this.data?.FromName != 'LAB-Bill' && this.data?.FromName != 'LAB-SETTLEMENT') {
-      let balamt = this.netPayAmt - this.paidAmt
+      const balamt = this.netPayAmt - this.paidAmt
       Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
       return
     }
@@ -814,14 +814,14 @@ export class OpPaymentComponent implements OnInit {
     }
     //new changes done by Ambadas sales multiple settlemetn pay 25/6/2025
     else if (this.data.FromName == "IP-Pharma-Multiple-SETTLEMENT") {
-      let PaymentMul = [];
+      const PaymentMul = [];
       debugger
       let PayCashAmt, PayChequeAmt, PayCardAmt, PayNeftAmt, PyaPytmAmt, PyaTDSAmt
-      let CashAmount = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
-      let ChequeAmt = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
-      let CardAmt = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
-      let NeftAmt = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
-      let PaytmAmt = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
+      const CashAmount = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
+      const ChequeAmt = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
+      const CardAmt = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
+      const NeftAmt = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
+      const PaytmAmt = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
       let PayTds = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0;
       let Paywf = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
 
@@ -848,7 +848,7 @@ export class OpPaymentComponent implements OnInit {
           Paywf = element.balanceAmount
         }
 
-        let MultiplePay = {}
+        const MultiplePay = {}
         MultiplePay['paymentId'] = 0;
         MultiplePay['billNo'] = element.salesId || 0;
         MultiplePay['paymentDate'] = formattedDate,
@@ -1031,11 +1031,11 @@ export class OpPaymentComponent implements OnInit {
       });
     });
 
-    let submitDataPay = {
+    const submitDataPay = {
       ipPaymentInsert: this.Paymentobj,
       ipModePaymentInsert: this.ModePaymentObj
     };
-    let IsSubmit = {
+    const IsSubmit = {
       "submitDataPay": submitDataPay,
       "IsSubmitFlag": true,
       "BillBalanceAmount": this.patientDetailsFormGrp.get("balanceAmountController").value
@@ -1046,7 +1046,7 @@ export class OpPaymentComponent implements OnInit {
   }
 
   onClose1() {
-    let IsSubmit = {
+    const IsSubmit = {
       "IsSubmitFlag": false,
       "BalAmt": this.netPayAmt
     }
@@ -1056,7 +1056,7 @@ export class OpPaymentComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1065,7 +1065,7 @@ export class OpPaymentComponent implements OnInit {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

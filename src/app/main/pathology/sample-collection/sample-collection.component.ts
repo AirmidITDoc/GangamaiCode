@@ -130,15 +130,15 @@ export class SampleCollectionComponent implements OnInit {
     getSelectedRow(row: any): void {
         // debugger
         console.log("selectedRow:", row)
-        let billNo = row.billNo;
+        const billNo = row.billNo;
 
-        let rawDate = row.pathDate;
-        let day = rawDate.split("T")[0];
-        let rest = rawDate.split("T")[1].split("-");
-        let month = rest[0];
-        let year = rest[1];
+        const rawDate = row.pathDate;
+        const day = rawDate.split("T")[0];
+        const rest = rawDate.split("T")[1].split("-");
+        const month = rest[0];
+        const year = rest[1];
 
-        let formattedDate = `${day}`
+        const formattedDate = `${day}`
 
         console.log(formattedDate);
 
@@ -220,14 +220,14 @@ export class SampleCollectionComponent implements OnInit {
 
     GetSampleCollectiondetail() {
 
-        let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
-        let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
+        const fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
 
         this.Vtotalcount = 0;
         this.VCompletedcount = 0;
         this.Vpendingcount = 0;
         // debugger
-        let filters: any[] = [];
+        const filters: any[] = [];
 
         // Handle date range
         if (fromDateControl && toDateControl) {
@@ -273,7 +273,7 @@ export class SampleCollectionComponent implements OnInit {
             }
         );
 
-        let data = {
+        const data = {
             "first": 0,
             "rows": 999999,
             "sortField": "RegNo",
@@ -316,7 +316,7 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
                 maxHeight: '85vh',
@@ -330,7 +330,7 @@ export class SampleCollectionComponent implements OnInit {
         });
     }
     OnPrintPatientIcard(data) {
-        var opiptype;
+        let opiptype;
         if (data.lbl == "IP") {
             opiptype = 1
         } else {

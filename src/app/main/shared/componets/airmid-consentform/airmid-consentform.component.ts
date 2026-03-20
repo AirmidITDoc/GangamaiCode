@@ -272,7 +272,7 @@ export class AirmidConsentformComponent {
         });
       }
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
           if (this.myForm.controls[controlName].invalid) {
@@ -301,7 +301,7 @@ export class AirmidConsentformComponent {
   OnViewReportPdf(element: any) {
 
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "ConsentId",

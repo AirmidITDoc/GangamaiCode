@@ -262,7 +262,7 @@ export class PharAdvanceComponent implements OnInit {
   getWhatsappsAdvance(el, vmono) {
 
     if (vmono != '' && vmono != "0") {
-      var m_data = {
+      const m_data = {
         "insertWhatsappsmsInfo": {
           "mobileNumber": vmono || 0,
           "smsString": '',

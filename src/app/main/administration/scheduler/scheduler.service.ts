@@ -4,21 +4,21 @@ import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SchdulerService {
-//   myformSearch: FormGroup;
-//   constructor(private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) {
-//   }
-//   public getSchedulers(ScheduleName) {
-//     return this._httpClient.get("Schedule/get-schedulers?ScheduleName="+ScheduleName);
-//   }
-  public saveScheduler(Param) {
-    return this._httpClient.PostData("Schedule/save", Param);
-  }
-//   public deleteScheduler(id) {
-//     return this._httpClient.delete("Schedule/remove-scheduler?Id="+id);
-//   }
+    //   myformSearch: FormGroup;
+    //   constructor(private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) {
+    //   }
+    //   public getSchedulers(ScheduleName) {
+    //     return this._httpClient.get("Schedule/get-schedulers?ScheduleName="+ScheduleName);
+    //   }
+    public saveScheduler(Param) {
+        return this._httpClient.PostData("Schedule/save", Param);
+    }
+    //   public deleteScheduler(id) {
+    //     return this._httpClient.delete("Schedule/remove-scheduler?Id="+id);
+    //   }
     myform: FormGroup;
     myformSearch: FormGroup;
 
@@ -33,14 +33,14 @@ export class SchdulerService {
     createBankForm(): FormGroup {
         return this._formBuilder.group({
             bankId: [0],
-            bankName: ["", 
+            bankName: ["",
                 [
                     Validators.required,
                     // Validators.maxLength(50),
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

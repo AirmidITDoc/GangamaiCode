@@ -181,8 +181,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
     }
 
     eventEmitForParent(actualDate, actualTime) {
-        let localaDateValues = actualDate.split('/');
-        let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+        const localaDateValues = actualDate.split('/');
+        const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
         this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
     }
 
@@ -198,7 +198,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
                 this.onClear(true);
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.phoneappForm.invalid) {
                 for (const controlName in this.phoneappForm.controls) {
                     if (this.phoneappForm.controls[controlName].invalid) {
@@ -277,7 +277,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

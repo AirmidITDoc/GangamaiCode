@@ -162,9 +162,9 @@ export class NewRefundOfAdvanceComponent {
   }
 
   getRefundSum() {
-    let totalRefAmt = this.dsrefundlist.data.reduce((sum, { refundAmt }) => sum += +(refundAmt || 0), 0);
+    const totalRefAmt = this.dsrefundlist.data.reduce((sum, { refundAmt }) => sum += +(refundAmt || 0), 0);
     const newBalAmt = this.dsrefundlist.data.filter(i => i.isCancelled == false)
-    let totalBalAmt = newBalAmt.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+    const totalBalAmt = newBalAmt.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
 
     this.RefundOfAdvanceFormGroup.patchValue({
       refundAmount: totalRefAmt,
@@ -200,7 +200,7 @@ export class NewRefundOfAdvanceComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp)) {
       return true;
     } else {
@@ -209,7 +209,7 @@ export class NewRefundOfAdvanceComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

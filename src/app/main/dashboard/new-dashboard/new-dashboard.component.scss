@@ -991,7 +991,7 @@
     }
 
     .payment-cards {
-        margin-top: 16px;
+        margin-top: 10px;
     }
 
     .payment-card {
@@ -1007,13 +1007,13 @@
         }
 
         mat-card-content {
-            padding: 16px !important;
+            padding: 10px !important;
             text-align: center;
         }
 
         .payment-mode-name {
-            font-size: 13px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: bold;
             color: #6c757d;
             margin-bottom: 8px;
             text-transform: uppercase;
@@ -1021,7 +1021,7 @@
         }
 
         .payment-amount {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 6px;
         }
@@ -1049,7 +1049,17 @@
     .payment-card-4 .payment-amount {
         color: #F77825;
     }
+ .payment-card-5 .payment-amount {
+        color: #a1e37b;
+    }
 
+    .payment-card-6 .payment-amount {
+        color: #5b5fee;
+    }
+
+    .payment-card-7 .payment-amount {
+        color: #ee7ccd;
+    }
     
 }
 

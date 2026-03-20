@@ -42,7 +42,7 @@ export class NewCampMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.campForm.invalid) {
                 for (const controlName in this.campForm.controls) {
                     if (this.campForm.controls[controlName].invalid) {

@@ -215,7 +215,7 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
   exportreturnFrdeptdaywiseReportExcel() {
     this.sIsLoading == 'loading-data'
-    let exportHeaders = ['ReturnNo', 'RDate', 'FromStoreName', 'ToStoreName', 'PurchaseTotalAmount', 'TotalVatAmount', 'Remark', 'Addedby'];
+    const exportHeaders = ['ReturnNo', 'RDate', 'FromStoreName', 'ToStoreName', 'PurchaseTotalAmount', 'TotalVatAmount', 'Remark', 'Addedby'];
     this.reportDownloadService.getExportJsonData(this.dsReturnToDepList.data, exportHeaders, 'Return From Dept Datewise');
     this.dsReturnToDepList.data = [];
     this.sIsLoading = '';
@@ -223,10 +223,10 @@ export class ReturnFromDepartmentComponent implements OnInit {
 
   viewgetReturnfromdeptdatewiseReportPdf() {
     this.sIsLoading == 'loading-data'
-    let FromDate = this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let ToDate = this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-    let FromStoreId = this._ReturnToDepartmentList.ReturnSearchGroup.get("StoreId").value.StoreId || 0
-    let ToStoreId = this._ReturnToDepartmentList.ReturnSearchGroup.get("ToStoreId").value.StoreId || 0
+    const FromDate = this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    const ToDate = this.datePipe.transform(this._ReturnToDepartmentList.ReturnSearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+    const FromStoreId = this._ReturnToDepartmentList.ReturnSearchGroup.get("StoreId").value.StoreId || 0
+    const ToStoreId = this._ReturnToDepartmentList.ReturnSearchGroup.get("ToStoreId").value.StoreId || 0
 
     setTimeout(() => {
       this.SpinLoading = true;
@@ -280,13 +280,13 @@ export class ReturnFromDepartmentComponent implements OnInit {
 }
 
 export class ReturnTODepList {
-  ReturnNo: Number;
+  ReturnNo: number;
   RDate: number;
   FromStoreName: string;
   ToStoreName: string;
   PurchaseTotalAmount: number;
   TotalVatAmount: number;
-  Remark: String;
+  Remark: string;
   Addedby: string;
 
   constructor(ReturnTODepList) {

@@ -108,7 +108,7 @@ export class UnitmasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewUnitComponent,
             {
                 maxWidth: "45vw",

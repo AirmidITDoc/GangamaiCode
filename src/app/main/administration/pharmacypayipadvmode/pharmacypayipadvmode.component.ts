@@ -49,7 +49,7 @@ export class PharmacypayipadvmodeComponent implements OnInit {
     }
 
     constructor(public _PharmacypayipadvmodeService: PharmacypayipadvmodeService,
-         public _matDialog: MatDialog,
+        public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
@@ -65,8 +65,8 @@ export class PharmacypayipadvmodeComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
-        let that = this;
+
+        const that = this;
         // const dialogRef = this._matDialog.open(NewTallyComponent,
         //     {
         //         maxWidth: "45vw",

@@ -58,7 +58,7 @@ export class TemplatedescriptionService {
         return this._httpClient.DeleteData("TemplateDescriptionConfig?Id=" + m_data.toString());
     }
     public getCategoryById(Param: any) {
-        return this._httpClient.PostData("TemplateDescriptionConfig/TemlateByCategoryList/",Param);
+        return this._httpClient.PostData("TemplateDescriptionConfig/TemlateByCategoryList/", Param);
     }
 
 }

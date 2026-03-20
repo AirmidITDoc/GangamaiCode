@@ -129,7 +129,7 @@ export class NewSubquestionComponent {
   geResultbyId(Id) {
     debugger
 
-    let param = {
+    const param = {
       "searchFields": [
         {
           "fieldName": "SubQuestionId",
@@ -210,7 +210,7 @@ if (this.SubQuestionForm.get('questionId').value == '') {
 
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

@@ -75,14 +75,14 @@ export class NewInOperationComponent {
     'Action'
   ];
 
-  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
-  autocompleteModeConDoctor: String = "ConDoctor";
-  autocompleteModeRefDoctor: String = "RefDoctor";
-  autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeSurgeryMaster: string = "SurgeryMaster";
+  autocompleteModeConDoctor: string = "ConDoctor";
+  autocompleteModeRefDoctor: string = "RefDoctor";
+  autocompleteModeOTTable: string = "OttableMaster";
   autocompleteModeLocation: string = "Location";
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
-  autocompleteModeotTableCategory: String = "OttypeMaster";
-  autocompleteModeSiteDescription: String = "SiteDescription";
+  autocompleteModeotTableCategory: string = "OttypeMaster";
+  autocompleteModeSiteDescription: string = "SiteDescription";
   autocompleteModeDoctorType: string = "DoctorType";
   autocompleteModeResourseType: string = "ResourcesTypes";
 
@@ -480,8 +480,8 @@ export class NewInOperationComponent {
       console.log("Visite Patient:", this.registerObj1)
       this.vRegNo = obj.regNo
       this.vOPDNo = obj.opdNo
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
+      const nameField = obj.formattedText;
+      const extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
     }
@@ -741,7 +741,7 @@ export class NewInOperationComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -779,7 +779,7 @@ export class NewInOperationComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist.push(
@@ -817,7 +817,7 @@ export class NewInOperationComponent {
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
         // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'postDiagnosis');
+        const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'postDiagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
             this.addDiagnolist1.push(
@@ -896,7 +896,7 @@ export class NewInOperationComponent {
       return;
     }
 
-    let newEntry = {
+    const newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.inOperFinalForm.get('surgeryCategoryId').value,
       surgeryId: this.inOperFinalForm.get('surgeryId').value,//
@@ -943,7 +943,7 @@ export class NewInOperationComponent {
 
   deleteTableRow(event, element) {
 
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dssurgeryDetailList.data = [];
@@ -1004,7 +1004,7 @@ export class NewInOperationComponent {
 
   FetchList: any = [];
   getPreOperSurgeryDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTPreOperationId",
@@ -1050,7 +1050,7 @@ export class NewInOperationComponent {
   }
 
   getInOperSurgeryDetList() {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OtinOperationSurgeryDetId",
@@ -1135,7 +1135,7 @@ export class NewInOperationComponent {
       });
       return;
     }
-    let newEntry = {
+    const newEntry = {
       doctorTypeId: this.inOperFinalForm.get('doctorTypeId').value,//
       doctorType: this.doctorType,
       doctorId: this.inOperFinalForm.get('doctorId').value, //
@@ -1160,7 +1160,7 @@ export class NewInOperationComponent {
   }
 
   deleteTableRow1(event, element) {
-    let index = this.Chargelist1.indexOf(element);
+    const index = this.Chargelist1.indexOf(element);
     if (index >= 0) {
       this.Chargelist1.splice(index, 1);
       this.dsattendentDetailList.data = [];
@@ -1223,7 +1223,7 @@ export class NewInOperationComponent {
 
   FetchList1: any = [];
   getPreOperAttendentDetList(obj) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTPreOperationId",
@@ -1254,7 +1254,7 @@ export class NewInOperationComponent {
   }
 
   getInOperAttendentDetList() {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 10,
       "sortField": "OTInOperationAttendingDetId",
@@ -1547,8 +1547,8 @@ export class NewInOperationComponent {
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 }

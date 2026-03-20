@@ -215,7 +215,7 @@ debugger
   }
 
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsRequisitionList.data = [];
@@ -246,7 +246,7 @@ debugger
     this.PrequiItemSaveFrom.markAsUntouched();
   }
   getupdateList(Id) {
-    var Param = {
+    const Param = {
 
       "first": 0,
       "rows": 9999,
@@ -320,7 +320,7 @@ debugger
 
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.PrequiSaveFrom.invalid) {
         for (const controlName in this.PrequiSaveFrom.controls) {
           if (this.PrequiSaveFrom.controls[controlName].invalid) { invalidFields.push(`Requsition Form: ${controlName}`); }
@@ -410,7 +410,7 @@ debugger
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

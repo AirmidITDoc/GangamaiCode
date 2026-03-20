@@ -35,7 +35,7 @@ export class IssueSummeryComponent implements OnInit {
   ];
 
   isLoadingStr: string = '';
-  isLoading: String = '';
+  isLoading: string = '';
   sIsLoading: string = "";
   registerObj: any;
   tabIndex: number = 0;
@@ -71,7 +71,7 @@ export class IssueSummeryComponent implements OnInit {
   }
 
   getIssueSummeryList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "ItemId",
@@ -108,7 +108,7 @@ export class IssueSummeryComponent implements OnInit {
 
   }
   getIssueSummeryDetailsList() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "ItemId",

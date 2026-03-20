@@ -53,14 +53,14 @@ export class MenuSubSubmenuComponent implements OnInit {
   }
 
   getMenu_SubMenuNameCombobox() {
-    var D_data = {
+    const D_data = {
       "Menu_Id": this._MenuService.myformMenuSubMenu.get("menu_master_detail_master_id").value,
     }
     this._MenuService.getMenu_SubMenuMasterCombo(D_data).subscribe(data => this.Menu_SubData = data);
   }
 
   getSub_SubMenuList() {
-    var D_data = {
+    const D_data = {
       "master_SubMenu_Id": this._MenuService.myformMenuSubMenu.get("menu_master_detail_master_id").value,
       "master_SubMenu_SrNo": this._MenuService.myformMenuSubMenu.get("menu_master_detail_sr_no").value,
     }
@@ -74,7 +74,7 @@ export class MenuSubSubmenuComponent implements OnInit {
   onSubmitSubMenu(){
     if (!this._MenuService.myformMenuSub_SubMenu.get("menu_Sub_SubID").value) {
       console.log('insert');
-      var m_data = {
+      const m_data = {
         menuMasterDetails_DetailsInsert: {
           "menu_master_detail_detail_master_id": Number(this._MenuService.myformMenuSub_SubMenu.get("menu_master_detail_detail_master_id").value),
           "menu_master_detail_detail_master_sr_no": Number(this._MenuService.myformMenuSub_SubMenu.get("menu_master_detail_detail_master_sr_no").value),
@@ -94,7 +94,7 @@ export class MenuSubSubmenuComponent implements OnInit {
     }
 
     else {
-      var m_dataUpdate = {
+      const m_dataUpdate = {
         menuMasterDetails_DetailsUpdate: {
           "Menu_Sub_SubID": Number(this._MenuService.myformMenuSub_SubMenu.get("menu_Sub_SubID").value),
           "menu_master_detail_detail_master_id": Number(this._MenuService.myformMenuSub_SubMenu.get("menu_master_detail_detail_master_id").value),
@@ -121,7 +121,7 @@ export class MenuSubSubmenuComponent implements OnInit {
     this._MenuService.initializeFormMenuSub_SubMenuMaster();
   }
   onEdit(row){
-    var m_data = {
+    const m_data = {
       "menu_Sub_SubID": row.Menu_Sub_SubID,
       "menu_master_detail_detail_master_id": row.menu_master_detail_detail_master_id,
       "menu_master_detail_detail_master_sr_no": row.menu_master_detail_detail_master_sr_no,

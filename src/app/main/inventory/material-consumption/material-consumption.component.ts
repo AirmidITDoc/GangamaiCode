@@ -94,7 +94,7 @@ export class MaterialConsumptionComponent implements OnInit {
     getSelectedRow(row: any): void {
 
         console.log("selectedRow:", row)
-        let materialConsumptionId = row.materialConsumptionId
+        const materialConsumptionId = row.materialConsumptionId
 
         this.gridConfig1 = {
             apiUrl: "MaterialConsumption/MaterialConsumptionDetailsList",

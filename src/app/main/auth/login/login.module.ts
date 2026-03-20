@@ -4,7 +4,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { RouterModule } from "@angular/router"; 
+import { RouterModule } from "@angular/router";
 import { SharedModule } from 'app/main/shared/shared.module';
 
 import { FuseSharedModule } from "@fuse/shared.module";

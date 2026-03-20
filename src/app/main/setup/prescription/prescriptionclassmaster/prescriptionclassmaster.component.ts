@@ -49,7 +49,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
                         this.confirmDialogRef.afterClosed().subscribe((result) => {
 
                             if (result) {
-                                let that = this;
+                                const that = this;
                                 this._PrescriptionclassService.deactivateTheStatus(data.classId).subscribe((data: any) => {
                                     that.grid.bindGridData();
                                 });
@@ -86,7 +86,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
         buttonElement.blur(); // Remove focus from the button
 
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionClassComponent,
             {
                 maxWidth: "50vw",

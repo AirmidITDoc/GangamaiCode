@@ -42,7 +42,7 @@ export class NewUnitComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.unitForm.invalid) {
                 for (const controlName in this.unitForm.controls) {
                     if (this.unitForm.controls[controlName].invalid) {

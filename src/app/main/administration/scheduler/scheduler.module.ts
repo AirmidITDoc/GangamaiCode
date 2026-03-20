@@ -39,10 +39,10 @@ import { SchdulerComponent } from "./scheduler.component";
 import { SchdulerService } from "./scheduler.service";
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: SchdulerComponent
-  },
+    {
+        path: "**",
+        component: SchdulerComponent
+    },
 ];
 @NgModule({
     declarations: [

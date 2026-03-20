@@ -68,7 +68,7 @@ export class InstructionmasterComponent implements OnInit {
         buttonElement.blur(); // Remove focus from the button
 
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewInstructionMasterComponent,
             {
                 maxWidth: "50vw",

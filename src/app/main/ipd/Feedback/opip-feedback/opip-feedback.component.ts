@@ -29,7 +29,7 @@ export class OPIPFeedbackComponent implements OnInit {
   Feedbackform: FormGroup;
   
   
-    isLoading: String = '';
+    isLoading: string = '';
     sIsLoading: string = ""; 
   
    
@@ -292,7 +292,7 @@ fetchresult(event,flag){
    
 
 getSearchListIP() {
-  var m_data = {
+  const m_data = {
     "Keyword": `${this.Feedbackpatientform.get('RegID').value}%`
   }
   if (this.Feedbackpatientform.get('PatientType').value == 'OP'){
@@ -404,9 +404,9 @@ getOptionTextOPObj(option) {
      console.log(this.fetchlist)
  
      
-     let ffeedbackarr = []; 
+     const ffeedbackarr = []; 
      this.fetchlist.forEach((element) => {
-       let feedarray = {};
+       const feedarray = {};
        feedarray['PatientFeedbackId'] = 0;
        feedarray['OP_IP_ID'] =1,//this.OP_IP_Id;
        feedarray['OP_IP_Type'] = 1,// this.OPD_IPD_Type || 0;
@@ -418,7 +418,7 @@ getOptionTextOPObj(option) {
        ffeedbackarr.push(feedarray); 
      });
  
-     var m_data = {
+     const m_data = {
        "patientFeedbackParams":ffeedbackarr
      
      }

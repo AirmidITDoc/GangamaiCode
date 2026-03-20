@@ -79,7 +79,7 @@ export class IssueTrackerComponent implements OnInit {
     // let vassigned=this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%';
     // console.log(vassigned)
     // console.log(vstatus)
-    var vdata = {
+    const vdata = {
       'IssueStatus': this._IssueTracker.MyFrom.get('IssueStatus').value.Value || '%',
       'IssueAssigned': this._IssueTracker.MyFrom.get('IssueAssigned').value.Value || '%'
     }
@@ -97,7 +97,7 @@ export class IssueTrackerComponent implements OnInit {
       });
   }
   getIssueStatusList() {
-    var vdata = {
+    const vdata = {
       'ConstanyType': 'ISSUE_STATUS',
     }
     this._IssueTracker.getConstantsList(vdata).subscribe(data => {
@@ -106,7 +106,7 @@ export class IssueTrackerComponent implements OnInit {
     });
   }
   getIssueAssignedList() {
-    var vdata = {
+    const vdata = {
       'ConstanyType': 'ISSUE_ASSIGNED',
     }
     this._IssueTracker.getConstantsList(vdata).subscribe(data => {

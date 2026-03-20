@@ -40,11 +40,11 @@ import { CancellationService } from './cancellation.service';
 
 
 
-const routes : Routes =[
-  {
-    path:"**",
-    component:CancellationComponent,
-  },
+const routes: Routes = [
+    {
+        path: "**",
+        component: CancellationComponent,
+    },
 ];
 @NgModule({
     declarations: [CancellationComponent, BillDateUpdateComponent],
@@ -89,7 +89,7 @@ const routes : Routes =[
         MatTooltipModule
     ],
     providers: [
-         CancellationService, DatePipe
+        CancellationService, DatePipe
     ]
 })
 export class CancellationModule { }

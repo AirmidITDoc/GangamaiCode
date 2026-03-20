@@ -66,13 +66,13 @@ export class AirmidFileuploadComponent extends BaseFormControlComponent implemen
     }
 
     onFileSelected(event) {
-        let selectedFiles = event.dataTransfer ? event.dataTransfer.files : event.target.files;
+        const selectedFiles = event.dataTransfer ? event.dataTransfer.files : event.target.files;
         if (!this.multiple) {
             this.files = []
         }
         for (let i = 0; i < selectedFiles.length; i++) {
-            let selectedFile = selectedFiles[i];
-            var nextSrNo = (this.files.length > 0) ? Math.max(...this.files.map((x: { srNo: any; }) => x.srNo)) + 1 : 1;
+            const selectedFile = selectedFiles[i];
+            const nextSrNo = (this.files.length > 0) ? Math.max(...this.files.map((x: { srNo: any; }) => x.srNo)) + 1 : 1;
             this.files.push({
                 srNo: nextSrNo, Document: selectedFile, refId: this.refId, refType: this.refType,
                 id: 0,
@@ -192,9 +192,9 @@ export class AirmidFileuploadComponent extends BaseFormControlComponent implemen
   
 }
 export class AirmidFileModel {
-    srNo: Number;
-    id: Number;
-    refId: Number;
+    srNo: number;
+    id: number;
+    refId: number;
     refType: PageNames;
     docName: string;
     docSavedName: string;

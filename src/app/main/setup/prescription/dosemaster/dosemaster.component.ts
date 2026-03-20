@@ -88,7 +88,7 @@ export class DosemasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        var m_data1 = {
+        const m_data1 = {
             DoseId: row.DoseId,
             DoseName: row.DoseName.trim(),
             DoseNameInEnglish: row.DoseNameInEnglish.trim(),
@@ -104,7 +104,7 @@ export class DosemasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewDoseMasterComponent,
             {
                 maxWidth: "50vw",

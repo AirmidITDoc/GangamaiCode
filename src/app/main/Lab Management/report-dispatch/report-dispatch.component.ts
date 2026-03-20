@@ -252,7 +252,7 @@ export class ReportDispatchComponent {
 
   getServiceTestList() {
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 10,
       "sortField": "LabPatientId",

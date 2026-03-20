@@ -103,7 +103,7 @@ export class QAEntryPopupComponent {
   }
 
   editTableRow(row) {
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -134,7 +134,7 @@ export class QAEntryPopupComponent {
 
   getResultList1(data) {
 
-    var SelectQuery =
+    const SelectQuery =
     {
       "searchFields": [
         {
@@ -270,7 +270,7 @@ export class QAEntryPopupComponent {
 }
 
 export class QuesResult {
-  SubQuestionName: String;
+  SubQuestionName: string;
   ShortcutValues: boolean;
   SubQuestionValName: Date;
   NormalRange: any;

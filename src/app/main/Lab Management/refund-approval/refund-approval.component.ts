@@ -198,7 +198,7 @@ export class RefundApprovalComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -238,7 +238,7 @@ export class RefundApprovalComponent {
         this.onClear();
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.approvalFormFinal.invalid) {
         for (const controlName in this.approvalFormFinal.controls) {
           if (this.approvalFormFinal.controls[controlName].invalid) {

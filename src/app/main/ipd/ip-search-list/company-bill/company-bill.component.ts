@@ -144,7 +144,7 @@ export class CompanyBillComponent implements OnInit {
     interimArray: any = [];
     vServiceDiscPer: any;
     serviceId: number;
-    serviceName: String;
+    serviceName: string;
     totalAmt: number;
     paidAmt: number;
     balanceAmt: number;
@@ -194,7 +194,7 @@ export class CompanyBillComponent implements OnInit {
   
     ConShow: boolean = false;
   
-    isLoading: String = '';
+    isLoading: string = '';
     selectedAdvanceObj: AdvanceDetailObj;
     isFilteredDateDisabled: boolean = false;
     Admincharge: boolean = true;
@@ -350,7 +350,7 @@ export class CompanyBillComponent implements OnInit {
   //Class list
   Tableclasslist:any=[];
   getBillingClasslist() {
-    var m_data = {
+    const m_data = {
       'ClassName': '%'
     }
     this._IpSearchListService.getseletclassMasterCombo(m_data).subscribe(data => {
@@ -387,7 +387,7 @@ export class CompanyBillComponent implements OnInit {
   ServiceList:any=[];
     getServiceListCombobox() {
       let tempObj;
-      var m_data = {
+      const m_data = {
         SrvcName: `${this.Serviceform.get('SrvcName').value}%`,
         TariffId: this.selectedAdvanceObj.TariffId,
         ClassId: this.Serviceform.get('ChargeClass').value.ClassId || 0
@@ -522,7 +522,7 @@ export class CompanyBillComponent implements OnInit {
       this.isLoading = 'save';
       if ((this.SrvcName && (parseInt(this.vPrice) > 0 || this.vPrice == '0') && this.vQty) && (parseFloat(this.vServiceNetAmount) > 0)) {
   
-        var m_data = {
+        const m_data = {
           "chargeID": 0,
           "chargesDate": this.datePipe.transform(this.Serviceform.get('Date').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
           "opD_IPD_Type": 1,
@@ -554,7 +554,7 @@ export class CompanyBillComponent implements OnInit {
           "classId":this.Serviceform.get('ChargeClass').value.ClassId     // this.selectedAdvanceObj.ClassId,
         }
         console.log(m_data);
-        let submitData = {
+        const submitData = {
           "addCharges": m_data
         };
   
@@ -593,7 +593,7 @@ export class CompanyBillComponent implements OnInit {
     billheaderlist:any;
     getBillheaderList() {
       this.isLoadingStr = 'loading';
-      let Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId="+  this.selectedAdvanceObj.AdmissionID
+      const Query = "select Isnull(AdminPer,0) as AdminPer from Admission where AdmissionId="+  this.selectedAdvanceObj.AdmissionID
        console.log(Query);
        
       this._IpSearchListService.getBillheaderList(Query).subscribe(data => {
@@ -645,7 +645,7 @@ export class CompanyBillComponent implements OnInit {
 
     PharmacyAmont:any=0;
     getPharmacyAmount(){
-      let Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
+      const Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
       this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) =>{
         //console.log(data)
         this.PharmacyAmont = data[0].PhBillCredit; 
@@ -673,7 +673,7 @@ export class CompanyBillComponent implements OnInit {
     }
   
   
-    add: Boolean = false;
+    add: boolean = false;
   
     @ViewChild('itemid') itemid: ElementRef;
     @ViewChild('doctorname') doctorname: ElementRef;
@@ -787,7 +787,7 @@ export class CompanyBillComponent implements OnInit {
     getRequestChargelist() {
       this.chargeslist1 = [];
       this.dataSource1.data = [];
-      var m = {
+      const m = {
         OP_IP_ID: this.selectedAdvanceObj.AdmissionID,
       }
       this._IpSearchListService.getchargesList1(m).subscribe(data => {
@@ -806,7 +806,7 @@ export class CompanyBillComponent implements OnInit {
       this.chargeslist = [];
       this.dataSource.data = [];
       this.isLoadingStr = 'loading';
-      let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
+      const Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 Order by Chargesid"
       // console.log(Query);
       this._IpSearchListService.getchargesList(Query).subscribe(data => {
         this.chargeslist = data as ChargesList[];
@@ -840,7 +840,7 @@ export class CompanyBillComponent implements OnInit {
   //Previouse Bill List
     getPrevBillList() {
       
-      var D_data = {
+      const D_data = {
         "IP_Id": this.selectedAdvanceObj.AdmissionID
       }
       setTimeout(() => {
@@ -877,7 +877,7 @@ export class CompanyBillComponent implements OnInit {
     }
   //Advance list
     getAdvanceDetList() { 
-      var D_data = {
+      const D_data = {
         "AdmissionID": this.selectedAdvanceObj.AdmissionID
       }
       setTimeout(() => {
@@ -897,7 +897,7 @@ export class CompanyBillComponent implements OnInit {
       this.dataSource.data = [];
   
       this.isLoadingStr = 'loading';
-      let Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "dd/MM/YYYY") + "' Order by Chargesid"
+      const Query = "Select * from lvwAddCharges where IsGenerated=0 and IsPackage=0 and IsCancelled =0 AND OPD_IPD_ID=" + this.selectedAdvanceObj.AdmissionID + " and OPD_IPD_Type=1 and ChargesDate ='" + this.datePipe.transform(param, "dd/MM/YYYY") + "' Order by Chargesid"
   
       console.log(Query)
       this._IpSearchListService.getchargesList(Query).subscribe(data => {
@@ -914,7 +914,7 @@ export class CompanyBillComponent implements OnInit {
   //Nursing list added in service list
     AddList(m) {
       console.log(m)
-      var m_data = {
+      const m_data = {
         "chargeID": 0,
         "chargesDate": this.datePipe.transform(this.currentDate, "MM-dd-yyyy"),
         "opD_IPD_Type": 1,
@@ -944,7 +944,7 @@ export class CompanyBillComponent implements OnInit {
         "chargeTime": this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
         "classId": this.Serviceform.get("ChargeClass").value.ClassId 
       }
-      let submitData = {
+      const submitData = {
         "addCharges": m_data
       };
       this._IpSearchListService.InsertIPAddChargesNew(submitData).subscribe(data => {
@@ -969,7 +969,7 @@ export class CompanyBillComponent implements OnInit {
     }
   
     getDiscAmount(element) {
-      let netAmt = parseInt(element.Price) * parseInt(element.Qty);
+      const netAmt = parseInt(element.Price) * parseInt(element.Qty);
       if (element.ConcessionPercentage) {
         this.discAmt = (netAmt * parseInt(element.ConcessionPercentage)) / 100;
         element.DiscAmt = this.discAmt;
@@ -978,7 +978,7 @@ export class CompanyBillComponent implements OnInit {
     }
   
     getDiscValue(element) {
-      let netAmt = parseInt(element.Price) * parseInt(element.Qty);
+      const netAmt = parseInt(element.Price) * parseInt(element.Qty);
       if (element.DiscAmt) {
         element.ConcessionPercentage = (parseInt(element.DiscAmt) * 100) / netAmt;
         element.NetAmount = netAmt - parseInt(element.DiscAmt);
@@ -1086,25 +1086,25 @@ export class CompanyBillComponent implements OnInit {
   CalculateAdminCharge() {
     if (this.vAdminPer > 0 && this.vAdminPer < 100) {
       this.vAdminAmt = Math.round((parseFloat(this.vTotalAmount) * parseFloat(this.vAdminPer)) / 100).toFixed(2);
-      let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
+      const netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
       if (this.checkdiscAmt > 0) {
         if (this.vCompanyDiscAmt > 0) {
-          let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
-          let TotalDiscAmt = Math.round(parseFloat(this.vfDiscountAmount) + parseFloat(this.vCompanyDiscAmt)).toFixed(2);
+          const netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
+          const TotalDiscAmt = Math.round(parseFloat(this.vfDiscountAmount) + parseFloat(this.vCompanyDiscAmt)).toFixed(2);
           this.vNetBillAmount = Math.round(parseFloat(netamt) - parseFloat(TotalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         } else {
-          let netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
-          let finalnetamt = (parseFloat(netamt) - parseFloat(this.vDiscountAmount)).toFixed(2);
+          const netamt = (parseFloat(this.vTotalAmount) + parseFloat(this.vAdminAmt)).toFixed(2);
+          const finalnetamt = (parseFloat(netamt) - parseFloat(this.vDiscountAmount)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(finalnetamt);
         }
       } else {
         let finalnetamt;
-        let Percentage = this.Ipbillform.get('Percentage').value || 0;
+        const Percentage = this.Ipbillform.get('Percentage').value || 0;
         finalnetamt = netamt
         if (this.vCompanyDiscAmt > 0) {
           this.vfDiscountAmount = ((parseFloat(finalnetamt) * parseFloat(Percentage)) / 100).toFixed(2);
-          let TotalDiscAmt = Math.round(parseFloat(this.vfDiscountAmount) + parseFloat(this.vCompanyDiscAmt)).toFixed(2);
+          const TotalDiscAmt = Math.round(parseFloat(this.vfDiscountAmount) + parseFloat(this.vCompanyDiscAmt)).toFixed(2);
           this.vNetBillAmount = Math.round(parseFloat(finalnetamt) - parseFloat(TotalDiscAmt)).toFixed(2);
           this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
@@ -1136,14 +1136,14 @@ export class CompanyBillComponent implements OnInit {
   finalNetAmt: any;
   finalNetAmount: any;
   CalFinalDisc1() {
-    let CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
+    const CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
     if (this.Ipbillform.get('AdminAmt').value > 0) {
-      let Percentage = this.Ipbillform.get('Percentage').value;
+      const Percentage = this.Ipbillform.get('Percentage').value;
       this.finalNetAmt = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt)))
 
       if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
         this.vfDiscountAmount = ((parseFloat(this.finalNetAmt) * parseFloat(Percentage)) / 100).toFixed(2);
-        let totalDiscAmt = (parseFloat(this.vfDiscountAmount) + parseFloat(CompDiscAmt)).toFixed(2);
+        const totalDiscAmt = (parseFloat(this.vfDiscountAmount) + parseFloat(CompDiscAmt)).toFixed(2);
         this.vNetBillAmount = (parseFloat(this.finalNetAmt) - parseFloat(totalDiscAmt)).toFixed(2);
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
@@ -1174,10 +1174,10 @@ export class CompanyBillComponent implements OnInit {
       }
     }
     else {
-      let Percentage = this.Ipbillform.get('Percentage').value;
+      const Percentage = this.Ipbillform.get('Percentage').value;
       if (this.Ipbillform.get('Percentage').value > 0 && Percentage < 100) {
         this.vfDiscountAmount = Math.round((this.vNetBillAmount * parseInt(Percentage)) / 100).toFixed(2);
-        let totalDiscAmt = (parseFloat(this.vfDiscountAmount) + parseFloat(CompDiscAmt)).toFixed(2);
+        const totalDiscAmt = (parseFloat(this.vfDiscountAmount) + parseFloat(CompDiscAmt)).toFixed(2);
         this.vNetBillAmount = (parseFloat(this.vTotalBillAmount) - parseFloat(totalDiscAmt)).toFixed(2);
         this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
         this.Ipbillform.get('concessionAmt').setValue(this.vfDiscountAmount);
@@ -1211,8 +1211,8 @@ export class CompanyBillComponent implements OnInit {
   } 
   getDiscAmtCal1() {
     
-    let FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
-    let CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
+    const FinalDiscAmt = this.Ipbillform.get('concessionAmt').value || 0;
+    const CompDiscAmt = this.Ipbillform.get('CompanyDiscAmt').value || 0;
 
     if (this.Ipbillform.get('AdminAmt').value > 0) {
       this.finalNetAmount = ((parseFloat(this.vNetBillAmount) + parseFloat(this.vAdminAmt))) || 0;
@@ -1231,7 +1231,7 @@ export class CompanyBillComponent implements OnInit {
           this.Ipbillform.get('ConcessionId').enable;
         } else {
           this.vPercentage = ((parseFloat(FinalDiscAmt) / parseFloat(this.finalNetAmount)) * 100).toFixed(2);
-          let totalDiscAmt = (parseFloat(FinalDiscAmt) + parseFloat(CompDiscAmt)).toFixed(2);
+          const totalDiscAmt = (parseFloat(FinalDiscAmt) + parseFloat(CompDiscAmt)).toFixed(2);
           this.vNetBillAmount = (parseFloat(this.finalNetAmount) - parseFloat(totalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(this.vNetBillAmount);
           this.Ipbillform.get('Percentage').setValue(this.vPercentage);
@@ -1274,8 +1274,8 @@ export class CompanyBillComponent implements OnInit {
           this.Ipbillform.get('ConcessionId').enable;
         } else {
           this.vPercentage = (parseFloat(FinalDiscAmt) / parseFloat(this.vNetBillAmount) * 100).toFixed(2);
-          let totalDiscAmt = (parseFloat(FinalDiscAmt) + parseFloat(CompDiscAmt)).toFixed(2);
-          let FinalnetAmt = Math.round(parseFloat(this.vNetBillAmount) - parseFloat(totalDiscAmt)).toFixed(2);
+          const totalDiscAmt = (parseFloat(FinalDiscAmt) + parseFloat(CompDiscAmt)).toFixed(2);
+          const FinalnetAmt = Math.round(parseFloat(this.vNetBillAmount) - parseFloat(totalDiscAmt)).toFixed(2);
           this.Ipbillform.get('FinalAmount').setValue(FinalnetAmt);
           this.ConShow = true
           this.Ipbillform.get('ConcessionId').reset();
@@ -1339,9 +1339,9 @@ export class CompanyBillComponent implements OnInit {
     calculatePersc() { 
       this.vServiceDisAmt = 0;
       this.vServiceDiscPer = this.Serviceform.get('discPer').value;
-      let netAmt = parseInt(this.vPrice) * parseInt(this.vQty);
+      const netAmt = parseInt(this.vPrice) * parseInt(this.vQty);
       if (this.vServiceDiscPer > 0 || this.vServiceDiscPer < 101) {
-        let discAmt = Math.round((netAmt * parseInt(this.vServiceDiscPer)) / 100);
+        const discAmt = Math.round((netAmt * parseInt(this.vServiceDiscPer)) / 100);
         this.vServiceDisAmt = discAmt;
         this.vServiceNetAmount = (netAmt - discAmt).toString();
         // this.discamt.nativeElement.focus();
@@ -1383,7 +1383,7 @@ export class CompanyBillComponent implements OnInit {
     calculatechargesDiscamt() {
   
       this.disamt = this.Serviceform.get('discAmount').value;
-      let Netamt = parseInt(this.vServiceNetAmount);
+      const Netamt = parseInt(this.vServiceNetAmount);
   
       if (parseInt(this.disamt) > 0 && this.disamt < this.vserviceTotalAmt) {
         let tot = 0;
@@ -1397,8 +1397,8 @@ export class CompanyBillComponent implements OnInit {
         this.Serviceform.get('netAmount').setValue(this.vserviceTotalAmt);
         this.Consession = true;
         if (this.vServiceDiscPer > 0) {
-          let netAmt = parseInt(this.vPrice) * parseInt(this.vQty);
-          let discAmt = Math.round((netAmt * parseInt(this.vServiceDiscPer)) / 100);
+          const netAmt = parseInt(this.vPrice) * parseInt(this.vQty);
+          const discAmt = Math.round((netAmt * parseInt(this.vServiceDiscPer)) / 100);
           this.vServiceDisAmt = discAmt;
           this.vServiceNetAmount = (netAmt - discAmt).toString();
         } else {
@@ -1411,8 +1411,8 @@ export class CompanyBillComponent implements OnInit {
         // });
         this.vServiceDisAmt = 0;
         if (this.vServiceDiscPer > 0) {
-          let netAmt = parseInt(this.vPrice) * parseInt(this.vQty);
-          let discAmt = Math.round((netAmt * parseInt(this.vServiceDiscPer)) / 100);
+          const netAmt = parseInt(this.vPrice) * parseInt(this.vQty);
+          const discAmt = Math.round((netAmt * parseInt(this.vServiceDiscPer)) / 100);
           this.vServiceDisAmt = discAmt;
           this.vServiceNetAmount = (netAmt - discAmt).toString();
         } else {
@@ -1426,7 +1426,7 @@ export class CompanyBillComponent implements OnInit {
     }
   
     keyPressAlphanumeric(event) {
-      var inp = String.fromCharCode(event.keyCode);
+      const inp = String.fromCharCode(event.keyCode);
       if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
         return true;
       } else {
@@ -1435,7 +1435,7 @@ export class CompanyBillComponent implements OnInit {
       }
     } 
     keyPressCharater(event){
-      var inp = String.fromCharCode(event.keyCode);
+      const inp = String.fromCharCode(event.keyCode);
       if (/^\d*\.?\d*$/.test(inp)) {
         return true;
       } else {
@@ -1447,7 +1447,7 @@ export class CompanyBillComponent implements OnInit {
   
     deleteTableRow(element) {
   
-      let index = this.chargeslist.indexOf(element);
+      const index = this.chargeslist.indexOf(element);
       if (index >= 0) {
         this.chargeslist.splice(index, 1);
         this.dataSource.data = [];
@@ -1472,11 +1472,11 @@ export class CompanyBillComponent implements OnInit {
       }).then((flag) => {
   
         if (flag.isConfirmed) {
-          let Chargescancle = {};
+          const Chargescancle = {};
           Chargescancle['ChargesId'] = contact.ChargesId;
           Chargescancle['userId'] = this.accountService.currentUserValue.userId;
   
-          let submitData = {
+          const submitData = {
             "deleteCharges": Chargescancle
           };
   
@@ -1555,7 +1555,7 @@ export class CompanyBillComponent implements OnInit {
         this.chargeslist = this.dataSource;
         this.isLoading = 'submit';
   
-        let InsertDraftBillOb = {};
+        const InsertDraftBillOb = {};
         InsertDraftBillOb['drbNo'] = 0;
         InsertDraftBillOb['OPD_IPD_ID'] = this.selectedAdvanceObj.AdmissionID,
         InsertDraftBillOb['TotalAmt'] = this.vBillTotalAmt || 0;
@@ -1581,9 +1581,9 @@ export class CompanyBillComponent implements OnInit {
         InsertDraftBillOb['TaxPer'] = this.Ipbillform.get('AdminPer').value || 0;
         InsertDraftBillOb['TaxAmount'] = this.Ipbillform.get('AdminAmt').value || 0;
   
-        let DraftBilldetsarr = [];
+        const DraftBilldetsarr = [];
         this.dataSource.data.forEach((element) => {
-          let DraftBillDetailsInsertObj = {};
+          const DraftBillDetailsInsertObj = {};
           DraftBillDetailsInsertObj['DRNo'] = 0;
           DraftBillDetailsInsertObj['ChargesId'] = element.ChargesId;
           DraftBilldetsarr.push(DraftBillDetailsInsertObj);
@@ -1591,7 +1591,7 @@ export class CompanyBillComponent implements OnInit {
   
         const InsertDraftBillObj = new DraftBill(InsertDraftBillOb);
         console.log('============================== Save IP Billing ===========');
-        let submitData = {
+        const submitData = {
           "ipIntremdraftbillInsert": InsertDraftBillObj,
           "interimBillDetailsInsert": DraftBilldetsarr
         };
@@ -1681,7 +1681,7 @@ export class CompanyBillComponent implements OnInit {
       
       
       if(vmono !='' && vmono !="0"){
-      var m_data = {
+      const m_data = {
         "insertWhatsappsmsInfo": {
           "mobileNumber": vmono || 0,
           "smsString": '',
@@ -1738,7 +1738,7 @@ export class CompanyBillComponent implements OnInit {
     ConcessionAuthorizationName: any;
     TaxPer: any;
     TaxAmount: any;
-    DiscComments: String;
+    DiscComments: string;
     vCashCounterID: any;
     Bdate: any;
     PBillNo: any;
@@ -1818,7 +1818,7 @@ export class CompanyBillComponent implements OnInit {
   
   
   export class PatientBilldetail {
-    AdmissionID: Number;
+    AdmissionID: number;
     BillNo: any;
     BillDate: Date;
     concessionReasonId: number;

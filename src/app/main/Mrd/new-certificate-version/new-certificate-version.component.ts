@@ -161,7 +161,7 @@ export class NewCertificateVersionComponent {
   OnViewReporWithHeader(element: any) {
 
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "ConsentId",
@@ -198,7 +198,7 @@ export class NewCertificateVersionComponent {
   OnViewReporWithOutHeader(element: any) {
 
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "ConsentId",

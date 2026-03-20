@@ -46,7 +46,7 @@ export class NewSubgroupComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.subgroupForm.invalid) {
                 for (const controlName in this.subgroupForm.controls) {
                     if (this.subgroupForm.controls[controlName].invalid) {

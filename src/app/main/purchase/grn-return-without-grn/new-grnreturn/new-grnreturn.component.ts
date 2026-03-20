@@ -164,9 +164,9 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnDetInsert(element: any = {}): FormGroup {
-    let totalQty = (parseFloat(element.returnQty) * parseFloat(element.conversion))
+    const totalQty = (parseFloat(element.returnQty) * parseFloat(element.conversion))
 
-    let inputDate = element?.ExpDate ?? element?.batchExpiryDate;
+    const inputDate = element?.ExpDate ?? element?.batchExpiryDate;
     let ExpDate = '1900-01-01';
 
     if (inputDate) {
@@ -175,8 +175,8 @@ export class NewGRNReturnComponent implements OnInit {
       }
       else if (inputDate.includes('/')) {
         // dd/MM/yyyy → convert to yyyy-MM-dd
-        let parts = inputDate.split('/');
-        let year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
+        const parts = inputDate.split('/');
+        const year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
         ExpDate = `${year}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
       }
     }
@@ -229,7 +229,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnQtyInsert(element: any = {}): FormGroup {
-    let issueqty = element.BalQty - element.returnQty
+    const issueqty = element.BalQty - element.returnQty
     return this._formbuilder.group({
       grndetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       returnQty: [issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
@@ -517,7 +517,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   getGRNreturnlist() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "GRNReturnId",
@@ -596,7 +596,7 @@ export class NewGRNReturnComponent implements OnInit {
 
     this.vTotalFinalAmount = (element.reduce((sum, { landedTotalAmount }) => sum += +(landedTotalAmount || 0), 0)).toFixed(2);
 
-    let FinalRoundAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
+    const FinalRoundAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
     this.mrpTotalAmount = (element.reduce((sum, { mrp }) => sum += +(mrp || 0), 0)).toFixed(2);
     this.vFinalNetAmount = Math.round(FinalRoundAmt).toFixed(2);
     this.vNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalRoundAmt)).toFixed(2);

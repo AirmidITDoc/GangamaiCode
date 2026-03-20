@@ -135,7 +135,7 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -282,7 +282,7 @@ export class CompanyInformationComponent implements OnInit {
         this.onClose();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.companyApprovalFormGroup.invalid) {
         for (const controlName in this.companyApprovalFormGroup.controls) {
@@ -301,7 +301,7 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsCompanyList.data = [];
@@ -331,7 +331,7 @@ export class CompanyInformationComponent implements OnInit {
         console.log(response)
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.companyInformationFormGroup.invalid) {
         for (const controlName in this.companyInformationFormGroup.controls) {

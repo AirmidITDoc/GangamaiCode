@@ -268,7 +268,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   getSearchList() {
     
-    var m_data = {
+    const m_data = {
       "Keyword": `${this._BedtransferService.bsaveForm.get('RegID').value}%`
     }
     // if (this._BedtransferService.bsaveForm.get('RegID').value.length >= 1) {
@@ -287,7 +287,7 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
   }
   onEdit(row){
      
-    var m_data = {
+    const m_data = {
     "DischargeDate":row.DischargeDate,
     "DischargeTime":row.DischargeTime,
     "DischargeTypeId":row.DischargeTypeId,
@@ -300,10 +300,10 @@ public filteredBed: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   onBedtransfer()
   {
-    ;
+    
     this.submitted = true;
   
-    var m_data = {
+    const m_data = {
       "updateBedtransferSetFix": {
         "bedId":this._BedtransferService.bsaveForm.get("BedId").value.BedId || 0,
       },

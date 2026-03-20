@@ -42,7 +42,7 @@ export class NewModeofpaymentComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.modeofpayForm.invalid) {
                 for (const controlName in this.modeofpayForm.controls) {
                     if (this.modeofpayForm.controls[controlName].invalid) {

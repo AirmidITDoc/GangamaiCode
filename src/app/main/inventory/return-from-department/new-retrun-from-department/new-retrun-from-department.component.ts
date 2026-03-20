@@ -109,7 +109,7 @@ autocompletestore1: string = "Store";
   getNewReturnToDepartmentList() {
     debugger
     this.sIsLoading = 'loading-data';
-    var vdata = {
+    const vdata = {
       "FromStoreId":this.userFormGroup.get('StoreId').value || 0,
       "ToStoreId":   this.userFormGroup.get('ToStoreId').value || 0,
       "FromDate": this.datePipe.transform(this.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -234,7 +234,7 @@ autocompletestore1: string = "Store";
     const isCheckReturnQty = this.dsItemDetailsList.data.some(item => item.ReturnQty === this.userFormGroup.get('ReturnQty').value);
     if(!isCheckReturnQty){
     this.Savebtn = true;
-    let insertReturnDepartmentHeader = {};
+    const insertReturnDepartmentHeader = {};
     insertReturnDepartmentHeader['returnDate'] = this.dateTimeObj.date;
     insertReturnDepartmentHeader['returnTime'] = this.dateTimeObj.time;
     insertReturnDepartmentHeader['fromStoreId'] = this._loggedService.currentUserValue.storeId
@@ -247,10 +247,10 @@ autocompletestore1: string = "Store";
     insertReturnDepartmentHeader['remark'] = this._ReturnToDepartmentList.NewReturnFinalForm.get('Remark').value || '';
     insertReturnDepartmentHeader['returnId'] = 0;
 
-    let insertReturnDepartmentDetailarray = [];
+    const insertReturnDepartmentDetailarray = [];
     this.dsItemDetailsList.data.forEach(element => {
-      let remainingQty = element.IssueQty - element.ReturnQty
-      let insertReturnDepartmentDetail = {};
+      const remainingQty = element.IssueQty - element.ReturnQty
+      const insertReturnDepartmentDetail = {};
       insertReturnDepartmentDetail['returnId'] = 0;
       insertReturnDepartmentDetail['issueId'] = element.IssueId;
       insertReturnDepartmentDetail['itemId'] = element.ItemId;
@@ -271,7 +271,7 @@ autocompletestore1: string = "Store";
       insertReturnDepartmentDetailarray.push(insertReturnDepartmentDetail);
     });
 
-    let submitData = {
+    const submitData = {
       "insertReturnDepartmentHeader": insertReturnDepartmentHeader,
       "insertReturnDepartmentDetail": insertReturnDepartmentDetailarray
     };
@@ -305,7 +305,7 @@ autocompletestore1: string = "Store";
   }
 
   deleteTableRow(element) {
-      let index = this.chargeslist.indexOf(element);
+      const index = this.chargeslist.indexOf(element);
       if (index >= 0) {
         this.chargeslist.splice(index, 1);
         this.dsItemDetailsList.data = [];

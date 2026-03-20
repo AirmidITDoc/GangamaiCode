@@ -64,8 +64,8 @@ export class OpPaymentVimalComponent implements OnInit {
         'RefundAmount'
     ];
     BindPaymentTypes() {
-        let full = this.opService.getPaymentArr();
-        let final = [];
+        const full = this.opService.getPaymentArr();
+        const final = [];
         full.forEach((item) => {
             if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
                 final.push(item);
@@ -174,7 +174,7 @@ getselectObjPayMode(obj){
           return;
         } 
 
-        let tmp = this.Payments.data;
+        const tmp = this.Payments.data;
         tmp.push({
             Id: this.getNewId(),
             PaymentType: this.selectedPaymnet1, Amount: this.amount1,
@@ -243,7 +243,7 @@ getselectObjPayMode(obj){
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                let tmp = this.Payments.data;
+                const tmp = this.Payments.data;
                 tmp.splice(this.Payments.data.findIndex(x => x.Id == payment.Id), 1);
                 if (payment.Id == -1)
                     this.IsAdv = false;
@@ -319,7 +319,7 @@ getselectObjPayMode(obj){
     ngOnInit(): void {
         // this.patientDetailsFormGrp = this.createForm();
         //Advance Calculation need balAmt
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 9999,
             "sortField": "AdmissionID",
@@ -367,7 +367,7 @@ getselectObjPayMode(obj){
 
     if (this.patientDetailsFormGrp.invalid && this.amount1 != 0) {
 
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.patientDetailsFormGrp.invalid) {
         for (const controlName in this.patientDetailsFormGrp.controls) {
           const control = this.patientDetailsFormGrp.get(controlName);
@@ -393,7 +393,7 @@ getselectObjPayMode(obj){
         debugger
         let transactionType = 0;
         let opdipdtype = 1;
-        let result = this.OnCheckFormValidity(); 
+        const result = this.OnCheckFormValidity(); 
         this.onAddPayment();
          if (result === 0) return; // stop execution if invalid
         if (this.data.FromName != "IP-Bill" && this.data.FromName != "IP-SETTLEMENT") {
@@ -409,7 +409,7 @@ getselectObjPayMode(obj){
                 return
             }
             if (this.amount1 != 0) {
-                let balamt = this.netPayAmt - this.paidAmt
+                const balamt = this.netPayAmt - this.paidAmt
                 Swal.fire({
                     title: 'Balance Amount is : ' + balamt,
                     text: "select payment mode and pay remaing amount",
@@ -559,15 +559,15 @@ getselectObjPayMode(obj){
       });
         console.log(JSON.stringify(this.Paymentobj));
 
-        let submitDataPay = {
+        const submitDataPay = {
             ipPaymentInsert: this.Paymentobj,
             ipModePaymentInsert:this.ModePaymentObj
         };
         let IsSubmit
         if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill") {
-            let Advancesarr = [];
+            const Advancesarr = [];
             this.dataSource.data.forEach((element) => {
-                let Advanceobj = {};
+                const Advanceobj = {};
                 Advanceobj['AdvanceId'] = element?.advanceId;
                 Advanceobj['AdvanceDetailID'] = (element?.advanceDetailId ?? element?.advanceDetailID) || 0;
                 Advanceobj['AdvanceAmount'] = element?.advanceAmount || 0;
@@ -606,14 +606,14 @@ getselectObjPayMode(obj){
     }
 
     onClose1() {
-        let IsSubmit = {
+        const IsSubmit = {
             "IsSubmitFlag": false,
             "BalAmt": this.netPayAmt
         }
         this.dialogRef.close(IsSubmit);
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -622,7 +622,7 @@ getselectObjPayMode(obj){
         }
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -633,7 +633,7 @@ getselectObjPayMode(obj){
     selectedAdvanceData: any = [];
     getAdvcanceDetails(isReset?: any) {
         this.dataSource.data = [];
-        var vdata = {  
+        const vdata = {  
              "first": 0,
             "rows": 9999,
             "sortField": "AdmissionID",
@@ -669,7 +669,7 @@ getselectObjPayMode(obj){
     OnAdvAmt(e) {
         this.IsAdv = e.checked;
         if (this.IsAdv) {
-            var vdata = {
+            const vdata = {
                 "first": 0,
                 "rows": 9999,
                 "sortField": "AdmissionID",
@@ -735,14 +735,14 @@ getselectObjPayMode(obj){
         return netAmt
     }
     SetAdvanceRow() {
-        let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
-        let tmp = this.Payments.data.find(x => x.Id == -1);
+        const adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
+        const tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
             tmp.Amount = adv;
             tmp.AdvUsedAmt = adv;
         }
         else {
-            let tmp1 = this.Payments.data;
+            const tmp1 = this.Payments.data;
             tmp1.push({
                 Id: -1,
                 PaymentType: "ADVANCE_USED", Amount: adv,

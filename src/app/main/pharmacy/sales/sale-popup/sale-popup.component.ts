@@ -108,7 +108,7 @@ export class SalePopupComponent implements OnInit {
   getSalesData() {
     console.log(this.data);
     this.isLoadingStr = 'loading';
-    var reqData = {
+    const reqData = {
       ItemId: this.data.ItemId,
       StoreId: this.data.StoreId,
     };

@@ -232,7 +232,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCasepaperComponent,
             {
                 maxWidth: "95vw",
@@ -253,7 +253,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(GastrologyEmrComponent,
             {
                 maxWidth: "95vw",
@@ -274,7 +274,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(PatientcertificateComponent,
             {
                 maxWidth: "95vw",
@@ -296,7 +296,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
@@ -393,7 +393,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         console.log(element)
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
@@ -420,7 +420,7 @@ export class MedicalrecordComponent implements OnInit {
         console.log(data)
         this.Vtotalcount;
         console.log(data)
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i].patientOldNew == 1) {
                 this.VNewcount = this.VNewcount + 1;
             }
@@ -494,7 +494,7 @@ export class MedicalrecordComponent implements OnInit {
         this.VBillcount = 0;
         this.VCrossConscount = 0;
 
-        let data =
+        const data =
         {
             "first": 0,
             "rows": 150,
@@ -702,7 +702,7 @@ export class MedicalrecordComponent implements OnInit {
 
 
 export class VisitMaster1 {
-    visitId: Number;
+    visitId: number;
     regId: number;
     RegID: number;
     visitDate: any;
@@ -767,8 +767,8 @@ export class VisitMaster1 {
 
 
 export class Regdetail {
-    RegId: Number;
-    regId: Number;
+    RegId: number;
+    regId: number;
     RegDate: Date;
     RegTime: Date;
     PrefixId: number;
@@ -786,7 +786,7 @@ export class Regdetail {
     RegNo: string;
     DateofBirth: Date;
     Age: any;
-    GenderId: Number;
+    GenderId: number;
     PhoneNo: string;
     MobileNo: string;
     AddedBy: number;
@@ -797,7 +797,7 @@ export class Regdetail {
     StateId: number;
     CityId: number;
     MaritalStatusId: number;
-    IsCharity: Boolean;
+    IsCharity: boolean;
     ReligionId: number;
     AreaId: number;
     VillageId: number;
@@ -875,7 +875,7 @@ export class ChargesList {
     ChargesId: number;
     ServiceId: number;
     serviceId: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: any;
     Qty: any;
     TotalAmt: number;
@@ -883,7 +883,7 @@ export class ChargesList {
     DiscAmt: number;
     NetAmount: number;
     DoctorId: number;
-    ChargeDoctorName: String;
+    ChargeDoctorName: string;
     ChargesDate: Date;
     IsPathology: boolean;
     IsRadiology: boolean;

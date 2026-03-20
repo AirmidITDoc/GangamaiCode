@@ -123,7 +123,7 @@ ServiceList: any = [];
 
   bindReportData() {
 
-    var data = 
+    const data = 
       {
         "first": 0,
         "rows": 10,
@@ -543,7 +543,7 @@ ServiceList: any = [];
 
 
   viewgetConcessionReportPdf() {
-    let OP_IP_Type = 1;
+    const OP_IP_Type = 1;
 
     let DoctorID = 0;
     if (this._OPReportsService.userForm.get('DoctorID').value)
@@ -652,7 +652,7 @@ ServiceList: any = [];
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
 
-      let GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
+      const GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
       this._OPReportsService.getgroupwisecollView(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", GroupId
@@ -680,7 +680,7 @@ ServiceList: any = [];
   viewgetGroupwisesummaryReportPdf() {
     this.sIsLoading = 'loading-data';
     setTimeout(() => {
-      let GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
+      const GroupId = this._OPReportsService.userForm.get('GroupId').value | 0
       this._OPReportsService.getgroupwisescollummaryView(
         this.datePipe.transform(this._OPReportsService.userForm.get("startdate").value, "MM-dd-yyyy") || "01/01/1900",
         this.datePipe.transform(this._OPReportsService.userForm.get("enddate").value, "MM-dd-yyyy") || "01/01/1900", GroupId
@@ -1191,7 +1191,7 @@ ServiceList: any = [];
 
   getDoctorvisitAdminwisegroupview() {
     this.sIsLoading = 'loading-data';
-    let DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
+    const DoctorId = this._OPReportsService.userForm.get('DoctorId').value.DoctorID || 0
     setTimeout(() => {
 
       this._OPReportsService.getdoctorvisitadmingroupwiseView(
@@ -1346,7 +1346,7 @@ ServiceList: any = [];
 
 
   GetUserList() {
-    var data = {
+    const data = {
       "StoreId": this._loggedUser.currentUserValue.storeId
     }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {
@@ -1363,7 +1363,7 @@ ServiceList: any = [];
  
   getServiceListCombobox() {
 
-    var m_data = {
+    const m_data = {
       SrvcName: "%",
       TariffId: 0,
       ClassId: 0,

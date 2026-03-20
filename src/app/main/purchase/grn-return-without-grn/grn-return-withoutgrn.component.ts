@@ -264,7 +264,7 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
   GetDetails1(data: any): void {
     debugger
     console.log("detailList:", data)
-    let grnReturnId = data.grnReturnId;
+    const grnReturnId = data.grnReturnId;
 
     this.gridConfig1 = {
       apiUrl: "GRNReturn/GRNReturnList",
@@ -344,11 +344,11 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
   }
   getVerify(row) {
 
-    let updateGRNReturnVerifyStatus = {};
+    const updateGRNReturnVerifyStatus = {};
     updateGRNReturnVerifyStatus['grnReturnId'] = row.GRNReturnId;
     updateGRNReturnVerifyStatus['isVerifiedUserId'] = this._loggedService.currentUserValue.userId;
 
-    let submitObj = {
+    const submitObj = {
       "updateGRNReturnVerifyStatus": updateGRNReturnVerifyStatus
     }
     // console.log(submitObj)

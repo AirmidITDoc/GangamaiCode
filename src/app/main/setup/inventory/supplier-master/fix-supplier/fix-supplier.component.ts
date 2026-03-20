@@ -98,7 +98,7 @@ export class FixSupplierComponent implements OnInit {
     }
 
     removestore(item) {
-        let removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
+        const removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
         this.supplierForm.value.mAssignSupplierToStores.splice(removedIndex, 1);
         this.ddlStore.SetSelection(this.supplierForm.value.mAssignSupplierToStores.map(x => x.storeId));
     }
@@ -202,7 +202,7 @@ export class FixSupplierComponent implements OnInit {
 
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

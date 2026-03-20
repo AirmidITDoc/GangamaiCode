@@ -447,19 +447,19 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             FirstName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
+                // Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             MiddleName: ['', [
                 // Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
+                // Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
             ]],
             LastName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$"),
+                // Validators.pattern("^[A-Za-z/() ]*$"),
                 this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             DateOfBirth: [{ value: new Date() }],
@@ -705,13 +705,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
     removeDepartment(item) {
-        let removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.departmentId == item.departmentId);
+        const removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.departmentId == item.departmentId);
         this.myForm.value.MDoctorDepartmentDets.splice(removedIndex, 1);
         this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x => x.departmentId));
     }
 
     removesignpage(item) {
-        let removedIndex = this.signatureForm.value.pageId.findIndex(x => x.value == item.value);
+        const removedIndex = this.signatureForm.value.pageId.findIndex(x => x.value == item.value);
         this.signatureForm.value.pageId.splice(removedIndex, 1);
         this.ddlsignpage.SetSelection(this.signatureForm.value.pageId.map(x => x.value));
     }
@@ -719,7 +719,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     onSubmit() {
 
-        let a = this.attachedFiles;
+        const a = this.attachedFiles;
 
         console.log(this.myForm.value)
         // Qualification detail assign to array
@@ -804,7 +804,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         debugger
         if (!this.myForm.invalid) {
 
-            let data = this.myForm.value;
+            const data = this.myForm.value;
             // data.IsConsultant = true
             // data.IsRefDoc = false
             // data.IsInHouseDoctor = false
@@ -838,7 +838,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 this.onClose();
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
 
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
@@ -1042,7 +1042,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     i = 0
 
     getdrschduleList() {
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocSchedId",
@@ -1085,7 +1085,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     getDrExperienceList() {
 
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocExpId",
@@ -1122,7 +1122,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     getDrEducationList() {
 
-        var m_data = {
+        const m_data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocQualfiId",
@@ -1154,7 +1154,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         });
     }
     getDrchargesList() {
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocChargeId",
@@ -1188,7 +1188,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         });
     }
     getDrleaveList() {
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DoctorId",
@@ -1265,7 +1265,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         this.chargeexpList = []
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorExperienceComponent,
             {
                 maxWidth: "55vw",
@@ -1297,7 +1297,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorSchduleComponent,
             {
                 maxWidth: "55vw",
@@ -1378,7 +1378,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur();
         this.chargechargesList = []
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorChargesComponent,
             {
                 maxWidth: "65vw",
@@ -1405,7 +1405,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur();
 
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorLeaveComponent,
             {
                 maxWidth: "65vw",
@@ -1436,7 +1436,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     getSignpagelist() {
 
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DoctorId",
@@ -1512,7 +1512,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     Filename: any;
 
     deleteImage(element) {
-        let index = this.images.indexOf(element);
+        const index = this.images.indexOf(element);
         if (index >= 0) {
             this.images.splice(index, 1);
             this.dataSourcedrsign.data = this.images;
@@ -1523,7 +1523,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
 
     deletedocattachment(element) {
-        let index = this.images.indexOf(element);
+        const index = this.images.indexOf(element);
         if (index >= 0) {
             this.images.splice(index, 1);
             this.imgDataSource.data = this.images;
@@ -1666,7 +1666,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -1716,8 +1716,8 @@ export class SignDetail {
 
 export class PatientDocument {
     Id: string;
-    OPD_IPD_ID: Number;
-    OPD_IPD_Type: Number;
+    OPD_IPD_ID: number;
+    OPD_IPD_Type: number;
     FileName: string;
     DocFile: File;
     constructor(PatientDocument) {

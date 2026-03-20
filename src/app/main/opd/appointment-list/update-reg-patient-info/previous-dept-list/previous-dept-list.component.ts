@@ -49,7 +49,7 @@ export class PreviousDeptListComponent {
   }
 
   getLastVisitDoctorList(Obj) {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 20,
       "sortField": "RegId",
@@ -70,7 +70,7 @@ export class PreviousDeptListComponent {
   }
 
   getLabDocVisitList(Obj) {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 20,
       "sortField": "RegId",

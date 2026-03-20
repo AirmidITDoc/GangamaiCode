@@ -20,7 +20,7 @@ export class PrintCallingComponent implements OnInit {
 
     Onprint() {
         setTimeout(() => {
-            let param = {
+            const param = {
                 
                     "searchFields": [
                         {

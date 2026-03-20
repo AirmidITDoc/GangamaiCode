@@ -39,7 +39,7 @@ export class NewCreditReasonComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.creditreasonForm.invalid) {
                 for (const controlName in this.creditreasonForm.controls) {
                     if (this.creditreasonForm.controls[controlName].invalid) {

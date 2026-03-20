@@ -80,7 +80,7 @@ EmailFrom:FormGroup
       }
       else if(this.data?.emailType == 'PathResultEntry'){
         this.vBillNo = this.registerObj?.pathReportId || 0 
-        let pathologyDelete = [];  
+        const pathologyDelete = [];  
         pathologyDelete.push({ pathReportId:  this.vBillNo }); 
         const submitData = {
             pathPrintResultEntry: pathologyDelete
@@ -201,7 +201,7 @@ toggleBcc() {
     } 
   }); 
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.EmailFrom.invalid) {
         for (const controlName in this.EmailFrom.controls) {
           if (this.EmailFrom.controls[controlName].invalid) {

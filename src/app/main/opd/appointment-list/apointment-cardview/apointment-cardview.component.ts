@@ -371,7 +371,7 @@ export class ApointmentCardviewComponent {
     this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
 
-    let data =
+    const data =
     {
       "first": 0,
       "rows": 150,
@@ -455,7 +455,7 @@ export class ApointmentCardviewComponent {
     const buttonElement = document.activeElement as HTMLElement;
     buttonElement.blur();
 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewRegistrationComponent,
       {
         maxWidth: "95vw",
@@ -481,7 +481,7 @@ export class ApointmentCardviewComponent {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
         {
           maxWidth: "90vw",
@@ -499,7 +499,7 @@ export class ApointmentCardviewComponent {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
         {
           maxWidth: "70vw",
@@ -517,7 +517,7 @@ export class ApointmentCardviewComponent {
       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
       buttonElement.blur(); // Remove focus from the button
 
-      let that = this;
+      const that = this;
       const dialogRef = this._matDialog.open(TestingTableComponent,
         {
           maxWidth: "90vw",
@@ -542,7 +542,7 @@ export class ApointmentCardviewComponent {
         confirmButtonText: "Yes"
       }).then((flag) => {
         if (flag.isConfirmed) {
-          let Convert = {
+          const Convert = {
             "visitId": element.visitId,
             "isConvertRequestForIp": true
           }
@@ -562,7 +562,7 @@ export class ApointmentCardviewComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
     this.advanceDataStored.storage = new SearchInforObj1(row);
-    let that = this;
+    const that = this;
     console.log("Row Selected Appointment Page : ", this.advanceDataStored.storage)
     const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
       maxWidth: "99vw",
@@ -611,7 +611,7 @@ export class ApointmentCardviewComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
+    const that = this;
     console.log(element)
     const dialogRef = this._matDialog.open(CrossConsultationComponent,
       {
@@ -661,7 +661,7 @@ export class ApointmentCardviewComponent {
     }).then((flag) => {
 
       if (flag.isConfirmed) {
-        let submitData = {
+        const submitData = {
           "visitId": contact.visitId
         };
         console.log(submitData);
@@ -789,7 +789,7 @@ export class ApointmentCardviewComponent {
     //     second: '2-digit',
     //     hour12: false
     // });
-    var data = {
+    const data = {
       "visitId": patientId,
       "conStartTime": patientTimer.checkIn?.toLocaleTimeString() //"10:00:00AM"
     }
@@ -813,7 +813,7 @@ export class ApointmentCardviewComponent {
 
     //Save updated timer state to localStorage
     this.saveTimersToLocalStorage();
-    var data = {
+    const data = {
       "visitId": patientId,
       "conEndTime": patientTimer.checkOut?.toLocaleTimeString(),
       "checkOutTime": patientTimer.checkOut?.toLocaleTimeString()
@@ -830,7 +830,7 @@ export class ApointmentCardviewComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -843,7 +843,7 @@ export class ApointmentCardviewComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewAppointmentComponent,
       {
         maxWidth: "95vw",

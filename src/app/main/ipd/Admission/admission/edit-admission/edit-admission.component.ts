@@ -209,7 +209,7 @@ AdmissionFormSet(){
 
   onChangePatient(value) {
 
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._AdmissionService.getMaster(mode, 1);
       this.admissionFormGroup.get('CompanyId').setValidators([Validators.required]);
@@ -287,7 +287,7 @@ const inputDate = this.parseAdmissionTime(this.registerObj1.admissionTime);
 
      if (!this.admissionFormGroup.invalid) {
     
-      let submitData = {
+      const submitData = {
         "admissionReg": this.registerObj,// this.personalFormGroup.value,
         "admission": this.admissionFormGroup.value
       };
@@ -298,7 +298,7 @@ const inputDate = this.parseAdmissionTime(this.registerObj1.admissionTime);
         this._matDialog.closeAll();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.admissionFormGroup.invalid) {
         for (const controlName in this.admissionFormGroup.controls) {
@@ -379,7 +379,7 @@ const inputDate = this.parseAdmissionTime(this.registerObj1.admissionTime);
 
   
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
         return true;
     } else {

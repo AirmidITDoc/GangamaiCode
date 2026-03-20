@@ -174,7 +174,7 @@ export class POtoGRNComponent implements OnInit {
   }  
   OnSavedata(){
     const PurchaseId = this.SelectedObj?.purchaseId || 0
-      var vdata = {
+      const vdata = {
             "first": 0,
             "rows": 999,
             "sortField": "PurchaseID",

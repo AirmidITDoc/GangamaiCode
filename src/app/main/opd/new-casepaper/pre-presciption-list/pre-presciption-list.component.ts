@@ -55,7 +55,7 @@ export class PrePresciptionListComponent implements OnInit {
 
   getnewVisistListDemo(obj) {
     // 
-    var D_data = {
+    const D_data = {
       "first": 0,
       "rows": 10,
       "sortField": "VisitId",

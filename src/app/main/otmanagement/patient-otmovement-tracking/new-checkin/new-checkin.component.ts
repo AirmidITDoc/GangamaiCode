@@ -30,8 +30,8 @@ export class NewCheckinComponent {
   movedatetime: any;
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
   autocompleteModeFromDepartment: string = "Room";
-  autocompleteModeDoctor: String = "ConDoctor";
-  autocompleteModeToDepartment: String = "OttableMaster";
+  autocompleteModeDoctor: string = "ConDoctor";
+  autocompleteModeToDepartment: string = "OttableMaster";
   autocompleteModerelationship: string = "Relationship";
   autocompleteModeOfTransfer: string = "ModeOfTransfer";
   registerObj1 = new OtReserInsert({});
@@ -217,8 +217,8 @@ export class NewCheckinComponent {
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
@@ -283,7 +283,7 @@ export class NewCheckinComponent {
         this.onClear(true);
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
 
       const validateFormGroup = (formGroup: FormGroup | FormArray, parentKey: string = '') => {
         Object.keys(formGroup.controls).forEach(key => {

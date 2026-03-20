@@ -15,7 +15,7 @@ export class ParametermasterService {
     formulaform: FormGroup;
     numericform: FormGroup;
 
-    is_numeric: Boolean = true;
+    is_numeric: boolean = true;
     descriptiveList = [];
     numericList = [];
 

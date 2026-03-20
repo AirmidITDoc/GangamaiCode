@@ -221,7 +221,7 @@ export class NewConsentComponent {
         this.onClose();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.ConsentinsertForm.invalid) {
         for (const controlName in this.ConsentinsertForm.controls) {
@@ -303,7 +303,7 @@ export class NewConsentComponent {
   OnViewReportPdf(element: any) {
 
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "ConsentId",

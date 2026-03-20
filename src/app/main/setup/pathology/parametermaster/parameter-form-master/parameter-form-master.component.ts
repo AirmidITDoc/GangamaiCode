@@ -86,7 +86,7 @@ vparaMultipleRange:any;
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
     dsParameterAgeList = new MatTableDataSource<PathParaRangeAgeMaster>();
-    autocompleteModeGender: String = "Gender";
+    autocompleteModeGender: string = "Gender";
     tableData: any;
     rowData: any;
 
@@ -142,7 +142,7 @@ vparaMultipleRange:any;
         this.selectedItems = [...this.selectedItems];
         console.log()
        
-        var mdata = {
+        const mdata = {
             parameterId: this.rowData?.parameterId,
             parameterShortName: this.rowData?.parameterShortName,
             parameterName: this.rowData?.parameterName,
@@ -232,9 +232,9 @@ vparaMultipleRange:any;
             else
                 var is_numeric = "0"
 
-            var numeric_info = [];
-            var mPathParaRangeMasters = [];
-            var data2 = [];
+            const numeric_info = [];
+            const mPathParaRangeMasters = [];
+            const data2 = [];
             if (!this._ParameterService.is_numeric) {
 
                 console.log('selected:', this.selectedItems)
@@ -521,7 +521,7 @@ vparaMultipleRange:any;
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -565,7 +565,7 @@ vparaMultipleRange:any;
     // }
  // it allowed only Digit & decimal
        keyPressDigitDecimalOnly(event) {
-           var inp = String.fromCharCode(event.keyCode);
+           const inp = String.fromCharCode(event.keyCode);
            if (/^\d*\.?\d*$/.test(inp)) {
                return true;
            } else {
@@ -721,11 +721,11 @@ export class PathParaRangeAgeMaster {
 export class PathDescriptiveMaster {
     DescriptiveID: number;
     ParameterId: number;
-    ParameterValues: String;
+    ParameterValues: string;
     IsDefaultValue: boolean;
     AddedBy: number;
     UpdatedBy: number;
-    DefaultValue: String;
+    DefaultValue: string;
     /**
      * Constructor
      *

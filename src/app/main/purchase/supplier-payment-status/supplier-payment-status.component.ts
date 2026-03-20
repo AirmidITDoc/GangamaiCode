@@ -147,7 +147,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     let toDate = this._SupplierPaymentStatusService.SearchFormGroup.get("end").value || "";
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "Supplier_Id",
@@ -333,7 +333,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
         this.grnSupPayDetArray.push(this.createGrnSupPayDetInsert(item));
       });
 
-      let PatientHeaderObj = {};
+      const PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
       PatientHeaderObj['GRNID'] = this.GRNID;
       PatientHeaderObj['NetPayAmount'] = this._SupplierPaymentStatusService.SearchFormGroup.get('NetAmount').value || 0;
@@ -368,7 +368,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
         );
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
 
       if (this.GrnSupplierPayForm.invalid) {
         // Loop through top-level controls
@@ -406,9 +406,9 @@ export class SupplierPaymentStatusComponent implements OnInit {
     }
 
    viewgetReportPdf() {
-      let fromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
-      let toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
-      var Param = {
+      const fromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+      const toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+      const Param = {
         "searchFields": [
           {
             "fieldName": "FromDate",
@@ -578,7 +578,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
       this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balAmount);
     }
     else {
-      let index = this.SelectedList.indexOf(element);
+      const index = this.SelectedList.indexOf(element);
       if (index >= 0) {
         this.SelectedList.splice(index, 1);
       }

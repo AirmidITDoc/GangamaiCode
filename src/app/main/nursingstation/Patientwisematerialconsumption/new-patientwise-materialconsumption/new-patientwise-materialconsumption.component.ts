@@ -116,7 +116,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         // const dialogRef = this._matDialog.open(ServiceMasterFormComponent,
         //     {
         //         maxWidth: "95vw",
@@ -284,13 +284,13 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
   interimArray: any = [];
   formDiscPersc: any;
   serviceId: number;
-  serviceName: String;
+  serviceName: string;
   DoctornewId:any;
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   @ViewChild('drawer') public drawer: MatDrawer;
 
-  isLoading: String = '';
+  isLoading: string = '';
   selectedAdvanceObj: AdvanceDetailObj;
   isFilteredDateDisabled: boolean = true;
   currentDate = new Date();
@@ -478,7 +478,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
     if (event.checked) {
       this.interimArray.push(element);
     } else if (this.interimArray.length > 0) {
-      let index = this.interimArray.indexOf(element);
+      const index = this.interimArray.indexOf(element);
       if (index !== -1) {
         this.interimArray.splice(index, 1);
       }
@@ -488,13 +488,13 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   
 
   onSaveFooter() {
-    ;
+    
    
     this.isLoading = 'submit';
-    let Pathreporthsarr = [];
+    const Pathreporthsarr = [];
     
 
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
 
    
     PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
@@ -507,12 +507,12 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
   OnSave() {
     // console.log(this.myForm.get('WardName').value.RoomId)
     this.isLoading = 'submit';
-    let submissionObj = {};
-    let materialconsumptionInsertarray = [];
-    let materialconsumptionInsert = {};
+    const submissionObj = {};
+    const materialconsumptionInsertarray = [];
+    const materialconsumptionInsert = {};
    
     // this.dataSource.data.forEach((element) => {
-      let insertIP_Prescription = {};
+      const insertIP_Prescription = {};
       materialconsumptionInsert['materialConsumptionId'] = 0;
       materialconsumptionInsert['fromStoreId'] =this.accountService.currentUserValue.storeId;
       materialconsumptionInsert['consumptionDate'] = this.dateTimeObj.date;
@@ -634,7 +634,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
  
    deleteTableRow(element) {
    
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index,1);
       this.dataSource.data = [];
@@ -667,7 +667,7 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 export class patientinfo {
   
-  PatientName: String;
+  PatientName: string;
   IPDNO: number;
 
   constructor(patientinfo) {

@@ -310,7 +310,7 @@ currency:any='';
   chargelist: any = [];
   getsaleslist() {
     
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10000,
       "sortField": "SalesId",
@@ -388,7 +388,7 @@ currency:any='';
   savePatientName(row: any) {
     
     row.isEditing = false;
-    var vadat = {
+    const vadat = {
       "extMobileNo": row?.extMobileNo || 0,
       "externalPatientName": row?.patientName || '',
       "extAddress": row?.extAddress || '',
@@ -542,7 +542,7 @@ currency:any='';
     retchargelist: any = [];
   getsalesreturnlist() {
     
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10000,
       "sortField": "SalesReturnId",
@@ -857,7 +857,7 @@ currency:any='';
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
     PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = contact?.patientName || '';
     PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
@@ -892,7 +892,7 @@ currency:any='';
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 
-        let SalesDataArray = [];
+        const SalesDataArray = [];
         SalesDataArray.push({ salesID: contact?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
 
         this.AdvanceDetailsArray.clear();
@@ -956,7 +956,7 @@ currency:any='';
   
 
   getPrint(el) {
-    var D_data = {
+    const D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": 1//el.OP_IP_Type
     }
@@ -982,27 +982,27 @@ currency:any='';
  
   getTemplateTax() {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:20px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1035,7 +1035,7 @@ currency:any='';
         </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1054,27 +1054,27 @@ currency:any='';
   }
   getTemplateTax2() {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:20px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1107,7 +1107,7 @@ currency:any='';
         </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1127,27 +1127,27 @@ currency:any='';
 
   getTemplateSalesReturn() {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:20px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1180,7 +1180,7 @@ currency:any='';
         </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1200,27 +1200,27 @@ currency:any='';
 
   getTemplate(old = true) {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
       <div style="display:flex;margin:8px 0">
       <div style="display:flex;width:40px;margin-left:20px;">
           <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1253,7 +1253,7 @@ currency:any='';
       </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1277,7 +1277,7 @@ currency:any='';
   }
 
   transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
+    const datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
   }
@@ -1411,7 +1411,7 @@ currency:any='';
   }
 
   getSalesRetPrint(el) {
-    var D_data = {
+    const D_data = {
       "SalesID": el.SalesReturnId,
       "OP_IP_Type": el.OP_IP_Type,
     }
@@ -1483,7 +1483,7 @@ currency:any='';
  
   expPrint(el, xls) {
     // 
-    var D_data = {
+    const D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
     }
@@ -1507,17 +1507,17 @@ currency:any='';
     
     this.reportPrintObjList = reportPrintObjList;
 
-    let columnList = [];
+    const columnList = [];
     if (this.reportPrintObjList.length == 0) {
     }
     else {
-      var excelData = [];
+      const excelData = [];
      
-      var a = 1;
-      for (var i = 0; i < this.reportPrintObjList.length; i++) {
+      const a = 1;
+      for (let i = 0; i < this.reportPrintObjList.length; i++) {
         this.TotalAmt = (parseFloat(this.reportPrintObjList[i]["TotalAmount"]) + parseFloat(this.TotalAmt)).toFixed(2);
 
-        let singleEntry = {
+        const singleEntry = {
           "": "",
           "Sr No": a + i,
           "HSN": this.reportPrintObjList[i]["HSNcode"] ? this.reportPrintObjList[i]["HSNcode"] : "N/A",
@@ -1533,22 +1533,22 @@ currency:any='';
       }
       excelData.concat('/n');
 
-      let singleEntry1 = {
+      const singleEntry1 = {
 
         "": this.TotalAmt ? this.TotalAmt : "N/A"
 
       };
       excelData.push(singleEntry1);
 
-      var fileName = "Sales Bill " + el.SalesId + ".xlsx";
+      const fileName = "Sales Bill " + el.SalesId + ".xlsx";
       if (exprtType == "Excel") {
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(excelData);
-        var wscols = [];
+        const wscols = [];
         if (excelData.length > 0) {
-          var columnsIn = excelData[0];
+          const columnsIn = excelData[0];
           console.log(columnsIn);
           for (var key in columnsIn) {
-            let headerLength = { wch: (key.length + 1) };
+            const headerLength = { wch: (key.length + 1) };
             let columnLength = headerLength;
             try {
               columnLength = { wch: Math.max(...excelData.map(o => o[key].length), 0) + 1 };
@@ -1570,15 +1570,15 @@ currency:any='';
         XLSX.writeFile(wb, fileName);
       }
       else {
-        let doc = new jsPDF('p', 'pt', 'a4');
+        const doc = new jsPDF('p', 'pt', 'a4');
         doc.page = 0;
-        var col = [];
-        for (var k in excelData[0]) col.push(k);
+        const col = [];
+        for (const k in excelData[0]) col.push(k);
         console.log(col.length)
-        var rows = [];
+        const rows = [];
         excelData.forEach(obj => {
           console.log(obj)
-          let arr = [];
+          const arr = [];
           col.forEach(col => {
             arr.push(obj[col]);
           });
@@ -1607,7 +1607,7 @@ currency:any='';
   printsalesDetails(contact) {
     
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
           { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
@@ -1634,7 +1634,7 @@ currency:any='';
 
   printsalesPatientstatement(contact) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
           { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
@@ -1664,7 +1664,7 @@ currency:any='';
     
     console.log(response)
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "SalesID",
@@ -1702,7 +1702,7 @@ currency:any='';
     console.log(response)
     
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "SalesID",

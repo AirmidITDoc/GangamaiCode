@@ -70,7 +70,7 @@ export class NewcompanyEmployComponent {
         this.onClose();
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.personalFormGroup.invalid) {
         for (const controlName in this.personalFormGroup.controls) {
           if (this.personalFormGroup.controls[controlName].invalid) {
@@ -89,7 +89,7 @@ export class NewcompanyEmployComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

@@ -87,10 +87,10 @@ export class SamplecollectionPageComponent {
     dialogRef.disableClose = true;
     this.type = data?.type;
 
-    let mydate = new Date()
+    const mydate = new Date()
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
 
-    var now = new Date();
+    const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   }
@@ -116,7 +116,7 @@ export class SamplecollectionPageComponent {
       if (event.checked) {
         this.interimArray.push(element);
       } else if (this.interimArray.length > 0) {
-        let index = this.interimArray.indexOf(element);
+        const index = this.interimArray.indexOf(element);
         if (index !== -1) {
           this.interimArray.splice(index, 1);
         }
@@ -140,17 +140,17 @@ export class SamplecollectionPageComponent {
       OPIP = "4";
     }
 
-    let rawDate = row.pathDate;
-    let day = rawDate.split("T")[0];
-    let rest = rawDate.split("T")[1].split("-");
-    let month = rest[0];
-    let year = rest[1];
+    const rawDate = row.pathDate;
+    const day = rawDate.split("T")[0];
+    const rest = rawDate.split("T")[1].split("-");
+    const month = rest[0];
+    const year = rest[1];
 
-    let formattedDate = `${day}`
+    const formattedDate = `${day}`
 
     console.log(formattedDate);
 
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 9999,
       "sortField": "PathTestID",
@@ -189,11 +189,11 @@ export class SamplecollectionPageComponent {
   getSampledetailListLab(row) {
     // debugger
 
-    let formattedDate = formatDate(row.pathDate);
+    const formattedDate = formatDate(row.pathDate);
 
     console.log(formattedDate);
 
-    var m_data = {
+    const m_data = {
       "first": 0,
       "rows": 9999,
       "sortField": "PathTestID",
@@ -394,8 +394,8 @@ export class SamplecollectionPageComponent {
 export class SampleList {
   VADate: Date;
   VATime: Date;
-  PathTestID: Number;
-  ServiceName: String;
+  PathTestID: number;
+  ServiceName: string;
   IsSampleCollection: boolean;
   isSampleCollection: any;
   SampleCollectionTime: Date;

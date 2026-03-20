@@ -43,7 +43,7 @@ export class NewDrugMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.drugForm.invalid) {
                 for (const controlName in this.drugForm.controls) {
                     if (this.drugForm.controls[controlName].invalid) {

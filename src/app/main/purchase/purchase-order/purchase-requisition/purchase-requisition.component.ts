@@ -158,7 +158,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
     this.GetPRHeaderlist();
   }
     GetPRHeaderlist(){
-        var data =
+        const data =
     {
       "first": 0,
       "rows": 999,
@@ -181,7 +181,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
     });
   }
        getPRDetList(contact){
-        var data =
+        const data =
     {
       "first": 0,
       "rows": 999,
@@ -215,7 +215,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
         height: '50%',
       })
     }
-    let Data = {
+    const Data = {
       "first": 0,
       "rows": 9999,
       "sortField": "ItemId",
@@ -298,7 +298,7 @@ export class  PurchaseRequisitionComponent implements OnInit {
     console.log(this.dsPRFinalitemlist.data )
   } 
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsPRFinalitemlist.data = [];
@@ -634,7 +634,7 @@ debugger
 
 
   getLastThreeItemInfo(ItemId) {
-    var vdata = { 
+    const vdata = { 
       "first": 0,
       "rows": 9999,
       "sortField": "ItemId",
@@ -811,7 +811,7 @@ debugger
    
   }
   calculateDiscperAmount() {
-    let disc = this.userFormGroup.get('Dis').value
+    const disc = this.userFormGroup.get('Dis').value
     if (disc >= 100) {
       // Swal.fire("Enter Discount less than 100");
       this.toastr.warning('Enter Discount less than 100', 'Warning !', {
@@ -958,7 +958,7 @@ debugger
 
        // it allowed only Digit 
        keyPressDigitsOnly(event) {
-           var inp = String.fromCharCode(event.keyCode);
+           const inp = String.fromCharCode(event.keyCode);
            if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
                return true;
            } else {
@@ -968,7 +968,7 @@ debugger
        }
        // it allowed only Digit & decimal
        keyPressDigitDecimalOnly(event) {
-           var inp = String.fromCharCode(event.keyCode);
+           const inp = String.fromCharCode(event.keyCode);
            if (/^\d*\.?\d*$/.test(inp)) {
                return true;
            } else {

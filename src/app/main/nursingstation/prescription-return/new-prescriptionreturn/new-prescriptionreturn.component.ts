@@ -205,7 +205,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
         }
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.prescriptionReturnForm.invalid) {
         for (const controlName in this.prescriptionReturnForm.controls) {
           const control = this.prescriptionReturnForm.get(controlName);
@@ -242,7 +242,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -341,8 +341,8 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.vPatientType = obj.patientType
       this.vTariffName = obj.tariffName
       this.vCompanyName = obj.companyName
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
+      const nameField = obj.formattedText;
+      const extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.OP_IP_Id = obj.visitId;
     }
@@ -425,7 +425,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.ItemSubform.get('BatchNo').reset('');
       this.ItemSubform.get('Qty').reset('');
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.ItemSubform.invalid) {
         for (const controlName in this.ItemSubform.controls) {
           if (this.ItemSubform.controls[controlName].invalid) {
@@ -482,7 +482,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   deleteTableRow(event, element) {
     this.PresItemlist = this.saleSelectedDatasource.data;
-    let index = this.PresItemlist.indexOf(element);
+    const index = this.PresItemlist.indexOf(element);
     if (index >= 0) {
       this.PresItemlist.splice(index, 1);
       this.saleSelectedDatasource.data = [];

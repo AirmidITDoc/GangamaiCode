@@ -127,7 +127,7 @@ export class IPPackageDetComponent implements OnInit {
   //IPD package list 
   getIPDpackagedetList(obj) {
     this.PacakgeList = [];
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10,
       "sortField": "ChargesId",
@@ -203,7 +203,7 @@ export class IPPackageDetComponent implements OnInit {
     }
 
     if (this.data.FormName == 'IPD Package') {
-      var Vdata = {
+      const Vdata = {
         "chargesId": 0,
         "chargesDate": formattedDate,
         "opdIpdType": 1,
@@ -276,7 +276,7 @@ export class IPPackageDetComponent implements OnInit {
     } else {
       DoctorId = element.DoctorId
     }
-    let addCharge = {
+    const addCharge = {
       "chargesId": element.ChargesId,
       "price": element.price,
       "qty": element.qty || 1,
@@ -307,10 +307,10 @@ export class IPPackageDetComponent implements OnInit {
     }).then((flag) => {
       if (flag.isConfirmed) {
         if (this.data.FormName == 'IPD Package') {
-          let Chargescancle = {};
+          const Chargescancle = {};
           Chargescancle['ChargesId'] = contact.ChargesId;
           Chargescancle['userId'] = this._loggedService.currentUserValue.user.id;
-          let submitData = {
+          const submitData = {
             "deleteCharges": Chargescancle
           };
           console.log(submitData);
@@ -326,7 +326,7 @@ export class IPPackageDetComponent implements OnInit {
           //   this.isLoading = '';
           // });
         } else {
-          let index = this.PacakgeList.indexOf(contact);
+          const index = this.PacakgeList.indexOf(contact);
           if (index >= 0) {
             this.PacakgeList.splice(index, 1);
             this.dsPackageDet.data = [];
@@ -402,7 +402,7 @@ export class IPPackageDetComponent implements OnInit {
         netAmt = totalAmt;
       }
 
-      let addCharge = {
+      const addCharge = {
         "chargesId": this.selectedAdvanceObj.chargesId,
         "price": this.FinalTotalamt,
         "qty": this.FinalQty || 0,
@@ -441,7 +441,7 @@ export class IPPackageDetComponent implements OnInit {
       //     }); 
       // });  
       this.dsPackageDet.data.forEach((element) => {
-        let OpPacakgesave = {}
+        const OpPacakgesave = {}
         // OpPacakgesave['ServiceId'] = element.serviceId;
         // OpPacakgesave['ServiceName'] = element.ServiceName || '';
         // OpPacakgesave['Price'] = element.Price || 0;
@@ -510,7 +510,7 @@ export class IPPackageDetComponent implements OnInit {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -519,7 +519,7 @@ export class IPPackageDetComponent implements OnInit {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -547,13 +547,13 @@ export class ChargesList {
   chargesId: number;
   serviceId: number;
   ServiceId: number;
-  serviceName: String;
+  serviceName: string;
   price: number;
   qty: number; 
   totalAmt: number; 
   netAmount: number;
   doctorId: number;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ChargesDate: Date;
   isPathology: boolean;
   isRadiology: boolean;

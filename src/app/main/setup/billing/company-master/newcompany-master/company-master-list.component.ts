@@ -98,7 +98,7 @@ this.Is5_Digit_Pincode_Id = id === "1";
                 this.dialogRef.close()
             });
         }else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.companyFormDemo.invalid) {
                 for (const controlName in this.companyFormDemo.controls) {
                     if (this.companyFormDemo.controls[controlName].invalid) {
@@ -180,7 +180,7 @@ this.Is5_Digit_Pincode_Id = id === "1";
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

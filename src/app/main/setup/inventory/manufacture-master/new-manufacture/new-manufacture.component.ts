@@ -42,7 +42,7 @@ export class NewManufactureComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.manufForm.invalid) {
         for (const controlName in this.manufForm.controls) {
           if (this.manufForm.controls[controlName].invalid) {

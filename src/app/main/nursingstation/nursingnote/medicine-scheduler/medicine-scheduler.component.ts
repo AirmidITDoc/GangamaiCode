@@ -67,8 +67,8 @@ export class MedicineSchedulerComponent {
 
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this.MedicineItemForm.get('DoseDate').value.toLocaleString("en-US").split(',');
+      const splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      const splitTime = this.MedicineItemForm.get('DoseDate').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
 
       const time = this.MedicineItemForm.get('DoseTime')?.value;
@@ -79,9 +79,9 @@ export class MedicineSchedulerComponent {
   onChangeTime(event) {
     this.timeflag = 1
     if (event) {
-      let selectedDate = new Date(this.MedicineItemForm.get('DoseTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this.MedicineItemForm.get('DoseTime').value.toLocaleString("en-US").split(',');
+      const selectedDate = new Date(this.MedicineItemForm.get('DoseTime').value);
+      const splitDate = selectedDate.toLocaleString("en-US").split(',');
+      const splitTime = this.MedicineItemForm.get('DoseTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.phdatetime = splitTime[1]
       console.log(this.phdatetime)
@@ -121,8 +121,8 @@ export class MedicineSchedulerComponent {
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
@@ -258,7 +258,7 @@ export class MedicineSchedulerComponent {
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsItemList.data = [];
@@ -289,7 +289,7 @@ export class MedicineSchedulerComponent {
         this.onClose();
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
       // checks nested error 
       if (this.MedicineItemLoopForm.invalid) {
         for (const controlName in this.MedicineItemLoopForm.controls) {

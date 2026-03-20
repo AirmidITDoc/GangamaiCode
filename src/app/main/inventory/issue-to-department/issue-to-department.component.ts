@@ -119,7 +119,7 @@ export class IssueToDepartmentComponent implements OnInit {
     isShowDetailTable: boolean = false;
     GetDetails1(data) {
 
-        let IssueId = data.issueId
+        const IssueId = data.issueId
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
@@ -244,7 +244,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         // if(this._ActRoute.url == '/inventory/issuetodepartment')
 
         const dialogRef = this._matDialog.open(NewIssueTodeptComponent,
@@ -265,7 +265,7 @@ export class IssueToDepartmentComponent implements OnInit {
     }
   onVerify(row) {
     debugger
-    let submitData = {
+    const submitData = {
       "issueId": row.issueId
     
     };
@@ -413,7 +413,7 @@ export class IssueItemList {
 }
 
 export class IssueToDep {
-    IssueNo: Number;
+    IssueNo: number;
     IssueDate: number;
     FromStoreName: string;
     ToStoreName: string;

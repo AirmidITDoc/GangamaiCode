@@ -64,7 +64,7 @@ export class IPRefundofBillComponent implements OnInit {
   screenFromString = 'Common-form';
   vRefundOfBillFormGroup: FormGroup
   RefundOfBillFormFooter: FormGroup;
-  isLoading: String = '';
+  isLoading: string = '';
   selectedAdvanceObj: any;
   
   dateTimeObj: any;
@@ -247,7 +247,7 @@ currency:any='';
     this.RefundBalAmount = (parseInt(this.NetBillAmount.toString()) - parseInt(this.RefundAmount.toString()));
 
 
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "ChargesId",
@@ -307,8 +307,8 @@ currency:any='';
 }
 
 calculateTotalAmount(): void {
-  let RefundAmount = this.dataSource2.data.reduce((sum, { refundAmount }) => sum + +(refundAmount || 0), 0);
-  let RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum + +(balanceAmount || 0), 0);
+  const RefundAmount = this.dataSource2.data.reduce((sum, { refundAmount }) => sum + +(refundAmount || 0), 0);
+  const RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum + +(balanceAmount || 0), 0);
 
   this.RefundOfBillFormFooter.patchValue({
     TotalRefundAmount: RefundAmount,
@@ -335,7 +335,7 @@ calculateTotalAmount(): void {
         this.addChargesArray.push(this.createAddCharge(item));
       });
 
-      let PatientHeaderObj = {};
+      const PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
       PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName || '';
       PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo || 0,
@@ -382,7 +382,7 @@ calculateTotalAmount(): void {
         }
       });
     } else {
-      let invalidFields: string[] = [];
+      const invalidFields: string[] = [];
       // checks nested error 
       if (this.vRefundOfBillFormGroup.invalid) {
         for (const controlName in this.vRefundOfBillFormGroup.controls) {
@@ -423,7 +423,7 @@ calculateTotalAmount(): void {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp)) {
       return true;
     } else {
@@ -432,7 +432,7 @@ calculateTotalAmount(): void {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -462,7 +462,7 @@ export class InsertRefund {
   OPD_IPD_Type: number;
   OPD_IPD_ID: number;
   RefundAmount: any;
-  Remark: String;
+  Remark: string;
   TransactionId: number;
   AddedBy: number;
   IsCancelled: boolean;
@@ -492,13 +492,13 @@ export class InsertRefund {
 }
 
 export class InsertRefundDetail {
-  RefundID: any;;
+  RefundID: any;
   serviceId: number;
   serviceName: any;
   netAmount: number;
   refundAmount: any;
   doctorId: number;
-  Remark: String;
+  Remark: string;
   AddBy: number;
   chargesId: number;
   chargesDate: Date;

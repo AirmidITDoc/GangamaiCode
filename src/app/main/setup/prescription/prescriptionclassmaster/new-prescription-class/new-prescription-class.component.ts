@@ -43,7 +43,7 @@ export class NewPrescriptionClassComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.prescriptionForm.invalid) {
         for (const controlName in this.prescriptionForm.controls) {
           if (this.prescriptionForm.controls[controlName].invalid) {

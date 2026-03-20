@@ -366,7 +366,7 @@ export class NewLabPatientRegComponent {
       patientName: [''],
       servicedoctorId: [0],
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-      appointmentId:0
+      appointmentId: 0
     })
   }
 
@@ -635,7 +635,7 @@ export class NewLabPatientRegComponent {
   }
 
   onChangePatient(value) {
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._labPatientRegService.getMaster(mode, 1);
       this.myForm.get('companyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
@@ -797,7 +797,7 @@ export class NewLabPatientRegComponent {
 
   FetchList: any = [];
   getCollectionList() {
-    var param = {
+    const param = {
       "first": 0,
       "rows": 10,
       "sortField": "HomeCollectionId",
@@ -1028,10 +1028,10 @@ export class NewLabPatientRegComponent {
   // Calculation of total amount.
   calculateTotalAmount(): void {
     // debugger
-    let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
-    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
-    let totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
-    let totalNet = totalSum - totalDiscount;
+    const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+    const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    const totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
+    const totalNet = totalSum - totalDiscount;
 
     this.myForm.patchValue({
       totalAmt: totalSum,
@@ -1051,10 +1051,10 @@ export class NewLabPatientRegComponent {
   }
 
   getServiceList() {
-    let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
-    let IsPathRad = 3
+    const ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
+    const IsPathRad = 3
     // this.myForm.get("IsPathRad").value || "1"
-    var param = {
+    const param = {
       "first": 0,
       "rows": 10,
       "sortField": "ServiceId",
@@ -1111,6 +1111,11 @@ export class NewLabPatientRegComponent {
     this.IsOtherService = obj.isOtherService;
     this.vIsPackage = obj.isPackage;
     this.serviceSelct = true
+    if (obj?.isEditable == true) {
+      this.chkIsEditable = false; //price should not get edit
+    } else {
+      this.chkIsEditable = true; //price should get edit
+    }
     this.onSaveEntry(obj);
 
     this.myForm.get('ServiceId')?.reset();
@@ -1141,7 +1146,7 @@ export class NewLabPatientRegComponent {
 
   onSaveEntry(row) {
     // debugger
-    let doctorid = 0;
+    const doctorid = 0;
     const formValue = this.myForm.value
 
     const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
@@ -1164,7 +1169,7 @@ export class NewLabPatientRegComponent {
     );
 
     let discountAmt = Number(this.myForm.get('discountAmt')?.value) || 0;
-    let discountPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
+    const discountPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
 
     if (source === 'PER') {
       // Discount % entered
@@ -1440,7 +1445,7 @@ export class NewLabPatientRegComponent {
   OriginalPackageService: any = [];
   TotalPrice: any = 0;
   getRtevPackageDetList(obj) {
-    var vdata =
+    const vdata =
     {
       "first": 0,
       "rows": 10,
@@ -1599,7 +1604,7 @@ export class NewLabPatientRegComponent {
   deleteTableRow(element) {
     debugger
     this.chargeslist = this.dstable1.data;
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
 
       // Package remove logic
@@ -1675,7 +1680,7 @@ export class NewLabPatientRegComponent {
   }
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -1697,7 +1702,7 @@ export class NewLabPatientRegComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         console.log(this.myForm.value)
-        let priceflag = this.dstable1.data.filter(row => row.Price == 0);
+        const priceflag = this.dstable1.data.filter(row => row.Price == 0);
 
         if (priceflag.length) {
           this.toastrService.warning('Please Enter Price For Service', 'Warning !', {
@@ -1713,7 +1718,7 @@ export class NewLabPatientRegComponent {
           this.OnSave();
 
         else {
-          let invalidFields = [];
+          const invalidFields = [];
           if (this.myForm.invalid) {
             for (const controlName in this.myForm.controls) {
               const control = this.myForm.get(controlName);
@@ -1766,7 +1771,7 @@ export class NewLabPatientRegComponent {
     }
 
     console.log(this.myForm.getRawValue())
-    let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+    const DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {
 
       const todayDate = new Date();
@@ -1807,7 +1812,7 @@ export class NewLabPatientRegComponent {
 
     const formValue = { ...this.myForm.value };
     const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-      'paymentType', 'servicedoctorId','appointmentId'];
+      'paymentType', 'servicedoctorId', 'appointmentId'];
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
 
@@ -1881,7 +1886,7 @@ export class NewLabPatientRegComponent {
     if (!this.OpBillForm.invalid) {
 
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
           PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
         PatientHeaderObj['RegNo'] = this.regNo;
@@ -1932,7 +1937,7 @@ export class NewLabPatientRegComponent {
       }
       else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {
         // debugger
-        let ModePaymentObj = [];
+        const ModePaymentObj = [];
         ModePaymentObj.push({
           paymentDate: formattedDate,
           paymentTime: formattedTime,
@@ -2006,7 +2011,7 @@ export class NewLabPatientRegComponent {
         //   return;
         // }
 
-        let ModePaymentObj = [];
+        const ModePaymentObj = [];
         ModePaymentObj.push({
           paymentDate: formattedDate,
           paymentTime: formattedTime,

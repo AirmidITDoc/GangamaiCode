@@ -120,7 +120,7 @@ export class MRPAdjustmentComponent implements OnInit {
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\?\d*$/.test(inp)) {
       return true;
     } else {
@@ -202,7 +202,7 @@ export class MRPAdjustmentComponent implements OnInit {
       });
     }
     else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.MRPAdjform.invalid) {
         for (const controlName in this.MRPAdjform.controls) {
@@ -221,7 +221,7 @@ export class MRPAdjustmentComponent implements OnInit {
     }
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9.]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

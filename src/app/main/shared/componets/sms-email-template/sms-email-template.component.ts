@@ -11,7 +11,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import Swal from 'sweetalert2';
 // import 'app/shared/email.js';
 // import { OpSearchListService } from 'app/main/opd/op-search-list/op-search-list.service';
-declare var Email :any;
+declare let Email :any;
 //import { BrowseOPDBillsService } from '../../../../../browse-opd-bills/browse-opd-bills.service';
 
 @Component({
@@ -94,7 +94,7 @@ export class SmsEmailTemplateComponent implements OnInit {
     console.log('attachedFile==', this.attachedFile)
   }
   transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
+    const datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
   }
@@ -102,7 +102,7 @@ export class SmsEmailTemplateComponent implements OnInit {
 
   onSendSMS(){
 
-    var m_data = {
+    const m_data = {
       "ipsmsOutgoingInsert": {
         "mobileNo": 0,
         "smsString": this.dateTimeObj.date,
@@ -138,7 +138,7 @@ export class SmsEmailTemplateComponent implements OnInit {
   }
 }
   onSend() {
-   var m_data = {
+   const m_data = {
      "emailInsert": {
        "Id": 0,
        "SendDate": this.dateTimeObj.date,

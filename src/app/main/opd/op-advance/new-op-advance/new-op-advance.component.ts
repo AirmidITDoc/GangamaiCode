@@ -237,7 +237,7 @@ CompanyName:any
 
     if (this.AdvFormGroup.valid) {
       console.log(this.AdvFormGroup.value)
-      let PatientHeaderObj = {};
+      const PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
         PatientHeaderObj['PatientName'] = this.PatientName;
       PatientHeaderObj['RegNo'] = this.regNo,
@@ -262,7 +262,7 @@ CompanyName:any
       dialogRef.afterClosed().subscribe(result => {
         console.log('Payment Details', result);
         if (!this.AdvFormGroup.get('advanceupdate.advanceId').value) {
-          let submitData = {
+          const submitData = {
             "advance": this.AdvFormGroup.value.advance,
             "advanceDetail": this.AdvFormGroup.value.advanceDetail,
             "advancePayment": result.submitDataPay.ipPaymentInsert
@@ -275,7 +275,7 @@ CompanyName:any
           });
         }
         else {
-          let submitData = {
+          const submitData = {
             "advance": this.AdvFormGroup.value.advanceupdate,
             "advanceDetail": this.AdvFormGroup.value.advanceDetail,
             "advancePayment": result.submitDataPay.ipPaymentInsert
@@ -288,7 +288,7 @@ CompanyName:any
         }
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.AdvFormGroup.invalid) {
         for (const controlName in this.AdvFormGroup.controls) {
@@ -328,7 +328,7 @@ CompanyName:any
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

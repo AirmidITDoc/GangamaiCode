@@ -306,7 +306,7 @@ export class TestApprovalListComponent {
       // debugger
       if (flag.isConfirmed) {
 
-        let submitData = {
+        const submitData = {
           "pathReportID": row.pathReportId
         };
         console.log(submitData);
@@ -416,7 +416,7 @@ export class TestApprovalListComponent {
   Printresultentry(row: any = null) {
     // debugger
     console.log(row);
-    let pathologyDelete = [];
+    const pathologyDelete = [];
     this.OnPrintReportLogSave('Lab Print', row) // log save
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
@@ -477,7 +477,7 @@ export class TestApprovalListComponent {
   }
 
   Printresultentrywithheader(row: any = null) {
-    let pathologyDelete = [];
+    const pathologyDelete = [];
     this.OnPrintReportLogSave('Lab Print', row) // log save
 
     pathologyDelete.push({ pathReportId: row.pathReportID });
@@ -543,7 +543,7 @@ export class TestApprovalListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 0) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -596,7 +596,7 @@ export class TestApprovalListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 1) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -671,7 +671,7 @@ export class TestApprovalListComponent {
         // this.GetSampleCollectiondetail();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.reportlogFormGroup.invalid) {
         for (const controlName in this.reportlogFormGroup.controls) {
           const control = this.reportlogFormGroup.get(controlName);
@@ -700,7 +700,7 @@ export class TestApprovalListComponent {
   AdList: boolean = false;
 
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -739,7 +739,7 @@ export class TestApprovalListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 0) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -790,7 +790,7 @@ export class TestApprovalListComponent {
       });
       return;
     }
-    let SubmitDate = {
+    const SubmitDate = {
       "PathReportID": this.UnVerifyList?.pathReportID || 0,
       "UnVerifyId": this.accountService.currentUserValue.userId,
       "UnVerifyComment": this.VReason,
@@ -858,7 +858,7 @@ export class TestApprovalListComponent {
     console.log(contact)
     if (this.IsTemplateTest == 1) {
       setTimeout(() => {
-        let data = [];
+        const data = [];
         const contactArray = Array.isArray(contact) ? contact : [contact];
         contactArray.forEach(element => {
           console.log(element)
@@ -1237,7 +1237,7 @@ export class TestApprovalListComponent {
     this.VCompletedcount = 0;
     this.Vpendingcount = 0;
 
-    let data =
+    const data =
     {
       "first": 0,
       "rows": 150,

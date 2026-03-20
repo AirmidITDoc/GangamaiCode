@@ -115,7 +115,7 @@ export class PrescriptionReturnComponent implements OnInit {
     //     this.grid1.bindGridData();
     // }
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionreturnComponent,
             {
                 maxWidth: "80vw",
@@ -201,7 +201,7 @@ export class PrescriptionReturnComponent implements OnInit {
 
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -221,7 +221,7 @@ export class PrescriptionReturnComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                let sub={
+                const sub={
                     presReId:data.presReId
                 }
                 this._PrescriptionReturnService.PrescriptionReturnCancle(sub).subscribe((response: any) => {

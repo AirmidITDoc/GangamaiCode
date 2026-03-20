@@ -39,7 +39,7 @@ export class NewItemCompanyMasterComponent {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.ItemCompanyForm.invalid) {
         for (const controlName in this.ItemCompanyForm.controls) {
           if (this.ItemCompanyForm.controls[controlName].invalid) {

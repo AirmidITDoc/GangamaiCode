@@ -76,7 +76,7 @@ export class StoreFormMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.storeForm.invalid) {
                 for (const controlName in this.storeForm.controls) {
                     if (this.storeForm.controls[controlName].invalid) {

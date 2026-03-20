@@ -42,7 +42,7 @@ export class NewItemClassComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.classForm.invalid) {
         for (const controlName in this.classForm.controls) {
           if (this.classForm.controls[controlName].invalid) {

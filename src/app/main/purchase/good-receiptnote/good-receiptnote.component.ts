@@ -456,7 +456,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     }
     onVerify(row) {
-        let GRNVerifyObj = {};
+        const GRNVerifyObj = {};
         GRNVerifyObj['grnid'] = row.grnid;
         GRNVerifyObj['verifiedBy'] = this.accountService.currentUserValue.userId;
 
@@ -469,7 +469,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     }
     LastThreeItemList(contact) {
-        var vdata = {
+        const vdata = {
             'ItemId': contact.ItemId,
         }
         // this._GRNService.getLastThreeItemInfo(vdata).subscribe(data => {
@@ -477,7 +477,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         // });
     }
     getWhatsappshareSales(el) {
-        var m_data = {
+        const m_data = {
             "insertWhatsappsmsInfo": {
                 "mobileNumber": 22,//el.RegNo,
                 "smsString": "Dear" + el.PatientName + ",Your GRN has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
@@ -534,7 +534,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     printBulkQrCode() {
         setTimeout(() => {
             this.SpinLoading = true;
-            let data = [];
+            const data = [];
             this.selection.selected.forEach(element => {
                 data.push({ QrCodeData: element["stockid"].toString(), Qty: element.ReceiveQty, Width: 15, Margin: 2, Between: 3 });
             });
@@ -1208,7 +1208,7 @@ hmrpUnitPrice:any;
             this.DebitNote = ItemNameList.DebitNote || 0;
             this.CreditNote = ItemNameList.CreditNote || 0;
             this.RoundingAmt = ItemNameList.RoundingAmt || 0;
-            this.InvDate = ItemNameList.InvDate || this.CurrentDate;;
+            this.InvDate = ItemNameList.InvDate || this.CurrentDate;
             this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
             this.totalVATAmount = ItemNameList.totalVATAmount || 0;
             this.ReceivedBy = ItemNameList.ReceivedBy || ''

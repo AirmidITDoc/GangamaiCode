@@ -136,7 +136,7 @@ export class PolicyInfoPopoverComponent implements OnInit {
         this.onClose();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.policyFormGroup.invalid) {
         for (const controlName in this.policyFormGroup.controls) {

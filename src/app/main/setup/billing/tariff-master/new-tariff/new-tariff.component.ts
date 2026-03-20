@@ -41,7 +41,7 @@ export class NewTariffComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.tariffForm.invalid) {
                 for (const controlName in this.tariffForm.controls) {
                     if (this.tariffForm.controls[controlName].invalid) {

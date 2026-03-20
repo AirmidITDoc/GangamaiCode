@@ -42,7 +42,7 @@ export class NewGnericMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.genericForm.invalid) {
                 for (const controlName in this.genericForm.controls) {
                     if (this.genericForm.controls[controlName].invalid) {

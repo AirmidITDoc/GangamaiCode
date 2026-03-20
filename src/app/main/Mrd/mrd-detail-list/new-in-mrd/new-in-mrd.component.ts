@@ -65,7 +65,7 @@ rmdrecordId=0
         this.opipid=this.data.opipid
         this.registerObj=this.data
        }
-    var now = new Date();
+    const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
 
@@ -109,7 +109,7 @@ rmdrecordId=0
         this._matDialog.closeAll();
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
 
       if (this.NewInMrdForm.invalid) {
         for (const controlName in this.NewInMrdForm.controls) {

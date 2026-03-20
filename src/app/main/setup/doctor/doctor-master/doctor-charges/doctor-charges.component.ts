@@ -117,7 +117,7 @@ export class DoctorChargesComponent {
       // this.DrchargesForm.get("serviceId").setValue(this.serviceId)
       this.dialogRef.close(this.DrchargesForm.value)
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.DrchargesForm.invalid) {
         for (const controlName in this.DrchargesForm.controls) {
           if (this.DrchargesForm.controls[controlName].invalid) { invalidFields.push(`Charges Form: ${controlName}`); }
@@ -131,7 +131,7 @@ export class DoctorChargesComponent {
     }
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

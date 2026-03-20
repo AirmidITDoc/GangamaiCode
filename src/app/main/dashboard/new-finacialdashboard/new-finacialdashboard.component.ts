@@ -319,7 +319,7 @@ get pcount(): number {
 ModeAmt=0
   getwardpatientList() {
     
-    var vadat = {
+    const vadat = {
       "UnitId": this.UnitId,
       'FromDate':this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
       'ToDate': this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',

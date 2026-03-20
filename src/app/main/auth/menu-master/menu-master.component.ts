@@ -17,14 +17,14 @@ import { NewMenuComponent } from './new-menu/new-menu.component';
     animations: fuseAnimations,
 })
 export class MenuMasterComponent implements OnInit {
-    mysearchform:FormGroup;
-    MenuId="0";
-    LinkName="%"
+    mysearchform: FormGroup;
+    MenuId = "0";
+    LinkName = "%"
     autocompletemenu: string = "MenuMain"
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-     allcolumns = [
-    
+    allcolumns = [
+
         { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "UpId", key: "upId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MenuName", key: "linkName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -55,12 +55,12 @@ export class MenuMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "MenuMaster/MenuMasterList",
         columnsList: this.allcolumns,
-        sortField: "MenuId", 
+        sortField: "MenuId",
         sortOrder: 0,
         filters: [
-        { fieldName: "Id", fieldValue: this.MenuId, opType: OperatorComparer.Equals },
-        { fieldName: "LinkName", fieldValue: this.LinkName, opType: OperatorComparer.Contains }
-        
+            { fieldName: "Id", fieldValue: this.MenuId, opType: OperatorComparer.Equals },
+            { fieldName: "LinkName", fieldValue: this.LinkName, opType: OperatorComparer.Contains }
+
         ]
     }
 
@@ -69,60 +69,60 @@ export class MenuMasterComponent implements OnInit {
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
-    ngOnInit(): void { 
-      this.mysearchform= this._MenuMasterService.createSearchForm()
+    ngOnInit(): void {
+        this.mysearchform = this._MenuMasterService.createSearchForm()
     }
 
 
     ListView(value) {
-            if (value.value !== 0)
+        if (value.value !== 0)
             this.MenuId = value.value
-          else
+        else
             this.MenuId = "0"
-            this.onChangeFirst(value);
-      }
-    
-      onChangeFirst(value) {
-        
+        this.onChangeFirst(value);
+    }
+
+    onChangeFirst(value) {
+
         this.MenuId = String(this.MenuId)
         this.LinkName = this.mysearchform.get("LinkSearch").value + "%"
-       
+
         this.getfilterdata();
-      }
-    
-      getfilterdata() {
+    }
+
+    getfilterdata() {
         debugger
         this.gridConfig = {
             apiUrl: "MenuMaster/MenuMasterList",
             columnsList: this.allcolumns,
-            sortField: "MenuId", 
-          sortOrder: 0,
-          filters: [
-            { fieldName: "Id", fieldValue: this.MenuId, opType: OperatorComparer.Equals },
-            { fieldName: "LinkName", fieldValue: this.LinkName, opType: OperatorComparer.Contains }
-        
-          ],
-          row: 25
+            sortField: "MenuId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "Id", fieldValue: this.MenuId, opType: OperatorComparer.Equals },
+                { fieldName: "LinkName", fieldValue: this.LinkName, opType: OperatorComparer.Contains }
+
+            ],
+            row: 25
         }
-       
+
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
-    
-      }
 
-        
+    }
 
-Clearfilter(event) {
-    console.log(event)
-    if (event == 'LinkSearch')
-        this.mysearchform.get('LinkSearch').setValue("%")
-   
-    this.onChangeFirst(event);
-  }
 
-      
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'LinkSearch')
+            this.mysearchform.get('LinkSearch').setValue("%")
+
+        this.onChangeFirst(event);
+    }
+
+
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewMenuComponent,
             {
                 maxWidth: "55vw",

@@ -79,11 +79,11 @@ export class IssuetodeptAgainstIndentComponent {
     debugger
     this.sIsLoading = 'loading-data';
 
-    let frdate = this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
-    let todate = this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
-    let IsClose = this.IndentFrom.get("Status").value
+    const frdate = this.datePipe.transform(this.IndentFrom.get("start").value, "yyyy-MM-dd")
+    const todate = this.datePipe.transform(this.IndentFrom.get("end").value, "yyyy-MM-dd")
+    const IsClose = this.IndentFrom.get("Status").value
 
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "IndentId",
@@ -144,7 +144,7 @@ export class IssuetodeptAgainstIndentComponent {
   getIndentItemDetList(Param) {
 
     this.sIsLoading = 'loading-data';
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 9999,
       "sortField": "IndentId",

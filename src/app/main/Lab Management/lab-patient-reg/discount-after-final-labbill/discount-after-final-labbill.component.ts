@@ -94,8 +94,8 @@ export class DiscountAfterFinalLabbillComponent {
     debugger
     let DiscAmt2;
     let CompanyDiscAmt;
-    let DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
-    let CompanyDiscPer = this.MyFrom.get('CompanyDiscper').value || 0;
+    const DiscPer2 = this.MyFrom.get('DiscountPer2').value || 0;
+    const CompanyDiscPer = this.MyFrom.get('CompanyDiscper').value || 0;
 
     if (DiscPer2) {
       if (DiscPer2 > 100) {
@@ -141,8 +141,8 @@ export class DiscountAfterFinalLabbillComponent {
 
   CalcDiscAmt() {
     debugger
-    let DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0;
-    let CompanyDiscAmt = this.MyFrom.get('CompanyDiscAmt').value || 0;
+    const DiscAmt2 = this.MyFrom.get('DiscAmount2').value || 0;
+    const CompanyDiscAmt = this.MyFrom.get('CompanyDiscAmt').value || 0;
     let DiscPer2;
     let CompanyDiscPer;
 
@@ -226,7 +226,7 @@ export class DiscountAfterFinalLabbillComponent {
         }
       },);
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.saveform.invalid) {
         for (const controlName in this.saveform.controls) {
           if (this.saveform.controls[controlName].invalid) {
@@ -250,7 +250,7 @@ export class DiscountAfterFinalLabbillComponent {
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

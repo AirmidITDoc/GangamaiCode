@@ -124,16 +124,16 @@ export class DoctorAddonpayComponent {
   onSubmit() {
 
 
-    let selectedDate = this.datePipe.transform(this.AdddocpayFormGroup.get('billDate')?.value, 'yyyy-MM-dd');
-    let timeValue = this.AdddocpayFormGroup.get('billTime')?.value;
-    let time = new Date(timeValue);
+    const selectedDate = this.datePipe.transform(this.AdddocpayFormGroup.get('billDate')?.value, 'yyyy-MM-dd');
+    const timeValue = this.AdddocpayFormGroup.get('billTime')?.value;
+    const time = new Date(timeValue);
 
     // extract hours and minutes
-    let hours = time.getHours();
-    let minutes = time.getMinutes();
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
 
     // combine reportingDate + reportingTime
-    let combinedDateTime = new Date(
+    const combinedDateTime = new Date(
       selectedDate + 'T' + this.pad(hours) + ':' + this.pad(minutes) + ':00'
     );
 
@@ -255,8 +255,8 @@ export class DoctorAddonpayComponent {
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-      let splitTime = this.AdddocpayFormGroup.get('reportingDate').value.toLocaleString("en-US").split(',');
+      const splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      const splitTime = this.AdddocpayFormGroup.get('reportingDate').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
@@ -265,9 +265,9 @@ export class DoctorAddonpayComponent {
     this.timeflag = 1
     if (event) {
 
-      let selectedDate = new Date(this.AdddocpayFormGroup.get('reportingTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US").split(',');
-      let splitTime = this.AdddocpayFormGroup.get('reportingTime').value.toLocaleString("en-US").split(',');
+      const selectedDate = new Date(this.AdddocpayFormGroup.get('reportingTime').value);
+      const splitDate = selectedDate.toLocaleString("en-US").split(',');
+      const splitTime = this.AdddocpayFormGroup.get('reportingTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.phdatetime = splitTime[1]
       console.log(this.phdatetime)
@@ -276,8 +276,8 @@ export class DoctorAddonpayComponent {
   }
 
   eventEmitForParent(actualDate, actualTime) {
-    let localaDateValues = actualDate.split('/');
-    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    const localaDateValues = actualDate.split('/');
+    const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
@@ -289,12 +289,12 @@ export class DoctorAddonpayComponent {
     const rate = +form.get('price').value || 0;
 
     this.totalAmount = qty * rate;
-    let netAmount = 0;
+    const netAmount = 0;
 
   }
 
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

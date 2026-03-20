@@ -312,7 +312,7 @@ export class BrowsSalesBillComponent implements OnInit {
   chargelist: any = [];
   getsaleslist() {
     debugger
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10000,
       "sortField": "SalesId",
@@ -390,7 +390,7 @@ export class BrowsSalesBillComponent implements OnInit {
   savePatientName(row: any) {
     debugger
     row.isEditing = false;
-    var vadat = {
+    const vadat = {
       "extMobileNo": row?.extMobileNo || 0,
       "externalPatientName": row?.patientName || '',
       "extAddress": row?.extAddress || '',
@@ -545,7 +545,7 @@ export class BrowsSalesBillComponent implements OnInit {
   retchargelist: any = [];
   getsalesreturnlist() {
     debugger
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 10000,
       "sortField": "SalesReturnId",
@@ -935,7 +935,7 @@ export class BrowsSalesBillComponent implements OnInit {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    let PatientHeaderObj = {};
+    const PatientHeaderObj = {};
     PatientHeaderObj['Date'] = formattedDate;
     PatientHeaderObj['PatientName'] = contact?.patientName || '';
     PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
@@ -970,7 +970,7 @@ export class BrowsSalesBillComponent implements OnInit {
         let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
         UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 
-        let SalesDataArray = [];
+        const SalesDataArray = [];
         SalesDataArray.push({ salesID: contact?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
 
         this.AdvanceDetailsArray.clear();
@@ -1015,7 +1015,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   getPrint(el) {
-    var D_data = {
+    const D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
     }
@@ -1055,7 +1055,7 @@ export class BrowsSalesBillComponent implements OnInit {
   // }
   OnPaitentFinalPrint(element) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "OPIPId", "fieldValue": String(element.opipid), "opType": "13" },
           { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
@@ -1081,7 +1081,7 @@ export class BrowsSalesBillComponent implements OnInit {
   viewgetSalesBillReportPdf(response) {
     console.log(response)
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "SalesID",
@@ -1187,7 +1187,7 @@ export class BrowsSalesBillComponent implements OnInit {
     console.log(response)
     debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "SalesID",
@@ -1296,27 +1296,27 @@ export class BrowsSalesBillComponent implements OnInit {
 
   getTemplateTax() {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:20px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1349,7 +1349,7 @@ export class BrowsSalesBillComponent implements OnInit {
         </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1368,27 +1368,27 @@ export class BrowsSalesBillComponent implements OnInit {
   }
   getTemplateTax2() {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:20px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1421,7 +1421,7 @@ export class BrowsSalesBillComponent implements OnInit {
         </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1441,27 +1441,27 @@ export class BrowsSalesBillComponent implements OnInit {
 
   getTemplateSalesReturn() {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=37';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
         <div style="display:flex;margin:8px 0">
         <div style="display:flex;width:20px;margin-left:20px;">
             <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1494,7 +1494,7 @@ export class BrowsSalesBillComponent implements OnInit {
         </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1514,27 +1514,27 @@ export class BrowsSalesBillComponent implements OnInit {
 
   getTemplate(old = true) {
 
-    let query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
+    const query = 'select TempId,TempDesign,TempKeys as TempKeys from Tg_Htl_Tmp where TempId=36';
     this._BrowsSalesService.getTemplate(query).subscribe((resData: any) => {
 
       this.printTemplate = resData[0].TempDesign;
-      let keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
+      const keysArray = ['PatientName', 'RegNo', 'IP_OP_Number', 'DoctorName', 'SalesNo', 'Date', 'Time', 'ItemName', 'OP_IP_Type', 'GenderName', 'AgeYear', 'BatchNo', 'BatchExpDate', 'UnitMRP', 'Qty', 'TotalAmount', 'GrossAmount', 'NetAmount', 'VatPer', 'VatAmount', 'DiscAmount', 'ConcessionReason', 'PaidAmount', 'BalanceAmount', 'UserName', 'HSNCode', 'CashPayAmount', 'CardPayAMount', 'ChequePayAmount', 'PayTMAmount', 'NEFTPayAmount', 'GSTPer', 'GSTAmt', 'CGSTAmt', 'CGSTPer', 'SGSTPer', 'SGSTAmt', 'IGSTPer', 'IGSTAmt', 'ManufShortName', 'StoreNo', 'StoreName', 'DL_NO', 'GSTIN', 'CreditReason', 'CompanyName', 'HTotalAmount', 'ExtMobileNo'];
       // ;
       for (let i = 0; i < keysArray.length; i++) {
-        let reString = "{{" + keysArray[i] + "}}";
-        let re = new RegExp(reString, "g");
+        const reString = "{{" + keysArray[i] + "}}";
+        const re = new RegExp(reString, "g");
         this.printTemplate = this.printTemplate.replace(re, this.reportPrintObj[keysArray[i]]);
       }
-      var strrowslist = "";
+      let strrowslist = "";
       for (let i = 1; i <= this.reportPrintObjList.length; i++) {
         console.log(this.reportPrintObjList);
-        var objreportPrint = this.reportPrintObjList[i - 1];
-        let PackValue = '1200'
+        const objreportPrint = this.reportPrintObjList[i - 1];
+        const PackValue = '1200'
         // <div style="display:flex;width:60px;margin-left:20px;">
         //     <div>`+ i + `</div> 
         // </div>
 
-        var strabc = `<hr style="border-color:white" >
+        const strabc = `<hr style="border-color:white" >
       <div style="display:flex;margin:8px 0">
       <div style="display:flex;width:40px;margin-left:20px;">
           <div>`+ i + `</div> <!-- <div>BLOOD UREA</div> -->
@@ -1567,7 +1567,7 @@ export class BrowsSalesBillComponent implements OnInit {
       </div>`;
         strrowslist += strabc;
       }
-      var objPrintWordInfo = this.reportPrintObjList[0];
+      const objPrintWordInfo = this.reportPrintObjList[0];
 
       this.printTemplate = this.printTemplate.replace('StrTotalPaidAmountInWords', this.convertToWord(objPrintWordInfo.NetAmount));
       this.printTemplate = this.printTemplate.replace('StrPrintDate', this.transform2(this.currentDate.toString()));
@@ -1591,7 +1591,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   transform2(value: string) {
-    var datePipe = new DatePipe("en-US");
+    const datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
   }
@@ -1725,7 +1725,7 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   getSalesRetPrint(el) {
-    var D_data = {
+    const D_data = {
       "SalesID": el.SalesReturnId,
       "OP_IP_Type": el.OP_IP_Type,
     }
@@ -1872,7 +1872,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   expPrint(el, xls) {
     // 
-    var D_data = {
+    const D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
     }
@@ -1899,11 +1899,11 @@ export class BrowsSalesBillComponent implements OnInit {
     // }, 1000);
     this.reportPrintObjList = reportPrintObjList;
 
-    let columnList = [];
+    const columnList = [];
     if (this.reportPrintObjList.length == 0) {
     }
     else {
-      var excelData = [];
+      const excelData = [];
       // let str = {
 
       //   "Sales Final BILL": "\\n"
@@ -1917,11 +1917,11 @@ export class BrowsSalesBillComponent implements OnInit {
       // };
       // excelData.push(str1);
 
-      var a = 1;
-      for (var i = 0; i < this.reportPrintObjList.length; i++) {
+      const a = 1;
+      for (let i = 0; i < this.reportPrintObjList.length; i++) {
         this.TotalAmt = (parseFloat(this.reportPrintObjList[i]["TotalAmount"]) + parseFloat(this.TotalAmt)).toFixed(2);
 
-        let singleEntry = {
+        const singleEntry = {
           "": "",
           "Sr No": a + i,
           "HSN": this.reportPrintObjList[i]["HSNcode"] ? this.reportPrintObjList[i]["HSNcode"] : "N/A",
@@ -1937,22 +1937,22 @@ export class BrowsSalesBillComponent implements OnInit {
       }
       excelData.concat('/n');
 
-      let singleEntry1 = {
+      const singleEntry1 = {
 
         "": this.TotalAmt ? this.TotalAmt : "N/A"
 
       };
       excelData.push(singleEntry1);
 
-      var fileName = "Sales Bill " + el.SalesId + ".xlsx";
+      const fileName = "Sales Bill " + el.SalesId + ".xlsx";
       if (exprtType == "Excel") {
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(excelData);
-        var wscols = [];
+        const wscols = [];
         if (excelData.length > 0) {
-          var columnsIn = excelData[0];
+          const columnsIn = excelData[0];
           console.log(columnsIn);
           for (var key in columnsIn) {
-            let headerLength = { wch: (key.length + 1) };
+            const headerLength = { wch: (key.length + 1) };
             let columnLength = headerLength;
             try {
               columnLength = { wch: Math.max(...excelData.map(o => o[key].length), 0) + 1 };
@@ -1974,15 +1974,15 @@ export class BrowsSalesBillComponent implements OnInit {
         XLSX.writeFile(wb, fileName);
       }
       else {
-        let doc = new jsPDF('p', 'pt', 'a4');
+        const doc = new jsPDF('p', 'pt', 'a4');
         doc.page = 0;
-        var col = [];
-        for (var k in excelData[0]) col.push(k);
+        const col = [];
+        for (const k in excelData[0]) col.push(k);
         console.log(col.length)
-        var rows = [];
+        const rows = [];
         excelData.forEach(obj => {
           console.log(obj)
-          let arr = [];
+          const arr = [];
           col.forEach(col => {
             arr.push(obj[col]);
           });
@@ -2051,7 +2051,7 @@ export class BrowsSalesBillComponent implements OnInit {
   printsalesDetails(contact) {
     debugger
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
           { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
@@ -2078,7 +2078,7 @@ export class BrowsSalesBillComponent implements OnInit {
 
   printsalesPatientstatement(contact) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
           { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }

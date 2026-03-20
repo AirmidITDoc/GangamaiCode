@@ -3,7 +3,7 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class BarcodeConfigService {
     myform: FormGroup;
@@ -36,16 +36,16 @@ export class BarcodeConfigService {
     createBankForm(): FormGroup {
         return this._formBuilder.group({
             bankId: [0],
-            templateid:[""],
-            templatename:[""],
-            bankName: ["", 
+            templateid: [""],
+            templatename: [""],
+            bankName: ["",
                 [
                     // Validators.required,
                     // Validators.maxLength(50),
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive:[true,
+            isActive: [true,
                 // [Validators.required]
             ]
         });

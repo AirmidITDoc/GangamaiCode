@@ -40,7 +40,7 @@ export class NewAdmissiontypeComponent {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.AdmissiontypeForm.invalid) {
                 for (const controlName in this.AdmissiontypeForm.controls) {
                     if (this.AdmissiontypeForm.controls[controlName].invalid) {

@@ -225,8 +225,8 @@ export class SalesReturnInPatientComponent implements OnInit {
       });
       return
     }
-    let storeID = this.accountService.currentUserValue.user.storeId
-    let ItemName = this.ItemFormGroup.get('ItemName')?.value + '%' || '%'
+    const storeID = this.accountService.currentUserValue.user.storeId
+    const ItemName = this.ItemFormGroup.get('ItemName')?.value + '%' || '%'
     const Filters = [
       { "fieldName": "AdmissionId", "fieldValue": String(this.registerObj?.admissionID), "opType": "Equals" },
       { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
@@ -270,7 +270,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     }
   }
   OnAdd() {
-    let invalidFields = [];
+    const invalidFields = [];
     if (this.ItemFormGroup.invalid) {
       for (const controlName in this.ItemFormGroup.controls) {
         if (this.ItemFormGroup.controls[controlName].invalid) {
@@ -307,12 +307,12 @@ export class SalesReturnInPatientComponent implements OnInit {
       }
     }
 
-    let totalAmt = (parseFloat(this.selcteditemObj.UnitMRP) * parseFloat(formValues.ReturnQty)).toFixed(2);
-    let GSTAmt = ((parseFloat(this.selcteditemObj.VatPer) * parseFloat(totalAmt)) / 100).toFixed(2) || 0;
-    let DiscAmt = ((parseFloat(this.selcteditemObj.DiscPer) * parseFloat(totalAmt)) / 100).toFixed(2) || '0';
-    let netAmt = (parseFloat(totalAmt) - parseFloat(DiscAmt)).toFixed(2);
-    let PurTotAmt = (parseFloat(this.selcteditemObj.PurRateWf) * parseFloat(formValues.ReturnQty)).toFixed(2);
-    let TotalLandedAmount = (parseFloat(this.selcteditemObj.LandedPrice) * parseFloat(formValues.ReturnQty)).toFixed(2);
+    const totalAmt = (parseFloat(this.selcteditemObj.UnitMRP) * parseFloat(formValues.ReturnQty)).toFixed(2);
+    const GSTAmt = ((parseFloat(this.selcteditemObj.VatPer) * parseFloat(totalAmt)) / 100).toFixed(2) || 0;
+    const DiscAmt = ((parseFloat(this.selcteditemObj.DiscPer) * parseFloat(totalAmt)) / 100).toFixed(2) || '0';
+    const netAmt = (parseFloat(totalAmt) - parseFloat(DiscAmt)).toFixed(2);
+    const PurTotAmt = (parseFloat(this.selcteditemObj.PurRateWf) * parseFloat(formValues.ReturnQty)).toFixed(2);
+    const TotalLandedAmount = (parseFloat(this.selcteditemObj.LandedPrice) * parseFloat(formValues.ReturnQty)).toFixed(2);
 
     this.chargeslist.push(
       {
@@ -353,7 +353,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     this.ItemFormGroup.markAllAsTouched();
   }
   deleteTableRow(event, element) {
-    let index = this.chargeslist.indexOf(element);
+    const index = this.chargeslist.indexOf(element);
     if (index >= 0) {
       this.chargeslist.splice(index, 1);
       this.dsIpSaleItemList.data = [];
@@ -502,7 +502,7 @@ export class SalesReturnInPatientComponent implements OnInit {
         });
       }
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.IpSalesReturnForm.invalid) {
         for (const controlName in this.IpSalesReturnForm.controls) {
           const control = this.IpSalesReturnForm.get(controlName);
@@ -547,7 +547,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     return this.dsIpSaleItemList.data.every((i) => i.ReturnQty > 0);
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -564,7 +564,7 @@ export class SalesReturnInPatientComponent implements OnInit {
   //print 
   OnSalesReturnprint(SalesID, OP_IP_Type) {
     setTimeout(() => {
-      let param = {
+      const param = {
         "searchFields": [
           { "fieldName": "SalesID", "fieldValue": String(SalesID || 0), "opType": "13" },
           { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
@@ -600,12 +600,12 @@ export class SalesReturnInPatientComponent implements OnInit {
 
 }
 export class IPSalesItemList {
-  SalesNo: Number;
+  SalesNo: number;
   ExpDate: number;
   ItemName: string;
   BatchNo: string;
   MRP: number;
-  Qty: any;;
+  Qty: any;
   ReturnQty: any;
   TotalAmt: any;
   GST: any;

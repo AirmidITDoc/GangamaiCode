@@ -103,7 +103,7 @@ export class PatientSearchComponent implements OnInit {
         this.OnClose();
       })
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.SaveForm.invalid) {
         for (const controlName in this.SaveForm.controls) {
           if (this.SaveForm.controls[controlName].invalid) {
@@ -150,7 +150,7 @@ export class PatientSearchComponent implements OnInit {
     };
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {

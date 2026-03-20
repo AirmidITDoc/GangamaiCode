@@ -34,19 +34,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from 'app/main/shared/shared.module';
+import { MatTimepickerModule } from 'mat-timepicker';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
 import { DoctorShareComponent } from './doctor-share.component';
-import { MatTimepickerModule } from 'mat-timepicker';
-import { SharedModule } from 'app/main/shared/shared.module';
 
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: DoctorShareComponent,
-  },
+    {
+        path: "**",
+        component: DoctorShareComponent,
+    },
 ];
 
 @NgModule({

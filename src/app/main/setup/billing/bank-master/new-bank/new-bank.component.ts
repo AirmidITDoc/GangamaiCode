@@ -47,7 +47,7 @@ export class NewBankComponent implements OnInit {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.bankForm.invalid) {
         for (const controlName in this.bankForm.controls) {
           if (this.bankForm.controls[controlName].invalid) {

@@ -640,7 +640,7 @@ export class NewPurchaseorderComponent {
         }
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.FinalPurchaseform.invalid) {
         for (const controlName in this.FinalPurchaseform.controls) {
           if (this.FinalPurchaseform.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
@@ -684,16 +684,16 @@ export class NewPurchaseorderComponent {
     let NetAmt;
     this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount), 0);
 
-    let handlingCharges = this.FinalPurchaseform.get('HandlingCharges').value || 0;
+    const handlingCharges = this.FinalPurchaseform.get('HandlingCharges').value || 0;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(4);
 
-    let transportChanges = this.FinalPurchaseform.get('TransportCharges').value || 0;
+    const transportChanges = this.FinalPurchaseform.get('TransportCharges').value || 0;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(transportChanges)).toFixed(4);
 
-    let Freight = this.FinalPurchaseform.get('Freight').value || 0;
+    const Freight = this.FinalPurchaseform.get('Freight').value || 0;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(Freight)).toFixed(4);
 
-    let OctriAmt = this.FinalPurchaseform.get('OctriAmount').value || 0;
+    const OctriAmt = this.FinalPurchaseform.get('OctriAmount').value || 0;
     this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(4);
 
     this.FinalNetAmount = Math.ceil(this.FinalNetAmount)
@@ -749,7 +749,7 @@ export class NewPurchaseorderComponent {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -758,7 +758,7 @@ export class NewPurchaseorderComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -1158,7 +1158,7 @@ export class NewPurchaseorderComponent {
   }
   // Last Three item list
   getLastThreeItemInfo() {
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 999,
       "sortField": "ItemId",
@@ -1197,7 +1197,7 @@ export class NewPurchaseorderComponent {
   }
   // Retreving Item Details Edit Time
   getOldPurchaseOrder(Id) {
-    var Param = {
+    const Param = {
       "first": 0,
       "rows": 999,
       "sortField": "PurchaseID",
@@ -1259,7 +1259,7 @@ export class NewPurchaseorderComponent {
   supplierRateList: any = [];
   getSupplierRate() {
     this.supplierRateList = [];
-    var data =
+    const data =
     {
       "first": 0,
       "rows": 999,
@@ -1275,7 +1275,7 @@ export class NewPurchaseorderComponent {
     this._PurchaseOrder.getSupplierRateList(data).subscribe(data => {
       console.log(data);
       if (data.data[0]) {
-        let SupplierRate = data.data[0].supplierRate;
+        const SupplierRate = data.data[0].supplierRate;
         this.vDefRate = SupplierRate;
         console.log(this.vDefRate)
       }

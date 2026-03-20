@@ -425,7 +425,7 @@ export class IPBillBrowseListComponent implements OnInit {
  
     OnPaitentFinalPrint(element) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     { "fieldName": "OPIPId", "fieldValue": String(element.opdipdid), "opType": "13" },
                     { "fieldName": "OPIPType", "fieldValue": String(element.opdipdType), "opType": "13" }
@@ -645,7 +645,7 @@ export class IPBillBrowseListComponent implements OnInit {
     }
     Billpayment(contact) {
         console.log(contact)
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = contact.billDate;
         PatientHeaderObj['PatientName'] = contact.patientName || '';
         PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay || 0;
@@ -739,7 +739,7 @@ export class IPBillBrowseListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(IPAdvanceComponent,
             {
                 maxWidth: "100%",

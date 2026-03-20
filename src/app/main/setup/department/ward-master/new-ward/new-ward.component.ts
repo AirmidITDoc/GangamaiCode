@@ -46,7 +46,7 @@ export class NewWardComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.roomForm.invalid) {
                 for (const controlName in this.roomForm.controls) {
                     if (this.roomForm.controls[controlName].invalid) {

@@ -80,7 +80,7 @@ export class SalesSummaryComponent implements OnInit {
   }
  
   getPharStoreList() {
-    var vdata = {
+    const vdata = {
       Id: this._loggedService.currentUserValue.storeId
     }
     this._DashboardService.getLoggedStoreList(vdata).subscribe(data => {
@@ -101,7 +101,7 @@ export class SalesSummaryComponent implements OnInit {
   }
 
   getPharDayWiseData() {
-    var Param = {
+    const Param = {
       "FromDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('start').value,"MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('end').value,"MM-dd-yyyy"),
       "StoreId": this._loggedService.currentUserValue.storeId
@@ -117,7 +117,7 @@ export class SalesSummaryComponent implements OnInit {
       });
   }
   getPharMonthWiseData() {
-    var Param = {
+    const Param = {
       "FromDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('start').value,"MM-dd-yyyy"),
       "ToDate": this.datePipe.transform(this._DashboardService.DayWiseFrom.get('end').value,"MM-dd-yyyy"),
       "StoreId": this._loggedService.currentUserValue.storeId

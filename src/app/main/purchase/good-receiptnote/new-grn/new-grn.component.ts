@@ -198,7 +198,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }
         else if (this.data.chkNewGRN == 3) {
             // get full data from excell import.
-            let obj = this.data.FullData;
+            const obj = this.data.FullData;
             this.registerObj = obj;
             this.dsItemNameList.data = obj.Items as ItemNameList[];
             this.chargeslist = obj.Items as ItemNameList[];
@@ -1048,7 +1048,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         const creditAmount = parseFloat(form?.CreditAmount) || 0;
 
         // Calculate net based on original base + additions - credits
-        let finalAmt = baseNet + otherCharge + debitAmount - creditAmount;
+        const finalAmt = baseNet + otherCharge + debitAmount - creditAmount;
 
         const roundedAmt = Math.round(finalAmt);
         const roundingAmt = (roundedAmt - finalAmt).toFixed(2);
@@ -1316,7 +1316,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 });
             }
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.GrnHeaderForm.invalid) {
                 for (const controlName in this.GrnHeaderForm.controls) {
                     const control = this.GrnHeaderForm.get(controlName);
@@ -1352,7 +1352,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     // item details retreving 
     getGRNrtrvItemlist() {
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 999,
             "sortField": "GRNDetID",
@@ -1576,7 +1576,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     // Last three item info
     getLastThreeItemInfo(Obj) {
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 999,
             "sortField": "ItemId",
@@ -1642,7 +1642,7 @@ debugger
 }
     // it allowed only Digit 
     keyPressDigitsOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -1652,7 +1652,7 @@ debugger
     }
     // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -1667,7 +1667,7 @@ debugger
             this.userFormGroup.get('InvoiceNo')?.setValue('')
             return
         }
-        var vdata = {
+        const vdata = {
             "searchFields": [
                 { "fieldName": "InvoiceNo", "fieldValue": String(InvoiceNo), "opType": "13" },
                 { "fieldName": "SupplierId", "fieldValue": String(this.userFormGroup.get('SupplierId')?.value), "opType": "13" },
@@ -2077,7 +2077,7 @@ debugger
                 });
             }
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.PoToGrnSaveForm.invalid) {
                 for (const controlName in this.PoToGrnSaveForm.controls) {
                     const control = this.PoToGrnSaveForm.get(controlName);
@@ -2102,7 +2102,7 @@ debugger
         }
     }
       keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

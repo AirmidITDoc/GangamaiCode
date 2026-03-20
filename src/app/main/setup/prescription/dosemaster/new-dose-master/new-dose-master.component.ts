@@ -41,7 +41,7 @@ export class NewDoseMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.doseForm.invalid) {
                 for (const controlName in this.doseForm.controls) {
                     if (this.doseForm.controls[controlName].invalid) {

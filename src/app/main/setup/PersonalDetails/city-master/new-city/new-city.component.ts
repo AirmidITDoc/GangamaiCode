@@ -44,7 +44,7 @@ export class NewCityComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.cityForm.invalid) {
                 for (const controlName in this.cityForm.controls) {
                     if (this.cityForm.controls[controlName].invalid) {

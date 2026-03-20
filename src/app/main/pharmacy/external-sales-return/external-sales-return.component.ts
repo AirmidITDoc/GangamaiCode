@@ -102,13 +102,13 @@ export class ExternalSalesReturnComponent implements OnInit {
      StockId: any;
      paymethod: boolean = true;
      Draftchk: boolean = true;
-     ConShow: Boolean = false; 
+     ConShow: boolean = false; 
      Creditflag: boolean = false;
      Addflag: boolean = false;
      vBarcodeflag: boolean = false;
      Itemflag: boolean = false;
      barcodeflag: boolean = false;
-     add: Boolean = false;
+     add: boolean = false;
      sIsLoading: string = '';
      currentDate = new Date();
      DraftID: any = 0;
@@ -513,12 +513,12 @@ export class ExternalSalesReturnComponent implements OnInit {
              },
          });
          dialogRef.afterClosed().subscribe((result1) => {
-             let isEscaped = result1.vEscflag;
+             const isEscaped = result1.vEscflag;
              if (isEscaped && !isEditable) {
                  this._salesService.ItemSearchGroup.get('ItemId').setValue('');
                  return;
              }
-             let result = result1.selectedData as SalesBatchItemModel;
+             const result = result1.selectedData as SalesBatchItemModel;
              const isAlreadyExists = this.Itemchargeslist.find((i) => i.StockId === result.stockId && i.ItemId === result.itemId);
              if (isAlreadyExists) {
                  this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -588,7 +588,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      }
      calculateTotalAmt() { 
          const formvalues = this._salesService.ItemSearchGroup.value;
-         let qty = +formvalues.Qty;
+         const qty = +formvalues.Qty;
          if (qty > formvalues.BalanceQty) {
              Swal.fire({
                  icon: "warning",
@@ -682,7 +682,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          }
          if (formValue.TotalMrp && discPer > 0) {
              // Calculate discount amount from percentage
-             let DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
+             const DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
              if(Number(DiscAmt) > Number(formValue?.MarginAmt ?? 0)){ 
                  Swal.fire({
                  icon: 'warning',
@@ -705,7 +705,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      private calculateNetAmount(): void {
          const formValue = this._salesService.ItemSearchGroup.value;
          if (formValue.TotalMrp) {
-             let NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
+             const NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
              this._salesService.ItemSearchGroup.patchValue({
                  NetAmt: NetAmt,
              });
@@ -748,7 +748,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          }
          if (formValue.TotalMrp && discAmt) {
              // Calculate discount percentage from amount
-             let DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
+             const DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
              this._salesService.ItemSearchGroup.patchValue({
                  DiscPer: DiscPer,
              });
@@ -823,7 +823,7 @@ export class ExternalSalesReturnComponent implements OnInit {
              });
          }
          if (this._salesService.ItemSearchGroup.invalid) {
-             let invalidFields = [];
+             const invalidFields = [];
              if (this._salesService.ItemSearchGroup.invalid) {
                  for (const controlName in this._salesService.ItemSearchGroup.controls) {
                      if (this._salesService.ItemSearchGroup.controls[controlName].invalid) {
@@ -871,7 +871,7 @@ export class ExternalSalesReturnComponent implements OnInit {
                  this.Itemchargeslist.push(this.ItemAddForm.value)
                  this.saleSelectedDatasource.data = this.Itemchargeslist;
              } else {
-                 let invalidFields = [];
+                 const invalidFields = [];
                  if (this.ItemAddForm.invalid) {
                      for (const controlName in this.ItemAddForm.controls) {
                          if (this.ItemAddForm.controls[controlName].invalid) {
@@ -948,7 +948,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          this.TotalCreditAmt = 0;
      }
      deleteTableRow(event, element) {
-         let index = this.Itemchargeslist.indexOf(element);
+         const index = this.Itemchargeslist.indexOf(element);
          if (index >= 0) {
              this.Itemchargeslist.splice(index, 1);
              this.saleSelectedDatasource.data = [];
@@ -960,11 +960,11 @@ export class ExternalSalesReturnComponent implements OnInit {
       isdiscAmount:boolean=false;
      getUpdateNetAmtSum(data) { 
           const itemData = data
-         let FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
-         let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
-         let FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
-         let FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
-         let roundoffAmt = (Math.round(FinalNetAmt) - FinalNetAmt).toFixed(2);
+         const FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
+         const FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
+         const FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
+         const FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
+         const roundoffAmt = (Math.round(FinalNetAmt) - FinalNetAmt).toFixed(2);
          this.ItemSubform.patchValue({
              roundoffAmt: roundoffAmt,
              totalAmount: FinalTotalAmt,
@@ -1061,7 +1061,7 @@ export class ExternalSalesReturnComponent implements OnInit {
                  return;
              }
          }
-         let opIpType = formValue?.opIpType || 0
+         const opIpType = formValue?.opIpType || 0
          this.PharmaSalesForm.get('sales.date').setValue(formattedDate)
          this.PharmaSalesForm.get('sales.time').setValue(FormattedDateTime)
          this.PharmaSalesForm.get('sales.opIpType').setValue(formValue?.opIpType)
@@ -1140,7 +1140,7 @@ export class ExternalSalesReturnComponent implements OnInit {
                      }
                  });
              } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
-                 let PatientHeaderObj = {};
+                 const PatientHeaderObj = {};
                  PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                      PatientHeaderObj['PatientName'] = this.PatientName;
                  PatientHeaderObj['RegNo'] = this.RegNo || 0;
@@ -1176,7 +1176,7 @@ export class ExternalSalesReturnComponent implements OnInit {
                  });
              }
          } else {
-             let invalidFields = [];
+             const invalidFields = [];
              if (this.PharmaSalesForm.invalid) {
                  for (const controlName in this.PharmaSalesForm.controls) {
                      const control = this.PharmaSalesForm.get(controlName);
@@ -1221,8 +1221,8 @@ export class ExternalSalesReturnComponent implements OnInit {
      }
      // Table calculation
      updateCellDiscount(item: IndentList): void {
-         let discPer = +item?.DiscPer;
-         let totalMrp = +item?.TotalMRP;
+         const discPer = +item?.DiscPer;
+         const totalMrp = +item?.TotalMRP;
  
          if (discPer < 0 || discPer > 100) {
              this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
@@ -1297,7 +1297,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      }
      m_getBalAvaListStore(Param) {
          this.dsDraftList.data = [];
-         var m = {
+         const m = {
              "first": 0,
              "rows": 10,
              "sortField": "ItemId",
@@ -1321,7 +1321,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      ///////////////// //Darft part ---------------------------------------------------------------------------------------////////////////////////////
      getDraftorderList() {
          this.dsDraftList.data = [];
-         var m = {
+         const m = {
              "first": 0,
              "rows": 10,
              "sortField": "DSalesId",
@@ -1348,8 +1348,8 @@ export class ExternalSalesReturnComponent implements OnInit {
          this.repeatItemList = row.value;
          this.Itemchargeslist = [];
          this.repeatItemList.forEach((element) => {
-             let Qty = parseInt(element.Qty.toString());
-             let UnitMrp = element.UnitMRP.split('|')[0];
+             const Qty = parseInt(element.Qty.toString());
+             const UnitMrp = element.UnitMRP.split('|')[0];
              // let GSTAmount = (((element.UnitMRP * this.GSTPer) / 100) * Qty).toFixed(2);
              // let CGSTAmt = (((element.UnitMRP * this.CgstPer) / 100) * Qty).toFixed(2);
              // let SGSTAmt = (((element.UnitMRP * this.SgstPer) / 100) * Qty).toFixed(2);
@@ -1392,7 +1392,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          this.saleSelectedDatasource.data = this.Itemchargeslist;
      }
      DraftbillCancel(Obj) {
-         var vdata = {
+         const vdata = {
              "dsalesId": Obj?.dsalesId
          }
          this._salesService.getDeleteDratf(vdata).subscribe((data) => {
@@ -1462,7 +1462,7 @@ export class ExternalSalesReturnComponent implements OnInit {
              });
          }
          else {
-             let invalidFields = [];
+             const invalidFields = [];
              if (this.PharmaSalesDraftForm.invalid) {
                  for (const controlName in this.PharmaSalesDraftForm.controls) {
                      const control = this.PharmaSalesDraftForm.get(controlName);
@@ -1566,7 +1566,7 @@ export class ExternalSalesReturnComponent implements OnInit {
              this.ItemSubform.get('extMobileNo').updateValueAndValidity();
              this.ItemSubform.get('externalPatientName').updateValueAndValidity();
          }
-         var vdata = {
+         const vdata = {
              "first": 0,
              "rows": 10,
              "sortField": "ItemId",
@@ -1595,7 +1595,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          console.log(contact) 
          this.QtyBalchk = 0;
  
-         var m_data = {
+         const m_data = {
              "first": 0,
              "rows": 10,
              "sortField": "ItemId",
@@ -1738,7 +1738,7 @@ export class ExternalSalesReturnComponent implements OnInit {
  
      getBillSummary(admissionID) {
          //Total Credit Amount
-         var vdata = {
+         const vdata = {
              "first": 0,
              "rows": 10,
              "sortField": "OP_IP_ID",
@@ -1752,7 +1752,7 @@ export class ExternalSalesReturnComponent implements OnInit {
              this.TotalCreditAmt = response?.data[0]?.creditAmount || 0;
          });
          //Total advance and advance bal Amount
-         var m_data = {
+         const m_data = {
              "first": 0,
              "rows": 10,
              "sortField": "AdmissionID",
@@ -1776,7 +1776,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      dummySalesIdNameArr = [];
      SalesIdWiseObj: any = {};
      getTopSalesDetailsList(MobileNo) {
-         var vdata = {
+         const vdata = {
              ExtMobileNo: MobileNo,
          };
          this.sIsLoading = 'get-sales-data';
@@ -1803,11 +1803,11 @@ export class ExternalSalesReturnComponent implements OnInit {
          this.getTopSalesDetailsprint();
      }
      getTopSalesDetailsprint() {
-         var strrowslist = '';
-         let onlySalesId = [];
+         let strrowslist = '';
+         const onlySalesId = [];
          this.reportPrintObjItemList.forEach((ele) => onlySalesId.push(ele.SalesId));
  
-         let SalesidNamesArr = [...new Set(onlySalesId)];
+         const SalesidNamesArr = [...new Set(onlySalesId)];
          SalesidNamesArr.forEach((ele) => this.dummySalesIdNameArr.push({ SalesId: ele, isHidden: false }));
  
          this.SalesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
@@ -1819,9 +1819,9 @@ export class ExternalSalesReturnComponent implements OnInit {
          }, {});
  
          for (let i = 1; i <= this.reportPrintObjItemList.length; i++) {
-             var objreportPrint = this.reportPrintObjItemList[i - 1];
+             const objreportPrint = this.reportPrintObjItemList[i - 1];
  
-             var strabc =
+             const strabc =
                  this.getSalesIdName(objreportPrint.SalesId) +
                  `
    <div style="display:flex;margin:8px 0">
@@ -1834,11 +1834,11 @@ export class ExternalSalesReturnComponent implements OnInit {
              strrowslist += strabc;
          }
      }
-     getSalesIdName(SalesId: String) {
+     getSalesIdName(SalesId: string) {
          let groupDiv;
          for (let i = 0; i < this.dummySalesIdNameArr.length; i++) {
              if (this.dummySalesIdNameArr[i].SalesId == SalesId && !this.dummySalesIdNameArr[i].isHidden) {
-                 let groupHeader =
+                 const groupHeader =
                      `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
            <div> <h3>` +
                      SalesId +
@@ -1861,7 +1861,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      }
      CalPaidbackAmt() {
          const formvalue = this.ItemSubform.value
-         let PaidbacktoPatient = (parseFloat(formvalue?.roundoffAmt || 0) - parseFloat(formvalue?.PaidbyPatient || 0)).toFixed(2);
+         const PaidbacktoPatient = (parseFloat(formvalue?.roundoffAmt || 0) - parseFloat(formvalue?.PaidbyPatient || 0)).toFixed(2);
          this.ItemSubform.patchValue({
              PaidbacktoPatient: PaidbacktoPatient
          })
@@ -1874,7 +1874,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          }
      }
      barcodeItemfetch() {
-         var d = {
+         const d = {
              StockId: this._salesService.ItemSearchGroup.get('Barcode').value || 0,
              StoreId: this._loggedService.currentUserValue.storeId || 0,
          };
@@ -1927,23 +1927,23 @@ export class ExternalSalesReturnComponent implements OnInit {
                          }
                      }
  
-                     let TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
-                     let Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
-                     let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
-                     let LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
-                     let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-                     let PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
+                     const TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
+                     const Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
+                     const vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
+                     const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
+                     const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+                     const PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
  
-                     let CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * this.DraftQty).toFixed(2);
-                     let SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * this.DraftQty).toFixed(2);
-                     let IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * this.DraftQty).toFixed(2);
+                     const CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * this.DraftQty).toFixed(2);
+                     const SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * this.DraftQty).toFixed(2);
+                     const IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * this.DraftQty).toFixed(2);
  
                      // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
  
-                     let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-                     let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+                     const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+                     const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
  
-                     let BalQty = contact.BalanceQty - this.DraftQty;
+                     const BalQty = contact.BalanceQty - this.DraftQty;
  
                      this.saleSelectedDatasource.data[i].Qty = this.DraftQty;
                      this.saleSelectedDatasource.data[i].VatAmount = Vatamount;
@@ -1994,19 +1994,19 @@ export class ExternalSalesReturnComponent implements OnInit {
                  }
              }
  
-             let TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
-             let Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
-             let TotalNet = parseFloat(TotalMRP + Vatamount).toFixed(2);
-             let LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
-             let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-             let PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
+             const TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
+             const Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
+             const TotalNet = parseFloat(TotalMRP + Vatamount).toFixed(2);
+             const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
+             const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+             const PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
  
-             let CGSTAmt = (((contact.UnitMRP * contact.CGSTPer) / 100) * this.DraftQty).toFixed(2);
-             let SGSTAmt = (((contact.UnitMRP * contact.SGSTPer) / 100) * this.DraftQty).toFixed(2);
-             let IGSTAmt = (((contact.UnitMRP * contact.IGSTPer) / 100) * this.DraftQty).toFixed(2);
+             const CGSTAmt = (((contact.UnitMRP * contact.CGSTPer) / 100) * this.DraftQty).toFixed(2);
+             const SGSTAmt = (((contact.UnitMRP * contact.SGSTPer) / 100) * this.DraftQty).toFixed(2);
+             const IGSTAmt = (((contact.UnitMRP * contact.IGSTPer) / 100) * this.DraftQty).toFixed(2);
  
-             let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-             let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+             const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+             const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
  
              this.chargeslistBarcode.push({
                  ItemId: contact.ItemId || 0,
@@ -2161,7 +2161,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          this.dateTimeObj = dateTimeObj;
      }
      getWhatsappshareSales(el, vmono) {
-         var m_data = {
+         const m_data = {
              insertWhatsappsmsInfo: {
                  mobileNumber: vmono || 0,
                  smsString:
@@ -2196,7 +2196,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      } 
      OnSalesprint(SalesID, OP_IP_Type) {
          setTimeout(() => {
-             let param = {
+             const param = {
                  "searchFields": [
                      { "fieldName": "SalesID", "fieldValue": String(SalesID), "opType": "13" },
                      { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
@@ -2294,7 +2294,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      }
      // it allowed only Digit 
      keyPressDigitsOnly(event) {
-         var inp = String.fromCharCode(event.keyCode);
+         const inp = String.fromCharCode(event.keyCode);
          if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
              return true;
          } else {
@@ -2304,7 +2304,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      }
          // it allowed only Digit & decimal
      keyPressDigitDecimalOnly(event) {
-         var inp = String.fromCharCode(event.keyCode);
+         const inp = String.fromCharCode(event.keyCode);
          if (/^\d*\.?\d*$/.test(inp)) {
              return true;
          } else {

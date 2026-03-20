@@ -130,7 +130,7 @@ export class OpReportsComponent implements OnInit {
 
   bindReportData() {
 
-    var data = {
+    const data = {
       ReportSection: this.Reportsection
     }
     this._OPReportsService.getDataByQuery(data).subscribe(data => {
@@ -578,7 +578,7 @@ export class OpReportsComponent implements OnInit {
     
     setTimeout(() => {
 
-      let param = {
+      const param = {
         "searchFields": [
           {
             "fieldName": "FromDate",
@@ -628,7 +628,7 @@ export class OpReportsComponent implements OnInit {
     this.PaymentMode = option.PaymentMode;
   }
   GetUserList() {
-    var data = {
+    const data = {
       "StoreId": this._loggedUser.currentUserValue.storeId
     }
     this._OPReportsService.getUserdetailList(data).subscribe(data => {

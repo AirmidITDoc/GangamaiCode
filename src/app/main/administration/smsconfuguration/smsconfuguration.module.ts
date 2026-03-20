@@ -39,13 +39,13 @@ import { SMSConfugurationService } from './smsconfuguration.service';
 import { UpdateSMSComponent } from './update-sms/update-sms.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SMSConfugurationComponent 
-  },
+    {
+        path: '**',
+        component: SMSConfugurationComponent
+    },
 ];
 @NgModule({
-    declarations: [ SMSConfugurationComponent, UpdateSMSComponent ],
+    declarations: [SMSConfugurationComponent, UpdateSMSComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -88,6 +88,6 @@ const routes: Routes = [
         // NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule
     ],
-    providers: [ DatePipe, SMSConfugurationService ]
+    providers: [DatePipe, SMSConfugurationService]
 })
 export class SMSConfugurationModule { }

@@ -201,7 +201,7 @@ export class EditAppointmentComponent {
 
   onChangePatient(value) {
 
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._AppointmentlistService.getMaster(mode, 1);
       this.VisitFormGroup.get('CompanyId').setValidators([Validators.required]);
@@ -240,7 +240,7 @@ export class EditAppointmentComponent {
 
 
   WhatsAppAppointmentSend(el, vmono) {
-    var m_data = {
+    const m_data = {
       "insertWhatsappsmsInfo": {
         "mobileNumber": vmono || 0,
         "smsString": '',
@@ -307,7 +307,7 @@ export class EditAppointmentComponent {
           this.Onsave()
 
         } else {
-          let invalidFields = [];
+          const invalidFields = [];
 
           if (this.VisitFormGroup.invalid) {
             for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }

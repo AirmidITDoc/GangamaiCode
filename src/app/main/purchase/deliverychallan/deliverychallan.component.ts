@@ -183,7 +183,7 @@ export class DeliverychallanComponent implements OnInit {
   }
 
   getGRNList() {
-    var Param = {
+    const Param = {
       "ToStoreId": this.accountService.currentUserValue.storeId,// this._GRNService.DeliverySearchGroup.get('ToStoreId').value.storeid,
       "From_Dt": this.datePipe.transform(this._DeliveryService.DeliverySearchGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "To_Dt": this.datePipe.transform(this._DeliveryService.DeliverySearchGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -202,7 +202,7 @@ export class DeliverychallanComponent implements OnInit {
       });
   }
   getToStoreSearchList() {
-    var vdata = {
+    const vdata = {
       Id: this.accountService.currentUserValue.storeId
     }
     this._DeliveryService.getLoggedStoreList(vdata).subscribe(data => {
@@ -215,7 +215,7 @@ export class DeliverychallanComponent implements OnInit {
   noOptionFoundsupplier:any;
   vSupplierId:any;
   getSupplierSearchCombo() {
-    var m_data = {
+    const m_data = {
       'SupplierName': `${this._DeliveryService.DeliverySearchGroup.get('SupplierId').value}%`
     }
     //console.log(m_data)
@@ -238,7 +238,7 @@ export class DeliverychallanComponent implements OnInit {
     // 
     setTimeout(() => {
       this.SpinLoading = true;
-      let data=[];
+      const data=[];
       this.selection.selected.forEach(element => {
         data.push({QrCodeData:element["stockid"].toString(),Qty:element.ReceiveQty,Width:15,Margin:2,Between:3});
       });
@@ -284,7 +284,7 @@ export class DeliverychallanComponent implements OnInit {
   }
   getGrnItemDetailList(Params) {
     this.sIsLoading = 'loading-data';
-    var Param = {
+    const Param = {
       "GrnId": Params.GRNID
     }
     this._DeliveryService.getGrnItemList(Param).subscribe(data => {
@@ -416,7 +416,7 @@ onEdit(contact) {
   });
 }
 LastThreeItemList(contact) {
-  var vdata = {
+  const vdata = {
     'ItemId': contact.ItemId,
   }
   this._DeliveryService.getLastThreeItemInfo(vdata).subscribe(data => {
@@ -425,10 +425,10 @@ LastThreeItemList(contact) {
 }
 
 onVerify(row) {
-let updateGRNVerifyStatusobj ={};
+const updateGRNVerifyStatusobj ={};
 updateGRNVerifyStatusobj['GRNID'] = row.GRNID;
 updateGRNVerifyStatusobj['IsVerifiedUserId'] = this.accountService.currentUserValue.userId ;
-let submitObj ={
+const submitObj ={
   "updateGRNVerifyStatus":updateGRNVerifyStatusobj
 }
 this._DeliveryService.getVerifyGRN(submitObj).subscribe(response => {
@@ -454,7 +454,7 @@ this.getGRNList();
 
 
 getWhatsappshareSales(el) {
-var m_data = {
+const m_data = {
   "insertWhatsappsmsInfo": {
     "mobileNumber": 22,//el.RegNo,
     "smsString": "Dear" + el.PatientName + ",Your GRN has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
@@ -751,7 +751,7 @@ export class ItemNameList {
       this.DebitNote = ItemNameList.DebitNote || 0;
       this.CreditNote = ItemNameList.CreditNote || 0;
       this.RoundingAmt = ItemNameList.RoundingAmt || 0;
-      this.InvDate = ItemNameList.InvDate || this.CurrentDate;;
+      this.InvDate = ItemNameList.InvDate || this.CurrentDate;
       this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
       this.totalVATAmount = ItemNameList.totalVATAmount || 0;
       this.ReceivedBy = ItemNameList.ReceivedBy || ''

@@ -74,7 +74,7 @@ RegNo:any;
 AddmissionId:any;
 RegId:any;
   getPrescriptionList(){
-    var Param = {
+    const Param = {
       "StoreId": this._loggedService.currentUserValue.storeId, 
       "FromDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
       "ToDate": this.datePipe.transform(this._SalesService.PrescriptionFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
@@ -109,7 +109,7 @@ RegId:any;
     this.IPMedID = contact.IPMedID;
     this.DoctorName = contact.DoctorName;
     this.IPDNo = contact.IPDNo;
-    var Param = {
+    const Param = {
       "OP_IP_Id": contact.IPMedID ,
       "OP_IP_Type":contact.PatientType
     }
@@ -131,7 +131,7 @@ RegId:any;
 
   GetPrescrpList() { 
     if(this.dsItemDetList.data.length > 0){
-    let strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from GeT_IP_PrescriptionItemDet where IPMedID=" + this.IPMedID + " Order by ItemName "
+    const strSql = "Select ItemId,QtyPerDay,BalQty,IsBatchRequired,ItemName from GeT_IP_PrescriptionItemDet where IPMedID=" + this.IPMedID + " Order by ItemName "
     this._SalesService.getchargesList(strSql).subscribe(data => {
       this.chargelist = data as any;
    

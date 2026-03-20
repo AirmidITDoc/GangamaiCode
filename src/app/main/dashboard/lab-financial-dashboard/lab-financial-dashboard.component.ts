@@ -342,7 +342,7 @@ export class LabFinancialDashboardComponent {
 
   getDoctorwisesalesList() {
 
-    let filters: any[] = [];
+    const filters: any[] = [];
     // UnitId: this.UnitId,
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
@@ -367,7 +367,7 @@ export class LabFinancialDashboardComponent {
         }
       );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "DoctorName",
@@ -385,7 +385,7 @@ export class LabFinancialDashboardComponent {
   Brancharray = []
   getBranchList() {
 
-    let filters: any[] = [];
+    const filters: any[] = [];
     // UnitId: this.UnitId,
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
@@ -410,7 +410,7 @@ export class LabFinancialDashboardComponent {
         }
       );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "DoctorName",
@@ -431,7 +431,7 @@ export class LabFinancialDashboardComponent {
 
   GetCompanywisesale() {
 
-    let filters: any[] = [];
+    const filters: any[] = [];
     // UnitId: this.UnitId,
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
@@ -456,7 +456,7 @@ export class LabFinancialDashboardComponent {
         }
       );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "CompanyName",
@@ -477,7 +477,7 @@ export class LabFinancialDashboardComponent {
 
   getDepartmentwisesalesList() {
 
-    let filters: any[] = [];
+    const filters: any[] = [];
     // UnitId: this.UnitId,
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
@@ -502,7 +502,7 @@ export class LabFinancialDashboardComponent {
         }
       );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "UnitId",
@@ -524,7 +524,7 @@ export class LabFinancialDashboardComponent {
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
       this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
 
-    var vdata = {
+    const vdata = {
       "first": 0,
       "rows": 200,
       "sortField": "UnitId",
@@ -617,7 +617,7 @@ export class LabFinancialDashboardComponent {
   }
 
   getwardpatientList() {
-    var vadat = {
+    const vadat = {
       UnitId: this.UnitId,
       FromDate: this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
       ToDate: this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',

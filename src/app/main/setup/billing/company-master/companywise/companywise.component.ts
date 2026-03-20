@@ -32,7 +32,7 @@ export class CompanywiseComponent {
       vClassName:any;
       myFormGroup:FormGroup
       chargeslist:any=[]; 
-      isLoading: String = '';
+      isLoading: string = '';
       sIsLoading: string = "";
       screenFromString = 'Company';
       registerObj:any;  
@@ -79,7 +79,7 @@ export class CompanywiseComponent {
         });
       }
       getclassNameCombo() {
-        var m_data = {
+        const m_data = {
           'ClassName': '%'  
         }
         // this._CompanyMasterService.getclassNameCombo(m_data).subscribe((data) => {
@@ -106,7 +106,7 @@ export class CompanywiseComponent {
       //get RtrvCompanyService
       getRtrvCompanyServList(obj) {
         this.isLoading = 'loading-data';
-        var vdata={
+        const vdata={
           "CompanyId": obj.CompanyId || 0
         }
         console.log(vdata)
@@ -128,7 +128,7 @@ export class CompanywiseComponent {
           return;
         } 
         this.sIsLoading = ''
-        var Param = {
+        const Param = {
           "ServiceName": `${this.myFormGroup.get('ServiceId').value}%` || '%',
           "IsPathRad": parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
           "ClassId": this.myFormGroup.get('ClassId').value.ClassId || 0,
@@ -149,7 +149,7 @@ export class CompanywiseComponent {
         this.isLoading = 'save';
         this.dscompanyserv.data = [];
         if (this.chargeslist && this.chargeslist.length > 0) {
-          let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId);
+          const duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId);
           if (duplicateItem && duplicateItem.length == 0) {
             this.addChargList(row);
             return;
@@ -187,7 +187,7 @@ export class CompanywiseComponent {
     
       deleteTableRow(element) { 
           this.chargeslist= this.dscompanyserv.data ;
-          let index = this.chargeslist.indexOf(element);
+          const index = this.chargeslist.indexOf(element);
           if (index >= 0) {
             this.chargeslist.splice(index, 1);
             this.dscompanyserv.data = [];
@@ -225,9 +225,9 @@ export class CompanywiseComponent {
             });
             return;
           }  
-         let insert_CompanyServiceAssignMasterObj = [];
+         const insert_CompanyServiceAssignMasterObj = [];
           this.dscompanyserv.data.forEach(element =>{
-            let insert_CompanyServiceAssignMaster={
+            const insert_CompanyServiceAssignMaster={
               "companyId":this.registerObj.CompanyId || 0,
               "serviceId": element.ServiceId || 0,
               "servicePrice":element.ServicePrice || 0,
@@ -238,11 +238,11 @@ export class CompanywiseComponent {
             insert_CompanyServiceAssignMasterObj.push(insert_CompanyServiceAssignMaster)
           });
       
-           let delete_CompantServiceDetails={
+           const delete_CompantServiceDetails={
             "companyId": this.registerObj.CompanyId || 0
           }
       
-          let submitData={
+          const submitData={
             "insert_CompanyServiceAssignMaster":insert_CompanyServiceAssignMasterObj,
             "delete_CompantServiceDetails":delete_CompantServiceDetails
           }
@@ -274,7 +274,7 @@ export class CompanywiseComponent {
       }
     
       keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

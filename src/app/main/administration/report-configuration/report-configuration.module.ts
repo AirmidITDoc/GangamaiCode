@@ -35,16 +35,16 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 //import { NgxPrintModule } from "ngx-print";
 //import { WebcamModule } from "ngx-webcam";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { NewReportConfigurationComponent } from "./new-report-configuration/new-report-configuration.component";
-import { ReportConfigurationComponent } from "./report-configuration.component";
-import { ReportConfigurationService } from "./report-configuration.service";
-import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { FormsModule } from "@angular/forms";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatChipsModule } from "@angular/material/chips";
 import { MatRippleModule } from "@angular/material/core";
 import { MatTimepickerModule } from "mat-timepicker";
-import { FormsModule } from "@angular/forms";
-import { MatChipsModule } from "@angular/material/chips";
+import { NewReportConfigurationComponent } from "./new-report-configuration/new-report-configuration.component";
+import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
+import { ReportConfigurationComponent } from "./report-configuration.component";
+import { ReportConfigurationService } from "./report-configuration.service";
 
 const routes: Routes = [
     {
@@ -54,7 +54,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ReportConfigurationComponent,NewReportConfigurationComponent, NewreportConfigComponent],
+    declarations: [ReportConfigurationComponent, NewReportConfigurationComponent, NewreportConfigComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

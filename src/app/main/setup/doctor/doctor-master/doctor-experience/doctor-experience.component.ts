@@ -92,7 +92,7 @@ export class DoctorExperienceComponent {
     if (!this.ExperienceForm.invalid) {
       this.dialogRef.close(this.ExperienceForm.value)
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.ExperienceForm.invalid) {
         for (const controlName in this.ExperienceForm.controls) {
           if (this.ExperienceForm.controls[controlName].invalid) { invalidFields.push(`Experience Form: ${controlName}`); }

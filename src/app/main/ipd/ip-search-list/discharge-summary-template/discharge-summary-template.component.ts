@@ -329,7 +329,7 @@ export class DischargeSummaryTemplateComponent {
 
             this.DischargesumForm.get('discharge.addedBy').setValue(this.accountService.currentUserValue.userId)
 
-          let insertData = {
+          const insertData = {
             "discharge": this.DischargesumForm.value.discharge,
             "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
           };
@@ -494,7 +494,7 @@ export class DischargeSummaryTemplateComponent {
     const iscekDuplicate = 0
     //  this.dsItemList.data.some(item => item.Presid == this.MedicineItemForm.get('TemplateId').value)
     if (!iscekDuplicate) {
-      var vdata = {
+      const vdata = {
         "first": 0,
         "rows": 999,
         "sortField": "Presid",
@@ -568,7 +568,7 @@ export class DischargeSummaryTemplateComponent {
     const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
     if (!iscekDuplicate) {
       // this.dsItemList.data = [];
-      let newEntry = {
+      const newEntry = {
         itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
         itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
         doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
@@ -593,7 +593,7 @@ export class DischargeSummaryTemplateComponent {
 
   deleteTableRow(event, element) {
 
-    let index = this.Chargelist.indexOf(element);
+    const index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
       this.dsItemList.data = [];
@@ -606,7 +606,7 @@ export class DischargeSummaryTemplateComponent {
 
   getPrescription(AdmissionId) {
     console.log(AdmissionId)
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 999,
       "sortField": "AdmissionId",
@@ -637,7 +637,7 @@ export class DischargeSummaryTemplateComponent {
   }
 
   getDischargeSummaryData(AdmissionId) {
-    var m_data2 = {
+    const m_data2 = {
       "first": 0,
       "rows": 999,
       "sortField": "AdmissionId",
@@ -844,7 +844,7 @@ export class DischargeSummaryTemplateComponent {
     };
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -853,7 +853,7 @@ export class DischargeSummaryTemplateComponent {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {

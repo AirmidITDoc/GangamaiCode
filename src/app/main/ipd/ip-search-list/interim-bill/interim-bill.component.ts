@@ -50,7 +50,7 @@ export class InterimBillComponent implements OnInit {
   onlineflag: boolean = false;
   interimArray: any = [];
   currency:any='';
-  isLoading: String = '';
+  isLoading: string = '';
   InterimFooterForm: FormGroup;
   IPInterimBillForm: FormGroup;
   concessionId: any = 0;
@@ -249,8 +249,8 @@ export class InterimBillComponent implements OnInit {
   }
   getNetAmtSum() {
     this.FinalNetAmt = this.interimArray.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-    let totalAmt = this.interimArray.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
-    let discountAmount = this.interimArray.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
+    const totalAmt = this.interimArray.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
+    const discountAmount = this.interimArray.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
     if (discountAmount > 0) {
       this.ConShow = true;
       this.DiscountFlag = true;
@@ -268,7 +268,7 @@ export class InterimBillComponent implements OnInit {
         UserDicPerLimit: any = 0;
       getAccessDetail() {
           // debugger
-          var SelectQuery = {
+          const SelectQuery = {
               "first": 0,
               "rows": 999,
               "sortField": "AccessValueId",
@@ -322,9 +322,9 @@ export class InterimBillComponent implements OnInit {
       this.toastr.warning("Enter Discount % between 0-100");
       return;
     }
-    let percentage = perControl.value;
-    let totalAmount = this.InterimFooterForm.get("TotalAmt").value;
-    let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
+    const percentage = perControl.value;
+    const totalAmount = this.InterimFooterForm.get("TotalAmt").value;
+    const discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
     finalNetAmt = parseFloat((totalAmount - discountAmount).toFixed(2));
     this.ConShow = true;
 
@@ -335,9 +335,9 @@ export class InterimBillComponent implements OnInit {
   }
   //Calculate Disc Per
   calculateDiscamt() {
-    let discountAmount = this.InterimFooterForm.get("concessionAmt").value;
-    let totalAmount = this.InterimFooterForm.get("TotalAmt").value;
-    let finalNetAmt = this.FinalNetAmt
+    const discountAmount = this.InterimFooterForm.get("concessionAmt").value;
+    const totalAmount = this.InterimFooterForm.get("TotalAmt").value;
+    const finalNetAmt = this.FinalNetAmt
     if (discountAmount < 0 || discountAmount == 0 || discountAmount == '' || parseFloat(discountAmount) > parseFloat(totalAmount)) {
       this.ConShow = false;
       this.InterimFooterForm.patchValue({
@@ -349,8 +349,8 @@ export class InterimBillComponent implements OnInit {
       return;
     }
 
-    let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
-    let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+    const percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+    const netAmount = Number((totalAmount - discountAmount).toFixed(2));
     this.ConShow = true;
     this.InterimFooterForm.patchValue({
       discPer: percent,
@@ -406,7 +406,7 @@ export class InterimBillComponent implements OnInit {
         this.IPInterimBillForm.get('payments.cashPayAmount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
-        let ModePaymentObj = [];
+        const ModePaymentObj = [];
         ModePaymentObj.push({
           paymentDate: formattedDate,
           paymentTime: formattedTime,
@@ -454,7 +454,7 @@ export class InterimBillComponent implements OnInit {
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
 
-        let ModePaymentObj = [];
+        const ModePaymentObj = [];
         ModePaymentObj.push({
           paymentDate: formattedDate,
           paymentTime: formattedTime,
@@ -485,7 +485,7 @@ export class InterimBillComponent implements OnInit {
         });
       }
       else if (this.InterimFooterForm.get('paymode').value == 'PayOption') {
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate
         PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName || '';
         PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo || 0;
@@ -528,7 +528,7 @@ export class InterimBillComponent implements OnInit {
         this.openWaitingScreen();
       }
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.IPInterimBillForm.invalid) {
         for (const controlName in this.IPInterimBillForm.controls) {
           const control = this.IPInterimBillForm.get(controlName);
@@ -668,7 +668,7 @@ export class InterimBillComponent implements OnInit {
     this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
     this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
 
-    let ModePaymentObj = [];
+    const ModePaymentObj = [];
     ModePaymentObj.push({
       paymentDate: formattedDate,
       paymentTime: formattedTime,
@@ -772,7 +772,7 @@ export class InterimBillComponent implements OnInit {
             this.IPInterimBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
             this.IPInterimBillForm.get('payments.companyId')?.setValue(this.selectedAdvanceObj?.CompanyId || 0)
 
-            let ModePaymentObj = [];
+            const ModePaymentObj = [];
             ModePaymentObj.push({
               paymentDate: formattedDate,
               paymentTime: formattedTime,
@@ -804,7 +804,7 @@ export class InterimBillComponent implements OnInit {
           }
         }
         else {
-          let invalidFields = [];
+          const invalidFields = [];
           if (this.IPInterimBillForm.invalid) {
             for (const controlName in this.IPInterimBillForm.controls) {
               const control = this.IPInterimBillForm.get(controlName);
@@ -835,7 +835,7 @@ export class InterimBillComponent implements OnInit {
   }
   getWhatsappshareIPInterimBill(el, vmono) {
     if (vmono != '' && vmono != "0") {
-      var m_data = {
+      const m_data = {
         "insertWhatsappsmsInfo": {
           "mobileNumber": vmono || 0,
           "smsString": '',
@@ -899,7 +899,7 @@ export class InterimBillComponent implements OnInit {
       maxHeight: '60vh'
     })
     //424929  this.vOPIPId
-    let Data = {
+    const Data = {
       "first": 0,
       "rows": 999,
       "sortField": "Id",
@@ -915,7 +915,7 @@ export class InterimBillComponent implements OnInit {
     });
   }
   keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
       return true;
     } else {
@@ -924,7 +924,7 @@ export class InterimBillComponent implements OnInit {
     }
   }
   keyPressCharater(event) {
-    var inp = String.fromCharCode(event.keyCode);
+    const inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
     } else {
@@ -982,11 +982,11 @@ export class Bill {
   tariffId: any;
   unitId: any;
   interimOrFinal: boolean;
-  companyRefNo: String;
-  concessionAuthorizationName: String;
+  companyRefNo: string;
+  concessionAuthorizationName: string;
   taxPer: any;
   taxAmount: any;
-  discComments: String;
+  discComments: string;
   CashCounterId: any;
   CompDiscAmt: any;
   PatientName: any;

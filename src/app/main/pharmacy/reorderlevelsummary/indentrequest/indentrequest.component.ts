@@ -34,7 +34,7 @@ export class IndentrequestComponent implements OnInit {
   IndentSaveFrom:FormGroup;
   sIsLoading: string = '';
   isLoadingStr: string = "";
-  isLoading: String = '';
+  isLoading: string = '';
   screenFromString = 'indent-form';
     autocompletestore: string = "Store";
   isStoreSelected: boolean = false;
@@ -130,7 +130,7 @@ export class IndentrequestComponent implements OnInit {
          this._matDialog.closeAll(); 
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.IndentSaveFrom.invalid) {
         for (const controlName in this.IndentSaveFrom.controls) {
           if (this.IndentSaveFrom.controls[controlName].invalid) { invalidFields.push(`Indent Form: ${controlName}`); }
@@ -157,7 +157,7 @@ export class IndentrequestComponent implements OnInit {
     const isCheckIndentQty = this.dsRaisedIndent.data.some(item => item.IndentQty === this._Reorderlevelsummery.RaisedIndentFrom.get('IndentQty').value);
     if(!isCheckIndentQty){
       this.Savebtn = true;
-      let InsertIndentObj = {};
+      const InsertIndentObj = {};
       InsertIndentObj['indentDate'] = this.dateTimeObj.date;
       InsertIndentObj['indentTime'] = this.dateTimeObj.time;
       InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.storeId;
@@ -165,16 +165,16 @@ export class IndentrequestComponent implements OnInit {
       InsertIndentObj['addedby'] = this._loggedService.currentUserValue.userId;
       InsertIndentObj['comments'] = '';
   
-      let InsertIndentDetObj = [];
+      const InsertIndentDetObj = [];
       this.dsRaisedIndent.data.forEach((element) => { 
-        let IndentDetInsertObj = {};
+        const IndentDetInsertObj = {};
         IndentDetInsertObj['indentId'] = 0;
         IndentDetInsertObj['itemId'] = element.ItemId;
         IndentDetInsertObj['qty'] = element.IndentQty;
         InsertIndentDetObj.push(IndentDetInsertObj);
       });
   
-      let submitData = {
+      const submitData = {
         "insertIndent": InsertIndentObj,
         "insertIndentDetail": InsertIndentDetObj,
       };

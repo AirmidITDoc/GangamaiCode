@@ -34,16 +34,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
+import { MatTimepickerModule } from 'mat-timepicker';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DischargeCancelComponent } from './discharge-cancel.component';
-import { MatTimepickerModule } from 'mat-timepicker';
 
 
 const routes: Routes = [
-  {
-      path:"**",
-      component: DischargeCancelComponent
-  },
+    {
+        path: "**",
+        component: DischargeCancelComponent
+    },
 ];
 
 
@@ -87,7 +87,7 @@ const routes: Routes = [
         MatTooltipModule,
         MatBadgeModule,
         MatIconModule,
-          MatTimepickerModule,
+        MatTimepickerModule,
         RouterModule.forChild(routes)
     ],
     providers: [

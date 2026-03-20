@@ -202,9 +202,9 @@ export function initializeApp(appConfig: AppConfigService) {
 
 
 class PickDateAdapter extends NativeDateAdapter {
-    format(date: Date, displayFormat: Object): string {
+    format(date: Date, displayFormat: string): string {
         if (displayFormat === 'input') {
-            return formatDate(date, 'dd-MMM-yyyy', this.locale);;
+            return formatDate(date, 'dd-MMM-yyyy', this.locale);
         } else {
             return date.toDateString();
         }

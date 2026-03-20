@@ -203,7 +203,7 @@ export class PurchaseRequisitionVerificationComponent {
 
 
   onSave(row: any = null) {
-    let that = this;
+    const that = this;
     const dialogRef = this._matDialog.open(NewPurchaserequisitionComponent,
       {
         maxWidth: "90vw",
@@ -251,7 +251,7 @@ export class PurchaseRequisitionVerificationComponent {
       confirmButtonText: "Yes, Cancel it!"
     }).then((flag) => {
       if (flag.isConfirmed) {
-        var data = {
+        const data = {
           "purchaseRequisitionId": row.purchaseRequisitionId,
           "isCancelledBy": this.accountService.currentUserValue.userId
         }
@@ -263,7 +263,7 @@ export class PurchaseRequisitionVerificationComponent {
   }
   onVerify(row) {
     debugger
-    let submitData = {
+    const submitData = {
       "purchaseRequisitionId": row.purchaseRequisitionId,
       "isInchargeVerifyId": this.accountService.currentUserValue.userId
 

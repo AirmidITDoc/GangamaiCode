@@ -146,7 +146,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(ServeToCompanyComponent,
             {
 
@@ -167,7 +167,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCompanyMasterComponent,
             {
 
@@ -186,7 +186,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(UpdateServCodePrintComponent,
             {
 
@@ -212,7 +212,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(CompanyExecutiveComponent,
             {
                 maxWidth: "50vw",
@@ -236,11 +236,11 @@ export class CompanyMaster {
     compTypeId: number;
     companyName: string;
     address: string;
-    cityId: String;
-    pinNo: String;
-    phoneNo: String;
-    mobileNo: String;
-    faxNo: String;
+    cityId: string;
+    pinNo: string;
+    phoneNo: string;
+    mobileNo: string;
+    faxNo: string;
     traiffId: any;
     classId: any;
     isDeleted: boolean;

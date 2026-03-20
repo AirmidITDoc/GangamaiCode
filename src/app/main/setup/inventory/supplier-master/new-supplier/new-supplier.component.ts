@@ -106,7 +106,7 @@ export class NewSupplierComponent implements OnInit {
     
   
     removestore(item) {
-      let removedIndex = this.supplierForm.value.MAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
+      const removedIndex = this.supplierForm.value.MAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
       this.supplierForm.value.MAssignSupplierToStores.splice(removedIndex, 1);
       this.ddlStore.SetSelection(this.supplierForm.value.MAssignSupplierToStores.map(x => x.storeId));
   }

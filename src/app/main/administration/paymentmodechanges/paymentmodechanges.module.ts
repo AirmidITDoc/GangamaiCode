@@ -36,16 +36,16 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DateUpdateComponent } from './date-update/date-update.component';
 import { EditPaymentComponent } from './edit-payment/edit-payment.component';
+import { NewedipamodeComponent } from './newedipamode/newedipamode.component';
 import { PaymentmodechangesComponent } from './paymentmodechanges.component';
 import { PaymentmodechangesService } from './paymentmodechanges.service';
-import { NewedipamodeComponent } from './newedipamode/newedipamode.component';
 
 
 const routes: Routes = [
-  {
-      path: '**',
-      component: PaymentmodechangesComponent,
-  },
+    {
+        path: '**',
+        component: PaymentmodechangesComponent,
+    },
 ];
 
 @NgModule({

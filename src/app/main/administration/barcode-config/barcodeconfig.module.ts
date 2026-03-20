@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule, DatePipe } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -29,74 +30,73 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
-import { FuseSidebarModule, FuseConfirmDialogModule } from '@fuse/components';
+import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { BarcodeConfigService } from './barcodeconfig.service';
-import { MatBadgeModule } from '@angular/material/badge';
 import { BarcodeConfigComponent } from './barcode-config.component';
+import { BarcodeConfigService } from './barcodeconfig.service';
 import { NewBarcodeComponent } from './new-barcode/new-barcode.component';
 
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: BarcodeConfigComponent
-  },
+    {
+        path: "**",
+        component: BarcodeConfigComponent
+    },
 ];
 @NgModule({
-  declarations: [BarcodeConfigComponent, NewBarcodeComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    FuseSidebarModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatCardModule,
-    MatListModule,
-    MatTooltipModule,
-    MatExpansionModule,
-    MatListModule,
-    ScrollingModule,
-    MatDialogModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatProgressSpinnerModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatSlideToggleModule,
-    FuseSharedModule,
-  ],
+    declarations: [BarcodeConfigComponent, NewBarcodeComponent],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        FuseSidebarModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatListModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatListModule,
+        ScrollingModule,
+        MatDialogModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatProgressSpinnerModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatSlideToggleModule,
+        FuseSharedModule,
+    ],
     providers: [
         BarcodeConfigService,
         DatePipe, { provide: MatDialogRef, useValue: {} }

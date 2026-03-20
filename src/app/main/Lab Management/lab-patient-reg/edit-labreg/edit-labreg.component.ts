@@ -117,7 +117,7 @@ export class EditLabregComponent {
   }
 
   onChangePatient(value) {
-    var mode = "Company"
+    const mode = "Company"
     if (value.text != "Self") {
       this._labPatientRegService.getMaster(mode, 1);
       this.myForm.get('companyId').setValidators([Validators.required]);

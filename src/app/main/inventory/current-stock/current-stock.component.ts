@@ -62,7 +62,7 @@ export class CurrentStockComponent implements OnInit {
     hasSelectedContacts: boolean;
 
     isLoadingStr: string = '';
-    isLoading: String = '';
+    isLoading: string = '';
     sIsLoading: string = "";
     Store1List: any = [];
     screenFromString = 'admission-form';
@@ -551,8 +551,8 @@ export class CurrentStockComponent implements OnInit {
 
     viewgetDaywisestockReportPdf() {
         this.sIsLoading == 'loading-data'
-        let LedgerDate = this.datePipe.transform(this._CurrentStockService.dayWiseForm.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.dayWiseForm.get("StoreId").value.StoreId || 0
+        const LedgerDate = this.datePipe.transform(this._CurrentStockService.dayWiseForm.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        const StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.dayWiseForm.get("StoreId").value.StoreId || 0
         setTimeout(() => {
             this.SpinLoading = true;
             //  this.AdList=true;
@@ -581,8 +581,8 @@ export class CurrentStockComponent implements OnInit {
 
     viewgetCurrentstockReportPdf() {
         this.sIsLoading == 'loading-data'
-        let ItemName = this._CurrentStockService.SearchGroup.get("ItemCategory").value + '%' || "%"
-        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
+        const ItemName = this._CurrentStockService.SearchGroup.get("ItemCategory").value + '%' || "%"
+        const StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.SearchGroup.get("StoreId").value.StoreId || 0
         setTimeout(() => {
             this.SpinLoading = true;
             this._CurrentStockService.getCurrentstockview(
@@ -610,9 +610,9 @@ export class CurrentStockComponent implements OnInit {
 
     viewgetItemwisestockReportPdf() {
         this.sIsLoading == 'loading-data'
-        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
+        const FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        const todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        const StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.ItemWiseFrom.get("StoreId").value.StoreId || 0
         setTimeout(() => {
             this.SpinLoading = true;
             //  this.AdList=true;
@@ -637,9 +637,9 @@ export class CurrentStockComponent implements OnInit {
 
     viewgetItemWisePurchaseReportPdf() {
         this.sIsLoading == 'loading-data'
-        let FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
-        let StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.dayWiseForm.get("StoreId").value.StoreId || 0
+        const FromDate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        const todate = this.datePipe.transform(this._CurrentStockService.ItemWiseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900'
+        const StoreId = this._loggedService.currentUserValue.storeId || this._CurrentStockService.dayWiseForm.get("StoreId").value.StoreId || 0
         setTimeout(() => {
             this.SpinLoading = true;
             //  this.AdList=true;
@@ -667,7 +667,7 @@ export class CurrentStockComponent implements OnInit {
 }
 
 export class CurrentStockList {
-    IssueQty: Number;
+    IssueQty: number;
     ReceivedQty: number;
     ItemName: string;
     ToStoreName: string;
@@ -691,10 +691,10 @@ export class DayWiseStockList {
 
     ItemName: string;
     ToStoreName: string;
-    IssueQty: Number;
+    IssueQty: number;
     BalanceQty: number;
     ReceivedQty: number;
-    BatchNo: Number;
+    BatchNo: number;
     BatchExpDate: number;
     UnitMRP: number;
     LedgerDate: any;
@@ -716,10 +716,10 @@ export class ItemWiseStockList {
 
     ItemName: string;
     ToStoreName: string;
-    IssueQty: Number;
+    IssueQty: number;
     BalanceQty: number;
     ReceivedQty: number;
-    BatchNo: Number;
+    BatchNo: number;
     BatchExpDate: number;
     UnitMRP: number;
     LedgerDate: any;

@@ -349,11 +349,11 @@ export class EmergencyComponent implements OnInit {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let finalReason = data.reason
+        const finalReason = data.reason
           ? data.reason + "; " + result.value
           : result.value;
 
-        let submitData = {
+        const submitData = {
           emgId: data.emgId,
           reason: finalReason,
           isCancelledBy: this._loggedService.currentUserValue.userId
@@ -396,8 +396,8 @@ export class EmergencyComponent implements OnInit {
   dataSource = new MatTableDataSource<EmergencyList>();
   AllCount:any=0;
   GetAppointdetail() {
-    let fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") //"01/01/1900";
-    let toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") //"01/01/1900";
+    const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") //"01/01/1900";
+    const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") //"01/01/1900";
 
     this.VEmgcount = 0;
     this.VOPcount = 0;
@@ -405,7 +405,7 @@ export class EmergencyComponent implements OnInit {
     this.VBillcount = 0;
     this.AllCount = 0;
 
-    let filters: any[] = [];
+    const filters: any[] = [];
 
     if (fromDateControl && toDateControl) {
       this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
@@ -443,7 +443,7 @@ export class EmergencyComponent implements OnInit {
       }
     );
 
-    let data = {
+    const data = {
       "first": 0,
       "rows": 999999,
       "sortField": "EmgId",
@@ -459,7 +459,7 @@ export class EmergencyComponent implements OnInit {
        
         this.AllCount = this.dataSource.data.length;
 
-        let today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
+        const today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
         this.VEmgcount = this.dataSource.data.filter(
           (element: any) => this.datePipe.transform(element.emgDate, "yyyy-MM-dd") === today
         ).length;
@@ -481,7 +481,7 @@ export class EmergencyComponent implements OnInit {
 export class EmergencyList {
 
   PatientName: string;
-  Date: Number;
+  Date: number;
   RegNo: number;
   MobileNo: number;
   Doctorname: number;
@@ -607,7 +607,7 @@ export class ChargesList {
   ChargesId: any
   chargesId: number;
   ServiceId: number;
-  ServiceName: String;
+  ServiceName: string;
   Price: number;
   Qty: number;
   TotalAmt: number;
@@ -615,7 +615,7 @@ export class ChargesList {
   DiscAmt: number;
   NetAmount: number;
   DoctorId: number;
-  ChargeDoctorName: String;
+  ChargeDoctorName: string;
   ChargesDate: Date;
   IsPathology: boolean;
   IsRadiology: boolean;

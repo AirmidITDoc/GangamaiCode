@@ -90,7 +90,7 @@ export class EmailComponent implements OnInit {
 
   OnSend() {
     this.isLoading = 'submit';
-    let Emailobj = {};
+    const Emailobj = {};
     Emailobj['fromEmail'] = (this.accountService.currentUserValue.storeId).toString();
     Emailobj['fromName'] = "SS Medical";
     Emailobj['ToEmail'] = this._PurchaseOrder.POEmailFrom.get("ToMailId").value || '',
@@ -106,7 +106,7 @@ export class EmailComponent implements OnInit {
     Emailobj['EmailType'] = "Purchase";
     Emailobj['id'] = 0
 
-    let submitData = {
+    const submitData = {
       "insertEamil": Emailobj
     };
     console.log(submitData);

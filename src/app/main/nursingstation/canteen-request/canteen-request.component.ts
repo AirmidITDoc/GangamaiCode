@@ -160,7 +160,7 @@ export class CanteenRequestComponent implements OnInit {
 
     GetDetails(data) {
         console.log(data)
-        let reqId = String(data.reqId)
+        const reqId = String(data.reqId)
         this.gridConfig1 = {
             apiUrl: "CanteenRequest/CanteenRequestList",
             columnsList: [
@@ -190,7 +190,7 @@ export class CanteenRequestComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur(); 
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCanteenRequestComponent,
             {
                 maxWidth: "95vw",
@@ -205,7 +205,7 @@ export class CanteenRequestComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -225,7 +225,7 @@ export class CanteenRequestComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                let sub={
+                const sub={
                     reqDetId:data.reqId
 
                 }
@@ -249,7 +249,7 @@ export class CanteenRequestComponent implements OnInit {
 
 
 export class CanteenList {
-    IndentNo: Number;
+    IndentNo: number;
     IndentDate: number;
     FromStoreName: string;
     ToStoreName: string;

@@ -46,7 +46,7 @@ export class NewHeadMasterComponent {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.HeadForm.invalid) {
         for (const controlName in this.HeadForm.controls) {
           if (this.HeadForm.controls[controlName].invalid) {

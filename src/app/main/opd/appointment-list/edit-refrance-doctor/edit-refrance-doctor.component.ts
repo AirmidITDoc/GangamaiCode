@@ -51,7 +51,7 @@ export class EditRefranceDoctorComponent implements OnInit {
         this.onClear(true);
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.ReferdrForm.invalid) {
         for (const controlName in this.ReferdrForm.controls) {
           if (this.ReferdrForm.controls[controlName].invalid) { invalidFields.push(`Edit Doctor Form: ${controlName}`); }

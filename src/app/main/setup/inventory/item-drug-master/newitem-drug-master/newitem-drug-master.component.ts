@@ -40,7 +40,7 @@ export class NewitemDrugMasterComponent {
         this.onClear(true);
       });
     } {
-      let invalidFields = [];
+      const invalidFields = [];
       if (this.drugTypeForm.invalid) {
         for (const controlName in this.drugTypeForm.controls) {
           if (this.drugTypeForm.controls[controlName].invalid) {

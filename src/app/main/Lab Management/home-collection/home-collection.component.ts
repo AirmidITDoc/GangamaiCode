@@ -208,7 +208,7 @@ export class HomeCollectionComponent {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
+        const submitData = {
           homeCollectionId: data.homeCollectionId,
           isCancelledBy: this._loggedService.currentUserValue.userId,
           cancelReason: result.value

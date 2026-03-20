@@ -4,7 +4,7 @@ import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PharmacypayipadvmodeService {
     myform: FormGroup;
@@ -21,14 +21,14 @@ export class PharmacypayipadvmodeService {
     createBankForm(): FormGroup {
         return this._formBuilder.group({
             bankId: [0],
-            bankName: ["", 
+            bankName: ["",
                 [
                     // Validators.required,
                     // Validators.maxLength(50),
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
