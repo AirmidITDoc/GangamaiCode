@@ -96,7 +96,7 @@ export class RolePermissionComponent implements OnInit {
     hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
 
     ngOnInit(): void {
-        
+
         if (this.data) {
             this.roleId = this.data.roleId;
             // debugger
@@ -126,7 +126,7 @@ export class RolePermissionComponent implements OnInit {
                 }
             }
         }
-        const objMatchedNode =this.dataSource["_flattenedData"].value.find(t => t.menuId == obj.menuId);// this.dataSource.data.find(x => x["menuId"] == obj.menuId);
+        const objMatchedNode = this.dataSource["_flattenedData"].value.find(t => t.menuId == obj.menuId);// this.dataSource.data.find(x => x["menuId"] == obj.menuId);
         if (objMatchedNode)
             objMatchedNode[proptype] = $event.checked;
     }
@@ -139,7 +139,7 @@ export class RolePermissionComponent implements OnInit {
     onSubmit() {
         const data = this.dataSource["_flattenedData"].value.map(obj => ({ ...obj, RoleId: this.roleId }));
         this._RoleTemplateService.savePermission(data).subscribe((Menu) => {
-           this.dialogRef.close()
+            this.dialogRef.close()
         });
     }
 

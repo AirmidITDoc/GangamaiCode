@@ -1,26 +1,19 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { Overlay, ToastrService } from 'ngx-toastr';
-import { NewTallyComponent } from './new-tally/new-tally.component';
-import { TallyInterfaceService } from './tally-interface.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
-import { DatePipe } from '@angular/common';
-import { map, Observable, startWith } from 'rxjs';
-import { FormGroup } from '@angular/forms';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ConfigService } from 'app/core/services/config.service';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { Overlay, ToastrService } from 'ngx-toastr';
+import { TallyInterfaceService } from './tally-interface.service';
 
 
 @Component({
@@ -98,7 +91,7 @@ export class TallyInterfaceComponent implements OnInit {
     rl_name: any = ""
     rPBillNo: any = "%"
 
-   
+
 
     constructor(public _OPListService: TallyInterfaceService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe,
@@ -428,17 +421,17 @@ export class TallyInterfaceComponent implements OnInit {
 
     allPurchaseColumns = [
         { heading: "Grn Date", key: "grnDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-        { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA' ,width: 200, },
+        { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200, },
         { heading: "Grn No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "PTR", key: "ptr", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cgst(%)", key: "cgstPer", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-        { heading: "Cgst Amt", key: "cgstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 90  },
-        { heading: "Sgst(%)", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA', width: 90  },
-        { heading: "Sgst Amt", key: "sgstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 90 },
-        { heading: "Igst(%)", key: "igstPer", sort: true, align: 'left', emptySign: 'NA', width: 90  },
-        { heading: "Igst Amt", key: "igstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 90  },
+        { heading: "Cgst Amt", key: "cgstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 90 },
+        { heading: "Sgst(%)", key: "sgstPer", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Sgst Amt", key: "sgstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 90 },
+        { heading: "Igst(%)", key: "igstPer", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "Igst Amt", key: "igstAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 90 },
         { heading: "Vat Amount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Dis Amount", key: "discountAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cr.DrAmount", key: "crDrAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

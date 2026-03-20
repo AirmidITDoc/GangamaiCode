@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from "@angular/material/chips";
 import { MatRippleModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -40,13 +41,12 @@ import { CreateUserComponent } from './create-user.component';
 import { CreateUserService } from './create-user.service';
 import { NewcreateUserComponent } from './newcreate-user/newcreate-user.component';
 import { NUserComponent } from './nuser/nuser.component';
-import { MatChipsModule } from "@angular/material/chips";
 
 const routes: Routes = [
-  {
-      path: '**',
-      component: CreateUserComponent,
-  },
+    {
+        path: '**',
+        component: CreateUserComponent,
+    },
 ];
 @NgModule({
     declarations: [CreateUserComponent, ChangePasswordComponent, UserDetailComponent, MyprofileComponent, NewcreateUserComponent, NUserComponent],

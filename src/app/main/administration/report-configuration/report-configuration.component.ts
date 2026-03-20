@@ -5,12 +5,12 @@ import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { ToastrService } from 'ngx-toastr';
-import { NewReportConfigurationComponent } from './new-report-configuration/new-report-configuration.component';
-import { ReportConfigurationService } from './report-configuration.service';
-import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { ToastrService } from 'ngx-toastr';
+import { NewReportConfigurationComponent } from './new-report-configuration/new-report-configuration.component';
+import { NewreportConfigComponent } from './newreport-config/newreport-config.component';
+import { ReportConfigurationService } from './report-configuration.service';
 
 @Component({
     selector: 'app-report-configuration',
@@ -20,7 +20,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
     animations: fuseAnimations,
 })
 export class ReportConfigurationComponent implements OnInit {
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ReportConfig, permissionType.Add);
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ReportConfig, permissionType.Add);
 
     myform: FormGroup;
     autocompleteModedReport: string = "ReportConfig";
@@ -71,7 +71,7 @@ export class ReportConfigurationComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.ReportConfig,
+        permissionCode: permissionCodes.ReportConfig,
         apiUrl: "ReportConfig/NewList", //"ReportConfig/List",
         columnsList: this.allcolumns,
         sortField: "ReportId",
@@ -96,7 +96,7 @@ export class ReportConfigurationComponent implements OnInit {
         this.getfilterdata();
     }
 
-     getfilterdata() {
+    getfilterdata() {
         debugger
         this.gridConfig = {
             apiUrl: "ReportConfig/NewList",
@@ -109,8 +109,8 @@ export class ReportConfigurationComponent implements OnInit {
             ]
         }
         // setTimeout(() => {
-            this.grid.gridConfig = this.gridConfig;
-            this.grid.bindGridData();            
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
         // }, 100);
         console.log("GridConfig:", this.gridConfig);
     }

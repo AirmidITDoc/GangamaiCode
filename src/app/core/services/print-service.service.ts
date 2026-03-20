@@ -15,7 +15,7 @@ import { Router } from "@angular/router";
 })
 export class PrintServiceService {
     isPritning = false;
-    constructor(private router: Router) {}
+    constructor(private router: Router) { }
 
     printDocument(documentName: string, documentData: string[]) {
         this.isPritning = true;

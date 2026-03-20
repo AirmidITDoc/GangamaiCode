@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { BarcodeConfigService } from './barcodeconfig.service';
 import { NewBarcodeComponent } from './new-barcode/new-barcode.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-barcode-config',
@@ -19,14 +19,14 @@ import { permissionCodes } from 'app/main/shared/model/permission.model';
 })
 export class BarcodeConfigComponent implements OnInit {
     //   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RoleTemplateMaster, permissionType.Add);
-          
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     autocompleteModeTemplateCat: string = "TemplateDescCategory";
     categoryid = ""
     myformSearch: FormGroup;
 
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.BarcodeConfig,
+        permissionCode: permissionCodes.BarcodeConfig,
         apiUrl: "BarcodeConfig/List",
         columnsList: [
             { heading: "Template Code", key: "templateCode", sort: true, align: 'left', emptySign: 'NA' },

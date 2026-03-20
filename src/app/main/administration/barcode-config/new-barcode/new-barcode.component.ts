@@ -2,8 +2,8 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { ToastrService } from 'ngx-toastr';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
 import { BarcodeConfigService } from '../barcodeconfig.service';
 
 @Component({
@@ -54,7 +54,7 @@ export class NewBarcodeComponent implements OnInit {
             height: ['', [Validators.required]],
             padding: [''],
             margin: [''],
-            barcodeData:[''],
+            barcodeData: [''],
             isActive: [true]
         })
     }

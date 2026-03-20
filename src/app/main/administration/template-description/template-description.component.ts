@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { ToastrService } from 'ngx-toastr';
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { TemplatedescriptionService } from './templatedescription.service';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
     selector: 'app-template-description',
@@ -23,10 +23,10 @@ export class TemplateDescriptionComponent implements OnInit {
     autocompleteModeTemplateCat: string = "TemplateDescCategory";
     categoryid = ""
     myformSearch: FormGroup;
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TemplateDescription, permissionType.Add);
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TemplateDescription, permissionType.Add);
 
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.TemplateDescription,
+        permissionCode: permissionCodes.TemplateDescription,
         apiUrl: "TemplateDescriptionConfig/List",
         columnsList: [
             { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
@@ -63,8 +63,8 @@ export class TemplateDescriptionComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-        this.myformSearch=this.filterForm();
-     }
+        this.myformSearch = this.filterForm();
+    }
 
     onEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

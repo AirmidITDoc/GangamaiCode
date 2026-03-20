@@ -1,10 +1,10 @@
-import { LoaderService } from './loader.service';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { LoaderService } from './loader.service';
 
 @Component({
-  selector: 'app-loader',
-  template: `<div [hidden]="!show"  class="spinner-load-wrapper">
+    selector: 'app-loader',
+    template: `<div [hidden]="!show"  class="spinner-load-wrapper">
                 <div class="spinner">
                     <div class="inner">
                         <div class="gap"></div>
@@ -17,32 +17,32 @@ import { Subscription } from 'rxjs';
                     </div>
                 </div>
             </div>`,
-  //styleUrls: ['./loader.component.scss']
+    //styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent implements OnInit, OnDestroy {
-  show = true;
-  private _subLoader: Subscription;
+    show = true;
+    private _subLoader: Subscription;
 
-  constructor(public loader: LoaderService, private cd: ChangeDetectorRef) { }
+    constructor(public loader: LoaderService, private cd: ChangeDetectorRef) { }
 
-  ngOnInit() {
-    this._subLoader = this.loader.loaderState.subscribe((showState: boolean) => {
-      if (showState) {
-        this.show = showState;
-        this.cd.detectChanges();
-      } else {
-        setTimeout(() => {
-          this.show = showState;
-          this.cd.detectChanges();
-        }, 500);
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    if (this._subLoader) {
-      this._subLoader.unsubscribe();
+    ngOnInit() {
+        this._subLoader = this.loader.loaderState.subscribe((showState: boolean) => {
+            if (showState) {
+                this.show = showState;
+                this.cd.detectChanges();
+            } else {
+                setTimeout(() => {
+                    this.show = showState;
+                    this.cd.detectChanges();
+                }, 500);
+            }
+        });
     }
-  }
+
+    ngOnDestroy() {
+        if (this._subLoader) {
+            this._subLoader.unsubscribe();
+        }
+    }
 
 }

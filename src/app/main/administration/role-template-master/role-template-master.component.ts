@@ -5,43 +5,43 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { RolePermissionComponent } from "../role-permission/role-permission.component";
 import { NewRoletemplateComponent } from "./new-roletemplate/new-roletemplate.component";
 import { RoleTemplateService } from "./role-template.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 @Component({
-  selector: 'app-role-template-master',
-  templateUrl: './role-template-master.component.html',
-  styleUrls: ['./role-template-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-role-template-master',
+    templateUrl: './role-template-master.component.html',
+    styleUrls: ['./role-template-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class RoleTemplateMasterComponent implements OnInit {
     myformSearch: FormGroup;
-      IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RoleTemplateMaster, permissionType.Add);
-       
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RoleTemplateMaster, permissionType.Add);
+
     constructor(
         public _RoleTemplateService: RoleTemplateService, private _formBuilder: UntypedFormBuilder,
-        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
+        public toastr: ToastrService, public _matDialog: MatDialog, public permissionService: PagePermissionService,
     ) { }
 
-     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-     allcolumns= [
+
+    allcolumns = [
         { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
-         { heading: "IsActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
                     }
-                }, 
+                },
                 {
                     action: gridActions.delete, callback: (data: any) => {
                         this._RoleTemplateService.deactivateTheStatus(data.roleId).subscribe((response: any) => {
@@ -53,31 +53,31 @@ export class RoleTemplateMasterComponent implements OnInit {
                     action: gridActions.view, callback: (data: any) => {
                         this.onPermission(data.roleId);
                     }
-                }, 
+                },
             ]
         } //Action 1-view, 2-Edit,3-delete
     ];
 
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.RoleTemplateMaster,
+        permissionCode: permissionCodes.RoleTemplateMaster,
         apiUrl: "Administration/RoleMasterList",
-        columnsList:this.allcolumns,
+        columnsList: this.allcolumns,
         sortField: "RoleId",
         sortOrder: 0,
         filters: [
             { fieldName: "RoleName", fieldValue: "%", opType: OperatorComparer.Contains }
         ]
     }
-    
+
     ngOnInit(): void {
         this.myformSearch = this.filterForm();
     }
-    
+
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         const that = this;
         const dialogRef = this._matDialog.open(NewRoletemplateComponent,
             {
@@ -93,59 +93,59 @@ export class RoleTemplateMasterComponent implements OnInit {
         });
     }
 
-    onPermission(roleId){
-            console.log(roleId)
-            const dialogRef = this._matDialog.open(RolePermissionComponent,
+    onPermission(roleId) {
+        console.log(roleId)
+        const dialogRef = this._matDialog.open(RolePermissionComponent,
             {
                 maxWidth: "80vw",
                 height: '100vh',
-                maxHeight:'100vh',
+                maxHeight: '100vh',
                 width: '100%',
-                data : {
-                    roleId : roleId,
+                data: {
+                    roleId: roleId,
                 }
             });
-            dialogRef.afterClosed().subscribe(result => {
-                // this. getregistrationList();
-            });
+        dialogRef.afterClosed().subscribe(result => {
+            // this. getregistrationList();
+        });
     }
 
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
-          RoleName: []              
+            RoleName: []
         });
     }
 
-Clearfilter(event) {
-    console.log(event)
-    if (event == 'Rolename')
-        this.myformSearch.get('RoleName').setValue("")
-   
-    this.onChangeFirst();
-  }
-  Rolename:any
-  onChangeFirst() {
-    this.Rolename = this.myformSearch.get('RoleName').value
-   
-    this.getfilterdata();
-}
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'Rolename')
+            this.myformSearch.get('RoleName').setValue("")
 
-getfilterdata(){
-    debugger
-this.gridConfig = {
-    
-    apiUrl: "Administration/RoleMasterList",
-    columnsList:this.allcolumns,
-    sortField: "RoleId",
-    sortOrder: 0,
-    filters:  [
-        { fieldName: "RoleName", fieldValue: this.Rolename, opType: OperatorComparer.Contains }
-    ]
-}
-this.grid.gridConfig = this.gridConfig;
-this.grid.bindGridData(); 
-}
+        this.onChangeFirst();
+    }
+    Rolename: any
+    onChangeFirst() {
+        this.Rolename = this.myformSearch.get('RoleName').value
+
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        debugger
+        this.gridConfig = {
+
+            apiUrl: "Administration/RoleMasterList",
+            columnsList: this.allcolumns,
+            sortField: "RoleId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "RoleName", fieldValue: this.Rolename, opType: OperatorComparer.Contains }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
 
 }
 

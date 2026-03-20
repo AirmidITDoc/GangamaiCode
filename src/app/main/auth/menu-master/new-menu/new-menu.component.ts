@@ -17,8 +17,8 @@ export class NewMenuComponent implements OnInit {
     menuForm: FormGroup;
     saveflag: boolean = false;
     isActive: boolean = true;
-    isDisplay: boolean=true;
-    autocompleteModeUPID:string="MenuMain";
+    isDisplay: boolean = true;
+    autocompleteModeUPID: string = "MenuMain";
 
     constructor(
         public _MenuMasterService: MenuMasterService,
@@ -28,7 +28,7 @@ export class NewMenuComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        
+
         this.menuForm = this._MenuMasterService.createMenuForm();
         console.log("EditData:", this.data)
         if ((this.data?.id ?? 0) > 0) {
@@ -44,32 +44,32 @@ export class NewMenuComponent implements OnInit {
                 tableNames: this.data?.tableNames,
             };
             this.isActive = this.data.isActive
-            this.isDisplay=this.data.isDisplay
+            this.isDisplay = this.data.isDisplay
             this.menuForm.patchValue(m_data);
         }
     }
 
     onSubmit() {
-        
+
         this.saveflag = true;
 
         if (!this.menuForm.invalid) {
 
             console.log("MenuMaster json:", this.menuForm.value);
-      
+
             this._MenuMasterService.menuMasterSave(this.menuForm.value).subscribe((response) => {
-              this.toastr.success(response.message);
-              this.onClear(true);
+                this.toastr.success(response.message);
+                this.onClear(true);
             }, (error) => {
-              this.toastr.error(error.message);
+                this.toastr.error(error.message);
             });
-          }
-          else {
+        }
+        else {
             this.toastr.warning('please check from is invalid', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
+                toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-          }
+        }
     }
 
     onClear(val: boolean) {
