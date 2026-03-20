@@ -38,7 +38,7 @@ export class NewDashboardComponent implements OnInit {
     this.getdrwiseList();
 
   }
- 
+
   onDateChange() {
     // Reload all data when dates change, only if both dates are set
     if (this.fromDate && this.toDate) {
@@ -61,9 +61,9 @@ export class NewDashboardComponent implements OnInit {
   loadDashboardData() {
 
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
-    this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
+      this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
 
-    this.getHomeDashboardAPI();
+      this.getHomeDashboardAPI();
     this.getDashOPUserWiseRevenue();
     this.getDashOPDepatmentWiseCount();
     this.alldashdata()
@@ -72,22 +72,22 @@ export class NewDashboardComponent implements OnInit {
     // Re-initialize charts with new date range
     setTimeout(() => {
       if (document.getElementById('PatientOverviewDoughnut')) {
-        this.patientOverviewChart = this.getPatientOverviewChart();
+        // this.patientOverviewChart = this.getPatientOverviewChart();
       }
       if (document.getElementById('OPDDrOverviewDoughnut')) {
         this.OPDDrOverviewDoughnut = this.getDrPatientOverviewChart();
       }
       if (document.getElementById('PatientOverviewDoughnut')) {
-      //   if (this.PatientOverviewDoughnut) {
-      //   this.PatientOverviewDoughnut.destroy();
-      //  }
+        //   if (this.PatientOverviewDoughnut) {
+        //   this.PatientOverviewDoughnut.destroy();
+        //  }
         // this.PatientOverviewDoughnut = this.getPatientOverviewChart();
       }
     });
   }
 
 
-
+  public AgestatusPieChart: any
   // Comprehensive Chart Popover properties
   chartPopoverVisible = false;
   chartPopoverData: any[] = [];
@@ -106,19 +106,25 @@ export class NewDashboardComponent implements OnInit {
   metrics = [
     { label: 'Registrations', value: 0, color: 'cream', icon: 'user-plus' },
     { label: 'Appointments', value: 0, color: 'cream', icon: 'calendar' },
+    { label: 'Checked In', value: 0, color: 'cream', icon: 'check-circle' },
+    { label: 'Checked-Out', value: 0, color: 'cream', icon: 'logout' },
+    { label: 'Pending & Waiting', value: 0, color: 'cream', icon: 'hourglass' },
+    { label: 'ER to OP.', value: 0, color: 'cream', icon: 'ambulance' },
+
     { label: 'Total Admission', value: 0, color: 'green', icon: 'assignment' },
     { label: 'Discharge', value: 0, color: 'red', icon: 'logout' },
     { label: 'Total Company', value: 0, color: 'cream', icon: 'ambulance' },
-      { label: 'Checked In', value: 0, color: 'cream', icon: 'check-circle' },
-    { label: 'Checked-Out', value: 0, color: 'cream', icon: 'logout' },
-    { label: 'Pending & Waiting', value: 0, color: 'cream', icon: 'hourglass' },
-    { label: 'ER to OP.', value: 0, color: 'cream', icon: 'ambulance' }
+
   ];
   financeSummary = [
-    { label: 'Today Revenue', value: 0, color: 'green', icon: 'check-circle' },
+    { label: 'Collection', value: 0, color: 'green', icon: 'check-circle' },
+    { label: 'Discount', value: 0, color: 'rose', icon: 'hourglass' },
     { label: 'Pending Dues', value: 0, color: 'rose', icon: 'hourglass' },
-    { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' },
-    { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' }
+
+    { label: 'Revenue', value: 0, color: 'rose', icon: 'hourglass' },
+    { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' },
+    { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' }
+
   ];
 
   paymentData = [
@@ -150,8 +156,8 @@ export class NewDashboardComponent implements OnInit {
     const payload = {
       searchFields: [
         { "fieldName": 'UnitId', "fieldValue": '0', "opType": 'Equals' },
-        { "fieldName": "FromDate", "fieldValue": this.fromDate,"opType": "Equals"},
-        { "fieldName": "ToDate","fieldValue": this.toDate,"opType": "Equals" }
+        { "fieldName": "FromDate", "fieldValue": this.fromDate, "opType": "Equals" },
+        { "fieldName": "ToDate", "fieldValue": this.toDate, "opType": "Equals" }
       ],
       mode: 'HomeDashboardAPI'
     };
@@ -159,31 +165,35 @@ export class NewDashboardComponent implements OnInit {
 
       let apiData = res && res.length ? res[0] : {};
       console.log(apiData)
+      
       this.metrics = [
         { label: 'Registrations', value: apiData?.RegistrationCount || 0, color: 'cream', icon: 'user-plus' },
         { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'cream', icon: 'calendar' },
-        { label: 'Total Admission', value: apiData?.TotalAdmittedPatientCount || 0, color: 'cream', icon: 'assignment' },
-        { label: 'Discharge', value: apiData?.TodayDischargePatient || 0, color: 'cream', icon: 'logout' },
-        { label: 'Total Company', value: apiData?.CompnayPatient || 0, color: 'cream', icon: 'ambulance' },
 
         { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'cream', icon: 'check-circle' },
         { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'cream', icon: 'logout' },
         { label: 'Pending & Waiting', value: 0, color: 'cream', icon: 'hourglass' }, // If API has a matching field, set it.
-        { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'cream', icon: 'ambulance' }
+        { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'cream', icon: 'ambulance' },
+        { label: 'Total Admission', value: apiData?.TotalAdmittedPatientCount || 0, color: 'cream', icon: 'assignment' },
+        { label: 'Discharge', value: apiData?.TodayDischargePatient || 0, color: 'cream', icon: 'logout' },
+        { label: 'Total Company', value: apiData?.CompnayPatient || 0, color: 'cream', icon: 'ambulance' },
+
+
       ];
 
     }, err => {
       this.metrics = [
         { label: 'Registrations', value: 0, color: 'cream', icon: 'user-plus' },
         { label: 'Appointments', value: 0, color: 'cream', icon: 'calendar' },
-        { label: 'Total Admission', value: 0, color: 'cream', icon: 'assignment' },
-        { label: 'Discharge', value: 0, color: 'cream', icon: 'logout' },
-        { label: 'Total Company', value: 0, color: 'cream', icon: 'ambulance' },
 
         { label: 'Checked In', value: 0, color: 'cream', icon: 'check-circle' },
         { label: 'Checked-Out', value: 0, color: 'cream', icon: 'logout' },
         { label: 'Pending & Waiting', value: 0, color: 'cream', icon: 'hourglass' },
-        { label: 'ER to OP.', value: 0, color: 'cream', icon: 'ambulance' }
+        { label: 'ER to OP.', value: 0, color: 'cream', icon: 'ambulance' },
+        { label: 'Total Admission', value: 0, color: 'cream', icon: 'assignment' },
+        { label: 'Discharge', value: 0, color: 'cream', icon: 'logout' },
+        { label: 'Total Company', value: 0, color: 'cream', icon: 'ambulance' },
+
       ];
     });
   }
@@ -195,7 +205,7 @@ export class NewDashboardComponent implements OnInit {
 
       this.dashboardService.allDashboarddata({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
         this.DailydashData = res;
-
+debugger
         if (this.DailydashData) {
 
           this.patientStats = {
@@ -204,7 +214,8 @@ export class NewDashboardComponent implements OnInit {
             reference: this.DailydashData.patientSummary.referencePatients,
             total: this.DailydashData.patientSummary.totalPatients
           };
-debugger
+          // this.paymentData= this.DailydashData.paymentOverview
+ 
 
           this.trendSeries = [
             {
@@ -249,7 +260,7 @@ debugger
       })
 
 
-         }
+  }
 
   getDashOPUserWiseRevenue() {
     const payload = {
@@ -279,31 +290,39 @@ debugger
     }
       ;
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-debugger
+      
       let apiData = res && res.length ? res[0] : {};
       console.log("==api data", apiData);
       console.log(res)
 
-      if(apiData){
-      this.financeSummary = [
-        { label: 'Today Revenue',value: apiData && apiData.Net_Revenue > 0 ? apiData.Net_Revenue : 0, color: 'mint', icon: 'check-circle' },
-        { label: 'Pending Dues', value:  apiData && apiData.PendingDues > 0 ?apiData?.PendingDues : 0, color: 'rose', icon: 'hourglass' },
-        { label: 'Refunds', value:  apiData && apiData.RefundAmount > 0 ?apiData?.RefundAmount : 0, color: 'sky', icon: 'logout' },
-        { label: 'Advances', value:  apiData && apiData.AdvPay > 0 ?apiData?.AdvPay : 0, color: 'butter', icon: 'user-plus' }
-      ];
-      this.paymentData = [
-        { name: 'Cash', value: apiData?.CashPay || 0 },
-        { name: 'Online', value: apiData?.OnlinePay || 0 },
-        { name: 'Card', value: apiData?.CardPay || 0 },
-        { name: 'Cheque', value: apiData?.ChequePay || 0 }
-      ];
-    }
+
+      if (apiData) {
+        this.financeSummary = [
+          { label: 'Collection', value: apiData && apiData.Total_Revenue > 0 ? apiData.Total_Revenue : 0, color: 'mint', icon: 'check-circle' },
+          { label: 'Discount', value: apiData && apiData.DiscAmount > 0 ? apiData.DiscAmount : 0, color: 'rose', icon: 'hourglass' },
+          { label: 'Pending Dues', value: apiData && apiData.PendingDues > 0 ? apiData?.PendingDues : 0, color: 'rose', icon: 'hourglass' },
+          { label: 'Revenue', value: apiData && apiData.Net_Revenue > 0 ? apiData?.Net_Revenue : 0, color: 'mint', icon: 'user-plus' },
+          { label: 'Advances', value: apiData && apiData.AdvPay > 0 ? apiData?.AdvPay : 0, color: 'butter', icon: 'user-plus' },
+          { label: 'Refunds', value: apiData && apiData.RefundAmount > 0 ? apiData?.RefundAmount : 0, color: 'rose', icon: 'logout' },
+
+        ];
+        this.paymentData = [
+          { name: 'Cash', value: apiData?.CashPay || 0 },
+          { name: 'Online', value: apiData?.OnlinePay || 0 },
+          { name: 'Card', value: apiData?.CardPay || 0 },
+          { name: 'Cheque', value: apiData?.ChequePay || 0 }
+        ];
+      }
     }, err => {
       this.financeSummary = [
-        { label: 'Today Revenue', value: 0, color: 'mint', icon: 'check-circle' },
+
+        { label: 'Collection', value: 0, color: 'green', icon: 'check-circle' },
+        { label: 'Discount', value: 0, color: 'rose', icon: 'hourglass' },
         { label: 'Pending Dues', value: 0, color: 'rose', icon: 'hourglass' },
-        { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' },
-        { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' }
+
+        { label: 'Revenue', value: 0, color: 'rose', icon: 'hourglass' },
+        { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' },
+        { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' }
       ];
       this.paymentData = [
         { name: 'Cash', value: 0 },
@@ -338,14 +357,17 @@ debugger
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : {};
       console.log(res)
-      this.departmentVisits = [
-        { name: 'Medicine', value: apiData?.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
-        { name: 'Gastrologist', value: apiData?.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
-        { name: 'Pathologist', value: apiData?.find(d => d.name.toLowerCase() === 'pathologist'.toLowerCase())?.value || 0 },
-        { name: 'Physician', value: apiData?.find(d => d.name.toLowerCase() === 'Physician'.toLowerCase())?.value || 0 },
-        { name: 'Plastic Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'plastic surgeon'.toLowerCase())?.value || 0 },
-        { name: 'Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'surgeon'.toLowerCase())?.value || 0 },
-      ];
+
+      debugger
+      this.departmentVisits =apiData
+      // this.departmentVisits = [
+      //   { name: 'Medicine', value: apiData?.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
+      //   { name: 'Gastrologist', value: apiData?.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
+      //   { name: 'Pathologist', value: apiData?.find(d => d.name.toLowerCase() === 'pathologist'.toLowerCase())?.value || 0 },
+      //   { name: 'Physician', value: apiData?.find(d => d.name.toLowerCase() === 'Physician'.toLowerCase())?.value || 0 },
+      //   { name: 'Plastic Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'plastic surgeon'.toLowerCase())?.value || 0 },
+      //   { name: 'Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'surgeon'.toLowerCase())?.value || 0 },
+      // ];
 
     }, err => {
       this.departmentVisits = [
@@ -361,15 +383,20 @@ debugger
 
 
   ageData = [
-    { name: '0-15 Years',  value: 0 },
+    { name: '0-15 Years', value: 0 },
     { name: '16-25 Years', value: 0 },
     { name: '26-40 Years', value: 0 },
-    { name: '41-60 Years', value: 0  },
-    { name: '60+ Years',   value: 0  }
+    { name: '41-60 Years', value: 0 },
+    // { name: '60+ Years', value: 0 }
   ];
 
 
   getDashRegistrationAgeWiseCount() {
+  //       if(this.modalityData1.length)
+  //       this.modalityData1 = [
+  //   { name: '', value: 0 }
+  // ];
+      
     const payload = {
       "searchFields": [
         {
@@ -392,21 +419,81 @@ debugger
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : {};
-      // return apiData;
- debugger
-       this.ageData = [
-        { name: '0-15 Years', value: apiData[0].value || 0 },
-        { name: '16-25 Years', value: apiData[1].value || 0},
-        { name: '16-25 Years', value: apiData[2].value || 0 },
-        { name: '41-60 Years', value: apiData[3].value || 0 },
-         { name: '60+ Years', value: apiData[4].value || 0 }
-      ];
+          if (apiData) {
+
+this.modalityData1=apiData
+                    // this.modalityData1 = [
+                    //     ...this.modalityData1,
+                    //     ...apiData.map(item => ({
+
+                    //         name: item.name,
+                    //         value: item.value
+                    //     }))
+                    // ];
+                }
+
+      // this.ageData = [
+      //   { name: '0-15 Years', value: apiData[0].value || 0 },
+      //   { name: '16-25 Years', value: apiData[1].value || 0 },
+      //   { name: '26-40', value: apiData[2].value || 0 },
+      //   { name: '41-60 Years', value: apiData[3].value || 0 },
+      //   { name: '60+ Years', value: apiData[4].value || 0 }
+      // ];
 
     }, err => {
       return []
     })
-  }
 
+    if (this.modalityData1.length)
+      this.AgestatusPieChart = this.getAgeStatusPieChart()
+  }
+  getAgeStatusPieChart() {
+    if (this.AgestatusPieChart) {
+      this.AgestatusPieChart.destroy();
+    }
+
+
+    return new Chart('AgestatusPieChart', {
+      // this.pathologyStatusPieChart = new Chart('pathologyStatusPieChart', {
+
+      type: 'doughnut',
+      data: {
+        labels: this.modalityData1.map(d => d.name),
+        datasets: [
+          {
+            backgroundColor: ['#497df7', '#4c52f8', '#1347b0', '#9827e4'],
+            data: this.modalityData1.map(d => d.value),
+            borderWidth: 2
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: { size: 12 },
+              padding: 15
+            }
+          },
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: function (context) {
+                let label = context.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += context.parsed + ' Age Type';
+                return label;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
 
   getDashDrWiseCount() {
     const payload = {
@@ -458,13 +545,15 @@ debugger
         return 'dashboard';
     }
   }
-  
+
   labelFormatting(c: any): string {
     return `${c.value}`;
   }
 
   // Chart data
-  colorScheme = { domain: ['#6366f1', '#f59e0b', '#10b981', '#ec4899', '#3b82f6', '#f97316'] };
+  colorScheme = { domain: ['#a9aae5', '#87a8f4', '#8587d0', '#7498e1', '#ce95f5', '#a1f6d9', '#f7bcd9', '#3b82f6'] };
+  colorScheme1 = { domain: ['#c97efa', '#ba5cf9', '#a978c9', '#9f70c0', '#bb65f5', '#beeede', '#eea6ca', '#3b82f6'] };
+  
   chartView: [number, number] = [420, 300];
   barChartView: [number, number] = [380, 300];
 
@@ -477,7 +566,7 @@ debugger
       { source: 'Online Bookings', count: 25 },
       { source: 'Phone Appointments', count: 10 }
     ],
-    'Old Registration': [
+    'Old Registration': [,
       { source: 'Returning Patients', count: 80 },
       { source: 'Follow-up Visits', count: 30 },
       { source: 'Emergency Cases', count: 10 }
@@ -627,7 +716,7 @@ debugger
   // Chart.js doughnut chart with custom plugins
   async getPatientOverviewChart() {
 
-  
+
     const dataLabelsPlugin = {
       id: 'dataLabels',
       afterDatasetDraw: (chart: any) => {
@@ -742,7 +831,7 @@ debugger
           labels: apiData?.map(data => data.name) || [],
           datasets: [
             {
-              backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
+              backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
               data: apiData?.map(data => data.value) || []
             }
           ]
@@ -906,7 +995,7 @@ debugger
           labels: apiData?.map(data => data.name) || [],
           datasets: [
             {
-              backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
+              backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6'],
               data: apiData?.map(data => data.value) || []
             }
           ]
@@ -949,7 +1038,7 @@ debugger
     })
 
   }
-   public chargeList: drcountdata[] = [];
+  public chargeList: drcountdata[] = [];
 
   trendData: drcountdata[] = [];
   //  trendData1: Servicecharge[] = [];
@@ -961,8 +1050,13 @@ debugger
     { name: '', value: 0 }
   ];
 
+    modalityData1 = [
+    { name: '', value: 0 }
+  ];
+
+
   getdrwiseList() {
-    
+
     const payload = {
       "searchFields": [
         {
@@ -985,8 +1079,8 @@ debugger
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       this.drcountdata = res
-        this.trendData = res
-          
+      this.trendData = res
+
 
       console.log(res)
       if (this.trendData) {
@@ -1004,7 +1098,7 @@ debugger
       console.log(this.modalityData)
 
       if (this.modalityData)
-      this.DrcountChart = this.getDrBarChart();
+        this.DrcountChart = this.getDrBarChart();
 
     });
   }
@@ -1012,7 +1106,7 @@ debugger
 
   //
   getDrBarChart() {
-     if (this.DrcountChart) {
+    if (this.DrcountChart) {
       this.DrcountChart.destroy();
     }
 
@@ -1025,7 +1119,16 @@ debugger
           {
             label: 'Dr. Name',
             data: this.modalityData.map(d => d.value),
-            backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+            backgroundColor: [
+  '#bbdefb',   // very pale blue
+  '#90caf9',   // light sky blue
+  '#64b5f6',   // medium light blue
+  '#497df7',   // your bright one
+  '#6366f1',   // indigo transition
+  '#4b50f7',   // deep vivid blue
+  '#bb65f5',   // bluish purple
+  '#9c44d6'    // final vivid purple
+],
             borderRadius: 6
           }
         ]
@@ -1181,7 +1284,7 @@ debugger
         labels: ['Registrations', 'Appointments', 'Checked In', 'Checked Out', 'No Shows', 'Bills'],
         datasets: [
           {
-            backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6', '#ff9f43'],
+            backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#bb59fc', '#f966b0', '#b050a0'],
             data: opdDataArray
           }
         ]

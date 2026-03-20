@@ -133,7 +133,7 @@ export class PharmacyDashboardComponent implements OnInit {
         { category: 'Capsules', count: 0 },
         { category: 'Ointments', count: 0 }
     ];
-    colorScheme = { domain: ['#6366f1', '#f59e0b', '#10b981', '#ec4899', '#3b82f6', '#f97316'] };
+    colorScheme = { domain: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'] };
 
     // Expiring medicines - NOT affected by date filter
     expiryData = [
@@ -269,7 +269,7 @@ export class PharmacyDashboardComponent implements OnInit {
                 labels: this.expiryData.map(d => d.name),
                 datasets: [
                     {
-                        backgroundColor: ['#497df7', '#28af28', '#ff5a8a'],
+                        backgroundColor: ['#7779f8', '#4f7adf', '#4e519f', '#309afd', '#bb65f5', '#acf1da', '#bc789a', '#4d77b9','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         data: this.expiryData.map(d => d.value),
                         borderWidth: 2
                     }
@@ -594,7 +594,7 @@ export class PharmacyDashboardComponent implements OnInit {
                 labels: this.paymentModeData.map(d => d.mode),
                 datasets: [
                     {
-                        backgroundColor: ['#FF3784', '#36A2EB', '#e471fe', '#F77825', '#bdf5ac'],
+                        backgroundColor: ['#ce92f6','#ad73d4', '#754e90', '#bdbfee', '#ca80a5',  '#a8efcf', '#aedef5', '#a283f6','#5287f0',  '#a1f6d9', '#3b82f6','#ff5a8a', '#f6c542'],
                         data: this.paymentModeData.map(d => d.amount),
                     }
                 ]
@@ -637,7 +637,7 @@ export class PharmacyDashboardComponent implements OnInit {
                     {
                         label: 'Sales Count',
                         data: this.pharmacyData.topSellingMedicines.map(d => d.qty),
-                        backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6']
+                        backgroundColor: ['#bb5bfa','#a84ce5', '#813cb0', '#f08cbe', '#d7669e', '#884659', '#6ed8f5', '#68bad0', '#4d8595', '#a283f6']
                     }
                 ]
             },
@@ -666,7 +666,7 @@ export class PharmacyDashboardComponent implements OnInit {
                     {
                         label: 'Stock Value (₹)',
                         data: this.stockValueData.map(d => d.value),
-                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a']
+                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6']
                     }
                 ]
             },
@@ -698,7 +698,7 @@ export class PharmacyDashboardComponent implements OnInit {
                 labels: this.pharmacyData.patientCategoryWiseSummary.map(d => d.category),
                 datasets: [
                     {
-                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         data: this.categoryData.map(d => d.count)
                     }
                 ]
