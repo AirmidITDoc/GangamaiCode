@@ -1,140 +1,140 @@
 export interface GRNItemResponseType {
-  itemId: number;
-  itemName: string;
-  balanceQty: number;
-  hsNcode: string;
-  cgstPer: number;
-  sgstPer: number;
-  igstPer: number;
-  converFactor: string;
-  storeId: number;
-  umoId: number;
-  itemCompanyName: string;
-  formattedText: string;
-  taxPer:number;
+    itemId: number;
+    itemName: string;
+    balanceQty: number;
+    hsNcode: string;
+    cgstPer: number;
+    sgstPer: number;
+    igstPer: number;
+    converFactor: string;
+    storeId: number;
+    umoId: number;
+    itemCompanyName: string;
+    formattedText: string;
+    taxPer: number;
 }
 
 export interface GRNFormModel {
-  // Purchase Details
-  PurchaseId: string;
-  poBalQty: number;
+    // Purchase Details
+    PurchaseId: string;
+    poBalQty: number;
 
-  // Item Details
-  ItemName: GRNItemResponseType | null;
-  UOMId: string;
-  HSNCode: string;
-  BatchNo: string;
-  ConversionFactor: number;
+    // Item Details
+    ItemName: GRNItemResponseType | null;
+    UOMId: string;
+    HSNCode: string;
+    BatchNo: string;
+    ConversionFactor: number;
 
-  // Quantity Details
-  Qty: number;
-  FreeQty: number;
-  FinalTotalQty: number;
+    // Quantity Details
+    Qty: number;
+    FreeQty: number;
+    FinalTotalQty: number;
 
 
-  // Date Details
-  ExpDate: Date | string;
-  DateOfInvoice: Date;
-  PaymentDate: Date;
+    // Date Details
+    ExpDate: Date | string;
+    DateOfInvoice: Date;
+    PaymentDate: Date;
 
-  // Price Details
-  MRP: number;
-  Rate: number;
-  RatePerUnit:number;
-  LandedRate:number;
-  TotalAmount: number;
-  HospitalMRP:any;
+    // Price Details
+    MRP: number;
+    Rate: number;
+    RatePerUnit: number;
+    LandedRate: number;
+    TotalAmount: number;
+    HospitalMRP: any;
 
-  // Discount Details
-  Disc: number;
-  Disc2: number;
-  DisAmount: number;
-  DisAmount2: number;
+    // Discount Details
+    Disc: number;
+    Disc2: number;
+    DisAmount: number;
+    DisAmount2: number;
 
-  // GST Details
-  GST: number;
-  GSTAmount: number;
-  CGST: number;
-  CGSTAmount: number;
-  SGST: number;
-  SGSTAmount: number;
-  IGST: number;
-  IGSTAmount: number;
+    // GST Details
+    GST: number;
+    GSTAmount: number;
+    CGST: number;
+    CGSTAmount: number;
+    SGST: number;
+    SGSTAmount: number;
+    IGST: number;
+    IGSTAmount: number;
 
-  // Final Amount
-  NetAmount: number;
+    // Final Amount
+    NetAmount: number;
 
-  // Supplier Details
-  SupplierId: string;
-  Contact: string;
-  Mobile: string;
-  StoreId:string
+    // Supplier Details
+    SupplierId: string;
+    Contact: string;
+    Mobile: string;
+    StoreId: string
 
-  // Document Details
-  InvoiceNo: string;
-  GateEntryNo: string;
+    // Document Details
+    InvoiceNo: string;
+    GateEntryNo: string;
 
-  // Type Details
-  GRNType: string;
-  GSTType: GSTType;
-  PaymentType: string;
-  CGSTPer:any;
-  SGSTPer:any;
-  IGSTPer:any;
+    // Type Details
+    GRNType: string;
+    GSTType: GSTType;
+    PaymentType: string;
+    CGSTPer: any;
+    SGSTPer: any;
+    IGSTPer: any;
 }
 
 // Enum for GST Type Text
 export enum GSTType {
-  GST_BEFORE_DISC = 'GST Before Disc',
-  GST_AFTER_DISC = 'GST After Disc',
-  GST_ON_MRP = 'GST On MRP',
-  GST_ON_PUR_PLUS_FREE_QTY = 'GST on Pur Plus FreeQty',
-  GST_ON_MRP_PLUS_FREE_QTY = 'GST on MRP Plus FreeQty',
-  GST_AFTER_TWO_TIME_DISC = 'GST After TwoTime Disc'
+    GST_BEFORE_DISC = 'GST Before Disc',
+    GST_AFTER_DISC = 'GST After Disc',
+    GST_ON_MRP = 'GST On MRP',
+    GST_ON_PUR_PLUS_FREE_QTY = 'GST on Pur Plus FreeQty',
+    GST_ON_MRP_PLUS_FREE_QTY = 'GST on MRP Plus FreeQty',
+    GST_AFTER_TWO_TIME_DISC = 'GST After TwoTime Disc'
 }
 export interface GSTCalculation {
-  baseAmount: number;
-  cgstAmount: number;
-  sgstAmount: number;
-  igstAmount: number;
-  totalGSTAmount: number;
-  netAmount: number;
+    baseAmount: number;
+    cgstAmount: number;
+    sgstAmount: number;
+    igstAmount: number;
+    totalGSTAmount: number;
+    netAmount: number;
 }
 export interface GSTValidation {
-  readonly VALID_GST_RATES: number[];
-  readonly GST_ERROR_MESSAGE: string;
+    readonly VALID_GST_RATES: number[];
+    readonly GST_ERROR_MESSAGE: string;
 }
 
 export interface GSTCalculationResult {
-  totalAmount: number;
-  discAmount: number;
-  cgst: number;
-  sgst: number;
-  igst: number;
-  gst: number;
-  finalTotalQty: number;
-  conversionFactor: number;
-  mrp: number;
-  rate: number;
+    totalAmount: number;
+    discAmount: number;
+    cgst: number;
+    sgst: number;
+    igst: number;
+    gst: number;
+    finalTotalQty: number;
+    conversionFactor: number;
+    mrp: number;
+    rate: number;
 }
 export interface GRNFinalFormModel {
-  Status3: string;
-  Remark: string;
-  ReceivedBy: string;
-  DebitAmount: number;
-  CreditAmount: number;
-  DiscAmount: string;
-  TotalAmt: string;
-  VatAmount: string;
-  NetPayamt: string;
-  OtherCharge: number;
-  RoundingAmt: any;
-  EwayBillNo: string;
-  EwalBillDate: Date;
-  DiscAmount2: number;
+    Status3: string;
+    Remark: string;
+    ReceivedBy: string;
+    DebitAmount: number;
+    CreditAmount: number;
+    DiscAmount: string;
+    TotalAmt: string;
+    VatAmount: string;
+    NetPayamt: string;
+    OtherCharge: number;
+    RoundingAmt: any;
+    EwayBillNo: string;
+    EwalBillDate: Date;
+    DiscAmount2: number;
 }
 export enum ToastType {
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error'
+    SUCCESS = 'success',
+    WARNING = 'warning',
+    ERROR = 'error'
 }

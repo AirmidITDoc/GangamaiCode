@@ -33,22 +33,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search'; 
-import { SalesHospitalKenyaComponent } from './sales-hospital-kenya.component'; 
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { SalesHospitalKenyaComponent } from './sales-hospital-kenya.component';
 import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SalesHospitalKenyaComponent 
-  },
+    {
+        path: '**',
+        component: SalesHospitalKenyaComponent
+    },
 ];
 
 @NgModule({
     declarations: [
-        SalesHospitalKenyaComponent, 
-        SalesbatchpopupComponent 
-        
+        SalesHospitalKenyaComponent,
+        SalesbatchpopupComponent
+
     ],
     imports: [
         CommonModule,
@@ -94,7 +94,7 @@ const routes: Routes = [
     providers: [
         DatePipe
     ]
-}) 
+})
 export class SalesHospitalkenyaModule { }
 
 

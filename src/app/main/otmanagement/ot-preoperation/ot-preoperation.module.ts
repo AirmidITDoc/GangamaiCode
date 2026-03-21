@@ -21,77 +21,76 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 // import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
-import { MatDatepickerModule } from "@angular/material/datepicker";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 import { CommonModule, DatePipe } from "@angular/common";
-import { ScrollingModule } from "@angular/cdk/scrolling";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from "@angular/material/card";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatListModule } from "@angular/material/list";
+import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatSidenavModule } from "@angular/material/sidenav";
-import { OtPreoperationService } from "./ot-preoperation.service";
-import { OtPreoperationComponent } from "./ot-preoperation.component";
-import { NewOtPreoperationComponent } from './new-ot-preoperation/new-ot-preoperation.component';
 import { NewOtPostOperationComponent } from './new-ot-post-operation/new-ot-post-operation.component';
-import { DragDropModule } from "@angular/cdk/drag-drop";
+import { NewOtPreoperationComponent } from './new-ot-preoperation/new-ot-preoperation.component';
+import { OtPreoperationComponent } from "./ot-preoperation.component";
+import { OtPreoperationService } from "./ot-preoperation.service";
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: OtPreoperationComponent,
-  },
+    {
+        path: "**",
+        component: OtPreoperationComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [OtPreoperationComponent, NewOtPreoperationComponent, NewOtPostOperationComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    // MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatCardModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatTabsModule,
-    MatTooltipModule,
-    MatButtonToggleModule,
-    MatSidenavModule,
-    DragDropModule
-  ],
-  providers: [DatePipe, OtPreoperationService]
+    declarations: [OtPreoperationComponent, NewOtPreoperationComponent, NewOtPostOperationComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        // MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+        MatSidenavModule,
+        DragDropModule
+    ],
+    providers: [DatePipe, OtPreoperationService]
 })
 
 export class OtPreoperationModule { }

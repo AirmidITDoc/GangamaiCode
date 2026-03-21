@@ -28,51 +28,51 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { NewSpecimumMasterComponent } from './new-specimum-master/new-specimum-master.component';
 import { SpecimumMasterComponent } from "./specimum-master.component";
 import { SpecimumMasterService } from "./specimum-master.service";
-import { NewSpecimumMasterComponent } from './new-specimum-master/new-specimum-master.component';
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: SpecimumMasterComponent,
-  },
+    {
+        path: "**",
+        component: SpecimumMasterComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [SpecimumMasterComponent, NewSpecimumMasterComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatDividerModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-  ],
-  providers: [SpecimumMasterService, DatePipe]
+    declarations: [SpecimumMasterComponent, NewSpecimumMasterComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+    ],
+    providers: [SpecimumMasterService, DatePipe]
 })
 export class SpecimumMasterModule { }

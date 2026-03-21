@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [TaxMasterService, DatePipe]
 })
-export class TaxMasterModule {}
+export class TaxMasterModule { }

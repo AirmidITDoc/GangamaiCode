@@ -7,9 +7,9 @@ import { ToastrService } from 'ngx-toastr';
 import { PhysiotherapistScheduleService } from '../physiotherapist-schedule.service';
 
 @Component({
-  selector: 'app-physio-schedule',
-  templateUrl: './physio-schedule.component.html',
-  styleUrls: ['./physio-schedule.component.scss'],
+    selector: 'app-physio-schedule',
+    templateUrl: './physio-schedule.component.html',
+    styleUrls: ['./physio-schedule.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
@@ -18,17 +18,16 @@ export class PhysioScheduleComponent implements OnInit {
 
 
 
-  constructor(
-       public _PhysiotherapistScheduleService: PhysiotherapistScheduleService,
+    constructor(
+        public _PhysiotherapistScheduleService: PhysiotherapistScheduleService,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
         public datePipe: DatePipe,
         private commonService: PrintserviceService
-  )
-  {}
+    ) { }
 
-  ngOnInit(): void {
-    
-  }
+    ngOnInit(): void {
+
+    }
 
 }

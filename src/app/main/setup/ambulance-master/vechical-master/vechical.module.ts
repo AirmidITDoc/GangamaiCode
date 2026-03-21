@@ -23,10 +23,10 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
+import { SharedModule } from "app/main/shared/shared.module";
 import { NewVechicalComponent } from "./new-vechical/new-vechical.component";
 import { VechicalMasterComponent } from "./vechical-master.component";
 import { VechicalMasterService } from "./vechical-master.service";
-import { SharedModule } from "app/main/shared/shared.module";
 
 
 const routes: Routes = [

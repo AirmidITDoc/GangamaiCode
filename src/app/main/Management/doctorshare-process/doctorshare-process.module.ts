@@ -37,17 +37,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
+import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { DoctorshareProcessComponent } from './doctorshare-process.component';
-import { SharedModule } from 'app/main/shared/shared.module';
 
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: DoctorshareProcessComponent,
-  },
+    {
+        path: "**",
+        component: DoctorshareProcessComponent,
+    },
 ];
 
 @NgModule({

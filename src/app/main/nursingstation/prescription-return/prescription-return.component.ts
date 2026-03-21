@@ -3,16 +3,15 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@a
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from 'ngx-toastr';
-import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
-import { PrescriptionReturnService } from './prescription-return.service';
-import Swal from 'sweetalert2';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
+import { PrescriptionReturnService } from './prescription-return.service';
 @Component({
     selector: 'app-prescription-return',
     templateUrl: './prescription-return.component.html',
@@ -21,8 +20,8 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
     animations: fuseAnimations
 })
 export class PrescriptionReturnComponent implements OnInit {
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingPrescription, permissionType.Add);
-         
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingPrescription, permissionType.Add);
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
     regNo: any = ""
@@ -43,8 +42,8 @@ export class PrescriptionReturnComponent implements OnInit {
     }
 
     allColumns2 = [
-        { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
-        { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 170},
+        { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 170 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -75,7 +74,7 @@ export class PrescriptionReturnComponent implements OnInit {
         permissionCode: permissionCodes.NursingPrescription,
         apiUrl: "IPPrescription/IPPrescriptionReturnList",
         columnsList: this.allColumns2,
-       
+
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
@@ -89,7 +88,7 @@ export class PrescriptionReturnComponent implements OnInit {
 
     constructor(public _PrescriptionReturnService: PrescriptionReturnService, public _matDialog: MatDialog,
         public toastr: ToastrService,
-        private commonService: PrintserviceService,public permissionService: PagePermissionService,
+        private commonService: PrintserviceService, public permissionService: PagePermissionService,
         public datePipe: DatePipe) { }
     ngOnInit(): void {
     }
@@ -221,8 +220,8 @@ export class PrescriptionReturnComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                const sub={
-                    presReId:data.presReId
+                const sub = {
+                    presReId: data.presReId
                 }
                 this._PrescriptionReturnService.PrescriptionReturnCancle(sub).subscribe((response: any) => {
                     this.toastr.success(response.message);

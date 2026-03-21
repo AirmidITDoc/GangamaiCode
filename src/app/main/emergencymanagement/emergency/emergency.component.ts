@@ -1,655 +1,652 @@
-import { fuseAnimations } from '@fuse/animations';
-import { NewEmergencyComponent } from './new-emergency/new-emergency.component';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { EmergencyService } from './emergency.service';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup } from '@angular/forms';
-import Swal from 'sweetalert2';
-import { EmergencyHistoryComponent } from './emergency-history/emergency-history.component';
-import { EmergencyBillComponent } from './emergency-bill/emergency-bill.component';
-import { NewAppointmentComponent } from 'app/main/opd/appointment-list/new-appointment/new-appointment.component';
-import { NewAdmissionComponent } from 'app/main/ipd/Admission/admission/new-admission/new-admission.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MLCInformationComponent } from 'app/main/ipd/Admission/admission/mlcinformation/mlcinformation.component';
+import { NewAdmissionComponent } from 'app/main/ipd/Admission/admission/new-admission/new-admission.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { EmergencyBillComponent } from './emergency-bill/emergency-bill.component';
+import { EmergencyHistoryComponent } from './emergency-history/emergency-history.component';
+import { EmergencyService } from './emergency.service';
+import { NewEmergencyComponent } from './new-emergency/new-emergency.component';
 
 @Component({
-  selector: 'app-emergency',
-  templateUrl: './emergency.component.html',
-  styleUrls: ['./emergency.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-emergency',
+    templateUrl: './emergency.component.html',
+    styleUrls: ['./emergency.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 
 export class EmergencyComponent implements OnInit {
 
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  myFilterform: FormGroup;
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-  @ViewChild('oldNewTemplate') oldNewTemplate!: TemplateRef<any>;
-  @ViewChild('after24Hr') after24Hr!: TemplateRef<any>;
-  @ViewChild('isConverted') isConverted!: TemplateRef<any>;
-  @ViewChild('ismlc') ismlc!: TemplateRef<any>;
-  f_name: any = ""
-  l_name: any = ""
-  Status: any = "0";
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    myFilterform: FormGroup;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('oldNewTemplate') oldNewTemplate!: TemplateRef<any>;
+    @ViewChild('after24Hr') after24Hr!: TemplateRef<any>;
+    @ViewChild('isConverted') isConverted!: TemplateRef<any>;
+    @ViewChild('ismlc') ismlc!: TemplateRef<any>;
+    f_name: any = ""
+    l_name: any = ""
+    Status: any = "0";
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
-  VEmgcount: any;
-  VOPcount: any;
-  VIPcount: any;
-  VBillcount: any;
+    VEmgcount: any;
+    VOPcount: any;
+    VIPcount: any;
+    VBillcount: any;
 
-  ngAfterViewInit() {
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'regId')!.template = this.oldNewTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'isAfter24Hrs')!.template = this.after24Hr;
-    this.gridConfig.columnsList.find(col => col.key === 'isConverted')!.template = this.isConverted;
-    this.gridConfig.columnsList.find(col => col.key === 'isMlc')!.template = this.ismlc;
-  }
-
-  constructor(
-    public _EmergencyService: EmergencyService,
-    private _loggedService: AuthenticationService,
-    public datePipe: DatePipe,
-    public _matDialog: MatDialog,
-    public toastr: ToastrService,
-    private commonService: PrintserviceService,
-  ) { }
-
-  ngOnInit(): void {
-    this.myFilterform = this._EmergencyService.CreateSearchGroup();
-
-    this.GetAppointdetail();
-  }
-
-  allcolumns = [
-    { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "-", key: "isConverted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "IsMLC", key: "isMlc", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
-    { heading: "Hour", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA', width: 60 },
-    { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-    { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
-    // { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "EmgNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "ageYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "AttendingDocName", key: "attendingDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
-    {
-      heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'regId')!.template = this.oldNewTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isAfter24Hrs')!.template = this.after24Hr;
+        this.gridConfig.columnsList.find(col => col.key === 'isConverted')!.template = this.isConverted;
+        this.gridConfig.columnsList.find(col => col.key === 'isMlc')!.template = this.ismlc;
     }
-  ]
 
-  allfilters = [
-    { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "IsConverted", fieldValue: this.Status, opType: OperatorComparer.Equals }
-  ]
+    constructor(
+        public _EmergencyService: EmergencyService,
+        private _loggedService: AuthenticationService,
+        public datePipe: DatePipe,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        private commonService: PrintserviceService,
+    ) { }
 
-  gridConfig: gridModel = {
-    apiUrl: "Emergency/Emergencylist",
-    columnsList: this.allcolumns,
-    sortField: "EmgId",
-    sortOrder: 0,
-    filters: this.allfilters
-  }
+    ngOnInit(): void {
+        this.myFilterform = this._EmergencyService.CreateSearchGroup();
 
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'firstName')
-      this.myFilterform.get('firstName').setValue("")
-    if (event == 'L_Name')
-      this.myFilterform.get('L_Name').setValue("")
-    this.onChangeFirst();
-  }
-
-  onChangeFirst() {
-    this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
-    this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
-    this.f_name = this.myFilterform.get('firstName').value + "%"
-    console.log(this.myFilterform.get('firstName').value)
-    this.l_name = this.myFilterform.get('L_Name').value + "%"
-    if (this.myFilterform.get('isConverted').value == true) {
-      this.Status = "1"
-    } else {
-      this.Status = "0"
+        this.GetAppointdetail();
     }
-    this.getfilterdata();
-  }
 
-  getfilterdata() {
-    this.gridConfig = {
-      apiUrl: "Emergency/Emergencylist",
-      columnsList: this.allcolumns,
-      sortField: "EmgId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
-        { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
-        { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "IsConverted", fieldValue: this.Status, opType: OperatorComparer.Equals }
-      ]
-    }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-    this.GetAppointdetail();
-  }
-  newEmergency(row: any = null) {
-    const dialogRef = this._matDialog.open(NewEmergencyComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: '90vh',
-        height: '90%',
-        width: '90%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-      this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-      this.grid.bindGridData();
-      this.GetAppointdetail();
-    });
-  }
-
-  EmergencyHistory(row: any = null) {
-    const dialogRef = this._matDialog.open(EmergencyHistoryComponent,
-      {
-        maxWidth: "95vw",
-        maxHeight: '95vh',
-        height: '95%',
-        width: '90%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-      this.GetAppointdetail();
-    });
-  }
-
-  OnBillPayment(row: any = null) {
-    const dialogRef = this._matDialog.open(EmergencyBillComponent,
-      {
-        maxWidth: "100%",
-        width: '95%',
-        height: '95%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-      this.GetAppointdetail();
-    });
-  }
-
-  // required code //
-  // getConvert(row) {
-  //   const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
-
-  //   Swal.fire({
-  //     title: `Convert ${patientName} to OPD or IPD?`,
-  //     text: 'Please choose the type you want to convert this patient to:',
-  //     icon: 'question',
-  //     showDenyButton: true,
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     denyButtonColor: '#6c757d',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Convert to OPD',
-  //     denyButtonText: 'Convert to IPD',
-  //     cancelButtonText: 'Cancel'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       // Show second dialog with 2 options
-  //       Swal.fire({
-  //         title: 'Appointment Check',
-  //         text: 'Does the patient already have an appointment today?',
-  //         showDenyButton: true,
-  //         showCancelButton: true,
-  //         confirmButtonColor: '#198754',
-  //         denyButtonColor: '#0dcaf0',
-  //         cancelButtonColor: '#dc3545',
-  //         confirmButtonText: 'Yes',
-  //         denyButtonText: "No",
-  //         cancelButtonText: 'Cancel'
-  //       }).then((res) => {
-  //         if (res.isConfirmed) {
-  //           // need to show list of patient
-  //           const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-  //             maxWidth: '95vw',
-  //             height: '95%',
-  //             width: '90%',
-  //             data: row
-  //           });
-  //           dialogRef.afterClosed().subscribe(result => {
-  //             console.log('old appointment', result);
-  //             this.grid.bindGridData();
-  //           });
-
-  //         } else if (res.isDenied) {
-  //           const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-  //             maxWidth: '95vw',
-  //             height: '95%',
-  //             width: '90%',
-  //             data: row
-  //           });
-  //           dialogRef.afterClosed().subscribe(result => {
-  //             console.log('new appointment', result);
-  //             this.grid.bindGridData();
-  //           });
-  //         }
-  //       });
-  //     }
-  //     else if (result.isDenied) {
-  //       const dialogRef = this._matDialog.open(NewAdmissionComponent, {
-  //         maxWidth: '95vw',
-  //         width: '100%',
-  //         height: '98vh',
-  //         data: row
-  //       });
-  //       dialogRef.afterClosed().subscribe(result => {
-  //         console.log('IPD conversion dialog closed', result);
-  //         this.grid.bindGridData();
-  //       });
-  //     }
-  //   });
-  // }
-
-  getConvert(row) {
-    const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
-    const showIPD = row.isAfter24Hrs == 1;
-    Swal.fire({
-      // title: showIPD
-      //   ? `Convert ${patientName} to ${showIPD ? 'IPD' : 'OPD'}?`
-      //   : `Convert ${patientName} to IPD or OPD?`,
-      // text: showIPD
-      //   ? 'Only IPD conversion is available after 24 hours.'
-      //   : 'Please choose the type you want to convert this patient to:',
-      title: `Convert ${patientName} to IPD?`, //*
-      icon: 'question',
-      // showDenyButton: !showIPD,
-       showDenyButton: false, //*
-      showCancelButton: true,
-      confirmButtonColor: '#6c757d',
-      // denyButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Convert to IPD',
-      // denyButtonText: 'Convert to OPD',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const dialogRef = this._matDialog.open(NewAdmissionComponent, {
-          maxWidth: '95vw',
-          width: '100%',
-          height: '98vh',
-          data: row
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('IPD conversion dialog closed', result);
-          this.grid.bindGridData();
-          this.GetAppointdetail();
-        });
-      }
-      // else if (result.isDenied && !showIPD) {
-      //   const dialogRef = this._matDialog.open(NewAppointmentComponent, {
-      //     maxWidth: '95vw',
-      //     height: '95%',
-      //     width: '90%',
-      //     data: row
-      //   });
-      //   dialogRef.afterClosed().subscribe(result => {
-      //     console.log('OPD conversion dialog closed', result);
-      //     this.grid.bindGridData();
-      //     this.GetAppointdetail();
-      //   });
-      // }
-    });
-  }
-
-  // append method tried
-  EmergencyCancel(data: any) {
-    Swal.fire({
-      title: 'Do you want to cancel Emergency?',
-      text: "Please provide a reason for cancellation",
-      icon: "warning",
-      input: 'text',
-      inputValue: data.reason ? data.reason + ' ' : '', // prefill old reason if exists
-      inputPlaceholder: 'Enter cancellation reason...',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel it!",
-      preConfirm: (reason) => {
-        if (!reason || reason.trim() === '') {
-          Swal.showValidationMessage('Reason is required');
+    allcolumns = [
+        { heading: "-", key: "regId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "-", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "-", key: "isConverted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "-", key: "isAfter24Hrs", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "IsMLC", key: "isMlc", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
+        { heading: "Hour", key: "hoursSinceAdmission", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+        { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        // { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "EmgNo", key: "seqNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "ageYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "AttendingDocName", key: "attendingDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+        {
+            heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-        return reason;
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const finalReason = data.reason
-          ? data.reason + "; " + result.value
-          : result.value;
+    ]
 
-        const submitData = {
-          emgId: data.emgId,
-          reason: finalReason,
-          isCancelledBy: this._loggedService.currentUserValue.userId
-        };
+    allfilters = [
+        { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "IsConverted", fieldValue: this.Status, opType: OperatorComparer.Equals }
+    ]
 
-        console.log(submitData);
-        this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
-          this.grid.bindGridData();
-          this.GetAppointdetail();
+    gridConfig: gridModel = {
+        apiUrl: "Emergency/Emergencylist",
+        columnsList: this.allcolumns,
+        sortField: "EmgId",
+        sortOrder: 0,
+        filters: this.allfilters
+    }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'firstName')
+            this.myFilterform.get('firstName').setValue("")
+        if (event == 'L_Name')
+            this.myFilterform.get('L_Name').setValue("")
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
+        this.f_name = this.myFilterform.get('firstName').value + "%"
+        console.log(this.myFilterform.get('firstName').value)
+        this.l_name = this.myFilterform.get('L_Name').value + "%"
+        if (this.myFilterform.get('isConverted').value == true) {
+            this.Status = "1"
+        } else {
+            this.Status = "0"
+        }
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        this.gridConfig = {
+            apiUrl: "Emergency/Emergencylist",
+            columnsList: this.allcolumns,
+            sortField: "EmgId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
+                { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
+                { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "IsConverted", fieldValue: this.Status, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+        this.GetAppointdetail();
+    }
+    newEmergency(row: any = null) {
+        const dialogRef = this._matDialog.open(NewEmergencyComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '90vh',
+                height: '90%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+            this.grid.bindGridData();
+            this.GetAppointdetail();
         });
-      }
-    });
-  }
-
-  OnViewReportPdf(element: any) {
-    this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
-  }
-
-  OnViewReportHistPdf(element: any) {
-    this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrescription");
-  }
-
-  NewMLc(contact) {
-    const dialogRef = this._matDialog.open(MLCInformationComponent,
-      {
-        maxWidth: '85vw',
-        height: 'auto', width: '100%',
-        data: contact
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-    });
-  }
-
-  getMLCdetailview(element) {
-    this.commonService.Onprint("AdmissionID", element.emgId, "IpMLCCasePaperPrint");
-  }
-
-  dataSource = new MatTableDataSource<EmergencyList>();
-  AllCount:any=0;
-  GetAppointdetail() {
-    const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") //"01/01/1900";
-    const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") //"01/01/1900";
-
-    this.VEmgcount = 0;
-    this.VOPcount = 0;
-    this.VIPcount = 0;
-    this.VBillcount = 0;
-    this.AllCount = 0;
-
-    const filters: any[] = [];
-
-    if (fromDateControl && toDateControl) {
-      this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-      this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
     }
-    else {
-      this.fromDate = "01/01/1900";
-      this.toDate = "01/01/1900";
+
+    EmergencyHistory(row: any = null) {
+        const dialogRef = this._matDialog.open(EmergencyHistoryComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+            this.GetAppointdetail();
+        });
     }
-    filters.push(
-      {
-        "fieldName": "From_Dt",
-        "fieldValue": this.fromDate,
-        "opType": "GreaterThanOrEqual"
-      },
-      {
-        "fieldName": "To_Dt",
-        "fieldValue": this.toDate,
-        "opType": "LessThanOrEqual"
-      },
-      {
-        "fieldName": "FirstName",
-        "fieldValue": '%',
-        "opType": "StartsWith"
-      },
-      {
-        "fieldName": "LastName",
-        "fieldValue": '%',
-        "opType": "StartsWith"
-      },
-      {
-        "fieldName": "IsConverted",
-        "fieldValue": '0',
-        "opType": "Equals"
-      }
-    );
 
-    const data = {
-      "first": 0,
-      "rows": 999999,
-      "sortField": "EmgId",
-      "sortOrder": 0,
-      "filters": filters, // 👈 only adds date filter if selected
-      "exportType": "JSON",
-      "columns": []
-    };
-    this._EmergencyService.getEmgList(data).subscribe((response) => {
-      this.dataSource.data = response.data;
+    OnBillPayment(row: any = null) {
+        const dialogRef = this._matDialog.open(EmergencyBillComponent,
+            {
+                maxWidth: "100%",
+                width: '95%',
+                height: '95%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+            this.GetAppointdetail();
+        });
+    }
 
-      if (this.dataSource.data.length > 0) {
-       
-        this.AllCount = this.dataSource.data.length;
+    // required code //
+    // getConvert(row) {
+    //   const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
 
-        const today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
-        this.VEmgcount = this.dataSource.data.filter(
-          (element: any) => this.datePipe.transform(element.emgDate, "yyyy-MM-dd") === today
-        ).length;
+    //   Swal.fire({
+    //     title: `Convert ${patientName} to OPD or IPD?`,
+    //     text: 'Please choose the type you want to convert this patient to:',
+    //     icon: 'question',
+    //     showDenyButton: true,
+    //     showCancelButton: true,
+    //     confirmButtonColor: '#3085d6',
+    //     denyButtonColor: '#6c757d',
+    //     cancelButtonColor: '#d33',
+    //     confirmButtonText: 'Convert to OPD',
+    //     denyButtonText: 'Convert to IPD',
+    //     cancelButtonText: 'Cancel'
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       // Show second dialog with 2 options
+    //       Swal.fire({
+    //         title: 'Appointment Check',
+    //         text: 'Does the patient already have an appointment today?',
+    //         showDenyButton: true,
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#198754',
+    //         denyButtonColor: '#0dcaf0',
+    //         cancelButtonColor: '#dc3545',
+    //         confirmButtonText: 'Yes',
+    //         denyButtonText: "No",
+    //         cancelButtonText: 'Cancel'
+    //       }).then((res) => {
+    //         if (res.isConfirmed) {
+    //           // need to show list of patient
+    //           const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+    //             maxWidth: '95vw',
+    //             height: '95%',
+    //             width: '90%',
+    //             data: row
+    //           });
+    //           dialogRef.afterClosed().subscribe(result => {
+    //             console.log('old appointment', result);
+    //             this.grid.bindGridData();
+    //           });
 
+    //         } else if (res.isDenied) {
+    //           const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+    //             maxWidth: '95vw',
+    //             height: '95%',
+    //             width: '90%',
+    //             data: row
+    //           });
+    //           dialogRef.afterClosed().subscribe(result => {
+    //             console.log('new appointment', result);
+    //             this.grid.bindGridData();
+    //           });
+    //         }
+    //       });
+    //     }
+    //     else if (result.isDenied) {
+    //       const dialogRef = this._matDialog.open(NewAdmissionComponent, {
+    //         maxWidth: '95vw',
+    //         width: '100%',
+    //         height: '98vh',
+    //         data: row
+    //       });
+    //       dialogRef.afterClosed().subscribe(result => {
+    //         console.log('IPD conversion dialog closed', result);
+    //         this.grid.bindGridData();
+    //       });
+    //     }
+    //   });
+    // }
+
+    getConvert(row) {
+        const patientName = `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() || 'the patient';
+        const showIPD = row.isAfter24Hrs == 1;
+        Swal.fire({
+            // title: showIPD
+            //   ? `Convert ${patientName} to ${showIPD ? 'IPD' : 'OPD'}?`
+            //   : `Convert ${patientName} to IPD or OPD?`,
+            // text: showIPD
+            //   ? 'Only IPD conversion is available after 24 hours.'
+            //   : 'Please choose the type you want to convert this patient to:',
+            title: `Convert ${patientName} to IPD?`, //*
+            icon: 'question',
+            // showDenyButton: !showIPD,
+            showDenyButton: false, //*
+            showCancelButton: true,
+            confirmButtonColor: '#6c757d',
+            // denyButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Convert to IPD',
+            // denyButtonText: 'Convert to OPD',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const dialogRef = this._matDialog.open(NewAdmissionComponent, {
+                    maxWidth: '95vw',
+                    width: '100%',
+                    height: '98vh',
+                    data: row
+                });
+                dialogRef.afterClosed().subscribe(result => {
+                    console.log('IPD conversion dialog closed', result);
+                    this.grid.bindGridData();
+                    this.GetAppointdetail();
+                });
+            }
+            // else if (result.isDenied && !showIPD) {
+            //   const dialogRef = this._matDialog.open(NewAppointmentComponent, {
+            //     maxWidth: '95vw',
+            //     height: '95%',
+            //     width: '90%',
+            //     data: row
+            //   });
+            //   dialogRef.afterClosed().subscribe(result => {
+            //     console.log('OPD conversion dialog closed', result);
+            //     this.grid.bindGridData();
+            //     this.GetAppointdetail();
+            //   });
+            // }
+        });
+    }
+
+    // append method tried
+    EmergencyCancel(data: any) {
+        Swal.fire({
+            title: 'Do you want to cancel Emergency?',
+            text: "Please provide a reason for cancellation",
+            icon: "warning",
+            input: 'text',
+            inputValue: data.reason ? data.reason + ' ' : '', // prefill old reason if exists
+            inputPlaceholder: 'Enter cancellation reason...',
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!",
+            preConfirm: (reason) => {
+                if (!reason || reason.trim() === '') {
+                    Swal.showValidationMessage('Reason is required');
+                }
+                return reason;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const finalReason = data.reason
+                    ? data.reason + "; " + result.value
+                    : result.value;
+
+                const submitData = {
+                    emgId: data.emgId,
+                    reason: finalReason,
+                    isCancelledBy: this._loggedService.currentUserValue.userId
+                };
+
+                console.log(submitData);
+                this._EmergencyService.EmgCancel(submitData).subscribe((res) => {
+                    this.grid.bindGridData();
+                    this.GetAppointdetail();
+                });
+            }
+        });
+    }
+
+    OnViewReportPdf(element: any) {
+        this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrint");
+    }
+
+    OnViewReportHistPdf(element: any) {
+        this.commonService.Onprint("EmgId", element.emgId, "EmergencyPrescription");
+    }
+
+    NewMLc(contact) {
+        const dialogRef = this._matDialog.open(MLCInformationComponent,
+            {
+                maxWidth: '85vw',
+                height: 'auto', width: '100%',
+                data: contact
+            });
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
+
+    getMLCdetailview(element) {
+        this.commonService.Onprint("AdmissionID", element.emgId, "IpMLCCasePaperPrint");
+    }
+
+    dataSource = new MatTableDataSource<EmergencyList>();
+    AllCount: any = 0;
+    GetAppointdetail() {
+        const fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") //"01/01/1900";
+        const toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") //"01/01/1900";
+
+        this.VEmgcount = 0;
+        this.VOPcount = 0;
         this.VIPcount = 0;
-        this.dataSource.data.forEach((element: any) => {
-          if (element.convertedIntoAdm > 0) {
-            this.VIPcount++;
-          }
+        this.VBillcount = 0;
+        this.AllCount = 0;
+
+        const filters: any[] = [];
+
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        else {
+            this.fromDate = "01/01/1900";
+            this.toDate = "01/01/1900";
+        }
+        filters.push(
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "LessThanOrEqual"
+            },
+            {
+                "fieldName": "FirstName",
+                "fieldValue": '%',
+                "opType": "StartsWith"
+            },
+            {
+                "fieldName": "LastName",
+                "fieldValue": '%',
+                "opType": "StartsWith"
+            },
+            {
+                "fieldName": "IsConverted",
+                "fieldValue": '0',
+                "opType": "Equals"
+            }
+        );
+
+        const data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "EmgId",
+            "sortOrder": 0,
+            "filters": filters, // 👈 only adds date filter if selected
+            "exportType": "JSON",
+            "columns": []
+        };
+        this._EmergencyService.getEmgList(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+
+            if (this.dataSource.data.length > 0) {
+
+                this.AllCount = this.dataSource.data.length;
+
+                const today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
+                this.VEmgcount = this.dataSource.data.filter(
+                    (element: any) => this.datePipe.transform(element.emgDate, "yyyy-MM-dd") === today
+                ).length;
+
+                this.VIPcount = 0;
+                this.dataSource.data.forEach((element: any) => {
+                    if (element.convertedIntoAdm > 0) {
+                        this.VIPcount++;
+                    }
+                });
+
+            }
         });
 
-      }
-    });
-
-  }
+    }
 
 }
 
 export class EmergencyList {
 
-  PatientName: string;
-  Date: number;
-  RegNo: number;
-  MobileNo: number;
-  Doctorname: number;
-  patientTypeID: any;
-  firstName: any;
-  middleName: any;
-  lastName: any;
-  genderId: any;
-  address: any;
-  pinNo: any;
-  stateId: any;
-  cityId: any;
-  countryId: any;
-  mobileNo: any;
-  phoneNo: any;
-  dateofBirth: Date;
-  dateOfBirth: Date;
-  currentDate = new Date();
-  prefixId: any;
-  regId: any;
-  departmentId: any;
-  docNameId: any;
-  doctorId: any;
-  genderID: any;
-  emgId: any;
-  comment: any;
-  tariffId: any;
-  classId: any;
-  tariffid: any;
-  classid: any;
-  tariffName: any;
-  genderName: any;
-  ageYear: any;
-  ageMonth: any;
-  ageDay: any;
-  patientName: any;
-  doctorName: any;
-  departmentName: any;
-  chiefComplaint: any;
-  diagnosis: any;
-  examination: any;
-  height: any;
-  pweight: any;
-  bmi: any;
-  bsl: any;
-  spo2: any;
-  pulse: any;
-  bp: any;
-  temp: any;
-  advice: any;
-  emgHistoryId: any;
-  attendingDoctorId: any;
-  refDoctorId: any;
-  spO2: any;
-  isMlc: any;
-  convertedIntoAdm: any;
-  age:any;
-  constructor(EmergencyList) {
-    {
-      this.Date = EmergencyList.Date || 0;
-      this.RegNo = EmergencyList.RegNo || 0;
-      this.MobileNo = EmergencyList.MobileNo || 0;
-      this.Doctorname = EmergencyList.Doctorname || '';
-      this.PatientName = EmergencyList.PatientName || '';
-      this.patientTypeID = EmergencyList.patientTypeID || 0
-      this.firstName = EmergencyList.firstName || ''
-      this.middleName = EmergencyList.middleName || ''
-      this.lastName = EmergencyList.lastName || ''
-      this.genderId = EmergencyList.genderId || 0
-      this.address = EmergencyList.address || ''
-      this.pinNo = EmergencyList.pinNo || 0
-      this.stateId = EmergencyList.stateId || 0
-      this.cityId = EmergencyList.cityId || 0
-      this.countryId = EmergencyList.countryId || 0
-      this.mobileNo = EmergencyList.mobileNo || 0
-      this.phoneNo = EmergencyList.phoneNo || 0
-      this.dateOfBirth = EmergencyList.dateOfBirth || this.currentDate;
-      this.dateofBirth = EmergencyList.dateofBirth || this.currentDate;
-      this.prefixId = EmergencyList.prefixId || 0
-      this.regId = EmergencyList.regId || 0
-      this.departmentId = EmergencyList.departmentId || 0
-      this.docNameId = EmergencyList.docNameId || 0
-      this.doctorId = EmergencyList.doctorId || 0
-      this.genderID = EmergencyList.genderID || 0
-      this.emgId = EmergencyList.emgId || 0
-      this.comment = EmergencyList.comment || ''
-      this.tariffId = EmergencyList.tariffId || 0
-      this.classId = EmergencyList.classId || 0
-      this.tariffid = EmergencyList.tariffid || 0
-      this.classid = EmergencyList.classid || 0
-      this.genderName = EmergencyList.genderName || ''
-      this.tariffName = EmergencyList.tariffName || ''
-      this.ageYear = EmergencyList.ageYear || 0
-      this.ageMonth = EmergencyList.ageMonth || 0
-      this.ageDay = EmergencyList.ageDay || 0
-      this.patientName = EmergencyList.patientName || ''
-      this.doctorName = EmergencyList.doctorName || ''
-      this.departmentName = EmergencyList.departmentName || ''
-      this.chiefComplaint = EmergencyList.chiefComplaint || ''
-      this.diagnosis = EmergencyList.diagnosis || ''
-      this.examination = EmergencyList.examination || ''
-      this.height = EmergencyList.height || ''
-      this.pweight = EmergencyList.pweight || ''
-      this.bmi = EmergencyList.bmi || ''
-      this.bsl = EmergencyList.bsl || ''
-      this.spo2 = EmergencyList.spo2 || ''
-      this.pulse = EmergencyList.pulse || ''
-      this.bp = EmergencyList.bp || ''
-      this.temp = EmergencyList.temp || ''
-      this.advice = EmergencyList.advice || ''
-      this.emgHistoryId = EmergencyList.emgHistoryId || 0
-      this.attendingDoctorId = EmergencyList.attendingDoctorId || 0
-      this.refDoctorId = EmergencyList.refDoctorId || 0
-      this.spO2 = EmergencyList.spO2 || 0
-      this.isMlc = EmergencyList.isMlc || false
-      this.convertedIntoAdm = EmergencyList.convertedIntoAdm || ''
-      this.age = EmergencyList.age || 0
+    PatientName: string;
+    Date: number;
+    RegNo: number;
+    MobileNo: number;
+    Doctorname: number;
+    patientTypeID: any;
+    firstName: any;
+    middleName: any;
+    lastName: any;
+    genderId: any;
+    address: any;
+    pinNo: any;
+    stateId: any;
+    cityId: any;
+    countryId: any;
+    mobileNo: any;
+    phoneNo: any;
+    dateofBirth: Date;
+    dateOfBirth: Date;
+    currentDate = new Date();
+    prefixId: any;
+    regId: any;
+    departmentId: any;
+    docNameId: any;
+    doctorId: any;
+    genderID: any;
+    emgId: any;
+    comment: any;
+    tariffId: any;
+    classId: any;
+    tariffid: any;
+    classid: any;
+    tariffName: any;
+    genderName: any;
+    ageYear: any;
+    ageMonth: any;
+    ageDay: any;
+    patientName: any;
+    doctorName: any;
+    departmentName: any;
+    chiefComplaint: any;
+    diagnosis: any;
+    examination: any;
+    height: any;
+    pweight: any;
+    bmi: any;
+    bsl: any;
+    spo2: any;
+    pulse: any;
+    bp: any;
+    temp: any;
+    advice: any;
+    emgHistoryId: any;
+    attendingDoctorId: any;
+    refDoctorId: any;
+    spO2: any;
+    isMlc: any;
+    convertedIntoAdm: any;
+    age: any;
+    constructor(EmergencyList) {
+        {
+            this.Date = EmergencyList.Date || 0;
+            this.RegNo = EmergencyList.RegNo || 0;
+            this.MobileNo = EmergencyList.MobileNo || 0;
+            this.Doctorname = EmergencyList.Doctorname || '';
+            this.PatientName = EmergencyList.PatientName || '';
+            this.patientTypeID = EmergencyList.patientTypeID || 0
+            this.firstName = EmergencyList.firstName || ''
+            this.middleName = EmergencyList.middleName || ''
+            this.lastName = EmergencyList.lastName || ''
+            this.genderId = EmergencyList.genderId || 0
+            this.address = EmergencyList.address || ''
+            this.pinNo = EmergencyList.pinNo || 0
+            this.stateId = EmergencyList.stateId || 0
+            this.cityId = EmergencyList.cityId || 0
+            this.countryId = EmergencyList.countryId || 0
+            this.mobileNo = EmergencyList.mobileNo || 0
+            this.phoneNo = EmergencyList.phoneNo || 0
+            this.dateOfBirth = EmergencyList.dateOfBirth || this.currentDate;
+            this.dateofBirth = EmergencyList.dateofBirth || this.currentDate;
+            this.prefixId = EmergencyList.prefixId || 0
+            this.regId = EmergencyList.regId || 0
+            this.departmentId = EmergencyList.departmentId || 0
+            this.docNameId = EmergencyList.docNameId || 0
+            this.doctorId = EmergencyList.doctorId || 0
+            this.genderID = EmergencyList.genderID || 0
+            this.emgId = EmergencyList.emgId || 0
+            this.comment = EmergencyList.comment || ''
+            this.tariffId = EmergencyList.tariffId || 0
+            this.classId = EmergencyList.classId || 0
+            this.tariffid = EmergencyList.tariffid || 0
+            this.classid = EmergencyList.classid || 0
+            this.genderName = EmergencyList.genderName || ''
+            this.tariffName = EmergencyList.tariffName || ''
+            this.ageYear = EmergencyList.ageYear || 0
+            this.ageMonth = EmergencyList.ageMonth || 0
+            this.ageDay = EmergencyList.ageDay || 0
+            this.patientName = EmergencyList.patientName || ''
+            this.doctorName = EmergencyList.doctorName || ''
+            this.departmentName = EmergencyList.departmentName || ''
+            this.chiefComplaint = EmergencyList.chiefComplaint || ''
+            this.diagnosis = EmergencyList.diagnosis || ''
+            this.examination = EmergencyList.examination || ''
+            this.height = EmergencyList.height || ''
+            this.pweight = EmergencyList.pweight || ''
+            this.bmi = EmergencyList.bmi || ''
+            this.bsl = EmergencyList.bsl || ''
+            this.spo2 = EmergencyList.spo2 || ''
+            this.pulse = EmergencyList.pulse || ''
+            this.bp = EmergencyList.bp || ''
+            this.temp = EmergencyList.temp || ''
+            this.advice = EmergencyList.advice || ''
+            this.emgHistoryId = EmergencyList.emgHistoryId || 0
+            this.attendingDoctorId = EmergencyList.attendingDoctorId || 0
+            this.refDoctorId = EmergencyList.refDoctorId || 0
+            this.spO2 = EmergencyList.spO2 || 0
+            this.isMlc = EmergencyList.isMlc || false
+            this.convertedIntoAdm = EmergencyList.convertedIntoAdm || ''
+            this.age = EmergencyList.age || 0
+        }
     }
-  }
 }
 
 export class ChargesList {
-  ChargesId: any
-  chargesId: number;
-  ServiceId: number;
-  ServiceName: string;
-  Price: number;
-  Qty: number;
-  TotalAmt: number;
-  DiscPer: number;
-  DiscAmt: number;
-  NetAmount: number;
-  DoctorId: number;
-  ChargeDoctorName: string;
-  ChargesDate: Date;
-  IsPathology: boolean;
-  IsRadiology: boolean;
-  ClassId: number;
-  ClassName: string;
-  ChargesAddedName: string;
-  BalanceQty: any;
-  IsStatus: any;
-  extMobileNo: any;
-  doctorName: any;
-  ConcessionPercentage: any;
-  EditDoctor: any;
-  constructor(ChargesList) {
-    this.chargesId = ChargesList.chargesId || '';
-    this.ServiceId = ChargesList.ServiceId || '';
-    this.doctorName = ChargesList.doctorName || '';
-    this.ServiceName = ChargesList.ServiceName || '';
-    this.Price = ChargesList.Price || '';
-    this.Qty = ChargesList.Qty || '';
-    this.TotalAmt = ChargesList.TotalAmt || '';
-    this.DiscPer = ChargesList.DiscPer || '';
-    this.DiscAmt = ChargesList.DiscAmt || '';
-    this.NetAmount = ChargesList.NetAmount || '';
-    this.DoctorId = ChargesList.DoctorId || 0;
-    this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
-    this.ChargesDate = ChargesList.ChargesDate || '';
-    this.IsPathology = ChargesList.IsPathology || '';
-    this.IsRadiology = ChargesList.IsRadiology || '';
-    this.ClassId = ChargesList.ClassId || 0;
-    this.ClassName = ChargesList.ClassName || '';
-    this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-    this.BalanceQty = ChargesList.BalanceQty || 0;
-    this.IsStatus = ChargesList.IsStatus || 0;
-    this.extMobileNo = ChargesList.extMobileNo || ''
-    this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
-  }
+    ChargesId: any
+    chargesId: number;
+    ServiceId: number;
+    ServiceName: string;
+    Price: number;
+    Qty: number;
+    TotalAmt: number;
+    DiscPer: number;
+    DiscAmt: number;
+    NetAmount: number;
+    DoctorId: number;
+    ChargeDoctorName: string;
+    ChargesDate: Date;
+    IsPathology: boolean;
+    IsRadiology: boolean;
+    ClassId: number;
+    ClassName: string;
+    ChargesAddedName: string;
+    BalanceQty: any;
+    IsStatus: any;
+    extMobileNo: any;
+    doctorName: any;
+    ConcessionPercentage: any;
+    EditDoctor: any;
+    constructor(ChargesList) {
+        this.chargesId = ChargesList.chargesId || '';
+        this.ServiceId = ChargesList.ServiceId || '';
+        this.doctorName = ChargesList.doctorName || '';
+        this.ServiceName = ChargesList.ServiceName || '';
+        this.Price = ChargesList.Price || '';
+        this.Qty = ChargesList.Qty || '';
+        this.TotalAmt = ChargesList.TotalAmt || '';
+        this.DiscPer = ChargesList.DiscPer || '';
+        this.DiscAmt = ChargesList.DiscAmt || '';
+        this.NetAmount = ChargesList.NetAmount || '';
+        this.DoctorId = ChargesList.DoctorId || 0;
+        this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+        this.ChargesDate = ChargesList.ChargesDate || '';
+        this.IsPathology = ChargesList.IsPathology || '';
+        this.IsRadiology = ChargesList.IsRadiology || '';
+        this.ClassId = ChargesList.ClassId || 0;
+        this.ClassName = ChargesList.ClassName || '';
+        this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+        this.BalanceQty = ChargesList.BalanceQty || 0;
+        this.IsStatus = ChargesList.IsStatus || 0;
+        this.extMobileNo = ChargesList.extMobileNo || ''
+        this.ConcessionPercentage = ChargesList.ConcessionPercentage || ''
+    }
 }

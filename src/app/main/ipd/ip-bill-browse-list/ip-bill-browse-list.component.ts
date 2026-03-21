@@ -10,25 +10,24 @@ import { IPBrowseBillService } from './ip-browse-bill.service';
 
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
+import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { IPAdvanceComponent, IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
-import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 import { ComponentPortal } from '@angular/cdk/portal';
+import { ConfigService } from 'app/core/services/config.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -225,14 +224,14 @@ export class IPBillBrowseListComponent implements OnInit {
         sortOrder: 0,
         filters: this.allIpRefundFilters
     }
-    Is9_Digit_National_Id:boolean=false;
+    Is9_Digit_National_Id: boolean = false;
     constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
         private accountService: AuthenticationService,
         public formBuilder: FormBuilder, public _whatsppService: WhatsAppEmailService,
         private overlay: Overlay,
-        public _configue:ConfigService   ,
+        public _configue: ConfigService,
         public _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
@@ -243,22 +242,22 @@ export class IPBillBrowseListComponent implements OnInit {
         this.myFilterFormIPBrowseRefund = this._IPBrowseBillService.filterForm_IpdrefundBrowse()
 
         const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
-        
+
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
-            if(!this.Is9_Digit_National_Id){
-            this.menuActions.push('Print Final Bill - Group wise');
-            this.menuActions.push('Print Final Bill - Class wise');
-            this.menuActions.push('Print Final Bill - Class Service');
-            this.menuActions.push('Print Final Bill'); 
-            this.menuActions.push('Print Final Bill - Charge Date Wise'); 
-            this.menuActions.push('Patient Statement Print'); 
-            }else{
+            if (!this.Is9_Digit_National_Id) {
+                this.menuActions.push('Print Final Bill - Group wise');
+                this.menuActions.push('Print Final Bill - Class wise');
+                this.menuActions.push('Print Final Bill - Class Service');
+                this.menuActions.push('Print Final Bill');
+                this.menuActions.push('Print Final Bill - Charge Date Wise');
+                this.menuActions.push('Patient Statement Print');
+            } else {
                 this.menuActions.push('Print Final Bill - Charge Date with Group wise');
                 this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
             }
-            
+
         }
     }
 
@@ -409,20 +408,20 @@ export class IPBillBrowseListComponent implements OnInit {
         if (m == "Print Final Bill")
             this.viewgetFinalBillReportNewPdf(contact.billNo)
 
-         else if(m == "Print Final Bill - Charge Date Wise"){
+        else if (m == "Print Final Bill - Charge Date Wise") {
             this.viewgetFinalBillReportChargeDatewisePdf(contact.billNo)
-          }
-          else if (m == "Patient Statement Print") {  
+        }
+        else if (m == "Patient Statement Print") {
             this.OnPaitentFinalPrint(contact)
-          } 
-            else if (m == "Print Final Bill - Charge Date with Group wise") {  
+        }
+        else if (m == "Print Final Bill - Charge Date with Group wise") {
             this.viewgetFinalGroupWisChargeatewiseReportPdf(contact.billNo)
-          }
-            else if (m == "Print Final Bill - Charge Date with Group wise Without Advance") {  
+        }
+        else if (m == "Print Final Bill - Charge Date with Group wise Without Advance") {
             this.viewgetFinalGroupWisChargeatewiseWithoutAdvanceReportPdf(contact.billNo)
-          } 
+        }
     }
- 
+
     OnPaitentFinalPrint(element) {
         setTimeout(() => {
             const param = {
@@ -449,10 +448,10 @@ export class IPBillBrowseListComponent implements OnInit {
         }, 100);
     }
     viewgetFinalGroupWisChargeatewiseReportPdf(billNo) {
-    this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwise");
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwise");
     }
-        viewgetFinalGroupWisChargeatewiseWithoutAdvanceReportPdf(billNo) {
-    this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwisewithoutadvance");
+    viewgetFinalGroupWisChargeatewiseWithoutAdvanceReportPdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwisewithoutadvance");
     }
     // viewgetBillReportPdf(billNo) {
     //     this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
@@ -472,20 +471,20 @@ export class IPBillBrowseListComponent implements OnInit {
     viewgetFinalBillReportGroupwisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
-        viewgetFinalBillReportChargeDatewisePdf(billNo) {
+    viewgetFinalBillReportChargeDatewisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");
-    } 
+    }
     OnCompanyBill(element) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur();
         const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
             maxWidth: "98vw",
             height: "96vh",
-            width: "100%", 
-             data:{
-                Obj:element,
-                OPIPType:1
-            } 
+            width: "100%",
+            data: {
+                Obj: element,
+                OPIPType: 1
+            }
         });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -715,7 +714,7 @@ export class IPBillBrowseListComponent implements OnInit {
     getFinalBillview(data) {
         console.log(data);
         console.log("BillNo Click : ", data.billNo);
-        if (!data.interimOrFinal) 
+        if (!data.interimOrFinal)
             this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
         else
             this.viewgetInterimBillReportPdf(data.billNo)
@@ -1189,7 +1188,7 @@ export class IPBillBrowseListComponent implements OnInit {
         });
     }
 
-     Onemailpayment(contact) {
+    Onemailpayment(contact) {
         const dialogRef = this._matDialog.open(EmailSendComponent,
             {
                 maxWidth: "100%",

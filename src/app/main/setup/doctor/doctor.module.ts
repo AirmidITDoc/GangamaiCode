@@ -18,20 +18,20 @@ const appRoutes: Routes = [
                 (m) => m.DoctorMasterModule
             ),
     },
- {
+    {
         path: "doctorshare",
         loadChildren: () =>
             import("./doctor-payoutpercentage/doctor-payout.module").then(
                 (m) => m.DoctorPayoutModule
             ),
     },
-    
+
 ];
 
 @NgModule({
     declarations: [
-    
-  ],
+
+    ],
     imports: [RouterModule.forChild(appRoutes)],
 })
-export class DoctorModule {}
+export class DoctorModule { }

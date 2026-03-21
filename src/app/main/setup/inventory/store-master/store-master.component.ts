@@ -5,11 +5,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { StoreFormMasterComponent } from "./store-form-master/store-form-master.component";
 import { StoreMasterService } from "./store-master.service";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-store-master",
@@ -20,7 +20,7 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class StoreMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.StoreMaster, permissionType.Add);
-       
+
     myformSearch: FormGroup;
     storeName: any = "";
     type: any = "2"
@@ -58,8 +58,8 @@ export class StoreMasterComponent implements OnInit {
                     //     this.onSave(data);
                     // }
                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.StoreMaster, permissionType.Edit), callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        this.onSave(data);
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._StoreMasterService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
@@ -87,7 +87,7 @@ export class StoreMasterComponent implements OnInit {
 
 
     constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,public permissionService: PagePermissionService) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void {
         this.myformSearch = this._StoreMasterService.createSearchForm();

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -6,6 +6,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -14,11 +15,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -32,62 +35,58 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { CompanysettlementComponent } from './companysettlement.component';
-import { CommonModule } from '@angular/common';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatListModule } from '@angular/material/list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 const routes: Routes = [
-  {
-    path: '**',
-    component: CompanysettlementComponent
-  },
+    {
+        path: '**',
+        component: CompanysettlementComponent
+    },
 ];
 @NgModule({
-  declarations: [CompanysettlementComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatToolbarModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatExpansionModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    CommonModule,
-    MatChipsModule,
-    MatListModule,
-    MatSlideToggleModule,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule,
-    // MatTableExporterModule
-  ],
-  providers: [
-    DatePipe,
-  ]
+    declarations: [CompanysettlementComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatToolbarModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatExpansionModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        CommonModule,
+        MatChipsModule,
+        MatListModule,
+        MatSlideToggleModule,
+        // NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule,
+        // MatTableExporterModule
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
 export class CompanysettlementModule { }

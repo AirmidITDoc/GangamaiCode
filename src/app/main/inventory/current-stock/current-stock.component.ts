@@ -8,7 +8,6 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
@@ -132,17 +131,21 @@ export class CurrentStockComponent implements OnInit {
     }
 
     allcurrentColumn = [
-        {heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 400,
+        {
+            heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 400,
             type: gridColumnTypes.template, template: this.eyeIcon1
         },
-        {heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+        {
+            heading: "Received Qty", key: "receivedQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon2
         },
-        {heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+        {
+            heading: "Issue Qty", key: "issueQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon3
         },
         { heading: "Balance Qty", key: "balanceQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        {heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
+        {
+            heading: "Return Qty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA', width: 100,
             type: gridColumnTypes.template, template: this.eyeIcon4
         },
     ]

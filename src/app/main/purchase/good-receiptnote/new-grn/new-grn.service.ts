@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoaderService } from 'app/core/components/loader/loader.service';
-import { GRNFormModel, GSTCalculation, GSTCalculationResult, GSTType, GSTValidation, ToastType } from './types';
-import { ItemNameList } from '../good-receiptnote.component';
+import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ItemNameList } from '../good-receiptnote.component';
+import { GRNFormModel, GSTCalculation, GSTCalculationResult, GSTType, GSTValidation, ToastType } from './types';
 
 @Injectable({
     providedIn: 'root'
@@ -109,9 +107,9 @@ export class NewGRNService {
             this.showToast('Conversion Factor should be greater than 0', ToastType.WARNING);
             item.ConversionFactor = 1;
             return false;
-        } 
+        }
         // const expDatePattern = /^(0[1-9]|1[0-2])\d{4}$/;
-         const expDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        const expDatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
         if (!expDatePattern.test(item.ExpDate)) {
             this.showToast('Invalid Expiry Date format. Expected MMYYYY', ToastType.WARNING);
             return false;
@@ -313,8 +311,8 @@ export class NewGRNService {
             this.showToast('Conversion Factor should be greater than 0', ToastType.WARNING);
             form.patchValue({ ConversionFactor: 1 });
             return false;
-        } 
-         if (!values.GSTType || +values.GSTType < 0) {
+        }
+        if (!values.GSTType || +values.GSTType < 0) {
             this.showToast('Please select an GST Type', ToastType.WARNING);
             return false;
         }

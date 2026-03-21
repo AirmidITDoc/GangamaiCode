@@ -1,19 +1,19 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { PhoneAppointListService } from './phone-appoint-list.service';
-import { DatePipe } from '@angular/common';
-import { fuseAnimations } from '@fuse/animations';
 import { MatDialog } from '@angular/material/dialog';
-import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
-import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { Router } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
+import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
+import { PhoneAppointListService } from './phone-appoint-list.service';
 import { ReScheduleComponent } from './re-schedule/re-schedule.component';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-phoneappointment',
@@ -171,13 +171,13 @@ export class PhoneappointmentComponent implements OnInit {
             }
         });
     }
-//     onSave1(row: any = null) {
-//   const buttonElement = document.activeElement as HTMLElement;
-//   buttonElement.blur();
+    //     onSave1(row: any = null) {
+    //   const buttonElement = document.activeElement as HTMLElement;
+    //   buttonElement.blur();
 
-//   // Navigate directly with optional data as query params or state
-//   this.router.navigate(['/new-phone-appointment'], { state: { rowData: row } });
-// }
+    //   // Navigate directly with optional data as query params or state
+    //   this.router.navigate(['/new-phone-appointment'], { state: { rowData: row } });
+    // }
 
 
     selectChangedeptdoc(obj: any) {

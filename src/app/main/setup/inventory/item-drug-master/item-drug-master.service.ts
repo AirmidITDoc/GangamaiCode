@@ -5,35 +5,35 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ItemDrugMasterService {
-  myform: FormGroup;
-  myformSearch: FormGroup;
+    myform: FormGroup;
+    myformSearch: FormGroup;
 
-  constructor(
-    private _httpClient: ApiCaller,
-    private _formBuilder: UntypedFormBuilder,
-    private _FormvalidationserviceService: FormvalidationserviceService
-  ) {
-    this.myform = this.createItemclassForm();
-  }
+    constructor(
+        private _httpClient: ApiCaller,
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService
+    ) {
+        this.myform = this.createItemclassForm();
+    }
 
-  createItemclassForm(): FormGroup {
-    return this._formBuilder.group({
-      itemDrugTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      drugTypeName: ["",
-        [
-          Validators.required, Validators.maxLength(50),
-          // Validators.pattern('^[a-zA-Z0-9 ]*$'),
-          this._FormvalidationserviceService.allowEmptyStringValidator()
-        ]
-      ],
-      isActive: [true, [Validators.required]]
-    });
-  }
+    createItemclassForm(): FormGroup {
+        return this._formBuilder.group({
+            itemDrugTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            drugTypeName: ["",
+                [
+                    Validators.required, Validators.maxLength(50),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
+                ]
+            ],
+            isActive: [true, [Validators.required]]
+        });
+    }
 
-   initializeFormGroup() {
+    initializeFormGroup() {
         this.createItemclassForm();
     }
 

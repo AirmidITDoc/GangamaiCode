@@ -1,17 +1,20 @@
 import { DatePipe } from '@angular/common';
 import { Component, HostListener, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ConfigService } from 'app/core/services/config.service';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
+import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
@@ -24,13 +27,8 @@ import { AdvanceDataStored } from '../../advance';
 import { InterimBillComponent } from '../interim-bill/interim-bill.component';
 import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
-import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
-import { element } from 'protractor';
-import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
 import { IPUpdatesComponent } from './ipupdates/ipupdates.component';
-import { ActivatedRoute } from '@angular/router';
-import { HospitalConfigService } from 'app/core/services/hospital-config.service';
-import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
+import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
 
 @Component({
     selector: 'app-ip-billing',
@@ -271,9 +269,9 @@ export class IPBillingComponent implements OnInit {
         this.IsAddAutoCharges = IsAutoChargesid === "1";
 
         if (!this.Is9_Digit_National_Id) {
-            if(this.IsAddAutoCharges){
-             this.AddBedCharge();
-            } 
+            if (this.IsAddAutoCharges) {
+                this.AddBedCharge();
+            }
         }
 
         if (this.selectedAdvanceObj.isDischarged) {
@@ -314,7 +312,7 @@ export class IPBillingComponent implements OnInit {
         this.currency = CurrencyValue
 
 
-  this.getAccessDetail();
+        this.getAccessDetail();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -495,7 +493,7 @@ export class IPBillingComponent implements OnInit {
             tariffId: [item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceName: item?.serviceName,
             chargesId: 0,
-             salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     // Getters 
@@ -1133,7 +1131,7 @@ export class IPBillingComponent implements OnInit {
         let finalNetAmt = 0
         let finalDiscAmt = 0
         const discPer = this.IpbillFooterform.get('totaldiscPer').value || 0;
-       
+
         const AdminPer = this.IpbillFooterform.get('AdminPer').value || 0;
         if (AdminPer > 10) {
             Swal.fire({
@@ -1211,7 +1209,7 @@ export class IPBillingComponent implements OnInit {
                 });
                 this.IpbillFooterform.get("totaldiscPer").setValue(this.UserDicPerLimit);
             }
-        }  
+        }
 
         const netAmount = this.FinalNetAmt;
         const perControl = this.IpbillFooterform.get("totaldiscPer");
@@ -1220,7 +1218,7 @@ export class IPBillingComponent implements OnInit {
         const AdminAmt = this.IpbillFooterform.get('AdminAmt').value || 0;
         let discountAmt = 0;
         let finalNetAmt
-        let FinalTotalAmt 
+        let FinalTotalAmt
 
         if (!perControl.valid || perControl.value == 0 || perControl.value == '') {
             if (AdminAmt > 0) {
@@ -1382,7 +1380,7 @@ export class IPBillingComponent implements OnInit {
         this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value || 0)
         this.IPBillMyForm.get('bill.govtApprovedAmt')?.setValue(this.IpbillFooterform.get('GovrnApprovAmt')?.value || 0)
 
-           const [Is9_Digit_NationalId, value] = this._ConfigService.configParams.Is9_Digit_NationalId.split(":");
+        const [Is9_Digit_NationalId, value] = this._ConfigService.configParams.Is9_Digit_NationalId.split(":");
         if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
             if (this.IpbillFooterform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
                 this.IPBillMyForm.get('bill.paidAmt')?.setValue(0)
@@ -1398,14 +1396,14 @@ export class IPBillingComponent implements OnInit {
 
                 console.log(this.IPBillMyForm.value);
                 this._IpSearchListService.InsertIPBillingCredit(this.IPBillMyForm.value).subscribe(response => {
-                  
-                if (Is9_Digit_NationalId == 1) {
-                  this.viewgetBillReportPdf(response);
-                }
-                else{
-                this.viewgetBillBillGroupWiseReportPdf(response);
-                }  
-                this._matDialog.closeAll();
+
+                    if (Is9_Digit_NationalId == 1) {
+                        this.viewgetBillReportPdf(response);
+                    }
+                    else {
+                        this.viewgetBillBillGroupWiseReportPdf(response);
+                    }
+                    this._matDialog.closeAll();
                 });
             }
             else if (this.IpbillFooterform.get('MPesa')?.value) {
@@ -1481,13 +1479,13 @@ export class IPBillingComponent implements OnInit {
                         console.log("form values", this.IPBillMyForm.value)
 
                         this._IpSearchListService.InsertIPBilling(this.IPBillMyForm.value).subscribe(response => {
-                           if (Is9_Digit_NationalId == 1) {
-                            this.viewgetBillReportPdf(response);
+                            if (Is9_Digit_NationalId == 1) {
+                                this.viewgetBillReportPdf(response);
                             }
-                            else{
-                           this.viewgetBillBillGroupWiseReportPdf(response);
-                             }
-                            this._matDialog.closeAll(); 
+                            else {
+                                this.viewgetBillBillGroupWiseReportPdf(response);
+                            }
+                            this._matDialog.closeAll();
                             // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
                         });
                     }
@@ -2092,7 +2090,7 @@ export class IPBillingComponent implements OnInit {
             console.log('The dialog was closed - Insert Action', result);
         });
     }
-    @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) { 
+    @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
         if (event.altKey && event.key.toLowerCase() === 'a') {
             event.preventDefault();
             event.stopPropagation();
@@ -2615,19 +2613,19 @@ export class IPBillingComponent implements OnInit {
         console.log('Edit cancelled');
     }
 
-     getHospitalBills(event) {
+    getHospitalBills(event) {
         debugger
         if (event.checked == true) {
-            const filterlist = this.dataSource.data.filter(item=> item.isPathology != 1 && item.isRadiology != 1)
+            const filterlist = this.dataSource.data.filter(item => item.isPathology != 1 && item.isRadiology != 1)
             this.dataSource.data = filterlist
-            this.chargeslist =  this.dataSource.data
+            this.chargeslist = this.dataSource.data
             this.getNetAmtSum()
             this.getbillbalamt();
-        } else { 
+        } else {
             this.getChargesList();
         }
     }
-      UserDicPerLimit: any = 0;
+    UserDicPerLimit: any = 0;
     getAccessDetail() {
         // debugger
         const SelectQuery = {

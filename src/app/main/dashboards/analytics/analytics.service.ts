@@ -4,8 +4,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class AnalyticsDashboardService implements Resolve<any>
-{
+export class AnalyticsDashboardService implements Resolve<any> {
     widgets: any[];
 
     /**

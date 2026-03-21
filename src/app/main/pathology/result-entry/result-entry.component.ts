@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, ComponentRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,41 +9,38 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { ResultEntryService } from './result-entry.service';
-import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
-import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
-import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
-import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
-import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
 import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
-import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
-import { Console } from 'console';
+import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
+import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
+import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
+import { ResultEntryService } from './result-entry.service';
 
-import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
 
 
 
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { ToastrService } from 'ngx-toastr';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-result-entry',
@@ -119,7 +116,7 @@ export class ResultEntryComponent implements OnInit {
     UnitId: any = this.accountService.currentUserValue.user.unitId;
     isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
-    IsEdit: boolean = true ; ///this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
+    IsEdit: boolean = true; ///this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -860,7 +857,7 @@ export class ResultEntryComponent implements OnInit {
     // changed by raksha 5/11/25
     //Changed by ambadas 09/03/2026
     Printresultentry(row: any = null) {
-         debugger
+        debugger
         console.log(row);
         console.log(this.selection.selected);
         const pathologyDelete = [];
@@ -868,20 +865,20 @@ export class ResultEntryComponent implements OnInit {
         this.selectedItem = this.selection.selected[0];
 
         this.selection.selected.forEach((element) => {
-        if (element?.isCompleted){
-            this.CompletdFlag = 1
-            pathologyDelete.push({ pathReportId: element.pathReportId });
-        }
-        else{
-            this.CompletdFlag = 0
-        }
+            if (element?.isCompleted) {
+                this.CompletdFlag = 1
+                pathologyDelete.push({ pathReportId: element.pathReportId });
+            }
+            else {
+                this.CompletdFlag = 0
+            }
         });
         // if (this.selectedItem.isCompleted)
         //     this.CompletdFlag = 1
         // else
         //     this.CompletdFlag = 0
 
-       // pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
+        // pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
 
         const submitData = {
             pathPrintResultEntry: pathologyDelete

@@ -1,6 +1,5 @@
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DatePipe } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatBadgeModule } from "@angular/material/badge";
@@ -34,50 +33,50 @@ import { SpecPreservativeMasterComponent } from './spec-preservative-master.comp
 import { SpecPreservativeMasterService } from './spec-preservative-master.service';
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: SpecPreservativeMasterComponent,
-  },
+    {
+        path: "**",
+        component: SpecPreservativeMasterComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [
-    SpecPreservativeMasterComponent,
-    NewSpecPreservativeMasterComponent
-  ],
-  imports: [
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    CommonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatDividerModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-  ],
-  providers: [SpecPreservativeMasterService, DatePipe]
+    declarations: [
+        SpecPreservativeMasterComponent,
+        NewSpecPreservativeMasterComponent
+    ],
+    imports: [
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        CommonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+    ],
+    providers: [SpecPreservativeMasterService, DatePipe]
 })
 export class SpecPreservativeMasterModule { }

@@ -4,10 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 // import { IpReportComponent } from './ip-report/ip-report.component';
 // import { IpBillingReportComponent } from './ip-billing-report/ip-billing-report.component';
 // import { OPBillingReportComponent } from './opbilling-report/opbilling-report.component';
- // loadChildren: () =>
-        //     import("./opbilling-report/opbillingreport.module").then(
-        //         (m) => m.OpbillingreportModule
-        //     ),
+// loadChildren: () =>
+//     import("./opbilling-report/opbillingreport.module").then(
+//         (m) => m.OpbillingreportModule
+//     ),
 const appRoutes: Routes = [
     {
         path: "opbillingreport",
@@ -73,15 +73,15 @@ const appRoutes: Routes = [
             import("./report-generation/report-generation.module").then(
                 (m) => m.ReportGenerationModule
             ),
-    },    
+    },
     {
         path: "report-generation",
-      
 
-            loadChildren: () =>
-                import("./common-report/common-report.module").then(
-                    (m) => m.CommonReportModule
-                ),
+
+        loadChildren: () =>
+            import("./common-report/common-report.module").then(
+                (m) => m.CommonReportModule
+            ),
     },
     {
         path: "inventoryreport",
@@ -97,8 +97,8 @@ const appRoutes: Routes = [
                 (m) => m.IPReortModule
             ),
     },
-   ];
-   
+];
+
 @NgModule({
     declarations: [],
     imports: [

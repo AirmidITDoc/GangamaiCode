@@ -5,7 +5,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { ToastrService } from 'ngx-toastr';
 import { ItemMovemnentService } from './item-movemnent.service';
 

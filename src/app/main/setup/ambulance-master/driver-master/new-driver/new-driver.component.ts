@@ -1,9 +1,9 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DrivermasterService } from '../drivermaster.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { DrivermasterService } from '../drivermaster.service';
 
 @Component({
     selector: 'app-new-driver',

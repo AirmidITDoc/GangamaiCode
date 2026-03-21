@@ -32,7 +32,7 @@ export class VechicalMasterService {
             vehicleModel: ["", [Validators.required, Validators.maxLength(50)]],
             manuDate: [new Date().toISOString()],
             vehicleType: ["",
-                Validators.required,Validators.maxLength(50),
+                Validators.required, Validators.maxLength(50),
             ],
             note: [''],
             //   isActive:'1'
@@ -47,7 +47,7 @@ export class VechicalMasterService {
 
 
     public AmbulanceInsert(Param: any) {
-        
+
         if (Param.vehicleId) {
             return this._httpClient.PutData("Ambulance/" + Param.vehicleId, Param);
         } else return this._httpClient.PostData("Ambulance", Param);

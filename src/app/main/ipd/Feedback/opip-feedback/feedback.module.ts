@@ -44,8 +44,8 @@ import { OPIPFeedbackComponent } from './opip-feedback.component';
 const routes: Routes = [
     {
         path: 'new-appointment',
-        component:OPIPFeedbackComponent,
-    },{
+        component: OPIPFeedbackComponent,
+    }, {
         path: '**',
         component: OPIPFeedbackComponent,
     }

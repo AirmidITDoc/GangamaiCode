@@ -1,162 +1,161 @@
 import { Component, HostListener, Inject } from '@angular/core';
-import { BatchpopupComponent } from '../../prescription-return/batchpopup/batchpopup.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { PrescriptionReturnService } from '../../prescription-return/prescription-return.service';
 
 @Component({
-  selector: 'app-batch-popup',
-  templateUrl: './batch-popup.component.html',
-  styleUrls: ['./batch-popup.component.scss']
+    selector: 'app-batch-popup',
+    templateUrl: './batch-popup.component.html',
+    styleUrls: ['./batch-popup.component.scss']
 })
 export class BatchPopupComponent {
 
 
-  displayedColumns: string[] = [
-    'BatchNo',
-    'BatchExpDate',
-    'BalanceQty',
-    'MRP',
-    'PurPrice',
-    'ConversionFactor',
-    'LandedRate'
-    // 'ItemName',
-    // 'ItemCode',
-  ];
-  isLoadingStr: string = '';
-  dataSource = new MatTableDataSource<SalesList>();
-  selectedRowIndex: number = 0;
-  screenFromString = 'admission-form';
-  registerObj:any;  
-  
-  constructor(
-    private dialogRef: MatDialogRef<BatchPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public _PrescriptionReturnService:PrescriptionReturnService,
-  ) {}
+    displayedColumns: string[] = [
+        'BatchNo',
+        'BatchExpDate',
+        'BalanceQty',
+        'MRP',
+        'PurPrice',
+        'ConversionFactor',
+        'LandedRate'
+        // 'ItemName',
+        // 'ItemCode',
+    ];
+    isLoadingStr: string = '';
+    dataSource = new MatTableDataSource<SalesList>();
+    selectedRowIndex: number = 0;
+    screenFromString = 'admission-form';
+    registerObj: any;
 
-  // const ESCAPE_KEYCODE = 27;
+    constructor(
+        private dialogRef: MatDialogRef<BatchPopupComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public _PrescriptionReturnService: PrescriptionReturnService,
+    ) { }
 
-@HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
-        this. close();
+    // const ESCAPE_KEYCODE = 27;
+
+    @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+        if (event.keyCode === 27) {
+            this.close();
+        }
     }
-}
 
-  close(){
-    this.dialogRef.close();
-  }
-
-  highlight(row: any) {
-    if(row && row.position) {
-      this.selectedRowIndex = row.position;
-      // console.log(this.selectedRowIndex);
+    close() {
+        this.dialogRef.close();
     }
-  }
 
-  arrowUpEvent(row: object, index: number) {
-    const nextrow = this.dataSource.data[index - 2];
-    this.highlight(nextrow);
-  }
-
-  arrowDownEvent(row: object, index: number) {
-    const nextrow = this.dataSource.data[index];
-    this.highlight(nextrow);
-  }
-
-  ngOnInit(): void {
-    if(this.data){
-      this.registerObj = this.data;
-      console.log("PopUp data:", this.registerObj)
+    highlight(row: any) {
+        if (row && row.position) {
+            this.selectedRowIndex = row.position;
+            // console.log(this.selectedRowIndex);
+        }
     }
-    this.getSalesData(this.registerObj);
-    setTimeout(() => {
-      document.getElementById('ele-1').focus();
-    }, 1000);
-  }
- 
-  getSalesData(obj) {
-    this.isLoadingStr = 'loading';
-    const reqData = {
-      // "ItemId": this.data.ItemId,
-      // "StoreId": this.data.StoreId,
-      // "OP_IP_Id":this.data.OP_IP_Id
-      "ItemId": this.registerObj.itemId,
-      "StoreId": this.registerObj.StoreId || 2,
+
+    arrowUpEvent(row: object, index: number) {
+        const nextrow = this.dataSource.data[index - 2];
+        this.highlight(nextrow);
     }
-    this._PrescriptionReturnService.getBatchList1(reqData).subscribe((res: any) => {
-      console.log("fffff:",res)
-      if (res && res.length > 0) {
-        res.forEach((element, index) => {
-          element['position'] = index + 1;
+
+    arrowDownEvent(row: object, index: number) {
+        const nextrow = this.dataSource.data[index];
+        this.highlight(nextrow);
+    }
+
+    ngOnInit(): void {
+        if (this.data) {
+            this.registerObj = this.data;
+            console.log("PopUp data:", this.registerObj)
+        }
+        this.getSalesData(this.registerObj);
+        setTimeout(() => {
+            document.getElementById('ele-1').focus();
+        }, 1000);
+    }
+
+    getSalesData(obj) {
+        this.isLoadingStr = 'loading';
+        const reqData = {
+            // "ItemId": this.data.ItemId,
+            // "StoreId": this.data.StoreId,
+            // "OP_IP_Id":this.data.OP_IP_Id
+            "ItemId": this.registerObj.itemId,
+            "StoreId": this.registerObj.StoreId || 2,
+        }
+        this._PrescriptionReturnService.getBatchList1(reqData).subscribe((res: any) => {
+            console.log("fffff:", res)
+            if (res && res.length > 0) {
+                res.forEach((element, index) => {
+                    element['position'] = index + 1;
+                });
+                this.dataSource.data = res as SalesList[];
+                this.highlight(this.dataSource.data[0]);
+            } else {
+                this.isLoadingStr = 'no-data';
+            }
         });
-        this.dataSource.data = res as SalesList[];
-        this.highlight(this.dataSource.data[0]);
-      } else {
-        this.isLoadingStr = 'no-data';
-      }
-    });
-  }
-
-  selectedRow(index?: number, ele?: SalesList) {
-    let selectedData;
-    if(index) {
-      selectedData = this.dataSource.data[index-1];
-    } else if(ele) {
-      selectedData = ele;
     }
-    this.dialogRef.close(selectedData);
-  }
 
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    // console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
+    selectedRow(index?: number, ele?: SalesList) {
+        let selectedData;
+        if (index) {
+            selectedData = this.dataSource.data[index - 1];
+        } else if (ele) {
+            selectedData = ele;
+        }
+        this.dialogRef.close(selectedData);
+    }
 
-  onTableClick() {
-    debugger
-    const focusId = 'ele-'+this.selectedRowIndex;
-    document.getElementById(focusId).focus();
-    console.log("focusId:",focusId)
-  }
+    dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+        // console.log('dateTimeObj==', dateTimeObj);
+        this.dateTimeObj = dateTimeObj;
+    }
+
+    onTableClick() {
+        debugger
+        const focusId = 'ele-' + this.selectedRowIndex;
+        document.getElementById(focusId).focus();
+        console.log("focusId:", focusId)
+    }
 
 }
 
 export class SalesList {
-  BatchNo: string;
-  BatchExpDate: string;
-  BalanceQty: any
-  UnitMRP: any;
-  PurchaseRate: any;
-  ItemName: string;
-  ConversionFactor: string;
-  position: number;
-  // Bal:number;
-  // StoreId:any;
-  // StoreName:any;
-  /**
-   * Constructor
-   *
-   * @param IndentList
-   */
-  constructor(IndentList) {
-    {
-      this.BatchExpDate = IndentList.BatchExpDate || '';
-      this.BatchNo = IndentList.BatchNo || 0;
-      this.BalanceQty = IndentList.BalanceQty || "";
-      this.UnitMRP = IndentList.UnitMRP || "";
-      this.PurchaseRate = IndentList.PurchaseRate || "";
-      this.position = IndentList.position || 0;
-      this.ItemName = IndentList.ItemName || "";
-      this.ConversionFactor = IndentList.ConversionFactor || '';
-      // this.Bal = IndentList.Bal|| 0;
-      // this.StoreId = IndentList.StoreId || 0;
-      // this.StoreName =IndentList.StoreName || '';
+    BatchNo: string;
+    BatchExpDate: string;
+    BalanceQty: any
+    UnitMRP: any;
+    PurchaseRate: any;
+    ItemName: string;
+    ConversionFactor: string;
+    position: number;
+    // Bal:number;
+    // StoreId:any;
+    // StoreName:any;
+    /**
+     * Constructor
+     *
+     * @param IndentList
+     */
+    constructor(IndentList) {
+        {
+            this.BatchExpDate = IndentList.BatchExpDate || '';
+            this.BatchNo = IndentList.BatchNo || 0;
+            this.BalanceQty = IndentList.BalanceQty || "";
+            this.UnitMRP = IndentList.UnitMRP || "";
+            this.PurchaseRate = IndentList.PurchaseRate || "";
+            this.position = IndentList.position || 0;
+            this.ItemName = IndentList.ItemName || "";
+            this.ConversionFactor = IndentList.ConversionFactor || '';
+            // this.Bal = IndentList.Bal|| 0;
+            // this.StoreId = IndentList.StoreId || 0;
+            // this.StoreName =IndentList.StoreName || '';
+        }
     }
-  }
 }
 
 function onKeydownHandler(event: Event, KeyboardEvent: { new(type: string, eventInitDict?: KeyboardEventInit): KeyboardEvent; prototype: KeyboardEvent; readonly DOM_KEY_LOCATION_STANDARD: 0; readonly DOM_KEY_LOCATION_LEFT: 1; readonly DOM_KEY_LOCATION_RIGHT: 2; readonly DOM_KEY_LOCATION_NUMPAD: 3; }) {
-  throw new Error('Function not implemented.');
+    throw new Error('Function not implemented.');
 }

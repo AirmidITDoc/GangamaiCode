@@ -1,11 +1,10 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
 import { ServiceMasterComponent } from "../service-master.component";
 import { ServiceMasterService } from "../service-master.service";
-import { FormGroup } from "@angular/forms";
-import { debug } from "console";
 
 @Component({
     selector: "app-service-master-form",
@@ -56,33 +55,33 @@ export class ServiceMasterFormNewComponent implements OnInit {
         //     console.log(this.ServiceList)
         // });
     }
-showTable = false;
+    showTable = false;
     applyFilters() {
         const selectedTariffId = this.myformSearch.get('searchTariffName')?.value;
 
-        if(selectedTariffId > 0){
+        if (selectedTariffId > 0) {
             this._serviceMasterService.getServicesNew(selectedTariffId).subscribe((response) => {
-            this.ServiceList = response.data;
-            this.ColumnList = response.columns;
-            
-            const serviceFilter = this.myformSearch.get('searchServiceName')?.value?.toLowerCase() || '';
+                this.ServiceList = response.data;
+                this.ColumnList = response.columns;
 
-            this.filteredList = this.ServiceList.filter(item =>
-                item.serviceName?.toLowerCase().includes(serviceFilter)
-            );
-             this.showTable = true;
-        });
-        }else{
-             this.showTable = false;
-            console.log('aasasas:',this.myformSearch.get('searchTariffName')?.value)
+                const serviceFilter = this.myformSearch.get('searchServiceName')?.value?.toLowerCase() || '';
+
+                this.filteredList = this.ServiceList.filter(item =>
+                    item.serviceName?.toLowerCase().includes(serviceFilter)
+                );
+                this.showTable = true;
+            });
+        } else {
+            this.showTable = false;
+            console.log('aasasas:', this.myformSearch.get('searchTariffName')?.value)
         }
-        console.log('aasasas:',this.myformSearch.get('searchTariffName')?.value)
+        console.log('aasasas:', this.myformSearch.get('searchTariffName')?.value)
     }
 
     onSubmit() {
         const data = { TariffId: 1, Data: this.ServiceList, Columns: [] };
         this._serviceMasterService.saveServicesNew(data).subscribe(() => {
-            
+
         });
     }
 

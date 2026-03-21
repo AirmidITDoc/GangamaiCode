@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [CompanyTypeMasterService, DatePipe]
 })
-export class CompanyTypeMasterModule {}
+export class CompanyTypeMasterModule { }

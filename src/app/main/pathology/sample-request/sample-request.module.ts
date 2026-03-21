@@ -37,11 +37,11 @@ import { PathologyService } from '../pathology.service';
 import { SampleRequestComponent } from './sample-request.component';
 
 const routes: Routes = [
- 
-  {
-      path: '**',
-      component:SampleRequestComponent,
-  },
+
+    {
+        path: '**',
+        component: SampleRequestComponent,
+    },
 
 ];
 @NgModule({

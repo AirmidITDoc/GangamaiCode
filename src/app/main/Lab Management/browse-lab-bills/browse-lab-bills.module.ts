@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from "@angular/material/card";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -33,59 +34,58 @@ import { FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { BrowseLabBillsComponent } from "./browse-lab-bills.component";
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: BrowseLabBillsComponent,
-  },
+    {
+        path: "**",
+        component: BrowseLabBillsComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [BrowseLabBillsComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    SharedModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseSidebarModule,
-    MatDialogModule,
-    MatTabsModule,
-    MatDatepickerModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    ReactiveFormsModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    NgxMatSelectSearchModule,
-    MatCardModule,
-    MatListModule,
-    MatTooltipModule,
-    MatExpansionModule,
-    MatListModule,
-    //WebcamModule,
-    ScrollingModule,
-    MatSidenavModule,
-    //NgxQRCodeModule,
-    //NgxPrintModule,
-    MatButtonToggleModule
-  ],
-  providers: [DatePipe]
+    declarations: [BrowseLabBillsComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        SharedModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatTabsModule,
+        MatDatepickerModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatListModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatListModule,
+        //WebcamModule,
+        ScrollingModule,
+        MatSidenavModule,
+        //NgxQRCodeModule,
+        //NgxPrintModule,
+        MatButtonToggleModule
+    ],
+    providers: [DatePipe]
 })
 export class BrowseLabBillsModule { }

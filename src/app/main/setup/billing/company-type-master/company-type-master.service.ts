@@ -20,20 +20,20 @@ export class CompanyTypeMasterService {
 
     createcompanytypeForm(): FormGroup {
         return this._formBuilder.group({
-            companyTypeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            typeName: ["", 
+            companyTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            typeName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]],
+            isActive: [true, [Validators.required]],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
     }
-    
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TypeNameSearch: [""],

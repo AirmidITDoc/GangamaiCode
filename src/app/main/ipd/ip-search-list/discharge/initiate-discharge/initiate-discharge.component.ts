@@ -9,89 +9,88 @@ import { IPSearchListService } from '../../ip-search-list.service';
 import { DischargeInitiateProcessComponent } from './discharge-initiate-process/discharge-initiate-process.component';
 
 @Component({
-  selector: 'app-initiate-discharge',
-  templateUrl: './initiate-discharge.component.html',
-  styleUrls: ['./initiate-discharge.component.scss']
+    selector: 'app-initiate-discharge',
+    templateUrl: './initiate-discharge.component.html',
+    styleUrls: ['./initiate-discharge.component.scss']
 })
 export class InitiateDischargeComponent {
 
-  displayedColumns:string[]=[
-    'DepartmentName',
-    'IsApprove',
-    'ApprovedBy',
-    'IsNoDues',
-    'Comments'
-  ]
+    displayedColumns: string[] = [
+        'DepartmentName',
+        'IsApprove',
+        'ApprovedBy',
+        'IsNoDues',
+        'Comments'
+    ]
 
-  selectedAdvanceObj:any
-  DischargeInitiateForm:FormGroup
-   
+    selectedAdvanceObj: any
+    DischargeInitiateForm: FormGroup
+
 
     autocompletcondoc: string = "ConDoctor";
     autocompletedichargetype: string = "DichargeType";
 
     dsApprovList = new MatTableDataSource<ApprovList>();
 
-  constructor(
-     public _IpSearchListService: IPSearchListService,
+    constructor(
+        public _IpSearchListService: IPSearchListService,
         public datePipe: DatePipe,
         public _matDialog: MatDialog,
         public dialogRef: MatDialogRef<InitiateDischargeComponent>,
         public toastr: ToastrService,
-        public _ConfigService : ConfigService,
+        public _ConfigService: ConfigService,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private _formbuilder:FormBuilder
-  ) 
-  { }
+        private _formbuilder: FormBuilder
+    ) { }
 
-  ngOnInit(): void {
-    this.DischargeInitiateForm = this.CreateDischargeInitiateForm();
-    if(this.data){
-      this.selectedAdvanceObj = this.data.Obj
-      console.log(this.selectedAdvanceObj)
+    ngOnInit(): void {
+        this.DischargeInitiateForm = this.CreateDischargeInitiateForm();
+        if (this.data) {
+            this.selectedAdvanceObj = this.data.Obj
+            console.log(this.selectedAdvanceObj)
+        }
+
     }
- 
-  }
-  CreateDischargeInitiateForm(){
-    return this._formbuilder.group({
-      DischargeTypeId:[''],
-      DoctorID:['']
-    });
-  }
+    CreateDischargeInitiateForm() {
+        return this._formbuilder.group({
+            DischargeTypeId: [''],
+            DoctorID: ['']
+        });
+    }
 
-  onClose(){
-    this.dialogRef.close();
-  }
-  DischargeInitiate(){
-    const dialogRef = this._matDialog.open(DischargeInitiateProcessComponent,
-      {
-        maxWidth: "50vw",
-        height: '70%',
-        width: '100%',
-        data:this.data
-        
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(result)
-      });
-  }
+    onClose() {
+        this.dialogRef.close();
+    }
+    DischargeInitiate() {
+        const dialogRef = this._matDialog.open(DischargeInitiateProcessComponent,
+            {
+                maxWidth: "50vw",
+                height: '70%',
+                width: '100%',
+                data: this.data
+
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result)
+        });
+    }
 }
-export class ApprovList{
-  DepartmentName:any;
-  IsApprove:any;
-  ApprovedBy:any;
-  IsNoDues:any;
-  Comments:any;
-  AddedByDateTime:any
+export class ApprovList {
+    DepartmentName: any;
+    IsApprove: any;
+    ApprovedBy: any;
+    IsNoDues: any;
+    Comments: any;
+    AddedByDateTime: any
 
-  constructor(ApprovList){
-    {
-      this.DepartmentName = ApprovList.DepartmentName || '';
-      this.IsApprove = ApprovList.IsApprove || '';
-      this.ApprovedBy = ApprovList.ApprovedBy || '';
-      this.IsNoDues = ApprovList.IsNoDues || '';
-      this.Comments = ApprovList.Comments || '';
-      this.AddedByDateTime = ApprovList.AddedByDateTime || '';
+    constructor(ApprovList) {
+        {
+            this.DepartmentName = ApprovList.DepartmentName || '';
+            this.IsApprove = ApprovList.IsApprove || '';
+            this.ApprovedBy = ApprovList.ApprovedBy || '';
+            this.IsNoDues = ApprovList.IsNoDues || '';
+            this.Comments = ApprovList.Comments || '';
+            this.AddedByDateTime = ApprovList.AddedByDateTime || '';
+        }
     }
-  }
 }

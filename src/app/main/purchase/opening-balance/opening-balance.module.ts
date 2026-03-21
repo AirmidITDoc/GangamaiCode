@@ -40,10 +40,10 @@ import { NewOpeningBalanceComponent } from './new-opening-balance/new-opening-ba
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: OpeningBalanceComponent 
-  },
+    {
+        path: '**',
+        component: OpeningBalanceComponent
+    },
 ];
 
 @NgModule({

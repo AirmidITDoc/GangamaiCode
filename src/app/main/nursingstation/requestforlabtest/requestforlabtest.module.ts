@@ -38,11 +38,11 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { RequestforlabtestComponent } from './requestforlabtest.component';
 
-const routes:Routes = [
-  {
-  path : "**" ,
-  component : RequestforlabtestComponent,
-  },
+const routes: Routes = [
+    {
+        path: "**",
+        component: RequestforlabtestComponent,
+    },
 ];
 
 @NgModule({
@@ -93,7 +93,7 @@ const routes:Routes = [
         DatePipe
     ]
 })
- 
+
 
 
 export class RequestforlabtestModule { }

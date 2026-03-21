@@ -13,181 +13,181 @@ import Swal from 'sweetalert2';
 import { IPSearchListService } from '../../../ip-search-list.service';
 
 @Component({
-  selector: 'app-discharge-initiate-process',
-  templateUrl: './discharge-initiate-process.component.html',
-  styleUrls: ['./discharge-initiate-process.component.scss']
+    selector: 'app-discharge-initiate-process',
+    templateUrl: './discharge-initiate-process.component.html',
+    styleUrls: ['./discharge-initiate-process.component.scss']
 })
 export class DischargeInitiateProcessComponent {
 
-  displayedColumns: string[] = [
-    'DepartmentName',
-    'AddedBy',
-    'AddedByDateTime',
-    'action'
-  ]
+    displayedColumns: string[] = [
+        'DepartmentName',
+        'AddedBy',
+        'AddedByDateTime',
+        'action'
+    ]
 
-  registerObj = new AdmissionPersonlModel({});
-  vDepartmentName: any;
-  InitiateForm: FormGroup
-  Chargelist: any = [];
-  isLoading: string = '';
-  screenFromString = 'OP-billing';
-  isDepartmentSelected: boolean = false;
-  filteredOptionDepartment: Observable<string[]>;
-  DepartmentList: any = [];
+    registerObj = new AdmissionPersonlModel({});
+    vDepartmentName: any;
+    InitiateForm: FormGroup
+    Chargelist: any = [];
+    isLoading: string = '';
+    screenFromString = 'OP-billing';
+    isDepartmentSelected: boolean = false;
+    filteredOptionDepartment: Observable<string[]>;
+    DepartmentList: any = [];
 
-  dsDepartmentlist = new MatTableDataSource<ApprovList>();
+    dsDepartmentlist = new MatTableDataSource<ApprovList>();
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  autocompleteModeDepartment: string = "Department";
-  constructor(
-    public _IpSearchListService: IPSearchListService,
-    public datePipe: DatePipe,
-    public dialogRef: MatDialogRef<DischargeInitiateProcessComponent>,
-    public toastr: ToastrService,
-    public _ConfigService: ConfigService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private _formbuilder: FormBuilder
-  ) { }
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    autocompleteModeDepartment: string = "Department";
+    constructor(
+        public _IpSearchListService: IPSearchListService,
+        public datePipe: DatePipe,
+        public dialogRef: MatDialogRef<DischargeInitiateProcessComponent>,
+        public toastr: ToastrService,
+        public _ConfigService: ConfigService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private _formbuilder: FormBuilder
+    ) { }
 
-  ngOnInit(): void {
-    this.InitiateForm = this.createInitiateForm()
-   
-    if (this.data) {
-      this.registerObj = this.data.Obj;
-      console.log(this.registerObj )
-      console.log(this.registerObj.patientName)
+    ngOnInit(): void {
+        this.InitiateForm = this.createInitiateForm()
+
+        if (this.data) {
+            this.registerObj = this.data.Obj;
+            console.log(this.registerObj)
+            console.log(this.registerObj.patientName)
+        }
+
     }
-  
-  }
-  createInitiateForm() {
-    return this._formbuilder.group({
-      DepartmentName: [''],
-      patientName:['']
-    });
-  }
-  
-  depatId=0;
-  deptname=''
-  onChangeDepartment(event){
-this.depatId=event.value
-this.deptname=event.text
-  }
-  onAddDepartment() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-   this.dsDepartmentlist.data = [];
-    this.Chargelist.push(
-      {
-
-        DepartmentID:this.depatId,// this.InitiateForm.get('DepartmentName').value.StoreId,
-        DepartmentName:this.deptname,// this.InitiateForm.get('DepartmentName').value.StoreName || '',
-        AddedBy: 1,//this.accountService.currentUserValue.user.id || 0,
-        AddedByDatetime: formattedDate || 0, 
-
-      });
- this.dsDepartmentlist.data = this.Chargelist;
-    this.InitiateForm.reset();
-    console.log(this.dsDepartmentlist.data)
-
-  }
-  deleteTableRow(element) {
-    const index = this.Chargelist.indexOf(element);
-    if (index >= 0) {
-      this.Chargelist.splice(index, 1);
-      this.dsDepartmentlist.data = [];
-      this.dsDepartmentlist.data = this.Chargelist;
-    }
-    Swal.fire('Success !', 'Row Deleted Successfully', 'success');
-  }
-
-  onSave() {
-    if ((!this.dsDepartmentlist.data.length)) {
-      this.toastr.warning('list is blank add department Name in list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+    createInitiateForm() {
+        return this._formbuilder.group({
+            DepartmentName: [''],
+            patientName: ['']
+        });
     }
 
-    const saveDischargeInitiateParam = [];
-    this.dsDepartmentlist.data.forEach(element => {
-      const saveDischargeInitiateParamObj = {
-        "admID": this.registerObj.AdmissionID || 0,
-        "departmentName": element.DepartmentName || '',
-        "departmentID": element.DepartmentID || 0,
-        "isApproved": 0,
-        "approvedBy": 0,
-        "approvedDatetime": "2024-12-19T08:01:44.541Z"
-      }
-      saveDischargeInitiateParam.push(saveDischargeInitiateParamObj)
-    })
+    depatId = 0;
+    deptname = ''
+    onChangeDepartment(event) {
+        this.depatId = event.value
+        this.deptname = event.text
+    }
+    onAddDepartment() {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    const updateDischargeInitiateParam = {
-      "admID":this.registerObj.AdmissionID || 0,
-      "isInitinatedDischarge": 1
+        this.dsDepartmentlist.data = [];
+        this.Chargelist.push(
+            {
+
+                DepartmentID: this.depatId,// this.InitiateForm.get('DepartmentName').value.StoreId,
+                DepartmentName: this.deptname,// this.InitiateForm.get('DepartmentName').value.StoreName || '',
+                AddedBy: 1,//this.accountService.currentUserValue.user.id || 0,
+                AddedByDatetime: formattedDate || 0,
+
+            });
+        this.dsDepartmentlist.data = this.Chargelist;
+        this.InitiateForm.reset();
+        console.log(this.dsDepartmentlist.data)
+
+    }
+    deleteTableRow(element) {
+        const index = this.Chargelist.indexOf(element);
+        if (index >= 0) {
+            this.Chargelist.splice(index, 1);
+            this.dsDepartmentlist.data = [];
+            this.dsDepartmentlist.data = this.Chargelist;
+        }
+        Swal.fire('Success !', 'Row Deleted Successfully', 'success');
     }
 
-    const submitData = {
-      "saveDischargeInitiateParam": saveDischargeInitiateParam,
-      "updateDischargeInitiateParam":updateDischargeInitiateParam
-    }
+    onSave() {
+        if ((!this.dsDepartmentlist.data.length)) {
+            this.toastr.warning('list is blank add department Name in list ', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
-    const submitData1={
-"initateDiscId": 0,
-  "admId": 210,
-  "departmentName": "D",
-  "departmentId": 10,
-  "isApproved": true,
-  "approvedBy": 10,
-  "approvedDatetime":  "2024-09-18T11:24:02.656Z",
-  "isNoDues": true,
-  "comments": "string"
-    }
+        const saveDischargeInitiateParam = [];
+        this.dsDepartmentlist.data.forEach(element => {
+            const saveDischargeInitiateParamObj = {
+                "admID": this.registerObj.AdmissionID || 0,
+                "departmentName": element.DepartmentName || '',
+                "departmentID": element.DepartmentID || 0,
+                "isApproved": 0,
+                "approvedBy": 0,
+                "approvedDatetime": "2024-12-19T08:01:44.541Z"
+            }
+            saveDischargeInitiateParam.push(saveDischargeInitiateParamObj)
+        })
 
-    const data={
-      initiateDischarge:submitData1
+        const updateDischargeInitiateParam = {
+            "admID": this.registerObj.AdmissionID || 0,
+            "isInitinatedDischarge": 1
+        }
+
+        const submitData = {
+            "saveDischargeInitiateParam": saveDischargeInitiateParam,
+            "updateDischargeInitiateParam": updateDischargeInitiateParam
+        }
+
+        const submitData1 = {
+            "initateDiscId": 0,
+            "admId": 210,
+            "departmentName": "D",
+            "departmentId": 10,
+            "isApproved": true,
+            "approvedBy": 10,
+            "approvedDatetime": "2024-09-18T11:24:02.656Z",
+            "isNoDues": true,
+            "comments": "string"
+        }
+
+        const data = {
+            initiateDischarge: submitData1
+        }
+
+        console.log(data)
+        this._IpSearchListService.SaveDischargeInitiate(data).subscribe(response => {
+            this.toastr.success(response);
+            this.dialogRef.close();
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
     }
-    
-    console.log(data)
-    this._IpSearchListService.SaveDischargeInitiate(data).subscribe(response => {
-      this.toastr.success(response);
-      this.dialogRef.close();
-      }, (error) => {
-        this.toastr.error(error.message);
-      });
-  }
-  onClose() {
-    // this._matDialog.closeAll();
-  }
+    onClose() {
+        // this._matDialog.closeAll();
+    }
 }
 export class ApprovList {
-  DepartmentName: any;
-  IsApprove: any;
-  ApprovedBy: any;
-  IsNoDues: any;
-  Comments: any;
-  AddedByDate: any
-  DepartmentID: any;
-  AddedByDatetime: any;
-  StoreName:any;
-  StoreId:any;
+    DepartmentName: any;
+    IsApprove: any;
+    ApprovedBy: any;
+    IsNoDues: any;
+    Comments: any;
+    AddedByDate: any
+    DepartmentID: any;
+    AddedByDatetime: any;
+    StoreName: any;
+    StoreId: any;
 
-  constructor(ApprovList) {
-    {
-      this.DepartmentName = ApprovList.DepartmentName || '';
-      this.IsApprove = ApprovList.IsApprove || '';
-      this.ApprovedBy = ApprovList.ApprovedBy || '';
-      this.IsNoDues = ApprovList.IsNoDues || '';
-      this.Comments = ApprovList.Comments || '';
-      this.DepartmentID = ApprovList.DepartmentID || 0;
-      this.AddedByDate = ApprovList.AddedByDate || '';
-      this.AddedByDatetime = ApprovList.AddedByDatetime || '';
-      this.StoreName = ApprovList.StoreName || 0;
-      this.StoreId = ApprovList.StoreId || '';
+    constructor(ApprovList) {
+        {
+            this.DepartmentName = ApprovList.DepartmentName || '';
+            this.IsApprove = ApprovList.IsApprove || '';
+            this.ApprovedBy = ApprovList.ApprovedBy || '';
+            this.IsNoDues = ApprovList.IsNoDues || '';
+            this.Comments = ApprovList.Comments || '';
+            this.DepartmentID = ApprovList.DepartmentID || 0;
+            this.AddedByDate = ApprovList.AddedByDate || '';
+            this.AddedByDatetime = ApprovList.AddedByDatetime || '';
+            this.StoreName = ApprovList.StoreName || 0;
+            this.StoreId = ApprovList.StoreId || '';
+        }
     }
-  }
 }

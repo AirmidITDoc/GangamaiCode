@@ -1,17 +1,16 @@
-import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 import { ToastrService } from "ngx-toastr";
+import Swal from "sweetalert2";
 import { Servicedetail, ServiceMaster, ServiceMasterComponent } from "../service-master.component";
 import { ServiceMasterService } from "../service-master.service";
-import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
-import Swal from "sweetalert2";
 import { TariffComponent } from "../tariff/tariff.component";
-import { element } from "protractor";
 
 @Component({
     selector: "app-service-master-form",
@@ -35,7 +34,7 @@ export class ServiceMasterFormComponent implements OnInit {
     butDisabled: boolean = false;
     msg: any;
     emg_amt: any;
-    vTariffId:any=0;
+    vTariffId: any = 0;
     emg_per: any;
     DSServicedetailList = new MatTableDataSource<Servicedetail>();
     // vServiceName: any;
@@ -86,7 +85,7 @@ export class ServiceMasterFormComponent implements OnInit {
             console.log(this.data)
             this.registerObj = this.data;
             this.ServiceId = this.registerObj.serviceId;
-             this.vTariffId  = this.registerObj.tariffId;
+            this.vTariffId = this.registerObj.tariffId;
             this.IsCreaditDoc = this.registerObj.creditedtoDoctor
             this.emg_amt = this.registerObj.emgAmt
             this.emg_per = this.registerObj.emgPer
@@ -204,7 +203,7 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     getClassList() {
-debugger
+        debugger
         if (this.ServiceId) {
             const param = {
                 "first": 0,
@@ -212,8 +211,8 @@ debugger
                 "sortField": "ServiceDetailId",
                 "sortOrder": 0,
                 "filters": [
-                    {  "fieldName": "ServiceId", "fieldValue": String(this.ServiceId), "opType": "Equals" },
-                     { "fieldName": "TariffId", "fieldValue": String(this.vTariffId), "opType": "Equals" }
+                    { "fieldName": "ServiceId", "fieldValue": String(this.ServiceId), "opType": "Equals" },
+                    { "fieldName": "TariffId", "fieldValue": String(this.vTariffId), "opType": "Equals" }
                 ],
                 "Columns": [],
                 "exportType": "JSON"
@@ -378,7 +377,7 @@ debugger
         // this.serviceForm.get("isApplicableFor")?.setValue(this.serviceForm.get("opipType")?.value);
 
         console.log("FormValue", this.serviceForm.value)
-        this._serviceMasterService.serviceMasterInsert(this.serviceForm.value,this.vTariffId).subscribe((response) => {
+        this._serviceMasterService.serviceMasterInsert(this.serviceForm.value, this.vTariffId).subscribe((response) => {
             this.onClear(true);
             this.onClose();
         })

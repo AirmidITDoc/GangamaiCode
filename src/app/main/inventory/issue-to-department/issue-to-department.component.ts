@@ -2,20 +2,18 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ToastrService } from 'ngx-toastr';
-import { IssuTodeptComponent } from './issu-todept/issu-todept.component';
-import { IssueToDepartmentService } from './issue-to-department.service';
-import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
-import { Router } from '@angular/router';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { IssueToDepartmentService } from './issue-to-department.service';
+import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
 
 
 @Component({
@@ -27,7 +25,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 })
 export class IssueToDepartmentComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.IssueToDepartment, permissionType.Add);
-      
+
     hasSelectedContacts: boolean;
     IssueSearchGroup: FormGroup;
 
@@ -46,7 +44,7 @@ export class IssueToDepartmentComponent implements OnInit {
         public _IssueToDep: IssueToDepartmentService,
         public toastr: ToastrService, private commonService: PrintserviceService,
         public _matDialog: MatDialog, private accountService: AuthenticationService,
-        public datePipe: DatePipe, private _ActRoute: Router,public permissionService: PagePermissionService,
+        public datePipe: DatePipe, private _ActRoute: Router, public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void {
@@ -101,7 +99,7 @@ export class IssueToDepartmentComponent implements OnInit {
 
 
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.IssueToDepartment,
+        permissionCode: permissionCodes.IssueToDepartment,
         apiUrl: "IssueToDepartment/IssueToDeptList",
         columnsList: this.allcolumns,
         sortField: "IssueId",
@@ -123,7 +121,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                  { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70, template: this.statusTable2 },
+                { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70, template: this.statusTable2 },
 
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -263,17 +261,17 @@ export class IssueToDepartmentComponent implements OnInit {
         console.log(element)
         this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
     }
-  onVerify(row) {
-    debugger
-    const submitData = {
-      "issueId": row.issueId
-    
-    };
-    this._IssueToDep.getVerifyIssue(submitData).subscribe(response => {
-      this.onChangeFirst(event);
+    onVerify(row) {
+        debugger
+        const submitData = {
+            "issueId": row.issueId
 
-    });
-  }
+        };
+        this._IssueToDep.getVerifyIssue(submitData).subscribe(response => {
+            this.onChangeFirst(event);
+
+        });
+    }
 
 }
 

@@ -39,10 +39,10 @@ import { NewMaterialConsumptionComponent } from './new-material-consumption/new-
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: MaterialConsumptionComponent 
-  },
+    {
+        path: '**',
+        component: MaterialConsumptionComponent
+    },
 ];
 
 @NgModule({

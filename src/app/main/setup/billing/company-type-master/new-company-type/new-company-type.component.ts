@@ -14,28 +14,28 @@ import { CompanyTypeMasterService } from '../company-type-master.service';
 })
 export class NewCompanyTypeComponent implements OnInit {
 
-  companttypeForm: FormGroup;
-  isActive:boolean=true;
+    companttypeForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor(
-      public _CompanyTypeMasterService: CompanyTypeMasterService,
-      public dialogRef: MatDialogRef<NewCompanyTypeComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
- 
-  ngOnInit(): void {
-      this.companttypeForm = this._CompanyTypeMasterService.createcompanytypeForm();
-      this.companttypeForm.markAllAsTouched();
-      if((this.data?.companyTypeId??0) > 0){
-        this.isActive=this.data.isActive
-        this.companttypeForm.patchValue(this.data);
+    constructor(
+        public _CompanyTypeMasterService: CompanyTypeMasterService,
+        public dialogRef: MatDialogRef<NewCompanyTypeComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
+    ngOnInit(): void {
+        this.companttypeForm = this._CompanyTypeMasterService.createcompanytypeForm();
+        this.companttypeForm.markAllAsTouched();
+        if ((this.data?.companyTypeId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.companttypeForm.patchValue(this.data);
+        }
     }
-  }
 
     onSubmit() {
-        
-       if (!this.companttypeForm.invalid) {
+
+        if (!this.companttypeForm.invalid) {
             console.log(this.companttypeForm.value)
             this._CompanyTypeMasterService.companytypeMasterSave(this.companttypeForm.value).subscribe((response) => {
                 this.onClear(true);

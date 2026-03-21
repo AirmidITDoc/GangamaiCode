@@ -28,51 +28,51 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-import { SpecContainerMasterService } from "./spec-container-master.service";
-import { SpecContainerMasterComponent } from "./spec-container-master.component";
 import { NewSpecContainerMasterComponent } from "./new-spec-container-master/new-spec-container-master.component";
+import { SpecContainerMasterComponent } from "./spec-container-master.component";
+import { SpecContainerMasterService } from "./spec-container-master.service";
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: SpecContainerMasterComponent,
-  },
+    {
+        path: "**",
+        component: SpecContainerMasterComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [SpecContainerMasterComponent, NewSpecContainerMasterComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatDividerModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-  ],
-  providers: [SpecContainerMasterService, DatePipe]
+    declarations: [SpecContainerMasterComponent, NewSpecContainerMasterComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+    ],
+    providers: [SpecContainerMasterService, DatePipe]
 })
 export class SpecContainerMasterModule { }

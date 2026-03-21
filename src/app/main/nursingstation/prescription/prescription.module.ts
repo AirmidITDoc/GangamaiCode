@@ -35,17 +35,17 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { BatchPopupComponent } from './batch-popup/batch-popup.component';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
 import { PrescriptionComponent } from './prescription.component';
 import { PrescrptionReturnComponent } from './prescrption-return/prescrption-return.component';
-import { BatchPopupComponent } from './batch-popup/batch-popup.component';
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: PrescriptionComponent,
-  },
+    {
+        path: "**",
+        component: PrescriptionComponent,
+    },
 ];
 
 @NgModule({

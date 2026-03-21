@@ -1,20 +1,18 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { map, Observable, startWith } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 import { RegInsert } from '../registration.component';
 import { RegistrationService } from '../registration.service';
-import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { map, Observable, startWith } from 'rxjs';
-import { ConfigSettingParams } from 'app/core/models/config';
-import { ConfigurationService } from 'app/main/administration/configuration/configuration.service';
-import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-registration',

@@ -3,17 +3,16 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@a
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 import { NewPrescriptionComponent } from './new-prescription/new-prescription.component';
 import { PrescriptionService } from './prescription.service';
-import { NewPrescriptionreturnComponent } from '../prescription-return/new-prescriptionreturn/new-prescriptionreturn.component';
-import Swal from 'sweetalert2';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 
 
@@ -25,8 +24,8 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
     animations: fuseAnimations
 })
 export class PrescriptionComponent implements OnInit {
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingPrescription, permissionType.Add);
-     
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingPrescription, permissionType.Add);
+
 
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
@@ -48,7 +47,7 @@ export class PrescriptionComponent implements OnInit {
     isShowDetailTable1: boolean = false;
 
     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
-        public toastr: ToastrService, private commonService: PrintserviceService,public permissionService: PagePermissionService,
+        public toastr: ToastrService, private commonService: PrintserviceService, public permissionService: PagePermissionService,
         public datePipe: DatePipe,) { }
 
     ngOnInit(): void {
@@ -62,7 +61,7 @@ export class PrescriptionComponent implements OnInit {
 
     }
     allColumns1 = [
-        
+
         { heading: "No.", key: "presNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Prescription Date", key: "ptime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 190 },
         { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 200 },//cant apply any date type
@@ -91,7 +90,7 @@ export class PrescriptionComponent implements OnInit {
         { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.NursingPrescription,
+        permissionCode: permissionCodes.NursingPrescription,
         apiUrl: "IPPrescription/PrescriptionPatientList",
         columnsList: this.allColumns1,
         sortField: "RegNo",
@@ -169,7 +168,7 @@ export class PrescriptionComponent implements OnInit {
         }, 500);
     }
 
-    
+
 
     viewgetIpprescriptionReportPdf(response) {
         console.log(response)

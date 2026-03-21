@@ -15,7 +15,7 @@ export class BankMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createBankForm();
         this.myformSearch = this.createSearchForm();
@@ -23,8 +23,8 @@ export class BankMasterService {
 
     createBankForm(): FormGroup {
         return this._formBuilder.group({
-            bankId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            bankName: ["", 
+            bankId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            bankName: ["",
                 [
                     Validators.required,
                     // Validators.maxLength(50),
@@ -32,7 +32,7 @@ export class BankMasterService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

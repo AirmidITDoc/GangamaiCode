@@ -11,10 +11,9 @@ import { FormGroup } from "@angular/forms";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import Swal from "sweetalert2";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -34,7 +33,7 @@ export class ParametermasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionsNumeric') actionsNumeric!: TemplateRef<any>;
-  @ViewChild('actionsIsprint') actionsIsprint!: TemplateRef<any>;
+    @ViewChild('actionsIsprint') actionsIsprint!: TemplateRef<any>;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'isNumericParameter')!.template = this.actionsNumeric;
         this.gridConfig.columnsList.find(col => col.key === 'isPrintDisSummary')!.template = this.actionsIsprint;
@@ -42,9 +41,9 @@ export class ParametermasterComponent implements OnInit {
     }
 
     allcolumns = [
-        { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', type: gridColumnTypes.template, width: 50  },
+        { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
 
-        { heading: "PrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 50 },
+        { heading: "PrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
         // { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -85,7 +84,7 @@ export class ParametermasterComponent implements OnInit {
     }
     constructor(
         public _ParameterService: ParametermasterService,
-        public _matDialog: MatDialog,public permissionService: PagePermissionService,
+        public _matDialog: MatDialog, public permissionService: PagePermissionService,
         private reportDownloadService: ExcelDownloadService,
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
@@ -104,7 +103,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
 
-     UnitView(value) {
+    UnitView(value) {
 
         if (value.value !== 0)
             this.UnitName = value.value
@@ -118,11 +117,11 @@ export class ParametermasterComponent implements OnInit {
         this.paraName = this.searchFormGroup.get('ParameterNameSearch').value + "%"
         this.UnitName = this.searchFormGroup.get('UnitId').value || "0"
         // debugger
-        if (this.searchFormGroup.get('IsNumeric').value==1)
+        if (this.searchFormGroup.get('IsNumeric').value == 1)
             this.IsNumneric = "1"
-        else if(this.searchFormGroup.get('IsNumeric').value==2)
+        else if (this.searchFormGroup.get('IsNumeric').value == 2)
             this.IsNumneric = "2"
-          else if(this.searchFormGroup.get('IsNumeric').value==0)
+        else if (this.searchFormGroup.get('IsNumeric').value == 0)
             this.IsNumneric = "0"
         this.getfilterdata();
     }
@@ -225,9 +224,9 @@ export class ParametermasterComponent implements OnInit {
             // }
             // this._ParameterService.populateForm(param);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
-                        maxWidth: "96%",
-                        width: '95%',
-                        height: '95%',
+                maxWidth: "96%",
+                width: '95%',
+                height: '95%',
                 // data:row,
                 data: { rowData: row, tableData: data.data }
             });
@@ -248,8 +247,8 @@ export class ParametermasterComponent implements OnInit {
                 height: '95%',
             });
         dialogRef.afterClosed().subscribe(result => {
-          that.grid.bindGridData();
-           
+            that.grid.bindGridData();
+
         });
     }
     onaddformula(row) {
@@ -346,7 +345,7 @@ export class PathparameterMaster {
             this.IsPrintDisSummary = PathparameterMaster.IsPrintDisSummary || "false";
             this.paraMultipleRange = PathparameterMaster.paraMultipleRange || "";
             this.IsDeletedSearch = PathparameterMaster.IsDeletedSearch || "";
-            
+
         }
     }
 }

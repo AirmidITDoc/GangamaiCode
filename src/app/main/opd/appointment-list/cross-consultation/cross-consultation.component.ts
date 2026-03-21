@@ -13,143 +13,143 @@ import { AppointmentlistService } from '../appointmentlist.service';
 
 
 @Component({
-  selector: 'app-cross-consultation',
-  templateUrl: './cross-consultation.component.html',
-  styleUrls: ['./cross-consultation.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-cross-consultation',
+    templateUrl: './cross-consultation.component.html',
+    styleUrls: ['./cross-consultation.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class CrossConsultationComponent implements OnInit {
-  crossconForm: FormGroup;
-  @Input() control: AbstractControl | null = null;
-  
-  date = new Date().toISOString();
+    crossconForm: FormGroup;
+    @Input() control: AbstractControl | null = null;
 
-  screenFromString = 'appointment';
+    date = new Date().toISOString();
 
-  registerObj1 = new VisitMaster1({});
+    screenFromString = 'appointment';
 
-  autocompletedepartment: string = "Department";
-  autocompleteModedeptdoc: string = "ConDoctor";
-  @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
+    registerObj1 = new VisitMaster1({});
 
-  docList: any = [];
-  optionsDoctor: any[] = [];
-  filteredOptionsdoc: Observable<string[]>;
-  isdocSelected: boolean = false;
-  regId = 0;
-  constructor(public _AppointmentlistService: AppointmentlistService, private formBuilder: UntypedFormBuilder,
-    private accountService: AuthenticationService,private _FormvalidationserviceService: FormvalidationserviceService,
-    public dialogRef: MatDialogRef<CrossConsultationComponent>, public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
-    public _matDialog: MatDialog, public toastr: ToastrService
-  ) { }
+    autocompletedepartment: string = "Department";
+    autocompleteModedeptdoc: string = "ConDoctor";
+    @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
 
-  ngOnInit(): void {
+    docList: any = [];
+    optionsDoctor: any[] = [];
+    filteredOptionsdoc: Observable<string[]>;
+    isdocSelected: boolean = false;
+    regId = 0;
+    constructor(public _AppointmentlistService: AppointmentlistService, private formBuilder: UntypedFormBuilder,
+        private accountService: AuthenticationService, private _FormvalidationserviceService: FormvalidationserviceService,
+        public dialogRef: MatDialogRef<CrossConsultationComponent>, public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
+        public _matDialog: MatDialog, public toastr: ToastrService
+    ) { }
 
-    setTimeout(() => {
-      this._AppointmentlistService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
-        this.ddldoctor.options = data;
-        this.ddldoctor.bindGridAutoComplete();
-      });
-    }, 500);
-   
-    this.crossconForm = this.createCrossConForm();
-    this.crossconForm.markAllAsTouched();
-    this.crossconForm.get("consultantDocId").setValue(this.data.doctorId)
-  }
+    ngOnInit(): void {
+
+        setTimeout(() => {
+            this._AppointmentlistService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
+                this.ddldoctor.options = data;
+                this.ddldoctor.bindGridAutoComplete();
+            });
+        }, 500);
+
+        this.crossconForm = this.createCrossConForm();
+        this.crossconForm.markAllAsTouched();
+        this.crossconForm.get("consultantDocId").setValue(this.data.doctorId)
+    }
 
 
-  createCrossConForm() {
-    return this.formBuilder.group({
-      regId: [this.data?.regId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      visitDate: "",
-      visitTime: " ",
-      unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      patientTypeId: this.data.patientTypeId,
-      consultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      refDocId: [this.data?.refDocId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tariffId: [this.data?.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      companyId: [this.data?.companyId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      isCancelled: false,
-      isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isCancelledDate: ['1900-01-01'],
-      classId: [this.data?.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      departmentId: [this.data.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      patientOldNew: this.data.patientOldNew,
-      firstFollowupVisit: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      appPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      followupDate: ['1900-01-01'],
-      crossConsulFlag: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      campId:0,
-      crossConsultantDrId:0,
-      visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-    });
-  }
+    createCrossConForm() {
+        return this.formBuilder.group({
+            regId: [this.data?.regId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            visitDate: "",
+            visitTime: " ",
+            unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            patientTypeId: this.data.patientTypeId,
+            consultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            refDocId: [this.data?.refDocId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.data?.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            companyId: [this.data?.companyId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            isCancelled: false,
+            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelledDate: ['1900-01-01'],
+            classId: [this.data?.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId: [this.data.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            patientOldNew: this.data.patientOldNew,
+            firstFollowupVisit: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            appPurposeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            followupDate: ['1900-01-01'],
+            crossConsulFlag: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            campId: 0,
+            crossConsultantDrId: 0,
+            visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
 
-  onSubmit() {
-    console.log(this.crossconForm.value);
+    onSubmit() {
+        console.log(this.crossconForm.value);
 
-    const data = this.crossconForm.value;
-    data.departmentId = Number(this.crossconForm.get('departmentId').value)
-    data.consultantDocId = parseInt(this.crossconForm.get('consultantDocId').value)
-    this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitDate').value, 'yyyy-MM-dd'))
-    this.crossconForm.get('crossConsultantDrId').setValue(this.data.doctorId)
+        const data = this.crossconForm.value;
+        data.departmentId = Number(this.crossconForm.get('departmentId').value)
+        data.consultantDocId = parseInt(this.crossconForm.get('consultantDocId').value)
+        this.crossconForm.get('visitDate').setValue(this.datePipe.transform(this.crossconForm.get('visitDate').value, 'yyyy-MM-dd'))
+        this.crossconForm.get('crossConsultantDrId').setValue(this.data.doctorId)
 
-     console.log(this.crossconForm.value)
+        console.log(this.crossconForm.value)
 
-    if(this.crossconForm.valid){
-    this._AppointmentlistService.crossconsultSave(this.crossconForm.value).subscribe((response) => {
-    this.onClear(true);
-    });
-  }else {
-    const invalidFields = [];
-    if (this.crossconForm.invalid) {
-        for (const controlName in this.crossconForm.controls) {
-            if (this.crossconForm.controls[controlName].invalid) { invalidFields.push(`Cross Consultation Form: ${controlName}`); }
+        if (this.crossconForm.valid) {
+            this._AppointmentlistService.crossconsultSave(this.crossconForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } else {
+            const invalidFields = [];
+            if (this.crossconForm.invalid) {
+                for (const controlName in this.crossconForm.controls) {
+                    if (this.crossconForm.controls[controlName].invalid) { invalidFields.push(`Cross Consultation Form: ${controlName}`); }
+                }
+            }
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
+
         }
     }
-  
-    if (invalidFields.length > 0) {
-        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+
+
+    selectChangedepartment(obj: any) {
+        this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+            this.ddldoctor.options = data;
+            this.ddldoctor.bindGridAutoComplete();
+        });
     }
 
-  }
-}
 
+    getValidationMessages() {
+        return {
+            Departmentid: [
+                { name: "required", Message: "Department Name is required" }
+            ],
+            consultantDocId: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+    }
 
-  selectChangedepartment(obj: any) {
-    this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-      this.ddldoctor.options = data;
-      this.ddldoctor.bindGridAutoComplete();
-    });
-  }
-
-
-  getValidationMessages() {
-    return {
-      Departmentid: [
-        { name: "required", Message: "Department Name is required" }
-      ],
-      consultantDocId: [
-        { name: "required", Message: "Doctor Name is required" }
-      ]
-    };
-  }
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  onClear(val: boolean) {
-    this.crossconForm.reset();
-    this.dialogRef.close(val);
-  }
-  onClose() {
-    this.dialogRef.close();
-  }
+    dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+    onClear(val: boolean) {
+        this.crossconForm.reset();
+        this.dialogRef.close(val);
+    }
+    onClose() {
+        this.dialogRef.close();
+    }
 
 
 

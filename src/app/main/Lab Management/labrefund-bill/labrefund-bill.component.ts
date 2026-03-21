@@ -1,591 +1,585 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDatepicker } from '@angular/material/datepicker';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { HospitalConfigService } from 'app/core/services/hospital-config.service';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg/lab-patient-reg.service';
-import { gridColumnTypes } from 'app/core/models/tableActions';
 
 
 @Component({
-  selector: 'app-labrefund-bill',
-  templateUrl: './labrefund-bill.component.html',
-  styleUrls: ['./labrefund-bill.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-labrefund-bill',
+    templateUrl: './labrefund-bill.component.html',
+    styleUrls: ['./labrefund-bill.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class LabrefundBillComponent {
 
-  screenFromString = 'ExternalLab-form';
-  autocompleteModeCashcounter: string = "CashCounter";
-  autocompleteModeunit: string = "Hospital";
-  searchFormGroup: FormGroup;
-  RefundOfBillFormFooter: FormGroup
-  vRefundOfBillFormGroup: FormGroup
-  dateTimeObj: any;
-  currentDate = new Date();
-  isLoadingStr: string = '';
-  registerObj = new LabPatientList({});
-  PatientName: any = "";
-  RegId: any;
-  RegNo: any;
-  billNo: any;
-  dataSource2 = new MatTableDataSource<InsertRefundDetail>();
-  UnitId: any = this.accountService.currentUserValue.user.unitId;
-  isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
+    screenFromString = 'ExternalLab-form';
+    autocompleteModeCashcounter: string = "CashCounter";
+    autocompleteModeunit: string = "Hospital";
+    searchFormGroup: FormGroup;
+    RefundOfBillFormFooter: FormGroup
+    vRefundOfBillFormGroup: FormGroup
+    dateTimeObj: any;
+    currentDate = new Date();
+    isLoadingStr: string = '';
+    registerObj = new LabPatientList({});
+    PatientName: any = "";
+    RegId: any;
+    RegNo: any;
+    billNo: any;
+    dataSource2 = new MatTableDataSource<InsertRefundDetail>();
+    UnitId: any = this.accountService.currentUserValue.user.unitId;
+    isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
-  displayedColumns1 = [
-    'serviceName',
-    'price',
-    'qty',
-    'ServiceWiseDisc',
-    'netAmount',
-    'discnetAmount',
-    'chargesDocName',
-    'refAmount',
-    'balanceAmount',
-    'refundAmount'
-  ];
-  @ViewChild('grid') grid: AirmidTableComponent;
-  ngAfterViewInit() {
-    this.gridConfig.columnsList.find(col => col.key === 'paidAmt')!.template = this.Paidstatus;
-  }
-  @ViewChild('Paidstatus') Paidstatus!: TemplateRef<any>;
+    displayedColumns1 = [
+        'serviceName',
+        'price',
+        'qty',
+        'ServiceWiseDisc',
+        'netAmount',
+        'discnetAmount',
+        'chargesDocName',
+        'refAmount',
+        'balanceAmount',
+        'refundAmount'
+    ];
+    @ViewChild('grid') grid: AirmidTableComponent;
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'paidAmt')!.template = this.Paidstatus;
+    }
+    @ViewChild('Paidstatus') Paidstatus!: TemplateRef<any>;
 
-  allColumns1 = [
-    { heading: "Status", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
-    { heading: "Bill Date", key: "bilDate", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-    { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-    { heading: "Bill Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
-    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 22 }
-  ]
-  gridConfig: gridModel = {
-    permissionCode: permissionCodes.ExternalInvestigation,
-    apiUrl: "RefundOfBill/OPBilllistforrefundList",
-    columnsList: this.allColumns1,
-    sortField: "BillNo",
-    sortOrder: 0,
-    filters: [{ fieldName: "RegId", fieldValue: '0', opType: OperatorComparer.Equals },
-    { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }]
-  }
+    allColumns1 = [
+        { heading: "Status", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
+        { heading: "Bill Date", key: "bilDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+        { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+        { heading: "Bill Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
+        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 22 }
+    ]
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.ExternalInvestigation,
+        apiUrl: "RefundOfBill/OPBilllistforrefundList",
+        columnsList: this.allColumns1,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: [{ fieldName: "RegId", fieldValue: '0', opType: OperatorComparer.Equals },
+        { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }]
+    }
 
-  constructor(
-    public _labPatientRegService: LabPatientRegService,
-    public _matDialog: MatDialog,
-    public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
-    public toastr: ToastrService,
-    public _WhatsAppEmailService: WhatsAppEmailService,
-    private commonService: PrintserviceService,
-    private accountService: AuthenticationService,
-    private hospitalconfigservice: HospitalConfigService,
-    private _FormvalidationserviceService: FormvalidationserviceService,
-  ) { }
+    constructor(
+        public _labPatientRegService: LabPatientRegService,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+        private formBuilder: FormBuilder,
+        public toastr: ToastrService,
+        public _WhatsAppEmailService: WhatsAppEmailService,
+        private commonService: PrintserviceService,
+        private accountService: AuthenticationService,
+        private hospitalconfigservice: HospitalConfigService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+    ) { }
 
-  ngOnInit(): void {
-    this.searchFormGroup = this.createSearchForm();
+    ngOnInit(): void {
+        this.searchFormGroup = this.createSearchForm();
 
-    this.vRefundOfBillFormGroup = this.vRefundBillFormInsert();
-    this.vRefundOfBillFormGroup.markAllAsTouched();
+        this.vRefundOfBillFormGroup = this.vRefundBillFormInsert();
+        this.vRefundOfBillFormGroup.markAllAsTouched();
 
-    this.RefundOfBillFormFooter = this.refundFormFooter();
-    this.RefundOfBillFormFooter.markAllAsTouched();
+        this.RefundOfBillFormFooter = this.refundFormFooter();
+        this.RefundOfBillFormFooter.markAllAsTouched();
 
-    // loop array defined
-    this.refundDetailsArray.push(this.createRefundDetail());
-    this.addChargesArray.push(this.createAddCharge());
+        // loop array defined
+        this.refundDetailsArray.push(this.createRefundDetail());
+        this.addChargesArray.push(this.createAddCharge());
 
-    this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
-    this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
-    this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
-  }
+        this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
+        this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
+        this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
+    }
 
-  createSearchForm() {
-    return this.formBuilder.group({
-      RegId: [''],
-      CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.OPD_Refund_Bill_CounterId],
-      UnitId: [this.accountService.currentUserValue.user.unitId]
-    });
-  }
-
-  // 1. Main Form Group new method
-  vRefundBillFormInsert(): FormGroup {
-    return this.formBuilder.group({
-      refund: this.formBuilder.group({
-        refundNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        refundDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
-        refundTime: [this.datePipe.transform(new Date(), 'shortTime')],
-        UnitId: [this.accountService.currentUserValue.user.unitId],
-        billId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdipdtype: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdipdid: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        refundAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
-        this._FormvalidationserviceService.notEmptyOrZeroValidator()
-        ]],
-        remark: [''],
-        transactionId: [2, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-        addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelled: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
-        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-        isApproval: false,
-        approvedBy: 0,
-        approvalDatetime: "1900-01-01",
-        comment: ""
-      }),
-
-      tRefundDetails: this.formBuilder.array([]), // FormArray for details
-      addCharges: this.formBuilder.array([]), // FormArray for charges
-      payment: '',
-      //New Payments
-      // ✅ Fixed: should be FormArray
-      tPayments: this.formBuilder.array([]),
-    });
-  }
-
-  // 2. FormArray Group for Refund Detail
-  createRefundDetail(item: any = {}): FormGroup {
-    return this.formBuilder.group({
-      refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      serviceId: [item.serviceId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      serviceAmount: [item.netAmount || 0],
-      refundAmount: [item.RefundAmt || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-      doctorId: [item.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(50)]],
-      addBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      chargesId: [item.chargesId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]]
-    });
-  }
-
-  //  3. FormArray Group for Charges
-  createAddCharge(item: any = {}): FormGroup {
-    return this.formBuilder.group({
-      chargesId: [item.chargesId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundAmount: [parseFloat(item.RefundAmt) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
-    });
-  }
-  CreateModePaymentform(item: any): FormGroup {
-    return this.formBuilder.group({
-      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
-      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      paymentDate: [item?.paymentDate ?? ''],
-      paymentTime: [item?.paymentTime ?? ''],
-      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      validationDate: [item?.validationDate ?? ''],
-      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
-      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-    });
-  }
-
-  // 5.FormArray Getters
-  get refundDetailsArray(): FormArray {
-    return this.vRefundOfBillFormGroup.get('tRefundDetails') as FormArray;
-  }
-
-  get addChargesArray(): FormArray {
-    return this.vRefundOfBillFormGroup.get('addCharges') as FormArray;
-  }
-  get ModeOfPaymentsArray(): FormArray {
-    return this.vRefundOfBillFormGroup.get('tPayments') as FormArray;
-  }
-
-  // footer form
-  refundFormFooter(): FormGroup {
-    return this.formBuilder.group({
-      TotalRefundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      RefundBalAmount: [0, [Validators.required]],
-      Remark: ['', [Validators.required]],
-    });
-  }
-
-  ListView1(value) {
-    console.log(value)
-    if (value.value !== 0)
-      this.UnitId = value.value
-    else
-      this.UnitId = 0
-  }
-
-  regflag = false
-  VlabPatId: any;
-  getSelectedObj(obj) {
-    console.log(obj)
-    // this.RegId = obj.labPatientId;
-    this.RegId = obj.visitId;
-    if (this.RegId) {
-      setTimeout(() => {
-        this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
-          this.registerObj = response;
-          this.VlabPatId = this.registerObj?.labPatientId
-          this.RegNo = this.registerObj?.labRequestNo
-          this.PatientName = this.registerObj?.firstName + ' ' + this.registerObj?.lastName
-          // this.billNo = this.registerObj.billNo;
-          this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.registerObj.billNo);
-          console.log(response)
+    createSearchForm() {
+        return this.formBuilder.group({
+            RegId: [''],
+            CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.OPD_Refund_Bill_CounterId],
+            UnitId: [this.accountService.currentUserValue.user.unitId]
         });
-      }, 100);
-      this.getfilterdata(this.RegId)
     }
-  }
 
-  getfilterdata(RegId) {
-    // debugger
-    this.gridConfig = {
-      apiUrl: "RefundOfBill/OPBilllistforrefundList",
-      columnsList: this.allColumns1,
-      sortField: "RegNo",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "RegId", fieldValue: String(RegId), opType: OperatorComparer.Equals },
-        { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }
-      ]
+    // 1. Main Form Group new method
+    vRefundBillFormInsert(): FormGroup {
+        return this.formBuilder.group({
+            refund: this.formBuilder.group({
+                refundNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                refundDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+                refundTime: [this.datePipe.transform(new Date(), 'shortTime')],
+                UnitId: [this.accountService.currentUserValue.user.unitId],
+                billId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                opdipdtype: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                opdipdid: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                refundAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
+                this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                ]],
+                remark: [''],
+                transactionId: [2, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+                addedBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+                isCancelled: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+                refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+                isApproval: false,
+                approvedBy: 0,
+                approvalDatetime: "1900-01-01",
+                comment: ""
+            }),
+
+            tRefundDetails: this.formBuilder.array([]), // FormArray for details
+            addCharges: this.formBuilder.array([]), // FormArray for charges
+            payment: '',
+            //New Payments
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([]),
+        });
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-  }
 
-  onPriceOrQtyChange(row: InsertRefundDetail = null, RefundAmt): void {
-    if (RefundAmt > 0 && RefundAmt <= row.balAmt) {
-      const BalanceAmount = row.balAmt - RefundAmt;
-      row.balanceAmount = BalanceAmount;
+    // 2. FormArray Group for Refund Detail
+    createRefundDetail(item: any = {}): FormGroup {
+        return this.formBuilder.group({
+            refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item.serviceId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceAmount: [item.netAmount || 0],
+            refundAmount: [item.RefundAmt || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+            doctorId: [item.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(50)]],
+            addBy: [this.accountService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            chargesId: [item.chargesId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]]
+        });
     }
-    else if (RefundAmt > row.balAmt) {
-      this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      row.RefundAmt = '';
-      row.balanceAmount = row.balAmt;
+
+    //  3. FormArray Group for Charges
+    createAddCharge(item: any = {}): FormGroup {
+        return this.formBuilder.group({
+            chargesId: [item.chargesId || 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundAmount: [parseFloat(item.RefundAmt) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+        });
     }
-    else if (RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined) {
-      row.RefundAmt = '';
-      row.balanceAmount = row.balAmt;
+    CreateModePaymentform(item: any): FormGroup {
+        return this.formBuilder.group({
+            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [item?.paymentDate ?? ''],
+            paymentTime: [item?.paymentTime ?? ''],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [item?.validationDate ?? ''],
+            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        });
     }
-    this.calculateTotalAmount();
-  }
 
-  calculateTotalAmount(): void {
-    const RefundAmount = this.dataSource2.data.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
-    const RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+    // 5.FormArray Getters
+    get refundDetailsArray(): FormArray {
+        return this.vRefundOfBillFormGroup.get('tRefundDetails') as FormArray;
+    }
 
-    this.RefundOfBillFormFooter.patchValue({
-      TotalRefundAmount: RefundAmount,
-      RefundBalAmount: Math.round(RefBalAmount),
-    }, { emitEvent: false });
-  }
+    get addChargesArray(): FormArray {
+        return this.vRefundOfBillFormGroup.get('addCharges') as FormArray;
+    }
+    get ModeOfPaymentsArray(): FormArray {
+        return this.vRefundOfBillFormGroup.get('tPayments') as FormArray;
+    }
 
-  onSave() {
+    // footer form
+    refundFormFooter(): FormGroup {
+        return this.formBuilder.group({
+            TotalRefundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            RefundBalAmount: [0, [Validators.required]],
+            Remark: ['', [Validators.required]],
+        });
+    }
 
-    this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
-    this.vRefundOfBillFormGroup.get("refund.refundAmount")?.setValue(parseInt(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value))
-    this.vRefundOfBillFormGroup.get("refund.remark")?.setValue(this.RefundOfBillFormFooter.get('Remark')?.value)
-    this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
-    this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
-    this.vRefundOfBillFormGroup.get("refund.cashCounterId")?.setValue(this.searchFormGroup.get('CashCounterID')?.value)
+    ListView1(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.UnitId = value.value
+        else
+            this.UnitId = 0
+    }
 
-    if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) {
-      console.log("FormValue", this.vRefundOfBillFormGroup.value)
-
-      // Refund table detail assign to array
-      this.refundDetailsArray.clear();
-      this.dataSource2.data.forEach(item => {
-        this.refundDetailsArray.push(this.createRefundDetail(item));
-      });
-
-      // addCharges table detail assign to array
-      this.addChargesArray.clear();
-      this.dataSource2.data.forEach(item => {
-        this.addChargesArray.push(this.createAddCharge(item));
-      });
-
-      // Patient info
-      const PatientHeaderObj = {
-        Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-        PatientName: this.PatientName || '',
-        RegNo: this.RegNo || 0,
-        Age: this.registerObj?.ageYear || 0,
-        NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value),
-        billNo: this.billNo,
-        CashCounterId: this.searchFormGroup.get('CashCounterID')?.value || 0,
-        TransactionLabel: 'LAB_REFUND_OF_BILL'
-      };
-      console.log(PatientHeaderObj)
-      const dialogRef = this._matDialog.open(OpPaymentComponent, {
-        maxWidth: "80vw",
-        height: '750px',
-        width: '80%',
-        data: {
-          vPatientHeaderObj: PatientHeaderObj,
-          FromName: "LAB-RefundOfBill",
-          advanceObj: PatientHeaderObj
-        }
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result && result.submitDataPay) {
-          this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
-
-          this.ModeOfPaymentsArray.clear();
-          result.submitDataPay.ipModePaymentInsert.forEach(item => {
-            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-          });
-
-          console.log("OP Refund Value --> ", this.vRefundOfBillFormGroup.value)
-          this._labPatientRegService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
-            this.viewgetOPRefundBillReportPdf(response);
+    regflag = false
+    VlabPatId: any;
+    getSelectedObj(obj) {
+        console.log(obj)
+        // this.RegId = obj.labPatientId;
+        this.RegId = obj.visitId;
+        if (this.RegId) {
             setTimeout(() => {
-              this.grid.bindGridData();
-              this.cleardata();
+                this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
+                    this.registerObj = response;
+                    this.VlabPatId = this.registerObj?.labPatientId
+                    this.RegNo = this.registerObj?.labRequestNo
+                    this.PatientName = this.registerObj?.firstName + ' ' + this.registerObj?.lastName
+                    // this.billNo = this.registerObj.billNo;
+                    this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.registerObj.billNo);
+                    console.log(response)
+                });
             }, 100);
-          });
+            this.getfilterdata(this.RegId)
         }
-      });
-    } else {
-      const invalidFields: string[] = [];
+    }
 
-      if (this.RefundOfBillFormFooter.invalid) {
-        for (const controlName in this.RefundOfBillFormFooter.controls) {
-          if (this.RefundOfBillFormFooter.controls[controlName].invalid) {
-            invalidFields.push(`Refund of Bill Footer: ${controlName}`);
-          }
+    getfilterdata(RegId) {
+        // debugger
+        this.gridConfig = {
+            apiUrl: "RefundOfBill/OPBilllistforrefundList",
+            columnsList: this.allColumns1,
+            sortField: "RegNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "RegId", fieldValue: String(RegId), opType: OperatorComparer.Equals },
+                { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }
+            ]
         }
-      }
-      // checks nested error 
-      if (this.vRefundOfBillFormGroup.invalid) {
-        for (const controlName in this.vRefundOfBillFormGroup.controls) {
-          const control = this.vRefundOfBillFormGroup.get(controlName);
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
 
-          if (control instanceof FormGroup || control instanceof FormArray) {
-            for (const nestedKey in control.controls) {
-              if (control.get(nestedKey)?.invalid) {
-                invalidFields.push(`Table Data : ${controlName}.${nestedKey}`);
-              }
+    onPriceOrQtyChange(row: InsertRefundDetail = null, RefundAmt): void {
+        if (RefundAmt > 0 && RefundAmt <= row.balAmt) {
+            const BalanceAmount = row.balAmt - RefundAmt;
+            row.balanceAmount = BalanceAmount;
+        }
+        else if (RefundAmt > row.balAmt) {
+            this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            row.RefundAmt = '';
+            row.balanceAmount = row.balAmt;
+        }
+        else if (RefundAmt == 0 || RefundAmt == '' || RefundAmt == null || RefundAmt == undefined) {
+            row.RefundAmt = '';
+            row.balanceAmount = row.balAmt;
+        }
+        this.calculateTotalAmount();
+    }
+
+    calculateTotalAmount(): void {
+        const RefundAmount = this.dataSource2.data.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
+        const RefBalAmount = this.dataSource2.data.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0);
+
+        this.RefundOfBillFormFooter.patchValue({
+            TotalRefundAmount: RefundAmount,
+            RefundBalAmount: Math.round(RefBalAmount),
+        }, { emitEvent: false });
+    }
+
+    onSave() {
+
+        this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
+        this.vRefundOfBillFormGroup.get("refund.refundAmount")?.setValue(parseInt(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value))
+        this.vRefundOfBillFormGroup.get("refund.remark")?.setValue(this.RefundOfBillFormFooter.get('Remark')?.value)
+        this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
+        this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
+        this.vRefundOfBillFormGroup.get("refund.cashCounterId")?.setValue(this.searchFormGroup.get('CashCounterID')?.value)
+
+        if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) {
+            console.log("FormValue", this.vRefundOfBillFormGroup.value)
+
+            // Refund table detail assign to array
+            this.refundDetailsArray.clear();
+            this.dataSource2.data.forEach(item => {
+                this.refundDetailsArray.push(this.createRefundDetail(item));
+            });
+
+            // addCharges table detail assign to array
+            this.addChargesArray.clear();
+            this.dataSource2.data.forEach(item => {
+                this.addChargesArray.push(this.createAddCharge(item));
+            });
+
+            // Patient info
+            const PatientHeaderObj = {
+                Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+                PatientName: this.PatientName || '',
+                RegNo: this.RegNo || 0,
+                Age: this.registerObj?.ageYear || 0,
+                NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value),
+                billNo: this.billNo,
+                CashCounterId: this.searchFormGroup.get('CashCounterID')?.value || 0,
+                TransactionLabel: 'LAB_REFUND_OF_BILL'
+            };
+            console.log(PatientHeaderObj)
+            const dialogRef = this._matDialog.open(OpPaymentComponent, {
+                maxWidth: "80vw",
+                height: '750px',
+                width: '80%',
+                data: {
+                    vPatientHeaderObj: PatientHeaderObj,
+                    FromName: "LAB-RefundOfBill",
+                    advanceObj: PatientHeaderObj
+                }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result && result.submitDataPay) {
+                    this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
+
+                    this.ModeOfPaymentsArray.clear();
+                    result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                    });
+
+                    console.log("OP Refund Value --> ", this.vRefundOfBillFormGroup.value)
+                    this._labPatientRegService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
+                        this.viewgetOPRefundBillReportPdf(response);
+                        setTimeout(() => {
+                            this.grid.bindGridData();
+                            this.cleardata();
+                        }, 100);
+                    });
+                }
+            });
+        } else {
+            const invalidFields: string[] = [];
+
+            if (this.RefundOfBillFormFooter.invalid) {
+                for (const controlName in this.RefundOfBillFormFooter.controls) {
+                    if (this.RefundOfBillFormFooter.controls[controlName].invalid) {
+                        invalidFields.push(`Refund of Bill Footer: ${controlName}`);
+                    }
+                }
             }
-          } else if (control?.invalid) {
-            invalidFields.push(`MainForm: ${controlName}`);
-          }
+            // checks nested error 
+            if (this.vRefundOfBillFormGroup.invalid) {
+                for (const controlName in this.vRefundOfBillFormGroup.controls) {
+                    const control = this.vRefundOfBillFormGroup.get(controlName);
+
+                    if (control instanceof FormGroup || control instanceof FormArray) {
+                        for (const nestedKey in control.controls) {
+                            if (control.get(nestedKey)?.invalid) {
+                                invalidFields.push(`Table Data : ${controlName}.${nestedKey}`);
+                            }
+                        }
+                    } else if (control?.invalid) {
+                        invalidFields.push(`MainForm: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
         }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
-    }
-  }
-
-  cleardata() {
-    this.dataSource2.data = [];
-    this.RefundOfBillFormFooter.reset();
-    this.RefundOfBillFormFooter.get("Remark").reset("")
-    this.searchFormGroup.get('RegId')?.setValue(0);
-    this.registerObj = new LabPatientList({});
-    this.RegNo = '';
-    this.RefundOfBillFormFooter.markAllAsTouched();
-    this.dataSource2.data = []
-    this.getfilterdata(0)
-  }
-  onEdit(row) {
-    console.log(row);
-
-    if (Number(row.paidAmt) == 0) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Refund Not Allowed',
-        text: 'Refund can’t be done. Payment is in credit or pending.',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#d33'
-      });
-      return;
     }
 
-    const datePipe = new DatePipe("en-US");
-    this.billNo = row.billNo;
-    this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)
-    this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId)
-    //Testing
-    // debugger
-    if (row.refundAmount < row.netPayableAmt) {
-      this.getservicedtailList(row);
-
-    } else {
-      this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
+    cleardata() {
+        this.dataSource2.data = [];
+        this.RefundOfBillFormFooter.reset();
+        this.RefundOfBillFormFooter.get("Remark").reset("")
+        this.searchFormGroup.get('RegId')?.setValue(0);
+        this.registerObj = new LabPatientList({});
+        this.RegNo = '';
+        this.RefundOfBillFormFooter.markAllAsTouched();
+        this.dataSource2.data = []
+        this.getfilterdata(0)
     }
-    this.calculateTotalAmount();
-  }
-  getservicedtailList(row) {
-    const m_data = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "BillNo",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "BillNo",
-          "fieldValue": String(row.billNo),
-          "opType": "Equals"
+    onEdit(row) {
+        console.log(row);
+
+        if (Number(row.paidAmt) == 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Refund Not Allowed',
+                text: 'Refund can’t be done. Payment is in credit or pending.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#d33'
+            });
+            return;
         }
-      ],
-      "Columns": [],
-      "exportType": "JSON"
+
+        const datePipe = new DatePipe("en-US");
+        this.billNo = row.billNo;
+        this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)
+        this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId)
+        //Testing
+        // debugger
+        if (row.refundAmount < row.netPayableAmt) {
+            this.getservicedtailList(row);
+
+        } else {
+            this.toastr.warning('Bill Amount Already Refund .', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+        }
+        this.calculateTotalAmount();
     }
-    this._labPatientRegService.getRefundofBillServiceList(m_data).subscribe(response => {
-      this.dataSource2.data = response.data as InsertRefundDetail[]
-      this.dataSource2.data.forEach(element => {
-        element.balanceAmount = element.balAmt - element.serviceWiseDisc;
-        element.balAmt = element.balAmt - element.serviceWiseDisc;
-      });
-      this.dataSource2.data = [...this.dataSource2.data];
-      this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
-      this.calculateTotalAmount();
-    });
-  }
-  chargelist: any = [];
-  populateiprefund(employee) {
-    this.RefundOfBillFormFooter.patchValue(employee);
-  }
-  viewgetOPRefundBillReportPdf(data) {
-    this.commonService.Onprint("RefundId", data, "LabRefundReceipt");
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  getWhatsappshareRefundbill(el, vmono) {
-    const m_data = {
-      "insertWhatsappsmsInfo": {
-        "mobileNumber": vmono || 0,
-        "smsString": '',
-        "isSent": 0,
-        "smsType": 'OPREFBILL',
-        "smsFlag": 0,
-        "smsDate": this.currentDate,
-        "tranNo": el,
-        "PatientType": 2,//el.PatientType,
-        "templateId": 0,
-        "smSurl": "info@gmail.com",
-        "filePath": '',
-        "smsOutGoingID": 0
-      }
-    }
-    this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
-      if (response) {
-        this.toastr.success('Refund Of Bill Sent on WhatsApp Successfully.', 'Save !', {
-          toastClass: 'tostr-tost custom-toast-success',
+    getservicedtailList(row) {
+        const m_data = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "BillNo",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "BillNo",
+                    "fieldValue": String(row.billNo),
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+        this._labPatientRegService.getRefundofBillServiceList(m_data).subscribe(response => {
+            this.dataSource2.data = response.data as InsertRefundDetail[]
+            this.dataSource2.data.forEach(element => {
+                element.balanceAmount = element.balAmt - element.serviceWiseDisc;
+                element.balAmt = element.balAmt - element.serviceWiseDisc;
+            });
+            this.dataSource2.data = [...this.dataSource2.data];
+            this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';
+            this.calculateTotalAmount();
         });
-      } else {
-        this.toastr.error('API Error!', 'Error WhatsApp!', {
-          toastClass: 'tostr-tost custom-toast-error',
+    }
+    chargelist: any = [];
+    populateiprefund(employee) {
+        this.RefundOfBillFormFooter.patchValue(employee);
+    }
+    viewgetOPRefundBillReportPdf(data) {
+        this.commonService.Onprint("RefundId", data, "LabRefundReceipt");
+    }
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+    getWhatsappshareRefundbill(el, vmono) {
+        const m_data = {
+            "insertWhatsappsmsInfo": {
+                "mobileNumber": vmono || 0,
+                "smsString": '',
+                "isSent": 0,
+                "smsType": 'OPREFBILL',
+                "smsFlag": 0,
+                "smsDate": this.currentDate,
+                "tranNo": el,
+                "PatientType": 2,//el.PatientType,
+                "templateId": 0,
+                "smSurl": "info@gmail.com",
+                "filePath": '',
+                "smsOutGoingID": 0
+            }
+        }
+        this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+            if (response) {
+                this.toastr.success('Refund Of Bill Sent on WhatsApp Successfully.', 'Save !', {
+                    toastClass: 'tostr-tost custom-toast-success',
+                });
+            } else {
+                this.toastr.error('API Error!', 'Error WhatsApp!', {
+                    toastClass: 'tostr-tost custom-toast-error',
+                });
+            }
         });
-      }
-    });
-  }
-  getValidationMessages() {
-    return {
-      CashCounterID: [
-        { name: "pattern", Message: "only Number allowed." }
-      ]
     }
-  }
-  keyPressCharater(event) {
-    const inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
+    getValidationMessages() {
+        return {
+            CashCounterID: [
+                { name: "pattern", Message: "only Number allowed." }
+            ]
+        }
     }
-  }
+    keyPressCharater(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 }
 
 export class InsertRefundDetail {
-  RefundID: any;
-  ServiceId: number;
-  serviceName: any;
-  ServiceAmount: number;
-  refundAmount: number;
-  doctorId: number;
-  Remark: string;
-  AddBy: number;
-  chargesId: number;
-  ChargesDate: Date;
-  price: number;
-  qty: number;
-  TotalAmt: number;
-  NetAmount: number;
-  ChargesDocName: any;
-  refundAmt: any;
-  balanceAmount: any;
-  refAmount: any;
-  RefundAmt: any;
-  balAmt: any;
-  serviceWiseDisc: any;
+    RefundID: any;
+    ServiceId: number;
+    serviceName: any;
+    ServiceAmount: number;
+    refundAmount: number;
+    doctorId: number;
+    Remark: string;
+    AddBy: number;
+    chargesId: number;
+    ChargesDate: Date;
+    price: number;
+    qty: number;
+    TotalAmt: number;
+    NetAmount: number;
+    ChargesDocName: any;
+    refundAmt: any;
+    balanceAmount: any;
+    refAmount: any;
+    RefundAmt: any;
+    balAmt: any;
+    serviceWiseDisc: any;
 
-  constructor(InsertRefundDetailObj) {
-    {
-      this.RefundID = InsertRefundDetailObj.RefundID || 0;
-      this.ServiceId = InsertRefundDetailObj.ServiceId || 0;
-      this.serviceName = InsertRefundDetailObj.serviceName || 0;
-      this.ServiceAmount = InsertRefundDetailObj.ServiceAmount || 0;
-      this.refundAmount = InsertRefundDetailObj.refundAmount || 0;
-      this.doctorId = InsertRefundDetailObj.doctorId || 0;
-      this.Remark = InsertRefundDetailObj.Remark || '';
-      this.AddBy = InsertRefundDetailObj.AddBy || 0;
-      this.chargesId = InsertRefundDetailObj.chargesId || 0;
-      this.ChargesDate = InsertRefundDetailObj.ChargesDate || '';
-      this.price = InsertRefundDetailObj.price || 0;
-      this.qty = InsertRefundDetailObj.qty || 0;
-      this.TotalAmt = InsertRefundDetailObj.TotalAmt || 0;
-      this.NetAmount = InsertRefundDetailObj.NetAmount || '';
-      this.ChargesDocName = InsertRefundDetailObj.ChargesDocName || 0;
-      // this.Qty = InsertRefundDetailObj.ty || 0;
-      this.refundAmt = InsertRefundDetailObj.refundAmt || 0;
-      this.balanceAmount = InsertRefundDetailObj.balanceAmount || 0;
-      this.refAmount = InsertRefundDetailObj.refAmount || 0;
-      this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
-      this.balAmt = InsertRefundDetailObj.balAmt || 0;
-      this.serviceWiseDisc = InsertRefundDetailObj.serviceWiseDisc || 0;
+    constructor(InsertRefundDetailObj) {
+        {
+            this.RefundID = InsertRefundDetailObj.RefundID || 0;
+            this.ServiceId = InsertRefundDetailObj.ServiceId || 0;
+            this.serviceName = InsertRefundDetailObj.serviceName || 0;
+            this.ServiceAmount = InsertRefundDetailObj.ServiceAmount || 0;
+            this.refundAmount = InsertRefundDetailObj.refundAmount || 0;
+            this.doctorId = InsertRefundDetailObj.doctorId || 0;
+            this.Remark = InsertRefundDetailObj.Remark || '';
+            this.AddBy = InsertRefundDetailObj.AddBy || 0;
+            this.chargesId = InsertRefundDetailObj.chargesId || 0;
+            this.ChargesDate = InsertRefundDetailObj.ChargesDate || '';
+            this.price = InsertRefundDetailObj.price || 0;
+            this.qty = InsertRefundDetailObj.qty || 0;
+            this.TotalAmt = InsertRefundDetailObj.TotalAmt || 0;
+            this.NetAmount = InsertRefundDetailObj.NetAmount || '';
+            this.ChargesDocName = InsertRefundDetailObj.ChargesDocName || 0;
+            // this.Qty = InsertRefundDetailObj.ty || 0;
+            this.refundAmt = InsertRefundDetailObj.refundAmt || 0;
+            this.balanceAmount = InsertRefundDetailObj.balanceAmount || 0;
+            this.refAmount = InsertRefundDetailObj.refAmount || 0;
+            this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
+            this.balAmt = InsertRefundDetailObj.balAmt || 0;
+            this.serviceWiseDisc = InsertRefundDetailObj.serviceWiseDisc || 0;
+        }
     }
-  }
 }  

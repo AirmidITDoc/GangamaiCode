@@ -38,11 +38,11 @@ import { GSTReportComponent } from './gst-report.component';
 
 
 
-const routes : Routes =[
-  {
-    path:"**",
-    component:GSTReportComponent,
-  },
+const routes: Routes = [
+    {
+        path: "**",
+        component: GSTReportComponent,
+    },
 ];
 
 @NgModule({

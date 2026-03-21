@@ -4,202 +4,199 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-  
-  @Injectable({
+
+@Injectable({
     providedIn: 'root'
-  })
-  export class SalesHospitalKenyaService {
-  
+})
+export class SalesHospitalKenyaService {
+
     userFormGroup: FormGroup;
-    ItemSearchGroup :FormGroup;
-    PrescriptionFrom:FormGroup;
-  
-  
+    ItemSearchGroup: FormGroup;
+    PrescriptionFrom: FormGroup;
+
+
     constructor(
-      public _httpClient: HttpClient,
-      private _formBuilder: UntypedFormBuilder,
-      public _httpClient1 :ApiCaller,
-       private _loaderService: LoaderService,
-      public _FormvalidationserviceService:FormvalidationserviceService
-    ) { 
-      this.userFormGroup = this.IndentID();
-      this.ItemSearchGroup= this.ItemSearchFrom();
+        public _httpClient: HttpClient,
+        private _formBuilder: UntypedFormBuilder,
+        public _httpClient1: ApiCaller,
+        private _loaderService: LoaderService,
+        public _FormvalidationserviceService: FormvalidationserviceService
+    ) {
+        this.userFormGroup = this.IndentID();
+        this.ItemSearchGroup = this.ItemSearchFrom();
     }
-  
+
     ItemSearchFrom() {
-      return this._formBuilder.group({
-        Barcode:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        StoreId:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        ItemId:['', [Validators.required]],
-        ItemName:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        BatchNo:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        BatchExpDate:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        BalanceQty:['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-        Qty: [1, [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$"),this._FormvalidationserviceService.onlyNumberValidator(),
-          this._FormvalidationserviceService.notEmptyOrZeroValidator()
-        ] ],  
-        GSTPer:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        MRP: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        TotalMrp: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        DiscAmt: [' '],
-        NetAmt: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        DiscPer:['', [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        MarginAmt:[0],
-       GSTAmount:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       LandedRateandedTotal:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       CGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       SGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       IGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       PurTotAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       MRPRate:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       MRPRateTotal:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-       IsPurRate:[0]
-      });
+        return this._formBuilder.group({
+            Barcode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            StoreId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            ItemId: ['', [Validators.required]],
+            ItemName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            BatchNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            BatchExpDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            BalanceQty: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+            Qty: [1, [Validators.pattern("^-?[0-9]\\d*(\\.\\d{1,2})?$"), this._FormvalidationserviceService.onlyNumberValidator(),
+            this._FormvalidationserviceService.notEmptyOrZeroValidator()
+            ]],
+            GSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            MRP: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            TotalMrp: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            DiscAmt: [' '],
+            NetAmt: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            DiscPer: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            MarginAmt: [0],
+            GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            LandedRateandedTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            CGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            SGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            IGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            PurTotAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            MRPRate: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            MRPRateTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            IsPurRate: [0]
+        });
     }
-    
-      IndentID() {
-      return this._formBuilder.group({
-        RoleId: '',
-        RoleName: '',
-        AdmDate:'',
-        Date:'',
-        StoreName:'',
-        PreNo:'',
-        IsActive: '',
-        
-      });
+
+    IndentID() {
+        return this._formBuilder.group({
+            RoleId: '',
+            RoleName: '',
+            AdmDate: '',
+            Date: '',
+            StoreName: '',
+            PreNo: '',
+            IsActive: '',
+
+        });
     }
- 
-   
-    public getIndentID(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID",Param);
+
+
+    public getIndentID(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Indent_by_ID", Param);
     }
-    public getstoreDetails(Param){
-      return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+ Param);
-    } 
-    public getIndentList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList",Param);
+    public getstoreDetails(Param) {
+        return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=" + Param);
     }
-  
-    public getTopSalesDetails(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Top3SalesDetails",Param);
+    public getIndentList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IndentItemList", Param);
     }
-  
-    public getStoreFromList(){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
+
+    public getTopSalesDetails(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Top3SalesDetails", Param);
     }
-  
-    public getLoggedStoreList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+
+    public getStoreFromList() {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName", {});
     }
-    
-    public getItemList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty",Param);
+
+    public getLoggedStoreList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
     }
-  
-    public getBatchList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BatchPOP_BalanceQty",Param);
+
+    public getItemList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ItemName_BalanceQty", Param);
     }
-    public getConcessionCombo()
-    {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
+
+    public getBatchList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ItemName_BatchPOP_BalanceQty", Param);
     }
-    public InsertCashSales(employee,loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-      return this._httpClient1.PostData("Sales/SalesSaveWithPayment", employee)
+    public getConcessionCombo() {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
     }
-  
-    public InsertCreditSales(employee,loader = true){ 
-    if (loader) {
-      this._loaderService.show();
-  }
-      return this._httpClient1.PostData("Sales/SalesSaveWithCredit", employee)
+    public InsertCashSales(employee, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient1.PostData("Sales/SalesSaveWithPayment", employee)
     }
-  
-    public InsertSalesDraftBill(employee){
-      return this._httpClient1.PostData("Sales/SalesDraftBillSave", employee)
+
+    public InsertCreditSales(employee, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        return this._httpClient1.PostData("Sales/SalesSaveWithCredit", employee)
     }
-  
+
+    public InsertSalesDraftBill(employee) {
+        return this._httpClient1.PostData("Sales/SalesDraftBillSave", employee)
+    }
+
     public getTemplate(query) {
-      return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
-    } 
+        return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+    }
     public getBillSummaryQuery(query) {
-      return this._httpClient1.PostData("Sales/SalesPatientWiseCreditAmountList",query)
-    } 
-    public getSalesPrint(emp){
-      return this._httpClient.post("Generic/GetByProc?procName=rptSalesPrint",emp);
+        return this._httpClient1.PostData("Sales/SalesPatientWiseCreditAmountList", query)
     }
-    
-    public getSalesReturnPrint(emp){
-      return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesReturnPrint",emp);
+    public getSalesPrint(emp) {
+        return this._httpClient.post("Generic/GetByProc?procName=rptSalesPrint", emp);
     }
-  
-    public getDraftList (emp){
-      return this._httpClient1.PostData("Sales/salesDraftlist",emp);
+
+    public getSalesReturnPrint(emp) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_rptSalesReturnPrint", emp);
     }
-  
-    public getBalAvaListStore(Param){
-      return this._httpClient1.PostData("Sales/StockavailableList",Param);
+
+    public getDraftList(emp) {
+        return this._httpClient1.PostData("Sales/salesDraftlist", emp);
+    }
+
+    public getBalAvaListStore(Param) {
+        return this._httpClient1.PostData("Sales/StockavailableList", Param);
     }
     public getDraftItemDetailsList(data) {
-      return this._httpClient1.PostData("Sales/SalesDraftBillItemDet",data)
+        return this._httpClient1.PostData("Sales/SalesDraftBillItemDet", data)
     }
-  
-    public getDeleteDratf(data){
-      return this._httpClient1.PostData("Sales/SalesDraftbillcancel",data)
+
+    public getDeleteDratf(data) {
+        return this._httpClient1.PostData("Sales/SalesDraftbillcancel", data)
     }
-   public getDraftBillItemBalQty(emp){
-      return this._httpClient1.PostData("Sales/BalqtysalesDraftlist",emp);
+    public getDraftBillItemBalQty(emp) {
+        return this._httpClient1.PostData("Sales/BalqtysalesDraftlist", emp);
     }
-    public InsertWhatsappSms(emp){
-      return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
+    public InsertWhatsappSms(emp) {
+        return this._httpClient.post("InPatient/WhatsappSMSoutgoingSave", emp);
     }
-  
-    public getCurrentStockItem(param){
-      return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CurrentStock_ItemList",param);
+
+    public getCurrentStockItem(param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_CurrentStock_ItemList", param);
     }
-    
+
     public getSubstitutes(emp) {
-      return this._httpClient1.PostData("Sales/ItemGenericByNameList",emp);
+        return this._httpClient1.PostData("Sales/ItemGenericByNameList", emp);
     }
-    public getItemListSearchList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",Param);
+    public getItemListSearchList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName", Param);
     }
-    public getGenericNameList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemGenericName",Param);
+    public getGenericNameList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemGenericName", Param);
     }
-    public getPrescriptionList(Param){//Retrieve_PrescriptionListforSales
-      return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PrescriptionListforSales",Param);
+    public getPrescriptionList(Param) {//Retrieve_PrescriptionListforSales
+        return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_PrescriptionListforSales", Param);
     }
-    public getItemDetailList(Param){
-      return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet",Param);
+    public getItemDetailList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Ret_PrescriptionDet", Param);
     }
-      public getAdvanceList(employee)
-  {
-    return this._httpClient1.PostData("Sales/PharAdvanceList",employee)
-  }
-      public getPrescriptionBalQtyList(employee)
-  {
-    return this._httpClient1.PostData("Sales/PrescriptionItemDetList",employee)
-  }
-    public getexternalDoctorList(inputValue){ 
-       return this._httpClient1.GetData("Sales/ExternalDoctor-auto-complete?Keyword="+inputValue);
+    public getAdvanceList(employee) {
+        return this._httpClient1.PostData("Sales/PharAdvanceList", employee)
+    }
+    public getPrescriptionBalQtyList(employee) {
+        return this._httpClient1.PostData("Sales/PrescriptionItemDetList", employee)
+    }
+    public getexternalDoctorList(inputValue) {
+        return this._httpClient1.GetData("Sales/ExternalDoctor-auto-complete?Keyword=" + inputValue);
     }
     public getReportView(Param) {
-     return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
-  }
+        return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+    }
     // ItemMaster/GetItemListForSalesBatchPop?StoreId=2&ItemId=0
-  // public getKenyaSalesBatchList(Param){ 
-  //   return this._httpClient1.GetData("ItemMaster/search-GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId+"&PatientTypeId="+Param.PatientTypeId); 
-  // }
-  public getKenyaSalesBatchList(Param){ 
-    return this._httpClient1.PostData("Sales/BalqtysalesDraftlistKenya", Param);
-  }
-        public getAccessDetailList(param){
-    return this._httpClient1.PostData("LoginManager/loginAccessDetailsList",param)
-  } 
-  }
-  
+    // public getKenyaSalesBatchList(Param){ 
+    //   return this._httpClient1.GetData("ItemMaster/search-GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId+"&PatientTypeId="+Param.PatientTypeId); 
+    // }
+    public getKenyaSalesBatchList(Param) {
+        return this._httpClient1.PostData("Sales/BalqtysalesDraftlistKenya", Param);
+    }
+    public getAccessDetailList(param) {
+        return this._httpClient1.PostData("LoginManager/loginAccessDetailsList", param)
+    }
+}
+
 

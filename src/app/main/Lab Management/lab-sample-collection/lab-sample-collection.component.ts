@@ -1,26 +1,26 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation, ComponentRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
-import { MatDialog } from "@angular/material/dialog";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridColumnTypes } from "app/core/models/tableActions";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from 'ngx-toastr';
-import { MatTableDataSource } from '@angular/material/table';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { LabSampleCollectionService } from './lab-sample-collection.service';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
-import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
-import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-coll-old-method.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { DatePipe } from '@angular/common';
+import { Component, ComponentRef, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from "@angular/material/dialog";
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
+import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { LabSampleCollectionService } from './lab-sample-collection.service';
 import { LabsampleNewFromComponent } from './labsample-new-from/labsample-new-from.component';
+import { SampleCollOldMethodComponent } from './sample-coll-old-method/sample-coll-old-method.component';
 
 @Component({
     selector: 'app-lab-sample-collection',

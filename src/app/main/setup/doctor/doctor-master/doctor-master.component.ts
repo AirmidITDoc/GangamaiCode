@@ -5,18 +5,18 @@ import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { FuseSidebarService } from "@fuse/components/sidebar/sidebar.service";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from "ngx-toastr";
-import { DoctorMasterService } from "./doctor-master.service";
-import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
-import Swal from "sweetalert2";
-import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
-import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
-import { DoctorschdulerComponent } from "./doctorschduler/doctorschduler.component";
 import { PageNames } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { ExcelDownloadService } from "app/main/shared/services/excel-download.service";
+import { ToastrService } from "ngx-toastr";
+import Swal from "sweetalert2";
 import { DoctorExecutiveComponent } from "./doctor-executive/doctor-executive.component";
+import { DoctorMasterService } from "./doctor-master.service";
+import { DoctorschdulerComponent } from "./doctorschduler/doctorschduler.component";
+import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
+import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 
 @Component({
     selector: "app-doctor-master",

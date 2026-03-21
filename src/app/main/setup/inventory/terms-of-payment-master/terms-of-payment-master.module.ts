@@ -69,4 +69,4 @@ const routes: Routes = [
     ],
     providers: [TermsOfPaymentMasterService, DatePipe]
 })
-export class TermsOfPaymentMasterModule {}
+export class TermsOfPaymentMasterModule { }

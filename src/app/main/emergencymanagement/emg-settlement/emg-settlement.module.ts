@@ -32,60 +32,60 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { EmgSettlementService } from './emg-settlement.service';
 import { EmgSettlementComponent } from './emg-settlement.component';
+import { EmgSettlementService } from './emg-settlement.service';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: EmgSettlementComponent 
-  },
+    {
+        path: '**',
+        component: EmgSettlementComponent
+    },
 ];
 
 @NgModule({
-  declarations: [
-    EmgSettlementComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatToolbarModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatExpansionModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatTooltipModule,
-    MatChipsModule,
-  ],
-  providers: [
-    EmgSettlementService,
-    DatePipe,
-  ]
+    declarations: [
+        EmgSettlementComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatToolbarModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatExpansionModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatTooltipModule,
+        MatChipsModule,
+    ],
+    providers: [
+        EmgSettlementService,
+        DatePipe,
+    ]
 })
 export class EmgSettlementModule { }

@@ -95,21 +95,21 @@ const appRoutes: Routes = [
             ).then((m) => m.TermsOfPaymentMasterModule),
     },
     {
-        path:"item-company-master",
-        loadChildren:()=>
-            import("./item-company-master/item-company-master.module").then((m)=> m.ItemCompanyMasterModule),
+        path: "item-company-master",
+        loadChildren: () =>
+            import("./item-company-master/item-company-master.module").then((m) => m.ItemCompanyMasterModule),
     },
     {
-        path:"item-drugtype-master",
-        loadChildren:()=>
-            import("./item-drug-master/item-drug-master.module").then((m)=> m.ItemDrugMasterModule),
+        path: "item-drugtype-master",
+        loadChildren: () =>
+            import("./item-drug-master/item-drug-master.module").then((m) => m.ItemDrugMasterModule),
     }
 ];
 
 @NgModule({
     declarations: [
-    
-  ],
+
+    ],
     imports: [RouterModule.forChild(appRoutes)],
 })
-export class InventoryModule {}
+export class InventoryModule { }

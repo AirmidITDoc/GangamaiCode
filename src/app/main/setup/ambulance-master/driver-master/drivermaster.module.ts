@@ -25,8 +25,8 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { DriverMasterComponent } from "./driver-master.component";
-import { NewDriverComponent } from "./new-driver/new-driver.component";
 import { DrivermasterService } from "./drivermaster.service";
+import { NewDriverComponent } from "./new-driver/new-driver.component";
 
 
 const routes: Routes = [

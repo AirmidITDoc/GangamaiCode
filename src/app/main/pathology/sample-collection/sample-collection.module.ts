@@ -31,19 +31,19 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/main/shared/shared.module';
+import { EditSampledateComponent } from './edit-sampledate/edit-sampledate.component';
 import { SampleCollectionComponent } from './sample-collection.component';
 import { SampleCollectionService } from './sample-collection.service';
-import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
 import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
-import { EditSampledateComponent } from './edit-sampledate/edit-sampledate.component';
+import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
 
 
 const routes: Routes = [
- 
-  {
-      path: '**',
-      component:SampleCollectionComponent,
-  },
+
+    {
+        path: '**',
+        component: SampleCollectionComponent,
+    },
 
 ];
 @NgModule({

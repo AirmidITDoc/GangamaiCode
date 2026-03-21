@@ -36,10 +36,10 @@ import { IPSettlementComponent } from './ip-settlement.component';
 import { IPSettlementService } from './ip-settlement.service';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: IPSettlementComponent 
-  },
+    {
+        path: '**',
+        component: IPSettlementComponent
+    },
 ];
 
 @NgModule({

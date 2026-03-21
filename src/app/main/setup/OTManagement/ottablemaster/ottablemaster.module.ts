@@ -36,8 +36,8 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-      OTTablemasterComponent,
-      NewOTTablemasterComponent],
+        OTTablemasterComponent,
+        NewOTTablemasterComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -66,5 +66,5 @@ const routes: Routes = [
         MatSlideToggleModule,
     ],
     providers: [DatePipe]
-})  
+})
 export class OTTablemasterModule { }

@@ -51,7 +51,7 @@ export class AppointmentlistService {
         });
     }
 
-    
+
     createPesonalForm() {
         return this._formBuilder.group({
             RegId: [0],
@@ -125,15 +125,15 @@ export class AppointmentlistService {
             regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             visitDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             visitTime: [(new Date()).toISOString()],
-          
-          
+
+
             PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             TariffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             CompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-             SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             isCancelledBy: 0,
@@ -152,7 +152,7 @@ export class AppointmentlistService {
             visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             policyNumber: [0],
             policyLimit: [0],
-            policyValidateDate: [(new Date()).toISOString()] 
+            policyValidateDate: [(new Date()).toISOString()]
         });
     }
 
@@ -198,12 +198,12 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("VisitDetail/Update", Param);
     }
 
-    
+
 
     // RS
- public getserviceList(param) {
-    return this._httpClient1.PostData("PathlogySampleCollection/PathRadServiceList", param);
-  }
+    public getserviceList(param) {
+        return this._httpClient1.PostData("PathlogySampleCollection/PathRadServiceList", param);
+    }
     public InsertAppointmentBilling(Param: any) {
 
         return this._httpClient1.PostData("OPBill/AppointmentBillingInsert", Param);
@@ -284,7 +284,7 @@ export class AppointmentlistService {
     }
 
     public getAppointmenttemplateReport(Param: any) {
-         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+        return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
 
     public getRegistraionById(Id) {
@@ -319,10 +319,10 @@ export class AppointmentlistService {
     }
 
     public getReportViewOld(Param) {
-         return this._httpClient1.PostData("Report/ViewReport", Param);
+        return this._httpClient1.PostData("Report/ViewReport", Param);
     }
     public getReportView(Param) {
-         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+        return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
     public getReportHtml(Param) {
         return this._httpClient1.PostData("Report/get-report-html", Param);

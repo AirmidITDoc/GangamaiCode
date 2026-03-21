@@ -5,6 +5,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatChipsModule } from "@angular/material/chips";
 import { MatRippleModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -30,15 +31,14 @@ import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
+import { MatTimepickerModule } from "mat-timepicker";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { EditpackageComponent } from './editpackage/editpackage.component';
+import { ServiceMasterFormNewComponent } from "./service-master-form-new/service-master-form-new.component";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
 import { ServiceMasterComponent } from "./service-master.component";
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from './tariff/tariff.component';
-import { MatTimepickerModule } from "mat-timepicker";
-import { MatChipsModule } from "@angular/material/chips";
-import { ServiceMasterFormNewComponent } from "./service-master-form-new/service-master-form-new.component";
 
 const routes: Routes = [
     {
@@ -48,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ServiceMasterComponent, ServiceMasterFormComponent,ServiceMasterFormNewComponent, TariffComponent, EditpackageComponent],
+    declarations: [ServiceMasterComponent, ServiceMasterFormComponent, ServiceMasterFormNewComponent, TariffComponent, EditpackageComponent],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
@@ -88,4 +88,4 @@ const routes: Routes = [
     ],
     providers: [ServiceMasterService, DatePipe]
 })
-export class ServiceMasterModule {}
+export class ServiceMasterModule { }

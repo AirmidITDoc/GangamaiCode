@@ -20,8 +20,8 @@ export class SubGroupMasterService {
 
     createSubgroupForm(): FormGroup {
         return this._formBuilder.group({
-            subGroupId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            subGroupName: ["", 
+            subGroupId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            subGroupName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
@@ -29,9 +29,9 @@ export class SubGroupMasterService {
                 ]
             ],
             groupId: [0,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

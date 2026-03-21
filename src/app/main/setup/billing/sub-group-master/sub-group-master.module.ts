@@ -71,4 +71,4 @@ const routes: Routes = [
     ],
     providers: [SubGroupMasterService, DatePipe]
 })
-export class SubGroupMasterModule {}
+export class SubGroupMasterModule { }

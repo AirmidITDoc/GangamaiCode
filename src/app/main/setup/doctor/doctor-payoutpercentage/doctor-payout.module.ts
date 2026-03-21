@@ -25,16 +25,16 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTableModule } from "@angular/material/table";
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
-import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-import { DoctorPayoutpercentageComponent } from "./doctor-payoutpercentage.component";
-import { MatTabsModule } from "@angular/material/tabs";
 import { MatTimepickerModule } from "mat-timepicker";
+import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { DoctorMasterService } from "../doctor-master/doctor-master.service";
+import { DoctorPayoutpercentageComponent } from "./doctor-payoutpercentage.component";
 import { DoctorShareListComponent } from './doctor-share-list/doctor-share-list.component';
 
 
@@ -80,11 +80,11 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatDialogModule,
-           MatTabsModule,
+        MatTabsModule,
         //    SignaturePadModule 
-                MatTimepickerModule,
-                
-                
+        MatTimepickerModule,
+
+
     ],
     providers: [DoctorMasterService, DatePipe]
 })

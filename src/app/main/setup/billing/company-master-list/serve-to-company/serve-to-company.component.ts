@@ -1,22 +1,19 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { CompanyMasterService } from '../company-master.service';
-import { ToastrService } from 'ngx-toastr';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { MatTableDataSource } from '@angular/material/table';
-import { Servicedetail } from '../../service-master/service-master.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { CompanyMaster } from '../company-master-list.component';
-import Swal from 'sweetalert2';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { Servicedetail } from '../../service-master/service-master.component';
 import { SubTpaCompanyMaster } from '../../subtpa-company-master/subtpa-company-master.component';
+import { CompanyMaster } from '../company-master-list.component';
+import { CompanyMasterService } from '../company-master.service';
 
 @Component({
     selector: 'app-serve-to-company',
@@ -307,9 +304,9 @@ export class ServeToCompanyComponent {
             this.pageSize = event.pageSize;
         } else {
             this.pageIndex = 0;
-            this.pageSize = 10; 
+            this.pageSize = 10;
         }
-        
+
         const classId = this.companyForm.get("ClassId2").value || 0
         const param = {
             // "first": 0,

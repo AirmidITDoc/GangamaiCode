@@ -2,11 +2,11 @@ import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angula
 import { FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
+import { ConfigService } from "app/core/services/config.service";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 import { ToastrService } from "ngx-toastr";
 import { CompanyMaster } from "../company-master.component";
 import { CompanyMasterService } from "../company-master.service";
-import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
-import { ConfigService } from "app/core/services/config.service";
 
 @Component({
     selector: "app-company-master-list",
@@ -36,7 +36,7 @@ export class CompanyMasterListComponent implements OnInit {
         public dialogRef: MatDialogRef<CompanyMasterListComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
-            public _configue:ConfigService,
+        public _configue: ConfigService,
     ) { }
 
     ngOnInit(): void {
@@ -68,9 +68,9 @@ export class CompanyMasterListComponent implements OnInit {
                 });
             }, 500);
         }
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is5_Digit_Pincode_Id = id === "1";
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is5_Digit_Pincode_Id = id === "1";
     }
 
     onChangecity(e) {
@@ -91,13 +91,13 @@ this.Is5_Digit_Pincode_Id = id === "1";
 
         if (!this.companyFormDemo.invalid) {
             console.log(this.companyFormDemo.value)
-             if ((this.data?.companyId ?? 0) > 0) 
+            if ((this.data?.companyId ?? 0) > 0)
                 this.companyFormDemo.get("companyId").setValue(this.registerObj.companyId)
 
             this._CompanyMasterService.companyMasterSave(this.companyFormDemo.value).subscribe((response) => {
                 this.dialogRef.close()
             });
-        }else {
+        } else {
             const invalidFields = [];
             if (this.companyFormDemo.invalid) {
                 for (const controlName in this.companyFormDemo.controls) {
@@ -161,7 +161,7 @@ this.Is5_Digit_Pincode_Id = id === "1";
             //     { name: "maxlength", Message: "Pincode must be greater than 2 digits" },
             //     { name: "pattern", Message: "Only Digits allowed." }
             // ],
-             pinNo: [ ,
+            pinNo: [,
                 { name: "required", Message: "Pin / Country ID is required" },
                 { name: "minLength", Message: `${maxLen} digits required.` },
                 { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }

@@ -36,22 +36,22 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EmailComponent } from './email/email.component';
 import { NewPurchaseorderComponent } from './new-purchaseorder/new-purchaseorder.component';
-import { PurchaseOrderComponent } from './purchase-order.component';
 import { PurchaseRequisitionlistComponent } from './new-purchaseorder/purchase-requisitionlist/purchase-requisitionlist.component';
+import { PurchaseOrderComponent } from './purchase-order.component';
 import { PurchaseRequisitionComponent } from './purchase-requisition/purchase-requisition.component';
 
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: PurchaseOrderComponent 
-  },
+    {
+        path: '**',
+        component: PurchaseOrderComponent
+    },
 ];
 
 @NgModule({
     declarations: [
-        PurchaseOrderComponent, 
+        PurchaseOrderComponent,
         EmailComponent,
         NewPurchaseorderComponent,
         PurchaseRequisitionlistComponent,

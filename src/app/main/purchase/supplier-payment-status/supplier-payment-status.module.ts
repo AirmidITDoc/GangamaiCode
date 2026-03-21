@@ -39,10 +39,10 @@ import { SupplierPaymentListComponent } from './supplier-payment-list/supplier-p
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SupplierPaymentStatusComponent 
-  },
+    {
+        path: '**',
+        component: SupplierPaymentStatusComponent
+    },
 ];
 
 @NgModule({

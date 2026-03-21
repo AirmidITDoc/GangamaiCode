@@ -41,10 +41,10 @@ import { IssueToDepartmentService } from './issue-to-department.service';
 import { NewIssueTodeptComponent } from './new-issue-todept/new-issue-todept.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: IssueToDepartmentComponent
-  },
+    {
+        path: '**',
+        component: IssueToDepartmentComponent
+    },
 ];
 
 @NgModule({

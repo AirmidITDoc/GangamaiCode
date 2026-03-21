@@ -9,177 +9,177 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { CurrentStockService } from '../current-stock.service';
 
 @Component({
-  selector: 'app-sales-return-summery',
-  templateUrl: './sales-return-summery.component.html',
-  styleUrls: ['./sales-return-summery.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-sales-return-summery',
+    templateUrl: './sales-return-summery.component.html',
+    styleUrls: ['./sales-return-summery.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class SalesReturnSummeryComponent implements OnInit {
-  displayedColumns = [
-    'ItemName',
-    'BatchNo',
-    'ReturnQty',
-  ];
-  displayedColumns1 = [
-    'SalesReturnNo',
-    'Date',
-    'ItemName',
-    'BatchNo',
-    //'BatchExpDate',
-    'Qty',
-    'MRP',
-  ];
+    displayedColumns = [
+        'ItemName',
+        'BatchNo',
+        'ReturnQty',
+    ];
+    displayedColumns1 = [
+        'SalesReturnNo',
+        'Date',
+        'ItemName',
+        'BatchNo',
+        //'BatchExpDate',
+        'Qty',
+        'MRP',
+    ];
 
-  isLoadingStr: string = '';
-  isLoading: string = '';
-  sIsLoading: string = "";
-  registerObj: any;
+    isLoadingStr: string = '';
+    isLoading: string = '';
+    sIsLoading: string = "";
+    registerObj: any;
 
-  tabIndex: number = 0;
+    tabIndex: number = 0;
 
-  @ViewChild(MatTable) table: MatTable<any>;
+    @ViewChild(MatTable) table: MatTable<any>;
 
-  ngAfterViewInit() {
-    this.table?.renderRows();
-  }
-  dsSalesRetSummeryList = new MatTableDataSource<SaleReturnssummeryList>();
-  dsSalesRetSummeryDetList = new MatTableDataSource<SalesReturnsummeryDetList>();
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
-
-  constructor(
-    public _CurrentStockService: CurrentStockService,
-    public _matDialog: MatDialog,
-    public datePipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<SalesReturnSummeryComponent>,
-    private _loggedService: AuthenticationService,
-  ) { }
-
-  ngOnInit(): void {
-    if (this.data.Obj) {
-      this.registerObj = this.data.Obj;
-      console.log(this.registerObj)
+    ngAfterViewInit() {
+        this.table?.renderRows();
     }
-    this.getSalesReturnSummeryList();
-    this.getSalesReturnSummeryDetailsList();
-  }
+    dsSalesRetSummeryList = new MatTableDataSource<SaleReturnssummeryList>();
+    dsSalesRetSummeryDetList = new MatTableDataSource<SalesReturnsummeryDetList>();
 
-  parseToDate(dateStr: string): Date | null {
-    if (!dateStr) return null;
-    const [datePart] = dateStr.split(' ');
-    const [day, month, year] = datePart.split('-').map(Number);
-    const date = new Date(year, month - 1, day);
-    return isNaN(date.getTime()) ? null : date;
-  }
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
 
-  getSalesReturnSummeryList() {
-    const vdata = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "StoreID",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "ToStoreId",
-          "fieldValue": String(this.registerObj.storeId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "ItemId",
-          "fieldValue": String(this.registerObj.itemId),
-          "opType": "Equals"
+    constructor(
+        public _CurrentStockService: CurrentStockService,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<SalesReturnSummeryComponent>,
+        private _loggedService: AuthenticationService,
+    ) { }
+
+    ngOnInit(): void {
+        if (this.data.Obj) {
+            this.registerObj = this.data.Obj;
+            console.log(this.registerObj)
         }
-      ],
-      "exportType": "JSON",
-      "columns": []
+        this.getSalesReturnSummeryList();
+        this.getSalesReturnSummeryDetailsList();
     }
-    console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getSalesReturnSummeryList(vdata).subscribe(data => {
-        this.dsSalesRetSummeryList.data = data.data as SaleReturnssummeryList[];
-        this.dsSalesRetSummeryList.sort = this.sort;
-        this.dsSalesRetSummeryList.paginator = this.paginator;
-        console.log(this.dsSalesRetSummeryList.data)
-      }
-      );
-    }, 500);
 
-  }
-  getSalesReturnSummeryDetailsList() {
-    const vdata = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "StoreID",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "ToStoreId",
-          "fieldValue": String(this.registerObj.storeId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "ItemId",
-          "fieldValue": String(this.registerObj.itemId),
-          "opType": "Equals"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
+    parseToDate(dateStr: string): Date | null {
+        if (!dateStr) return null;
+        const [datePart] = dateStr.split(' ');
+        const [day, month, year] = datePart.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        return isNaN(date.getTime()) ? null : date;
     }
-    console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getSalesReturnDetailSummeryList(vdata).subscribe(data => {
-        this.dsSalesRetSummeryDetList.data = data.data as SalesReturnsummeryDetList[];
-        this.dsSalesRetSummeryDetList.sort = this.sort;
-        this.dsSalesRetSummeryDetList.paginator = this.SecondPaginator;
-        console.log(this.dsSalesRetSummeryDetList.data)
-      }
-      );
-    }, 500);
-  }
-  onClose() {
-    this.dsSalesRetSummeryDetList.data = [];
-    this.dsSalesRetSummeryList.data = [];
-    this._matDialog.closeAll();
-  }
+
+    getSalesReturnSummeryList() {
+        const vdata = {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "StoreID",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ToStoreId",
+                    "fieldValue": String(this.registerObj.storeId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": String(this.registerObj.itemId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        console.log(vdata)
+        setTimeout(() => {
+            this._CurrentStockService.getSalesReturnSummeryList(vdata).subscribe(data => {
+                this.dsSalesRetSummeryList.data = data.data as SaleReturnssummeryList[];
+                this.dsSalesRetSummeryList.sort = this.sort;
+                this.dsSalesRetSummeryList.paginator = this.paginator;
+                console.log(this.dsSalesRetSummeryList.data)
+            }
+            );
+        }, 500);
+
+    }
+    getSalesReturnSummeryDetailsList() {
+        const vdata = {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "StoreID",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ToStoreId",
+                    "fieldValue": String(this.registerObj.storeId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": String(this.registerObj.itemId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        console.log(vdata)
+        setTimeout(() => {
+            this._CurrentStockService.getSalesReturnDetailSummeryList(vdata).subscribe(data => {
+                this.dsSalesRetSummeryDetList.data = data.data as SalesReturnsummeryDetList[];
+                this.dsSalesRetSummeryDetList.sort = this.sort;
+                this.dsSalesRetSummeryDetList.paginator = this.SecondPaginator;
+                console.log(this.dsSalesRetSummeryDetList.data)
+            }
+            );
+        }, 500);
+    }
+    onClose() {
+        this.dsSalesRetSummeryDetList.data = [];
+        this.dsSalesRetSummeryList.data = [];
+        this._matDialog.closeAll();
+    }
 }
 export class SaleReturnssummeryList {
 
-  ItemName: any;
-  BatchNo: any;
-  ReturnQty: number;
+    ItemName: any;
+    BatchNo: any;
+    ReturnQty: number;
 
-  constructor(SaleReturnssummeryList) {
-    {
-      this.ItemName = SaleReturnssummeryList.ItemName || '';
-      this.BatchNo = SaleReturnssummeryList.BatchNo || '';
-      this.ReturnQty = SaleReturnssummeryList.ReturnQty || 0;
+    constructor(SaleReturnssummeryList) {
+        {
+            this.ItemName = SaleReturnssummeryList.ItemName || '';
+            this.BatchNo = SaleReturnssummeryList.BatchNo || '';
+            this.ReturnQty = SaleReturnssummeryList.ReturnQty || 0;
+        }
     }
-  }
 }
 export class SalesReturnsummeryDetList {
 
-  SalesReturnNo: any;
-  Date: any;
-  ItemName: any;
-  BatchNo: any;
-  BatchExpDate: number;
-  Qty: number;
-  MRP: number;
+    SalesReturnNo: any;
+    Date: any;
+    ItemName: any;
+    BatchNo: any;
+    BatchExpDate: number;
+    Qty: number;
+    MRP: number;
 
-  constructor(SalesReturnsummeryDetList) {
-    {
-      this.SalesReturnNo = SalesReturnsummeryDetList.SalesReturnNo || 0;
-      this.Date = SalesReturnsummeryDetList.Date || '';
-      this.ItemName = SalesReturnsummeryDetList.ItemName || 0;
-      this.BatchExpDate = SalesReturnsummeryDetList.BatchExpDate || 0;
-      this.BatchNo = SalesReturnsummeryDetList.BatchNo || '';
-      this.Qty = SalesReturnsummeryDetList.Qty || 0;
-      this.MRP = SalesReturnsummeryDetList.MRP || 0;
+    constructor(SalesReturnsummeryDetList) {
+        {
+            this.SalesReturnNo = SalesReturnsummeryDetList.SalesReturnNo || 0;
+            this.Date = SalesReturnsummeryDetList.Date || '';
+            this.ItemName = SalesReturnsummeryDetList.ItemName || 0;
+            this.BatchExpDate = SalesReturnsummeryDetList.BatchExpDate || 0;
+            this.BatchNo = SalesReturnsummeryDetList.BatchNo || '';
+            this.Qty = SalesReturnsummeryDetList.Qty || 0;
+            this.MRP = SalesReturnsummeryDetList.MRP || 0;
+        }
     }
-  }
 }

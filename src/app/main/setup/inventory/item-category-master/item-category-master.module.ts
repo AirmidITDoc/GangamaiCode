@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [ItemCategoryMasterService, DatePipe]
 })
-export class ItemCategoryMasterModule {}
+export class ItemCategoryMasterModule { }

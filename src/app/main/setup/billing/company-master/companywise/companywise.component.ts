@@ -11,76 +11,76 @@ import { Observable } from 'rxjs';
 import { CompanyMasterService } from '../company-master.service';
 
 @Component({
-  selector: 'app-companywise',
-  templateUrl: './companywise.component.html',
-  styleUrls: ['./companywise.component.scss']
+    selector: 'app-companywise',
+    templateUrl: './companywise.component.html',
+    styleUrls: ['./companywise.component.scss']
 })
 export class CompanywiseComponent {
 
     displayedServiceColumns: string[] = [
         'ServiceName',
-        'Action' 
-        ] 
-        displayedServiceselected: string[] = [
-          'ServiceName',
-          'Qty',
-          'Price',
-          'buttons'
-        ]    
-        
-      isClasselected:boolean=false;
-      vClassName:any;
-      myFormGroup:FormGroup
-      chargeslist:any=[]; 
-      isLoading: string = '';
-      sIsLoading: string = "";
-      screenFromString = 'Company';
-      registerObj:any;  
-      isServiceIdSelected:boolean=false;
-      filteredOptionsBillingClassName:Observable<string[]>;
-      ClassList:any=[];
-      selectedObj:any;
-    
-      @ViewChild(MatSort) sort: MatSort;
-      @ViewChild(MatPaginator) paginator: MatPaginator;
-    
-      dsservicelist = new MatTableDataSource<ServCompList>();
-      dscompanyserv = new MatTableDataSource<ServCompList>();
-    
-      constructor(
+        'Action'
+    ]
+    displayedServiceselected: string[] = [
+        'ServiceName',
+        'Qty',
+        'Price',
+        'buttons'
+    ]
+
+    isClasselected: boolean = false;
+    vClassName: any;
+    myFormGroup: FormGroup
+    chargeslist: any = [];
+    isLoading: string = '';
+    sIsLoading: string = "";
+    screenFromString = 'Company';
+    registerObj: any;
+    isServiceIdSelected: boolean = false;
+    filteredOptionsBillingClassName: Observable<string[]>;
+    ClassList: any = [];
+    selectedObj: any;
+
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+    dsservicelist = new MatTableDataSource<ServCompList>();
+    dscompanyserv = new MatTableDataSource<ServCompList>();
+
+    constructor(
         public _CompanyMasterService: CompanyMasterService,
-        public toastr : ToastrService,
+        public toastr: ToastrService,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public dialogRef: MatDialogRef<CompanywiseComponent>, 
+        public dialogRef: MatDialogRef<CompanywiseComponent>,
         private _loggedService: AuthenticationService,
-        public _matDialog: MatDialog, 
-        public datePipe: DatePipe,  
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
         public formBuilder: FormBuilder
-      ) { }
-    
-      ngOnInit(): void {
+    ) { }
+
+    ngOnInit(): void {
         this.myFormGroup = this.CreateServCompForm();
         this.myFormGroup.markAllAsTouched();
-        
-        if(this.data){
-          this.registerObj = this.data.Obj
-          console.log(this.registerObj)
-          this.getRtrvCompanyServList(this.registerObj)
-        } 
+
+        if (this.data) {
+            this.registerObj = this.data.Obj
+            console.log(this.registerObj)
+            this.getRtrvCompanyServList(this.registerObj)
+        }
         this.getclassNameCombo();
-      }
-      
-      CreateServCompForm(){
+    }
+
+    CreateServCompForm() {
         return this.formBuilder.group({
-          IsPathRad: ['3'], 
-          ServiceId: '',  
-          ClassId:'',
-          CompanyName:''
+            IsPathRad: ['3'],
+            ServiceId: '',
+            ClassId: '',
+            CompanyName: ''
         });
-      }
-      getclassNameCombo() {
+    }
+    getclassNameCombo() {
         const m_data = {
-          'ClassName': '%'  
+            'ClassName': '%'
         }
         // this._CompanyMasterService.getclassNameCombo(m_data).subscribe((data) => {
         //   this.ClassList = data; 
@@ -89,50 +89,50 @@ export class CompanywiseComponent {
         //     map(value => value ? this._filterClassName(value) : this.ClassList.slice()),
         //   ); 
         // });
-      } 
-      //filters
-      private _filterClassName(value: any): string[] {
+    }
+    //filters
+    private _filterClassName(value: any): string[] {
         if (value) {
-          const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
-          return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
+            const filterValue = value && value.ClassName ? value.ClassName.toLowerCase() : value.toLowerCase();
+            return this.ClassList.filter(option => option.ClassName.toLowerCase().includes(filterValue));
         }
-      } 
-      getOptionTextclass(option) {
+    }
+    getOptionTextclass(option) {
         return option && option.ClassName ? option.ClassName : '';
-      } 
-      getSelectedObjClass(obj){
+    }
+    getSelectedObjClass(obj) {
         this.getServiceListdata();
-      }
-      //get RtrvCompanyService
-      getRtrvCompanyServList(obj) {
+    }
+    //get RtrvCompanyService
+    getRtrvCompanyServList(obj) {
         this.isLoading = 'loading-data';
-        const vdata={
-          "CompanyId": obj.CompanyId || 0
+        const vdata = {
+            "CompanyId": obj.CompanyId || 0
         }
         console.log(vdata)
         setTimeout(() => {
-        //   this._CompanyMasterService.getRtrvCompanyServList(vdata).subscribe(data=>{
-        //     this.dscompanyserv.data =  data as ServCompList[];
-        //     this.chargeslist = data as ServCompList
-        //     console.log(this.dscompanyserv.data)  
-        //   }); 
-        },1000); 
-      }
-    
-      getServiceListdata() {
+            //   this._CompanyMasterService.getRtrvCompanyServList(vdata).subscribe(data=>{
+            //     this.dscompanyserv.data =  data as ServCompList[];
+            //     this.chargeslist = data as ServCompList
+            //     console.log(this.dscompanyserv.data)  
+            //   }); 
+        }, 1000);
+    }
+
+    getServiceListdata() {
         //   
         if (this.vClassName == '' || this.vClassName == null || this.vClassName == undefined) {
-          this.toastr.warning('Please Select class Name', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
-        } 
+            this.toastr.warning('Please Select class Name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
         this.sIsLoading = ''
         const Param = {
-          "ServiceName": `${this.myFormGroup.get('ServiceId').value}%` || '%',
-          "IsPathRad": parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
-          "ClassId": this.myFormGroup.get('ClassId').value.ClassId || 0,
-          "TariffId": this.registerObj.TraiffId || 0
+            "ServiceName": `${this.myFormGroup.get('ServiceId').value}%` || '%',
+            "IsPathRad": parseInt(this.myFormGroup.get('IsPathRad').value) || 0,
+            "ClassId": this.myFormGroup.get('ClassId').value.ClassId || 0,
+            "TariffId": this.registerObj.TraiffId || 0
         }
         console.log(Param);
         // this._CompanyMasterService.getServiceListDetails(Param).subscribe(data => {
@@ -144,110 +144,110 @@ export class CompanywiseComponent {
         //   error => {
         //     this.sIsLoading = '';
         //   });
-      }
-      onAssignServComp(row) {
+    }
+    onAssignServComp(row) {
         this.isLoading = 'save';
         this.dscompanyserv.data = [];
         if (this.chargeslist && this.chargeslist.length > 0) {
-          const duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId);
-          if (duplicateItem && duplicateItem.length == 0) {
-            this.addChargList(row);
-            return;
-          }
-          this.isLoading = '';
-          this.dscompanyserv.data = this.chargeslist;
-          this.dscompanyserv.sort = this.sort;
-          this.dscompanyserv.paginator = this.paginator;
+            const duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.ServiceId);
+            if (duplicateItem && duplicateItem.length == 0) {
+                this.addChargList(row);
+                return;
+            }
+            this.isLoading = '';
+            this.dscompanyserv.data = this.chargeslist;
+            this.dscompanyserv.sort = this.sort;
+            this.dscompanyserv.paginator = this.paginator;
         } else if (this.chargeslist && this.chargeslist.length == 0) {
-          this.addChargList(row);
+            this.addChargList(row);
         }
-        else{
-          this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
+        else {
+            this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
-      }
-    
-      addChargList(row) {
+    }
+
+    addChargList(row) {
         this.chargeslist.push(
-          {
-            ServiceId: row.ServiceId,
-            ServiceName: row.ServiceName,
-            ServicePrice: row.Price || 0,
-            ServiceQty:1
-    
-          });
+            {
+                ServiceId: row.ServiceId,
+                ServiceName: row.ServiceName,
+                ServicePrice: row.Price || 0,
+                ServiceQty: 1
+
+            });
         this.isLoading = '';
         console.log(this.chargeslist);
         this.dscompanyserv.data = this.chargeslist;
         this.dscompanyserv.sort = this.sort;
         this.dscompanyserv.paginator = this.paginator;
-      }
-    
-      deleteTableRow(element) { 
-          this.chargeslist= this.dscompanyserv.data ;
-          const index = this.chargeslist.indexOf(element);
-          if (index >= 0) {
+    }
+
+    deleteTableRow(element) {
+        this.chargeslist = this.dscompanyserv.data;
+        const index = this.chargeslist.indexOf(element);
+        if (index >= 0) {
             this.chargeslist.splice(index, 1);
             this.dscompanyserv.data = [];
             this.dscompanyserv.data = this.chargeslist;
-          }
-          this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-            toastClass: 'tostr-tost custom-toast-success',
-          });  
-      }
-      gettablecalculation(element) {
-        console.log(element)
-        if(element.ServiceQty == 0 || element.ServiceQty == ''){
-          element.ServiceQty = 1 ;
-          this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });  
-          return;
         }
-         
-       if(element.ServicePrice > 0 && element.ServiceQty > 0){ 
-        element.TotalAmt = element.ServiceQty * element.ServicePrice || 0;
-        element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100  || 0;
-        element.NetAmount =  element.TotalAmt - element.DiscAmt
-        }  
-        else if(element.ServicePrice == 0 || element.ServicePrice == '' || element.ServiceQty == '' || element.ServiceQty == 0){
-          element.TotalAmt = 0;  
-          element.DiscAmt =  0 ;
-          element.NetAmount =  0 ;
-        }  
-      }
-      onSubmit(){  
-          if (!this.dscompanyserv.data.length) {
-            this.toastr.warning('Please assign service to company', 'Warning !', {
-              toastClass: 'tostr-tost custom-toast-warning',
+        this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+            toastClass: 'tostr-tost custom-toast-success',
+        });
+    }
+    gettablecalculation(element) {
+        console.log(element)
+        if (element.ServiceQty == 0 || element.ServiceQty == '') {
+            element.ServiceQty = 1;
+            this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {
+                toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-          }  
-         const insert_CompanyServiceAssignMasterObj = [];
-          this.dscompanyserv.data.forEach(element =>{
-            const insert_CompanyServiceAssignMaster={
-              "companyId":this.registerObj.CompanyId || 0,
-              "serviceId": element.ServiceId || 0,
-              "servicePrice":element.ServicePrice || 0,
-              "serviceQty":element.ServiceQty || 0,
-              "isActive": String(this.registerObj.IsActive) == 'false' ? 0:1,
-              "createdBy": 1,
+        }
+
+        if (element.ServicePrice > 0 && element.ServiceQty > 0) {
+            element.TotalAmt = element.ServiceQty * element.ServicePrice || 0;
+            element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 || 0;
+            element.NetAmount = element.TotalAmt - element.DiscAmt
+        }
+        else if (element.ServicePrice == 0 || element.ServicePrice == '' || element.ServiceQty == '' || element.ServiceQty == 0) {
+            element.TotalAmt = 0;
+            element.DiscAmt = 0;
+            element.NetAmount = 0;
+        }
+    }
+    onSubmit() {
+        if (!this.dscompanyserv.data.length) {
+            this.toastr.warning('Please assign service to company', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        const insert_CompanyServiceAssignMasterObj = [];
+        this.dscompanyserv.data.forEach(element => {
+            const insert_CompanyServiceAssignMaster = {
+                "companyId": this.registerObj.CompanyId || 0,
+                "serviceId": element.ServiceId || 0,
+                "servicePrice": element.ServicePrice || 0,
+                "serviceQty": element.ServiceQty || 0,
+                "isActive": String(this.registerObj.IsActive) == 'false' ? 0 : 1,
+                "createdBy": 1,
             }
             insert_CompanyServiceAssignMasterObj.push(insert_CompanyServiceAssignMaster)
-          });
-      
-           const delete_CompantServiceDetails={
+        });
+
+        const delete_CompantServiceDetails = {
             "companyId": this.registerObj.CompanyId || 0
-          }
-      
-          const submitData={
-            "insert_CompanyServiceAssignMaster":insert_CompanyServiceAssignMasterObj,
-            "delete_CompantServiceDetails":delete_CompantServiceDetails
-          }
-      
-          console.log(submitData)
+        }
+
+        const submitData = {
+            "insert_CompanyServiceAssignMaster": insert_CompanyServiceAssignMasterObj,
+            "delete_CompantServiceDetails": delete_CompantServiceDetails
+        }
+
+        console.log(submitData)
         //   this._CompanyMasterService.SaveCompanyService(submitData).subscribe(reponse =>{
         //     if(reponse){
         //       this.toastr.success('Record Saved Successfully.', 'Saved !', {
@@ -265,15 +265,15 @@ export class CompanywiseComponent {
         //       toastClass: 'tostr-tost custom-toast-error',
         //     });
         //   });  
-      }
-      onClose(){
+    }
+    onClose() {
         this._matDialog.closeAll();
         this.dscompanyserv.data = [];
         this.dsservicelist.data = [];
         this.myFormGroup.reset();
-      }
-    
-      keyPressAlphanumeric(event) {
+    }
+
+    keyPressAlphanumeric(event) {
         const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
@@ -282,16 +282,15 @@ export class CompanywiseComponent {
             return false;
         }
     }
-    }
-    export class ServCompList {
-      ServiceName: any;
-      ServicePrice: number;
-      ServiceId: any;
-      ServiceQty:any;
-      constructor(ServCompList) {
+}
+export class ServCompList {
+    ServiceName: any;
+    ServicePrice: number;
+    ServiceId: any;
+    ServiceQty: any;
+    constructor(ServCompList) {
         this.ServiceName = ServCompList.ServiceName || '';
         this.ServicePrice = ServCompList.ServicePrice || 0;
         this.ServiceId = ServCompList.ServiceId || 0;
-      }
     }
-    
+}

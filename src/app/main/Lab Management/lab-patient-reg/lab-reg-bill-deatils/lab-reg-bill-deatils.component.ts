@@ -1,20 +1,20 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
-import { LabPatientRegService } from '../lab-patient-reg.service';
-import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { fuseAnimations } from '@fuse/animations';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { ToastrService } from 'ngx-toastr';
 import { EmailorSMSHistoryComponent } from '../../emailor-smshistory/emailor-smshistory.component';
 import { ReportDispatchComponent } from '../../report-dispatch/report-dispatch.component';
+import { LabPatientRegService } from '../lab-patient-reg.service';
 
 @Component({
     selector: 'app-lab-reg-bill-deatils',

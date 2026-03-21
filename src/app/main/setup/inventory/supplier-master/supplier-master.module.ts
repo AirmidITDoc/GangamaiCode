@@ -81,4 +81,4 @@ const routes: Routes = [
     ],
     providers: [SupplierMasterService, DatePipe]
 })
-export class SupplierMasterModule {}
+export class SupplierMasterModule { }

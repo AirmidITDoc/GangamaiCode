@@ -7,11 +7,11 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
 import { SupplierMasterService } from "./supplier-master.service";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-supplier-master",
@@ -22,7 +22,7 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class SupplierMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Add);
-       
+
     myformSearch: FormGroup;
     autocompleteModestoreName: string = "Store";
     autocompletecity: string = "City";
@@ -56,9 +56,9 @@ export class SupplierMasterComponent implements OnInit {
                     // action: gridActions.edit, callback: (data: any) => {
                     //     this.onSave(data);
                     // }
-                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Edit), callback: (data: any) => {
-                                                this.onSave(data);
-                                            }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
                 },
                 {
                     action: gridActions.delete, callback: (data: any) => {

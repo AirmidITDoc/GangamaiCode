@@ -1,35 +1,35 @@
+import { DatePipe } from "@angular/common";
 import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from "ngx-toastr";
-import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
-import { NewReservationComponent } from "./new-reservation/new-reservation.component";
-import { OtReservationService } from "./ot-reservation.service";
-import { DatePipe } from "@angular/common";
-import { PrintserviceService } from "app/main/shared/services/printservice.service";
-import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
-import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
-import { OtPopupComponent } from "./ot-popup/ot-popup.component";
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, CalendarMonthViewDay } from "angular-calendar";
-import { finalize, fromEvent, Subject, takeUntil } from "rxjs";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import Swal from "sweetalert2";
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from "angular-calendar";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { EventColor, WeekViewHourSegment } from "calendar-utils";
-import { addDays, addMinutes, endOfDay, endOfWeek, isSameDay, endOfMonth, isSameMonth, startOfDay } from "date-fns";
-import { NewCheckinComponent } from "../patient-otmovement-tracking/new-checkin/new-checkin.component";
-import { NewOtPreoperationComponent } from "../ot-preoperation/new-ot-preoperation/new-ot-preoperation.component";
-import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-operation/new-ot-post-operation.component";
-import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-in.component";
-import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
-import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesia-record/new-anesthesia-record.component";
-import { OtOperativeNoteComponent } from "./ot-operative-note/ot-operative-note.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 import { NewMaterialConsumptionComponent } from "app/main/inventory/material-consumption/new-material-consumption/new-material-consumption.component";
+import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { PrintserviceService } from "app/main/shared/services/printservice.service";
+import { EventColor, WeekViewHourSegment } from "calendar-utils";
+import { addDays, addMinutes, endOfDay, endOfWeek, isSameDay, isSameMonth, startOfDay } from "date-fns";
+import { ToastrService } from "ngx-toastr";
+import { finalize, fromEvent, Subject, takeUntil } from "rxjs";
+import Swal from "sweetalert2";
+import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesia-record/new-anesthesia-record.component";
+import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
+import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-operation/new-ot-post-operation.component";
+import { NewOtPreoperationComponent } from "../ot-preoperation/new-ot-preoperation/new-ot-preoperation.component";
+import { NewCheckinComponent } from "../patient-otmovement-tracking/new-checkin/new-checkin.component";
+import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-in.component";
+import { NewReservationComponent } from "./new-reservation/new-reservation.component";
+import { OtOperativeNoteComponent } from "./ot-operative-note/ot-operative-note.component";
+import { OtPopupComponent } from "./ot-popup/ot-popup.component";
+import { OtReservationService } from "./ot-reservation.service";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -1154,8 +1154,8 @@ export class OtReserInsert {
             this.AnesthesiaId = OtReserInsert.AnesthesiaId || 0
             this.anesthesiaId = OtReserInsert.anesthesiaId || 0
             this.toDepartment = OtReserInsert.toDepartment || 0
-             this.refDocName = OtReserInsert.refDocName || ''
-  
+            this.refDocName = OtReserInsert.refDocName || ''
+
         }
     }
 }

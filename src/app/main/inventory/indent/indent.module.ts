@@ -39,10 +39,10 @@ import { IndentService } from './indent.service';
 import { NewIndentComponent } from './new-indent/new-indent.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: IndentComponent 
-  },
+    {
+        path: '**',
+        component: IndentComponent
+    },
 ];
 
 @NgModule({

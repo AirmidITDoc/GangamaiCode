@@ -33,14 +33,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTimepickerModule } from 'mat-timepicker';
+import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
 import { NewPhoneAppointmentComponent } from './new-phone-appointment/new-phone-appointment.component';
 import { PhoneAppointListService } from './phone-appoint-list.service';
 import { PhoneappointmentComponent } from './phoneappointment.component';
-import { NewPhoneAppoinmentCalendarComponent } from './new-phone-appoinment-calendar/new-phone-appoinment-calendar.component';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ReScheduleComponent } from './re-schedule/re-schedule.component';
 
 // const routes: Routes = [
@@ -50,14 +50,14 @@ import { ReScheduleComponent } from './re-schedule/re-schedule.component';
 //     },
 // ];
 const routes: Routes = [
-  {
-    path: 'new-phone-appointment',
-    component: NewPhoneAppoinmentCalendarComponent
-  },
-  {
-    path: '**',
-    redirectTo: 'new-phone-appointment'
-  }
+    {
+        path: 'new-phone-appointment',
+        component: NewPhoneAppoinmentCalendarComponent
+    },
+    {
+        path: '**',
+        redirectTo: 'new-phone-appointment'
+    }
 ];
 @NgModule({
     declarations: [
