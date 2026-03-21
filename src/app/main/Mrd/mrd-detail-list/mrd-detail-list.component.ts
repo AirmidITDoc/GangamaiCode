@@ -43,10 +43,6 @@ export class MrdDetailListComponent {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isInOut')!.template = this.actionsTemplate1;
-        // this.gridConfig.columnsList.find(col => col.key === 'priority')!.template = this.actionsTemplate2;
-        // this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.isverifyTemplate;
-
-
     }
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -55,26 +51,16 @@ export class MrdDetailListComponent {
 
     allcolumns = [
         { heading: "IsInOut", key: "isInOut", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        { heading: "mrdno", key: "mrdno", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Patient Name | Age", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "OPIP Id", key: "opipid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        { heading: "Admission Time", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
-        // { heading: "Person Name", key: "personName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
+        // { heading: "DOD", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
+        { heading: "IPNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "InFile Info", key: "inFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-
         { heading: "OutFile Info", key: "outFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-
-
-
-        // { heading: "Out FileId", key: "outFileId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        // { heading: "Out Time", key: "outTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "Out Reason", key: "outReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "In No", key: "inNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        //  { heading: "Return PersonName", key: "returnPersonName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        // { heading: "In Reason", key: "inReason", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Location", key: "location", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
+        { heading: "createdBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column

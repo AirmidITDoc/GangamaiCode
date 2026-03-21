@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Inject, Output, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-// import { OPIPPatientModel } from 'app/main/nursingstation/patient-vist/patient-vist.component';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -72,41 +71,25 @@ export class NewOutMrdComponent {
         return this.formBuilder.group({
             outFileId: 0,
             opipid: [this.opipid, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            // outNo: [''],
             givenUserId: this.accountService.currentUserValue.userId,
-
             personName: ['', [Validators.required]],
-
             outDate: [(new Date()).toISOString()],
             outTime: ['', [Validators.required]],
             outReason: ['', [Validators.required]],
             CreatedBy: this.accountService.currentUserValue.userId,
-            // inNo: [''],
-            // inDate: [(new Date()).toISOString()],
-            // inTime: ['', [Validators.required]],
-            // returnUserId: this.accountService.currentUserValue.userId,
-            // returnPersonName: [''],
-            // inReason: [false, Validators.required],
-
         });
     }
 
     onSubmit() {
-        debugger
-
         this.NewOutMrdForm.get('outDate').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, 'yyyy-MM-dd'))
         this.NewOutMrdForm.get('outTime').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, "yyyy-MM-dd hh:mm"))
-
-
         if (!this.NewOutMrdForm.invalid) {
             console.log(this.NewOutMrdForm.value)
             this._MrdService.MrdOutFileUpdate(this.NewOutMrdForm.value).subscribe((response) => {
-
                 this._matDialog.closeAll();
             });
         } else {
             const invalidFields = [];
-
             if (this.NewOutMrdForm.invalid) {
                 for (const controlName in this.NewOutMrdForm.controls) {
                     if (this.NewOutMrdForm.controls[controlName].invalid) {

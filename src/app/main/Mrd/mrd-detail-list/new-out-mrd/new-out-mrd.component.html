@@ -22,129 +22,101 @@
   <div class="modal-body" fusePerfectScrollbar>
     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="10px">
 
-         <mat-card style="padding: 5px;">
-        <div class="patient-info-sales my-1">
-
-          <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row" fxLayoutAlign="space-between">
-            <div fxLayout="column" fxLayoutGap="6px">
-              <!-- <div class="patient-col">
-                <span class="patient-col-key">UHID No
-                </span>
-                <span>:</span>
-                <span class="patient-col-value">{{registerObj.regNo}}</span>
-              </div> -->
-
-              
-              <div class="patient-col">
-                <span class="patient-col-key">IPD No</span>
-                <span>:</span>
-                <span class="patient-col-value">{{registerObj.ipdNo}}</span>
+      <!-- Patient Info Section -->
+      <div class="modal-card-container mt-0" style="margin-top: -4px;">
+        <div fxFlex.gt-sm="100%" fxFlex>
+          <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+            <div class="patient-info-sales">
+              <div class="patient-info-title border-bottom pb-1 mb-1">
+                <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
               </div>
-              <div class="patient-col">
-                <span class="patient-col-key">Patient Name
-                </span>
-                <span>:</span>
-                <span class="patient-col-value">{{registerObj.patientName}}</span>
+              <div class="Ipd-patient-info w-100-p">
+                <app-patient-information [uhidNo]="registerObj?.regNo" [patientName]="registerObj?.patientName"
+                  [doctorName]="registerObj?.doctorName" [doa]="registerObj?.admissionTime"
+                  [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                  [ageString]="(registerObj?.ageYear !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')">
+                </app-patient-information>
               </div>
-
-
             </div>
-
-            <div fxLayout="column" fxLayoutGap="6px">
-              <div class="patient-col">
-                <span class="patient-col-key">DOA | Time</span>
-                <span>:</span>
-                <span class="patient-col-value">{{registerObj.admissionTime  | date:'dd-MM-yyyy, hh:mm a'}}</span>
-              </div>
-              
-               <div class="patient-col">
-                <span class="patient-col-key">Age | Sex
-                </span>
-                <span>:</span>
-                <span
-                  class="patient-col-value">{{registerObj.ageYear}}Y|{{registerObj.ageMonth}}M|{{registerObj.ageDay}}
-                  D | {{registerObj.genderName}}</span>
-              </div>
-
-            </div>
-            <div fxLayout="column" fxLayoutGap="6px">
-              <div class="patient-col">
-                <span class="patient-col-key">Doctor Name</span>
-                <span>:</span>
-                <span class="patient-col-value">{{registerObj.doctorName}}</span>
-              </div>
-
-
-             
-
-            </div>
-
-          </div>
-
+          </mat-card>
         </div>
-      </mat-card>
-
+      </div>
       <div class="modal-body-container">
         <div fxLayout="column">
 
           <form [formGroup]="NewOutMrdForm" style="border: blue">
             <div fxLayout="row" fxLayoutAlign="start stretch">
               <div fxFlex="50">
-                <mat-card style="padding: 5px;">
-                  <input type="hidden" name="opipid" formControlName="opipid" [(ngModel)]="opipid">
-                  <div fxLayout="row wrap" fxLayoutGap="2px 0px grid">
-
-                    <div fxFlex="100" fxFlex.xs="100" fxFlex.sm="33">
-                      <div style="font-size: large; font-weight: bold; color: rgb(3, 51, 101); padding:10px;">
-                        In File Data
-                      </div>
-
-                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File IN Number : -<span style="font-weight: bold;">{{this.data.inNo}}</span>
-                      </div>
-
-                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File IN Date : -<span style="font-weight: bold;">{{this.data.inDate}}</span>
-                      </div>
-
-                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File IN Person Name : -<span style="font-weight: bold;">{{this.data.returnPersonName}}</span>
-                      </div>
-
-                      <div style="padding: 10px; font-size: large; color: rgb(2, 36, 69);">
-                        Mrd File IN Reason : -<span style="font-weight: bold;">{{this.data.inReason}}</span>
-                      </div>
-                    </div>
+                <mat-card class="in-file-card">
+                  <div class="card-header">
+                    <mat-icon color="primary">folder_shared</mat-icon>
+                    <span class="header-title">In File Data</span>
                   </div>
 
-                  <!-- <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                  <mat-divider></mat-divider>
 
-                    <div fxFlex="49" fxFlex.xs="100" fxFlex.sm="33">
-                      <airmid-textbox label="InNo" formControlName="inNo" [formGroup]="NewOutMrdForm"
-                        [validations]="getValidationMessages().inNo" [maxLength]="15"></airmid-textbox>
+                  <div class="card-content">
+                    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+
+                      <div fxFlex="100" fxFlex.gt-sm="50" class="data-item">
+                        <label>File IN Number</label>
+                        <div class="value">{{data.inNo}}</div>
+                      </div>
+
+                      <div fxFlex="100" fxFlex.gt-sm="50" class="data-item">
+                        <label>File IN Date</label>
+                        <div class="value">{{data.inDate | date:'dd-MMM-yyyy HH:mm'}}</div>
+                      </div>
+
+                      <div fxFlex="100" fxFlex.gt-sm="50" class="data-item">
+                        <label>Return Person Name</label>
+                        <div class="value">{{data.returnPersonName}}</div>
+                      </div>
+
+                      <div fxFlex="100" fxFlex.gt-sm="50" class="data-item">
+                        <label>File IN Reason</label>
+                        <div class="value">{{data.inReason || 'N/A'}}</div>
+                      </div>
+
                     </div>
-
-                    <div fxFlex="49" fxFlex.xs="100" fxFlex.sm="33">
-                      <airmid-textbox label="Return PersonName" formControlName="returnPersonName"
-                        [formGroup]="NewOutMrdForm" [validations]="getValidationMessages().returnPersonName"
-                        [maxLength]="15"></airmid-textbox>
-                    </div>
-
                   </div>
-
-                  <div fxLayout="row wrap" fxLayoutGap="8px 8px grid">
-                    <div fxFlex="98" fxFlex.xs="100" fxFlex.sm="33">
-                      <airmid-textbox label="InReason" formControlName="inReason" [formGroup]="NewOutMrdForm"
-                        [validations]="getValidationMessages().inReason" [maxLength]="15"></airmid-textbox>
-                    </div>
-
-
-                  </div> -->
                 </mat-card>
               </div>
               <div fxFlex="50">
 
-                <mat-card style="padding: 5px;">
+                <mat-card class="p-16">
+                  <div class="mb-16">
+                    <span class="out-file-title">Out File Data</span>
+                  </div>
+
+                  <form [formGroup]="NewOutMrdForm">
+                    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+
+                      <div fxFlex="100">
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>OUT Date / Time</mat-label>
+                           <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                          (change)="date=$event.target.value" formControlName="outDate" />
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="100">
+                        <airmid-textbox label="Person Name" formControlName="personName" [formGroup]="NewOutMrdForm"
+                          [validations]="getValidationMessages().personName" [maxLength]="50">
+                        </airmid-textbox>
+                      </div>
+
+                      <div fxFlex="100">
+                        <airmid-textbox label="Return Reason" formControlName="outReason" [formGroup]="NewOutMrdForm"
+                          [validations]="getValidationMessages().outReason" [maxLength]="100">
+                        </airmid-textbox>
+                      </div>
+
+                    </div>
+                  </form>
+                </mat-card>
+
+                <!-- <mat-card style="padding: 5px;">
 
                   <div fxLayout="row wrap" fxLayoutGap="2px 0px grid">
 
@@ -164,17 +136,6 @@
                   </div>
 
                   <div fxLayout="row wrap" fxLayoutGap="8px 8px grid">
-
-                    <!-- <div fxFlex="49" fxFlex.xs="100" fxFlex.sm="33">
-                          <airmid-textbox label="opipid" formControlName="opipid" [formGroup]="NewOutMrdForm"
-                            [validations]="getValidationMessages().opipid" [maxLength]="15"></airmid-textbox>
-                        </div> -->
-
-                    <!-- <div fxFlex="49" fxFlex.xs="100" fxFlex.sm="33">
-                      <airmid-textbox label="outNo" formControlName="outNo" [formGroup]="NewOutMrdForm"
-                        [validations]="getValidationMessages().outNo" [maxLength]="15"></airmid-textbox>
-                    </div> -->
-
                     <div fxFlex="98" fxFlex.xs="100" fxFlex.sm="33">
                       <airmid-textbox label="personName" formControlName="personName" [formGroup]="NewOutMrdForm"
                         [validations]="getValidationMessages().personName" [maxLength]="15"></airmid-textbox>
@@ -189,7 +150,7 @@
                         [validations]="getValidationMessages().outReason" [maxLength]="15"></airmid-textbox>
                     </div>
                   </div>
-                </mat-card>
+                </mat-card> -->
               </div>
 
             </div>
