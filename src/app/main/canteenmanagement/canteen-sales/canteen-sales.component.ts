@@ -322,6 +322,7 @@ export class CanteenSalesComponent implements OnInit {
             this.canteendetailArray.push(this.tCanteenRequestDetails(item));
         });
 
+    console.log("form values", this.CanteenForm.value)
 
         this._CanteenmanagementService.userFormGroup.get("date").setValue(this.datePipe.transform(this.dateTimeObj, "yyyy-MM-dd"))
         this._CanteenmanagementService.userFormGroup.get("time").setValue(this.dateTimeObj)

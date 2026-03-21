@@ -1,0 +1,87 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" dynamicTableHeight>
+
+    <ng-template mat-tab-label>
+      Canteen Bill  List
+    </ng-template>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+           
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button (click)="onSave(element)" matTooltip="Bill Edit">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="viewgetIpprescriptionReportPdf(element)"
+                        matTooltip="IP Prescription Print">
+                        <mat-icon title="Prescription Print">print</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="Presccancle(element)" matTooltip="Bill Cancel"
+                        *ngIf="element.isCancelled==false">
+                        <mat-icon title="Cancel Bill">cancel</mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+            <airmid-table [gridConfig]="gridConfig" #grid class="content" :ShowButtons="false"
+                (onSelectRow)="GetDetails1($event)">
+                <ng-container filters>
+                    <form [formGroup]="myFilterbillform" fxLayout="column">
+                        <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            (dateChange)="getfilterdata()">
+                        </airmid-datepicker>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Bill No</mat-label>
+                            <input matInput placeholder="Search UHID" autocomplete="off"
+                                (keypress)="keyPressAlphanumeric($event)"
+                                [formGroup]="myFilterbillform" formControlName="BillNo"
+                                (input)="onChangeBill()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('BillNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Customer Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myFilterbillform" formControlName="CustomerName"
+                                (input)="onChangeBill()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('CustomerName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+
+<!-- 
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off"
+                                [formGroup]="_PrescriptionService.mysearchform" formControlName="lName"
+                                (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('lName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field> -->
+                    </form>
+
+                </ng-container>
+            </airmid-table>
+        </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+
+        
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+            </airmid-table>
+        </div>
+    </div>
+
+
+</div>

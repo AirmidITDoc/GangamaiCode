@@ -80,15 +80,20 @@ export class NursingnoteService {
         } else return this._httpClient.PostData("Nursing/NursingPatientHandoverInsert", employee)
     }
 
-    public insertMedicationChart(employee) {
-        return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
-    }
-    public getSchedulerdatalist(employee) {
-        return this._httpClient.PostData("Nursing/NursingMedicationList", employee)
-    }
-    public getPrescriptionList(employee) {
-        return this._httpClient.PostData("DischargeSummary/IPPrescriptionDischargeData", employee)
-    }
+  
+
+   public NursingMedicineInsert(employee) {
+    return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
+  }
+  public insertMedicationChart(employee) {
+    return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
+  }
+  public getSchedulerdatalist(employee) {
+    return this._httpClient.PostData("Nursing/NursingMedicationList", employee)
+  }
+  public getPrescriptionList(employee) {
+    return this._httpClient.PostData("DischargeSummary/IPPrescriptionDischargeData", employee)
+  }
     public getTempPrescriptionList(param) {
         return this._httpClient.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList", param)
     }

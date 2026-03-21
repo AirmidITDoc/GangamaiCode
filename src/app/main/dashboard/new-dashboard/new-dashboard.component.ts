@@ -34,7 +34,8 @@ export class NewDashboardComponent implements OnInit {
         this.myFilterform = this.dashboardService.filterdashboardForm()
         this.loadDashboardData();
 
-        this.getdrwiseList();
+    this.getdrwiseList();
+    this.getDashRegistrationAgeWiseCount();
 
     }
 
@@ -162,12 +163,12 @@ export class NewDashboardComponent implements OnInit {
         };
         this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
 
-            const apiData = res && res.length ? res[0] : {};
-            console.log(apiData)
+      let apiData = res && res.length ? res[0] : {};
+      console.log(apiData)
 
-            this.metrics = [
-                { label: 'Registrations', value: apiData?.RegistrationCount || 0, color: 'cream', icon: 'user-plus' },
-                { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'cream', icon: 'calendar' },
+      this.metrics = [
+        { label: 'Registrations', value: apiData?.RegistrationCount || 0, color: 'cream', icon: 'user-plus' },
+        { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'cream', icon: 'calendar' },
 
                 { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'cream', icon: 'check-circle' },
                 { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'cream', icon: 'logout' },
@@ -202,18 +203,18 @@ export class NewDashboardComponent implements OnInit {
             this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
 
 
-            this.dashboardService.allDashboarddata({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
-                this.DailydashData = res;
-                debugger
-                if (this.DailydashData) {
+      this.dashboardService.allDashboarddata({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
+        this.DailydashData = res;
+        debugger
+        if (this.DailydashData) {
 
-                    this.patientStats = {
-                        withMediclaim: this.DailydashData.patientSummary.withMediclaim,
-                        withoutMediclaim: this.DailydashData.patientSummary.withoutMediclaim,
-                        reference: this.DailydashData.patientSummary.referencePatients,
-                        total: this.DailydashData.patientSummary.totalPatients
-                    };
-                    // this.paymentData= this.DailydashData.paymentOverview
+          this.patientStats = {
+            withMediclaim: this.DailydashData.patientSummary.withMediclaim,
+            withoutMediclaim: this.DailydashData.patientSummary.withoutMediclaim,
+            reference: this.DailydashData.patientSummary.referencePatients,
+            total: this.DailydashData.patientSummary.totalPatients
+          };
+          // this.paymentData= this.DailydashData.paymentOverview
 
 
                     this.trendSeries = [
@@ -261,38 +262,38 @@ export class NewDashboardComponent implements OnInit {
 
     }
 
-    getDashOPUserWiseRevenue() {
-        const payload = {
-            "searchFields": [
-                {
-                    "fieldName": "UnitId",
-                    "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "UserId",
-                    "fieldValue": this.accountService.currentUserValue.userId.toString(),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "FromDate",
-                    "fieldValue": this.fromDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "ToDate",
-                    "fieldValue": this.toDate,
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "DashOPUserWiseRevenue"
+  getDashOPUserWiseRevenue() {
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "UserId",
+          "fieldValue": this.accountService.currentUserValue.userId.toString(),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
         }
-            ;
-        this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      ],
+      "mode": "DashOPUserWiseRevenue"
+    }
+      ;
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
 
-            const apiData = res && res.length ? res[0] : {};
-            console.log("==api data", apiData);
-            console.log(res)
+      let apiData = res && res.length ? res[0] : {};
+      console.log("==api data", apiData);
+      console.log(res)
 
 
             if (apiData) {
@@ -332,41 +333,43 @@ export class NewDashboardComponent implements OnInit {
         });
     }
 
-    getDashOPDepatmentWiseCount() {
-        const payload = {
-            "searchFields": [
-                {
-                    "fieldName": "UnitId",
-                    "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "FromDate",
-                    "fieldValue": this.fromDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "ToDate",
-                    "fieldValue": this.toDate,
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "DashOPDepatmentWiseCount"
-        };
-        this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-            const apiData = res && res.length ? res : {};
-            console.log(res)
+  getDashOPDepatmentWiseCount() {
+    debugger
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashOPDepatmentWiseCount"
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      let apiData = res && res.length ? res : {};
+      console.log(res)
 
-            debugger
-            this.departmentVisits = apiData
-            // this.departmentVisits = [
-            //   { name: 'Medicine', value: apiData?.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
-            //   { name: 'Gastrologist', value: apiData?.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
-            //   { name: 'Pathologist', value: apiData?.find(d => d.name.toLowerCase() === 'pathologist'.toLowerCase())?.value || 0 },
-            //   { name: 'Physician', value: apiData?.find(d => d.name.toLowerCase() === 'Physician'.toLowerCase())?.value || 0 },
-            //   { name: 'Plastic Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'plastic surgeon'.toLowerCase())?.value || 0 },
-            //   { name: 'Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'surgeon'.toLowerCase())?.value || 0 },
-            // ];
+      debugger
+      if (apiData)
+        this.departmentVisits = apiData
+      // this.departmentVisits = [
+      //   { name: 'Medicine', value: apiData?.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
+      //   { name: 'Gastrologist', value: apiData?.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
+      //   { name: 'Pathologist', value: apiData?.find(d => d.name.toLowerCase() === 'pathologist'.toLowerCase())?.value || 0 },
+      //   { name: 'Physician', value: apiData?.find(d => d.name.toLowerCase() === 'Physician'.toLowerCase())?.value || 0 },
+      //   { name: 'Plastic Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'plastic surgeon'.toLowerCase())?.value || 0 },
+      //   { name: 'Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'surgeon'.toLowerCase())?.value || 0 },
+      // ];
 
         }, err => {
             this.departmentVisits = [
@@ -390,46 +393,44 @@ export class NewDashboardComponent implements OnInit {
     ];
 
 
-    getDashRegistrationAgeWiseCount() {
-        //       if(this.modalityData1.length)
-        //       this.modalityData1 = [
-        //   { name: '', value: 0 }
+  getDashRegistrationAgeWiseCount() {
+
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.toDate,
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashRegistrationAgeWiseCount"
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      let apiData = res && res.length ? res : {};
+      if (apiData) {
+
+        this.modalityData1 = apiData
+         if (this.modalityData1.length)
+      this.AgestatusPieChart = this.getAgeStatusPieChart()
+        // this.modalityData1 = [
+        //     ...this.modalityData1,
+        //     ...apiData.map(item => ({
+
+        //         name: item.name,
+        //         value: item.value
+        //     }))
         // ];
-
-        const payload = {
-            "searchFields": [
-                {
-                    "fieldName": "UnitId",
-                    "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "FromDate",
-                    "fieldValue": this.fromDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "ToDate",
-                    "fieldValue": this.toDate,
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "DashRegistrationAgeWiseCount"
-        };
-        this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-            const apiData = res && res.length ? res : {};
-            if (apiData) {
-
-                this.modalityData1 = apiData
-                // this.modalityData1 = [
-                //     ...this.modalityData1,
-                //     ...apiData.map(item => ({
-
-                //         name: item.name,
-                //         value: item.value
-                //     }))
-                // ];
-            }
+      }
 
             // this.ageData = [
             //   { name: '0-15 Years', value: apiData[0].value || 0 },
@@ -443,13 +444,13 @@ export class NewDashboardComponent implements OnInit {
             return []
         })
 
-        if (this.modalityData1.length)
-            this.AgestatusPieChart = this.getAgeStatusPieChart()
+   
+  }
+  getAgeStatusPieChart() {
+    debugger
+    if (this.AgestatusPieChart) {
+      this.AgestatusPieChart.destroy();
     }
-    getAgeStatusPieChart() {
-        if (this.AgestatusPieChart) {
-            this.AgestatusPieChart.destroy();
-        }
 
 
         return new Chart('AgestatusPieChart', {
@@ -549,12 +550,12 @@ export class NewDashboardComponent implements OnInit {
         return `${c.value}`;
     }
 
-    // Chart data
-    colorScheme = { domain: ['#a9aae5', '#87a8f4', '#8587d0', '#7498e1', '#ce95f5', '#a1f6d9', '#f7bcd9', '#3b82f6'] };
-    colorScheme1 = { domain: ['#c97efa', '#ba5cf9', '#a978c9', '#9f70c0', '#bb65f5', '#beeede', '#eea6ca', '#3b82f6'] };
+  // Chart data
+  colorScheme = { domain: ['#a9aae5', '#87a8f4', '#8587d0', '#7498e1', '#ce95f5', '#a1f6d9', '#f7bcd9', '#3b82f6'] };
+  colorScheme1 = { domain: ['#c97efa', '#ba5cf9', '#a978c9', '#9f70c0', '#bb65f5', '#beeede', '#eea6ca', '#3b82f6'] };
 
-    chartView: [number, number] = [420, 300];
-    barChartView: [number, number] = [380, 300];
+  chartView: [number, number] = [420, 300];
+  barChartView: [number, number] = [380, 300];
 
 
 
@@ -825,48 +826,48 @@ export class NewDashboardComponent implements OnInit {
             // const chart = new Chart('PatientOverviewDoughnut', {
             return new Chart('PatientOverviewDoughnut', {
 
-                type: 'doughnut',
-                data: {
-                    labels: apiData?.map(data => data.name) || [],
-                    datasets: [
-                        {
-                            backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
-                            data: apiData?.map(data => data.value) || []
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    aspectRatio: 1.4,
-                    plugins: {
-                        tooltip: { enabled: true }, // Disable default tooltip
-                        legend: { display: false }
-                    },
-                    cutout: 0,
-                    // onHover: (event: any, elements: any) => {
-                    //   console.log('Patient Chart Hover event triggered:', elements.length);
-                    //   if (elements.length > 0) {
-                    //     const element = elements[0];
-                    //     const index = element.index;
-                    //     const dataset = chart.data.datasets[element.datasetIndex];
-                    //     const data = {
-                    //       name: this.registrationChartData[index].name,
-                    //       value: this.registrationChartData[index].value,
-                    //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
-                    //       color: dataset.backgroundColor[index]
-                    //     };
-                    //     console.log('Showing Patient popover for:', data);
-                    //     this.showSegmentPopover(event, data);
-                    //   } else {
-                    //     console.log('Hiding Patient popover');
-                    //     this.hideSegmentPopover();
-                    //   }
-                    // }
-                },
-                plugins: [dataLabelsPlugin]
-            });
-            // return chart;
+        type: 'doughnut',
+        data: {
+          labels: apiData?.map(data => data.name) || [],
+          datasets: [
+            {
+              backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
+              data: apiData?.map(data => data.value) || []
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 1.4,
+          plugins: {
+            tooltip: { enabled: true }, // Disable default tooltip
+            legend: { display: false }
+          },
+          cutout: 0,
+          // onHover: (event: any, elements: any) => {
+          //   console.log('Patient Chart Hover event triggered:', elements.length);
+          //   if (elements.length > 0) {
+          //     const element = elements[0];
+          //     const index = element.index;
+          //     const dataset = chart.data.datasets[element.datasetIndex];
+          //     const data = {
+          //       name: this.registrationChartData[index].name,
+          //       value: this.registrationChartData[index].value,
+          //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
+          //       color: dataset.backgroundColor[index]
+          //     };
+          //     console.log('Showing Patient popover for:', data);
+          //     this.showSegmentPopover(event, data);
+          //   } else {
+          //     console.log('Hiding Patient popover');
+          //     this.hideSegmentPopover();
+          //   }
+          // }
+        },
+        plugins: [dataLabelsPlugin]
+      });
+      // return chart;
 
         }, err => {
             return []
@@ -1049,9 +1050,9 @@ export class NewDashboardComponent implements OnInit {
         { name: '', value: 0 }
     ];
 
-    modalityData1 = [
-        { name: '', value: 0 }
-    ];
+  modalityData1 = [
+    { name: '', value: 0 }
+  ];
 
 
     getdrwiseList() {
@@ -1110,51 +1111,51 @@ export class NewDashboardComponent implements OnInit {
         }
 
 
-        return new Chart('DrcountChart', {
-            type: 'bar',
-            data: {
-                labels: this.modalityData.map(d => d.name),
-                datasets: [
-                    {
-                        label: 'Dr. Name',
-                        data: this.modalityData.map(d => d.value),
-                        backgroundColor: [
-                            '#bbdefb',   // very pale blue
-                            '#90caf9',   // light sky blue
-                            '#64b5f6',   // medium light blue
-                            '#497df7',   // your bright one
-                            '#6366f1',   // indigo transition
-                            '#4b50f7',   // deep vivid blue
-                            '#bb65f5',   // bluish purple
-                            '#9c44d6'    // final vivid purple
-                        ],
-                        borderRadius: 6
-                    }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            font: { size: 11 }
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            font: { size: 11 }
-                        }
-                    }
-                }
+    return new Chart('DrcountChart', {
+      type: 'bar',
+      data: {
+        labels: this.modalityData.map(d => d.name),
+        datasets: [
+          {
+            label: 'Dr. Name',
+            data: this.modalityData.map(d => d.value),
+            backgroundColor: [
+              '#bbdefb',   // very pale blue
+              '#90caf9',   // light sky blue
+              '#64b5f6',   // medium light blue
+              '#497df7',   // your bright one
+              '#6366f1',   // indigo transition
+              '#4b50f7',   // deep vivid blue
+              '#bb65f5',   // bluish purple
+              '#9c44d6'    // final vivid purple
+            ],
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: { size: 11 }
             }
-        });
-    }
-    // OPD Overview Chart with custom plugins
-    getOPDOverviewChart() {
+          },
+          x: {
+            ticks: {
+              font: { size: 11 }
+            }
+          }
+        }
+      }
+    });
+  }
+  // OPD Overview Chart with custom plugins
+  getOPDOverviewChart() {
 
         if (this.opdOverviewChart) {
             this.opdOverviewChart.destroy();

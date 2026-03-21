@@ -37,11 +37,7 @@ import { OPIPCollectiongraphComponent } from './new-finacialdashboard/opipcollec
 import { PharCollecionGraphComponent } from './new-finacialdashboard/phar-collecion-graph/phar-collecion-graph.component';
 import { ServiceGraphComponent } from './new-finacialdashboard/service-graph/service-graph.component';
 import { ServiceReceiptGraphComponent } from './new-finacialdashboard/service-receipt-graph/service-receipt-graph.component';
-import { VisitDatagraphComponent } from './new-finacialdashboard/visit-datagraph/visit-datagraph.component';
-import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
-import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
-import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
-import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
+import { OperatonalDashboardComponent } from './operatonal-dashboard/operatonal-dashboard.component';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -67,6 +63,7 @@ import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-das
         BillingSummarygraphComponent,
         BedstausgraphComponent,
         ServiceReceiptGraphComponent,
+        OperatonalDashboardComponent,
         // FinancetestComponent
     ],
     imports: [

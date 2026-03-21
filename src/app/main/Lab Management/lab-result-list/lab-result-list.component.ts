@@ -51,12 +51,22 @@ function formatDate(rawDate: string): string {
     }
 
     // Case 2: Space format → 15-01-2026 00:00:00
-    if (rawDate.includes(' ')) {
+    if (rawDate.includes(' ') && rawDate.includes('-')) {
         const datePart = rawDate.split(' ')[0]; // 15-01-2026
         const [day, month, year] = datePart.split('-');
         return `${year}-${month}-${day}`; // 2026-01-15
     }
 
+        // Case 3: MM/DD/YYYY format → 3/21/2026 12:00:00 AM
+    if (rawDate.includes('/')) {
+        const d = new Date(rawDate); 
+        const pad = (n: number) => ('0' + n).slice(-2);
+        const ms = ('00' + d.getMilliseconds()).slice(-3); 
+        // return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ` +
+        //        `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${ms}`;
+
+         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} `;
+    } 
     return '';
 }
 
