@@ -18,7 +18,7 @@ export class StateMasterService {
 
     createStateForm(): FormGroup {
         return this._formBuilder.group({
-            stateId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            stateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             stateName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
@@ -26,12 +26,12 @@ export class StateMasterService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            countryId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            isActive:[true,[Validators.required]]
+            countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isActive: [true, [Validators.required]]
         });
     }
 
-    
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             StateNameSearch: [""],

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
@@ -13,13 +13,13 @@ export class SubquestionMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService
-    ) {    }
+    ) { }
 
     initializeFormGroup() {
-        
+
     }
 
- 
+
     public SubQuestionMasterSave(Param: any) {
         if (Param.subQuestionId) {
             return this._httpClient.PutData("SubQuestionMaster/Edit/" + Param.subQuestionId, Param);
@@ -30,7 +30,7 @@ export class SubquestionMasterService {
         return this._httpClient.DeleteData("SubQuestionMaster?Id=" + m_data.toString());
     }
 
-         public getSubresult(Param) {
-       return this._httpClient.PostData("Common",Param)
+    public getSubresult(Param) {
+        return this._httpClient.PostData("Common", Param)
     }
 }

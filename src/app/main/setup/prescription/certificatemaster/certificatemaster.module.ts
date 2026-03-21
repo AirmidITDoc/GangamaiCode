@@ -79,8 +79,8 @@ const routes: Routes = [
     ],
     providers: [
         CertificateserviceService,
-            DatePipe
-        ]
+        DatePipe
+    ]
 
 })
-export class CertificatemasterModule {}
+export class CertificatemasterModule { }

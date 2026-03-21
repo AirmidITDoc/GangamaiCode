@@ -54,4 +54,4 @@ const routes: Routes = [
     ],
     providers: [RelationshipMasterService, DatePipe]
 })
-export class RelationshipMasterModule {}
+export class RelationshipMasterModule { }

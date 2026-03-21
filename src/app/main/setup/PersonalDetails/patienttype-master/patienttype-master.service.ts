@@ -11,8 +11,7 @@ export class PatienttypeMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService
-    )
-    {
+    ) {
         this.myForm = this.createPatientTypeForm();
         this.myformSearch = this.createSearchForm();
     }
@@ -31,10 +30,10 @@ export class PatienttypeMasterService {
                 [
                     Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]],
+            isActive: [true, [Validators.required]],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -43,8 +42,8 @@ export class PatienttypeMasterService {
     initializeFormGroup() {
         this.createPatientTypeForm();
     }
-    
-    
+
+
 
     public patienttypeMasterSave(Param: any) {
         if (Param.patientTypeId) {

@@ -18,9 +18,9 @@ import { RouterModule, Routes } from "@angular/router";
 import { FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
+import { AdmissiontypeService } from "./admissiontype.service";
 import { AdmissionypeComponent } from "./admissionype.component";
 import { NewAdmissiontypeComponent } from './new-admissiontype/new-admissiontype.component';
-import { AdmissiontypeService } from "./admissiontype.service";
 
 
 const routes: Routes = [

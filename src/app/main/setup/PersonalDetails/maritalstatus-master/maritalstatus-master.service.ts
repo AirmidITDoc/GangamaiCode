@@ -26,7 +26,7 @@ export class MaritalstatusMasterService {
 
     createMaritalForm(): FormGroup {
         return this._formBuilder.group({
-            maritalStatusId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            maritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             maritalStatusName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
@@ -34,7 +34,7 @@ export class MaritalstatusMasterService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
@@ -42,7 +42,7 @@ export class MaritalstatusMasterService {
         this.createMaritalForm();
     }
 
-  
+
 
     public MaritalStatusMasterSave(Param: any) {
         if (Param.maritalStatusId) {

@@ -13,29 +13,27 @@ import { ReligionMasterService } from '../religion-master.service';
     animations: fuseAnimations,
 })
 export class NewReligionMasterComponent implements OnInit {
-  religionForm: FormGroup;
-  isActive:boolean=true;
+    religionForm: FormGroup;
+    isActive: boolean = true;
 
-    constructor(   public _ReligionMasterService: ReligionMasterService,
+    constructor(public _ReligionMasterService: ReligionMasterService,
         public dialogRef: MatDialogRef<NewReligionMasterComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService)
-    { }
+        public toastr: ToastrService) { }
 
     ngOnInit(): void {
         this.religionForm = this._ReligionMasterService.CreateReligionForm();
         this.religionForm.markAllAsTouched();
         console.log(this.data)
-        if ((this.data?.religionId??0) > 0) 
-        {   
-            this.isActive=this.data.isActive
+        if ((this.data?.religionId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.religionForm.patchValue(this.data);
         }
     }
- 
-  onSubmit() {
-    
-     if (!this.religionForm.invalid) {
+
+    onSubmit() {
+
+        if (!this.religionForm.invalid) {
             console.log(this.religionForm.value)
             this._ReligionMasterService.religionMasterSave(this.religionForm.value).subscribe((response) => {
                 this.onClear(true);

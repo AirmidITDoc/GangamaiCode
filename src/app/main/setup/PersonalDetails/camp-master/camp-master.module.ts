@@ -19,8 +19,8 @@ import { FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { CampMasterComponent } from "./camp-master.component";
-import { NewCampMasterComponent } from "./new-camp-master/new-camp-master.component";
 import { CampMasterService } from "./camp-master.service";
+import { NewCampMasterComponent } from "./new-camp-master/new-camp-master.component";
 
 const routes: Routes = [
     {

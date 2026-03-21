@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UntypedFormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
@@ -10,7 +10,7 @@ export class GenderMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
     }
@@ -22,16 +22,16 @@ export class GenderMasterService {
     }
     createGenderForm() {
         return this._formBuilder.group({
-            genderId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            genderId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             genderName: ['', [
                 Validators.required, Validators.maxLength(50),
                 // Validators.pattern('^[a-zA-Z () ]*$'),
                 this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
-            isActive:[true,[Validators.required]],
+            isActive: [true, [Validators.required]],
         });
     }
-  
+
 
     public genderMasterSave(Param: any) {
         if (Param.genderId) {
@@ -40,7 +40,7 @@ export class GenderMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        
+
         return this._httpClient.DeleteData("Gender?Id=" + m_data.toString());
     }
 }

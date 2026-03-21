@@ -6,40 +6,39 @@ import { ToastrService } from 'ngx-toastr';
 import { AreaMasterService } from '../area-master.service';
 
 @Component({
-  selector: 'app-new-area',
-  templateUrl: './new-area.component.html',
-  styleUrls: ['./new-area.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-area',
+    templateUrl: './new-area.component.html',
+    styleUrls: ['./new-area.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewAreaComponent implements OnInit {
 
-  areaForm: FormGroup;
-  isActive:boolean=true
- 
-  constructor(
-      public _AreaMasterService: AreaMasterService,
-      public dialogRef: MatDialogRef<NewAreaComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    areaForm: FormGroup;
+    isActive: boolean = true
+
+    constructor(
+        public _AreaMasterService: AreaMasterService,
+        public dialogRef: MatDialogRef<NewAreaComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
     autocompleteModecity: string = "City";
 
     cityId = 0;
 
     ngOnInit(): void {
-      this.areaForm = this._AreaMasterService.createAreaForm();
-      this.areaForm.markAllAsTouched();
+        this.areaForm = this._AreaMasterService.createAreaForm();
+        this.areaForm.markAllAsTouched();
 
-      if((this.data?.areaId??0) > 0) 
-        {
-            this.isActive=this.data.isActive
+        if ((this.data?.areaId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.areaForm.patchValue(this.data);
         }
     }
 
-  
+
     onSubmit() {
         if (!this.areaForm.invalid) {
             console.log(this.areaForm.value)
@@ -77,14 +76,14 @@ export class NewAreaComponent implements OnInit {
             ]
         };
     }
-  
+
     onClear(val: boolean) {
         this.areaForm.reset();
         this.dialogRef.close(val);
     }
 
-    selectChangecity(obj: any){
+    selectChangecity(obj: any) {
         console.log(obj);
-        this.cityId=obj
+        this.cityId = obj
     }
 }

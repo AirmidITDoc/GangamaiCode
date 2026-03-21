@@ -58,4 +58,4 @@ const routes: Routes = [
     ],
     providers: [VillageMasterService, DatePipe]
 })
-export class VillageMasterModule {}
+export class VillageMasterModule { }

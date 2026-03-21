@@ -4,10 +4,10 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AdmissiontypeService {
-  myform: FormGroup;
+    myform: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
@@ -30,7 +30,7 @@ export class AdmissiontypeService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-          
+
             isActive: [true, [Validators.required]]
         });
     }
