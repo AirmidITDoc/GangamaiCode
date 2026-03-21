@@ -38,6 +38,11 @@ import { PharCollecionGraphComponent } from './new-finacialdashboard/phar-collec
 import { ServiceGraphComponent } from './new-finacialdashboard/service-graph/service-graph.component';
 import { ServiceReceiptGraphComponent } from './new-finacialdashboard/service-receipt-graph/service-receipt-graph.component';
 import { OperatonalDashboardComponent } from './operatonal-dashboard/operatonal-dashboard.component';
+import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
+import { VisitDatagraphComponent } from './new-finacialdashboard/visit-datagraph/visit-datagraph.component';
+import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
+import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
+import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({

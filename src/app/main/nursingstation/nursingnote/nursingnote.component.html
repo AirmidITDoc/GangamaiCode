@@ -510,7 +510,14 @@
                                                             </div>
 
                                                             <mat-divider [vertical]="true"></mat-divider>&nbsp;
-
+                                                            <airmid-dropdown label="Template List"
+                                                                *ngIf="showTemplateRefresh" formControlName="TemplateId"
+                                                                [formGroup]="MedicineItemForm"
+                                                                [mode]="autocompleteModeTemplate"
+                                                                (selectionChange)="selectChangeTemplateName($event)"
+                                                                ValueField="presId" TextField="presTemplateName"
+                                                                ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=DischargeSummeryTemplate">
+                                                            </airmid-dropdown>
                                                             <button mat-raised-button (click)="getDosemaster()">
                                                                 <mat-icon>add</mat-icon>
                                                                 Dose</button>
@@ -523,14 +530,7 @@
                                                                 <mat-icon>save</mat-icon>
                                                                 Save Template</button>
 
-                                                            <airmid-dropdown label="Template List"
-                                                                *ngIf="showTemplateRefresh" formControlName="TemplateId"
-                                                                [formGroup]="MedicineItemForm"
-                                                                [mode]="autocompleteModeTemplate"
-                                                                (selectionChange)="selectChangeTemplateName($event)"
-                                                                ValueField="presId" TextField="presTemplateName"
-                                                                ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=DischargeSummeryTemplate">
-                                                            </airmid-dropdown>
+                                                          
 
                                                             <div class="input-add-button">
                                                                 <!-- <div matTooltip="Select Drug to enable this button!!"

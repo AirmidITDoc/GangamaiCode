@@ -51,9 +51,7 @@ export class RadiologyDashboardComponent implements OnInit {
     modalityData = [
         { name: '', value: 0 }
     ];
-    modalityData = [
-        { name: '', value: 0 }
-    ];
+
     metrics = [
         { label: 'Total Report', value: 0, color: 'lavender', icon: 'assignment' },
         { label: 'Completed', value: 0, color: 'green', icon: 'check_circle' },
@@ -589,8 +587,7 @@ export class RadiologyDashboardComponent implements OnInit {
                         label: 'Number of Tests',
                         data: this.pathologyData.pathologyValumes.map(d => d.categoryCount),
                         backgroundColor: ['#4c52f8', '#497df7', '#1347b0', '#9827e4'],
-                        backgroundColor: ['#4c52f8', '#497df7', '#1347b0', '#9827e4'],
-                        borderRadius: 6
+                       borderRadius: 6
                     }
                 ]
             },
@@ -637,8 +634,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 datasets: [
                     {
                         backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
-                        backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
-                        data: pathologyStatusData.map(d => d.count),
+                       data: pathologyStatusData.map(d => d.count),
                         borderWidth: 2
                     }
                 ]
@@ -868,7 +864,6 @@ export class RadiologyDashboardComponent implements OnInit {
                         label: 'Number of Tests',
                         data: this.RadiologyData.radiologyVolumes.map(d => d.categoryCount),
                         backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
-                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         borderRadius: 6
                     }
                 ]
@@ -917,7 +912,6 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: RadiologyStatusData.map(d => d.status),
                 datasets: [
                     {
-                        backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         data: RadiologyStatusData.map(d => d.count),
                         borderWidth: 2

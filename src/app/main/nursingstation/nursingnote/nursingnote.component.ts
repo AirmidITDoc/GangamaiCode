@@ -27,65 +27,65 @@ import { NursingnoteService } from './nursingnote.service';
     animations: fuseAnimations,
 })
 export class NursingnoteComponent implements OnInit {
-  MedicineItemForm: FormGroup;
-  autocompleteModeDose: string = "DoseMaster";
-  vstoreId = this.accountService.currentUserValue.user.storeId
-  displayedColumns: string[] = [
-    'itemName',
-    'doseName',
-    'time',
-    'day',
+    MedicineItemForm: FormGroup;
+    autocompleteModeDose: string = "DoseMaster";
+    vstoreId = this.accountService.currentUserValue.user.storeId
+    displayedColumns: string[] = [
+        'itemName',
+        'doseName',
+        'time',
+        'day',
 
-    'Action'
-  ]
-  onBlur(e: any) {
-    this.vDescription = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-  }
+        'Action'
+    ]
+    onBlur(e: any) {
+        this.vDescription = e.target.innerHTML;
+        throw new Error('Method not implemented.');
+    }
 
-  displayedItemColumn: string[] = [
-    'Status',
-    'DrugName',
-    'DoseName',
-    'Route',
-    'Frequency',
-    'NurseName',
-    'Action'
-  ]
-  dateTimeObj: any
-  currentDate = new Date();
-  vCompanyName: any;
-  vRegNo: any;
-  vDescription: any;
-  vGender: any;
-  vIPDNo: any;
-  vAgeyear: any;
-  vAgeMonth: any;
-  vAgeDay: any;
-  vWardName: any;
-  vBedName: any;
-  vPatientType: any;
-  vRefDocName: any;
-  vTariffName: any;
-  vDoctorName: any;
-  vPatientName: any;
-  vDepartment: any;
-  vAge: any;
-  vGenderName: any;
-  vDOA: any;
-  OP_IP_Id: any;
-  myform: FormGroup;
-  myNursingForm: FormGroup;
-  myHandOverForm: FormGroup;
-  IsAddFlag: boolean = true;
-  registerObj: any;
-  vDoctNoteId: any;
-  NoteList: any = [];
-  // selectedAdvanceObj: AdmissionPersonlModel;
-  dsItemList = new MatTableDataSource<MedicineItemList>();
-  dsHandOverNoteList = new MatTableDataSource<DocNote>();
-  autocompleteModeNurNote: string = "NurNote";
-  autocompleteModeime: string = "DrugTimeDurationMaster";
+    displayedItemColumn: string[] = [
+        'Status',
+        'DrugName',
+        'DoseName',
+        'Route',
+        'Frequency',
+        'NurseName',
+        'Action'
+    ]
+    dateTimeObj: any
+    currentDate = new Date();
+    vCompanyName: any;
+    vRegNo: any;
+    vDescription: any;
+    vGender: any;
+    vIPDNo: any;
+    vAgeyear: any;
+    vAgeMonth: any;
+    vAgeDay: any;
+    vWardName: any;
+    vBedName: any;
+    vPatientType: any;
+    vRefDocName: any;
+    vTariffName: any;
+    vDoctorName: any;
+    vPatientName: any;
+    vDepartment: any;
+    vAge: any;
+    vGenderName: any;
+    vDOA: any;
+    OP_IP_Id: any;
+    myform: FormGroup;
+    myNursingForm: FormGroup;
+    myHandOverForm: FormGroup;
+    IsAddFlag: boolean = true;
+    registerObj: any;
+    vDoctNoteId: any;
+    NoteList: any = [];
+    // selectedAdvanceObj: AdmissionPersonlModel;
+    dsItemList = new MatTableDataSource<MedicineItemList>();
+    dsHandOverNoteList = new MatTableDataSource<DocNote>();
+    autocompleteModeNurNote: string = "NurNote";
+    autocompleteModeime: string = "DrugTimeDurationMaster";
 
     HandOverNoteList: any = [];
     vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
@@ -176,30 +176,30 @@ export class NursingnoteComponent implements OnInit {
         { fieldName: "AdmId", fieldValue: "0", opType: OperatorComparer.Equals } //1
     ]
 
-  gridConfig1: gridModel = {
-    apiUrl: "Nursing/MedicationChartlist",
-    columnsList: this.allMedicationColumns,
-    sortField: "AdmissionID",
-    sortOrder: 0,
-    filters: this.allMedicationFilters
-  }
-  // 40923
-  getMedicationList() {
-    debugger
-    this.gridConfig1 = {
-      apiUrl: "Nursing/MedicationChartlist",
-      columnsList: this.allMedicationColumns,
-      sortField: "AdmissionID",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
-        // { fieldName: "AdmId", fieldValue: '1', opType: OperatorComparer.Equals }
-      ]
+    gridConfig1: gridModel = {
+        apiUrl: "Nursing/MedicationChartlist",
+        columnsList: this.allMedicationColumns,
+        sortField: "AdmissionID",
+        sortOrder: 0,
+        filters: this.allMedicationFilters
     }
-    console.log(this.gridConfig1)
-    this.grid2.gridConfig = this.gridConfig1;
-    this.grid2.bindGridData();
-  }
+    // 40923
+    getMedicationList() {
+        debugger
+        this.gridConfig1 = {
+            apiUrl: "Nursing/MedicationChartlist",
+            columnsList: this.allMedicationColumns,
+            sortField: "AdmissionID",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "AdmId", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Equals }
+                // { fieldName: "AdmId", fieldValue: '1', opType: OperatorComparer.Equals }
+            ]
+        }
+        console.log(this.gridConfig1)
+        this.grid2.gridConfig = this.gridConfig1;
+        this.grid2.bindGridData();
+    }
 
     allColumnOfHandOver = [
         { heading: "Date", key: "vDate", sort: true, align: 'left', emptySign: 'NA' },
@@ -267,61 +267,61 @@ export class NursingnoteComponent implements OnInit {
         private commonService: PrintserviceService,
     ) { }
 
-  ngOnInit(): void {
-    this.myform = this._NursingStationService.createtemplateForm();
+    ngOnInit(): void {
+        this.myform = this._NursingStationService.createtemplateForm();
 
-    this.myNursingForm = this._NursingStationService.createnursingForm();
-    this.myHandOverForm = this._NursingStationService.createHandOverForm();
+        this.myNursingForm = this._NursingStationService.createnursingForm();
+        this.myHandOverForm = this._NursingStationService.createHandOverForm();
 
-    this.MedicineItemForm = this.MedicineItemform();
-    this.FinalMedicineItemForm = this.createNursingMedicinForm();
-    // this.DischargesumForm.markAllAsTouched()
-  }
+        this.MedicineItemForm = this.MedicineItemform();
+        this.FinalMedicineItemForm = this.createNursingMedicinForm();
+        // this.DischargesumForm.markAllAsTouched()
+    }
 
-  FinalMedicineItemForm: FormGroup
+    FinalMedicineItemForm: FormGroup
 
-  MedicineItemform(): FormGroup {
-    return this._formBuilder.group({
-      ItemId: '',
-      DoseId: '',
-      Day: '',
-      Instruction: '',
-      TemplateId: [''],
-      TimeId: ''
-    });
-  }
-  createNursingMedicinForm(): FormGroup {
-    return this._formBuilder.group({
-      nursingMedicationChart: this._formBuilder.array([]),
-    });
-  }
+    MedicineItemform(): FormGroup {
+        return this._formBuilder.group({
+            ItemId: '',
+            DoseId: '',
+            Day: '',
+            Instruction: '',
+            TemplateId: [''],
+            TimeId: ''
+        });
+    }
+    createNursingMedicinForm(): FormGroup {
+        return this._formBuilder.group({
+            nursingMedicationChart: this._formBuilder.array([]),
+        });
+    }
 
-  FinalMedicineItemform(item: any): FormGroup {
-    
-    const MDate = this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01';
-    const MTime = new Date() || '00:00';
-    console.log(item)
-    return this._formBuilder.group({
-      medChartId: 0,
-      admId: this.OP_IP_Id | 0,
-      mdate: [MDate],
-      mtime: [MTime],
-      durgId: [item.itemID || 0],
-      doseId: [item.doseId || 0],
-      route: [item.timename || ''],
-      freq: [item.doseName || ''],
-      isAddedBy: this.accountService.currentUserValue.userId,
-      nurseName: "",
-      isCancelled: false,
-      doseName: [item.doseName || ''],
-    });
+    FinalMedicineItemform(item: any): FormGroup {
 
-  }
+        const MDate = this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01';
+        const MTime = new Date() || '00:00';
+        console.log(item)
+        return this._formBuilder.group({
+            medChartId: 0,
+            admId: this.OP_IP_Id | 0,
+            mdate: [MDate],
+            mtime: [MTime],
+            durgId: [item.itemID || 0],
+            doseId: [item.doseId || 0],
+            route: [item.timename || ''],
+            freq: [item.doseName || ''],
+            isAddedBy: this.accountService.currentUserValue.userId,
+            nurseName: "",
+            isCancelled: false,
+            doseName: [item.doseName || ''],
+        });
+
+    }
 
 
-  get MedinicesArray(): FormArray {
-    return this.FinalMedicineItemForm.get('nursingMedicationChart') as FormArray;
-  }
+    get MedinicesArray(): FormArray {
+        return this.FinalMedicineItemForm.get('nursingMedicationChart') as FormArray;
+    }
 
 
     onTemplate(row: any = null) {
@@ -353,33 +353,37 @@ export class NursingnoteComponent implements OnInit {
     }
 
     getSelectedObjIP(obj) {
+        debugger
+          
+        if ((obj.regID ?? 0) > 0) {
+            console.log("Admitted patient:", obj)
+            this.registerObj = obj
+            this.vRegNo = obj.regNo
+            this.vDoctorName = obj.doctorName
+            this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+            this.vDepartment = obj.departmentName
+            this.vIPDNo = obj.ipdNo
+            this.vAge = obj.age
+            this.vAgeMonth = obj.ageMonth
+            this.vAgeDay = obj.ageDay
+            this.vGenderName = obj.genderName
+            this.vRefDocName = obj.refDocName
+            this.vBedName = obj.bedName
+            this.vPatientType = obj.patientType
+            this.vTariffName = obj.tariffName
+            this.vCompanyName = obj.companyName
+            this.vDOA = obj.admissionDate
+            this.OP_IP_Id = obj.admissionID;
+            //   this.initializeGridConfig();
+           
+            this.getSchedulerlist();
 
-    if ((obj.regID ?? 0) > 0) {
-      console.log("Admitted patient:", obj)
-      this.registerObj = obj
-      this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
-      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vDepartment = obj.departmentName
-      this.vIPDNo = obj.ipdNo
-      this.vAge = obj.age
-      this.vAgeMonth = obj.ageMonth
-      this.vAgeDay = obj.ageDay
-      this.vGenderName = obj.genderName
-      this.vRefDocName = obj.refDocName
-      this.vBedName = obj.bedName
-      this.vPatientType = obj.patientType
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
-      this.vDOA = obj.admissionDate
-      this.OP_IP_Id = obj.admissionID;
-      this.initializeGridConfig();
-      this.getSchedulerlist();
-      // this.getMedicationList();
-      this.getHandOverNotelist();
+            //   }
+            //   this.getMedicationList();
+            this.getHandOverNotelist();
+        }
+        // this.getNoteTablelist(obj);
     }
-    // this.getNoteTablelist(obj);
-  }
 
     onEdit(row) {
         console.log("data:", row)
@@ -420,65 +424,62 @@ export class NursingnoteComponent implements OnInit {
         this.IsAddFlag = false
     }
 
-  Chargelist: any[] = [];
-  // 1
-  getSchedulerlist() {
-    // 
-    var param = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "MedChartId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "AdmissionId",
-          "fieldValue": String(this.OP_IP_Id), //1
-          "opType": "Equals"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    console.log(param)
-    
-    this._NursingStationService.getSchedulerdatalist(param).subscribe(data => {
-      // this.dsItemList.data = data.data as MedicineItemList[];
-      console.log(data)
+    Chargelist: any[] = [];
+    // 1
+    getSchedulerlist() {
+                this.dsItemList.data = [];
+                this.Chargelist = [...this.dsItemList.data];
 
-      if (data) {
         debugger
-        // if (!Array.isArray(this.Chargelist)) {
-        //     console.warn("Chargelist was not an array. Resetting...");
+        var param = {
+            "first": 0,
+            "rows": 100,
+            "sortField": "MedChartId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "AdmissionId",
+                    "fieldValue": String(this.OP_IP_Id), //1
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        console.log(param)
+
+        this._NursingStationService.getSchedulerdatalist(param).subscribe(data => {
+            // this.dsItemList.data = data.data as MedicineItemList[];
+            console.log(data)
+
+            if (data.data.length > 0) {
+                data.data.forEach(element => {
+                    let newEntry = {
+                        itemID: element.durgId || 0,
+                        itemName: element.drugName || '',
+                        doseName: element.doseName,
+                        doseId: element.doseID,
+                        days: element.days,
+                        timeId: 0,
+                        timename: data.route || '',
+                        instruction: '',
+                        route: element.timename || '',
+                        freq: element.doseName,
+                        routeId: element.routeId || 0,
+                    }
+                    this.Chargelist.push(newEntry);
+                    this.dsItemList.data = [...this.Chargelist]
+
+                })
 
 
-        this.dsItemList.data = [];
-        this.Chargelist = [...this.dsItemList.data];
+                // this.dsItemList.data = [...this.Chargelist];
 
-        data.data.forEach(element => {
-          let newEntry = {
-            itemID: element.durgId || 0,
-            itemName: element.drugName || '',
-            doseName: element.doseName,
-            doseId: element.doseID,
-            days: element.days,
-            timeId: 0,
-            timename: data.route || '',
-            instruction: '',
-            route: element.timename || '',
-            freq: element.doseName,
-            routeId:element.routeId || 0,
-          }
-          this.Chargelist.push(newEntry);
+            }
+
+            // this.Chargelist = data.data as MedicineItemList[];
         })
-        
-
-        this.dsItemList.data = [...this.Chargelist];
-
-      }
-
-      // this.Chargelist = data.data as MedicineItemList[];
-    })
-  }
+    }
 
     // deleteTableRow(event, element) {
     //   const index = this.Chargelist.indexOf(element);
@@ -631,40 +632,42 @@ export class NursingnoteComponent implements OnInit {
         this.dsHandOverNoteList.data = [];
     }
 
-  onSubmitMedicine() {
-    if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
-      this.toastr.warning('Please select Patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    onSubmitMedicine() {
+        if (this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
+            this.toastr.warning('Please select Patient', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
         this.MedinicesArray.clear();
-    this.Chargelist.forEach(item => {
-      this.MedinicesArray.push(this.FinalMedicineItemform(item as MedicineItem));
+        this.Chargelist.forEach(item => {
+            this.MedinicesArray.push(this.FinalMedicineItemform(item as MedicineItem));
 
-    });
-    console.log(this.FinalMedicineItemForm.value)
-    this._NursingStationService.NursingMedicineInsert(this.FinalMedicineItemForm.value).subscribe(response => {
-      if(response)
-        this.getSchedulerlist()
-      // this.onClose();
+        });
+        console.log(this.FinalMedicineItemForm.value)
+        debugger
+        this._NursingStationService.NursingMedicineInsert(this.FinalMedicineItemForm.value).subscribe(response => {
+            if (response) {
+                this.getSchedulerlist()
+                this.MedicineItemForm.reset();
+            }
 
-    });
+        });
 
 
-    this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
-    this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
-    this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
-    this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
-    this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
-    this.myHandOverForm.get('shiftInfo').setValue('Morning')
-    this.myHandOverForm.get('comments').setValue('')
-    this.dsItemList.data = [];
-  }
-  OnHandOverPrint(element) {
-    this.commonService.Onprint("AdmId", element, "NursingPatientHandoverReceipt");
-  }
+        this.vStaffNursName = "HANDOVER GIVER DETAILS\n\nStaff Nurse Name : \nDesignation : "
+        this.vSYMPTOMS = "Presenting SYMPTOMS\n\nVitals : \nAny Status Changes : "
+        this.vInstruction = "BE CLEAR ABOUT THE REQUESTS:\n(If any special Instruction)"
+        this.VStable = "THE PATIENT IS - Stable/Unstable\nBut i have a womes\nLEVEL OF WORRIES\nHigh/Medium/Low"
+        this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
+        this.myHandOverForm.get('shiftInfo').setValue('Morning')
+        this.myHandOverForm.get('comments').setValue('')
+      
+    }
+    OnHandOverPrint(element) {
+        this.commonService.Onprint("AdmId", element, "NursingPatientHandoverReceipt");
+    }
 
     OnHandOverEdit(row) {
         console.log(row)
@@ -718,16 +721,16 @@ export class NursingnoteComponent implements OnInit {
         this.dateTimeObj = dateTimeObj;
     }
 
-  getdose(event) {
-    this.doseName1 = event.text
-    this.doseId = event.value
-  }
-  timeId = 0
-  timename = '';
-  getime(event) {
-    this.timename = event.text
-    this.timeId = event.value
-  }
+    getdose(event) {
+        this.doseName1 = event.text
+        this.doseId = event.value
+    }
+    timeId = 0
+    timename = '';
+    getime(event) {
+        this.timename = event.text
+        this.timeId = event.value
+    }
 
 
     getSelectedserviceObj(obj) {
@@ -737,92 +740,93 @@ export class NursingnoteComponent implements OnInit {
         this.vDay = obj.doseDay
         console.log(obj)
 
-    if (this.doseId > 0) {
-      this._NursingStationService.getDoseMasterById(this.doseId).subscribe((response) => {
-        this.doseName1 = response.doseName;
-      });
-      const doseRow = {
-        value: this.doseId,
-        text: this.doseName1
-      };
-      this.getdose(doseRow);
+        if (this.doseId > 0) {
+            this._NursingStationService.getDoseMasterById(this.doseId).subscribe((response) => {
+                this.doseName1 = response.doseName;
+            });
+            const doseRow = {
+                value: this.doseId,
+                text: this.doseName1
+            };
+            this.getdose(doseRow);
+        }
     }
-  }
-  ItemFromReset() {
-    const form = this.MedicineItemForm;
-    form.patchValue({
-      ItemId: "",
-      DoseId: "",
-      vDay: "",
-      Day: "",
-      TimeId: ''
-    });
-  }
+    ItemFromReset() {
+        const form = this.MedicineItemForm;
+        form.patchValue({
+            ItemId: "",
+            DoseId: "",
+            vDay: "",
+            Day: "",
+            TimeId: ''
+        });
+    }
 
     showTemplateRefresh = true;
     templateId: any;
     templateName: any;
 
-  onAdd() {
-    if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
-      this.toastr.warning('Please select Item', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+    onAdd() {
+        if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
+            this.toastr.warning('Please select Item', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (!this.MedicineItemForm.get("DoseId")?.value) {
+            this.toastr.warning('Please select a Dose Name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (!this.MedicineItemForm.get("TimeId")?.value) {
+            this.toastr.warning('Please enter a Time', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (!Array.isArray(this.Chargelist)) {
+            console.warn("Chargelist was not an array. Resetting...");
+            this.Chargelist = [...this.dsItemList.data];
+        }
+
+        const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
+        if (!iscekDuplicate) {
+            this.Chargelist = [];
+            let newEntry = {
+                itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
+                itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
+                doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
+                doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
+                days: this.MedicineItemForm.get('Day').value || 0,
+                timeId: this.timeId || 0,
+                timename: this.timename || '',
+                instruction: this.vInstruction || '',
+                route: this.timename || '',
+                routeId: this.timeId || 0,
+                freq: this.doseName1
+            }
+
+            this.Chargelist.push(newEntry);
+        } else {
+            this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (this.Chargelist)
+            this.onSubmitMedicine()
+
+        // this.itemid.nativeElement.focus();
+
+
     }
-    if (!this.MedicineItemForm.get("DoseId")?.value) {
-      this.toastr.warning('Please select a Dose Name', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (!this.MedicineItemForm.get("TimeId")?.value) {
-      this.toastr.warning('Please enter a Time', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    if (!Array.isArray(this.Chargelist)) {
-      console.warn("Chargelist was not an array. Resetting...");
-      this.Chargelist = [...this.dsItemList.data];
-    }
-
-    const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
-    if (!iscekDuplicate) {
-      this.Chargelist = [];
-      let newEntry = {
-        itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
-        itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
-        doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
-        doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
-        days: this.MedicineItemForm.get('Day').value || 0,
-        timeId: this.timeId || 0,
-        timename: this.timename || '',
-        instruction: this.vInstruction || '',
-        route: this.timename || '',
-        routeId: this.timeId || 0,
-        freq: this.doseName1
-      }
-      
-      this.Chargelist.push(newEntry);
-    } else {
-      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    if (this.Chargelist)
-      this.onSubmitMedicine()
-    // this.itemid.nativeElement.focus();
 
 
-  }
 
-  
-
-  deleteTableRow(event, element) {
+    deleteTableRow(event, element) {
 
         const index = this.Chargelist.indexOf(element);
         if (index >= 0) {
@@ -835,37 +839,37 @@ export class NursingnoteComponent implements OnInit {
         });
     }
 
-    getPrescription(AdmissionId) {
-        console.log(AdmissionId)
-        const m_data2 = {
-            "first": 0,
-            "rows": 10,
-            "sortField": "AdmissionId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "AdmissionId",
-                    "fieldValue": String(AdmissionId),//"40773",	
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": [
-                {
-                    "data": "string",
-                    "name": "string"
-                }
-            ]
-        }
-        console.log(m_data2)
-        this._NursingStationService.getPrescriptionList(m_data2).subscribe((data) => {
-            // this.dsItemList.data = data?.data as MedicineItemList[];
-            // if (this.dsItemList.data)
-            this.Chargelist = data.data as MedicineItemList[];
-            this.dsItemList.data = [...this.Chargelist];
-            // console.log(this.dsItemList.data);
-        });
-    }
+    // getPrescription(AdmissionId) {
+    //     console.log(AdmissionId)
+    //     const m_data2 = {
+    //         "first": 0,
+    //         "rows": 10,
+    //         "sortField": "AdmissionId",
+    //         "sortOrder": 0,
+    //         "filters": [
+    //             {
+    //                 "fieldName": "AdmissionId",
+    //                 "fieldValue": String(AdmissionId),//"40773",	
+    //                 "opType": "Equals"
+    //             }
+    //         ],
+    //         "exportType": "JSON",
+    //         "columns": [
+    //             {
+    //                 "data": "string",
+    //                 "name": "string"
+    //             }
+    //         ]
+    //     }
+    //     console.log(m_data2)
+    //     this._NursingStationService.getPrescriptionList(m_data2).subscribe((data) => {
+    //         // this.dsItemList.data = data?.data as MedicineItemList[];
+    //         // if (this.dsItemList.data)
+    //         this.Chargelist = data.data as MedicineItemList[];
+    //         this.dsItemList.data = [...this.Chargelist];
+    //         // console.log(this.dsItemList.data);
+    //     });
+    // }
 
     showDoseDropdownRefresh = true;
     getDosemaster() {
@@ -940,10 +944,10 @@ export class NursingnoteComponent implements OnInit {
         });
     }
 
-  getValidationMessages() {
-    return {
-      DoseId: [],
-      TimeId: []
+    getValidationMessages() {
+        return {
+            DoseId: [],
+            TimeId: []
 
         };
     }
@@ -989,106 +993,106 @@ export class DocNote {
 }
 
 export class MedicineItemList {
-  ItemID: any;
-  ItemId: any;
-  ItemName: string;
-  DoseName: any;
-  Route: number;
-  Frequency: any;
-  NurseName: number;
-  DoseName2: any;
-  Day2: number;
-  Instruction: any;
-  DoseDateTime: any;
-  itemID: any;
-  timeId: any;
-  timename: any;
+    ItemID: any;
+    ItemId: any;
+    ItemName: string;
+    DoseName: any;
+    Route: number;
+    Frequency: any;
+    NurseName: number;
+    DoseName2: any;
+    Day2: number;
+    Instruction: any;
+    DoseDateTime: any;
+    itemID: any;
+    timeId: any;
+    timename: any;
 
-  admId: any;
-  mdate: any;
-  mtime: any;
-  durgId: string;
-  doseId: any;
-  route: any;
-  freq: any;
-  isAddedBy: number;
-  nurseName: any;
-  isCancelled: any;
-  doseName: any;
-  /**
-  * Constructor
-  *
-  * @param MedicineItemList
-  */
-  constructor(MedicineItemList) {
-    {
-      this.ItemId = MedicineItemList.ItemId || 0;
-      this.ItemID = MedicineItemList.ItemID || 0;
-      this.ItemName = MedicineItemList.ItemName || "";
-      this.Frequency = MedicineItemList.Frequency || '';
-      this.DoseName = MedicineItemList.DoseName || '';
-      this.Route = MedicineItemList.Route || 0;
-      this.NurseName = MedicineItemList.NurseName || 0;
-      this.itemID = MedicineItemList.itemID || 0;
-      this.timeId = MedicineItemList.timeId || '';
-      this.timename = MedicineItemList.timename || '';
+    admId: any;
+    mdate: any;
+    mtime: any;
+    durgId: string;
+    doseId: any;
+    route: any;
+    freq: any;
+    isAddedBy: number;
+    nurseName: any;
+    isCancelled: any;
+    doseName: any;
+    /**
+    * Constructor
+    *
+    * @param MedicineItemList
+    */
+    constructor(MedicineItemList) {
+        {
+            this.ItemId = MedicineItemList.ItemId || 0;
+            this.ItemID = MedicineItemList.ItemID || 0;
+            this.ItemName = MedicineItemList.ItemName || "";
+            this.Frequency = MedicineItemList.Frequency || '';
+            this.DoseName = MedicineItemList.DoseName || '';
+            this.Route = MedicineItemList.Route || 0;
+            this.NurseName = MedicineItemList.NurseName || 0;
+            this.itemID = MedicineItemList.itemID || 0;
+            this.timeId = MedicineItemList.timeId || '';
+            this.timename = MedicineItemList.timename || '';
 
-      this.admId = MedicineItemList.admId || 0;
-      this.mdate = MedicineItemList.mdate || 0;
-      this.mtime = MedicineItemList.mtime || 0;
-      this.durgId = MedicineItemList.durgId || 0;
+            this.admId = MedicineItemList.admId || 0;
+            this.mdate = MedicineItemList.mdate || 0;
+            this.mtime = MedicineItemList.mtime || 0;
+            this.durgId = MedicineItemList.durgId || 0;
 
-      this.doseId = MedicineItemList.doseId || '';
-      this.route = MedicineItemList.route || 0;
-      this.doseId = MedicineItemList.doseId || 0;
-      this.freq = MedicineItemList.freq || 0;
-      this.isAddedBy = MedicineItemList.isAddedBy || 0;
-      this.nurseName = MedicineItemList.nurseName || '';
-      this.isCancelled = MedicineItemList.isCancelled || 0;
-      this.doseName = MedicineItemList.doseName || '';
+            this.doseId = MedicineItemList.doseId || '';
+            this.route = MedicineItemList.route || 0;
+            this.doseId = MedicineItemList.doseId || 0;
+            this.freq = MedicineItemList.freq || 0;
+            this.isAddedBy = MedicineItemList.isAddedBy || 0;
+            this.nurseName = MedicineItemList.nurseName || '';
+            this.isCancelled = MedicineItemList.isCancelled || 0;
+            this.doseName = MedicineItemList.doseName || '';
 
 
+        }
     }
-  }
 }
 
 
 
 
 export class MedicineItem {
-  admId: any;
-  mdate: any;
-  mtime: any;
-  durgId: string;
-  doseId: any;
-  route: any;
-  freq: any;
-  isAddedBy: number;
-  nurseName: any;
-  isCancelled: any;
-  doseName: any;
+    admId: any;
+    mdate: any;
+    mtime: any;
+    durgId: string;
+    doseId: any;
+    route: any;
+    freq: any;
+    isAddedBy: number;
+    nurseName: any;
+    isCancelled: any;
+    doseName: any;
 
-  /**
-  * Constructor
-  *
-  * @param MedicineItem
-  */
-  constructor(MedicineItem) {
-    {
-      this.admId = MedicineItem.admId || 0;
-      this.mdate = MedicineItem.mdate || 0;
-      this.mtime = MedicineItem.mtime || 0;
-      this.durgId = MedicineItem.durgId || 0;
+    /**
+    * Constructor
+    *
+    * @param MedicineItem
+    */
+    constructor(MedicineItem) {
+        {
+            this.admId = MedicineItem.admId || 0;
+            this.mdate = MedicineItem.mdate || 0;
+            this.mtime = MedicineItem.mtime || 0;
+            this.durgId = MedicineItem.durgId || 0;
 
-      this.doseId = MedicineItem.doseId || '';
-      this.route = MedicineItem.route || 0;
-      this.doseId = MedicineItem.doseId || 0;
-      this.freq = MedicineItem.freq || 0;
-      this.isAddedBy = MedicineItem.isAddedBy || 0;
-      this.nurseName = MedicineItem.nurseName || '';
-      this.isCancelled = MedicineItem.isCancelled || 0;
-      this.doseName = MedicineItem.doseName || '';
+            this.doseId = MedicineItem.doseId || '';
+            this.route = MedicineItem.route || 0;
+            this.doseId = MedicineItem.doseId || 0;
+            this.freq = MedicineItem.freq || 0;
+            this.isAddedBy = MedicineItem.isAddedBy || 0;
+            this.nurseName = MedicineItem.nurseName || '';
+            this.isCancelled = MedicineItem.isCancelled || 0;
+            this.doseName = MedicineItem.doseName || '';
 
+        }
     }
-  }
 }

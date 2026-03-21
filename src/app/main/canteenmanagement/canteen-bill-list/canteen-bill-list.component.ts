@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { CanteenmanagementService } from '../canteenmanagement.service';
 import { ToastrService } from 'ngx-toastr';
@@ -9,11 +9,15 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { CanteenSalesComponent } from '../canteen-sales/canteen-sales.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-canteen-bill-list',
   templateUrl: './canteen-bill-list.component.html',
-  styleUrls: ['./canteen-bill-list.component.scss']
+  styleUrls: ['./canteen-bill-list.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class CanteenBillListComponent {
 
@@ -24,7 +28,8 @@ export class CanteenBillListComponent {
   f_name = '%'
   l_name = '%'
   regNo = '0'
-
+  BillNo = "0"
+  CustName = ''
   constructor(
     public _CanteenmanagementService: CanteenmanagementService, public toastr: ToastrService,
     private _loggedService: AuthenticationService, private _FormBuilder: UntypedFormBuilder, private _matDialog: MatDialog,
@@ -34,8 +39,6 @@ export class CanteenBillListComponent {
   //  data
   gridConfig1: gridModel = new gridModel();
   @ViewChild('BillGrid', { static: false }) grid: AirmidTableComponent;
-  // @ViewChild('Grid', { static: false }) grid1: AirmidTableComponent;
-  // @ViewChild('ItemGrid', { static: false }) grid1: AirmidTableComponent;
   @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
   isShowDetailTable: boolean = false;
   ngOnInit(): void {
@@ -55,7 +58,7 @@ export class CanteenBillListComponent {
 
   ];
 
-  
+
   allbillcolumns = [
     // { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 45 },
     // { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -72,7 +75,7 @@ export class CanteenBillListComponent {
     { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
 
     {
-      heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
     }  // Assign ng-template to the column
 
@@ -83,17 +86,17 @@ export class CanteenBillListComponent {
     // { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     // { heading: "", key: "refundAmount1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     // { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "BillDate", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "BillDate", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Item Name", key: "customerName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "MRP", key: "unitMrp", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "MRP", key: "unitMrp", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-    { heading: "Total Amount", key: "totalAmount", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount }, // It is just example of apply color based on condition
-    { heading: "Disc Amount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Total Amount", key: "totalAmount", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 }, // It is just example of apply color based on condition
+    { heading: "Disc Amount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
 
     {
@@ -112,10 +115,8 @@ export class CanteenBillListComponent {
     filters: this.allBillfilters
   }
 
-
-
-  GetDetails1(data: any): void {
-
+GetDetails1(data: any): void {
+debugger
     console.log("detailList:", data)
     let BillNo = data.billNo;
 
@@ -125,7 +126,7 @@ export class CanteenBillListComponent {
       sortField: "BillNo",
       sortOrder: 0,
       filters: [
-        { fieldName: "BillNo", fieldValue: String(BillNo), opType: OperatorComparer.Equals },
+        { fieldName: "BillNo", fieldValue: String(BillNo), opType: OperatorComparer.Equals }
       ]
     };
     this.isShowDetailTable = true;
@@ -153,23 +154,28 @@ export class CanteenBillListComponent {
     debugger
     this.fromDate = this.datePipe.transform(this.myFilterbillform.get('startdate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
-    this.f_name = this.myFilterbillform.get('CustomerName').value + "%"
-    // this.l_name = this.myFilterbillform.get('LastName').value + "%"
-    // this.regNo = this.myFilterbillform.get('RegNo').value || "0"
+    this.CustName = this.myFilterbillform.get('CustomerName').value + "%"
+    this.BillNo = this.myFilterbillform.get('BillNo').value || "0"
     this.getfilterdata();
   }
 
   getfilterdata() {
     debugger
+    this.fromDate = this.datePipe.transform(this.myFilterbillform.get('startdate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
+    this.CustName = this.myFilterbillform.get('CustomerName').value + "%"
+    this.BillNo = this.myFilterbillform.get('BillNo').value || "0"
+
+
     this.gridConfig = {
       apiUrl: "CanteenBill/CanteenBillList",
       columnsList: this.allbillcolumns,
       sortField: "BillNo",
       sortOrder: 0,
-      filters: [ { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "CustomerName", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "BillNo ", fieldValue: "0", opType: OperatorComparer.Equals },
+      filters: [{ fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "CustomerName", fieldValue: this.CustName, opType: OperatorComparer.Contains },
+      { fieldName: "BillNo ", fieldValue: this.BillNo, opType: OperatorComparer.Equals },
 
       ]
     }
@@ -189,4 +195,23 @@ export class CanteenBillListComponent {
   }
 
 
+  onSave(row: any = null) {
+    // const that = this;
+    // const dialogRef = this._matDialog.open(CanteenSalesComponent,
+    //     {
+    //         maxWidth: "97vw",
+    //         height: '98%',
+    //         width: '96%',
+    //         data: row
+    //     });
+    // dialogRef.afterClosed().subscribe(result => {
+    //     that.grid.bindGridData();
+    //     this.isShowDetailTable = false;
+
+    // });
+  }
+
+  Billcancle(element) { }
+
+  viewgetReportPdf(element) { }
 }

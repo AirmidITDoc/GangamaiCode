@@ -1,8 +1,19 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" dynamicTableHeight>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <!-- <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button> -->
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Canteen Bill List
+            </span>
+        </div>
 
-    <ng-template mat-tab-label>
-      Canteen Bill  List
-    </ng-template>
+        
+    </mat-toolbar>
 
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -10,31 +21,37 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-           
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button (click)="onSave(element)" matTooltip="Bill Edit">
                         <mat-icon>edit</mat-icon>
                     </button>
 
-                    <button mat-icon-button (click)="viewgetIpprescriptionReportPdf(element)"
-                        matTooltip="IP Prescription Print">
-                        <mat-icon title="Prescription Print">print</mat-icon>
+                    <button mat-icon-button (click)="viewgetReportPdf(element)"
+                        matTooltip="Bill Print">
+                        <mat-icon title="Bill Print">print</mat-icon>
                     </button>
 
-                    <button mat-icon-button (click)="Presccancle(element)" matTooltip="Bill Cancel"
+                    <button mat-icon-button (click)="Billcancle(element)" matTooltip="Bill Cancel"
                         *ngIf="element.isCancelled==false">
                         <mat-icon title="Cancel Bill">cancel</mat-icon>
                     </button>
                 </div>
             </ng-template>
-            <airmid-table [gridConfig]="gridConfig" #grid class="content" :ShowButtons="false"
+            <airmid-table [gridConfig]="gridConfig" #BillGrid class="content" :ShowButtons="false"
                 (onSelectRow)="GetDetails1($event)">
                 <ng-container filters>
                     <form [formGroup]="myFilterbillform" fxLayout="column">
-                        <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
+                        <!-- <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
                             (dateChange)="getfilterdata()">
+                        </airmid-datepicker> -->
+
+
+                         <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker>
 
                         <mat-form-field appearance="outline" fxFlex>

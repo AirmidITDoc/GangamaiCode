@@ -15,6 +15,8 @@ import { parseInt } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { CanteenmanagementService } from '../canteenmanagement.service';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-canteen-sales',
@@ -235,7 +237,7 @@ export class CanteenSalesComponent implements OnInit {
 
     constructor(
         public _CanteenmanagementService: CanteenmanagementService, public toastr: ToastrService,
-        private _loggedService: AuthenticationService, private _FormBuilder: UntypedFormBuilder,
+        private _loggedService: AuthenticationService, private _FormBuilder: UntypedFormBuilder,private _matDialog: MatDialog,
         public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
     ) { }
 
@@ -246,10 +248,10 @@ export class CanteenSalesComponent implements OnInit {
 
         this.CanteenForm = this.createCanteenform()
         this.CanteenForm.markAllAsTouched();
-
-        this.canteendetailform = this.tCanteenRequestDetails();
-        this.canteendetailform.markAllAsTouched();
-        this.canteendetailArray.push(this.tCanteenRequestDetails());
+this.billdetailArray.push(this.CanteenBillDetails());
+        // this.canteendetailform = this.tCanteenRequestDetails();
+        // this.canteendetailform.markAllAsTouched();
+        // this.canteendetailArray.push(this.tCanteenRequestDetails());
 
         this.getBillListData()
     }
@@ -257,39 +259,64 @@ export class CanteenSalesComponent implements OnInit {
     autocompleteModeCashcounter: string = "CashCounter";
     RegId = 0
     Opipid = 0
+ReqId=0
+  
+  createCanteenform() {
+    debugger
+    return this._FormBuilder.group({
+      billNo: 0,
+      date: [(new Date()).toISOString()],
+      time: [(new Date()).toISOString()],
+      storeId: 0,
+      opIpId: this.Opipid,
+      customerName: this.CustomerName,
+      pBillNo: 0,
+      totalAmount: 0,
+      gstper: 0,
+      gstamount: 0,
+      discAmount: this.vDiscAmt || 0,
+      netAmount: this.vTotalFinalAmount || 0,
+      paidAmount: this.vTotalFinalAmount || 0,
+      balanceAmount: 0,
+      concessionReasonId: 0,
+      concessionAuthorizationId: 0,
+      cashCounterId: 0,
+      isPrint: true,
+      isFree: true,
+      unitId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // addedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // updatedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelled: false,
+      reqId: this.ReqId,
+      isOtherOrIsEmpBill: false,
+      tCanteenBillDetails: this._FormBuilder.array([]),
+    });
+  }
 
-    createCanteenform(): FormGroup {
-
-        return this._FormBuilder.group({
-            "reqId": this.RegId,
-            "date": [(new Date()).toISOString()],
-            "time": [(new Date()).toISOString()],
-            "reqNo": "string",
-            "opIpId": this.Opipid,
-            "opIpType": 0,
-            "wardId": [this.RoomId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            "cashCounterId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            "isFree": false,
-            "unitId": [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            "isBillGenerated": true,
-            "isPrint": true,
-            tCanteenRequestDetails: this._FormBuilder.array([]),
-        })
-    }
-
-
-    tCanteenRequestDetails(element: any = {}): FormGroup {
-        return this._FormBuilder.group({
-            reqDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            requestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            itemId: [Number(element.ItemID) ?? 0],
-            unitMrp: [element.Price ?? 0],
-            qty: element.Qty,
-            totalAmount: this.vTotalFinalAmount || 0,
-            isBillGenerated: true,
-            isCancelled: false
-        });
-    }
+  CanteenBillDetails(element: any = {}): FormGroup {
+    debugger
+    return this._FormBuilder.group({
+      cdetId: [0],
+      billNo: 0,
+      itemId: [element.ItemID],
+      itemName: [element.ItemName ?? ''],
+      batchNo: '',
+      batchExpDate: new Date(),
+      unitMrp: [element.Price ?? 0],
+      qty: element.Qty,
+      totalAmount: this.vTotalFinalAmount || 0,
+      gstper: [0],
+      gstamount: [0],
+      discPer: [0],
+      discAmount: [0],
+      grossAmount: [0],
+      landedPrice: [0],
+      totalLandedAmount: [0],
+      returnQty: [0],
+      reqId: [0],
+      reqDetId: [0],
+    });
+  }
 
 
     get canteendetailArray(): FormArray {
@@ -300,73 +327,220 @@ export class CanteenSalesComponent implements OnInit {
     applyFilter() {
         this.dsItemTable1.filter = this.Itemsearch.trim().toLowerCase();
     }
+  get billdetailArray(): FormArray {
+    debugger
+    return this.CanteenForm.get('tCanteenBillDetails') as FormArray;
+  }
+   
+  Save() {
 
-    Save() {
-        // console.log(this.CanteenForm.value)
+    if (this._CanteenmanagementService.userFormGroup.get('CustomerName').value == '') {
+      this.toastr.warning('Please select a Customer Name .', 'Warning!', {
+        toastClass: 'tostr-tost custom-toast-warning'
+      });
+      return;
+    }
 
-        if (this._CanteenmanagementService.userFormGroup.get('CustomerName').value == '') {
-            this.toastr.warning('Please select a Customer Name .', 'Warning!', {
-                toastClass: 'tostr-tost custom-toast-warning'
-            });
-            return;
-        }
+    // if (!this.CanteenForm.invalid) {
 
-        // if (!this.CanteenForm.invalid) {
+    this.CanteenForm.get("date").setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd"))
+    this.CanteenForm.get("time").setValue(new Date(),"HH:mm:ss")
 
-        this.canteendetailArray.clear();
-        if (this.dsItemDetTable2.data.length === 0) {
-            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning');
-            return;
-        }
-        this.dsItemDetTable2.data.forEach(item => {
-            this.canteendetailArray.push(this.tCanteenRequestDetails(item));
-        });
+    this.CanteenForm.get('balanceAmount').setValue(0)
+     this.CanteenForm.get('paidAmount')?.setValue(this.vTotalFinalAmount)
+    this.CanteenForm.get('netAmount')?.setValue(this.vTotalFinalAmount)
+    this.CanteenForm.get('customerName').setValue(this._CanteenmanagementService.userFormGroup.get('CustomerName').value)
+    this.CanteenForm.get('opIpId')?.setValue(this.Opipid)
+
+    // const formattedDate = this.datePipe.transform(this.CanteenForm.get('billDate').value, "yyyy-MM-dd");
+    // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+
+    // if (!this.CanteenForm.invalid) {
+    this.billdetailArray.clear();
+    this.dsItemDetTable2.data.forEach(item => {
+      this.billdetailArray.push(this.CanteenBillDetails(item));
+
+    });
 
     console.log("form values", this.CanteenForm.value)
 
-        this._CanteenmanagementService.userFormGroup.get("date").setValue(this.datePipe.transform(this.dateTimeObj, "yyyy-MM-dd"))
-        this._CanteenmanagementService.userFormGroup.get("time").setValue(this.dateTimeObj)
-
-        this._CanteenmanagementService.userFormGroup.get("wardId").setValue(this.RoomId)
-        this._CanteenmanagementService.userFormGroup.get("opIpId").setValue(this._CanteenmanagementService.userFormGroup.get('Code').value)
-        // this.CanteenForm.get("tCanteenRequestDetails.totalAmount").setValue(this._CanteenmanagementService.userFormGroup.get('TotalAmount').value)
-
-        console.log(this._CanteenmanagementService.userFormGroup.value)
-
-
-        this._CanteenmanagementService.canteenrequestSave(this._CanteenmanagementService.userFormGroup.value).subscribe(response => {
-            //  this.viewgetLabrequestReportPdf(response)
-            // this.d.closeAll();
-
+    if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'PayOption') {
+      let PatientHeaderObj = {};
+      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+        PatientHeaderObj['PatientName'] = this.CustomerName;
+      PatientHeaderObj['RegNo'] = this.regNo || 0;
+      PatientHeaderObj['OPD_IPD_Id'] = this.Opipid;
+      PatientHeaderObj['CashCounterId'] = this._CanteenmanagementService.userFormGroup.get('CashCounterID')?.value || 0;
+      PatientHeaderObj['TransactionLabel'] = 'CANTEEN-Bill';
+      PatientHeaderObj['NetPayAmount'] = Math.round(this._CanteenmanagementService.userFormGroup.get('netPayableAmt').value);
+      const dialogRef = this._matDialog.open(OpPaymentComponent,
+        {
+          maxWidth: "80vw",
+          height: '750px',
+          width: '80%',
+          data: {
+            vPatientHeaderObj: PatientHeaderObj,
+            FromName: "CANTEEN-Bill",
+            advanceObj: PatientHeaderObj,
+          }
         });
-        // } else {
-        //   let invalidFields: string[] = [];
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.IsSubmitFlag == true) {
+          console.log(this.CanteenForm.value)
+          console.log(result.submitDataPay.ipPaymentInsert)
+          console.log(result.BillBalanceAmount)
+          this.CanteenForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
+          this.CanteenForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-        //   if (this.CanteenForm.invalid) {
-        //     for (const controlName in this.CanteenForm.controls) {
-        //       const control = this.CanteenForm.get(controlName);
+          // this.ModeOfPaymentsArray.clear();
+          // result.submitDataPay.ipModePaymentInsert.forEach(item => {
+          //     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+          // });
 
-        //       if (control instanceof FormGroup || control instanceof FormArray) {
-        //         for (const nestedKey in control.controls) {
-        //           if (control.get(nestedKey)?.invalid) {
-        //             invalidFields.push(`Nested: ${controlName}.${nestedKey}`);
-        //           }
-        //         }
-        //       } else if (control?.invalid) {
-        //         invalidFields.push(`MainForm: ${controlName}`);
-        //       }
-        //     }
-        //   }
-        //   if (invalidFields.length > 0) {
-        //     invalidFields.forEach(field => {
-        //       this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-        //       );
-        //     });
-        //   }
-        // }
+          console.log(this.CanteenForm.value)
+          this._CanteenmanagementService.canteenBillSave(this.CanteenForm.value).subscribe(response => {
+            this.resetform();
+            // this.viewgetBillThermalReportPdf(response)
+
+          });
+        }
+      });
     }
+    else if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'CashPay') {//Cash pay  
+      let ModePaymentObj = [];
+      // ModePaymentObj.push({
+      //     paymentDate: formattedDate,
+      //     paymentTime: formattedTime,
+      //     payAmount: this._CanteenmanagementService.userFormGroup.get('netPayableAmt')?.value ?? 0,
+      //     tranNo: "",
+      //     bankName: "",
+      //     validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+      //     comments: "",
+      //     payMode: "CASH",
+      //     onlineTranNo: "0",
+      //     onlineTranResponse: "0",
+      //     companyId: 0,
+      //     cashCounterId: 0,
+      //     transactionType: 0,
+      //     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
+      // });
 
+      // this.CanteenForm.get('payments.cashPayAmount')?.setValue(Number(this._CanteenmanagementService.userFormGroup.get('netPayableAmt')?.value))
+      // this.CanteenForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+      // this.CanteenForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+      // this.CanteenForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
+      debugger
+      console.log(this.CanteenForm.value)
+      this._CanteenmanagementService.canteenBillSave(this.CanteenForm.value).subscribe(response => {
+        this.resetform();
+        // this.viewgetBillThermalReportPdf(response)
+
+      });
+    }
+    // else if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'OnlinePay') {
+    //     let ModePaymentObj = [];
+    //     ModePaymentObj.push({
+    //         paymentDate: formattedDate,
+    //         paymentTime: formattedTime,
+    //         payAmount: this.OPFooterForm.get('netPayableAmt')?.value ?? 0,
+    //         tranNo: this.OPFooterForm.get('UpiNo')?.value || 0,
+    //         bankName: "",
+    //         validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+    //         comments: "",
+    //         payMode: "UPI",
+    //         onlineTranNo: "0",
+    //         onlineTranResponse: "0",
+    //         companyId: this.patientDetail?.CompanyId ?? 0,
+    //         cashCounterId: this.searchForm.get('CashCounterID')?.value || 0,
+    //         transactionType: 0,
+    //         isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
+    //     });
+    //     debugger
+    //     this.CanteenForm.get('balanceAmt').setValue(0)
+    //     this.CanteenForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+    //     this.CanteenForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
+    //     this.CanteenForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    //     this.CanteenForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+    //     this.CanteenForm.get('payments.payTmtranNo')?.setValue(this.OPFooterForm.get('UpiNo')?.value || 0)
+    //     this.CanteenForm.get('payments.payTmdate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    //     this.CanteenForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+
+    //     this.ModeOfPaymentsArray.clear();
+    //     ModePaymentObj.forEach(item => {
+    //         this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+    //     });
+
+    //     console.log(this.CanteenForm.value)
+    //     this._AppointmentlistService.InsertOPBilling(this.CanteenForm.value).subscribe(response => {
+
+    //         console.log(response)
+    //         this.mpesaResponse = response.data;
+    //         // this.startPolling();
+    //         this._matDialog.closeAll();
+    //         this.savebtn = true
+    //         this.resetform();
+    //         if (ThermalPrint != 1) {
+    //             this.viewgetOPBillReportPdf(response)
+    //         } else {
+    //             if (this.data?.FormName != 'Appointment-OPBill') {
+    //                 this.viewgetOPBillThermalReportPdf(response)
+    //             } else {
+    //                 this.dialogRef.close(response)
+    //             }
+    //         }
+    //     });
+    // }
+    // else if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'CreditPay') {//Credit pay 
+    //     this.CanteenForm.get('paidAmt').setValue(0)
+    //     this.CanteenForm.get('balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+    //     this.CanteenForm.removeControl('payments')
+    //     console.log(this.CanteenForm.value)
+    //     this._AppointmentlistService.InsertOPBillingCredit(this.CanteenForm.value).subscribe(response => {
+    //         this._matDialog.closeAll();
+    //         this.savebtn = true
+    //         this.resetform();
+    //         if (ThermalPrint != 1) {
+    //             this.viewgetOPBillReportPdf(response)
+    //         } else {
+    //             if (this.data?.FormName != 'Appointment-OPBill') {
+    //                 this.viewgetOPBillThermalReportPdf(response)
+    //             } else {
+    //                 this.dialogRef.close(response)
+    //             }
+    //         }
+    //     });
+    // }
+
+    // }
+    // else {
+    //   let invalidFields = [];
+    //   if (this.CanteenForm.invalid) {
+    //     for (const controlName in this.CanteenForm.controls) {
+    //       const control = this.CanteenForm.get(controlName);
+
+    //       if (control instanceof FormGroup || control instanceof FormArray) {
+    //         for (const nestedKey in control.controls) {
+    //           if (control.get(nestedKey)?.invalid) {
+    //             invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
+    //           }
+    //         }
+    //       } else if (control?.invalid) {
+    //         invalidFields.push(`OpBill From: ${controlName}`);
+    //       }
+    //     }
+    //   }
+    //   if (invalidFields.length > 0) {
+    //     invalidFields.forEach(field => {
+    //       this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+    //       );
+    //     });
+    //     return
+    //   }
+    // }
+  }
+
+  resetform() { }
 
     getItemTable1List() {
 
@@ -421,10 +595,10 @@ export class CanteenSalesComponent implements OnInit {
         // this.grid1.gridConfig = this.gridConfigcard;
         // this.grid1.bindGridData();
 
-        this.cardView.gridConfig = this.gridConfigcard;
-        this.cardView.bindGridData();
-
-    }
+      this.cardView.gridConfig = this.gridConfigcard;
+      this.cardView.bindGridData();
+    
+  }
 
 
     addChargList(row) {
@@ -698,8 +872,8 @@ export class CanteenSalesComponent implements OnInit {
             this.myFilterbillform.get('RegNo').setValue("")
 
 
-        this.onChangeBill();
-    }
+    this.onChangeBill();
+  }
 
 
 
@@ -714,24 +888,24 @@ export class CanteenSalesComponent implements OnInit {
         this.resultsLength = data.length;
     }
 
-    onCardAction(event: { action: string, item: any }) {
-        if (event.action === 'viewPassword') {
-            // this.PasswordView(event.item);
-        } else if (event.action === 'edit') {
-            this.onEdit(event.item);
-        } else if (event.action === 'delete') {
-        }
+  onCardAction(event: { action: string, item: any }) {
+    if (event.action === 'viewPassword') {
+      // this.PasswordView(event.item);
+    } else if (event.action === 'edit') {
+      this.onEdit(event.item);
+    } else if (event.action === 'delete') {
     }
-    onEdit(element) {
-        console.log(element)
-        this.addChargList(element)
-    }
+  }
+  onEdit(element) {
+    console.log(element)
+    this.addChargList(element)
+   }
 
-    //
-    @Output() action = new EventEmitter<{ action: string, item: any }>();
-    onAction(action: string, item: any) {
-        this.action.emit({ action, item });
-    }
+  //
+@Output() action = new EventEmitter<{ action: string, item: any }>();
+  onAction(action: string, item: any) {
+  this.action.emit({ action, item });
+}
 
     getfilterdata() {
 
