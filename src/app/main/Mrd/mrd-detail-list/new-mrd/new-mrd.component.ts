@@ -68,12 +68,11 @@ export class NewMrdComponent {
         this.gridConfig.columnsList.find(col => col.key === 'mrdInFileStatus')!.template = this.mrdInFileStatus;
     }
     allcolumns = [
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
-        { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "MRD-InFileStatus", key: "mrdInFileStatus", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
         // {
         //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.template, width: 200,
@@ -180,24 +179,19 @@ export class NewMrdComponent {
 
 
     onChangeFirst() {
-        debugger
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.m_name = this.myFilterform.get('MiddleName').value + "%"
         this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
-
         this.getfilterdata();
     }
 
     getchangeDate() {
-
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
-
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -219,17 +213,14 @@ export class NewMrdComponent {
                 { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "Admtd_Dschrgd_All", fieldValue: "1", opType: OperatorComparer.Equals },
                 { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
                 { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
-
             ],
             row: 25
         }
         this.discgrid.gridConfig = this.gridConfig;
         this.discgrid.bindGridData();
-
-
     }
 
 
@@ -316,43 +307,6 @@ export class NewMrdComponent {
             ],
         };
     }
-
-
-
-    // public now: Date = new Date();
-    // onChangeDate(value) {
-    //   if (value) {
-    //     const dateOfReg = new Date(value);
-    //     let splitDate = dateOfReg.toLocaleString("en-US").split(',');
-    //     let splitTime = this.NewMrdForm.get('recievedDate').value.toLocaleString("en-US").split(',');
-    //     this.eventEmitForParent(splitDate[0], splitTime[1]);
-    //   }
-    // }
-
-    // onChangeTime(event) {
-    //   this.timeflag = 1
-    //   if (event) {
-
-    //     let selectedDate = new Date(this.NewMrdForm.get('recievedTime').value);
-    //     let splitDate = selectedDate.toLocaleString("en-US").split(',');
-    //     let splitTime = this.NewMrdForm.get('recievedTime').value.toLocaleString("en-US").split(',');
-    //     this.isTimeChanged = true;
-    //     // this.phdatetime = splitTime[1]
-    //     // console.log(this.phdatetime)
-    //     this.eventEmitForParent(splitDate[0], splitTime[1]);
-    //   }
-    // }
-
-    // eventEmitForParent(actualDate, actualTime) {
-    //   let localaDateValues = actualDate.split('/');
-    //   let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
-    //   this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
-    // }
-    // dateTimeObj: any;
-    // getDateTime(dateTimeObj) {
-    //   console.log('dateTimeObj ==', dateTimeObj);
-    //   this.dateTimeObj = dateTimeObj;
-    // }
     onClose() {
         this.dialogRef.close();
     }
