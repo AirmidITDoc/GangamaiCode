@@ -27,7 +27,7 @@
         <div class="example-sidenav-content">
             <div fxFlexFill fxLayout="column" fxLayoutGap="6px" class="h-100-p">
 
-                <mat-card class="p-5 overflow-auto" fxFlex>
+                <mat-card class="p-5" fxFlex>
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <mat-tab-group class="dynamic-table-wrapper">
                             <!-- 1st tab -->
@@ -36,7 +36,7 @@
                                 <div fxLayout="row" class="gap-8 h-100-p">
                                     <div fxFlex="99%" fxFlex.sm="60%" fxFlex.xs="100%" class="table-left">
 
-                                        <div fxLayout="column" class="gap-8 h-100-p" style="padding-top: 10px;">
+                                        <div fxLayout="column" class="gap-8 h-100-p" style="padding-top: 4px;">
                                             <mat-card fxLayout="column" class="gap-8 h-100-p">
                                                 <div class="modal-card-container">
                                                     <form [formGroup]="_CanteenmanagementService.userFormGroup"
@@ -91,18 +91,19 @@
                                                     </form>
                                                 </div>
 
-                                                <div class="modal-card-container dynamic-table-wrapper">
+                                                <div class="modal-card-container">
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="65%" fxFlex.sm="60%" fxFlex.xs="100%"
-                                                            class="table-left">
+                                                            class="table-left" dynamicTableHeight>
 
                                                             <div fxLayout="column">
                                                                 <form
                                                                     [formGroup]="_CanteenmanagementService.userFormGroup">
-                                                                    <mat-card fxFlex="100%"
-                                                                        style="padding: 5px;margin-bottom: 5px;">
-                                                                        <mat-form-field appearance="outline"
-                                                                            fxFlex="70%">
+                                                                    <mat-card fxFlex="100%" fxLayout="row" fxLayoutAlign="space-between center"
+                                                                        class="compact-search-card"
+                                                                        style="padding: 2px 5px;margin-bottom: 2px; height: 50px;">
+                                                                        
+                                                                        <mat-form-field appearance="outline" fxFlex="65%" class="compact-search-input">
                                                                             <input type="text" name="ItemID"
                                                                                 formControlName="ItemID"
                                                                                 [(ngModel)]="Itemsearch"
@@ -116,9 +117,9 @@
                                                                             </span>
                                                                         </mat-form-field>
 
-
-                                                                        <mat-button-toggle-group [(ngModel)]="viewMode"
-                                                                            aria-label="View mode">
+                                                                        <mat-button-toggle-group [value]="viewMode"
+                                                                            (change)="viewMode = $event.value"
+                                                                            aria-label="View mode" style="height: 36px; align-items: center;">
                                                                             <mat-button-toggle value="table"
                                                                                 matTooltip="Table view">
                                                                                 <mat-icon>table_view</mat-icon>
@@ -132,7 +133,7 @@
                                                                 </form>
 
 
-                                                                <div style="height: 400px;">
+                                                                <div class="canteen-items-scroll-area">
                                                                     <mat-table #table matSort
                                                                         (afterLoadData)="onAfterLoadData($event)"
                                                                         [dataSource]="dsItemTable1"
@@ -220,9 +221,8 @@
 
                                                                     <!-- // -->
                                                                     <!-- CARD VIEW -->
-                                                                    <div *ngIf="viewMode === 'card'" fxFlex
-                                                                        fxLayout="column"
-                                                                        style="min-height:0;width: fit-content;">
+                                                                    <div *ngIf="viewMode === 'card'"
+                                                                        class="canteen-cards-scroll">
                                                                         <!-- <airmid-card-view [data]="userList"
                                                                             [config]="cardConfig"
                                                                             [gridConfig]="gridConfigcard"
@@ -247,121 +247,42 @@
 
                                                                                     <!-- One card per item – this *ngFor is the only loop we need -->
                                                                                     <div fxLayout="row wrap"
-                                                                                        fxLayoutGap="12px grid"
-                                                                                        style="width:100%; padding: 0 8px;">
+                                                                                        fxLayoutGap="10px grid"
+                                                                                        class="canteen-cards-grid">
                                                                                         <div *ngFor="let item of dsItemTable1.data"
                                                                                             fxFlex="14"
-                                                                                            style="padding:0; box-sizing:border-box;">
-                                                                                            <mat-card
-                                                                                                class="mat-elevation-z3 mat-density-compact"
-                                                                                                style="width: 100%; height: 100%; border-radius: 12px; padding: 5px;">
+                                                                                            class="canteen-card-wrapper">
+                                                                                            <div class="canteen-item-card"
+                                                                                                (click)="onEdit(item)">
 
-                                                                                                <!-- Your card content remains the same -->
-                                                                                                <mat-card-header>
-                                                                                                    <!-- <button mat-mini-fab
-                                                                                                        mat-card-avatar
-                                                                                                        color="primary"
-                                                                                                        tabindex="-1"
-                                                                                                        aria-label="Item avatar">
-                                                                                                        <mat-icon>restaurant</mat-icon>
-                                                                                                    </button> -->
+                                                                                                <!-- Item Name -->
+                                                                                                <div
+                                                                                                    class="canteen-item-name">
+                                                                                                    {{ item.itemName ||
+                                                                                                    'Unnamed Item' }}
+                                                                                                </div>
 
-                                                                                                    <!-- <mat-icon style="color: rgb(246, 101, 246);">restaurant</mat-icon> -->
-                                                                                                    <span
-                                                                                                        style="font-size: 1.1rem; font-weight: bold;color: rgb(4, 22, 94);">
-                                                                                                        {{ item.itemName
-                                                                                                        || 'Unnamed
-                                                                                                        Item' }}
-                                                                                                    </span>
-                                                                                                    <div
-                                                                                                        style="font-size: 1.1rem; font-weight: bold;color: rgb(73, 5, 87);">
-                                                                                                        | {{
-                                                                                                        item.price
-                                                                                                        |
-                                                                                                        currency:'INR':'symbol-narrow':'1.0-2'
-                                                                                                        || '—'
-                                                                                                        }}
-                                                                                                    </div>
-                                                                                                </mat-card-header>
+                                                                                                <!-- Price Badge -->
+                                                                                                <div
+                                                                                                    class="canteen-item-price">
+                                                                                                    {{ item.price |
+                                                                                                    currency:'INR':'symbol-narrow':'1.0-2'
+                                                                                                    || '—' }}
+                                                                                                </div>
 
-                                                                                                <mat-divider
-                                                                                                    inset></mat-divider>
-
-                                                                                                <!-- <mat-card-content
-                                                                                                    style="padding: 10px 0; font-size: 0.95rem;">
-                                                                                                    <div fxLayout="column"
-                                                                                                        style="gap: 10px;">
-                                                                                                        <div fxLayout="row"
-                                                                                                            fxLayoutAlign="space-between center">
-                                                                                                            <span
-                                                                                                                class="field-label">Item
-                                                                                                                </span>
-                                                                                                            <span
-                                                                                                                class="field-value">{{
-                                                                                                                item.itemName
-                                                                                                                || '—'
-                                                                                                                }}</span>
-
-                                                                                                                 <span
-                                                                                                                class="field-label">| Price</span>
-                                                                                                            <span
-                                                                                                                class="field-value price">
-                                                                                                                {{
-                                                                                                                item.price
-                                                                                                                |
-                                                                                                                currency:'INR':'symbol-narrow':'1.0-2'
-                                                                                                                || '—'
-                                                                                                                }}
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                        <div fxLayout="row"
-                                                                                                            fxLayoutAlign="space-between center">
-                                                                                                            <span
-                                                                                                                class="field-label">Price</span>
-                                                                                                            <span
-                                                                                                                class="field-value price">
-                                                                                                                {{
-                                                                                                                item.price
-                                                                                                                |
-                                                                                                                currency:'INR':'symbol-narrow':'1.0-2'
-                                                                                                                || '—'
-                                                                                                                }}
-                                                                                                            </span>
-                                                                                                        </div>
-                                                                                                      
-                                                                                                    </div>
-                                                                                                </mat-card-content> -->
-
-                                                                                                <mat-card-actions
-                                                                                                    fxLayout="row"
-                                                                                                    fxLayoutAlign="end center"
-                                                                                                    fxLayoutGap="2px"
-                                                                                                    style="padding: 2px 2px 2px 2px; margin-top: 5px;">
-                                                                                                    <!-- push to bottom if card has flex -->
-
-                                                                                                    <!-- Example: Edit button -->
-                                                                                                    <button
-                                                                                                        mat-icon-button
+                                                                                                <!-- Add Button -->
+                                                                                                <div
+                                                                                                    class="canteen-item-action">
+                                                                                                    <button mat-mini-fab
                                                                                                         color="primary"
                                                                                                         matTooltip="Add Item"
-                                                                                                        (click)="onEdit(item)">
+                                                                                                        class="canteen-add-btn"
+                                                                                                        (click)="onEdit(item); $event.stopPropagation()">
                                                                                                         <mat-icon>add</mat-icon>
                                                                                                     </button>
+                                                                                                </div>
 
-                                                                                                    <!-- Example: Delete button -->
-                                                                                                    <!-- <button
-                                                                                                        mat-icon-button
-                                                                                                        color="warn"
-                                                                                                        matTooltip="Delete Item"
-                                                                                                        (click)="deleteItem(item)">
-                                                                                                        <mat-icon>delete_outline</mat-icon>
-                                                                                                    </button> -->
-
-
-
-                                                                                                </mat-card-actions>
-
-                                                                                            </mat-card>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -394,9 +315,9 @@
 
                                                         <!-- ?//? -->
                                                         <div fxFlex="35%" fxFlex.sm="60%" fxFlex.xs="100%"
-                                                            class="table-left">
+                                                            class="table-left" [dynamicTableHeight]="100">
 
-                                                            <div style="height: 370px;">
+                                                            <div class="canteen-right-table-area">
                                                                 <mat-table matSort [dataSource]="dsItemDetTable2"
                                                                     [@animateStagger]="{value:'100'}">
 
@@ -465,7 +386,7 @@
 
                                                                 </mat-table>
                                                             </div>
-                                                            <div style="height: 80px;">
+                                                            <div>
                                                                 <form
                                                                     [formGroup]="_CanteenmanagementService.userFormGroup">
                                                                     <div fxLayout="row">
@@ -625,10 +546,10 @@
         </div>
 
         <mat-drawer #drawer class="example-sidenav sidebar-drawer" mode="side" [opened]="false">
-            <div class="sidebar-content px-12 pt-12 h-100-p grey-100-bg">
-                <form [formGroup]="_CanteenmanagementService.userFormGroup">
+            <div class="sidebar-content px-12 pt-12 h-100-p grey-100-bg" fxLayout="column" fxLayoutAlign="start stretch">
+                <form [formGroup]="_CanteenmanagementService.userFormGroup" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" style="margin-bottom: 8px;">
 
-                    <mat-form-field appearance="outline" fxFlex="80%" style="margin-right: 20px;">
+                    <mat-form-field appearance="outline" fxFlex="80%" class="compact-search-input">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker2">
                             <input matStartDate formControlName="start" placeholder="Start date">
@@ -639,15 +560,14 @@
                         <mat-date-range-picker #picker2></mat-date-range-picker>
                     </mat-form-field>
 
-                    <button mat-raised-button class="searchButton" matTooltip="search">
-                        <mat-icon class="searchiconbutton" (click)="getfilterdata()">search</mat-icon>
+                    <button mat-mini-fab color="primary" matTooltip="search" (click)="getfilterdata()">
+                        <mat-icon>search</mat-icon>
                     </button>
                 </form>
 
 
-                <mat-card fxLayout="column" class="gap-8 h-100-p">
-                    <div class="modal-card-container dynamic-table-wrapper" fxFlex>
-                        <div style="height: 400px;">
+                <mat-card fxLayout="column" class="gap-8" fxFlex="1 1 auto" style="min-height: 0;">
+                    <div class="modal-card-container" fxFlex="1 1 auto" style="min-height: 0;">
                             <!-- <mat-table matSort [dataSource]="dsNursingBillList" [@animateStagger]="{value:'50'}">
 
                                 <ng-container matColumnDef="Date">
@@ -695,7 +615,6 @@
                             <airmid-table [gridConfig]="gridConfig1" class="content" #WardGrid [ShowFilter]="false"
                                 (onSelectRow)="GetDetails1($event)" [ShowButtons]="false">
                             </airmid-table>
-                        </div>
                     </div>
                 </mat-card>
             </div>
