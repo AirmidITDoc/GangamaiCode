@@ -255,6 +255,45 @@ export class NewLabPatientRegComponent {
         });
         this.getCollectionList();
       }
+    } else if (this.data.mode == 'appointment') {
+      if (this.data?.row?.labAppId) {
+        this.regNo = this.data?.row?.seqNo
+        this._labPatientRegService.getAppById(this.data?.row?.labAppId).subscribe((response) => {
+          console.log("App master", response)
+          this.registerObj = response;
+          this.value = response.dateofBirth
+          this.VlabPatRegId = this.registerObj.labPatRegId ?? 0
+          this.onChangeDateofBirth(response.dateofBirth)
+          this.regflag = true
+          this.myForm.patchValue({
+            firstName: this.registerObj.firstName.trim(),
+            middleName: this.registerObj.middleName.trim(),
+            LastName: this.registerObj.lastName.trim(),
+            // MobileNo: String(this.registerObj.mobileNo).trim(),
+            // MobileNo: this.registerObj.mobileNo?.trim(),
+            // MobileNo: this.registerObj.mobileNo.replace(/\s+/g, '').trim(),
+            address: this.registerObj.address.trim()
+          });
+          // this.myForm.get('MobileNo').setValue(this.registerObj.mobileNo?.replace(/\s+/g, '').trim());
+          this.myForm.get('MobileNo').setValue(
+            this.registerObj.mobileNo?.replace(/\s+/g, '').trim(),
+            { emitEvent: true }
+          );
+          this.myForm.get('MobileNo').updateValueAndValidity();
+          this.myForm.get('cityId').setValue(this.registerObj.cityId);
+          // this.myForm.get('patientType').setValue(this.registerObj.patientType);
+          if (this.registerObj.cityId) {
+            this._labPatientRegService.getcityId(this.registerObj.cityId).subscribe((Response) => {
+              this.stateId = Response.stateId
+
+              this._labPatientRegService.getstateId(this.stateId).subscribe((Response) => {
+                this.counryId = Response.countryId
+              });
+            });
+          }
+        });
+        this.getAppointmentSerList();
+      }
     }
 
     this.getServiceList();
@@ -829,6 +868,54 @@ export class NewLabPatientRegComponent {
           item.isPathology = item.isPathology ?? item.IsPathology;
           item.isRadiology = item.isRadiology ?? item.IsRadiology;
           item.isOtherService = item.isOtherService ?? item.IsOtherService;
+          item.isPackage = item.isPackage ?? item.IsPackage;
+
+          if (item.DiscAmt > 0 || item.DiscPer > 0) {
+            this.isDiscountApplied = true;
+            hasPrevDiscount = true;
+          }
+
+          this.onSaveEntry(item);
+
+        });
+      }
+    });
+
+  }
+
+  getAppointmentSerList() {
+    const param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "LabAppId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "LabAppId",
+          "fieldValue": String(this.data?.row?.labAppId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+
+    this._labPatientRegService.getAppDetById(param).subscribe(Menu => {
+      this.FetchList = Menu.data as ChargesList[];
+
+      let hasPrevDiscount = false;
+      if (Array.isArray(this.FetchList)) {
+        this.FetchList.forEach(item => {
+          item.serviceId = item.testId;
+          item.serviceName = item.serviceName;
+          item.price = item.price;
+          item.totalAmt = item.totalAmount;
+          item.netAmount = item.netAmount;
+          item.DiscPer = item.discPer
+          item.DiscAmt = item.discAmount
+          item.isPathology = 0;
+          item.isRadiology = 1;
+          item.isOtherService = 0;
           item.isPackage = item.isPackage ?? item.IsPackage;
 
           if (item.DiscAmt > 0 || item.DiscPer > 0) {
