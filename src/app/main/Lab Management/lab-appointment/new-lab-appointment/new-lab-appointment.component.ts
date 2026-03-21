@@ -10,8 +10,14 @@ import { HospitalConfigService } from 'app/core/services/hospital-config.service
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { LabPatientList } from '../../lab-patient-reg/lab-patient-reg.component';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
+import Swal from 'sweetalert2';
+import { ConfigService } from 'app/core/services/config.service';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { ChargesList, LabPatientList } from '../../lab-patient-reg/lab-patient-reg.component';
 import { LabAppointmentService } from '../lab-appointment.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-new-lab-appointment',
@@ -29,63 +35,63 @@ export class NewLabAppointmentComponent {
     autocompleteModegender: string = "Gender";
     autocompleteModecountry: string = "Country";
 
-    vFirstNameConfig: any;
-    vmiddleNameConfig: any;
-    vlastNameConfig: any;
-    patientTypeList: any = [];
-    VlabPatRegId: any;
-    ApiURL: any = '';
-    vTariffId: any = 1;
-    vClassId: any = 1;
-    dateTimeObj: any;
-    isExpanded2 = true;
+  vFirstNameConfig: any;
+  vmiddleNameConfig: any;
+  vlastNameConfig: any;
+  patientTypeList: any = [];
+  VlabPatRegId: any;
+  ApiURL: any = '';
+  vTariffId: any = 1;
+  vClassId: any = 1;
+  dateTimeObj: any;
+  isExpanded2 = true;
 
-    isCompanySelected: boolean = false;
-    isTariffSelect: boolean = false;
-    patienttype = 0
-    UnitId: any = this.accountService.currentUserValue.user.unitId;
-    vdoctorId: any = 0
-    vdoctorName: any = ''
-    companyId = 0;
-    companyName = '';
-    companyDet = new LabPatientList({});
-    ageYear: any;
-    ageMonth: any;
-    ageDays: any;
-    stateId = 0
-    counryId = 0
-    filteredOptions: any[] = [];
-    prevResults: any[] = [];
-    debounceTimers: { [key: string]: any } = {};
-    PatientName: any;
-    regNo: any;
-    ageDay = 0;
-    minDate = new Date();
-    CityName: '';
-    labPatientId = 0
-    timeflag = 0
-    isTimeChanged: boolean = false;
-    phdatetime: any;
-    @Output() dateTimeEventEmitter = new EventEmitter<{}>();
-    isDatePckrDisabled: boolean = false;
-    fromDate: Date;
-    toDate: Date;
-    isEditMode: boolean = false;
-    public now: Date = new Date();
+  isCompanySelected: boolean = false;
+  isTariffSelect: boolean = false;
+  patienttype = 0
+  UnitId: any = this.accountService.currentUserValue.user.unitId;
+  vdoctorId: any = 0
+  vdoctorName: any = ''
+  companyId = 0;
+  companyName = '';
+  companyDet = new LabPatientList({});
+  ageYear: any;
+  ageMonth: any;
+  ageDays: any;
+  stateId = 0
+  counryId = 0
+  filteredOptions: any[] = [];
+  prevResults: any[] = [];
+  debounceTimers: { [key: string]: any } = {};
+  PatientName: any;
+  regNo: any;
+  ageDay = 0;
+  minDate = new Date();
+  CityName: '';
+  labPatientId = 0
+  timeflag = 0
+  isTimeChanged: boolean = false;
+  phdatetime: any;
+  @Output() dateTimeEventEmitter = new EventEmitter<{}>();
+  isDatePckrDisabled: boolean = false;
+  fromDate: Date;
+  toDate: Date;
+  isEditMode: boolean = false;
+  public now: Date = new Date();
 
-    @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
-    @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
-    @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
-    @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
-    @ViewChild('ddlcompanyExec') ddlcompanyExec: AirmidDropDownComponent;
-    autocompleteRadioDD: string = "RadioCategory";
-    autocompleteRefDoctorDD: string = "RefDoctor";
+  @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
+  @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
+  @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
+  @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+  @ViewChild('ddlcompanyExec') ddlcompanyExec: AirmidDropDownComponent;
+  autocompleteRadioDD: string = "RadioCategory";
+  autocompleteRefDoctorDD: string = "RefDoctor";
 
-    displayedServiceselected: string[] = [
-        'ServiceName',
-        'Price',
-        'buttons'
-    ]
+  displayedServiceselected: string[] = [
+    'ServiceName',
+    'Price',
+    'buttons'
+  ]
 
     constructor(public _appointmentService: LabAppointmentService,
         public _matDialog: MatDialog,
@@ -131,10 +137,10 @@ export class NewLabAppointmentComponent {
 
         }
 
-        // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
-        const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
-        const [firstnameid, firstnameval] = firstValue.includes(":") ? firstValue.split(":") : [null, null];
-        this.vFirstNameConfig = firstnameid
+    // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
+    const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
+    const [firstnameid, firstnameval] = firstValue.includes(":") ? firstValue.split(":") : [null, null];
+    this.vFirstNameConfig = firstnameid
 
         const middleValue = this?._configue?.configParams?.MiddleNameMandatory || "";
         const [middlenameid, middlenameval] = middleValue.includes(":") ? middleValue.split(":") : [null, null];
@@ -172,37 +178,37 @@ export class NewLabAppointmentComponent {
         });
     }
 
-    CreateMyForm() {
-        return this._formbuilder.group({
-            labAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            unitId: this.accountService.currentUserValue.user.unitId,
-            appDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-            appTime: [''],
-            prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            firstName: ['', [Validators.required, Validators.maxLength(50)]],
-            middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-            DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-            mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-            cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            doctorId: [0],
-            categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            labAppDate: [(new Date()).toISOString(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
-            labAppTime: ['', [Validators.required]],
-            addedBy: this.accountService.currentUserValue.userId,
-            updatedBy: 0,
-            isCancelled: false,
-            isCancelledBy: [0],
-            isCancelledDate: ['1900-01-01'],
-            labPatRegId: [0],
-            startTime: ['', [Validators.required]],
-            endTime: ['', [Validators.required]],
-        })
-    }
+  CreateMyForm() {
+    return this._formbuilder.group({
+      labAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: this.accountService.currentUserValue.user.unitId,
+      appDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      appTime: [''],
+      prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      firstName: ['', [Validators.required, Validators.maxLength(50)]],
+      middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
+      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      doctorId: [0],
+      categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      labAppDate: [(new Date()).toISOString(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
+      labAppTime: ['', [Validators.required]],
+      addedBy: this.accountService.currentUserValue.userId,
+      updatedBy: 0,
+      isCancelled: false,
+      isCancelledBy: [0],
+      isCancelledDate: ['1900-01-01'],
+      labPatRegId: [0],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+    })
+  }
 
     prefixName: any;
     onChangePrefix(e) {
@@ -233,32 +239,32 @@ export class NewLabAppointmentComponent {
         });
     }
 
-    regflag = false
-    showPrevBtn: boolean = false
-    getSelectedObj(obj) {
-        console.log(obj)
-        // this.PatientName = obj.patientName;
-        this.PatientName = obj.firstName + ' ' + obj.lastName;
-        this.VlabPatRegId = obj.visitId;
-        if (this.VlabPatRegId) {
-            setTimeout(() => {
-                this._appointmentService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
-                    console.log(response)
-                    this.registerObj = response;
-                    this.counryId = response.countryId
-                    this.stateId = response.stateId
-                    this.value = response.dateofBirth
-                    this.regNo = response.labRequestNo
-                    this.onChangeDateofBirth(response.dateofBirth)
-                    this.regflag = true
-                    this.myForm.patchValue({
-                        firstName: this.registerObj.firstName.trim(),
-                        middleName: this.registerObj.middleName.trim(),
-                        LastName: this.registerObj.lastName.trim(),
-                        MobileNo: this.registerObj.mobileNo.trim(),
-                        address: this.registerObj.address.trim(),
-                        // DateOfBirth:this.registerObj.dateofBirth,
-                    });
+  regflag = false
+  showPrevBtn: boolean = false
+  getSelectedObj(obj) {
+    console.log(obj)
+    // this.PatientName = obj.patientName;
+    this.PatientName = obj.firstName + ' ' + obj.lastName;
+    this.VlabPatRegId = obj.visitId;
+    if (this.VlabPatRegId) {
+      setTimeout(() => {
+        this._appointmentService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
+          console.log(response)
+          this.registerObj = response;
+          this.counryId = response.countryId
+          this.stateId = response.stateId
+          this.value = response.dateofBirth
+          this.regNo = response.labRequestNo
+          this.onChangeDateofBirth(response.dateofBirth)
+          this.regflag = true
+          this.myForm.patchValue({
+            firstName: this.registerObj.firstName.trim(),
+            middleName: this.registerObj.middleName.trim(),
+            LastName: this.registerObj.lastName.trim(),
+            MobileNo: this.registerObj.mobileNo.trim(),
+            address: this.registerObj.address.trim(),
+            // DateOfBirth:this.registerObj.dateofBirth,
+          });
 
                 });
             }, 100);
@@ -469,34 +475,34 @@ export class NewLabAppointmentComponent {
         this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
     }
 
-    OnSubmit() {
-        debugger
-        this.myForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-        this.myForm.get('appTime').setValue(this.datePipe.transform(this.now, 'HH:mm'));
-        this.myForm.get('labPatRegId').setValue(this.VlabPatRegId ?? 0);
-        this.myForm.get('stateId').setValue(this.stateId)
-        this.myForm.get('countryId').setValue(String(this.counryId))
-        console.log(this.myForm.value);
+  OnSubmit() {
+    debugger
+    this.myForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    this.myForm.get('appTime').setValue(this.datePipe.transform(this.now, 'HH:mm'));
+    this.myForm.get('labPatRegId').setValue(this.VlabPatRegId ?? 0);
+    this.myForm.get('stateId').setValue(this.stateId)
+    this.myForm.get('countryId').setValue(String(this.counryId))
+    console.log(this.myForm.value);
 
-        if (!this.myForm.invalid) {
-            this._appointmentService.appointmentMasterSave(this.myForm.value).subscribe((response) => {
-                this.onClose();
-            });
-        } else {
-            const invalidFields = [];
-            if (this.myForm.invalid) {
-                for (const controlName in this.myForm.controls) {
-                    if (this.myForm.controls[controlName].invalid) {
-                        invalidFields.push(`Appointment Form: ${controlName}`);
-                    }
-                }
-            }
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
-                });
-            }
+    if (!this.myForm.invalid) {
+      this._appointmentService.appointmentMasterSave(this.myForm.value).subscribe((response) => {
+        this.onClose();
+      });
+    } else {
+      const invalidFields = [];
+      if (this.myForm.invalid) {
+        for (const controlName in this.myForm.controls) {
+          if (this.myForm.controls[controlName].invalid) {
+            invalidFields.push(`Appointment Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
 
         }
     }

@@ -754,9 +754,195 @@ export class NewLabPatientRegComponent {
             }, 100);
         }
 
+<<<<<<< HEAD
+      }
+
+      else {
+        this.onSaveEntry(result);
+      }
+    });
+  }
+
+  value = new Date()
+  onChangeDateofBirth(DateOfBirth: Date) {
+
+    if (DateOfBirth > this.minDate) {
+      this.toastrService.warning('Enter Proper Birth Date..', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      return;
+    }
+    if (DateOfBirth) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+
+      this.ageYear = todayDate.getFullYear() - dob.getFullYear();
+      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay = (todayDate.getDate() - dob.getDate());
+
+      if (this.ageDay < 0) {
+        this.ageMonth--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.ageDay += previousMonth.getDate(); // Days in previous month
+        // this.ageDay =this.ageDay +1;
+      }
+
+      if (this.ageMonth < 0) {
+        this.ageYear--;
+        this.ageMonth += 12;
+      }
+
+      this.value = DateOfBirth;
+      this.myForm.get('DateOfBirth').setValue(DateOfBirth);
+      if (this.ageYear > 110)
+        this.toastrService.warning('Please Enter Valid BirthDate..', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+    }
+  }
+  // Consessionres: boolean = false;
+  private _Consessionres = false;
+
+  get Consessionres(): boolean {
+    return this._Consessionres;
+  }
+
+  set Consessionres(value: boolean) {
+    if (this._Consessionres !== value) {
+      this._Consessionres = value;
+      this.toggleConcessionValidator();
+    }
+  }
+
+  toggleConcessionValidator() {
+    const control = this.myForm.get('concessionReasonId');
+
+    if (!control) return;
+
+    if (this.Consessionres) {
+      control.setValidators([Validators.required]);
+    } else {
+      control.clearValidators();
+      control.setValue(null);
+    }
+
+    control.updateValueAndValidity({ emitEvent: false });
+  }
+
+
+  onDiscountPerChange(row: ChargesList): void {
+    // debugger
+    if (!row) return;
+
+    if (row.DiscPer == null) {
+      row.DiscPer = 0;
+    }
+
+    let discountPer = +row.DiscPer || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountPer < 0 || discountPer > 100) {
+      discountPer = 0; // Reset if out of range
+      row.DiscPer = 0;
+      this.toastrService.error("Enter discount % between 0-100");
+    }
+
+    this.Consessionres = true
+    if (discountPer == 0) {
+      this.Consessionres = false
+      this.OPFooterForm.get("concessionReasonId").setValue(0)
+    }
+
+    row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - row.DiscAmt;
+
+    this.calculateTotalAmount();
+  }
+
+  onDiscountAmtChange(row: ChargesList): void {
+    if (!row) return;
+    let discountAmt = +row.DiscAmt || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountAmt < 0 || discountAmt > totalAmount) {
+      row.DiscAmt = 0;
+      discountAmt = 0;
+      this.toastrService.error("Discount must be between 0 and the total amount.");
+    }
+
+    this.Consessionres = true
+    if (discountAmt == 0) {
+      this.Consessionres = false
+      this.OPFooterForm.get("concessionReasonId").setValue(0)
+    }
+    row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - discountAmt;
+
+    this.calculateTotalAmount();
+    this.updateCalculation();
+  }
+  // Calculation of total amount.
+  calculateTotalAmount(): void {
+    // debugger
+    const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+    const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    const totalDiscountPer = 0 //this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
+    const totalNet = totalSum - totalDiscount;
+
+    this.myForm.patchValue({
+      totalAmt: totalSum,
+      totalDiscountPer: Math.round(totalDiscountPer),
+      discountAmt: Math.round(totalDiscount),
+      netPayableAmt: Math.round(totalNet)
+    }, { emitEvent: false });
+    if (!this.isDiscountApplied && totalDiscount > 0) {
+      this.isDiscountApplied = true;
+      this.Consessionres = true
+    }
+
+    this.Consessionres = this.chargeList.some(
+      charge => (+charge.DiscAmt || 0) > 0
+    );
+    this.isDiscountApplied = this.Consessionres;
+  }
+
+  getServiceList() {
+    const ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
+    const IsPathRad = 3
+    // this.myForm.get("IsPathRad").value || "1"
+    const param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ServiceName",
+          "fieldValue": ServiceName,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "TariffId",
+          "fieldValue": String(this.vTariffId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "IsPathRad",
+          "fieldValue": String(IsPathRad),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ClassId",
+          "fieldValue": String(this.vClassId),
+          "opType": "Equals"
+=======
         if (this.VlabPatRegId) {
             this.showPrevBtn = true
             this.getPrevList(obj);
+>>>>>>> cbe49c5f46aaeab10eb98127a946cd2b2fa2b15d
         }
     }
 
