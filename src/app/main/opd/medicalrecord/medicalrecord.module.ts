@@ -32,6 +32,8 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { AppointmentlistService } from "../appointment-list/appointmentlist.service";
+import { GastrologyEmrComponent } from "../gastrology-emr/gastrology-emr.component";
+import { QAEntryPopupComponent } from "../gastrology-emr/qa-entry-popup/qa-entry-popup.component";
 import { AddItemComponent } from "../new-casepaper/add-item/add-item.component";
 import { MedicineTableNewComponent } from "../new-casepaper/medicine-table-new/medicine-table-new.component";
 import { NewCasepaperComponent } from "../new-casepaper/new-casepaper.component";
@@ -39,8 +41,6 @@ import { PrePresciptionListComponent } from "../new-casepaper/pre-presciption-li
 import { PrescriptionTemplateComponent } from "../new-casepaper/prescription-template/prescription-template.component";
 import { MedicalrecordComponent } from "./medicalrecord.component";
 import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
-import { GastrologyEmrComponent } from "../gastrology-emr/gastrology-emr.component";
-import { QAEntryPopupComponent } from "../gastrology-emr/qa-entry-popup/qa-entry-popup.component";
 const routes: Routes = [
     {
         path: "**",
@@ -49,53 +49,53 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    MedicalrecordComponent,
-    PrescriptionTemplateComponent,
-    PrePresciptionListComponent,
-    NewCasepaperComponent,
-    AddItemComponent,
-    PatientcertificateComponent,
-    MedicineTableNewComponent,
-    GastrologyEmrComponent,
-    QAEntryPopupComponent
-  ],
-  imports: [
-    RouterModule.forChild(routes),
-            FormsModule,
-            ReactiveFormsModule,
-            MatButtonModule,
-            MatCheckboxModule,
-            MatDatepickerModule,
-            MatFormFieldModule,
-            MatIconModule,
-            MatInputModule,
-            MatMenuModule,
-            MatBadgeModule,
-            MatRippleModule,
-            MatTableModule,
-            MatToolbarModule,
-            MatPaginatorModule,
-            MatSortModule,
-            MatSelectModule,
-            MatRadioModule,
-            MatSnackBarModule,
-            FuseSharedModule,
-            FuseConfirmDialogModule,
-            MatAutocompleteModule,
-            FuseSidebarModule,
-            CommonModule,
-            MatExpansionModule,
-            MatCardModule,
-            MatSlideToggleModule,
-            MatTabsModule,
-            SharedModule,
-            MatDialogModule,
-            MatListModule,
-            MatTooltipModule,
-            MatChipsModule,
-            MatButtonToggleModule,
-  ],
-  providers: [AppointmentlistService, DatePipe]
+    declarations: [
+        MedicalrecordComponent,
+        PrescriptionTemplateComponent,
+        PrePresciptionListComponent,
+        NewCasepaperComponent,
+        AddItemComponent,
+        PatientcertificateComponent,
+        MedicineTableNewComponent,
+        GastrologyEmrComponent,
+        QAEntryPopupComponent
+    ],
+    imports: [
+        RouterModule.forChild(routes),
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatBadgeModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        MatAutocompleteModule,
+        FuseSidebarModule,
+        CommonModule,
+        MatExpansionModule,
+        MatCardModule,
+        MatSlideToggleModule,
+        MatTabsModule,
+        SharedModule,
+        MatDialogModule,
+        MatListModule,
+        MatTooltipModule,
+        MatChipsModule,
+        MatButtonToggleModule,
+    ],
+    providers: [AppointmentlistService, DatePipe]
 })
 export class MedicalrecordModule { }

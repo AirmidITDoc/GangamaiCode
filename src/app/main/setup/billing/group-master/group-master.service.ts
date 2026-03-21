@@ -20,8 +20,8 @@ export class GroupMasterService {
 
     createGroupForm(): FormGroup {
         return this._formBuilder.group({
-            groupId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            groupName: ["", 
+            groupId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            groupName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
@@ -29,7 +29,7 @@ export class GroupMasterService {
                 ]
             ],
             isconsolidated: true,
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

@@ -40,8 +40,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { HospitalMasterComponent } from "./hospital-master.component";
-import { NewHospitalComponent } from "./new-hospital/new-hospital.component";
 import { HospitalService } from "./hospital.service";
+import { NewHospitalComponent } from "./new-hospital/new-hospital.component";
 
 
 const routes: Routes = [
@@ -52,7 +52,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [HospitalMasterComponent,NewHospitalComponent],
+    declarations: [HospitalMasterComponent, NewHospitalComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -94,7 +94,7 @@ const routes: Routes = [
         ScrollingModule,
         MatSidenavModule,
         MatButtonToggleModule,
-         ],
-    providers: [DatePipe,HospitalService]
+    ],
+    providers: [DatePipe, HospitalService]
 })
 export class HospitalModule { }

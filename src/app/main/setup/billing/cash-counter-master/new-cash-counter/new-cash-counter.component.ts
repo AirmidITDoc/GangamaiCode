@@ -15,28 +15,27 @@ import { CashCounterMasterService } from '../cash-counter-master.service';
 export class NewCashCounterComponent implements OnInit {
 
     cashcounterForm: FormGroup;
-    isActive:boolean=true;
-    
+    isActive: boolean = true;
+
     constructor(
         public _CashCounterMasterService: CashCounterMasterService,
         public dialogRef: MatDialogRef<NewCashCounterComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
- 
+
     ngOnInit(): void {
         this.cashcounterForm = this._CashCounterMasterService.createcashcounterForm();
         this.cashcounterForm.markAllAsTouched();
 
-        if((this.data?.cashCounterId??0) > 0)
-        {
-            this.isActive=this.data.isActive
+        if ((this.data?.cashCounterId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.cashcounterForm.patchValue(this.data);
         }
     }
 
     onSubmit() {
-        
+
         if (!this.cashcounterForm.invalid) {
             console.log(this.cashcounterForm.value)
             this._CashCounterMasterService.cashcounterMasterSave(this.cashcounterForm.value).subscribe((response) => {
@@ -62,8 +61,8 @@ export class NewCashCounterComponent implements OnInit {
     }
 
     onClear(val: boolean) {
-      this.cashcounterForm.reset();
-      this.dialogRef.close(val);
+        this.cashcounterForm.reset();
+        this.dialogRef.close(val);
     }
 
     getValidationMessages() {
@@ -86,5 +85,5 @@ export class NewCashCounterComponent implements OnInit {
         };
     }
 
-    
+
 }

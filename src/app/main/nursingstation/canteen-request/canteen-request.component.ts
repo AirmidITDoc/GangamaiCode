@@ -6,11 +6,11 @@ import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 import { CanteenRequestService } from './canteen-request.service';
 import { NewCanteenRequestComponent } from './new-canteen-request/new-canteen-request.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-canteen-request',
@@ -26,8 +26,8 @@ export class CanteenRequestComponent implements OnInit {
     regNo: any = ""
     fname = "%"
     lname = "%"
-    WardId="0"
-      autocompleteModewardName: string = "Room";
+    WardId = "0"
+    autocompleteModewardName: string = "Room";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
@@ -43,10 +43,10 @@ export class CanteenRequestComponent implements OnInit {
 
         { heading: "-", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150  },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-       
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -76,7 +76,7 @@ export class CanteenRequestComponent implements OnInit {
             enddate: [(new Date()).toISOString()],
             fName: "",
             lName: "",
-            wardId:''
+            wardId: ''
         });
     }
 
@@ -91,21 +91,21 @@ export class CanteenRequestComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
             { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals },
-             { fieldName: "WardId", fieldValue: this.WardId, opType: OperatorComparer.Equals }
+            { fieldName: "WardId", fieldValue: this.WardId, opType: OperatorComparer.Equals }
 
-             
+
         ]
     }
 
-        
-  selectChangeward(value) {
-    if (value.value !== 0)
-      this.WardId = value.value
-    else
-      this.WardId = "0"
 
-    this.onChangeFirst();
-  }
+    selectChangeward(value) {
+        if (value.value !== 0)
+            this.WardId = value.value
+        else
+            this.WardId = "0"
+
+        this.onChangeFirst();
+    }
 
     Clearfilter(event) {
         console.log(event)
@@ -146,7 +146,7 @@ export class CanteenRequestComponent implements OnInit {
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
                 { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals },
-                 { fieldName: "WardId", fieldValue: this.WardId, opType: OperatorComparer.Equals }
+                { fieldName: "WardId", fieldValue: this.WardId, opType: OperatorComparer.Equals }
 
             ]
         }
@@ -188,7 +188,7 @@ export class CanteenRequestComponent implements OnInit {
 
     NewRequest(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement;
-        buttonElement.blur(); 
+        buttonElement.blur();
 
         const that = this;
         const dialogRef = this._matDialog.open(NewCanteenRequestComponent,
@@ -225,8 +225,8 @@ export class CanteenRequestComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                const sub={
-                    reqDetId:data.reqId
+                const sub = {
+                    reqDetId: data.reqId
 
                 }
                 this._CanteenRequestService.CanrequestCancle(sub).subscribe((response: any) => {
@@ -237,14 +237,14 @@ export class CanteenRequestComponent implements OnInit {
         });
     }
 
-    
-  getValidationMessages() {
-    return {
-    
-      WardName: [],
-         
+
+    getValidationMessages() {
+        return {
+
+            WardName: [],
+
+        }
     }
-  }
 }
 
 

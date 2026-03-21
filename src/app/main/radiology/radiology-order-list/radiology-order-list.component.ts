@@ -10,25 +10,21 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 // import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
-import { RadioloyOrderlistService } from './radioloy-orderlist.service';
-import { ResultEntryComponent } from './result-entry/result-entry.component';
-import { ReportVerifyDetailsComponent } from 'app/main/pathology/result-entry/report-verify-details/report-verify-details.component';
-import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import Swal from 'sweetalert2';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RadioLabOutsourceComponent } from './radio-lab-outsource/radio-lab-outsource.component';
+import { RadioloyOrderlistService } from './radioloy-orderlist.service';
+import { ResultEntryComponent } from './result-entry/result-entry.component';
 
 
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { Subscription } from 'rxjs';
-import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
     selector: 'app-radiology-order-list',
@@ -140,20 +136,20 @@ export class RadiologyOrderListComponent implements OnInit {
         if (value.value !== 0)
             this.CategoryId = value.value
         else
-            this.CategoryId = "0" 
+            this.CategoryId = "0"
 
         this.onChangeFirst();
-    } 
+    }
     onChangeFirst() {
         debugger
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
         this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
-        this.status = this.myformSearch.get('StatusSearch').value 
-        this.opipType = this.myformSearch.get('PatientTypeSearch').value 
+        this.status = this.myformSearch.get('StatusSearch').value
+        this.opipType = this.myformSearch.get('PatientTypeSearch').value
         //this.regNo = this.myformSearch.get('RegNoSearch').value  || 0
-        this.CategoryId =  this.myformSearch.get('CategoryId').value || '0' 
+        this.CategoryId = this.myformSearch.get('CategoryId').value || '0'
         this.getfilterdata();
     }
 
@@ -309,15 +305,15 @@ export class RadiologyOrderListComponent implements OnInit {
         console.log(obj)
         if ((obj.regNo ?? 0) > 0) {
             this.regNo = obj.regNo || 0
-           // this.regNo = obj.regID
+            // this.regNo = obj.regID
 
             this.onChangeFirst();
         }
     }
-resetFormPatient(){
-      this.regNo = 0
-      this.onChangeFirst();
-}
+    resetFormPatient() {
+        this.regNo = 0
+        this.onChangeFirst();
+    }
     Editoutsoucedata(row) {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur(); // Remove focus from the button

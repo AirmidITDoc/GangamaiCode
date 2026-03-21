@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service'; 
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { parseInt } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -20,13 +20,13 @@ import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabt
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { PaymentModeComponent } from 'app/main/shared/componets/payment-mode/payment-mode.component';
 import { OnlinePaymentService } from 'app/main/shared/services/online-payment.service';
 import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 import { PrescriptionComponent } from './prescription/prescription.component';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-sales',
@@ -2365,44 +2365,44 @@ export class SalesComponent implements OnInit {
 
     }
 
- getPrint3(response) {
-    debugger
-    console.log(response)
-    
-    setTimeout(() => {
-      const param = {
-        "searchFields": [
-          {
-            "fieldName": "SalesID",
-            "fieldValue": String(response.salesId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "OP_IP_Type",
-            "fieldValue": String(this.OP_IPType),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "SalesBill"
-      }
+    getPrint3(response) {
+        debugger
+        console.log(response)
 
-      this._BrowsSalesBillService.getReportView(param).subscribe(res => {
-
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Sales Bill" + " " + "Viewer"
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    {
+                        "fieldName": "SalesID",
+                        "fieldValue": String(response.salesId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OP_IP_Type",
+                        "fieldValue": String(this.OP_IPType),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "SalesBill"
             }
-          });
-        matDialog.afterClosed().subscribe(result => {
-        });
-      });
-    }, 100);
-  }
+
+            this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Sales Bill" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
     // getPrint3(el) {
 
     //     if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
@@ -3209,7 +3209,7 @@ export class SalesComponent implements OnInit {
     }
 
     public onF6Reset(event): void {
-        
+
         if (event.which === 117) {
             this.onClose();
         }

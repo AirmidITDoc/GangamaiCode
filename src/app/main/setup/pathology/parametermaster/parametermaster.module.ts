@@ -74,4 +74,4 @@ const routes: Routes = [
     ],
     providers: [ParametermasterService, DatePipe]
 })
-export class ParametermasterModule {}
+export class ParametermasterModule { }

@@ -20,15 +20,15 @@ export class TalukaMasterService {
 
     createTalukaForm(): FormGroup {
         return this._formBuilder.group({
-            talukaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            talukaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             talukaName: ['',
-               [ Validators.required,
+                [Validators.required,
                 // Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                 this._FormvalidationserviceService.allowEmptyStringValidator()
-               ]
+                this._FormvalidationserviceService.allowEmptyStringValidator()
+                ]
             ],
-            cityId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            isActive:[true,[Validators.required]]
+            cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

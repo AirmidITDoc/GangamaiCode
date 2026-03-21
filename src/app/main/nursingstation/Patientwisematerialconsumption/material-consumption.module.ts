@@ -40,10 +40,10 @@ import { PatientwiseMaterialConsumptionService } from './patientwise-material-co
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: MaterialConsumptionPatientwiseComponent,
-  },
+    {
+        path: "**",
+        component: MaterialConsumptionPatientwiseComponent,
+    },
 ];
 
 @NgModule({
@@ -86,7 +86,7 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         MatTooltipModule,
-        
+
     ],
     providers: [
         DatePipe,

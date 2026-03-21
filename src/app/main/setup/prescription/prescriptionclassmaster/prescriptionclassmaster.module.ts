@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [PrescriptionclassmasterService, DatePipe]
 })
-export class PrescriptionclassmasterModule {}
+export class PrescriptionclassmasterModule { }

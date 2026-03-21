@@ -37,10 +37,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { BatchAndExpDateAdjustmentComponent } from './batch-and-exp-date-adjustment.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: BatchAndExpDateAdjustmentComponent 
-  },
+    {
+        path: '**',
+        component: BatchAndExpDateAdjustmentComponent
+    },
 ];
 
 @NgModule({

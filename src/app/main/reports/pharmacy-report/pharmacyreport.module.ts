@@ -36,11 +36,11 @@ import { PharmacyReportComponent } from './pharmacy-report.component';
 // import { OPIPBillReportsComponent } from '../opipbill-reports/opipbill-reports.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
-const routes : Routes =[
-  {
-    path:"**",
-    component:PharmacyReportComponent,
-  },
+const routes: Routes = [
+    {
+        path: "**",
+        component: PharmacyReportComponent,
+    },
 ];
 
 @NgModule({

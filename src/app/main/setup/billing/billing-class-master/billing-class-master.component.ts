@@ -4,11 +4,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { BillingClassMasterService } from "./billing-class-master.service";
 import { NewClassComponent } from "./new-class/new-class.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-billing-class-master",
@@ -18,39 +18,39 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class BillingClassMasterComponent implements OnInit {
-      IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ClassMaster, permissionType.Add);
-       
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ClassMaster, permissionType.Add);
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
- className: any = "";
-   
-        allcolumns = [
-            { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        // action: gridActions.edit, callback: (data: any) => {
-                        //     this.onSave(data);
-                        // }
-                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ClassMaster, permissionType.Edit), callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._BillingClassMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       
-        allfilters = [
-            { fieldName: "className", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
-         permissionCode: permissionCodes.ClassMaster,
+    className: any = "";
+
+    allcolumns = [
+        { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ClassMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._BillingClassMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "className", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.ClassMaster,
         apiUrl: "ClassMaster/List",
         columnsList: this.allcolumns,
         sortField: "classId",
@@ -62,11 +62,11 @@ export class BillingClassMasterComponent implements OnInit {
     constructor(
         public _BillingClassMasterService: BillingClassMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog,
-                public permissionService: PagePermissionService
+        public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-27/05/2025
+    //filters addedby avdhoot vedpathak date-27/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'ClassNameSearch')
@@ -107,7 +107,7 @@ export class BillingClassMasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         const that = this;
         const dialogRef = this._matDialog.open(NewClassComponent,
             {

@@ -33,15 +33,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search'; 
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SalesInPatientComponent } from './sales-in-patient.component';
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SalesInPatientComponent 
-  },
+    {
+        path: '**',
+        component: SalesInPatientComponent
+    },
 ];
 
 @NgModule({

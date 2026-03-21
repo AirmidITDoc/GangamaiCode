@@ -38,10 +38,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { InPatientIssueComponent } from './in-patient-issue.component';
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: InPatientIssueComponent,
-  },
+    {
+        path: "**",
+        component: InPatientIssueComponent,
+    },
 ];
 
 @NgModule({

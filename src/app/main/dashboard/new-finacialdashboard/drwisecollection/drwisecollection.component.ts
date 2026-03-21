@@ -1,15 +1,14 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel } from 'app/core/models/gridRequest';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { Chart } from 'chart.js';
 import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from '../../dashboard.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-drwisecollection',
@@ -35,10 +34,10 @@ export class DrwisecollectionComponent {
 
     gridConfig!: gridModel;
     unitId = 0
-    
+
     ngOnInit() {
         this.unitId = this.data.unit
-       
+
         this.getdrwiseList();
     }
 
@@ -54,7 +53,7 @@ export class DrwisecollectionComponent {
     }
 
     trendData: Servicecharge[] = [];
-     trendData1: Servicecharge[] = [];
+    trendData1: Servicecharge[] = [];
     trendChart: any;
     Financedata: any
 
@@ -95,7 +94,7 @@ export class DrwisecollectionComponent {
             }
             if (this.trendData1) {
                 debugger
-                 this.modalityData1 = [
+                this.modalityData1 = [
                     ...this.modalityData1,
                     ...this.trendData1.map(item => ({
 
@@ -107,50 +106,50 @@ export class DrwisecollectionComponent {
             }
 
             console.log(this.modalityData)
-            
+
             // if (this.modalityData)
-                  this.modalityChart = this.getModalityBarChart();
-                  this.modalityChart1 = this.getModalityBarChart1();
- });
-        }
+            this.modalityChart = this.getModalityBarChart();
+            this.modalityChart1 = this.getModalityBarChart1();
+        });
+    }
 
     // Tests by Modality Bar Chart
     getModalityBarChart() {
-        
-            return new Chart('modalityChart', {
-                type: 'bar',
-                data: {
-                    labels: this.modalityData.map(d => d.modality),
-                    datasets: [
-                        {
-                            label: 'Dr.Name',
-                            data: this.modalityData.map(d => d.opcount),
-                            backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
-                            borderRadius: 6
-                        }
-                    ]
+
+        return new Chart('modalityChart', {
+            type: 'bar',
+            data: {
+                labels: this.modalityData.map(d => d.modality),
+                datasets: [
+                    {
+                        label: 'Dr.Name',
+                        data: this.modalityData.map(d => d.opcount),
+                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
                 },
-                options: {
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: { size: 11 }
+                        }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                font: { size: 11 }
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                font: { size: 11 }
-                            }
+                    x: {
+                        ticks: {
+                            font: { size: 11 }
                         }
                     }
                 }
-            });
-        }
+            }
+        });
+    }
 
     getModalityBarChart1() {
         return new Chart('modalityChart1', {
@@ -198,7 +197,7 @@ export class Servicecharge {
     constructor(test: any) {
         this.totalBusiness = test.totalBusiness || 0;
         this.doctorName = test.doctorName || '';
-         this.opCollection = test.opCollection || 0;
+        this.opCollection = test.opCollection || 0;
         this.patientCount = test.patientCount || 0;
 
     }

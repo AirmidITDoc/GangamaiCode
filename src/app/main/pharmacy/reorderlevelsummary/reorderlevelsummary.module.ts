@@ -38,10 +38,10 @@ import { IndentrequestComponent } from './indentrequest/indentrequest.component'
 import { ReorderlevelsummaryComponent } from './reorderlevelsummary.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component:  ReorderlevelsummaryComponent
-  },
+    {
+        path: '**',
+        component: ReorderlevelsummaryComponent
+    },
 ];
 
 @NgModule({

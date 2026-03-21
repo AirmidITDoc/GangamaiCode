@@ -1,10 +1,10 @@
-import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OverlayModule } from "@angular/cdk/overlay";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 import { DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatBadgeModule } from '@angular/material/badge';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatCheckboxModule } from "@angular/material/checkbox";
@@ -41,25 +41,25 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 // import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
 //import { WebcamModule } from "ngx-webcam";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatChipsModule } from "@angular/material/chips";
 import { MatSidenavModule } from "@angular/material/sidenav";
+import { SharedModule } from "app/main/shared/shared.module";
+import { WebcamModule } from "ngx-webcam";
+import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
 import { CrossConsultationComponent } from './cross-consultation/cross-consultation.component';
+import { DoctorDetailsPopoverComponent } from './doctor-details-popover/doctor-details-popover.component';
+import { EditAppointmentComponent } from './edit-appointment/edit-appointment.component';
 import { EditConsultantDoctorComponent } from './edit-consultant-doctor/edit-consultant-doctor.component';
 import { EditRefranceDoctorComponent } from './edit-refrance-doctor/edit-refrance-doctor.component';
+import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
 import { ImageViewComponent } from './image-view/image-view.component';
 import { PatientvitalInformationComponent } from './new-appointment/patientvital-information/patientvital-information.component';
+import { NewAppointmentwihBillComponent } from './new-appointmentwih-bill/new-appointmentwih-bill.component';
+import { NewAppointmentwithBillComponent } from "./new-appointmentwith-bill/new-appointmentwith-bill.component";
+import { PatientDetailsPopoverComponent } from './patient-details-popover/patient-details-popover.component';
+import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { PreviousDeptListComponent } from './update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { UpdateRegPatientInfoComponent } from './update-reg-patient-info/update-reg-patient-info.component';
-import { WebcamModule } from "ngx-webcam";
-import { MatChipsModule } from "@angular/material/chips";
-import { SharedModule } from "app/main/shared/shared.module";
-import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
-import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
-import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
-import { PatientDetailsPopoverComponent } from './patient-details-popover/patient-details-popover.component';
-import { DoctorDetailsPopoverComponent } from './doctor-details-popover/doctor-details-popover.component';
-import { NewAppointmentwithBillComponent } from "./new-appointmentwith-bill/new-appointmentwith-bill.component";
-import { EditAppointmentComponent } from './edit-appointment/edit-appointment.component';
-import { NewAppointmentwihBillComponent } from './new-appointmentwih-bill/new-appointmentwih-bill.component';
 
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 
@@ -81,13 +81,13 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        AppointmentListComponent, 
-        NewAppointmentComponent, 
-        EditConsultantDoctorComponent, 
-        EditRefranceDoctorComponent, 
-        CrossConsultationComponent, 
-        ImageViewComponent, 
-        PatientvitalInformationComponent, 
+        AppointmentListComponent,
+        NewAppointmentComponent,
+        EditConsultantDoctorComponent,
+        EditRefranceDoctorComponent,
+        CrossConsultationComponent,
+        ImageViewComponent,
+        PatientvitalInformationComponent,
         UpdateRegPatientInfoComponent,
         PreviousDeptListComponent,
         FollowpdateUpdateComponent,
@@ -98,7 +98,7 @@ const routes: Routes = [
         NewAppointmentwithBillComponent,
         EditAppointmentComponent,
         NewAppointmentwihBillComponent,
-        
+
     ],
     imports: [
         RouterModule.forChild(routes),

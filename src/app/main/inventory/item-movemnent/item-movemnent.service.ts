@@ -5,60 +5,60 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ItemMovemnentService {
 
-  userFormGroup: FormGroup;
-  ItemSearchGroup :FormGroup;
+    userFormGroup: FormGroup;
+    ItemSearchGroup: FormGroup;
 
-  constructor(
-    public _httpClient: HttpClient, public _httpClient1: ApiCaller,
-    private _formBuilder: UntypedFormBuilder,
-    private accountService: AuthenticationService
-  ) { 
-    // this.userFormGroup = this.createUserForm();
-    this.ItemSearchGroup= this.createSearchFrom();
-  }
+    constructor(
+        public _httpClient: HttpClient, public _httpClient1: ApiCaller,
+        private _formBuilder: UntypedFormBuilder,
+        private accountService: AuthenticationService
+    ) {
+        // this.userFormGroup = this.createUserForm();
+        this.ItemSearchGroup = this.createSearchFrom();
+    }
 
-  createSearchFrom() {
-    return this._formBuilder.group({
-      FromStoreId: this.accountService.currentUserValue.user.storeId,
-      ToStoreId:'',
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-      ItemID:'',
-      BatchNo:''
-    });
-  }
- 
-  public getItemMovementList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rptItemMovementReport",Param);
-  }
+    createSearchFrom() {
+        return this._formBuilder.group({
+            FromStoreId: this.accountService.currentUserValue.user.storeId,
+            ToStoreId: '',
+            start: [(new Date()).toISOString()],
+            end: [(new Date()).toISOString()],
+            ItemID: '',
+            BatchNo: ''
+        });
+    }
 
-  public getItemFormList(param){//RetrieveItemMasterForCombo
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
-  }
-  
-  public getBatchNoList(param){ 
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BatchNo",param);
-  }
+    public getItemMovementList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_rptItemMovementReport", Param);
+    }
 
-  public getToStoreFromList(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo",{});
-  }
+    public getItemFormList(param) {//RetrieveItemMasterForCombo
+        return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName", param);
+    }
 
-  public getLoggedStoreList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
-  }
-  
-  public getItemmovementview(Fromdate, Todate,ItemId, FromStoreId, ToStoreId){
-    return this._httpClient.get("InventoryTransaction/view-InvItemmovement?Fromdate=" + Fromdate+"&ToDate="+Todate+"&ItemId="+ItemId+"&FromStoreId="+FromStoreId+"&ToStoreId="+ToStoreId);
-  }
+    public getBatchNoList(param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BatchNo", param);
+    }
 
-  // NewApi
-  public deactivateTheStatus(m_data) {
-    return this._httpClient1.PostData("BedMaster", m_data);
-  }
+    public getToStoreFromList() {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo", {});
+    }
+
+    public getLoggedStoreList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
+    }
+
+    public getItemmovementview(Fromdate, Todate, ItemId, FromStoreId, ToStoreId) {
+        return this._httpClient.get("InventoryTransaction/view-InvItemmovement?Fromdate=" + Fromdate + "&ToDate=" + Todate + "&ItemId=" + ItemId + "&FromStoreId=" + FromStoreId + "&ToStoreId=" + ToStoreId);
+    }
+
+    // NewApi
+    public deactivateTheStatus(m_data) {
+        return this._httpClient1.PostData("BedMaster", m_data);
+    }
 
 }

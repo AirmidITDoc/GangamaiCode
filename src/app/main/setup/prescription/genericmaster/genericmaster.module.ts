@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [GenericmasterService, DatePipe]
 })
-export class GenericmasterModule {}
+export class GenericmasterModule { }

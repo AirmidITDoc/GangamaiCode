@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { Observable } from 'rxjs';
@@ -552,15 +552,14 @@ export class OPSearhlistService {
 
     // new API
     public getReportView(Param) {
-         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+        return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
 
 
     getNewMenuMasterList(emp) {
-        return this._httpClient1.PostData("MenuMaster/MenuMasterList",emp)
-      }
-            public AdvancePharamcylist(employee)
-  {
-    return this._httpClient1.PostData("Sales/PharAdvanceList",employee)
-  }
+        return this._httpClient1.PostData("MenuMaster/MenuMasterList", emp)
+    }
+    public AdvancePharamcylist(employee) {
+        return this._httpClient1.PostData("Sales/PharAdvanceList", employee)
+    }
 }

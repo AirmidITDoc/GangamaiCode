@@ -36,11 +36,11 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { IpReportComponent } from './ip-report.component';
 
-const routes : Routes =[
-  {
-    path:"**",
-    component:IpReportComponent,
-  },
+const routes: Routes = [
+    {
+        path: "**",
+        component: IpReportComponent,
+    },
 ];
 
 @NgModule({

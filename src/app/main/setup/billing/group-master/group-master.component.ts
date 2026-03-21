@@ -4,11 +4,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { GroupMasterService } from "./group-master.service";
 import { NewGroupComponent } from "./new-group/new-group.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -19,41 +19,41 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class GroupMasterComponent implements OnInit {
-  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.GroupMaster, permissionType.Add);
-      
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.GroupMaster, permissionType.Add);
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-groupName: any = "";
-  
-        allcolumns =[
-            { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsConsolidatedDR", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        // action: gridActions.edit, callback: (data: any) => {
-                        //     this.onSave(data);
-                        // }
-                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.GroupMaster, permissionType.Edit), callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._GroupMasterService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       
-        allfilters =  [
-            { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-    
- gridConfig: gridModel = {
-      permissionCode: permissionCodes.GroupMaster,
+    groupName: any = "";
+
+    allcolumns = [
+        { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsConsolidatedDR", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.GroupMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._GroupMasterService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.GroupMaster,
         apiUrl: "GroupMaster/List",
         columnsList: this.allcolumns,
         sortField: "groupId",
@@ -66,7 +66,7 @@ groupName: any = "";
     ngOnInit(): void {
 
     }
-     //filters addedby avdhoot vedpathak date-27/05/2025
+    //filters addedby avdhoot vedpathak date-27/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'GroupNameSearch')
@@ -108,11 +108,11 @@ groupName: any = "";
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         const that = this;
         const dialogRef = this._matDialog.open(NewGroupComponent,
             {
-                
+
                 maxWidth: "50vw",
                 maxHeight: '50%',
                 width: '70%',

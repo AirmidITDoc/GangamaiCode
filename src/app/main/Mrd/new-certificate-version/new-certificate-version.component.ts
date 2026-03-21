@@ -1,234 +1,234 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
-import { NewCertificateVersionService } from './new-certificate-version.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
+import { NewCertificateVersionService } from './new-certificate-version.service';
 
 @Component({
-  selector: 'app-new-certificate-version',
-  templateUrl: './new-certificate-version.component.html',
-  styleUrls: ['./new-certificate-version.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-new-certificate-version',
+    templateUrl: './new-certificate-version.component.html',
+    styleUrls: ['./new-certificate-version.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewCertificateVersionComponent {
-  msg: any;
-  consentName: any = "";
-  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  regNo: any = "0"
-  LastName: any = ""
-  myFilterform: FormGroup
+    msg: any;
+    consentName: any = "";
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    regNo: any = "0"
+    LastName: any = ""
+    myFilterform: FormGroup
 
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-  ngAfterViewInit() {
-    // Assign the template to the column dynamically
-    this.gridConfig.columnsList.find(col => col.key === 'opipType')!.template = this.actionsTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-  }
-
-  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-
-  allcolumns = [
-    { heading: "-", key: "opipType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-    { heading: "Date", key: "consentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
-    { heading: "UHID", key: "regNo", align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name", key: "patientName", align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Department Name", key: "departmentName", align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Doctor Name", key: "doctorName", align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "DOA", key: "admissionDate", align: 'left', emptySign: 'NA', type: 6 },
-    { heading: "AgeYear", key: "ageYear", align: 'left', emptySign: 'NA', },
-    { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    {
-      heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'opipType')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
-  ]
 
-  allfilters = [
-    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "TranLabel", fieldValue: 'MRD', opType: OperatorComparer.Equals }
-  ]
-  gridConfig: gridModel = {
-    apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
-    columnsList: this.allcolumns,
-    sortField: "ConsentId",
-    sortOrder: 0,
-    filters: this.allfilters
-  }
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
-  constructor(
-    public _certificateService: NewCertificateVersionService,
-    public toastr: ToastrService, public _matDialog: MatDialog,
-    public datePipe: DatePipe,
-    private _formBuilder: UntypedFormBuilder,
-  ) { }
+    allcolumns = [
+        { heading: "-", key: "opipType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "Date", key: "consentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
+        { heading: "UHID", key: "regNo", align: 'left', emptySign: 'NA' },
+        { heading: "Patient Name", key: "patientName", align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Department Name", key: "departmentName", align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Doctor Name", key: "doctorName", align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "DOA", key: "admissionDate", align: 'left', emptySign: 'NA', type: 6 },
+        { heading: "AgeYear", key: "ageYear", align: 'left', emptySign: 'NA', },
+        { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        {
+            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
+    ]
 
-
-  ngOnInit(): void {
-    this.myFilterform = this.createSearchForm();
-  }
-
-  createSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-      consentName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]]
-    });
-  }
-
-  onChangeFirst() {
-    this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
-    this.getfilterdata();
-  }
-  getfilterdata() {
-    this.gridConfig = {
-      apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
-      columnsList: this.allcolumns,
-      sortField: "ConsentId",
-      sortOrder: 0,
-      filters: [
+    allfilters = [
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "TranLabel", fieldValue: 'MRD', opType: OperatorComparer.Equals }
-      ],
-      row: 25
+    ]
+    gridConfig: gridModel = {
+        apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
+        columnsList: this.allcolumns,
+        sortField: "ConsentId",
+        sortOrder: 0,
+        filters: this.allfilters
     }
-    console.log(this.gridConfig)
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-  }
 
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'consentName')
-      this.myFilterform.get('consentName').setValue("")
+    constructor(
+        public _certificateService: NewCertificateVersionService,
+        public toastr: ToastrService, public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+        private _formBuilder: UntypedFormBuilder,
+    ) { }
 
-    this.onChangeFirst();
-  }
 
-  onFiles() {
-    const dialogRef = this._matDialog.open(
-      AirmidConsentformComponent,
-      {
-        maxWidth: "90vw",
-        maxHeight: '85%',
-        width: '70%',
-        data: { refId: 0, opipId: 0, opipType: 0, Id: 0, title: 'Certificate', labelType: 'MRD' }
-      }
-    );
+    ngOnInit(): void {
+        this.myFilterform = this.createSearchForm();
+    }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.grid.bindGridData();
-    });
-  }
-
-  getPrint(element) {
-    Swal.fire({
-      title: 'Select Report Format',
-      text: "Choose how you want to view the report:",
-      icon: "warning",
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      denyButtonColor: "#6c757d",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "With Header",
-      denyButtonText: "Without Header",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.OnViewReporWithHeader(element);
-      } else if (result.isDenied) {
-        this.OnViewReporWithOutHeader(element);
-      }
-    });
-  }
-
-  OnViewReporWithHeader(element: any) {
-
-    setTimeout(() => {
-      const param = {
-        "searchFields": [
-          {
-            "fieldName": "ConsentId",
-            "fieldValue": String(element.consentId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "OPIPType",
-            "fieldValue": String(element?.opipType),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "ConsentInformation"
-      }
-
-      this._certificateService.getReportView(param).subscribe(res => {
-
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Consent Report" + " " + "Viewer"
-            }
-          });
-        matDialog.afterClosed().subscribe(result => {
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            start: [(new Date()).toISOString()],
+            end: [(new Date()).toISOString()],
+            consentName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]]
         });
-      });
-    }, 100);
-  }
+    }
 
-  OnViewReporWithOutHeader(element: any) {
+    onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
+        this.getfilterdata();
+    }
+    getfilterdata() {
+        this.gridConfig = {
+            apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
+            columnsList: this.allcolumns,
+            sortField: "ConsentId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "TranLabel", fieldValue: 'MRD', opType: OperatorComparer.Equals }
+            ],
+            row: 25
+        }
+        console.log(this.gridConfig)
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
 
-    setTimeout(() => {
-      const param = {
-        "searchFields": [
-          {
-            "fieldName": "ConsentId",
-            "fieldValue": String(element.consentId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "OPIPType",
-            "fieldValue": String(element?.opipType),
-            "opType": "Equals"
-          }
-        ],
-        "mode": "ConsentInformationWithoutHeader"
-      }
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'consentName')
+            this.myFilterform.get('consentName').setValue("")
 
-      this._certificateService.getReportView(param).subscribe(res => {
+        this.onChangeFirst();
+    }
 
-        const matDialog = this._matDialog.open(PdfviewerComponent,
-          {
-            maxWidth: "85vw",
-            height: '750px',
-            width: '100%',
-            data: {
-              base64: res["base64"] as string,
-              title: "Consent Report" + " " + "Viewer"
+    onFiles() {
+        const dialogRef = this._matDialog.open(
+            AirmidConsentformComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '85%',
+                width: '70%',
+                data: { refId: 0, opipId: 0, opipType: 0, Id: 0, title: 'Certificate', labelType: 'MRD' }
             }
-          });
-        matDialog.afterClosed().subscribe(result => {
+        );
+
+        dialogRef.afterClosed().subscribe((result) => {
+            this.grid.bindGridData();
         });
-      });
-    }, 100);
-  }
+    }
+
+    getPrint(element) {
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.OnViewReporWithHeader(element);
+            } else if (result.isDenied) {
+                this.OnViewReporWithOutHeader(element);
+            }
+        });
+    }
+
+    OnViewReporWithHeader(element: any) {
+
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    {
+                        "fieldName": "ConsentId",
+                        "fieldValue": String(element.consentId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OPIPType",
+                        "fieldValue": String(element?.opipType),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "ConsentInformation"
+            }
+
+            this._certificateService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Consent Report" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
+
+    OnViewReporWithOutHeader(element: any) {
+
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    {
+                        "fieldName": "ConsentId",
+                        "fieldValue": String(element.consentId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OPIPType",
+                        "fieldValue": String(element?.opipType),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "ConsentInformationWithoutHeader"
+            }
+
+            this._certificateService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Consent Report" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
 }

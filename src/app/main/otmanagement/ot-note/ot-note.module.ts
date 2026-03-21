@@ -25,7 +25,6 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 
 import { CommonModule, DatePipe } from "@angular/common";
 
-import { ScrollingModule } from "@angular/cdk/scrolling";
 
 import { MatCardModule } from "@angular/material/card";
 
@@ -48,8 +47,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 //import { WebcamModule } from "ngx-webcam";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { OTNoteComponent } from "./ot-note.component";
 import { NewOtnotesComponent } from './new-otnotes/new-otnotes.component';
+import { OTNoteComponent } from "./ot-note.component";
 
 
 
@@ -89,17 +88,17 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatCardModule,
-MatDialogModule,
-MatDividerModule,
-MatExpansionModule,
-MatListModule,
-MatSlideToggleModule, 
-MatSnackBarModule,
-MatStepperModule,
-MatTabsModule,
-MatTooltipModule,
-MatButtonToggleModule,
-MatSidenavModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+        MatSidenavModule,
     ],
     providers: [DatePipe]
 })

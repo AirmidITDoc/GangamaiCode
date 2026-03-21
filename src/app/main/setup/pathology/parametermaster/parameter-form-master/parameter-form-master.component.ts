@@ -1,20 +1,18 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { Router } from "@angular/router";
-import { UntypedFormBuilder, FormGroup, FormBuilder, FormArray } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ParametermasterService } from "../parametermaster.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { Observable } from "rxjs";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
-import { map, startWith } from "rxjs/operators";
-import Swal from "sweetalert2";
-import { ToastrService } from "ngx-toastr";
-import { ParametermasterComponent, PathparameterMaster } from "../parametermaster.component";
+import { MatTableDataSource } from "@angular/material/table";
+import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
+import { ToastrService } from "ngx-toastr";
+import { Observable } from "rxjs";
+import Swal from "sweetalert2";
+import { ParametermasterComponent, PathparameterMaster } from "../parametermaster.component";
+import { ParametermasterService } from "../parametermaster.service";
 
 @Component({
     selector: "app-parameter-form-master",
@@ -81,7 +79,7 @@ export class ParameterFormMasterComponent implements OnInit {
     defaultValue: any;
     vParameterId: any;
     parameterValue: any;
-vparaMultipleRange:any;
+    vparaMultipleRange: any;
     ChargeList: any = [];
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
@@ -134,14 +132,14 @@ vparaMultipleRange:any;
             this.dsParameterAgeList.data = this._ParameterService.numericList;
             this.selectedItems = this._ParameterService.descriptiveList;
         }
- debugger
+        debugger
         this.dsParameterAgeList.data = this.tableData;  // Assign received data
         this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
 
         this.selectedItems = [...this.tableData];
         this.selectedItems = [...this.selectedItems];
         console.log()
-       
+
         const mdata = {
             parameterId: this.rowData?.parameterId,
             parameterShortName: this.rowData?.parameterShortName,
@@ -153,9 +151,9 @@ vparaMultipleRange:any;
             isNumeric: this.rowData?.isNumericParameter,
             isActive: JSON.stringify(this.rowData?.isActive),
         };
-        this.parameterForm.patchValue(mdata); 
+        this.parameterForm.patchValue(mdata);
         const defaultvalue = this.data?.tableData.find(item => item.defaultValue)?.defaultValue || '';
-        this.descForm.patchValue({defaultValue:defaultvalue || ''})
+        this.descForm.patchValue({ defaultValue: defaultvalue || '' })
 
     }
 
@@ -239,11 +237,11 @@ vparaMultipleRange:any;
 
                 console.log('selected:', this.selectedItems)
                 this.DescArray.clear();
-                this.selectedItems.forEach(item => { 
-                const formObj = this.createdescDetails(item);  
-                formObj.patchValue({ defaultValue: this.descForm.get("defaultValue")?.value || ''});  
-                this.DescArray.push(formObj);
-                }); 
+                this.selectedItems.forEach(item => {
+                    const formObj = this.createdescDetails(item);
+                    formObj.patchValue({ defaultValue: this.descForm.get("defaultValue")?.value || '' });
+                    this.DescArray.push(formObj);
+                });
             }
             else {
 
@@ -476,8 +474,8 @@ vparaMultipleRange:any;
             ],
             paraId: [],
             defaultValue: [],
-            paraMultipleRange:[]
-            
+            paraMultipleRange: []
+
         };
     }
 
@@ -563,16 +561,16 @@ vparaMultipleRange:any;
     //         this.onAdd(event);
     //     }
     // }
- // it allowed only Digit & decimal
-       keyPressDigitDecimalOnly(event) {
-           const inp = String.fromCharCode(event.keyCode);
-           if (/^\d*\.?\d*$/.test(inp)) {
-               return true;
-           } else {
-               event.preventDefault();
-               return false;
-           }
-       }
+    // it allowed only Digit & decimal
+    keyPressDigitDecimalOnly(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
     selectedGenderName: any;
     selectChangeGender(obj: any) {
         console.log(obj);
@@ -697,7 +695,7 @@ export class PathParaRangeAgeMaster {
     MinAge: any;
     MaxAge: any;
     IsDeleted: any;
-    paraMultipleRange:any;
+    paraMultipleRange: any;
     /**
      * Constructor
      *
@@ -714,7 +712,7 @@ export class PathParaRangeAgeMaster {
             this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
             this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
             this.IsDeleted = PathParaRangeAgeMaster.IsDeleted || 1;
-             this.paraMultipleRange = PathParaRangeAgeMaster.paraMultipleRange || '';
+            this.paraMultipleRange = PathParaRangeAgeMaster.paraMultipleRange || '';
         }
     }
 }

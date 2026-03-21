@@ -25,27 +25,27 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTableModule } from "@angular/material/table";
+import { MatTabsModule } from "@angular/material/tabs";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
+import { MatTimepickerModule } from "mat-timepicker";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { DoctorChargesComponent } from './doctor-charges/doctor-charges.component';
+import { DoctorEducationComponent } from './doctor-education/doctor-education.component';
+import { DoctorExecutiveComponent } from './doctor-executive/doctor-executive.component';
+import { DoctorExperienceComponent } from './doctor-experience/doctor-experience.component';
+import { DoctorLeaveComponent } from "./doctor-leave/doctor-leave.component";
 import { DoctorMasterComponent } from "./doctor-master.component";
 import { DoctorMasterService } from "./doctor-master.service";
+import { DoctorSchduleComponent } from './doctor-schdule/doctor-schdule.component';
+import { DoctorschdulerComponent } from './doctorschduler/doctorschduler.component';
+import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
 import { NewDoctorComponent } from "./new-doctor/new-doctor.component";
 import { SignatureViewComponent } from "./signature-view/signature-view.component";
-import { ExcelPreviewDialogComponent } from "./excel-preview-dialog/excel-preview-dialog.component";
-import { DoctorschdulerComponent } from './doctorschduler/doctorschduler.component';
-import { MatTabsModule } from "@angular/material/tabs";
-import { DoctorEducationComponent } from './doctor-education/doctor-education.component';
-import { DoctorExperienceComponent } from './doctor-experience/doctor-experience.component';
-import { DoctorChargesComponent } from './doctor-charges/doctor-charges.component';
-import { DoctorSchduleComponent } from './doctor-schdule/doctor-schdule.component';
-import { MatTimepickerModule } from "mat-timepicker";
-import { DoctorLeaveComponent } from "./doctor-leave/doctor-leave.component";
-import { DoctorExecutiveComponent } from './doctor-executive/doctor-executive.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
     {

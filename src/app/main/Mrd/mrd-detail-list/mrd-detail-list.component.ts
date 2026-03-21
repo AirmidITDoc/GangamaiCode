@@ -1,26 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { ReplaySubject, Subject } from 'rxjs';
-import { MrdService } from '../mrd.service';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ToastrService } from 'ngx-toastr';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
-import { NewMrdComponent } from './new-mrd/new-mrd.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
 import { MrdDetailsService } from './mrd-details.service';
 import { NewINMrdComponent } from './new-in-mrd/new-in-mrd.component';
+import { NewMrdComponent } from './new-mrd/new-mrd.component';
 import { NewOutMrdComponent } from './new-out-mrd/new-out-mrd.component';
 
 @Component({
@@ -168,7 +159,7 @@ export class MrdDetailListComponent {
         const that = this;
         const dialogRef = this._matDialog.open(NewOutMrdComponent,
             {
-               maxWidth: "55vw",
+                maxWidth: "55vw",
                 height: '55%',
                 width: '90%',
                 data: row

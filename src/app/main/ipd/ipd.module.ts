@@ -38,63 +38,63 @@ import { MatCardModule } from '@angular/material/card';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/shared.module';
-import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component'; 
+import { IPDSearcPatienthComponent } from './ipdsearc-patienth/ipdsearc-patienth.component';
 
 
 // import { IPPatientsearchComponent } from 'app/main/SearchDlg/ippatientsearch/ippatientsearch.component';
 
 
 @NgModule({
-  declarations: [IPDSearcPatienthComponent,],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatChipsModule,
-    MatProgressSpinnerModule,
-    // WebcamModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatListModule,
-    SharedModule,
-    // MatStepperModule,
-    // MatSpinner,
-    // NgxMatSelectSearchModule,
-    MatDatepickerModule,
-    //  NgMultiSelectDropDownModule.forRoot(),
-     MatTooltipModule,
-     
-],
-providers: [
-  IPSearchListService,
-    DatePipe
-    // NotificationService
-]
+    declarations: [IPDSearcPatienthComponent,],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
+        // WebcamModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        MatGridListModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        // MatStepperModule,
+        // MatSpinner,
+        // NgxMatSelectSearchModule,
+        MatDatepickerModule,
+        //  NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule,
+
+    ],
+    providers: [
+        IPSearchListService,
+        DatePipe
+        // NotificationService
+    ]
 })
 export class IpdModule { }

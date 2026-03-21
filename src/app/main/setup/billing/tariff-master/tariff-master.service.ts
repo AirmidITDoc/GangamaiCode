@@ -13,7 +13,7 @@ export class TariffMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createTariffForm();
         this.myformSearch = this.createSearchForm();
@@ -21,15 +21,15 @@ export class TariffMasterService {
 
     createTariffForm(): FormGroup {
         return this._formBuilder.group({
-            tariffId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            tariffName: ["", 
+            tariffId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
@@ -43,7 +43,7 @@ export class TariffMasterService {
     initializeFormGroup() {
         this.createTariffForm();
     }
-    
+
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("TarrifMaster?Id=" + m_data.toString());
     }

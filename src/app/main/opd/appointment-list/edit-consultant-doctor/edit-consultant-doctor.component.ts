@@ -10,101 +10,101 @@ import { VisitMaster1 } from '../appointment-list.component';
 import { AppointmentlistService } from '../appointmentlist.service';
 
 @Component({
-  selector: 'app-edit-consultant-doctor',
-  templateUrl: './edit-consultant-doctor.component.html',
-  styleUrls: ['./edit-consultant-doctor.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-edit-consultant-doctor',
+    templateUrl: './edit-consultant-doctor.component.html',
+    styleUrls: ['./edit-consultant-doctor.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class EditConsultantDoctorComponent implements OnInit {
-  ConsdrForm: FormGroup;
-  VisitId: any = 0;
-  RegId: any = 0;
-  Departmentid = 0;
-  DoctorID = 0;
-  regobj = new VisitMaster1({})
-  autocompletedepartment: string = "Department";
-  autocompleteModedeptdoc: string = "ConDoctor";
+    ConsdrForm: FormGroup;
+    VisitId: any = 0;
+    RegId: any = 0;
+    Departmentid = 0;
+    DoctorID = 0;
+    regobj = new VisitMaster1({})
+    autocompletedepartment: string = "Department";
+    autocompleteModedeptdoc: string = "ConDoctor";
 
-  @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
+    @ViewChild('ddldoctor') ddldoctor: AirmidDropDownComponent;
 
-  constructor(
-    public _AppointmentlistService: AppointmentlistService,
-    public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
-    private _formBuilder: UntypedFormBuilder,
-    private _FormvalidationserviceService: FormvalidationserviceService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public datePipe: DatePipe,
-    public toastr: ToastrService
-  ) { }
+    constructor(
+        public _AppointmentlistService: AppointmentlistService,
+        public dialogRef: MatDialogRef<EditConsultantDoctorComponent>,
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public datePipe: DatePipe,
+        public toastr: ToastrService
+    ) { }
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this._AppointmentlistService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
-        this.ddldoctor.options = data;
-        this.ddldoctor.bindGridAutoComplete();
-      });
-    }, 500);
-    this.ConsdrForm = this.createConsultatDrForm();
-    this.ConsdrForm.markAllAsTouched();
-    this.ConsdrForm.get("consultantDocId")?.setValue(this.data?.doctorId)
-  }
-
-  createConsultatDrForm() {
-    return this._formBuilder.group({
-      visitId: [this.data?.visitId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      regId: [this.data?.regId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      consultantDocId: [this.data?.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      departmentId: [this.data?.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    });
-  }
-
-  onSubmit() {
-    if (!this.ConsdrForm.invalid) {
-      console.log(this.ConsdrForm.value)
-      this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
-        this.onClear(true);
-      });
-    } else {
-      const invalidFields = [];
-      if (this.ConsdrForm.invalid) {
-        for (const controlName in this.ConsdrForm.controls) {
-          if (this.ConsdrForm.controls[controlName].invalid) { invalidFields.push(`Edit Doctor Form: ${controlName}`); }
-        }
-      }
-
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-      }
-
+    ngOnInit(): void {
+        setTimeout(() => {
+            this._AppointmentlistService.getDoctorsByDepartment(this.data.departmentId).subscribe((data: any) => {
+                this.ddldoctor.options = data;
+                this.ddldoctor.bindGridAutoComplete();
+            });
+        }, 500);
+        this.ConsdrForm = this.createConsultatDrForm();
+        this.ConsdrForm.markAllAsTouched();
+        this.ConsdrForm.get("consultantDocId")?.setValue(this.data?.doctorId)
     }
-  }
-  getValidationMessages() {
-    return {
-      departmentId: [
-        { name: "required", Message: "Department Name is required" }
-      ],
-      consultantDocId: [
-        { name: "required", Message: "Doctor Name is required" }
-      ]
-    };
-  }
 
-  selectChangedepartment(obj: any) {
-    this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-      this.ddldoctor.options = data;
-      this.ddldoctor.bindGridAutoComplete();
-    });
-  }
+    createConsultatDrForm() {
+        return this._formBuilder.group({
+            visitId: [this.data?.visitId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            regId: [this.data?.regId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            consultantDocId: [this.data?.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            departmentId: [this.data?.departmentId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        });
+    }
 
-  onClear(val: boolean) {
-    this.ConsdrForm.reset();
-    this.dialogRef.close(val);
-  }
+    onSubmit() {
+        if (!this.ConsdrForm.invalid) {
+            console.log(this.ConsdrForm.value)
+            this._AppointmentlistService.EditConDoctor(this.ConsdrForm.value).subscribe((response) => {
+                this.onClear(true);
+            });
+        } else {
+            const invalidFields = [];
+            if (this.ConsdrForm.invalid) {
+                for (const controlName in this.ConsdrForm.controls) {
+                    if (this.ConsdrForm.controls[controlName].invalid) { invalidFields.push(`Edit Doctor Form: ${controlName}`); }
+                }
+            }
 
-  onClose() {
-    this.dialogRef.close();
-  }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
+
+        }
+    }
+    getValidationMessages() {
+        return {
+            departmentId: [
+                { name: "required", Message: "Department Name is required" }
+            ],
+            consultantDocId: [
+                { name: "required", Message: "Doctor Name is required" }
+            ]
+        };
+    }
+
+    selectChangedepartment(obj: any) {
+        this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+            this.ddldoctor.options = data;
+            this.ddldoctor.bindGridAutoComplete();
+        });
+    }
+
+    onClear(val: boolean) {
+        this.ConsdrForm.reset();
+        this.dialogRef.close(val);
+    }
+
+    onClose() {
+        this.dialogRef.close();
+    }
 
 
 

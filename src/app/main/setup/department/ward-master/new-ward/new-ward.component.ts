@@ -14,16 +14,16 @@ import { WardMasterService } from '../ward-master.service';
 })
 export class NewWardComponent implements OnInit {
     roomForm: FormGroup;
-    isActive:boolean=true;
-    isAvailible:boolean=true;
+    isActive: boolean = true;
+    isAvailible: boolean = true;
     autocompleteModelocation: string = "Location";
     autocompleteModeclass: string = "Class";
-    autocompleteModeroomId: string = "Room"; 
-    locationId =0;
+    autocompleteModeroomId: string = "Room";
+    locationId = 0;
     classId = 0;
     roomType = 0;
 
-    constructor( public _WardMasterService: WardMasterService,
+    constructor(public _WardMasterService: WardMasterService,
         public dialogRef: MatDialogRef<NewWardComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService) { }
@@ -31,16 +31,15 @@ export class NewWardComponent implements OnInit {
     ngOnInit(): void {
         this.roomForm = this._WardMasterService.createWardForm();
         this.roomForm.markAllAsTouched();
-        if((this.data?.roomId??0) > 0)
-        {
-            this.isActive=this.data.isActive;
-            this.isAvailible=this.data.isAvailible;
+        if ((this.data?.roomId ?? 0) > 0) {
+            this.isActive = this.data.isActive;
+            this.isAvailible = this.data.isAvailible;
             this.roomForm.patchValue(this.data);
         }
     }
 
     onSubmit() {
-       if (!this.roomForm.invalid) {
+        if (!this.roomForm.invalid) {
             console.log(this.roomForm.value)
             this._WardMasterService.roomMasterSave(this.roomForm.value).subscribe((response) => {
                 this.onClear(true);
@@ -63,32 +62,27 @@ export class NewWardComponent implements OnInit {
 
         }
     }
-    selectChangelocation(obj: any)
-    {
+    selectChangelocation(obj: any) {
         console.log(obj);
-        this.locationId=obj.value
+        this.locationId = obj.value
     }
 
-    selectChangeclass(obj: any)
-    {
+    selectChangeclass(obj: any) {
         console.log(obj);
-        this.classId=obj.value
+        this.classId = obj.value
     }
 
-    selectChangeroomType(obj: any)
-    {
+    selectChangeroomType(obj: any) {
         console.log(obj);
-        this.roomType=obj.value
+        this.roomType = obj.value
     }
 
-    onClear(val: boolean) 
-    {
+    onClear(val: boolean) {
         this.roomForm.reset();
         this.dialogRef.close(val);
     }
 
-    getValidationMessages() 
-    {
+    getValidationMessages() {
         return {
             roomName: [
                 { name: "required", Message: "RoomName  is required" },

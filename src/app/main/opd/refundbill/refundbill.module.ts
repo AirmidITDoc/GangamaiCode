@@ -45,7 +45,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         RefundbillComponent
-        
+
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -85,10 +85,10 @@ const routes: Routes = [
         MatListModule,
         // WebcamModule,
         ScrollingModule,
-    // MatTableExporterModule
-],
-providers: [
-    DatePipe,
-]
+        // MatTableExporterModule
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
 export class RefundbillModule { }

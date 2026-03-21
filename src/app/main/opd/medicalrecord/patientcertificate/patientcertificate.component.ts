@@ -1,269 +1,267 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { AppointmentlistService } from '../../appointment-list/appointmentlist.service';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
-  selector: 'app-patientcertificate',
-  templateUrl: './patientcertificate.component.html',
-  styleUrls: ['./patientcertificate.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-patientcertificate',
+    templateUrl: './patientcertificate.component.html',
+    styleUrls: ['./patientcertificate.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class PatientcertificateComponent {
 
-  registerObj: any;
-  vOPDNo: any;
-  vPatientName: any;
-  vDoctorName: any;
-  vAgeYear: any;
-  vAgeMonth: any;
-  vAgeDay: any;
-  vDepartmentName: any;
-  vOP_MobileNo: any;
-  vTariffName: any;
-  vCompanyName: any;
-  vWardName: any;
-  vBedNo: any;
-  vGenderName: any;
-  RegId: any;
-  vVisitedId: any;
-  vAge: any;
-  vRegNo: any;
-  vRefDocName: any;
-  mycertificateForm: FormGroup;
-  vCertificateId: any;
-  vcertificateText: any;
-  isButtonDisabled: boolean = false;
-  selectedTemplate: string = ''
-  registerObjDet: any;
+    registerObj: any;
+    vOPDNo: any;
+    vPatientName: any;
+    vDoctorName: any;
+    vAgeYear: any;
+    vAgeMonth: any;
+    vAgeDay: any;
+    vDepartmentName: any;
+    vOP_MobileNo: any;
+    vTariffName: any;
+    vCompanyName: any;
+    vWardName: any;
+    vBedNo: any;
+    vGenderName: any;
+    RegId: any;
+    vVisitedId: any;
+    vAge: any;
+    vRegNo: any;
+    vRefDocName: any;
+    mycertificateForm: FormGroup;
+    vCertificateId: any;
+    vcertificateText: any;
+    isButtonDisabled: boolean = false;
+    selectedTemplate: string = ''
+    registerObjDet: any;
 
-  dsCertficateTemp = new MatTableDataSource<certificateTemp>();
-  displayedColumns: string[] = [
-    'CertificateDate',
-    'CertificateName',
-    'CertificateText',
-    'doctorName',
-    'Action'
-  ]
-  autocompleteModeTemplate: string = 'Template' //'OPDEMR'
+    dsCertficateTemp = new MatTableDataSource<certificateTemp>();
+    displayedColumns: string[] = [
+        'CertificateDate',
+        'CertificateName',
+        'CertificateText',
+        'doctorName',
+        'Action'
+    ]
+    autocompleteModeTemplate: string = 'Template' //'OPDEMR'
 
-  onBlur(e: any) {
-    this.vcertificateText = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-  }
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(
-    public _AppointmentServiceService: AppointmentlistService,
-    private _FormvalidationserviceService: FormvalidationserviceService,
-    public dialogRef: MatDialogRef<PatientcertificateComponent>,
-    public _matDialog: MatDialog,
-    private commonService: PrintserviceService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService,
-    private _formBuilder: FormBuilder
-  ) { }
-
-  ngOnInit(): void {
-    this.mycertificateForm = this.CreatePatientCertiform();
-    this.mycertificateForm.markAllAsTouched()
-
-    if (this.data) {
-      this.registerObj = this.data;
-      this.vWardName = this.registerObj.RoomName;
-      this.vBedNo = this.registerObj.BedName;
-      this.vGenderName = this.registerObj.GenderName;
-      this.vPatientName = this.registerObj.patientName;
-      this.vAgeYear = this.registerObj.ageYear;
-      this.vAgeMonth = this.registerObj.ageMonth
-      this.vAgeDay = this.registerObj.ageDay
-      this.RegId = this.registerObj.regId;
-      this.vVisitedId = this.registerObj.visitId
-      this.vAge = this.registerObj.Age;
-      this.vRegNo = this.registerObj.regNoWithPrefix;
-      this.vOPDNo = this.registerObj.opdNo;
-      this.vCompanyName = this.registerObj.companyName;
-      this.vTariffName = this.registerObj.tariffName;
-      this.vOP_MobileNo = this.registerObj.mobileNo;
-      this.vDoctorName = this.registerObj.doctorname;
-      this.vDepartmentName = this.registerObj.departmentName;
-      this.vRefDocName = this.registerObj.refDocName
-      this.selectedTemplate = this.registerObj.ConsentTempId;
-      this.getCertificateList();
+    onBlur(e: any) {
+        this.vcertificateText = e.target.innerHTML;
+        throw new Error('Method not implemented.');
     }
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    constructor(
+        public _AppointmentServiceService: AppointmentlistService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+        public dialogRef: MatDialogRef<PatientcertificateComponent>,
+        public _matDialog: MatDialog,
+        private commonService: PrintserviceService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService,
+        private _formBuilder: FormBuilder
+    ) { }
 
-  }
+    ngOnInit(): void {
+        this.mycertificateForm = this.CreatePatientCertiform();
+        this.mycertificateForm.markAllAsTouched()
 
-  CreatePatientCertiform() {
-    return this._formBuilder.group({
-      certificateId: [0],
-      certificateDate: [new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())).toISOString()],
-      certificateTime: [(new Date()).toISOString()],
-      visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      CertificateTemplateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      certificateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      certificateText: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      Language: ['1'],
-    })
-  }
-
-  onEditorValueChange(content: string) {
-    this.mycertificateForm.get('certificateText')?.setValue(content);
-  }
-
-  onSave() {
-    if (!this.mycertificateForm.invalid) {
-      this.mycertificateForm.get('visitId').setValue(this.vVisitedId)
-      this.mycertificateForm.get('certificateId').setValue(this.certiID ?? 0);
-      const payload = this.mycertificateForm.getRawValue();
-      delete payload.Language;
-      console.log(payload)
-      this._AppointmentServiceService.CertificateInsertUpdate(payload).subscribe((response) => {
-        this.onSubList()
-        this.onReset();
-        this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
-        this.onClose();
-        this.viewgetCertificateReportPdf(response)
-      });
-    }
-    else {
-      const invalidFields: string[] = [];
-      if (this.mycertificateForm.invalid) {
-        for (const controlName in this.mycertificateForm.controls) {
-          if (this.mycertificateForm.controls[controlName].invalid) {
-            invalidFields.push(`My Form: ${controlName}`);
-          }
+        if (this.data) {
+            this.registerObj = this.data;
+            this.vWardName = this.registerObj.RoomName;
+            this.vBedNo = this.registerObj.BedName;
+            this.vGenderName = this.registerObj.GenderName;
+            this.vPatientName = this.registerObj.patientName;
+            this.vAgeYear = this.registerObj.ageYear;
+            this.vAgeMonth = this.registerObj.ageMonth
+            this.vAgeDay = this.registerObj.ageDay
+            this.RegId = this.registerObj.regId;
+            this.vVisitedId = this.registerObj.visitId
+            this.vAge = this.registerObj.Age;
+            this.vRegNo = this.registerObj.regNoWithPrefix;
+            this.vOPDNo = this.registerObj.opdNo;
+            this.vCompanyName = this.registerObj.companyName;
+            this.vTariffName = this.registerObj.tariffName;
+            this.vOP_MobileNo = this.registerObj.mobileNo;
+            this.vDoctorName = this.registerObj.doctorname;
+            this.vDepartmentName = this.registerObj.departmentName;
+            this.vRefDocName = this.registerObj.refDocName
+            this.selectedTemplate = this.registerObj.ConsentTempId;
+            this.getCertificateList();
         }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
+
+    }
+
+    CreatePatientCertiform() {
+        return this._formBuilder.group({
+            certificateId: [0],
+            certificateDate: [new Date(Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())).toISOString()],
+            certificateTime: [(new Date()).toISOString()],
+            visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            CertificateTemplateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            certificateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            certificateText: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            Language: ['1'],
+        })
+    }
+
+    onEditorValueChange(content: string) {
+        this.mycertificateForm.get('certificateText')?.setValue(content);
+    }
+
+    onSave() {
+        if (!this.mycertificateForm.invalid) {
+            this.mycertificateForm.get('visitId').setValue(this.vVisitedId)
+            this.mycertificateForm.get('certificateId').setValue(this.certiID ?? 0);
+            const payload = this.mycertificateForm.getRawValue();
+            delete payload.Language;
+            console.log(payload)
+            this._AppointmentServiceService.CertificateInsertUpdate(payload).subscribe((response) => {
+                this.onSubList()
+                this.onReset();
+                this.mycertificateForm.patchValue(this.CreatePatientCertiform().value);
+                this.onClose();
+                this.viewgetCertificateReportPdf(response)
+            });
+        }
+        else {
+            const invalidFields: string[] = [];
+            if (this.mycertificateForm.invalid) {
+                for (const controlName in this.mycertificateForm.controls) {
+                    if (this.mycertificateForm.controls[controlName].invalid) {
+                        invalidFields.push(`My Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+        }
+    }
+
+    onSubList() {
+        this.getCertificateList();
+        this.mycertificateForm.reset({ Language: '1' });
+    }
+
+    onClose() {
+        this.mycertificateForm.reset({ Language: '1' });
+        this.dialogRef.close();
+    }
+
+    onReset() {
+        this.mycertificateForm.reset()
+        this.mycertificateForm.reset({
+            Language: '1',
+            certificateDate: new Date(
+                Date.UTC(
+                    new Date().getFullYear(),
+                    new Date().getMonth(),
+                    new Date().getDate()
+                )
+            ).toISOString(),
+            certificateTime: (new Date()).toISOString(),
         });
-      }
+
+        this.vcertificateText = ''
     }
-  }
 
-  onSubList() {
-    this.getCertificateList();
-    this.mycertificateForm.reset({ Language: '1' });
-  }
-
-  onClose() {
-    this.mycertificateForm.reset({ Language: '1' });
-    this.dialogRef.close();
-  }
-
-  onReset() {
-    this.mycertificateForm.reset()
-    this.mycertificateForm.reset({
-      Language: '1',
-      certificateDate: new Date(
-        Date.UTC(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate()
-        )
-      ).toISOString(),
-      certificateTime: (new Date()).toISOString(),
-    });
-
-    this.vcertificateText = ''
-  }
-
-  addTemplateDescription() {
-    this.isButtonDisabled = false;
-    if (!this.mycertificateForm.get('CertificateTemplateId').value) {
-      this.toastr.warning('Please select Certificate Template ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if (this.registerObjDet) {
-      this.vcertificateText = this.registerObjDet;
-      this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
-      this.registerObjDet = '';
-    }
-  }
-
-  selectChangeTemplate(data) {
-    this.registerObjDet = data.certificateDesc;
-    this.mycertificateForm.get('certificateName').setValue(data.certificateName)
-  }
-
-  getCertificateList() {
-    const D_data = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "VisitedID",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "VisitedID",
-          "fieldValue": String(this.vVisitedId),
-          "opType": "Equals"
+    addTemplateDescription() {
+        this.isButtonDisabled = false;
+        if (!this.mycertificateForm.get('CertificateTemplateId').value) {
+            this.toastr.warning('Please select Certificate Template ', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
-      ],
-      "exportType": "JSON",
-      "columns": []
+        if (this.registerObjDet) {
+            this.vcertificateText = this.registerObjDet;
+            this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
+            this.registerObjDet = '';
+        }
     }
-    this._AppointmentServiceService.getCertificateList(D_data).subscribe(Visit => {
-      this.dsCertficateTemp.data = Visit.data as certificateTemp[];
-      this.dsCertficateTemp.sort = this.sort;
-      this.dsCertficateTemp.paginator = this.paginator;
-      console.log('check:', this.dsCertficateTemp.data)
-    })
-  }
 
-  selectedTabIndex = 0;
-  certiID = 0;
-  OnEdit(row) {
-    this.mycertificateForm.get('CertificateTemplateId').disable();
-    this.isButtonDisabled=true
+    selectChangeTemplate(data) {
+        this.registerObjDet = data.certificateDesc;
+        this.mycertificateForm.get('certificateName').setValue(data.certificateName)
+    }
 
-    console.log('Row data received:', row);
-    this.certiID = row.certificateId
-    this.mycertificateForm.get('certificateName').setValue(row.certificateName)
-    this.mycertificateForm.patchValue({
-      CertificateTemplateId: row.certificateTemplateId,
-    });
-    this.vcertificateText = row.certificateText
-     this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
-    this.selectedTabIndex = 1;
-  }
+    getCertificateList() {
+        const D_data = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "VisitedID",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "VisitedID",
+                    "fieldValue": String(this.vVisitedId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        this._AppointmentServiceService.getCertificateList(D_data).subscribe(Visit => {
+            this.dsCertficateTemp.data = Visit.data as certificateTemp[];
+            this.dsCertficateTemp.sort = this.sort;
+            this.dsCertficateTemp.paginator = this.paginator;
+            console.log('check:', this.dsCertficateTemp.data)
+        })
+    }
 
-  getWhatsappshareSales(el, vmono) {
+    selectedTabIndex = 0;
+    certiID = 0;
+    OnEdit(row) {
+        this.mycertificateForm.get('CertificateTemplateId').disable();
+        this.isButtonDisabled = true
 
-  }
+        console.log('Row data received:', row);
+        this.certiID = row.certificateId
+        this.mycertificateForm.get('certificateName').setValue(row.certificateName)
+        this.mycertificateForm.patchValue({
+            CertificateTemplateId: row.certificateTemplateId,
+        });
+        this.vcertificateText = row.certificateText
+        this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
+        this.selectedTabIndex = 1;
+    }
 
-  viewgetCertificateReportPdf(element: any) {
-    this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
-  }
+    getWhatsappshareSales(el, vmono) {
+
+    }
+
+    viewgetCertificateReportPdf(element: any) {
+        this.commonService.Onprint("CertificateId", element.certificateId, "CertificateInformationReport");
+    }
 }
 export class certificateTemp {
 
-  CertificateDate: Date;
-  CreatedBy: any;
-  CetificateName: any;
-  CertificateText: any;
-  doctorName: any;
+    CertificateDate: Date;
+    CreatedBy: any;
+    CetificateName: any;
+    CertificateText: any;
+    doctorName: any;
 
-  constructor(certificateTemp) {
+    constructor(certificateTemp) {
 
-    this.CertificateDate = certificateTemp.CertificateDate || '';
-    this.CreatedBy = certificateTemp.CreatedBy || '';
-    this.CetificateName = certificateTemp.CetificateName || '';
-    this.CertificateText = certificateTemp.CertificateText || '';
-    this.doctorName = certificateTemp.doctorName || '';
-  }
+        this.CertificateDate = certificateTemp.CertificateDate || '';
+        this.CreatedBy = certificateTemp.CreatedBy || '';
+        this.CetificateName = certificateTemp.CetificateName || '';
+        this.CertificateText = certificateTemp.CertificateText || '';
+        this.doctorName = certificateTemp.doctorName || '';
+    }
 }

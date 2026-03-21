@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 const appRoutes: Routes = [
-   
+
     {
         path: "admission",
         loadChildren: () =>
@@ -18,14 +18,14 @@ const appRoutes: Routes = [
             import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
     {
-        path: "ip-advance-browse", 
+        path: "ip-advance-browse",
         loadChildren: () =>
-        import("./browse-ip-advance/browse-ip-advance.module").then((m) => m.BrowseIpAdvanceModule),
+            import("./browse-ip-advance/browse-ip-advance.module").then((m) => m.BrowseIpAdvanceModule),
     },
     {
         path: "ip-casepaper",
         loadChildren: () =>
-        import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
     },
     {
         path: "ip-refund-browse",
@@ -39,68 +39,68 @@ const appRoutes: Routes = [
     {
         path: "ipd-bill-browse-list",
         loadChildren: () =>
-       import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
+            import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
     {
         path: "ipd-browse-receipt",
         loadChildren: () =>
-           import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
+            import("./ip-bill-browse-list/ip-bill-browse.module").then((m) => m.IPBillBrowseModule),
     },
     {
         path: "discharge",
         loadChildren: () =>
-        import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
-           
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+
     },
     {
         path: "dischargesummary",
         loadChildren: () =>
-        import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
-         
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+
     },
-   
+
     {
         path: "add-billing",
         loadChildren: () =>
-        import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
-            // this.Routes.navigate(['ipd/ip-search-list/ip-billing']);
+            import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
+        // this.Routes.navigate(['ipd/ip-search-list/ip-billing']);
     },
-     {
-         path: "ip-addCharges", 
-         loadChildren: () =>
-         import("./ip-settlement/ip-settlement.module").then((m) => m.IPSettlementModule),
-        },
-        // {
-        //     path: "browserefundofbill",
-        //     loadChildren: () =>
-        //     import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
-               
-        // },
-        // {
-        //     path: "browserefundofadvance",
-        //     loadChildren: () =>
-        //     import("./Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
-               
-       // },
-        // {
-        //     path: "companylist",
-        //     loadChildren: () =>
-        //     import("./company-list/company-list.module").then((m) => m.CompanyListModule),
-               
-        // },
+    {
+        path: "ip-addCharges",
+        loadChildren: () =>
+            import("./ip-settlement/ip-settlement.module").then((m) => m.IPSettlementModule),
+    },
+    // {
+    //     path: "browserefundofbill",
+    //     loadChildren: () =>
+    //     import("./Refund/ip-refund/ip-browse-refundof-bill/ip-browse-refundof-bill.module").then((m) => m.IPBrowseRefundofBillModule),
 
-         {
-            path: "companylist",
-            loadChildren: () =>
-            import("./Admission/admission/admission-cardview/admission-cardview.module").then((m) => m.AdmissionCardviewModule),
-               
-        },
+    // },
+    // {
+    //     path: "browserefundofadvance",
+    //     loadChildren: () =>
+    //     import("./Refund/ip-refund/ip-browse-refundof-advance/ip-browse-refundof-advance.module").then((m) => m.IPBrowseRefundofAdvanceModule),
+
+    // },
+    // {
+    //     path: "companylist",
+    //     loadChildren: () =>
+    //     import("./company-list/company-list.module").then((m) => m.CompanyListModule),
+
+    // },
 
     {
-        path: "refundofbill", 
+        path: "companylist",
+        loadChildren: () =>
+            import("./Admission/admission/admission-cardview/admission-cardview.module").then((m) => m.AdmissionCardviewModule),
+
+    },
+
+    {
+        path: "refundofbill",
         loadChildren: () =>
             import("./ip-search-list/ip-searchlist.module").then((m) => m.IPSearchlistModule),
-   }
+    }
 
 ];
 

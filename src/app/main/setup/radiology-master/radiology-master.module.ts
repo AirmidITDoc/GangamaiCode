@@ -29,4 +29,4 @@ const appRoutes: Routes = [
     declarations: [],
     imports: [RouterModule.forChild(appRoutes)],
 })
-export class RadiologyMasterModule {}
+export class RadiologyMasterModule { }

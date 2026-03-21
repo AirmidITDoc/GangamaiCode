@@ -76,4 +76,4 @@ const routes: Routes = [
     ],
     providers: [ReportService, DatePipe],
 })
-export class ReportGenerationModule {}
+export class ReportGenerationModule { }

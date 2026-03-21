@@ -35,16 +35,16 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GRNReturnComponent } from '../grn-return/grn-return.component';
+import { GrnreturnWithoutGrnNewComponent } from './grnreturn-without-grn-new/grnreturn-without-grn-new.component';
 import { GrnListComponent } from './new-grnreturn/grn-list/grn-list.component';
 import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
-import { GrnreturnWithoutGrnNewComponent } from './grnreturn-without-grn-new/grnreturn-without-grn-new.component';
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: GRNReturnComponent 
-  },
+    {
+        path: '**',
+        component: GRNReturnComponent
+    },
 ];
 
 @NgModule({

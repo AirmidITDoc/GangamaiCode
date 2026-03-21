@@ -13,7 +13,7 @@ export class BillingClassMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createClassForm();
         this.myformSearch = this.createSearchForm();
@@ -22,7 +22,7 @@ export class BillingClassMasterService {
     createClassForm(): FormGroup {
         return this._formBuilder.group({
             classId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            className: ["", 
+            className: ["",
                 [
                     Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
@@ -30,7 +30,7 @@ export class BillingClassMasterService {
                 ]
             ],
             classRate: [0],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
@@ -54,5 +54,5 @@ export class BillingClassMasterService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ClassMaster?Id=" + m_data.toString());
     }
-    
+
 }

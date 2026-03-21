@@ -1,10 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormControl, FormGroup, FormGroupName, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
+import { FixSupplierComponent } from 'app/main/setup/inventory/supplier-master/fix-supplier/fix-supplier.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import * as _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
@@ -12,13 +15,9 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { GrnItemList, GRNList, ItemNameList } from '../good-receiptnote.component';
 import { GoodReceiptnoteService } from '../good-receiptnote.service';
+import { POtoGRNComponent } from '../poto-grn/poto-grn.component';
 import { NewGRNService } from './new-grn.service';
 import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTType, ToastType } from './types';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
-import { FixSupplierComponent } from 'app/main/setup/inventory/supplier-master/fix-supplier/fix-supplier.component';
-import { POtoGRNComponent } from '../poto-grn/poto-grn.component';
-import { element } from 'protractor';
 
 
 const moment = _rollupMoment || _moment;
@@ -43,7 +42,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'ConversionFactor',
         'TotalQty',
         'MRP',
-        'Rate', 
+        'Rate',
         'HospitalMRP',
         'TotalAmount',
         'Disc',
@@ -127,12 +126,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     vpoBalQty: any;
     vMobile: any;
     ExpDate: any;
-    StoreId_1:any=0;
+    StoreId_1: any = 0;
     // Make it true when you want to use mock data.
     mock = false;
     vGRNType: boolean = true;
     vPaymentType: boolean = false
-    ApiUrl=""
+    ApiUrl = ""
     // Bind dropdown mode
     dropdownMode = {
         gstCalcType: "GstCalcType",
@@ -166,11 +165,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     ngOnInit(): void {
 
-       
-                     
-             this.StoreId = this.accountService.currentUserValue.user.storeId;
-            this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
-            console.log(this.ApiUrl)
+
+
+        this.StoreId = this.accountService.currentUserValue.user.storeId;
+        this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
+        console.log(this.ApiUrl)
 
 
         this.GrnHeaderForm = this.createGrnHeaderInsert();
@@ -206,13 +205,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }
     }
     batchlistApiUrl: any = '';
-   
-      selectChangeStore(obj: any) {
-    debugger
-    console.log("Store:", obj);
-    this.StoreId = obj.value || 0
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
-      }
+
+    selectChangeStore(obj: any) {
+        debugger
+        console.log("Store:", obj);
+        this.StoreId = obj.value || 0
+        this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
+    }
 
     getSelectedItem(item: GRNItemResponseType): void {
         if (this.mock) {
@@ -454,179 +453,179 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     //Table Exp Date change
     lastDay1: any;
-        CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
+    CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
         //debugger 
-    //     const NextExpiryDate = new Date();
-    //     const Months = 3 
-    //     const numericPattern = /^[0-9]+$/;
-    //     const CurrentDate = new Date();
-    //     const currentMonth = CurrentDate.getMonth() + 1;
-    //     const currentYear = CurrentDate.getFullYear();
-    //     const NxtMonths = ((currentMonth) + (Months));
-    //     NextExpiryDate.setMonth(NxtMonths);
-    //     const newNextDate = new Date(NextExpiryDate)
+        //     const NextExpiryDate = new Date();
+        //     const Months = 3 
+        //     const numericPattern = /^[0-9]+$/;
+        //     const CurrentDate = new Date();
+        //     const currentMonth = CurrentDate.getMonth() + 1;
+        //     const currentYear = CurrentDate.getFullYear();
+        //     const NxtMonths = ((currentMonth) + (Months));
+        //     NextExpiryDate.setMonth(NxtMonths);
+        //     const newNextDate = new Date(NextExpiryDate)
 
 
-    //     if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
-    //         const month = +inputDate.substring(0, 2);
-    //         const year = +inputDate.substring(2, 6);
+        //     if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
+        //         const month = +inputDate.substring(0, 2);
+        //         const year = +inputDate.substring(2, 6);
 
-    //         if (year >= currentYear) { 
-    // const inputFullDate = new Date(year, month - 1, 1);
-    // const today = new Date(CurrentDate.getFullYear(), CurrentDate.getMonth(), 1); 
-    //               if (inputFullDate < today)  {
-    //                 Swal.fire({
-    //                     icon: 'warning',
-    //                     title: '⚠️ Expired Item Alert',
-    //                     html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
-    //                     showConfirmButton: false,
-    //                     timer: 2000,
-    //                     timerProgressBar: true,
-    //                     background: '#fff',
-    //                     width: '400px',
-    //                     padding: '1.5em',
-    //                 });
-    //                 this.lastDay1 = '';
-    //                 contact.ExpDate = '';
-    //                 return
-    //             }
-    //            if (month > 12 || month <= 0) {
-    //                 this.lastDay1 = '';
-    //                 contact.ExpDate = '';
-    //                 this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
-    //                     toastClass: 'tostr-tost custom-toast-warning',
-    //                 });
-    //                 return;
-    //             } 
-    //             const lastDay1 = this.getLastDayOfMonth(month, year);
-    //             this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
-    //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
-    //             contact.ExpDate = this.lastDay1; 
+        //         if (year >= currentYear) { 
+        // const inputFullDate = new Date(year, month - 1, 1);
+        // const today = new Date(CurrentDate.getFullYear(), CurrentDate.getMonth(), 1); 
+        //               if (inputFullDate < today)  {
+        //                 Swal.fire({
+        //                     icon: 'warning',
+        //                     title: '⚠️ Expired Item Alert',
+        //                     html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+        //                     showConfirmButton: false,
+        //                     timer: 2000,
+        //                     timerProgressBar: true,
+        //                     background: '#fff',
+        //                     width: '400px',
+        //                     padding: '1.5em',
+        //                 });
+        //                 this.lastDay1 = '';
+        //                 contact.ExpDate = '';
+        //                 return
+        //             }
+        //            if (month > 12 || month <= 0) {
+        //                 this.lastDay1 = '';
+        //                 contact.ExpDate = '';
+        //                 this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !', {
+        //                     toastClass: 'tostr-tost custom-toast-warning',
+        //                 });
+        //                 return;
+        //             } 
+        //             const lastDay1 = this.getLastDayOfMonth(month, year);
+        //             this.lastDay1 = `${lastDay1}/${this.pad(month)}/${year}`;
+        //             this.lastDay2 = `${year}/${this.pad(month)}/${lastDay1}`;
+        //             contact.ExpDate = this.lastDay1; 
 
-    //             // Get values as strings in dd/MM/yyyy format
-    //             const NewNextExpiray = this.datePipe.transform(newNextDate, "dd/MM/yyyy");
-    //             const NewCurrentDate = this.lastDay1
-    //             if (NewNextExpiray && NewCurrentDate) {
-    //                 // Convert to Date objects
-    //                 const [sDay, sMonth, sYear] = NewNextExpiray.split('/').map(Number);
-    //                 const [aDay, aMonth, aYear] = NewCurrentDate.split('/').map(Number);
+        //             // Get values as strings in dd/MM/yyyy format
+        //             const NewNextExpiray = this.datePipe.transform(newNextDate, "dd/MM/yyyy");
+        //             const NewCurrentDate = this.lastDay1
+        //             if (NewNextExpiray && NewCurrentDate) {
+        //                 // Convert to Date objects
+        //                 const [sDay, sMonth, sYear] = NewNextExpiray.split('/').map(Number);
+        //                 const [aDay, aMonth, aYear] = NewCurrentDate.split('/').map(Number);
 
-    //                 const NewNextExpiray_1 = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
-    //                 const NewCurrentDate_1 = new Date(aYear, aMonth - 1, aDay);
+        //                 const NewNextExpiray_1 = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
+        //                 const NewCurrentDate_1 = new Date(aYear, aMonth - 1, aDay);
 
-    //                 if (NewCurrentDate_1 < NewNextExpiray_1) {
-    //                     Swal.fire({
-    //                         icon: 'warning',
-    //                         title: '⚠️ Upcoming Expiry Alert',
-    //                         html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
-    //                         showConfirmButton: true,
-    //                         confirmButtonText: 'OK',
-    //                         confirmButtonColor: '#f39c12',
-    //                         width: '400px',
-    //                         padding: '1.5em',
-    //                         background: '#fff',
-    //                         timer: 4000,
-    //                         timerProgressBar: true,
-    //                     });
-                    
-    //                 }
-    //             }
-    //         } else {
-    //             Swal.fire({
-    //                 icon: 'warning',
-    //                 title: '⚠️ Expired Item Alert',
-    //                 html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
-    //                 showConfirmButton: false,
-    //                 timer: 2000,
-    //                 timerProgressBar: true,
-    //                 background: '#fff',
-    //                 width: '400px',
-    //                 padding: '1.5em',
-    //             });
-    //                 this.lastDay1 = '';
-    //                 contact.ExpDate = '';
-    //             return
-    //         }
-    //     } else {
-    //                 this.lastDay1 = '';
-    //                 contact.ExpDate = '';
-    //         this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
+        //                 if (NewCurrentDate_1 < NewNextExpiray_1) {
+        //                     Swal.fire({
+        //                         icon: 'warning',
+        //                         title: '⚠️ Upcoming Expiry Alert',
+        //                         html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
+        //                         showConfirmButton: true,
+        //                         confirmButtonText: 'OK',
+        //                         confirmButtonColor: '#f39c12',
+        //                         width: '400px',
+        //                         padding: '1.5em',
+        //                         background: '#fff',
+        //                         timer: 4000,
+        //                         timerProgressBar: true,
+        //                     });
 
-
+        //                 }
+        //             }
+        //         } else {
+        //             Swal.fire({
+        //                 icon: 'warning',
+        //                 title: '⚠️ Expired Item Alert',
+        //                 html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+        //                 showConfirmButton: false,
+        //                 timer: 2000,
+        //                 timerProgressBar: true,
+        //                 background: '#fff',
+        //                 width: '400px',
+        //                 padding: '1.5em',
+        //             });
+        //                 this.lastDay1 = '';
+        //                 contact.ExpDate = '';
+        //             return
+        //         }
+        //     } else {
+        //                 this.lastDay1 = '';
+        //                 contact.ExpDate = '';
+        //         this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         });
+        //         return;
+        //     }
 
 
-   
-  const numericPattern = /^[0-9]+$/;
-  const currentDate = new Date();
 
-  const nextExpiryDate = new Date();
-  nextExpiryDate.setMonth(currentDate.getMonth() + 3);
 
-  // ✅ Validate input format
-  if (!(inputDate && inputDate.length === 6 && numericPattern.test(inputDate))) {
-    this.lastDay1 = '';
-    contact.ExpDate = '';
-    this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !');
-    return;
-  }
 
-  const month = +inputDate.substring(0, 2);
-  const year = +inputDate.substring(2, 6);
+        const numericPattern = /^[0-9]+$/;
+        const currentDate = new Date();
 
-  // ✅ Validate month
-  if (month < 1 || month > 12) {
-    this.lastDay1 = '';
-    contact.ExpDate = '';
-    this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !');
-    return;
-  }
+        const nextExpiryDate = new Date();
+        nextExpiryDate.setMonth(currentDate.getMonth() + 3);
 
-  // ✅ Create input date (1st day of month)
-  const inputDateObj = new Date(year, month - 1, 1);
+        // ✅ Validate input format
+        if (!(inputDate && inputDate.length === 6 && numericPattern.test(inputDate))) {
+            this.lastDay1 = '';
+            contact.ExpDate = '';
+            this.toastr.warning('Please enter only numbers in MMYYYY format', 'Warning !');
+            return;
+        }
 
-  // ✅ Current month start
-  const today = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const month = +inputDate.substring(0, 2);
+        const year = +inputDate.substring(2, 6);
 
-  // ❌ Expired check
-  if (inputDateObj < today) {
-    Swal.fire({
-      icon: 'warning',
-      title: '⚠️ Expired Item Alert',
-      html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
-      timer: 2000,
-      showConfirmButton: false
-    });
+        // ✅ Validate month
+        if (month < 1 || month > 12) {
+            this.lastDay1 = '';
+            contact.ExpDate = '';
+            this.toastr.warning('Invalid month. Month should be between 01 and 12', 'Warning !');
+            return;
+        }
 
-    this.lastDay1 = '';
-    contact.ExpDate = '';
-    return;
-  }
+        // ✅ Create input date (1st day of month)
+        const inputDateObj = new Date(year, month - 1, 1);
 
-  // ✅ Get last day of month
-  const lastDay = this.getLastDayOfMonth(month, year);
+        // ✅ Current month start
+        const today = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
-  this.lastDay1 = `${lastDay}/${this.pad(month)}/${year}`;
-  this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+        // ❌ Expired check
+        if (inputDateObj < today) {
+            Swal.fire({
+                icon: 'warning',
+                title: '⚠️ Expired Item Alert',
+                html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+                timer: 2000,
+                showConfirmButton: false
+            });
 
-  contact.ExpDate = this.lastDay1;
+            this.lastDay1 = '';
+            contact.ExpDate = '';
+            return;
+        }
 
-  // ⚠️ Near expiry check (within 3 months)
-  const expiryFullDate = new Date(year, month - 1, lastDay);
+        // ✅ Get last day of month
+        const lastDay = this.getLastDayOfMonth(month, year);
 
-  if (expiryFullDate <= nextExpiryDate) {
-    Swal.fire({
-      icon: 'warning',
-      title: '⚠️ Upcoming Expiry Alert',
-      html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#f39c12',
-      timer: 4000
-    }); 
-}
+        this.lastDay1 = `${lastDay}/${this.pad(month)}/${year}`;
+        this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
+
+        contact.ExpDate = this.lastDay1;
+
+        // ⚠️ Near expiry check (within 3 months)
+        const expiryFullDate = new Date(year, month - 1, lastDay);
+
+        if (expiryFullDate <= nextExpiryDate) {
+            Swal.fire({
+                icon: 'warning',
+                title: '⚠️ Upcoming Expiry Alert',
+                html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                timer: 4000
+            });
+        }
     }
     // CellcalculateLastDay(contact: ItemNameList, inputDate: string) {
     //     debugger
@@ -783,12 +782,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             TotalAmount: 0,
             NetAmount: 0,
             FinalTotalQty: 0,
-            HospitalMRP:0,
-            HospitalPerUnitMRP:0
+            HospitalMRP: 0,
+            HospitalPerUnitMRP: 0
         });
         this.userFormGroup.markAsUntouched();
     }
-    
+
     //item Total amt
     calculateTotalamt() {
         const form = this.userFormGroup;
@@ -797,7 +796,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
         // // Check if rate matches any of last three
         // const isRateSame = lastRates.includes(enteredRate);
-        
+
         // if (!isRateSame && (Number(enteredRate) > 0)) { 
         //     Swal.fire({
         //         icon: 'warning',
@@ -813,7 +812,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         //     });
         // }
 
-            this.validateFormValues();
+        this.validateFormValues();
         // Get values with proper type conversion
         const qty = +form.get('Qty').value || 0;
         const freeqty = +form.get('FreeQty').value || 0;
@@ -831,7 +830,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 TotalAmount: totalAmount,
                 NetAmount: netAmount,
                 FinalTotalQty: totalQty,
-                HospitalMRP:+form.get('MRP').value || 0
+                HospitalMRP: +form.get('MRP').value || 0
             });
             // Trigger discount and GST calculations
             // this.calculateDiscperAmount();
@@ -1159,7 +1158,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             isVerifiedUserId: [item?.IsVerifiedUserId || 0],
             hmrpStrip: [item?.HospitalMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             hmrpUnitPrice: [item?.HospitalPerUnitMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
- 
+
         });
     }
     //Insert current stk form
@@ -1185,7 +1184,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
 
         console.log(this.userFormGroup.value)
-        
+
         if ((formValues.StoreId == '' || formValues.StoreId == null || formValues.StoreId == '0')) {
             this.toastr.warning('Please select a supplier name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -1215,7 +1214,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
         debugger
         if (!this.isValidForm()) {
-           // Swal.fire('Please enter valid table data.');
+            // Swal.fire('Please enter valid table data.');
             return;
         }
         if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null)) {
@@ -1409,8 +1408,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         IsVerifiedDatetime: element.isVerifiedDatetime,
                         StkID: element.stkID,
                         grnDetID: element.grnDetID,
-                        HospitalMRP:element?.hmrpStrip || 0,
-                        HospitalPerUnitMRP:element?.hmrpUnitPrice || 0
+                        HospitalMRP: element?.hmrpStrip || 0,
+                        HospitalPerUnitMRP: element?.hmrpUnitPrice || 0
                     }
                 )
             })
@@ -1544,7 +1543,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             Disc: [
                 // { name: "required", Message: "Disc is required" }
             ],
-              HospitalMRP: [
+            HospitalMRP: [
                 // { name: "required", Message: "Disc is required" }
             ],
         };
@@ -1597,49 +1596,49 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 
     // }
     isValidForm(): boolean {
-    const invalidItem = this.dsItemNameList.data.find((item, index) => { 
-debugger
-        if (item.Qty <= 0) {
-            this.toastr.warning(
-                `Row ${index + 1}: Quantity must be greater than 0`,
-                'Warning !',
-                { toastClass: 'tostr-tost custom-toast-warning' }
-            );
-            return true;
-        }
+        const invalidItem = this.dsItemNameList.data.find((item, index) => {
+            debugger
+            if (item.Qty <= 0) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Quantity must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
 
-        if (item.TotalQty <= 0) {
-            this.toastr.warning(
-                `Row ${index + 1}: Total Quantity must be greater than 0`,
-                'Warning !',
-                { toastClass: 'tostr-tost custom-toast-warning' }
-            );
-            return true;
-        }
+            if (item.TotalQty <= 0) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Total Quantity must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
 
-         if (item.ConversionFactor <= 0 || item.ConversionFactor == '' || item.ConversionFactor == null) {
-            this.toastr.warning(
-                `Row ${index + 1}: Conversion Factor must be greater than 0`,
-                'Warning !',
-                { toastClass: 'tostr-tost custom-toast-warning' }
-            );
-            return true;
-        }
+            if (item.ConversionFactor <= 0 || item.ConversionFactor == '' || item.ConversionFactor == null) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Conversion Factor must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
 
-        if (!item.ExpDate) {
-            this.toastr.warning(
-                `Row ${index + 1}: Expiry Date is required`,
-                'Warning !',
-                { toastClass: 'tostr-tost custom-toast-warning' }
-            );
-            return true;
-        }
+            if (!item.ExpDate) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Expiry Date is required`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
 
-        return false;
-    });
+            return false;
+        });
 
-    return !invalidItem; // valid only if no invalid row
-}
+        return !invalidItem; // valid only if no invalid row
+    }
     // it allowed only Digit 
     keyPressDigitsOnly(event) {
         const inp = String.fromCharCode(event.keyCode);
@@ -1688,15 +1687,15 @@ debugger
         });
 
     }
-        // Check Invice is already exist or not 
-    chkpreviouserates(rate) { 
+    // Check Invice is already exist or not 
+    chkpreviouserates(rate) {
         const enteredRate = rate;
         const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
 
         // Check if rate matches any of last three
         const isRateSame = lastRates.includes(enteredRate);
-        
-        if (!isRateSame && (Number(enteredRate) > 0)) { 
+
+        if (!isRateSame && (Number(enteredRate) > 0)) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Price Verification Required',
@@ -1796,18 +1795,18 @@ debugger
                 const FinalTotalQty = (element.Qty * element?.ConversionFactor || 1);
                 const FinalpurUnitRate = (((element.TotalAmount) / (element.Qty)) * (element?.ConversionFactor || 1))
                 const FinalpurUnitrateWF = (((element.TotalAmount) / (FinalTotalQty)) * (element?.ConversionFactor || 1))
-                let  FinalUnitMRP_1 = 0 
+                let FinalUnitMRP_1 = 0
                 let HosPerUnitRate = 0
                 let HosMRP = 0
-                if(element?.MRP){
-                 FinalUnitMRP_1 = (element.MRP) / (element?.ConversionFactor || 1)
-                 HosPerUnitRate = FinalUnitMRP_1
-                 HosMRP = element.MRP
-                }else{
-                  FinalUnitMRP_1 = (element.Rate) / (element?.ConversionFactor || 1) 
-                  HosPerUnitRate = FinalUnitMRP_1
+                if (element?.MRP) {
+                    FinalUnitMRP_1 = (element.MRP) / (element?.ConversionFactor || 1)
+                    HosPerUnitRate = FinalUnitMRP_1
+                    HosMRP = element.MRP
+                } else {
+                    FinalUnitMRP_1 = (element.Rate) / (element?.ConversionFactor || 1)
+                    HosPerUnitRate = FinalUnitMRP_1
                     HosMRP = element.Rate
-                } 
+                }
                 const FinalUnitMRP = FinalUnitMRP_1 || 0;
                 this.chargeslist.push(
                     {
@@ -1850,9 +1849,9 @@ debugger
                         IsVerifiedDatetime: '1999-01-01',
                         StkID: 0,
                         grnDetID: 0,
-                        purchaseNo: Number(element.PurchaseNo) || 0, 
-                        HospitalMRP:Number(HosMRP) || 0,
-                        HospitalPerUnitMRP:Number(HosPerUnitRate) || 0,
+                        purchaseNo: Number(element.PurchaseNo) || 0,
+                        HospitalMRP: Number(HosMRP) || 0,
+                        HospitalPerUnitMRP: Number(HosPerUnitRate) || 0,
                     });
                 this.dsItemNameList.data = this.chargeslist
                 this.updateGRNFinalForm();
@@ -2101,7 +2100,7 @@ debugger
             }
         }
     }
-      keyPressCharater(event) {
+    keyPressCharater(event) {
         const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;

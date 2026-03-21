@@ -35,64 +35,64 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ExternalSalesReturnComponent } from './external-sales-return.component';
-   
+
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component:  ExternalSalesReturnComponent
-  },
+    {
+        path: '**',
+        component: ExternalSalesReturnComponent
+    },
 ];
 
 @NgModule({
-  declarations: [
-    ExternalSalesReturnComponent 
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatExpansionModule,
-    MatSlideToggleModule ,
-    MatListModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
-        
-  ],
-  providers: [ 
-    DatePipe,
-] 
+    declarations: [
+        ExternalSalesReturnComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        MatChipsModule,
+        // NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule
+
+    ],
+    providers: [
+        DatePipe,
+    ]
 })
-export class ExternalSalesReturnModule{ }
+export class ExternalSalesReturnModule { }

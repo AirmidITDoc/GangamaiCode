@@ -1,14 +1,13 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { QuestionMasterService } from './question-master.service';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
-import { NewQuestionComponent } from './new-question/new-question.component';
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { fuseAnimations } from '@fuse/animations';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { ToastrService } from 'ngx-toastr';
+import { NewQuestionComponent } from './new-question/new-question.component';
+import { QuestionMasterService } from './question-master.service';
 
 @Component({
     selector: 'app-gastology-question-master',
@@ -25,7 +24,7 @@ export class GastologyQuestionMasterComponent {
     questionName: any = "";
 
     allcolumns = [
-        { heading: "Question Name", key: "questionName", sort: true, align: 'left', emptySign: 'NA', width: 650},
+        { heading: "Question Name", key: "questionName", sort: true, align: 'left', emptySign: 'NA', width: 650 },
         { heading: "ShortcutValues", key: "shortCutValues", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
 

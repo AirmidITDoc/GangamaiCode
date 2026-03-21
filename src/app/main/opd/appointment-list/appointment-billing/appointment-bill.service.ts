@@ -21,9 +21,9 @@ export class AppointmentBillService {
     public getBillingServiceList(param) {
         return this._httpClient1.PostData("VisitDetail/GetServiceListwithTraiff", param)
     }
-       public getAccessDetailList(param){
-    return this._httpClient1.PostData("LoginManager/loginAccessDetailsList",param)
-  }
+    public getAccessDetailList(param) {
+        return this._httpClient1.PostData("LoginManager/loginAccessDetailsList", param)
+    }
 
     public InsertOPBillingCredit(param) {
         return this._httpClient1.PostData("OPBill/OPCreditBillingInsert", param)
@@ -31,7 +31,7 @@ export class AppointmentBillService {
     public InsertOPBilling(param) {
         return this._httpClient1.PostData("OPBill/OPBillingInsert", param)
     }
-        public InsertOPDraftBilling(param) {
+    public InsertOPDraftBilling(param) {
         return this._httpClient1.PostData("OPBill/OPDraftBillInsert", param)
     }
     public InsertEditOPDraftBilling(param) {
@@ -68,26 +68,26 @@ export class AppointmentBillService {
     //     return this._httpClient1.PostData("MPesa/pay?" + params, {});
     // }
     public postpayment(amount, phone, opdipdid) {
-        return this._httpClient1.PostData("MPesa/pay", { amount: amount, phone: phone ,opdipdid:opdipdid})
+        return this._httpClient1.PostData("MPesa/pay", { amount: amount, phone: phone, opdipdid: opdipdid })
     }
-        public getmPesaTranscationlist(param) {
+    public getmPesaTranscationlist(param) {
         return this._httpClient1.PostData("MPesa/List", param)
-    } 
-
-    public getReportView(Param,loader = true) {
-    if (loader) {
-      this._loaderService.show();
     }
-  // return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
-    return this._httpClient1.PostData("Common",Param)
-}
+
+    public getReportView(Param, loader = true) {
+        if (loader) {
+            this._loaderService.show();
+        }
+        // return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+        return this._httpClient1.PostData("Common", Param)
+    }
     public getdraftchargeslist(param) {
         return this._httpClient1.PostData("OPBill/OPDraftAddChargeslList", param)
     }
     public getdraftlist(param) {
         return this._httpClient1.PostData("OPBill/OPDraftBillList", param)
     }
-        public getDeleteDratfBill(param) {
+    public getDeleteDratfBill(param) {
         return this._httpClient1.PostData("OPBill/Cancel", param)
     }
 }

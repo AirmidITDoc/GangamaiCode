@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [DischargetypeMasterService, DatePipe]
 })
-export class DischargetypeMasterModule {}
+export class DischargetypeMasterModule { }

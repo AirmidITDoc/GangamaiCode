@@ -6,111 +6,111 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class GRNReturnWithoutGRNService {
-  GRNReturnSearchFrom: FormGroup;
-  NewGRNReturnFrom: FormGroup;
-  GRNReturnStoreFrom: FormGroup;
-  ReturnFinalForm: FormGroup;
-  constructor(
-    private _formBuilder: UntypedFormBuilder,
-    public _httpClient: HttpClient,
-    public _httpClient1: ApiCaller,
-    private _FormvalidationserviceService: FormvalidationserviceService,
-    private accountService: AuthenticationService,
-  ) {
-    this.GRNReturnSearchFrom = this.CreateReturnSearchForm();
-    this.NewGRNReturnFrom = this.CreateNewGRNReturnForm();
-    this.GRNReturnStoreFrom = this.CreateStoreForm();
-    this.ReturnFinalForm = this.CreateFinalForm();
-  }
-  CreateReturnSearchForm() {
-    return this._formBuilder.group({
-      ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      Status: ['0'],
-      start: [(new Date()).toISOString()],
-      end: [(new Date()).toISOString()],
-    });
-  }
-  CreateStoreForm() {
-    return this._formBuilder.group({
-      ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    });
-  }
-  CreateNewGRNReturnForm() {
-    return this._formBuilder.group({
-      ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierName: '',
-      SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      GSTType: ['GST Return'],
-      ReturnDate: [(new Date()).toISOString()],
-      ItemName: [''],
-      BatchNo: [''],
-      ExpDates: [''],
-      BalQty: [''],
-      Qty: [''],
-      Rate: [''],
-      TotalAmount: [''],
-      GST: [''],
-      CGST: [''],
-      SGST: [''],
-      IGST: [''],
-      GSTAmount: [''],
-      NetAmount: [''],
-    });
-  }
-  CreateFinalForm() {
-    return this._formBuilder.group({
-      Remark: [''],
-      FinalTotalAmt: [''],
-      FinalDiscAmount: [''],
-      FinalVatAmount: [''],
-      FinalNetPayamt: [''],
-      RoundingAmt: [''],
-      BalQty: [''],
-      Qty: [''],
-      PurRate: [''],
-      PurTotal: [''],
-      GST: [''],
-      GSTAmount: [''],
-      NetAmount: [''],
-    });
-  }
-  public getLoggedStoreList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
-  }
-  public getItemBySupplier(Param) {
-    return this._httpClient1.PostData("GRNReturn/getGRNReturnWithoutGRNBySupplierID", Param);
-  }
-  public getSupplierList(param) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
-  }
-  public getGRNReturnList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNReturnList_by_Name", Param);
-  }
-  public getGRNReturnItemDetList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=getGRNReturnList", Param);
-  }
-  public getItemNameList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
-  }
-  public GRNReturnSave(Param) {
-    if (Param.grnReturn.grnreturnId) {
-      return this._httpClient1.PutData("GRNReturn/UpdateGRNReturn", Param);
-    } else return this._httpClient1.PostData("GRNReturn/Insert", Param);
-  }
+    GRNReturnSearchFrom: FormGroup;
+    NewGRNReturnFrom: FormGroup;
+    GRNReturnStoreFrom: FormGroup;
+    ReturnFinalForm: FormGroup;
+    constructor(
+        private _formBuilder: UntypedFormBuilder,
+        public _httpClient: HttpClient,
+        public _httpClient1: ApiCaller,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+        private accountService: AuthenticationService,
+    ) {
+        this.GRNReturnSearchFrom = this.CreateReturnSearchForm();
+        this.NewGRNReturnFrom = this.CreateNewGRNReturnForm();
+        this.GRNReturnStoreFrom = this.CreateStoreForm();
+        this.ReturnFinalForm = this.CreateFinalForm();
+    }
+    CreateReturnSearchForm() {
+        return this._formBuilder.group({
+            ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            Status: ['0'],
+            start: [(new Date()).toISOString()],
+            end: [(new Date()).toISOString()],
+        });
+    }
+    CreateStoreForm() {
+        return this._formBuilder.group({
+            ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        });
+    }
+    CreateNewGRNReturnForm() {
+        return this._formBuilder.group({
+            ToStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            SupplierName: '',
+            SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            GSTType: ['GST Return'],
+            ReturnDate: [(new Date()).toISOString()],
+            ItemName: [''],
+            BatchNo: [''],
+            ExpDates: [''],
+            BalQty: [''],
+            Qty: [''],
+            Rate: [''],
+            TotalAmount: [''],
+            GST: [''],
+            CGST: [''],
+            SGST: [''],
+            IGST: [''],
+            GSTAmount: [''],
+            NetAmount: [''],
+        });
+    }
+    CreateFinalForm() {
+        return this._formBuilder.group({
+            Remark: [''],
+            FinalTotalAmt: [''],
+            FinalDiscAmount: [''],
+            FinalVatAmount: [''],
+            FinalNetPayamt: [''],
+            RoundingAmt: [''],
+            BalQty: [''],
+            Qty: [''],
+            PurRate: [''],
+            PurTotal: [''],
+            GST: [''],
+            GSTAmount: [''],
+            NetAmount: [''],
+        });
+    }
+    public getLoggedStoreList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
+    }
+    public getItemBySupplier(Param) {
+        return this._httpClient1.PostData("GRNReturn/getGRNReturnWithoutGRNBySupplierID", Param);
+    }
+    public getSupplierList(param) {
+        return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_SupplierName_list", param);
+    }
+    public getGRNReturnList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=Rtrv_GRNReturnList_by_Name", Param);
+    }
+    public getGRNReturnItemDetList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=getGRNReturnList", Param);
+    }
+    public getItemNameList(Param) {
+        return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
+    }
+    public GRNReturnSave(Param) {
+        if (Param.grnReturn.grnreturnId) {
+            return this._httpClient1.PutData("GRNReturn/UpdateGRNReturn", Param);
+        } else return this._httpClient1.PostData("GRNReturn/Insert", Param);
+    }
 
-  public getVerifyGRNReturn(Param) {
-    return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)
-  }
-  public getGRNreturnreportview(GRNReturnId) {
-    return this._httpClient.get("Pharmacy/view-GRNReturnReport?GRNReturnId=" + GRNReturnId);
-  }
+    public getVerifyGRNReturn(Param) {
+        return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)
+    }
+    public getGRNreturnreportview(GRNReturnId) {
+        return this._httpClient.get("Pharmacy/view-GRNReturnReport?GRNReturnId=" + GRNReturnId);
+    }
 
-  public getGRNReturnrtrvlist(Param) {
-    return this._httpClient1.PostData("GRNReturn/GRNReturnList", Param);
-  }
+    public getGRNReturnrtrvlist(Param) {
+        return this._httpClient1.PostData("GRNReturn/GRNReturnList", Param);
+    }
 
 }

@@ -1,31 +1,30 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { parseInt } from 'lodash';
-import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
+import { ConfigService } from 'app/core/services/config.service';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { MatDrawer } from '@angular/material/sidenav';
-import { ToastrService } from 'ngx-toastr';
-import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from '../sales-hopsital-new/types';
-import { SubstitutesComponent } from '../sales-hopsital-new/substitutes/substitutes.component';
-import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
-import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.component';
-import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
-import { ConfigService } from 'app/core/services/config.service';
-import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
+import { parseInt } from 'lodash';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
+import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
+import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
+import { SubstitutesComponent } from '../sales-hopsital-new/substitutes/substitutes.component';
+import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from '../sales-hopsital-new/types';
+import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
+import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.component';
 
 @Component({
     selector: 'app-sales-bill-kenya',
@@ -175,7 +174,7 @@ export class SalesHospitalKenyaComponent {
         public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         public _ConfigService: ConfigService,
-        public commonService:PrintserviceService
+        public commonService: PrintserviceService
     ) { }
 
     ngOnInit(): void {
@@ -1126,22 +1125,22 @@ export class SalesHospitalKenyaComponent {
         });
     }
     getFinalDiscperAmt() {
-   const formValues = this.ItemSubform.getRawValue();
+        const formValues = this.ItemSubform.getRawValue();
 
-            if (this.UserDicPerLimit > 0) {
+        if (this.UserDicPerLimit > 0) {
             const Disc = formValues.FinalDiscPer || 0;
-              if (+Disc > +this.UserDicPerLimit) {
+            if (+Disc > +this.UserDicPerLimit) {
                 Swal.fire({
-                  icon: 'warning',
-                  title: 'Discount Limit Exceeded',
-                  text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
-                  confirmButtonColor: '#d33'
+                    icon: 'warning',
+                    title: 'Discount Limit Exceeded',
+                    text: `Maximum allowed discount is ${this.UserDicPerLimit}%`,
+                    confirmButtonColor: '#d33'
                 });
                 this.ItemSubform.get("FinalDiscPer").setValue(this.UserDicPerLimit);
-              }
-            }  
+            }
+        }
 
-     
+
         const Disc = formValues.FinalDiscPer || 0;
         let NetAmount = formValues.netAmount;
         let FinalDiscAmt = '';
@@ -1797,14 +1796,14 @@ export class SalesHospitalKenyaComponent {
             }
         }
     }
-    viewgetsalesDraftReportPdf(element){
-    this.commonService.Onprint("DSalesId", element, "OpDraftPharmacyReceipt");
-    } 
+    viewgetsalesDraftReportPdf(element) {
+        this.commonService.Onprint("DSalesId", element, "OpDraftPharmacyReceipt");
+    }
     draftpatientlist: any = [];
     draftextMobilenolist: any = [];
     onAddDraftList(contact) {
         debugger
-         this.saveflag = false;
+        this.saveflag = false;
         console.log(contact)
         this.DraftID = contact.dsalesId;
         this.saleSelectedDatasource.data = [];
@@ -2101,19 +2100,19 @@ export class SalesHospitalKenyaComponent {
                 this.getBillSummary(result[0]?.AdmissionID || 0)
                 this.dsItemNameList1.data = result;
                 this.dsItemNameList1.data.forEach((contact) => {
-                       const m_data = {
-                         "first": 0,
-                         "rows": 999,
-                         "sortField": "ItemId",
-                         "sortOrder": 0,
-                         "filters": [
-                             { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
-                             { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" },
-                              { "fieldName": "PatientTypeId", "fieldValue": String(this.PatientTypeId), "opType": "Contains" }
-                         ],
-                         "exportType": "JSON",
-                         "columns": [{ "data": "string", "name": "string" }]
-                     };
+                    const m_data = {
+                        "first": 0,
+                        "rows": 999,
+                        "sortField": "ItemId",
+                        "sortOrder": 0,
+                        "filters": [
+                            { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
+                            { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" },
+                            { "fieldName": "PatientTypeId", "fieldValue": String(this.PatientTypeId), "opType": "Contains" }
+                        ],
+                        "exportType": "JSON",
+                        "columns": [{ "data": "string", "name": "string" }]
+                    };
                     // var reqData = {
                     //     ItemId: contact.ItemId,
                     //     StoreId: this._loggedService.currentUserValue.user.storeId,
@@ -2125,11 +2124,11 @@ export class SalesHospitalKenyaComponent {
                         console.log(response)
                         if (this.Tempchargeslist.length == 0) {
                             Swal.fire({
-                                 icon: 'warning',
-                                 title: 'Stock Unavailable',
-                                 html: `The item <strong>${contact.ItemName}</strong> is currently out of stock.`,
-                                 showConfirmButton: true,
-                                 confirmButtonText: 'OK'
+                                icon: 'warning',
+                                title: 'Stock Unavailable',
+                                html: `The item <strong>${contact.ItemName}</strong> is currently out of stock.`,
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
                             });
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
@@ -2739,35 +2738,35 @@ export class SalesHospitalKenyaComponent {
         }
     }
 
-           UserDicPerLimit: any = 0;
-          getAccessDetail() {
-              // debugger
-              const SelectQuery = {
-                  "first": 0,
-                  "rows": 999,
-                  "sortField": "AccessValueId",
-                  "sortOrder": 0,
-                  "filters": [
-                      {
-                          "fieldName": "LoginId",
-                          "fieldValue": String(this._loggedService.currentUserValue.userId), //"30091",
-                          "opType": "Equals"
-                      }
-                  ],
-                  "exportType": "JSON",
-                  "columns": []
-              }
-              this._salesService.getAccessDetailList(SelectQuery).subscribe(response => {
-                  const getUserAccesDetList = response.data as UserDetail[];
-                  console.log("get Access data:", getUserAccesDetList)
-      
-                  const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
-                  console.log(discountData)
-                  if (discountData?.accessValue) {
-                      this.UserDicPerLimit = discountData?.accessInputValue || 0
-                  }
-              });
-          }
+    UserDicPerLimit: any = 0;
+    getAccessDetail() {
+        // debugger
+        const SelectQuery = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "AccessValueId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "LoginId",
+                    "fieldValue": String(this._loggedService.currentUserValue.userId), //"30091",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        this._salesService.getAccessDetailList(SelectQuery).subscribe(response => {
+            const getUserAccesDetList = response.data as UserDetail[];
+            console.log("get Access data:", getUserAccesDetList)
+
+            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+            console.log(discountData)
+            if (discountData?.accessValue) {
+                this.UserDicPerLimit = discountData?.accessInputValue || 0
+            }
+        });
+    }
 }
 
 export class IndentList {

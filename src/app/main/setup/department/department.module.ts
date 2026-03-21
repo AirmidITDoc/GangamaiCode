@@ -12,7 +12,7 @@ const appRoutes: Routes = [
                 (m) => m.DepartmentMasterModule
             ),
     },
-   {
+    {
         path: "location-master",
         loadChildren: () =>
             import("./location-master/location-master.module").then(
@@ -41,7 +41,7 @@ const appRoutes: Routes = [
                 (m) => m.DischargetypeMasterModule
             ),
     },
-    { 
+    {
         path: "vendor-master",
         loadChildren: () => import("./vendor-master/vendor-master.module").then((m) => m.VendorMasterModule),
     },

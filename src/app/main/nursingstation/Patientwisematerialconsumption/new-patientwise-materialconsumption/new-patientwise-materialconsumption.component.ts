@@ -19,16 +19,16 @@ import Swal from 'sweetalert2';
 import { PatientwiseMaterialConsumptionService } from '../patientwise-material-consumption.service';
 
 @Component({
-  selector: 'app-new-patientwise-materialconsumption',
-  templateUrl: './new-patientwise-materialconsumption.component.html',
-  styleUrls: ['./new-patientwise-materialconsumption.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+    selector: 'app-new-patientwise-materialconsumption',
+    templateUrl: './new-patientwise-materialconsumption.component.html',
+    styleUrls: ['./new-patientwise-materialconsumption.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     [x: string]: any;
 
-    isPatientWiseConsumption = true; 
+    isPatientWiseConsumption = true;
     selectedStore: string;
     patientType: string;
     patientSearch: string;
@@ -37,60 +37,60 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
 
     hasSelectedContacts: boolean;
     data: any;
-    paidamt:number;
-    balanceamt:number;
+    paidamt: number;
+    balanceamt: number;
     screenFromString = 'admission-form';
     msg: any;
     DepartmentList: any = [];
     chargeslist: any = [];
-    autocompleteModeItemName:string = "Item";
-    autocompleteModeStoreName:string = "Store";
+    autocompleteModeItemName: string = "Item";
+    autocompleteModeStoreName: string = "Store";
     registeredForm: FormGroup;
     consumption: boolean = true;
-  
-//     displayedColumns = [
-//      'SrvcName',
-//     // 'ItemName',
-//     'BatchNo',
-//     'ExpDate',
-//     // 'Qty',
-//     'BalanceQty',
-//     'Used',
-//     'Rate',
-//     'TotalAmount',
-//     'Remark',
-    
-//     // 'action'
-//   ];
 
-//   tableColumns = [
-//     'PatientName',
-//     'IPDNo',
-  
-//   ];
+    //     displayedColumns = [
+    //      'SrvcName',
+    //     // 'ItemName',
+    //     'BatchNo',
+    //     'ExpDate',
+    //     // 'Qty',
+    //     'BalanceQty',
+    //     'Used',
+    //     'Rate',
+    //     'TotalAmount',
+    //     'Remark',
+
+    //     // 'action'
+    //   ];
+
+    //   tableColumns = [
+    //     'PatientName',
+    //     'IPDNo',
+
+    //   ];
 
     gridConfig: gridModel = {
-        apiUrl:"IPPrescription/PatietWiseMatetialList",
+        apiUrl: "IPPrescription/PatietWiseMatetialList",
         columnsList: [
-            { heading: "ItemName", key: "itemname", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "BatchNo", key: "batch", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "BalQty", key: "balqty", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "UsedQty", key: "usedqty", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "LandedRate", key: "LandedRate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PurchaseRate", key: "purchaseRate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "UnitMRP", key: "unitmrp", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "MRPTotalAmt", key: "mrptotalamt", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "StartDate", key: "startdate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "EndDate", key: "enddate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Remark", key: "reMark", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "ItemName", key: "itemname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BatchNo", key: "batch", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "BalQty", key: "balqty", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UsedQty", key: "usedqty", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "LandedRate", key: "LandedRate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PurchaseRate", key: "purchaseRate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UnitMRP", key: "unitmrp", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "MRPTotalAmt", key: "mrptotalamt", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "StartDate", key: "startdate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "EndDate", key: "enddate", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Remark", key: "reMark", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         action: gridActions.edit, callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, 
+                    },
                     {
                         action: gridActions.delete, callback: (data: any) => {
                             this._PatientwiseMaterialConsumptionService.deactivateTheStatus(data.materialConsumptionId).subscribe((response: any) => {
@@ -133,7 +133,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        
+
         this.myForm = this._NursingStationService.createMyForm();
         this.createForm();
         this.consumption = this.data.consumption
@@ -145,13 +145,13 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         //  this.getDepartmentList();
         //  this.getChargesList();
         // this.getBillingClassCombo();
-        
+
         // this.departmentFilterCtrl.valueChanges
         // .pipe(takeUntil(this._onDestroy))
         // .subscribe(() => {
         //   this.filterDepartment();
         // });
-    
+
     }
 
     onChangePatientType(event) {
@@ -187,7 +187,7 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
 
 
     getSelectedObjOP(obj) {
-        
+
         // if ((obj.regId ?? 0) > 0) {
         //     console.log("Visite Patient:",obj)
         //     this.vRegNo=obj.regNo
@@ -214,13 +214,13 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         //         this.registerObj = response;
         //         console.log(this.registerObj)
         //     });
-        
+
         //     }, 500);
         // }
     }
 
     getSelectedObjIP(obj) {
-        
+
         // if ((obj.regID ?? 0) > 0) {
         //     console.log("Admitted patient:",obj)
         //     this.vRegNo=obj.regNo
@@ -245,112 +245,112 @@ export class NewPatientwiseMaterialconsumptionComponent implements OnInit {
         //         this.registerObj = response;        
         //         console.log(this.registerObj)
         //     });
-        
+
         //     }, 500);
         // }
     }
 
-  dataSource = new MatTableDataSource<ChargesList>();
-  dataSource1 = new MatTableDataSource<patientinfo>();
-
-  
-  public departmentFilterCtrl: FormControl = new FormControl();
-  public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-  private _onDestroy = new Subject<void>();
-  myControl = new FormControl();
-  filteredOptions: any;
-  billingServiceList = [];
-  showAutocomplete = false;
-  
-  isDoctor: boolean = true;
-  Consession :boolean= true;
-
-  ConcessionReasonList: any = [];
-  FinalAmt:any;
-  DoctorFinalId = 'N';
-  b_price = '0';
-  b_qty = '1';
-  b_totalAmount = '';
-  b_netAmount = '';
-  B_netAmount: any;
-  b_disAmount = '0';
- 
-  totalamt = 0;
-  TotalAmount = 0;
-  concessionDiscPer: any = 0;
-  isExpanded: boolean = false;
-  totalAmtOfNetAmt: any;
-  interimArray: any = [];
-  formDiscPersc: any;
-  serviceId: number;
-  serviceName: string;
-  DoctornewId:any;
-
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-  @ViewChild('drawer') public drawer: MatDrawer;
-
-  isLoading: string = '';
-  selectedAdvanceObj: AdvanceDetailObj;
-  isFilteredDateDisabled: boolean = true;
-  currentDate = new Date();
-
-  
-  BillingClassCmbList: any = [];
-  IPBillingInfor: any = [];
-//   myForm: FormGroup;
-  myShowAdvanceForm: FormGroup;
-  concessionAmtOfNetAmt: any = 0;
-  netPaybleAmt: any;
-  TotalnetPaybleAmt:any;
-  drugList1: any = [];
-  // filteredDrugs$: Observable<ILookup[]>;
-  // filteredDrugs1$: Observable<ILookup[]>;
-  public filteredDose: ReplaySubject<any> = new ReplaySubject<any>(1);
-  public filteredDrug: ReplaySubject<any> = new ReplaySubject<any>(1);
-  public historyFilterCtrl: FormControl = new FormControl();
-  public diagnosisFilterCtrl: FormControl = new FormControl();
-  public doseFilterCtrl: FormControl = new FormControl();
-  public drugFilterCtrl: FormControl = new FormControl();
-  // private lookups: ILookup[] = [];
-  private nextPage$ = new Subject();
-  noOptionFound: boolean = false;
-  SrvcName:any;
-    
-//doctorone filter
-public doctorFilterCtrl: FormControl = new FormControl();
-public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
+    dataSource = new MatTableDataSource<ChargesList>();
+    dataSource1 = new MatTableDataSource<patientinfo>();
 
 
-  public serviceFilterCtrl: FormControl = new FormControl();
-  public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
+    public departmentFilterCtrl: FormControl = new FormControl();
+    public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+    private _onDestroy = new Subject<void>();
+    myControl = new FormControl();
+    filteredOptions: any;
+    billingServiceList = [];
+    showAutocomplete = false;
+
+    isDoctor: boolean = true;
+    Consession: boolean = true;
+
+    ConcessionReasonList: any = [];
+    FinalAmt: any;
+    DoctorFinalId = 'N';
+    b_price = '0';
+    b_qty = '1';
+    b_totalAmount = '';
+    b_netAmount = '';
+    B_netAmount: any;
+    b_disAmount = '0';
+
+    totalamt = 0;
+    TotalAmount = 0;
+    concessionDiscPer: any = 0;
+    isExpanded: boolean = false;
+    totalAmtOfNetAmt: any;
+    interimArray: any = [];
+    formDiscPersc: any;
+    serviceId: number;
+    serviceName: string;
+    DoctornewId: any;
+
+    @ViewChild(MatAccordion) accordion: MatAccordion;
+    @ViewChild('drawer') public drawer: MatDrawer;
+
+    isLoading: string = '';
+    selectedAdvanceObj: AdvanceDetailObj;
+    isFilteredDateDisabled: boolean = true;
+    currentDate = new Date();
 
 
-  //Print Bill
-  reportPrintObj: any;
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  reportPrintObjList: any[] = [];  
-  autocompletedepartment: string = "Department"; 
+    BillingClassCmbList: any = [];
+    IPBillingInfor: any = [];
+    //   myForm: FormGroup;
+    myShowAdvanceForm: FormGroup;
+    concessionAmtOfNetAmt: any = 0;
+    netPaybleAmt: any;
+    TotalnetPaybleAmt: any;
+    drugList1: any = [];
+    // filteredDrugs$: Observable<ILookup[]>;
+    // filteredDrugs1$: Observable<ILookup[]>;
+    public filteredDose: ReplaySubject<any> = new ReplaySubject<any>(1);
+    public filteredDrug: ReplaySubject<any> = new ReplaySubject<any>(1);
+    public historyFilterCtrl: FormControl = new FormControl();
+    public diagnosisFilterCtrl: FormControl = new FormControl();
+    public doseFilterCtrl: FormControl = new FormControl();
+    public drugFilterCtrl: FormControl = new FormControl();
+    // private lookups: ILookup[] = [];
+    private nextPage$ = new Subject();
+    noOptionFound: boolean = false;
+    SrvcName: any;
 
-  constructor(
-    private _fuseSidebarService: FuseSidebarService,
-    private changeDetectorRefs: ChangeDetectorRef,
-    public _NursingStationService:PatientwiseMaterialConsumptionService,
-    
-    private _ActRoute: Router,
-    public _matDialog: MatDialog,
-    private advanceDataStored: AdvanceDataStored,
-    public datePipe: DatePipe,
-    private accountService: AuthenticationService,
-    private dialogRef: MatDialogRef<NewPatientwiseMaterialconsumptionComponent>,
-    public _httpClient: HttpClient,
-    private formBuilder: UntypedFormBuilder,
-    
-    private router: Router, private route: ActivatedRoute
+    //doctorone filter
+    public doctorFilterCtrl: FormControl = new FormControl();
+    public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+
+    public serviceFilterCtrl: FormControl = new FormControl();
+    public filteredService: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+
+    //Print Bill
+    reportPrintObj: any;
+    subscriptionArr: Subscription[] = [];
+    printTemplate: any;
+    reportPrintObjList: any[] = [];
+    autocompletedepartment: string = "Department";
+
+    constructor(
+        private _fuseSidebarService: FuseSidebarService,
+        private changeDetectorRefs: ChangeDetectorRef,
+        public _NursingStationService: PatientwiseMaterialConsumptionService,
+
+        private _ActRoute: Router,
+        public _matDialog: MatDialog,
+        private advanceDataStored: AdvanceDataStored,
+        public datePipe: DatePipe,
+        private accountService: AuthenticationService,
+        private dialogRef: MatDialogRef<NewPatientwiseMaterialconsumptionComponent>,
+        public _httpClient: HttpClient,
+        private formBuilder: UntypedFormBuilder,
+
+        private router: Router, private route: ActivatedRoute
     ) { }
 
-  
+
     chkHealthcard(event) {
         if (event.checked) {
             this.Healthcardflag = true;
@@ -363,318 +363,318 @@ public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
         }
     }
 
-    getValidationMessages(){
-        return{
+    getValidationMessages() {
+        return {
             itemName: [],
             balqty: [],
             usedqty: [],
             remark: [],
-            Remark:[],
-            MRPTotalAmount:[],
-            PurTotalAmount:[],
-            LandedTotalAmount:[],
+            Remark: [],
+            MRPTotalAmount: [],
+            PurTotalAmount: [],
+            LandedTotalAmount: [],
 
         }
     }
 
- 
 
-  // Create registered form group
-  createForm() {
-    this.registeredForm = this.formBuilder.group({
-      Code: [Validators.required,
-      Validators.pattern("^[0-9]*$")],
-      ItemName: [Validators.required],
-      totalAmount: [Validators.required],
-      StoreId: [''],
-      SrvcName:[''],
-      ServiceId:[''],
-      ServiceName:[''],
-      netAmount: ['',Validators.pattern("^[0-9]*$")],
-      BQty: [''],
-      Qty:[],
-      Departmentid:[''],
-      Remark: [''],
-      TotalAmount: [Validators.pattern("^[0-9]*$")],
-    
-    });
-  }
 
- 
-  onOptionSelected(selectedItem) {
-    this.b_price = selectedItem.Price
-    this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
-    this.b_disAmount = '0';
-    this.b_netAmount = selectedItem.Price
-   
-    this.serviceId = selectedItem.ServiceId;
-    this.serviceName = selectedItem.ServiceName;
-    this.calculateTotalAmt();
-  }
+    // Create registered form group
+    createForm() {
+        this.registeredForm = this.formBuilder.group({
+            Code: [Validators.required,
+            Validators.pattern("^[0-9]*$")],
+            ItemName: [Validators.required],
+            totalAmount: [Validators.required],
+            StoreId: [''],
+            SrvcName: [''],
+            ServiceId: [''],
+            ServiceName: [''],
+            netAmount: ['', Validators.pattern("^[0-9]*$")],
+            BQty: [''],
+            Qty: [],
+            Departmentid: [''],
+            Remark: [''],
+            TotalAmount: [Validators.pattern("^[0-9]*$")],
 
-  updatedVal(e) {
-    if (e && e.length >= 2) {
-      this.showAutocomplete = true;
-    } else {
-      this.showAutocomplete = false;
+        });
     }
-    if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; }
-  }
 
 
-  BatchNo:any;
-  ExpDate:any;
-  getSelectedObj(obj) {
-  // ;
-   console.log('obj==', obj);
-   this.SrvcName=obj.ServiceName;
-    this.b_price=obj.Price;
-    this.b_totalAmount=obj.Price;
-    this.b_netAmount=obj.Price;
-    this.serviceId=obj.ServiceId;
-    this.BatchNo=obj.BatchNo;
-    this.ExpDate=obj.ExpDate;
-   
-  }
-  
-  getTotalAmount(element) {
-    // 
-    if (element.Price && element.Qty) {
-      let totalAmt;
-      totalAmt = parseInt(element.Price) * parseInt(element.Qty);
-      element.TotalAmt = totalAmt;
-      element.NetAmount = totalAmt;
-      this.totalAmtOfNetAmt = totalAmt;
-    
+    onOptionSelected(selectedItem) {
+        this.b_price = selectedItem.Price
+        this.b_totalAmount = selectedItem.Price  //* parseInt(this.b_qty)
+        this.b_disAmount = '0';
+        this.b_netAmount = selectedItem.Price
+
+        this.serviceId = selectedItem.ServiceId;
+        this.serviceName = selectedItem.ServiceName;
+        this.calculateTotalAmt();
     }
-  }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
 
-  openBillInfo() {
-    this.isExpanded = !this.isExpanded;
-  }
-
-  getNetAmtSum(element) {
-   
-    let netAmt;
-    netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    this.totalAmtOfNetAmt = netAmt;
-    this.netPaybleAmt = netAmt;
-    this.TotalnetPaybleAmt=netAmt;
-    // this.TotalnetPaybleAmt= this.netPaybleAmt.toString();
-  
-    return netAmt
-  }
-
-  getNetAmount() {
-
-    this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
-  }
-
-  tableElementChecked(event, element) {
-
-    if (event.checked) {
-      this.interimArray.push(element);
-    } else if (this.interimArray.length > 0) {
-      const index = this.interimArray.indexOf(element);
-      if (index !== -1) {
-        this.interimArray.splice(index, 1);
-      }
+    updatedVal(e) {
+        if (e && e.length >= 2) {
+            this.showAutocomplete = true;
+        } else {
+            this.showAutocomplete = false;
+        }
+        if (e.length == 0) { this.b_price = ''; this.b_totalAmount = '0'; this.b_netAmount = '0'; this.b_disAmount = '0'; }
     }
-  }
-
-  
-
-  onSaveFooter() {
-    
-   
-    this.isLoading = 'submit';
-    const Pathreporthsarr = [];
-    
-
-    const PatientHeaderObj = {};
-
-   
-    PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
-    PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
-    PatientHeaderObj['NetPayAmount'] = this.FinalAmt//this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
-      
-  }
 
 
-  OnSave() {
-    // console.log(this.myForm.get('WardName').value.RoomId)
-    this.isLoading = 'submit';
-    const submissionObj = {};
-    const materialconsumptionInsertarray = [];
-    const materialconsumptionInsert = {};
-   
-    // this.dataSource.data.forEach((element) => {
-      const insertIP_Prescription = {};
-      materialconsumptionInsert['materialConsumptionId'] = 0;
-      materialconsumptionInsert['fromStoreId'] =this.accountService.currentUserValue.storeId;
-      materialconsumptionInsert['consumptionDate'] = this.dateTimeObj.date;
-      materialconsumptionInsert['consumptionTime'] = this.dateTimeObj.time;
-      materialconsumptionInsert['landedTotalAmount'] = 0;
-      materialconsumptionInsert['purchaseTotal'] = 0;
-      materialconsumptionInsert['mrpTotal'] = 0;
-      materialconsumptionInsert['remark'] = 0;
-      materialconsumptionInsert['Addedby'] = this.accountService.currentUserValue.userId;
-     
-    submissionObj['materialconsumptionInsert'] = materialconsumptionInsert;
-    
-    console.log(submissionObj);
+    BatchNo: any;
+    ExpDate: any;
+    getSelectedObj(obj) {
+        // ;
+        console.log('obj==', obj);
+        this.SrvcName = obj.ServiceName;
+        this.b_price = obj.Price;
+        this.b_totalAmount = obj.Price;
+        this.b_netAmount = obj.Price;
+        this.serviceId = obj.ServiceId;
+        this.BatchNo = obj.BatchNo;
+        this.ExpDate = obj.ExpDate;
 
-      this._NursingStationService.MaterialConsumptionSave(submissionObj).subscribe(response => {
-        console.log(response);
-        this.toastr.success(response.message);
-      this._matDialog.closeAll();
-    }, (error) => {
-      this.toastr.error(error.message);
-    });
-  }
-  
-  @ViewChild('itemid') itemid: ElementRef;
-  @ViewChild('qty') qty: ElementRef;
-  @ViewChild('remark') remark: ElementRef;
-  
-  @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
-  
-  
-  onEnterItem(event): void {
-    if (event.which === 13) {
-      this.qty.nativeElement.focus();
-      // this.calculateTotalAmt()
     }
-  }
 
-  public onEnterqty(event): void {
-    
-    if (event.which === 13) {
-      this.remark.nativeElement.focus();
-      // this.calculateTotalAmt()
+    getTotalAmount(element) {
+        // 
+        if (element.Price && element.Qty) {
+            let totalAmt;
+            totalAmt = parseInt(element.Price) * parseInt(element.Qty);
+            element.TotalAmt = totalAmt;
+            element.NetAmount = totalAmt;
+            this.totalAmtOfNetAmt = totalAmt;
+
+        }
     }
-  }
-  add:boolean=false;
-  public onEnterremark(event): void {
-    
-    if (event.which === 13) {
-      // this.discamt.nativeElement.focus();
-      this.add=true;
-      this.addbutton.focus();
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
     }
-  }
-  
-  onSaveEntry() {
-    //   
-    this.isLoading = 'save';
-    this.dataSource.data = [];
-    this.chargeslist.push(
-      {
-        ChargesId:this.serviceId,
-        ServiceId: this.serviceId,
-        SrvcName: this.SrvcName,
-        BatchNo:this.BatchNo,
-        ExpDate:this.ExpDate,
-        Rate: parseFloat(this.b_price) || 0,
-        Used: parseInt(this.b_qty) || 0 ,
-        TotalAmount: parseFloat(this.b_totalAmount) || 0,
-        NetAmount: parseFloat(this.b_netAmount) || 0,
-        ClassName: 'ss',//this.selectedAdvanceObj.ClassName || '',
-        Remark:this.registeredForm.get('Remark').value || '',
-        ChargesAddedName:this.accountService.currentUserValue.userId || 1,
-      });
-    this.isLoading = '';
-    // console.log(this.chargeslist);
-    this.dataSource.data = this.chargeslist;
-    this.changeDetectorRefs.detectChanges();
-  this.add=false;
-      this.registeredForm.reset();
-    
-  }
 
+    openBillInfo() {
+        this.isExpanded = !this.isExpanded;
+    }
 
- 
-  displayWith(lookup) {
-    return lookup ? lookup.ItemName : null;
-  }
+    getNetAmtSum(element) {
 
-  onScroll() {
-    //Note: This is called multiple times after the scroll has reached the 80% threshold position.
-    this.nextPage$.next(true);
-  }
+        let netAmt;
+        netAmt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+        this.totalAmtOfNetAmt = netAmt;
+        this.netPaybleAmt = netAmt;
+        this.TotalnetPaybleAmt = netAmt;
+        // this.TotalnetPaybleAmt= this.netPaybleAmt.toString();
 
+        return netAmt
+    }
 
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-       this.dateTimeObj = dateTimeObj;
-  }
+    getNetAmount() {
 
-  onClearServiceAddList() {
-   
-    this.registeredForm.get('SrvcName').reset();
-    this.registeredForm.get('price').reset();
-    this.registeredForm.get('Qty').reset('1');
-    this.registeredForm.get('BQty').reset();
-   
-    this.registeredForm.get('Remark').reset();
-  }
+        this.netPaybleAmt = this.totalAmtOfNetAmt - this.concessionAmtOfNetAmt;
+    }
 
-  calculateTotalAmt() {
-   
-    if (this.b_price && this.b_qty) {
-      this.b_totalAmount = Math.round(parseInt(this.b_price) * parseInt(this.b_qty)).toString();
-      this.b_netAmount = this.b_totalAmount;
-     
+    tableElementChecked(event, element) {
+
+        if (event.checked) {
+            this.interimArray.push(element);
+        } else if (this.interimArray.length > 0) {
+            const index = this.interimArray.indexOf(element);
+            if (index !== -1) {
+                this.interimArray.splice(index, 1);
             }
-  }
-
- 
-   deleteTableRow(element) {
-   
-    const index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index,1);
-      this.dataSource.data = [];
-      this.dataSource.data = this.chargeslist;
+        }
     }
-    Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
-  }
-
-  showAllFilter(event) {
-    console.log(event.value);
-    this.isFilteredDateDisabled = event.value;
-  }
-
-  backNavigate() {
-    // this._location.back();
-  }
-
-  
-
-  onClose() {
-    this.dialogRef.close();
 
 
-    
-  }
+
+    onSaveFooter() {
+
+
+        this.isLoading = 'submit';
+        const Pathreporthsarr = [];
+
+
+        const PatientHeaderObj = {};
+
+
+        PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.PatientName;
+        PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.AdmissionID;
+        PatientHeaderObj['NetPayAmount'] = this.FinalAmt//this.registeredForm.get('FinalAmt').value;//this.TotalnetPaybleAmt,//this.FinalAmt || 0,//
+
+    }
+
+
+    OnSave() {
+        // console.log(this.myForm.get('WardName').value.RoomId)
+        this.isLoading = 'submit';
+        const submissionObj = {};
+        const materialconsumptionInsertarray = [];
+        const materialconsumptionInsert = {};
+
+        // this.dataSource.data.forEach((element) => {
+        const insertIP_Prescription = {};
+        materialconsumptionInsert['materialConsumptionId'] = 0;
+        materialconsumptionInsert['fromStoreId'] = this.accountService.currentUserValue.storeId;
+        materialconsumptionInsert['consumptionDate'] = this.dateTimeObj.date;
+        materialconsumptionInsert['consumptionTime'] = this.dateTimeObj.time;
+        materialconsumptionInsert['landedTotalAmount'] = 0;
+        materialconsumptionInsert['purchaseTotal'] = 0;
+        materialconsumptionInsert['mrpTotal'] = 0;
+        materialconsumptionInsert['remark'] = 0;
+        materialconsumptionInsert['Addedby'] = this.accountService.currentUserValue.userId;
+
+        submissionObj['materialconsumptionInsert'] = materialconsumptionInsert;
+
+        console.log(submissionObj);
+
+        this._NursingStationService.MaterialConsumptionSave(submissionObj).subscribe(response => {
+            console.log(response);
+            this.toastr.success(response.message);
+            this._matDialog.closeAll();
+        }, (error) => {
+            this.toastr.error(error.message);
+        });
+    }
+
+    @ViewChild('itemid') itemid: ElementRef;
+    @ViewChild('qty') qty: ElementRef;
+    @ViewChild('remark') remark: ElementRef;
+
+    @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
+
+
+    onEnterItem(event): void {
+        if (event.which === 13) {
+            this.qty.nativeElement.focus();
+            // this.calculateTotalAmt()
+        }
+    }
+
+    public onEnterqty(event): void {
+
+        if (event.which === 13) {
+            this.remark.nativeElement.focus();
+            // this.calculateTotalAmt()
+        }
+    }
+    add: boolean = false;
+    public onEnterremark(event): void {
+
+        if (event.which === 13) {
+            // this.discamt.nativeElement.focus();
+            this.add = true;
+            this.addbutton.focus();
+        }
+    }
+
+    onSaveEntry() {
+        //   
+        this.isLoading = 'save';
+        this.dataSource.data = [];
+        this.chargeslist.push(
+            {
+                ChargesId: this.serviceId,
+                ServiceId: this.serviceId,
+                SrvcName: this.SrvcName,
+                BatchNo: this.BatchNo,
+                ExpDate: this.ExpDate,
+                Rate: parseFloat(this.b_price) || 0,
+                Used: parseInt(this.b_qty) || 0,
+                TotalAmount: parseFloat(this.b_totalAmount) || 0,
+                NetAmount: parseFloat(this.b_netAmount) || 0,
+                ClassName: 'ss',//this.selectedAdvanceObj.ClassName || '',
+                Remark: this.registeredForm.get('Remark').value || '',
+                ChargesAddedName: this.accountService.currentUserValue.userId || 1,
+            });
+        this.isLoading = '';
+        // console.log(this.chargeslist);
+        this.dataSource.data = this.chargeslist;
+        this.changeDetectorRefs.detectChanges();
+        this.add = false;
+        this.registeredForm.reset();
+
+    }
+
+
+
+    displayWith(lookup) {
+        return lookup ? lookup.ItemName : null;
+    }
+
+    onScroll() {
+        //Note: This is called multiple times after the scroll has reached the 80% threshold position.
+        this.nextPage$.next(true);
+    }
+
+
+    dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+
+    onClearServiceAddList() {
+
+        this.registeredForm.get('SrvcName').reset();
+        this.registeredForm.get('price').reset();
+        this.registeredForm.get('Qty').reset('1');
+        this.registeredForm.get('BQty').reset();
+
+        this.registeredForm.get('Remark').reset();
+    }
+
+    calculateTotalAmt() {
+
+        if (this.b_price && this.b_qty) {
+            this.b_totalAmount = Math.round(parseInt(this.b_price) * parseInt(this.b_qty)).toString();
+            this.b_netAmount = this.b_totalAmount;
+
+        }
+    }
+
+
+    deleteTableRow(element) {
+
+        const index = this.chargeslist.indexOf(element);
+        if (index >= 0) {
+            this.chargeslist.splice(index, 1);
+            this.dataSource.data = [];
+            this.dataSource.data = this.chargeslist;
+        }
+        Swal.fire('Success !', 'ChargeList Row Deleted Successfully', 'success');
+    }
+
+    showAllFilter(event) {
+        console.log(event.value);
+        this.isFilteredDateDisabled = event.value;
+    }
+
+    backNavigate() {
+        // this._location.back();
+    }
+
+
+
+    onClose() {
+        this.dialogRef.close();
+
+
+
+    }
 
 }
 
 
 
 export class patientinfo {
-  
-  PatientName: string;
-  IPDNO: number;
 
-  constructor(patientinfo) {
-   
-    this.PatientName = patientinfo.PatientName || '';
-    this.IPDNO = patientinfo.IPDNO || '';
-  }
+    PatientName: string;
+    IPDNO: number;
+
+    constructor(patientinfo) {
+
+        this.PatientName = patientinfo.PatientName || '';
+        this.IPDNO = patientinfo.IPDNO || '';
+    }
 }
 
 

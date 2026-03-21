@@ -24,12 +24,12 @@ export class CityMasterService {
                     Validators.required,
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
-                ] 
+                ]
             ],
-            stateId: [0, 
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            stateId: [0,
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
@@ -43,7 +43,7 @@ export class CityMasterService {
         this.createCityForm();
     }
 
-   
+
 
     public cityMasterSave(Param: any) {
         if (Param.cityId) {

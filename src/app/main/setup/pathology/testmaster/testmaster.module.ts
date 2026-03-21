@@ -1,10 +1,12 @@
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatButtonModule } from "@angular/material/button";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from "@angular/material/card";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatRippleModule } from "@angular/material/core";
@@ -22,6 +24,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
+import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSortModule } from "@angular/material/sort";
@@ -36,12 +39,9 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { TestFormMasterComponent } from "./test-form-master/test-form-master.component";
+import { TestSettingsComponent } from './test-settings/test-settings.component';
 import { TestmasterComponent } from "./testmaster.component";
 import { TestmasterService } from "./testmaster.service";
-import { TestSettingsComponent } from './test-settings/test-settings.component';
-import { ScrollingModule } from "@angular/cdk/scrolling";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatSidenavModule } from "@angular/material/sidenav";
 
 const routes: Routes = [
     {

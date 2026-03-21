@@ -35,14 +35,14 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
-import { IssuetodeptAgainstIndentComponent } from './issuetodept-against-indent.component';
 import { IssueToDepartmentService } from '../issue-to-department/issue-to-department.service';
+import { IssuetodeptAgainstIndentComponent } from './issuetodept-against-indent.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: IssuetodeptAgainstIndentComponent
-  },
+    {
+        path: '**',
+        component: IssuetodeptAgainstIndentComponent
+    },
 ];
 
 @NgModule({

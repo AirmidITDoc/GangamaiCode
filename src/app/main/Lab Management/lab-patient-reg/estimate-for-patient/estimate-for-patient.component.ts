@@ -1,21 +1,21 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { LabPatientRegService } from '../lab-patient-reg.service';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { DatePipe } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { LabPatientList } from '../lab-patient-reg.component';
-import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
-import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2';
-import { gridColumnTypes } from 'app/core/models/tableActions';
 import { OperatorComparer, gridModel } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ChargesList } from 'app/main/ipd/ip-search-list/ip-search-list.component';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { LabPatientList } from '../lab-patient-reg.component';
+import { LabPatientRegService } from '../lab-patient-reg.service';
 
 @Component({
     selector: 'app-estimate-for-patient',
@@ -31,7 +31,7 @@ export class EstimateForPatientComponent {
     registerObj = new LabPatientList({});
     ApiURL: any = '';
     myFilterbillform: FormGroup;
-      screenFromString = 'ExternalLab-form';
+    screenFromString = 'ExternalLab-form';
     // All dropdown modes 
     // autocompleteModepatienttype: string = "PatientType";
     autocompleteModegender: string = "Gender";
@@ -78,7 +78,7 @@ export class EstimateForPatientComponent {
         public _matDialog: MatDialog, private commonService: PrintserviceService,
         public datePipe: DatePipe,
         public toastrService: ToastrService,
-         public dialogRef: MatDialogRef<EstimateForPatientComponent>,
+        public dialogRef: MatDialogRef<EstimateForPatientComponent>,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private accountService: AuthenticationService,
         public _formbuilder: UntypedFormBuilder, private formBuilder: FormBuilder,
@@ -379,7 +379,7 @@ export class EstimateForPatientComponent {
         this.dstable1.data.forEach(item => {
             this.estimatedetailArray.push(this.createtEstimateDetails(item));
         });
-debugger
+        debugger
         // const allPricesPositive = this.dstable1.data.every(row => Number(row.Price) > 0);
         // if (!allPricesPositive) {
         //     this.toastr.warning('Please Enter Price Greater >  0.', 'Warning!', {
@@ -443,15 +443,15 @@ debugger
 
         // }
     }
-dateTimeObj:any
-      getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
+    dateTimeObj: any
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
 
 
-   onClose() {
+    onClose() {
         this.dialogRef.close();
-  }
+    }
     UnitId: any = this.accountService.currentUserValue.user.unitId;
     // 
     filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {

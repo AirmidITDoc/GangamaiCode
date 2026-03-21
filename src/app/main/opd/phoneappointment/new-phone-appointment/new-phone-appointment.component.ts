@@ -5,11 +5,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../../registration/registration.component';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
-import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-phone-appointment',
@@ -60,7 +60,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
         public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
         public datePipe: DatePipe) {
 
-       
+
     }
 
     ngOnInit(): void {
@@ -70,7 +70,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
         this.phoneappForm = this._phoneAppointListService.createphoneForm();
         this.phoneappForm.markAllAsTouched();
         this.searchFormGroup = this.createSearchForm();
-         
+
 
         if (this.data) {
             this.isEditMode = true;
@@ -94,10 +94,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
             this.phoneappForm.get('phAppTime')?.setValue(currentDateTime);
             this.phoneappForm.get('endTime')?.setValue(currentDateTime);
             this.phoneappForm.get('startTime').setValue(currentDateTime);
-           
+
         }
 
-      
+
     }
 
     createSearchForm(): FormGroup {

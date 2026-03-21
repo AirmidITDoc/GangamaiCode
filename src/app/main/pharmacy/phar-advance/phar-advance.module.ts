@@ -39,10 +39,10 @@ import { NewIPRefundAdvanceComponent } from './new-iprefund-advance/new-iprefund
 import { PharAdvanceComponent } from './phar-advance.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: PharAdvanceComponent 
-  },
+    {
+        path: '**',
+        component: PharAdvanceComponent
+    },
 ];
 
 @NgModule({

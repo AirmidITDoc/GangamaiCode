@@ -289,8 +289,8 @@ export class DashboardService {
 
     }
 
-    
- public getcashlessDashboard(params) {
+
+    public getcashlessDashboard(params) {
 
         return this._httpClient.GetData("Dashboard/Cashless-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
 

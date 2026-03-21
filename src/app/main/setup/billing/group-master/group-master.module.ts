@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [GroupMasterService, DatePipe]
 })
-export class GroupMasterModule {}
+export class GroupMasterModule { }

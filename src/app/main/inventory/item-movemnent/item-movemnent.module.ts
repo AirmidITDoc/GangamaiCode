@@ -38,10 +38,10 @@ import { ItemMovemnentComponent } from './item-movemnent.component';
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: ItemMovemnentComponent 
-  },
+    {
+        path: '**',
+        component: ItemMovemnentComponent
+    },
 ];
 
 @NgModule({

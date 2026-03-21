@@ -14,8 +14,8 @@ import { GenericmasterService } from '../genericmaster.service';
 })
 export class NewGnericMasterComponent implements OnInit {
 
-  genericForm:FormGroup;
-  isActive:boolean=true;
+    genericForm: FormGroup;
+    isActive: boolean = true;
 
     constructor(
         public _GenericMasterService: GenericmasterService,
@@ -25,18 +25,17 @@ export class NewGnericMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.genericForm=this._GenericMasterService.createGenericForm();
+        this.genericForm = this._GenericMasterService.createGenericForm();
         this.genericForm.markAllAsTouched();
-        if((this.data?.genericId??0) > 0)
-            {
-            this.isActive=this.data.isActive
+        if ((this.data?.genericId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.genericForm.patchValue(this.data);
         }
     }
 
     onSubmit() {
-        
-      if (!this.genericForm.invalid) {
+
+        if (!this.genericForm.invalid) {
             console.log(this.genericForm.value)
             this._GenericMasterService.genericMasterInsert(this.genericForm.value).subscribe((response) => {
                 this.onClear(true);
@@ -66,8 +65,8 @@ export class NewGnericMasterComponent implements OnInit {
     }
 
 
-    getValidationMessages(){
-        return{
+    getValidationMessages() {
+        return {
             genericName: [
                 { name: "required", Message: "Generic Name is required" },
                 { name: "maxlength", Message: "Generic Name should not be greater than 50 char." },

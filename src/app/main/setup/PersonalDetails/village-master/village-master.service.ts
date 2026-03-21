@@ -16,23 +16,23 @@ export class VillageMasterService {
     ) {
         this.myForm = this.createVillageForm();
         this.myformSearch = this.createSearchForm();
-        
+
     }
 
     createVillageForm(): FormGroup {
         return this._formBuilder.group({
-            villageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            villageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             villageName: ["",
-                [ Validators.required,
-                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                    this._FormvalidationserviceService.allowEmptyStringValidator()
-                   ]
+                [Validators.required,
+                // Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                this._FormvalidationserviceService.allowEmptyStringValidator()
+                ]
             ],
-            talukaName: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            isActive:[true,[Validators.required]]
+            talukaName: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isActive: [true, [Validators.required]]
         });
     }
-  
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             VillageNameSearch: [""],

@@ -5,16 +5,16 @@ import { ToastrService } from 'ngx-toastr';
 import { DrugmasterService } from '../drugmaster.service';
 
 @Component({
-  selector: 'app-new-drug-master',
-  templateUrl: './new-drug-master.component.html',
-  styleUrls: ['./new-drug-master.component.scss']
+    selector: 'app-new-drug-master',
+    templateUrl: './new-drug-master.component.html',
+    styleUrls: ['./new-drug-master.component.scss']
 })
 export class NewDrugMasterComponent implements OnInit {
 
-    drugForm:FormGroup;
-    isActive:boolean=true;
+    drugForm: FormGroup;
+    isActive: boolean = true;
 
-    autocompleteModeClass: string = "Class";  
+    autocompleteModeClass: string = "Class";
     autocompleteModeGenericName: string = "ItemGeneric";
 
     constructor(
@@ -25,19 +25,18 @@ export class NewDrugMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.drugForm=this._durgMasterService.createDrugForm();
+        this.drugForm = this._durgMasterService.createDrugForm();
         this.drugForm.markAllAsTouched();
-        if((this.data?.drugId??0) > 0)
-            {
-            this.isActive=this.data.isActive
+        if ((this.data?.drugId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.drugForm.patchValue(this.data);
         }
     }
 
-  
+
     onSubmit() {
-        
-      if (!this.drugForm.invalid) {
+
+        if (!this.drugForm.invalid) {
             console.log(this.drugForm.value)
             this._durgMasterService.drugMasterSave(this.drugForm.value).subscribe((response) => {
                 this.onClear(true);
@@ -67,20 +66,20 @@ export class NewDrugMasterComponent implements OnInit {
         this.dialogRef.close(val);
     }
 
-    ClassId=0;
-    GenericId=0;
+    ClassId = 0;
+    GenericId = 0;
 
-    selectChangeClass(obj: any){
+    selectChangeClass(obj: any) {
         console.log(obj);
-        this.ClassId=obj.value
+        this.ClassId = obj.value
     }
-    selectChangeGeneric(obj: any){
+    selectChangeGeneric(obj: any) {
         console.log(obj);
-        this.ClassId=obj.value
+        this.ClassId = obj.value
     }
-        
-    getValidationMessages(){
-        return{
+
+    getValidationMessages() {
+        return {
             drugName: [
                 { name: "required", Message: "Drug Name is required" },
                 { name: "maxlength", Message: "Drug name should not be greater than 50 char." },
@@ -89,7 +88,7 @@ export class NewDrugMasterComponent implements OnInit {
             classId: [
                 { name: "required", Message: "Class Name is required" },
             ],
-            genericId : [
+            genericId: [
                 { name: "required", Message: "Generic Name is required" },
             ]
         }

@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [CurrencymasterService, DatePipe]
 })
-export class CurrencyMasterModule {}
+export class CurrencyMasterModule { }

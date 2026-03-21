@@ -30,24 +30,24 @@ export class OtReservationService {
         });
     }
 
-//      "otreservationId": 0,
-//   "opipid": 0,
-//   "surgeryDate": "Unknown Type: DateTime",
-//   "createdby": 0,
-//   "reason": "string",
-//   "newOTReservationId": 0
+    //      "otreservationId": 0,
+    //   "opipid": 0,
+    //   "surgeryDate": "Unknown Type: DateTime",
+    //   "createdby": 0,
+    //   "reason": "string",
+    //   "newOTReservationId": 0
 
     CreateForm() {
         return this._formBuilder.group({
-            otreservationId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            otreservationId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isAnaesthetistPaid: [false],
             isMaterialReplacement: [false],
-            PatientName:'',
-            surgeryDate:[new Date().toISOString()],
-            reason:'',
-            opipid:'',
-            createdby:0,
-            newOTReservationId:0
+            PatientName: '',
+            surgeryDate: [new Date().toISOString()],
+            reason: '',
+            opipid: '',
+            createdby: 0,
+            newOTReservationId: 0
         })
     }
 
@@ -56,9 +56,9 @@ export class OtReservationService {
     }
 
     public getReportView(Param) {
-         return this._httpClient.PostData("Report/ViewReportFromDB", Param);
+        return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
-     public getMultiReportView(Param) {
+    public getMultiReportView(Param) {
         return this._httpClient.PostData("Report/NewMultiReport", Param);
     }
     public getotRequestById(Id) {
@@ -118,7 +118,7 @@ export class OtReservationService {
 
     public statusUpdate(Param: any) {
         // if (Param.otreservationId) {
-            return this._httpClient.PostData("OTReservation/UpdateOTReservationHeader/", Param);
+        return this._httpClient.PostData("OTReservation/UpdateOTReservationHeader/", Param);
         // }
     }
 }

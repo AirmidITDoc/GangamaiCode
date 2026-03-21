@@ -40,10 +40,10 @@ import { PatientrefvisitService } from './patientrefvisit.service';
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: PatientRefVisitComponent,
-  },
+    {
+        path: "**",
+        component: PatientRefVisitComponent,
+    },
 ];
 
 @NgModule({

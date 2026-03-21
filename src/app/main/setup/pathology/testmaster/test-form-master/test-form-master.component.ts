@@ -1,22 +1,18 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MatAutocomplete } from "@angular/material/autocomplete";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from "ngx-toastr";
-import { Observable, ReplaySubject, Subject } from "rxjs";
-import { TemplatedetailList, TestList, TestMaster } from "../testmaster.component";
-import { TestmasterService } from "../testmaster.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
-import { element } from "protractor";
+import { ToastrService } from "ngx-toastr";
 import Swal from "sweetalert2";
+import { TemplatedetailList, TestList } from "../testmaster.component";
+import { TestmasterService } from "../testmaster.service";
 
 
 
@@ -91,7 +87,7 @@ export class TestFormMasterComponent implements OnInit {
             this.TemplateId = this.registerObj.TemplateId;
             this.isActive = this.registerObj.isActive;
             this.vsuggestionNote = this.registerObj?.suggestionNote || '';
-            this.ServiceID=this.registerObj.serviceID;
+            this.ServiceID = this.registerObj.serviceID;
 
 
             if (this.registerObj.isTemplateTest === "0" && !this.registerObj.isSubTest) {

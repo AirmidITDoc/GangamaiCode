@@ -1,31 +1,28 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { NewAreaComponent } from 'app/main/setup/PersonalDetails/area-master/new-area/new-area.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { SearchInforObj1 } from '../../op-search-list/opd-search-list/opd-search-list.component';
 import { RegInsert } from '../../registration/registration.component';
+import { AppointmentBillingComponent } from '../appointment-billing/appointment-billing.component';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { ImageViewComponent } from '../image-view/image-view.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import Swal from 'sweetalert2';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { ConfigService } from 'app/core/services/config.service';
-import { MatTableDataSource } from '@angular/material/table';
-import { VisitMaster1 } from '../appointment-list.component';
-import { AreaMasterComponent } from 'app/main/setup/PersonalDetails/area-master/area-master.component';
-import { NewAreaComponent } from 'app/main/setup/PersonalDetails/area-master/new-area/new-area.component';
-import { AppointmentBillingComponent } from '../appointment-billing/appointment-billing.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { SearchInforObj1 } from '../../op-search-list/opd-search-list/opd-search-list.component';
 
 @Component({
     selector: 'app-new-appointment',
@@ -915,24 +912,24 @@ export class NewAppointmentComponent implements OnInit {
 
 
     }
-doctorName=''
-       patientDetail: any = new RegInsert({});
+    doctorName = ''
+    patientDetail: any = new RegInsert({});
     OnBillPayment() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         debugger
         // this.patientDetail.doctorId = this.VisitFormGroup.get('ConsultantDocId').value
         this.patientDetail.doctorname = this.doctorName
-         this.patientDetail.patientName = this.personalFormGroup.get('FirstName').value + " " + this.personalFormGroup.get('LastName').value
+        this.patientDetail.patientName = this.personalFormGroup.get('FirstName').value + " " + this.personalFormGroup.get('LastName').value
         this.patientDetail.departmentName = this.departmentName
-        this.patientDetail.regNo =this.RegNo
-        this.patientDetail.visitId=this.VisitId
-        this.patientDetail.tariffId=this.VisitFormGroup.get('TariffId').value
-        this.patientDetail.hospitalId=this.VisitFormGroup.get('UnitId').value
-        this.patientDetail.ageYear=this.ageYear
+        this.patientDetail.regNo = this.RegNo
+        this.patientDetail.visitId = this.VisitId
+        this.patientDetail.tariffId = this.VisitFormGroup.get('TariffId').value
+        this.patientDetail.hospitalId = this.VisitFormGroup.get('UnitId').value
+        this.patientDetail.ageYear = this.ageYear
 
 
-        console.log( this.patientDetail)
+        console.log(this.patientDetail)
         this.advanceDataStored.storage = new SearchInforObj1(this.patientDetail);
 
         const dialogRef = this._matDialog.open(AppointmentBillingComponent, {
@@ -1069,9 +1066,9 @@ doctorName=''
         this.DosctorId = row.DoctorId;
         this.VisitFlagDisp = false;
     }
-departmentName=''
+    departmentName = ''
     selectChangedepartment(obj: any) {
-         this.departmentId = obj.value;
+        this.departmentId = obj.value;
         this.departmentName = obj.text;
 
         if (obj.value) {

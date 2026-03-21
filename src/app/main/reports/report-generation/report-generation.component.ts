@@ -11,7 +11,6 @@ import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { ToastrService } from "ngx-toastr";
 import { Observable } from "rxjs";
 import { ReportService } from "./service/report-generation.service";
-import { Validators } from "@angular/forms";
 
 
 interface FoodNode {

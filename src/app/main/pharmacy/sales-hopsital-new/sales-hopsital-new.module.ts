@@ -34,15 +34,15 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { SalesHospitalNewComponent } from './sales-hopsital-new.component';
 import { PrescriptionComponent } from './prescription/prescription.component';
-import { SubstitutesComponent } from './substitutes/substitutes.component'; 
+import { SalesHospitalNewComponent } from './sales-hopsital-new.component';
+import { SubstitutesComponent } from './substitutes/substitutes.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SalesHospitalNewComponent 
-  },
+    {
+        path: '**',
+        component: SalesHospitalNewComponent
+    },
 ];
 
 @NgModule({
@@ -50,7 +50,7 @@ const routes: Routes = [
         SalesHospitalNewComponent,
         PrescriptionComponent,
         SubstitutesComponent
-         
+
     ],
     imports: [
         CommonModule,

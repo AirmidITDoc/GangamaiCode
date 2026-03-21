@@ -18,6 +18,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { ConfigService } from 'app/core/services/config.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { MLCInformationComponent } from '../Admission/admission/mlcinformation/mlcinformation.component';
@@ -28,7 +29,6 @@ import { DischargeSummaryTemplateComponent } from './discharge-summary-template/
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -61,8 +61,8 @@ export class IPSearchListComponent implements OnInit {
     @ViewChild('mrdInFileStatus') mrdInFileStatus!: TemplateRef<any>;
     @ViewChild('isAnaesthetistPaidStatus') isAnaesthetistPaidStatus!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-       @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>; 
-      @ViewChild('isMaterialReplStatus') isMaterialReplStatus!: TemplateRef<any>; 
+    @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>;
+    @ViewChild('isMaterialReplStatus') isMaterialReplStatus!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
@@ -72,7 +72,7 @@ export class IPSearchListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'mrdInFileStatus')!.template = this.mrdInFileStatus;
         this.gridConfig.columnsList.find(col => col.key === 'isAnaesthetistPaid')!.template = this.isAnaesthetistPaidStatus;
         this.gridConfig.columnsList.find(col => col.key === 'isReimbursement')!.template = this.actionisReimbursement;
-             this.gridConfig.columnsList.find(col => col.key === 'isMaterialReplacement')!.template = this.isMaterialReplStatus;  
+        this.gridConfig.columnsList.find(col => col.key === 'isMaterialReplacement')!.template = this.isMaterialReplStatus;
     }
 
     allcolumns = [
@@ -91,11 +91,15 @@ export class IPSearchListComponent implements OnInit {
         { heading: "Advance Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Charges Amount", key: "chargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Payer Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "MRD-InFileStatus", key: "mrdInFileStatus", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 150},
-        { heading: "Anaesthesia", key: "isAnaesthetistPaid", sort: true, align: 'left', emptySign: 'NA',
-             type: gridColumnTypes.template , width: 120,  template: this.isAnaesthetistPaidStatus }, 
-     { heading: "Material Replcement", key: "isMaterialReplacement", sort: true, align: 'left', emptySign: 'NA',
-             type: gridColumnTypes.template , width: 140,  template: this.isMaterialReplStatus }, 
+        { heading: "MRD-InFileStatus", key: "mrdInFileStatus", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
+        {
+            heading: "Anaesthesia", key: "isAnaesthetistPaid", sort: true, align: 'left', emptySign: 'NA',
+            type: gridColumnTypes.template, width: 120, template: this.isAnaesthetistPaidStatus
+        },
+        {
+            heading: "Material Replcement", key: "isMaterialReplacement", sort: true, align: 'left', emptySign: 'NA',
+            type: gridColumnTypes.template, width: 140, template: this.isMaterialReplStatus
+        },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.template, width: 200,
             template: this.actionButtonTemplate  // Assign ng-template to the column

@@ -48,13 +48,12 @@ import { NewAdmissionComponent } from './new-admission/new-admission.component';
 // import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTimepickerModule } from 'mat-timepicker';
-import { AdmissionCardviewComponent } from './admission-cardview/admission-cardview.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: AdmissionComponent 
-  },
+    {
+        path: '**',
+        component: AdmissionComponent
+    },
 ];
 
 @NgModule({
@@ -64,8 +63,8 @@ const routes: Routes = [
         EditAdmissionComponent,
         MLCInformationComponent,
         SubCompanyTPAInfoComponent, IPDSearcPatienthComponent, NewAdmissionComponent,
-                CompanyInformationComponent,
-              
+        CompanyInformationComponent,
+
         // AdmissionViewComponent
     ],
     imports: [
@@ -111,7 +110,7 @@ const routes: Routes = [
         MatChipsModule,
         MatTooltipModule,
         MatButtonToggleModule,
-         MatTimepickerModule,
+        MatTimepickerModule,
     ],
     providers: [
         AdmissionService,

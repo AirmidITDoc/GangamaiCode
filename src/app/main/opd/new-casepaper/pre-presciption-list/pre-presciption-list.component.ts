@@ -10,89 +10,89 @@ import { CasepaperService } from '../casepaper.service';
 import { MedicineItemList } from '../new-casepaper.component';
 
 @Component({
-  selector: 'app-pre-presciption-list',
-  templateUrl: './pre-presciption-list.component.html',
-  styleUrls: ['./pre-presciption-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+    selector: 'app-pre-presciption-list',
+    templateUrl: './pre-presciption-list.component.html',
+    styleUrls: ['./pre-presciption-list.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class PrePresciptionListComponent implements OnInit {
 
-  displayedItemColumn: string[] = [
-    'ItemName',
-    'DoseName',
-    'Days',
-    'Remark'
-  ]
-  RegId: any;
-  visitData: any[] = [];
-  groupedData: { [key: string]: any[] } = {};
-  dsItemList = new MatTableDataSource<MedicineItemList>();
+    displayedItemColumn: string[] = [
+        'ItemName',
+        'DoseName',
+        'Days',
+        'Remark'
+    ]
+    RegId: any;
+    visitData: any[] = [];
+    groupedData: { [key: string]: any[] } = {};
+    dsItemList = new MatTableDataSource<MedicineItemList>();
 
-  patients: any[] = []; // Using 'any' type for simplicity
-  uniqueDates: string[] = [];
+    patients: any[] = []; // Using 'any' type for simplicity
+    uniqueDates: string[] = [];
 
-  constructor(
-    private _CasepaperService: CasepaperService,
-    private _formBuilder: UntypedFormBuilder,
-    public _matDialog: MatDialog,
-    public toastr: ToastrService,
-    private _loggedService: AuthenticationService,
-    public datePipe: DatePipe,
-    public dialogRef: MatDialogRef<PrePresciptionListComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+    constructor(
+        private _CasepaperService: CasepaperService,
+        private _formBuilder: UntypedFormBuilder,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        private _loggedService: AuthenticationService,
+        public datePipe: DatePipe,
+        public dialogRef: MatDialogRef<PrePresciptionListComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+    ) { }
 
-  ngOnInit(): void {
-    // 
-    if (this.data) {
-      this.RegId = this.data.Obj
-      console.log(this.data.Obj)
-    }
-    // this.getPrescriptionListFill1(); 
-    this.getnewVisistListDemo(this.data);
-  }
-
-  getnewVisistListDemo(obj) {
-    // 
-    const D_data = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "VisitId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "RegID",
-          "fieldValue": String(this.RegId),//"40773",	
-          "opType": "Equals"
+    ngOnInit(): void {
+        // 
+        if (this.data) {
+            this.RegId = this.data.Obj
+            console.log(this.data.Obj)
         }
-      ],
-      "Columns": [],
-      "exportType": "JSON"
+        // this.getPrescriptionListFill1(); 
+        this.getnewVisistListDemo(this.data);
     }
-    console.log(D_data);
-    this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
-      this.patients = Visit?.data as MedicineItemList[];
-      this.extractUniqueDates();
-      console.log("visitPatient info:", this.patients)
-    });
-  }
 
-  extractUniqueDates() {
-    const dates = this.patients.map(patient => patient.visitDate);
-    this.uniqueDates = Array.from(new Set(dates));
-  }
-  getFirstPatientForDate(date: string) {
-    return this.patients.filter(patient => patient.visitDate === date); //
-  }
+    getnewVisistListDemo(obj) {
+        // 
+        const D_data = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "VisitId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "RegID",
+                    "fieldValue": String(this.RegId),//"40773",	
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+        console.log(D_data);
+        this._CasepaperService.getRtrvVisitedListdemo(D_data).subscribe(Visit => {
+            this.patients = Visit?.data as MedicineItemList[];
+            this.extractUniqueDates();
+            console.log("visitPatient info:", this.patients)
+        });
+    }
 
-  CopyPresciptionList: any = [];
-  CopyList: any = [];
-  getCopyPreviouseList(date: string) {
-    this.CopyPresciptionList.date = [];
-    this.CopyList = this.patients.filter(patient => patient.visitDate === date); // 
-    console.log(this.CopyList)
-    this.dialogRef.close(this.CopyList);
-  }
+    extractUniqueDates() {
+        const dates = this.patients.map(patient => patient.visitDate);
+        this.uniqueDates = Array.from(new Set(dates));
+    }
+    getFirstPatientForDate(date: string) {
+        return this.patients.filter(patient => patient.visitDate === date); //
+    }
+
+    CopyPresciptionList: any = [];
+    CopyList: any = [];
+    getCopyPreviouseList(date: string) {
+        this.CopyPresciptionList.date = [];
+        this.CopyList = this.patients.filter(patient => patient.visitDate === date); // 
+        console.log(this.CopyList)
+        this.dialogRef.close(this.CopyList);
+    }
 
 }

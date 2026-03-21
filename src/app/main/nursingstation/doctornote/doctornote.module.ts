@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from '@angular/material/card';
@@ -40,13 +41,12 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DoctornoteComponent } from './doctornote.component';
 import { DoctornoteService } from './doctornote.service';
 import { NewTemplateComponent } from './new-template/new-template.component';
-import { MatBadgeModule } from '@angular/material/badge';
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: DoctornoteComponent,
-  },
+    {
+        path: "**",
+        component: DoctornoteComponent,
+    },
 ];
 
 @NgModule({

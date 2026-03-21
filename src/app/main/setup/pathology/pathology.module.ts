@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { OutsourceLabDetailsComponent } from './outsource-lab-details/outsource-lab-details.component';
 
 const appRoutes: Routes = [
     {

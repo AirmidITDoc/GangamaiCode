@@ -66,4 +66,4 @@ const routes: Routes = [
     ],
     providers: [SubtpaCompanyMasterService, DatePipe]
 })
-export class SubtpaCompanyMasterModule {}
+export class SubtpaCompanyMasterModule { }

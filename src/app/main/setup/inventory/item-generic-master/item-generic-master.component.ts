@@ -5,11 +5,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { ItemGenericMasterService } from "./item-generic-master.service";
 import { NewGenericComponent } from "./new-generic/new-generic.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-item-generic-master",
@@ -20,25 +20,25 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class ItemGenericMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.GenericMaster, permissionType.Add);
-        
+
     genericForm: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
-           permissionCode: permissionCodes.GenericMaster,
+        permissionCode: permissionCodes.GenericMaster,
         apiUrl: "GenericMaster/List",
         columnsList: [
             { heading: "GenericName", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA' },
-           { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
                         // action: gridActions.edit, callback: (data: any) => {
                         //     this.onSave(data);
                         // }
-                          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.GenericMaster, permissionType.Edit), callback: (data: any) => {
-                                                    this.onSave(data);
-                                                }
+                        action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.GenericMaster, permissionType.Edit), callback: (data: any) => {
+                            this.onSave(data);
+                        }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ItemGenericMasterService.deactivateTheStatus(data.itemGenericNameId).subscribe((response: any) => {

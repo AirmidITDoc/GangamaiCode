@@ -8,7 +8,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
 import { IndentList } from 'app/main/pharmacy/sales/sales.component';
+import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
 import { SupplierMaster } from 'app/main/setup/inventory/supplier-master/supplier-master.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
@@ -18,1310 +20,1308 @@ import Swal from 'sweetalert2';
 import { GRNFormModel } from '../../good-receiptnote/new-grn/types';
 import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseOrderService } from '../purchase-order.service';
-import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from './types';
-import { ConfigService } from 'app/core/services/config.service';
 import { PurchaseRequisitionlistComponent } from './purchase-requisitionlist/purchase-requisitionlist.component';
-import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
+import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from './types';
 // import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
 
 @Component({
-  selector: 'app-new-purchaseorder',
-  templateUrl: './new-purchaseorder.component.html',
-  styleUrls: ['./new-purchaseorder.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-new-purchaseorder',
+    templateUrl: './new-purchaseorder.component.html',
+    styleUrls: ['./new-purchaseorder.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewPurchaseorderComponent {
 
 
-  userFormGroup: FormGroup;   // Item Calculation
-  FinalPurchaseform: FormGroup;   // Footer Calculation
-  PurchaseInsertform: FormGroup;   // Purchase Save Form
+    userFormGroup: FormGroup;   // Item Calculation
+    FinalPurchaseform: FormGroup;   // Footer Calculation
+    PurchaseInsertform: FormGroup;   // Purchase Save Form
 
-  autocompletestore: string = "Store";
-  autocompleteSupplier: string = "SupplierMaster"
-  autocompleteModeGSTType: string = "GstCalcType";
-  autocompletepaymentterm: string = "TermofPayment";
-  autocompletepaymentmode: string = "PaymentMode";
-  labelPosition: 'before' | 'after' = 'after';
-  sIsLoading: string = '';
-  screenFromString = 'Common-form';
-  UmoId = 0
-  Umoname: any;
-  ItemID: any = "0";
-  vDefRate: any = 0;
-  vGSTAmt: any = 0.0;
-  CGSTAmount: any;
-  IGSTAmount: any;
-  SGSTAmount: any = 0.0;
-  optionsInc = null;
-  VatPercentage: any = 0.0;
-  StoreId_1: any = 0;
-  BatchNo: any;
-  BatchExpDate: any;
-  UnitMRP: any;
-  vQty: any = 1;
-  IssQty: any;
-  Bal: any;
-  disableSelect = new FormControl(false);
-  vGSTPer: any;
-  vMRP: any;
-  DiscPer: any = 0;
-  vDiscAmt: any = 0;
-  FinalDiscPer: any = 0;
-  FinalDiscAmt: any = 0;
-  NetAmt: any = 0;
-  TotalMRP: any = 0;
-  FinalTotalAmt: any;
-  FinalNetAmount: any = 0;
-  FinalGSTAmt: any = 0;
+    autocompletestore: string = "Store";
+    autocompleteSupplier: string = "SupplierMaster"
+    autocompleteModeGSTType: string = "GstCalcType";
+    autocompletepaymentterm: string = "TermofPayment";
+    autocompletepaymentmode: string = "PaymentMode";
+    labelPosition: 'before' | 'after' = 'after';
+    sIsLoading: string = '';
+    screenFromString = 'Common-form';
+    UmoId = 0
+    Umoname: any;
+    ItemID: any = "0";
+    vDefRate: any = 0;
+    vGSTAmt: any = 0.0;
+    CGSTAmount: any;
+    IGSTAmount: any;
+    SGSTAmount: any = 0.0;
+    optionsInc = null;
+    VatPercentage: any = 0.0;
+    StoreId_1: any = 0;
+    BatchNo: any;
+    BatchExpDate: any;
+    UnitMRP: any;
+    vQty: any = 1;
+    IssQty: any;
+    Bal: any;
+    disableSelect = new FormControl(false);
+    vGSTPer: any;
+    vMRP: any;
+    DiscPer: any = 0;
+    vDiscAmt: any = 0;
+    FinalDiscPer: any = 0;
+    FinalDiscAmt: any = 0;
+    NetAmt: any = 0;
+    TotalMRP: any = 0;
+    FinalTotalAmt: any;
+    FinalNetAmount: any = 0;
+    FinalGSTAmt: any = 0;
 
-  VatPer: any;
-  CgstPer: any;
-  SgstPer: any;
-  IgstPer: any;
+    VatPer: any;
+    CgstPer: any;
+    SgstPer: any;
+    IgstPer: any;
 
-  VatAmount: any;
-  CGSTAmt: any;
-  SGSTAmt: any;
-  IGSTAmt: any;
+    VatAmount: any;
+    CGSTAmt: any;
+    SGSTAmt: any;
+    IGSTAmt: any;
 
-  ItemName: any;
-  vUOM: any;
-  BalanceQty: any;
-  vRate: any;
-  vTotalAmount: any;
-  vDis: any = 0;
-  GST: any = 0;
-  vNetAmount: any;
-  vSpecification: string;
-  renderer: any;
-  disableTextbox: boolean;
-  DiscAmount: any;
-  GSTAmount: any;
-  vAddress: any;
-  vMobile: any;
-  vContact: any;
-  vGSTNo: any;
-  vEmail: any;
-  vItemNames: any;
-  vConversionFactor: any;
-  vHSNcode: any;
-  optionsupplier: any;
-  GrandTotalAmount: any;
-  UnitofMeasurementName: any;
-  dateTimeObj: any;
-  ItemId: any;
-  vDisc: any = 0;
+    ItemName: any;
+    vUOM: any;
+    BalanceQty: any;
+    vRate: any;
+    vTotalAmount: any;
+    vDis: any = 0;
+    GST: any = 0;
+    vNetAmount: any;
+    vSpecification: string;
+    renderer: any;
+    disableTextbox: boolean;
+    DiscAmount: any;
+    GSTAmount: any;
+    vAddress: any;
+    vMobile: any;
+    vContact: any;
+    vGSTNo: any;
+    vEmail: any;
+    vItemNames: any;
+    vConversionFactor: any;
+    vHSNcode: any;
+    optionsupplier: any;
+    GrandTotalAmount: any;
+    UnitofMeasurementName: any;
+    dateTimeObj: any;
+    ItemId: any;
+    vDisc: any = 0;
 
-  vDisAmount: any = 0;
-  vCGST: any;
-  vCGSTAmount: any;
-  vSGST: any;
-  vSGSTAmount: any;
-  vIGST: any = 0;
-  vIGSTAmount: any = 0;
-  vGST: any = 0;
-  vGSTAmount: any = 0;
-  FinalLandedrate: any;
-  FinalpurUnitRate: any;
+    vDisAmount: any = 0;
+    vCGST: any;
+    vCGSTAmount: any;
+    vSGST: any;
+    vSGSTAmount: any;
+    vIGST: any = 0;
+    vIGSTAmount: any = 0;
+    vGST: any = 0;
+    vGSTAmount: any = 0;
+    FinalLandedrate: any;
+    FinalpurUnitRate: any;
 
-  FinalUnitMRP: any;
-  FinalTotalQty: any;
-  vPurchaseId: any = 0;
+    FinalUnitMRP: any;
+    FinalTotalQty: any;
+    vPurchaseId: any = 0;
 
-  PurchaseID = 0;
-  vSupplierId: any = 0;
-  vsupplierName: any;
-  vCGSTPer: any;
-  vSGSTPer: any;
-  vIGSTPer: any;
-  vCGSTAmt: any = 0;
-  vSGSTAmt: any = 0;
-  vIGSTAmt: any = 0;
-  paymentmode = 0;
-  paymentterm = 0;
-  PurchaseNo = ""
-  CGSTFinalAmount: any;
-  SGSTFinalAmount: any;
-  IGSTFinalAmount: any;
-  RoundingAmt = 0
+    PurchaseID = 0;
+    vSupplierId: any = 0;
+    vsupplierName: any;
+    vCGSTPer: any;
+    vSGSTPer: any;
+    vIGSTPer: any;
+    vCGSTAmt: any = 0;
+    vSGSTAmt: any = 0;
+    vIGSTAmt: any = 0;
+    paymentmode = 0;
+    paymentterm = 0;
+    PurchaseNo = ""
+    CGSTFinalAmount: any;
+    SGSTFinalAmount: any;
+    IGSTFinalAmount: any;
+    RoundingAmt = 0
 
-  PaymentTermsList: any = [];
-  ModeOfPaymentList: any = [];
-  GSTTypeList: any = [];
-  ItemnameList = [];
-  chargeslist: any = [];
-  currency:any=''
-  registerObj = new ItemNameList({});
-  SupplierObj = new SupplierMaster({});
-  ItemObj: IndentList;
+    PaymentTermsList: any = [];
+    ModeOfPaymentList: any = [];
+    GSTTypeList: any = [];
+    ItemnameList = [];
+    chargeslist: any = [];
+    currency: any = ''
+    registerObj = new ItemNameList({});
+    SupplierObj = new SupplierMaster({});
+    ItemObj: IndentList;
 
-  isItemIdSelected: boolean = false;
-  state = false;
-  isLoading = true;
-  vsaveflag: boolean = true;
-  lastsupplierflag: boolean = false;
-  vstoreId = 0
-  ApiUrl = ""
-  displayedColumns2 = [
-    // 'ItemID',
-    'ItemName',
-    'UOM',
-    'Qty',
-    'FreeQty',
-    'MRP',
-    'Rate',
-    'DefRate',
-    'TotalAmount', 
-    'TotalQty',
-    'DiscPer',
-    'DiscAmount',
-    'CGSTPer',
-    'CGSTAmount',
-    'SGSTPer',
-    'SGSTAmount',
-    'IGSTPer',
-    'IGSTAmount',
-    'GST',
-    'GSTAmount',
-    'NetAmount',
-    'Specification',
-    'Action',
-  ];
-  displayedColumns3 = [
-    'supplierName',
-    'receiveQty',
-    'freeQty',
-    'mrp',
-    'rate',
-    'discpercentage',
-    'DiscAmount',
-    'vatPercentage'
-  ]
+    isItemIdSelected: boolean = false;
+    state = false;
+    isLoading = true;
+    vsaveflag: boolean = true;
+    lastsupplierflag: boolean = false;
+    vstoreId = 0
+    ApiUrl = ""
+    displayedColumns2 = [
+        // 'ItemID',
+        'ItemName',
+        'UOM',
+        'Qty',
+        'FreeQty',
+        'MRP',
+        'Rate',
+        'DefRate',
+        'TotalAmount',
+        'TotalQty',
+        'DiscPer',
+        'DiscAmount',
+        'CGSTPer',
+        'CGSTAmount',
+        'SGSTPer',
+        'SGSTAmount',
+        'IGSTPer',
+        'IGSTAmount',
+        'GST',
+        'GSTAmount',
+        'NetAmount',
+        'Specification',
+        'Action',
+    ];
+    displayedColumns3 = [
+        'supplierName',
+        'receiveQty',
+        'freeQty',
+        'mrp',
+        'rate',
+        'discpercentage',
+        'DiscAmount',
+        'vatPercentage'
+    ]
 
-  dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
+    dsPurchaseItemList = new MatTableDataSource<PurchaseItemList>();
 
-  dsItemNameList = new MatTableDataSource<ItemNameList>();
-  dsTempItemNameList = new MatTableDataSource<ItemNameList>();
-  dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>();
-  autocompleteModeGSTTypesValues: string = "GSTTypes";
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  selectedRowIndex: any;
-  filteredoptionsSupplier: Observable<string[]>;
-  filteredoptionsPayment: Observable<string[]>;
-  @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
+    dsItemNameList = new MatTableDataSource<ItemNameList>();
+    dsTempItemNameList = new MatTableDataSource<ItemNameList>();
+    dsLastThreeItemList = new MatTableDataSource<LastThreeItemList>();
+    autocompleteModeGSTTypesValues: string = "GSTTypes";
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    selectedRowIndex: any;
+    filteredoptionsSupplier: Observable<string[]>;
+    filteredoptionsPayment: Observable<string[]>;
+    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
 
-  constructor(
-    public _PurchaseOrder: PurchaseOrderService,
-    public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    private commonService: PrintserviceService,
-    public dialogRef: MatDialogRef<NewPurchaseorderComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private _FormvalidationserviceService: FormvalidationserviceService,
-    private _formBuilder: UntypedFormBuilder,
-    public toastr: ToastrService,
-    public _ConfigService:ConfigService,
-    private accountService: AuthenticationService,
-  ) { }
+    constructor(
+        public _PurchaseOrder: PurchaseOrderService,
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,
+        public datePipe: DatePipe,
+        private commonService: PrintserviceService,
+        public dialogRef: MatDialogRef<NewPurchaseorderComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+        private _formBuilder: UntypedFormBuilder,
+        public toastr: ToastrService,
+        public _ConfigService: ConfigService,
+        private accountService: AuthenticationService,
+    ) { }
 
-  ngOnInit(): void {
-    debugger
-    this.vstoreId = this.accountService.currentUserValue.user.storeId;
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
-    console.log(this.ApiUrl)
+    ngOnInit(): void {
+        debugger
+        this.vstoreId = this.accountService.currentUserValue.user.storeId;
+        this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+        console.log(this.ApiUrl)
 
-    this.userFormGroup = this.getPurchaseOrderForm();
-    this.FinalPurchaseform = this.getPurchaseOrderFinalForm()
-    this.userFormGroup.markAllAsTouched();
-    this.FinalPurchaseform.markAllAsTouched();
+        this.userFormGroup = this.getPurchaseOrderForm();
+        this.FinalPurchaseform = this.getPurchaseOrderFinalForm()
+        this.userFormGroup.markAllAsTouched();
+        this.FinalPurchaseform.markAllAsTouched();
 
-    this.PurchaseInsertform = this.getPurchaseInsertForm();
-    if (this.data) {
-      this.registerObj = this.data.Obj
-      this.PurchaseID = this.data.Obj.purchaseID
-      this.vSupplierId = this.data.Obj.supplierID
-      this.vstoreId = this.data.Obj.storeId
-      this.PurchaseNo = this.data.Obj.purchaseNo
-      this.FinalTotalAmt = this.data.Obj.totalAmount
-      this.DiscAmount = this.data.Obj.discAmount
-      this.GSTAmount = this.data.Obj.taxAmount
-      this.paymentterm = this.data.Obj.paymentTermId
-      this.paymentmode = this.data.Obj.modeOfPayment
+        this.PurchaseInsertform = this.getPurchaseInsertForm();
+        if (this.data) {
+            this.registerObj = this.data.Obj
+            this.PurchaseID = this.data.Obj.purchaseID
+            this.vSupplierId = this.data.Obj.supplierID
+            this.vstoreId = this.data.Obj.storeId
+            this.PurchaseNo = this.data.Obj.purchaseNo
+            this.FinalTotalAmt = this.data.Obj.totalAmount
+            this.DiscAmount = this.data.Obj.discAmount
+            this.GSTAmount = this.data.Obj.taxAmount
+            this.paymentterm = this.data.Obj.paymentTermId
+            this.paymentmode = this.data.Obj.modeOfPayment
 
 
-      this._PurchaseOrder.getSupplierById(this.data.Obj.supplierID).subscribe((response) => {
-        console.log(response)
-        this.SupplierObj = response;
-        this.userFormGroup.patchValue({
-          Address: this.SupplierObj?.address || '',
-          Mobile: this.SupplierObj?.mobile || '',
-          Contact: this.SupplierObj?.contactPerson || '',
-          GSTNo: this.SupplierObj?.gstNo || '',
-          Email: this.SupplierObj?.email || '',
-        })
-        let SupplierRate = 0;
-        SupplierRate = this.supplierRateList[0]?.SupplierRate || 0;
-        this.vDefRate = SupplierRate;
-      });
-      this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
-      this.FinalPurchaseform.get('PaymentTerm').setValue(this.data.Obj.paymentTermId);
-      this.FinalPurchaseform.get('PaymentMode').setValue(this.data.Obj.modeOfPayment);
-      this.FinalPurchaseform.get('Remark').setValue(this.data.Obj.remarks);
-      this.FinalPurchaseform.get('HandlingCharges').setValue(this.data.Obj.handlingCharges);
-      this.FinalPurchaseform.get('TransportCharges').setValue(this.data.Obj.transportChanges);
-      this.FinalPurchaseform.get('Freight').setValue(this.data.Obj.freightAmount);
-      this.FinalPurchaseform.get('OctriAmount').setValue(this.data.Obj.octriAmount);
-      this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty);
+            this._PurchaseOrder.getSupplierById(this.data.Obj.supplierID).subscribe((response) => {
+                console.log(response)
+                this.SupplierObj = response;
+                this.userFormGroup.patchValue({
+                    Address: this.SupplierObj?.address || '',
+                    Mobile: this.SupplierObj?.mobile || '',
+                    Contact: this.SupplierObj?.contactPerson || '',
+                    GSTNo: this.SupplierObj?.gstNo || '',
+                    Email: this.SupplierObj?.email || '',
+                })
+                let SupplierRate = 0;
+                SupplierRate = this.supplierRateList[0]?.SupplierRate || 0;
+                this.vDefRate = SupplierRate;
+            });
+            this.userFormGroup.get('SupplierId').setValue(this.data.Obj.supplierID);
+            this.FinalPurchaseform.get('PaymentTerm').setValue(this.data.Obj.paymentTermId);
+            this.FinalPurchaseform.get('PaymentMode').setValue(this.data.Obj.modeOfPayment);
+            this.FinalPurchaseform.get('Remark').setValue(this.data.Obj.remarks);
+            this.FinalPurchaseform.get('HandlingCharges').setValue(this.data.Obj.handlingCharges);
+            this.FinalPurchaseform.get('TransportCharges').setValue(this.data.Obj.transportChanges);
+            this.FinalPurchaseform.get('Freight').setValue(this.data.Obj.freightAmount);
+            this.FinalPurchaseform.get('OctriAmount').setValue(this.data.Obj.octriAmount);
+            this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty);
 
-      this.getOldPurchaseOrder(this.data.Obj.purchaseID);
-    }
+            this.getOldPurchaseOrder(this.data.Obj.purchaseID);
+        }
 
-          
+
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
-  }
-
-  // Item Calculation form
-
-  getPurchaseOrderForm() {
-    return this._formBuilder.group({
-      purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purchaseNo: [''],
-      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      TotalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      DiscAmount: [0],
-      Disc: [0, [Validators.min(0), Validators.max(100)]],
-      grandTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      ItemName: ['', [Validators.required,]],
-      ConversionFactor: [''],
-      Qty: ['', [Validators.required, Validators.min(1)]],
-      FreeQty: [0],
-      UOM: [''],
-      Rate: ['', [Validators.required, Validators.min(1)]],
-      HSNcode: [''],
-      GST: [''],
-      GSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      NetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      MRP: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      Specification: [''],
-      SupplierID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      Address: [''],
-      Mobile: [''],
-      Contact: [''],
-      GSTNo: [''],
-      Email: [''],
-      PurchaseDate: [new Date()],
-      DefRate: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-
-      CGSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      CGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      SGSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      SGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      IGSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      IGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      GSTType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // GSTType: [16, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      UOMId: [''],
-
-      PurchaseId: [0],
-
-    });
-
-  }
-  // Footer Calculation form
-  getPurchaseOrderFinalForm() {
-    return this._formBuilder.group({
-      TransportCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      HandlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      Freight: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      OctriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      Worrenty: [0, [Validators.pattern("^[A-Za-z0-9 ]+$")]],
-      roundVal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      NetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      Remark: ['', [Validators.required]],
-      PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-    });
-  }
-  // Purchase Save Form
-  getPurchaseInsertForm() {
-    return this._formBuilder.group({
-      purchaseId: [this.PurchaseID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purchaseNo: this.PurchaseNo,
-      purchaseDate: new Date(),
-      purchaseTime: new Date(),
-      storeId: this.vstoreId || 0,
-      supplierId: this.vSupplierId || 0,
-      totalAmount: this.FinalTotalAmt || 0,
-      discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      taxAmount: (parseFloat(this.GSTAmount)) || 0,
-      freightAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      octriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      grandTotal: this.FinalNetAmount || 0,
-      isclosed: false,
-      isVerified: false,
-      remarks: '',
-      taxId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      paymentTermId: this.paymentterm || 0,
-      modeofPayment: this.paymentmode || 0,
-      worrenty: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
-      roundVal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      prefix: "",
-      isVerifiedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
-      totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
-      totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
-      totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
-      transportChanges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      handlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      isCancelled: false,
-      tPurchaseDetails: this._formBuilder.array([])
-    });
-  }
-  getPurchaseInsertFormnew() {
-    return this._formBuilder.group({
-      purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purchaseNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purchaseDate: new Date(),
-      purchaseTime: new Date(),
-      storeId: [this.vstoreId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      supplierId: [this.vSupplierId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      totalAmount: [this.FinalTotalAmt[this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      taxAmount: [parseFloat(this.GSTAmount) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      freightAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      octriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      grandTotal: [this.FinalNetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      isclosed: [false],
-      isVerified: [false],
-      remarks: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      taxId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      paymentTermId: this.paymentterm || 0,
-      modeofPayment: this.paymentmode || 0,
-      worrenty: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
-      roundVal: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      prefix: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      isVerifiedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
-      totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
-      totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
-      totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
-      transportChanges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      handlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      isCancelled: [false],
-      tPurchaseDetails: this._formBuilder.array([])
-    });
-  }
-  // Purchase Save Details Form
-  createPurchasedetailForm(item: any = {}): FormGroup {
-    return this._formBuilder.group({
-      purchaseId: [item.PurchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      uomid: [item.UOMID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      freeQty: [item.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      rate: [item.Rate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      totalAmount: [item.TotalAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discAmount: [item.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      discPer: [item.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      vatAmount: [item.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      vatPer: [item.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      grandTotalAmount: [item.NetAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      mrp: [item.MRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      specification: [item.Specification || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      cgstper: [item.CGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      cgstamt: [item.CGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      sgstper: [item.SGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      sgstamt: [item.SGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      igstper: [item.IGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      igstamt: [item.IGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      totalQty:[item.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      defRate: [item.DefRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      vendDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
-    });
-  }
-  get purchasedetailArray(): FormArray {
-    return this.PurchaseInsertform.get('tPurchaseDetails') as FormArray;
-  }
-  //Supplier select obj
-  getSelectedSupplierObj(obj) {
-    this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
-      this.SupplierObj = response;
-      this.vSupplierId = this.SupplierObj.supplierId
-      this.userFormGroup.patchValue({
-        Address: this.SupplierObj.address,
-        Mobile: this.SupplierObj.mobile,
-        Contact: this.SupplierObj.contactPerson,
-        GSTNo: this.SupplierObj.gstNo,
-        Email: this.SupplierObj.email,
-      })
-      this.getSupplierRate();
-    });
-  }
-  // Add Item
-  onAdd() {
-
-    if (!this._PurchaseOrder.validatePurchaseForm(this.userFormGroup)) {
-      return;
     }
-    const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
 
-    if (!isDuplicate) {
-      const formValue = this.userFormGroup.value
-      this.userFormGroup.patchValue({
-        CGSTPer: formValue.SGSTPer
-      })
+    // Item Calculation form
 
+    getPurchaseOrderForm() {
+        return this._formBuilder.group({
+            purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            purchaseNo: [''],
+            StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            SupplierId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            TotalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            DiscAmount: [0],
+            Disc: [0, [Validators.min(0), Validators.max(100)]],
+            grandTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            ItemName: ['', [Validators.required,]],
+            ConversionFactor: [''],
+            Qty: ['', [Validators.required, Validators.min(1)]],
+            FreeQty: [0],
+            UOM: [''],
+            Rate: ['', [Validators.required, Validators.min(1)]],
+            HSNcode: [''],
+            GST: [''],
+            GSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            NetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            MRP: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            Specification: [''],
+            SupplierID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            Address: [''],
+            Mobile: [''],
+            Contact: [''],
+            GSTNo: [''],
+            Email: [''],
+            PurchaseDate: [new Date()],
+            DefRate: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
 
-      const formValues = this.userFormGroup.getRawValue() as PurchaseFormModel;
-      console.log(formValues)
+            CGSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            CGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            SGSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            SGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            IGSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            IGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            GSTType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            // GSTType: [16, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            UOMId: [''],
 
-      const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
+            PurchaseId: [0],
 
-      if (formValues.ItemName) {
-        const newItem = new ItemNameList({
-          ...formValues,
-          ItemName: formValues.ItemName.itemName,
-          TotalQty: totalQty,
-          ItemId: formValues.ItemName.itemId,
-          UOM: formValues.UOMId || '' , //this.UmoId,// formValues.UOMId || 0,
-          UOMID: this.UmoId,//formValues.UOMId || 0,
-          Rate: formValues.Rate,
-          Qty: formValues.Qty || 0,
-          FreeQty: formValues.FreeQty || 0,
-          TotalAmount: formValues.TotalAmount || 0,
-          DiscPer: formValues.Disc || 0,
-          DiscAmount: formValues.DiscAmount || 0,
-          CGSTPer: formValues.SGSTPer || 0,
-          CGSTAmount: formValues.CGSTAmount || 0,
-          CGSTAmt: formValues.CGSTAmount || 0,
-          SGSTPer: formValues.SGSTPer || 0,
-          SGSTAmount: formValues.SGSTAmount || 0,
-          SGSTAmt: formValues.SGSTAmount || 0,
-          IGST: formValues.IGSTPer || 0,
-          IGSTAmont: formValues.IGSTAmount || 0,
-          IGSTAmt: formValues.IGSTAmount || 0,
-          GST: formValues.GST || 0,
-          GSTAmount: formValues.GSTAmount || 0,
-          NetAmount: formValues.NetAmount || 0,
-          MRP: formValues.MRP || 0,
-          DefRate: formValues.DefRate || 0,
-          Specification: formValues.Specification || '',
         });
-        console.log(newItem)
-        this.lastsupplierflag = false;
-        this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
+
+    }
+    // Footer Calculation form
+    getPurchaseOrderFinalForm() {
+        return this._formBuilder.group({
+            TransportCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            HandlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            Freight: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            OctriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            Worrenty: [0, [Validators.pattern("^[A-Za-z0-9 ]+$")]],
+            roundVal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            NetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            Remark: ['', [Validators.required]],
+            PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        });
+    }
+    // Purchase Save Form
+    getPurchaseInsertForm() {
+        return this._formBuilder.group({
+            purchaseId: [this.PurchaseID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            purchaseNo: this.PurchaseNo,
+            purchaseDate: new Date(),
+            purchaseTime: new Date(),
+            storeId: this.vstoreId || 0,
+            supplierId: this.vSupplierId || 0,
+            totalAmount: this.FinalTotalAmt || 0,
+            discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            taxAmount: (parseFloat(this.GSTAmount)) || 0,
+            freightAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            octriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            grandTotal: this.FinalNetAmount || 0,
+            isclosed: false,
+            isVerified: false,
+            remarks: '',
+            taxId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentTermId: this.paymentterm || 0,
+            modeofPayment: this.paymentmode || 0,
+            worrenty: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
+            roundVal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            prefix: "",
+            isVerifiedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+            totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
+            totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
+            totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.AllowDecimalNumberValidator()],
+            transportChanges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            handlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            isCancelled: false,
+            tPurchaseDetails: this._formBuilder.array([])
+        });
+    }
+    getPurchaseInsertFormnew() {
+        return this._formBuilder.group({
+            purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            purchaseNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            purchaseDate: new Date(),
+            purchaseTime: new Date(),
+            storeId: [this.vstoreId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            supplierId: [this.vSupplierId[this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            totalAmount: [this.FinalTotalAmt[this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            discAmount: [this.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            taxAmount: [parseFloat(this.GSTAmount) || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            freightAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            octriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            grandTotal: [this.FinalNetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isclosed: [false],
+            isVerified: [false],
+            remarks: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            taxId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentTermId: this.paymentterm || 0,
+            modeofPayment: this.paymentmode || 0,
+            worrenty: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
+            roundVal: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            prefix: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            isVerifiedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            verifiedDateTime: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+            totCgstamt: [(parseFloat(this.CGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+            totSgstamt: [(parseFloat(this.SGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+            totIgstamt: [(parseFloat(this.IGSTFinalAmount)) || 0, this._FormvalidationserviceService.onlyNumberValidator()],
+            transportChanges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            handlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            isCancelled: [false],
+            tPurchaseDetails: this._formBuilder.array([])
+        });
+    }
+    // Purchase Save Details Form
+    createPurchasedetailForm(item: any = {}): FormGroup {
+        return this._formBuilder.group({
+            purchaseId: [item.PurchaseID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [item.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            uomid: [item.UOMID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            qty: [item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            freeQty: [item.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            rate: [item.Rate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            totalAmount: [item.TotalAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discAmount: [item.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discPer: [item.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vatAmount: [item.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vatPer: [item.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            grandTotalAmount: [item.NetAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            mrp: [item.MRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            specification: [item.Specification || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            cgstper: [item.CGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            cgstamt: [item.CGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgstper: [item.SGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgstamt: [item.SGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igstper: [item.IGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igstamt: [item.IGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            totalQty: [item.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            defRate: [item.DefRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vendDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
+        });
+    }
+    get purchasedetailArray(): FormArray {
+        return this.PurchaseInsertform.get('tPurchaseDetails') as FormArray;
+    }
+    //Supplier select obj
+    getSelectedSupplierObj(obj) {
+        this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
+            this.SupplierObj = response;
+            this.vSupplierId = this.SupplierObj.supplierId
+            this.userFormGroup.patchValue({
+                Address: this.SupplierObj.address,
+                Mobile: this.SupplierObj.mobile,
+                Contact: this.SupplierObj.contactPerson,
+                GSTNo: this.SupplierObj.gstNo,
+                Email: this.SupplierObj.email,
+            })
+            this.getSupplierRate();
+        });
+    }
+    // Add Item
+    onAdd() {
+
+        if (!this._PurchaseOrder.validatePurchaseForm(this.userFormGroup)) {
+            return;
+        }
+        const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.userFormGroup.get('ItemName').value.itemId);
+
+        if (!isDuplicate) {
+            const formValue = this.userFormGroup.value
+            this.userFormGroup.patchValue({
+                CGSTPer: formValue.SGSTPer
+            })
+
+
+            const formValues = this.userFormGroup.getRawValue() as PurchaseFormModel;
+            console.log(formValues)
+
+            const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
+
+            if (formValues.ItemName) {
+                const newItem = new ItemNameList({
+                    ...formValues,
+                    ItemName: formValues.ItemName.itemName,
+                    TotalQty: totalQty,
+                    ItemId: formValues.ItemName.itemId,
+                    UOM: formValues.UOMId || '', //this.UmoId,// formValues.UOMId || 0,
+                    UOMID: this.UmoId,//formValues.UOMId || 0,
+                    Rate: formValues.Rate,
+                    Qty: formValues.Qty || 0,
+                    FreeQty: formValues.FreeQty || 0,
+                    TotalAmount: formValues.TotalAmount || 0,
+                    DiscPer: formValues.Disc || 0,
+                    DiscAmount: formValues.DiscAmount || 0,
+                    CGSTPer: formValues.SGSTPer || 0,
+                    CGSTAmount: formValues.CGSTAmount || 0,
+                    CGSTAmt: formValues.CGSTAmount || 0,
+                    SGSTPer: formValues.SGSTPer || 0,
+                    SGSTAmount: formValues.SGSTAmount || 0,
+                    SGSTAmt: formValues.SGSTAmount || 0,
+                    IGST: formValues.IGSTPer || 0,
+                    IGSTAmont: formValues.IGSTAmount || 0,
+                    IGSTAmt: formValues.IGSTAmount || 0,
+                    GST: formValues.GST || 0,
+                    GSTAmount: formValues.GSTAmount || 0,
+                    NetAmount: formValues.NetAmount || 0,
+                    MRP: formValues.MRP || 0,
+                    DefRate: formValues.DefRate || 0,
+                    Specification: formValues.Specification || '',
+                });
+                console.log(newItem)
+                this.lastsupplierflag = false;
+                this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
+                this.updatePurchaseFinalForm();
+            }
+        }
+        else {
+            this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+        }
+        const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+        if (itemNameElement) {
+            itemNameElement.focus();
+        }
+        this.resetFormItem();
+        this.userFormGroup.get('CGST').reset();
+        this.userFormGroup.get('CGST').enable();
+        this.userFormGroup.get('IGST').reset();
+        this.userFormGroup.get('IGST').enable();
+    }
+
+    deleteTableRow(row: ItemNameList) {
+        this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
+        this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
         this.updatePurchaseFinalForm();
-      }
-    }
-    else {
-      this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-    }
-    const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
-    if (itemNameElement) {
-      itemNameElement.focus();
-    }
-    this.resetFormItem();
-    this.userFormGroup.get('CGST').reset();
-    this.userFormGroup.get('CGST').enable();
-    this.userFormGroup.get('IGST').reset();
-    this.userFormGroup.get('IGST').enable();
-  }
-
-  deleteTableRow(row: ItemNameList) {
-    this.dsItemNameList.data = this.dsItemNameList.data.filter(item => item !== row);
-    this._PurchaseOrder.showToast('Record Deleted Successfully.', ToastType.SUCCESS);
-    this.updatePurchaseFinalForm();
-    if (this.dsItemNameList.data.length == 0) {
-      this.FinalPurchaseform.get("TransportCharges").setValue(0)
-      this.FinalPurchaseform.get("Freight").setValue(0)
-      this.FinalPurchaseform.get("OctriAmount").setValue(0)
-    }
-  }
-
-  //Item selected Obj
-  getSelectedObj(obj) {
-    console.log(obj)
-    this.ItemId = obj.itemId;
-    this.ItemName = obj.itemName;
-    this.vUOM = obj.umoId;
-    this.vConversionFactor = obj.converFactor;
-    this.vHSNcode = obj.hsNcode || '0';
-    this.vQty = 0;
-    this.vMRP = 0;
-    this.vRate = '';
-    this.vDis = '';
-    this.vCGSTPer = obj.cgstPer
-    this.vSGSTPer = obj.sgstPer
-    this.vIGSTPer = obj.igstPer
-    this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(4);
-    this.vNetAmount = this.vTotalAmount;
-    this.vGSTPer = (obj.SGSTPer + obj.CGSTPer + obj.IGSTPer);
-    this.vSpecification = obj.Specification || '';
-    this.getLastThreeItemInfo();
-    this.getSupplierRate();
-  }
-
-  // @HostListener('document:keydown', ['$event'])
-  // handleKeyboardEvent(event: KeyboardEvent) {
-  // if (event.key === 'F4') {
-  // this.OnSavenew();
-  // } else if (event.key === 'F5') {
-
-
-  OnSave() {
-
-    let Pdate;
-    let pTime;
-    if (this.PurchaseID != 0) {
-      Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
-        pTime = this.data.Obj.purchaseTime
-    } else {
-      Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
-        pTime = this.dateTimeObj.time;
-    }
-    if ((!this.dsItemNameList.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    const fomrValues = this.userFormGroup.value
-    const FooterfomrValues = this.FinalPurchaseform.value
-
-    if (!this.FinalPurchaseform.invalid) {
-
-      this.PurchaseInsertform.get("storeId").setValue(this.vstoreId)
-      this.PurchaseInsertform.get("purchaseId").setValue(this.PurchaseID || 0)
-      this.PurchaseInsertform.get("purchaseNo").setValue(String(this.PurchaseNo) || "0")
-      this.PurchaseInsertform.get("purchaseDate").setValue(Pdate)
-      this.PurchaseInsertform.get("purchaseTime").setValue(pTime)
-      this.PurchaseInsertform.get("supplierId").setValue(this.userFormGroup.get('SupplierId').value)
-      this.PurchaseInsertform.get("freightAmount").setValue(this.FinalPurchaseform.get('Freight').value)
-      this.PurchaseInsertform.get("octriAmount").setValue(this.FinalPurchaseform.get('OctriAmount').value)
-      this.PurchaseInsertform.get("remarks").setValue(this.FinalPurchaseform.get('Remark').value)
-      this.PurchaseInsertform.get("worrenty").setValue(this.FinalPurchaseform.get('Worrenty').value || "")
-      this.PurchaseInsertform.get("transportChanges").setValue(this.FinalPurchaseform.get('TransportCharges').value)
-      this.PurchaseInsertform.get("handlingCharges").setValue(this.FinalPurchaseform.get('HandlingCharges').value)
-      this.PurchaseInsertform.get("freightCharges").setValue(this.FinalPurchaseform.get('Freight').value)
-      this.PurchaseInsertform.get("grandTotal").setValue(this.FinalNetAmount)
-      this.PurchaseInsertform.get("paymentTermId").setValue(this.paymentterm)
-      this.PurchaseInsertform.get("modeofPayment").setValue(this.paymentmode)
-      this.PurchaseInsertform.get("totalAmount").setValue(this.FinalTotalAmt)
-      this.PurchaseInsertform.get("discAmount").setValue(this.DiscAmount)
-      this.PurchaseInsertform.get("taxAmount").setValue(parseFloat(this.GSTAmount))
-      this.PurchaseInsertform.get("roundVal").setValue(Math.round(this.FinalNetAmount),)
-      this.PurchaseInsertform.get("totCgstamt").setValue(parseFloat(this.CGSTFinalAmount))
-      this.PurchaseInsertform.get("totSgstamt").setValue(parseFloat(this.SGSTFinalAmount))
-      this.PurchaseInsertform.get("totIgstamt").setValue(parseFloat(this.IGSTFinalAmount))
-
-      this.purchasedetailArray.clear();
-      this.dsItemNameList.data.forEach(item => {
-        this.purchasedetailArray.push(this.createPurchasedetailForm(item));
-      });
-      console.log(this.PurchaseInsertform.value);
-      this._PurchaseOrder.InsertPurchaseSave(this.PurchaseInsertform.value).subscribe(response => {
-        if (response) {
-          this.viewgetPurchaseorderReportPdf(response)
-          this._matDialog.closeAll();
+        if (this.dsItemNameList.data.length == 0) {
+            this.FinalPurchaseform.get("TransportCharges").setValue(0)
+            this.FinalPurchaseform.get("Freight").setValue(0)
+            this.FinalPurchaseform.get("OctriAmount").setValue(0)
         }
-      });
-    } else {
-      const invalidFields = [];
-      if (this.FinalPurchaseform.invalid) {
-        for (const controlName in this.FinalPurchaseform.controls) {
-          if (this.FinalPurchaseform.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
+    }
+
+    //Item selected Obj
+    getSelectedObj(obj) {
+        console.log(obj)
+        this.ItemId = obj.itemId;
+        this.ItemName = obj.itemName;
+        this.vUOM = obj.umoId;
+        this.vConversionFactor = obj.converFactor;
+        this.vHSNcode = obj.hsNcode || '0';
+        this.vQty = 0;
+        this.vMRP = 0;
+        this.vRate = '';
+        this.vDis = '';
+        this.vCGSTPer = obj.cgstPer
+        this.vSGSTPer = obj.sgstPer
+        this.vIGSTPer = obj.igstPer
+        this.vTotalAmount = (parseInt(this.vQty) * parseFloat(this.vRate)).toFixed(4);
+        this.vNetAmount = this.vTotalAmount;
+        this.vGSTPer = (obj.SGSTPer + obj.CGSTPer + obj.IGSTPer);
+        this.vSpecification = obj.Specification || '';
+        this.getLastThreeItemInfo();
+        this.getSupplierRate();
+    }
+
+    // @HostListener('document:keydown', ['$event'])
+    // handleKeyboardEvent(event: KeyboardEvent) {
+    // if (event.key === 'F4') {
+    // this.OnSavenew();
+    // } else if (event.key === 'F5') {
+
+
+    OnSave() {
+
+        let Pdate;
+        let pTime;
+        if (this.PurchaseID != 0) {
+            Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+                pTime = this.data.Obj.purchaseTime
+        } else {
+            Pdate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd") || '1900-01-01',
+                pTime = this.dateTimeObj.time;
         }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-      }
-    }
-  }
-  viewgetPurchaseorderReportPdf(PurchaseID) {
-    this.commonService.Onprint("PurchaseID", PurchaseID, "Purchaseorder");
-  }
-  // Table Calculation 
-  getCellCalculation(item: ItemNameList) {
-    this._PurchaseOrder.validateCellData(item);
-    this._PurchaseOrder.calculateBasicValues(item);
-    this._PurchaseOrder.validateGSTRates(item);
-    const updatedItem = this.calculateCellGSTType(item);
-    Object.assign(item, updatedItem);
-    this.updatePurchaseFinalForm();
-  }
-  //Update footer Values
-  updatePurchaseFinalForm() {
-    const form = this.userFormGroup;
-    const itemList = this.dsItemNameList.data;
-    const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    const updatableFormValues: FinalFormModel = {
-      TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(4),
-      VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(4),
-      NetPayamt: netAmount.toFixed(4),
-      RoundingAmt: Math.round(netAmount),
-      DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(4)
-    } as FinalFormModel;
-    this.RoundingAmt = Math.round(netAmount)
-    form.patchValue({
-      ...updatableFormValues
-    });
-  }
-  getTotalNet(element) {
-    let NetAmt;
-    this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount), 0);
-
-    const handlingCharges = this.FinalPurchaseform.get('HandlingCharges').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(4);
-
-    const transportChanges = this.FinalPurchaseform.get('TransportCharges').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(transportChanges)).toFixed(4);
-
-    const Freight = this.FinalPurchaseform.get('Freight').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(Freight)).toFixed(4);
-
-    const OctriAmt = this.FinalPurchaseform.get('OctriAmount').value || 0;
-    this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(4);
-
-    this.FinalNetAmount = Math.ceil(this.FinalNetAmount)
-    return this.FinalNetAmount;
-  }
-  getTotalGST(element) {
-    this.GSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(4);
-
-    return this.GSTAmount;
-    this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(4);
-    this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(4);
-    this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(4);
-  }
-  getTotalDisc(element) {
-    this.DiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
-    if (this.DiscAmount > 0)
-      this.DiscAmount = this.DiscAmount.toFixed(4);
-    return this.DiscAmount;
-  }
-  getTotalAmt(element) {
-    this.FinalTotalAmt = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(4);
-    return this.FinalTotalAmt;
-  }
-
-
-  getCGSTAmt() {
-    this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
-    return this.CGSTFinalAmount
-  }
-  getSGSTAmt() {
-    this.SGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { SGSTAmount }) => sum += +(SGSTAmount || 0), 0);
-    return this.SGSTFinalAmount
-  }
-  getIGSTAmt() {
-    this.IGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { IGSTAmount }) => sum += +(IGSTAmount || 0), 0);
-    if (this.IGSTFinalAmount > 0)
-      return this.IGSTFinalAmount
-    else
-      this.IGSTFinalAmount = 0
-    return this.IGSTFinalAmount
-  }
-
-
-  getTotalAmount() {
-    return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
-  }
-
-  highlight(contact) {
-    this.selectedRowIndex = contact.ItemID;
-  }
-
-  public setFocus(nextElementId): void {
-    document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
-  }
-  keyPressAlphanumeric(event) {
-    const inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-  keyPressCharater(event) {
-    const inp = String.fromCharCode(event.keyCode);
-    if (/^\d*\.?\d*$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-  GSTTypeID: any = 0;
-  GSTTypetext: any = 0;
-  IsDiscPer2: boolean = false;
-  onGSTTypeChange(event: { value: number, text: string }) {
-
-    console.log(event)
-    this.GSTTypeID = event.value;
-    const newGSTType = event.text as GSTType;
-    this.calculateGSTType(newGSTType);
-    if (event.text == "GST After TwoTime Disc") {
-      this.IsDiscPer2 = true
-    } else {
-      this.IsDiscPer2 = false
-    }
-
-    // Update gst type of table data
-
-    this.dsItemNameList.data.forEach((item) => {
-      item.GSTType = newGSTType;
-      this.getCellCalculation(item);
-    })
-
-  }
-
-  getSelectedItem(item: GRNItemResponseType): void {
-    console.log(item)
-    this.lastsupplierflag = true
-    this.ItemID = item.itemId
-    this.UmoId = item.umoId
-    this.Umoname = item.umoName
-
-    this.userFormGroup.patchValue({
-      // UOMId: item.umoId,
-      UOMId: item.umoName,
-      ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      Qty: '',// item.balanceQty,
-      CGSTPer: item.cgstPer,
-      SGSTPer: item.sgstPer,
-      IGSTPer: item.igstPer,
-      GST: item.cgstPer + item.sgstPer + item.igstPer,
-      HSNcode: item.hsNcode || '0'
-    });
-    this.getLastThreeItemInfo();
-    const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-    if (QtyElement) {
-      QtyElement.focus();
-    }
-    this.getSupplierRate();
-
-    setTimeout(() => {
-      const nativeElement = this.qtyTextboxRef?.nativeElement;
-      if (nativeElement) {
-        const inputEl: HTMLInputElement = nativeElement.querySelector('input');
-        if (inputEl) {
-          inputEl.focus();
+        if ((!this.dsItemNameList.data.length)) {
+            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
-      }
-    }, 100);
-  }
-  calculateTotalamt() {
-    // if (this.vDefRate == 0) {
-    this.validateFormValues();
-    const form = this.userFormGroup;
-    const qty = +form.get('Qty').value || 0;
-    const rate = +form.get('Rate').value || 0;
 
-    let totalAmount = 0;
-    let netAmount = 0;
+        const fomrValues = this.userFormGroup.value
+        const FooterfomrValues = this.FinalPurchaseform.value
 
-    if (qty > 0 && rate > 0) {
-      totalAmount = rate * qty;
-      netAmount = totalAmount;
-      form.patchValue({
-        TotalAmount: totalAmount,
-        NetAmount: netAmount,
-      });
-    } else {
-      form.patchValue({
-        TotalAmount: 0,
-        DiscAmount: 0,
-        DiscAmount2: 0,
-        CGSTAmount: 0,
-        SGSTAmount: 0,
-        IGSTAmount: 0,
-        GSTAmount: 0,
-        NetAmount: 0,
+        if (!this.FinalPurchaseform.invalid) {
 
-      });
+            this.PurchaseInsertform.get("storeId").setValue(this.vstoreId)
+            this.PurchaseInsertform.get("purchaseId").setValue(this.PurchaseID || 0)
+            this.PurchaseInsertform.get("purchaseNo").setValue(String(this.PurchaseNo) || "0")
+            this.PurchaseInsertform.get("purchaseDate").setValue(Pdate)
+            this.PurchaseInsertform.get("purchaseTime").setValue(pTime)
+            this.PurchaseInsertform.get("supplierId").setValue(this.userFormGroup.get('SupplierId').value)
+            this.PurchaseInsertform.get("freightAmount").setValue(this.FinalPurchaseform.get('Freight').value)
+            this.PurchaseInsertform.get("octriAmount").setValue(this.FinalPurchaseform.get('OctriAmount').value)
+            this.PurchaseInsertform.get("remarks").setValue(this.FinalPurchaseform.get('Remark').value)
+            this.PurchaseInsertform.get("worrenty").setValue(this.FinalPurchaseform.get('Worrenty').value || "")
+            this.PurchaseInsertform.get("transportChanges").setValue(this.FinalPurchaseform.get('TransportCharges').value)
+            this.PurchaseInsertform.get("handlingCharges").setValue(this.FinalPurchaseform.get('HandlingCharges').value)
+            this.PurchaseInsertform.get("freightCharges").setValue(this.FinalPurchaseform.get('Freight').value)
+            this.PurchaseInsertform.get("grandTotal").setValue(this.FinalNetAmount)
+            this.PurchaseInsertform.get("paymentTermId").setValue(this.paymentterm)
+            this.PurchaseInsertform.get("modeofPayment").setValue(this.paymentmode)
+            this.PurchaseInsertform.get("totalAmount").setValue(this.FinalTotalAmt)
+            this.PurchaseInsertform.get("discAmount").setValue(this.DiscAmount)
+            this.PurchaseInsertform.get("taxAmount").setValue(parseFloat(this.GSTAmount))
+            this.PurchaseInsertform.get("roundVal").setValue(Math.round(this.FinalNetAmount),)
+            this.PurchaseInsertform.get("totCgstamt").setValue(parseFloat(this.CGSTFinalAmount))
+            this.PurchaseInsertform.get("totSgstamt").setValue(parseFloat(this.SGSTFinalAmount))
+            this.PurchaseInsertform.get("totIgstamt").setValue(parseFloat(this.IGSTFinalAmount))
+
+            this.purchasedetailArray.clear();
+            this.dsItemNameList.data.forEach(item => {
+                this.purchasedetailArray.push(this.createPurchasedetailForm(item));
+            });
+            console.log(this.PurchaseInsertform.value);
+            this._PurchaseOrder.InsertPurchaseSave(this.PurchaseInsertform.value).subscribe(response => {
+                if (response) {
+                    this.viewgetPurchaseorderReportPdf(response)
+                    this._matDialog.closeAll();
+                }
+            });
+        } else {
+            const invalidFields = [];
+            if (this.FinalPurchaseform.invalid) {
+                for (const controlName in this.FinalPurchaseform.controls) {
+                    if (this.FinalPurchaseform.controls[controlName].invalid) { invalidFields.push(`Purchase Form: ${controlName}`); }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+            }
+        }
     }
-    this.calculateDiscountAmount();
-    this.calculateGSTType();
-    // }
-    // else {
-    //   if (this.vDefRate > 0) {
-    //     if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
-    //       Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-    //       this.vRate = 0
-    //     } else { this.calculateTotalamt(); }
-
-    //   }
-    // }
-  }
-      // Add New Item
-      OnAddItem() {
-          const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
-              maxWidth: "100%",
-              height: '95%',
-              width: '95%',
-          });
-          dialogRef.afterClosed().subscribe((result) => {
-              console.log("The dialog was closed - Insert Action", result);
-          });
-      }
-  calculateDiscountAmount() {
-    const form = this.userFormGroup;
-    const values = form.getRawValue() as PurchaseFormModel;
-
-    // Get and validate discount percentage
-    const discountPercentage = Number(this.userFormGroup.get("Disc").value) // Number(values.Disc || 0);
-    if (discountPercentage >= 100 || discountPercentage < 0) {
-      this._PurchaseOrder.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);
-      form.patchValue({ Disc: 0 });
-      this.calculateGSTType();
-      return;
+    viewgetPurchaseorderReportPdf(PurchaseID) {
+        this.commonService.Onprint("PurchaseID", PurchaseID, "Purchaseorder");
     }
-
-    // Calculate discount amount
-    const totalAmount = Number(values.TotalAmount || 0);
-    const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(4));
-
-    // Update form with new discount amount
-    form.patchValue({
-      DiscAmount: discountAmount
-    }, { emitEvent: false });
-
-    // // Recalculate GST after discount update
-    this.calculateGSTType();
-  }
-  Cgst: any;
-  calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
-    debugger
-
-    const form = this.userFormGroup;
-    const formValues = form.getRawValue() as PurchaseFormModel;
-
-    this.Cgst = (formValues.CGSTPer)
-    if (parseFloat(this.Cgst) > 0) {
-      this.Cgst = parseFloat(this.Cgst) / 2
-      formValues.CGSTPer = this.Cgst
+    // Table Calculation 
+    getCellCalculation(item: ItemNameList) {
+        this._PurchaseOrder.validateCellData(item);
+        this._PurchaseOrder.calculateBasicValues(item);
+        this._PurchaseOrder.validateGSTRates(item);
+        const updatedItem = this.calculateCellGSTType(item);
+        Object.assign(item, updatedItem);
+        this.updatePurchaseFinalForm();
     }
-    const values = this._PurchaseOrder.normalizeValues(formValues);
-    const calculation = this._PurchaseOrder.getGSTCalculation(this.GSTTypetext || type, values);
-
-    // Update form with calculated values
-    form.patchValue({
-      IGST: type === GSTType.GST_AFTER_DISC ? 0 : values.igst,
-      CGSTAmount: calculation.cgstAmount.toFixed(4),
-      SGSTAmount: calculation.sgstAmount.toFixed(4),
-      IGSTAmount: calculation.igstAmount.toFixed(4),
-      GSTAmount: calculation.totalGSTAmount.toFixed(4),
-      NetAmount: calculation.netAmount.toFixed(4)
-    }, { emitEvent: false });
-  }
-
-
-  calculateCellGSTType(item: ItemNameList): ItemNameList {
-
-    if (!item) return item;
-
-    try {
-      const values = this._PurchaseOrder.normalizeValues(item);
-      const calculation = this._PurchaseOrder.getGSTCalculation(item.GSTType, values);
-      return {
-        ...item,
-        IGST: item.GSTType === GSTType.GST_AFTER_DISC ? 0 : values.igst,
-        CGSTAmount: Number(calculation.cgstAmount.toFixed(4)),
-        SGSTAmount: Number(calculation.sgstAmount.toFixed(4)),
-        IGSTAmount: Number(calculation.igstAmount.toFixed(4)),
-        VatAmount: Number(calculation.totalGSTAmount.toFixed(4)),
-        // GST: Number(calculation.totalGSTAmount.toFixed(4)),
-        GSTAmount: Number(calculation.totalGSTAmount.toFixed(4)),
-        NetAmount: Number(calculation.netAmount.toFixed(4)),
-      };
-    } catch (error) {
-      console.error('Error calculating GST:', error);
-      return item;
-    }
-
-
-  }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-    console.log(this.dateTimeObj)
-  }
-
-
-  selPaymentterm(event) {
-    this.paymentterm = event.value
-  }
-
-  selPaymentmode(event) {
-    this.paymentmode = event.value
-  }
-
-  onClose() {
-    this.dialogRef.close();
-  }
-  onClear() { }
-
-  //new 
-
-  selectChangeStore(obj: any) {
-    debugger
-    console.log("Store:", obj);
-    this.vstoreId = obj.value || 0
-    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
-  
-  }
-
-
-  validateFormValues() {
-    debugger
-    const form = this.userFormGroup;
-    const values = form.getRawValue() as GRNFormModel;
-    if (+values.Qty < 0) {
-      this._PurchaseOrder.showToast('Quantity should be greater than 0', ToastType.WARNING);
-      form.patchValue({
-        Qty: 0,
-      });
-    }
-
-    // if (+values.MRP < 0) {
-    //   this._PurchaseOrder.showToast('MRP should be greater than 0', ToastType.WARNING);
-    //   form.patchValue({
-    //     MRP: 0,
-    //   });
-    // }
-    if (+values.Rate < 0) {
-      this._PurchaseOrder.showToast('Rate should be greater than 0', ToastType.WARNING);
-      form.patchValue({
-        Rate: 0,
-      });
-    }
-    if (+values.MRP > 0) {
-      if (+values.Rate > +values.MRP) {
-        this._PurchaseOrder.showToast('Rate should be less than MRP', ToastType.WARNING);
+    //Update footer Values
+    updatePurchaseFinalForm() {
+        const form = this.userFormGroup;
+        const itemList = this.dsItemNameList.data;
+        const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+        const updatableFormValues: FinalFormModel = {
+            TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(4),
+            VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(4),
+            NetPayamt: netAmount.toFixed(4),
+            RoundingAmt: Math.round(netAmount),
+            DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(4)
+        } as FinalFormModel;
+        this.RoundingAmt = Math.round(netAmount)
         form.patchValue({
-          Rate: 0,
+            ...updatableFormValues
         });
-      }
+    }
+    getTotalNet(element) {
+        let NetAmt;
+        this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount), 0);
+
+        const handlingCharges = this.FinalPurchaseform.get('HandlingCharges').value || 0;
+        this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(4);
+
+        const transportChanges = this.FinalPurchaseform.get('TransportCharges').value || 0;
+        this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(transportChanges)).toFixed(4);
+
+        const Freight = this.FinalPurchaseform.get('Freight').value || 0;
+        this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(Freight)).toFixed(4);
+
+        const OctriAmt = this.FinalPurchaseform.get('OctriAmount').value || 0;
+        this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(4);
+
+        this.FinalNetAmount = Math.ceil(this.FinalNetAmount)
+        return this.FinalNetAmount;
+    }
+    getTotalGST(element) {
+        this.GSTAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(4);
+
+        return this.GSTAmount;
+        this.CGSTAmount = (element.reduce((sum, { CGSTAmt }) => sum += +(CGSTAmt || 0), 0)).toFixed(4);
+        this.SGSTAmount = (element.reduce((sum, { SGSTAmt }) => sum += +(SGSTAmt || 0), 0)).toFixed(4);
+        this.IGSTAmount = (element.reduce((sum, { IGSTAmt }) => sum += +(IGSTAmt || 0), 0)).toFixed(4);
+    }
+    getTotalDisc(element) {
+        this.DiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0);
+        if (this.DiscAmount > 0)
+            this.DiscAmount = this.DiscAmount.toFixed(4);
+        return this.DiscAmount;
+    }
+    getTotalAmt(element) {
+        this.FinalTotalAmt = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(4);
+        return this.FinalTotalAmt;
     }
 
-  }
 
-
-  getchangegstper(rate: any): void {
-
-    if (Number(rate?.value) > 0) {
-      this.userFormGroup.patchValue({
-        SGSTPer: Number((rate.value) / 2),
-        IGSTPer: 0,
-        GST: Number(rate.value)
-      })
-      this.userFormGroup.get('IGSTPer').reset();
-      this.userFormGroup.get('IGSTPer').clearValidators();
-      this.userFormGroup.get('IGSTPer').updateValueAndValidity();
-      this.userFormGroup.get('IGSTPer').disable();
-      const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
-      if (addbuttonElement) {
-        addbuttonElement.focus();
-      }
-    } else {
-      this.userFormGroup.get('IGSTPer').reset();
-      this.userFormGroup.get('IGSTPer').enable();
+    getCGSTAmt() {
+        this.CGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { CGSTAmount }) => sum += +(CGSTAmount || 0), 0);
+        return this.CGSTFinalAmount
     }
-    this.calculateTotalamt();
-  }
-  getchangeIgstper(rate: any): void {
-
-    if (Number(rate?.text) > 0) {
-      this.userFormGroup.patchValue({
-        SGSTPer: 0,
-        CGSTPer: 0,
-        GST: Number(rate.text),
-        selectedIGSTValue: Number(rate.text),
-      })
-      this.userFormGroup.get('CGSTPer').reset();
-      this.userFormGroup.get('CGSTPer').clearValidators();
-      this.userFormGroup.get('CGSTPer').updateValueAndValidity();
-      this.userFormGroup.get('CGSTPer').disable();
-    } else {
-      this.userFormGroup.get('CGSTPer').reset();
-      this.userFormGroup.get('CGSTPer').enable();
+    getSGSTAmt() {
+        this.SGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { SGSTAmount }) => sum += +(SGSTAmount || 0), 0);
+        return this.SGSTFinalAmount
     }
-    this.calculateTotalamt();
-  }
-
-
-
-  resetForm() {
-    this.userFormGroup.reset();
-    this.dsItemNameList.data = [];
-  }
-  OnReset() {
-    this.userFormGroup.reset();
-    this.FinalPurchaseform.reset();
-    this.dsItemNameList.data = [];
-    this.resetFormItem();
-    this._matDialog.closeAll();
-  }
-  toggleDisable() {
-    this.disableTextbox = !this.disableTextbox;
-  }
-  resetFormItem() {
-    const form = this.userFormGroup;
-    form.patchValue({
-      ItemName: "",
-      ConversionFactor: 1,
-      Qty: "",
-      UOMId: 0,
-      HSNCode: "",
-      BatchNo: "",
-      ExpDate: "",
-      FreeQty: 0,
-      Rate: "",
-      MRP: 0,
-      Disc: 0,
-      Disc2: 0,
-      DisAmount: 0,
-      DisAmount2: 0,
-      CGST: 0,
-      CGSTPer: 0,
-      CGSTAmount: 0,
-      SGST: 0,
-      SGSTPer: 0,
-      SGSTAmount: 0,
-      IGST: 0,
-      IGSTPer: 0,
-      GST: 0,
-      GSTAmount: 0,
-      TotalAmount: "",
-      NetAmount: "",
-      FinalTotalQty: 0,
-      HSNcode: '',
-      DefRate: 0
-    });
-    this.lastsupplierflag = false;
-    this.userFormGroup.markAsUntouched();
-  }
-  selectChangeSupplier(supplier: any): void {
-    console.log({ supplier });
-  }
-  getValidationMessages() {
-    return {
-      supplierId: [
-        { name: "required", Message: "SupplierId is required" }
-      ],
-      itemName: [
-        { name: "required", Message: "Item Name is required" }
-      ],
-
-      // invoiceNo: [
-      //   // { name: "required", Message: "Invoice No is required" }
-      // ],
-      // gateEntryNo: [
-      //   // { name: "required", Message: "Gate Entry No is required" }
-      // ],
-      mrp: [
-        // { name: "required", Message: "MRP is required" }
-      ],
-      rate: [
-        // { name: "required", Message: "Raterequired" }
-      ],
-      GSTType: [
-        { name: "required", Message: "GSTType is required" }
-      ],
-      Qty: [
-
-      ],
-       FreeQty: [],
-      CGST: [],
-      IGST: []
-    };
-  }
-  isValidForm(): boolean {
-    return this.dsItemNameList.data.every((i) => i.Qty > 0 && i.MRP > 0);
-  }
-  // Last Three item list
-  getLastThreeItemInfo() {
-    const vdata = {
-      "first": 0,
-      "rows": 999,
-      "sortField": "ItemId",
-      "sortOrder": 0,
-      "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.ItemID), "opType": "Equals" }],
-      "exportType": "JSON",
-      "columns": [{ "data": "string", "name": "string" }]
+    getIGSTAmt() {
+        this.IGSTFinalAmount = this.dsItemNameList.data.reduce((sum, { IGSTAmount }) => sum += +(IGSTAmount || 0), 0);
+        if (this.IGSTFinalAmount > 0)
+            return this.IGSTFinalAmount
+        else
+            this.IGSTFinalAmount = 0
+        return this.IGSTFinalAmount
     }
-    this._PurchaseOrder.getLastThreeItemInfo(vdata).subscribe(data => {
-      this.dsLastThreeItemList.data = data.data as LastThreeItemList[]; this.sIsLoading = '';
-    });
-  }
-  // Check Invice is already exist or not 
-  chkpreviouserates(rate) {
-    const enteredRate = rate;
-    const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
 
-    // Check if rate matches any of last three
-    const isRateSame = lastRates.includes(enteredRate);
 
-    if (!isRateSame && (Number(enteredRate) > 0)) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Price Verification Required',
-        html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
+    getTotalAmount() {
+        return this.dsItemNameList.data.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0);
+    }
+
+    highlight(contact) {
+        this.selectedRowIndex = contact.ItemID;
+    }
+
+    public setFocus(nextElementId): void {
+        document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
+    }
+    keyPressAlphanumeric(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+    keyPressCharater(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+    GSTTypeID: any = 0;
+    GSTTypetext: any = 0;
+    IsDiscPer2: boolean = false;
+    onGSTTypeChange(event: { value: number, text: string }) {
+
+        console.log(event)
+        this.GSTTypeID = event.value;
+        const newGSTType = event.text as GSTType;
+        this.calculateGSTType(newGSTType);
+        if (event.text == "GST After TwoTime Disc") {
+            this.IsDiscPer2 = true
+        } else {
+            this.IsDiscPer2 = false
+        }
+
+        // Update gst type of table data
+
+        this.dsItemNameList.data.forEach((item) => {
+            item.GSTType = newGSTType;
+            this.getCellCalculation(item);
+        })
+
+    }
+
+    getSelectedItem(item: GRNItemResponseType): void {
+        console.log(item)
+        this.lastsupplierflag = true
+        this.ItemID = item.itemId
+        this.UmoId = item.umoId
+        this.Umoname = item.umoName
+
+        this.userFormGroup.patchValue({
+            // UOMId: item.umoId,
+            UOMId: item.umoName,
+            ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
+            Qty: '',// item.balanceQty,
+            CGSTPer: item.cgstPer,
+            SGSTPer: item.sgstPer,
+            IGSTPer: item.igstPer,
+            GST: item.cgstPer + item.sgstPer + item.igstPer,
+            HSNcode: item.hsNcode || '0'
+        });
+        this.getLastThreeItemInfo();
+        const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+        if (QtyElement) {
+            QtyElement.focus();
+        }
+        this.getSupplierRate();
+
+        setTimeout(() => {
+            const nativeElement = this.qtyTextboxRef?.nativeElement;
+            if (nativeElement) {
+                const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+                if (inputEl) {
+                    inputEl.focus();
+                }
+            }
+        }, 100);
+    }
+    calculateTotalamt() {
+        // if (this.vDefRate == 0) {
+        this.validateFormValues();
+        const form = this.userFormGroup;
+        const qty = +form.get('Qty').value || 0;
+        const rate = +form.get('Rate').value || 0;
+
+        let totalAmount = 0;
+        let netAmount = 0;
+
+        if (qty > 0 && rate > 0) {
+            totalAmount = rate * qty;
+            netAmount = totalAmount;
+            form.patchValue({
+                TotalAmount: totalAmount,
+                NetAmount: netAmount,
+            });
+        } else {
+            form.patchValue({
+                TotalAmount: 0,
+                DiscAmount: 0,
+                DiscAmount2: 0,
+                CGSTAmount: 0,
+                SGSTAmount: 0,
+                IGSTAmount: 0,
+                GSTAmount: 0,
+                NetAmount: 0,
+
+            });
+        }
+        this.calculateDiscountAmount();
+        this.calculateGSTType();
+        // }
+        // else {
+        //   if (this.vDefRate > 0) {
+        //     if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
+        //       Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+        //       this.vRate = 0
+        //     } else { this.calculateTotalamt(); }
+
+        //   }
+        // }
+    }
+    // Add New Item
+    OnAddItem() {
+        const dialogRef = this._matDialog.open(ItemFormMasterComponent, {
+            maxWidth: "100%",
+            height: '95%',
+            width: '95%',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log("The dialog was closed - Insert Action", result);
+        });
+    }
+    calculateDiscountAmount() {
+        const form = this.userFormGroup;
+        const values = form.getRawValue() as PurchaseFormModel;
+
+        // Get and validate discount percentage
+        const discountPercentage = Number(this.userFormGroup.get("Disc").value) // Number(values.Disc || 0);
+        if (discountPercentage >= 100 || discountPercentage < 0) {
+            this._PurchaseOrder.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);
+            form.patchValue({ Disc: 0 });
+            this.calculateGSTType();
+            return;
+        }
+
+        // Calculate discount amount
+        const totalAmount = Number(values.TotalAmount || 0);
+        const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(4));
+
+        // Update form with new discount amount
+        form.patchValue({
+            DiscAmount: discountAmount
+        }, { emitEvent: false });
+
+        // // Recalculate GST after discount update
+        this.calculateGSTType();
+    }
+    Cgst: any;
+    calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
+        debugger
+
+        const form = this.userFormGroup;
+        const formValues = form.getRawValue() as PurchaseFormModel;
+
+        this.Cgst = (formValues.CGSTPer)
+        if (parseFloat(this.Cgst) > 0) {
+            this.Cgst = parseFloat(this.Cgst) / 2
+            formValues.CGSTPer = this.Cgst
+        }
+        const values = this._PurchaseOrder.normalizeValues(formValues);
+        const calculation = this._PurchaseOrder.getGSTCalculation(this.GSTTypetext || type, values);
+
+        // Update form with calculated values
+        form.patchValue({
+            IGST: type === GSTType.GST_AFTER_DISC ? 0 : values.igst,
+            CGSTAmount: calculation.cgstAmount.toFixed(4),
+            SGSTAmount: calculation.sgstAmount.toFixed(4),
+            IGSTAmount: calculation.igstAmount.toFixed(4),
+            GSTAmount: calculation.totalGSTAmount.toFixed(4),
+            NetAmount: calculation.netAmount.toFixed(4)
+        }, { emitEvent: false });
+    }
+
+
+    calculateCellGSTType(item: ItemNameList): ItemNameList {
+
+        if (!item) return item;
+
+        try {
+            const values = this._PurchaseOrder.normalizeValues(item);
+            const calculation = this._PurchaseOrder.getGSTCalculation(item.GSTType, values);
+            return {
+                ...item,
+                IGST: item.GSTType === GSTType.GST_AFTER_DISC ? 0 : values.igst,
+                CGSTAmount: Number(calculation.cgstAmount.toFixed(4)),
+                SGSTAmount: Number(calculation.sgstAmount.toFixed(4)),
+                IGSTAmount: Number(calculation.igstAmount.toFixed(4)),
+                VatAmount: Number(calculation.totalGSTAmount.toFixed(4)),
+                // GST: Number(calculation.totalGSTAmount.toFixed(4)),
+                GSTAmount: Number(calculation.totalGSTAmount.toFixed(4)),
+                NetAmount: Number(calculation.netAmount.toFixed(4)),
+            };
+        } catch (error) {
+            console.error('Error calculating GST:', error);
+            return item;
+        }
+
+
+    }
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+        console.log(this.dateTimeObj)
+    }
+
+
+    selPaymentterm(event) {
+        this.paymentterm = event.value
+    }
+
+    selPaymentmode(event) {
+        this.paymentmode = event.value
+    }
+
+    onClose() {
+        this.dialogRef.close();
+    }
+    onClear() { }
+
+    //new 
+
+    selectChangeStore(obj: any) {
+        debugger
+        console.log("Store:", obj);
+        this.vstoreId = obj.value || 0
+        this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+
+    }
+
+
+    validateFormValues() {
+        debugger
+        const form = this.userFormGroup;
+        const values = form.getRawValue() as GRNFormModel;
+        if (+values.Qty < 0) {
+            this._PurchaseOrder.showToast('Quantity should be greater than 0', ToastType.WARNING);
+            form.patchValue({
+                Qty: 0,
+            });
+        }
+
+        // if (+values.MRP < 0) {
+        //   this._PurchaseOrder.showToast('MRP should be greater than 0', ToastType.WARNING);
+        //   form.patchValue({
+        //     MRP: 0,
+        //   });
+        // }
+        if (+values.Rate < 0) {
+            this._PurchaseOrder.showToast('Rate should be greater than 0', ToastType.WARNING);
+            form.patchValue({
+                Rate: 0,
+            });
+        }
+        if (+values.MRP > 0) {
+            if (+values.Rate > +values.MRP) {
+                this._PurchaseOrder.showToast('Rate should be less than MRP', ToastType.WARNING);
+                form.patchValue({
+                    Rate: 0,
+                });
+            }
+        }
+
+    }
+
+
+    getchangegstper(rate: any): void {
+
+        if (Number(rate?.value) > 0) {
+            this.userFormGroup.patchValue({
+                SGSTPer: Number((rate.value) / 2),
+                IGSTPer: 0,
+                GST: Number(rate.value)
+            })
+            this.userFormGroup.get('IGSTPer').reset();
+            this.userFormGroup.get('IGSTPer').clearValidators();
+            this.userFormGroup.get('IGSTPer').updateValueAndValidity();
+            this.userFormGroup.get('IGSTPer').disable();
+            const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
+            if (addbuttonElement) {
+                addbuttonElement.focus();
+            }
+        } else {
+            this.userFormGroup.get('IGSTPer').reset();
+            this.userFormGroup.get('IGSTPer').enable();
+        }
+        this.calculateTotalamt();
+    }
+    getchangeIgstper(rate: any): void {
+
+        if (Number(rate?.text) > 0) {
+            this.userFormGroup.patchValue({
+                SGSTPer: 0,
+                CGSTPer: 0,
+                GST: Number(rate.text),
+                selectedIGSTValue: Number(rate.text),
+            })
+            this.userFormGroup.get('CGSTPer').reset();
+            this.userFormGroup.get('CGSTPer').clearValidators();
+            this.userFormGroup.get('CGSTPer').updateValueAndValidity();
+            this.userFormGroup.get('CGSTPer').disable();
+        } else {
+            this.userFormGroup.get('CGSTPer').reset();
+            this.userFormGroup.get('CGSTPer').enable();
+        }
+        this.calculateTotalamt();
+    }
+
+
+
+    resetForm() {
+        this.userFormGroup.reset();
+        this.dsItemNameList.data = [];
+    }
+    OnReset() {
+        this.userFormGroup.reset();
+        this.FinalPurchaseform.reset();
+        this.dsItemNameList.data = [];
+        this.resetFormItem();
+        this._matDialog.closeAll();
+    }
+    toggleDisable() {
+        this.disableTextbox = !this.disableTextbox;
+    }
+    resetFormItem() {
+        const form = this.userFormGroup;
+        form.patchValue({
+            ItemName: "",
+            ConversionFactor: 1,
+            Qty: "",
+            UOMId: 0,
+            HSNCode: "",
+            BatchNo: "",
+            ExpDate: "",
+            FreeQty: 0,
+            Rate: "",
+            MRP: 0,
+            Disc: 0,
+            Disc2: 0,
+            DisAmount: 0,
+            DisAmount2: 0,
+            CGST: 0,
+            CGSTPer: 0,
+            CGSTAmount: 0,
+            SGST: 0,
+            SGSTPer: 0,
+            SGSTAmount: 0,
+            IGST: 0,
+            IGSTPer: 0,
+            GST: 0,
+            GSTAmount: 0,
+            TotalAmount: "",
+            NetAmount: "",
+            FinalTotalQty: 0,
+            HSNcode: '',
+            DefRate: 0
+        });
+        this.lastsupplierflag = false;
+        this.userFormGroup.markAsUntouched();
+    }
+    selectChangeSupplier(supplier: any): void {
+        console.log({ supplier });
+    }
+    getValidationMessages() {
+        return {
+            supplierId: [
+                { name: "required", Message: "SupplierId is required" }
+            ],
+            itemName: [
+                { name: "required", Message: "Item Name is required" }
+            ],
+
+            // invoiceNo: [
+            //   // { name: "required", Message: "Invoice No is required" }
+            // ],
+            // gateEntryNo: [
+            //   // { name: "required", Message: "Gate Entry No is required" }
+            // ],
+            mrp: [
+                // { name: "required", Message: "MRP is required" }
+            ],
+            rate: [
+                // { name: "required", Message: "Raterequired" }
+            ],
+            GSTType: [
+                { name: "required", Message: "GSTType is required" }
+            ],
+            Qty: [
+
+            ],
+            FreeQty: [],
+            CGST: [],
+            IGST: []
+        };
+    }
+    isValidForm(): boolean {
+        return this.dsItemNameList.data.every((i) => i.Qty > 0 && i.MRP > 0);
+    }
+    // Last Three item list
+    getLastThreeItemInfo() {
+        const vdata = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "ItemId",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.ItemID), "opType": "Equals" }],
+            "exportType": "JSON",
+            "columns": [{ "data": "string", "name": "string" }]
+        }
+        this._PurchaseOrder.getLastThreeItemInfo(vdata).subscribe(data => {
+            this.dsLastThreeItemList.data = data.data as LastThreeItemList[]; this.sIsLoading = '';
+        });
+    }
+    // Check Invice is already exist or not 
+    chkpreviouserates(rate) {
+        const enteredRate = rate;
+        const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
+
+        // Check if rate matches any of last three
+        const isRateSame = lastRates.includes(enteredRate);
+
+        if (!isRateSame && (Number(enteredRate) > 0)) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Price Verification Required',
+                html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
                   <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
                   <hr>  `,
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#f39c12',
-        background: '#fff',
-        timer: 4000,
-        timerProgressBar: true
-      });
-    }
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f39c12',
+                background: '#fff',
+                timer: 4000,
+                timerProgressBar: true
+            });
+        }
 
-  }
-  // Retreving Item Details Edit Time
-  getOldPurchaseOrder(Id) {
-    const Param = {
-      "first": 0,
-      "rows": 999,
-      "sortField": "PurchaseID",
-      "sortOrder": 0,
-      "filters": [{ "fieldName": "PurchaseID", "fieldValue": String(Id), "opType": "Equals" }],
-      "exportType": "JSON",
-      "columns": []
     }
-    this._PurchaseOrder.getPurchaseOrderDetail(Param).subscribe(data => {
-      debugger
-      console.log(data)
-      this.dsItemNameList.data = data.data as ItemNameList[];
-      this.chargeslist = data as ItemNameList[];
-      this.dsItemNameList.data.forEach(element => {
-        console.log(element)
-        element.ItemName = element.itemName,
-          element.ItemId = element.itemId,
-          element.Qty = element.qty,
-          element.FreeQty = element.freeQty || 0
-          element.Rate = element.rate,
-          element.TotalAmount = element.totalAmount,
-          element.DiscAmount = element.discAmount,
-          element.DiscPer = element.discPer,
-          element.VatPer = element.vatPer,
-          element.VatAmount = element.vatAmount,
-          element.GST = element.vatPer,
-          element.GSTAmount = element.vatAmount,
-          element.GSTAmt = element.vatAmount,
-          element.NetAmount = element.grandTotalAmount,
-          element.MRP = element.mrp
-           element.CGSTPer = element.cgstPer,
-          element.CGSTAmount = element.cgstAmt,
-          element.SGSTPer = element.sgstPer,
-          element.SGSTAmount = element.sgstAmt,
-          element.IGST = element.igstPer,
-          element.IGSTAmount = element.igstAmt
-        element.DefRate = element.defRate,
-          element.Specification = element.specification
-          element.UOM =element.unitofMeasurementName 
-         element.UOMID =  element.uomid
-        element.TotalQty = element.totalQty
-      });
-    });
-    console.log(this.dsItemNameList)
-  }
-  // Defined Rate Validation
-  OnchekPurchaserateValidation() {
-    if (this.vDefRate > 0) {
-      if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
-        Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-        this.vRate = 0
-      } else { this.calculateTotalamt(); }
-    } else if (this.vDefRate == 0) {
-      if (this.userFormGroup.get("Rate").value) {
-        this.calculateTotalamt();
-      }
-    }
-  }
-  supplierRateList: any = [];
-  getSupplierRate() {
-    this.supplierRateList = [];
-    const data =
-    {
-      "first": 0,
-      "rows": 999,
-      "sortField": "ItemId",
-      "sortOrder": 0,
-      "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.ItemID), "opType": "Equals" },
-      { "fieldName": "SupplierId", "fieldValue": String(this.vSupplierId), "opType": "Equals" }
-      ],
-      "exportType": "JSON",
-      "columns": [{ "data": "string", "name": "string" }]
-    }
-    console.log(data);
-    this._PurchaseOrder.getSupplierRateList(data).subscribe(data => {
-      console.log(data);
-      if (data.data[0]) {
-        const SupplierRate = data.data[0].supplierRate;
-        this.vDefRate = SupplierRate;
-        console.log(this.vDefRate)
-      }
-    });
-  }
-  onKeydown(e, data) { }
-
-  getPurchaseRequisition() { 
-      const dialogRef = this._matDialog.open(PurchaseRequisitionlistComponent,
-        {
-          maxWidth: "100%",
-          height: '90%',
-          width: '90%' 
+    // Retreving Item Details Edit Time
+    getOldPurchaseOrder(Id) {
+        const Param = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "PurchaseID",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "PurchaseID", "fieldValue": String(Id), "opType": "Equals" }],
+            "exportType": "JSON",
+            "columns": []
+        }
+        this._PurchaseOrder.getPurchaseOrderDetail(Param).subscribe(data => {
+            debugger
+            console.log(data)
+            this.dsItemNameList.data = data.data as ItemNameList[];
+            this.chargeslist = data as ItemNameList[];
+            this.dsItemNameList.data.forEach(element => {
+                console.log(element)
+                element.ItemName = element.itemName,
+                    element.ItemId = element.itemId,
+                    element.Qty = element.qty,
+                    element.FreeQty = element.freeQty || 0
+                element.Rate = element.rate,
+                    element.TotalAmount = element.totalAmount,
+                    element.DiscAmount = element.discAmount,
+                    element.DiscPer = element.discPer,
+                    element.VatPer = element.vatPer,
+                    element.VatAmount = element.vatAmount,
+                    element.GST = element.vatPer,
+                    element.GSTAmount = element.vatAmount,
+                    element.GSTAmt = element.vatAmount,
+                    element.NetAmount = element.grandTotalAmount,
+                    element.MRP = element.mrp
+                element.CGSTPer = element.cgstPer,
+                    element.CGSTAmount = element.cgstAmt,
+                    element.SGSTPer = element.sgstPer,
+                    element.SGSTAmount = element.sgstAmt,
+                    element.IGST = element.igstPer,
+                    element.IGSTAmount = element.igstAmt
+                element.DefRate = element.defRate,
+                    element.Specification = element.specification
+                element.UOM = element.unitofMeasurementName
+                element.UOMID = element.uomid
+                element.TotalQty = element.totalQty
+            });
         });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result); 
-      }); 
-  }
+        console.log(this.dsItemNameList)
+    }
+    // Defined Rate Validation
+    OnchekPurchaserateValidation() {
+        if (this.vDefRate > 0) {
+            if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
+                Swal.fire("Please Check defined Supplier Rate for product ...!!!");
+                this.vRate = 0
+            } else { this.calculateTotalamt(); }
+        } else if (this.vDefRate == 0) {
+            if (this.userFormGroup.get("Rate").value) {
+                this.calculateTotalamt();
+            }
+        }
+    }
+    supplierRateList: any = [];
+    getSupplierRate() {
+        this.supplierRateList = [];
+        const data =
+        {
+            "first": 0,
+            "rows": 999,
+            "sortField": "ItemId",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.ItemID), "opType": "Equals" },
+            { "fieldName": "SupplierId", "fieldValue": String(this.vSupplierId), "opType": "Equals" }
+            ],
+            "exportType": "JSON",
+            "columns": [{ "data": "string", "name": "string" }]
+        }
+        console.log(data);
+        this._PurchaseOrder.getSupplierRateList(data).subscribe(data => {
+            console.log(data);
+            if (data.data[0]) {
+                const SupplierRate = data.data[0].supplierRate;
+                this.vDefRate = SupplierRate;
+                console.log(this.vDefRate)
+            }
+        });
+    }
+    onKeydown(e, data) { }
+
+    getPurchaseRequisition() {
+        const dialogRef = this._matDialog.open(PurchaseRequisitionlistComponent,
+            {
+                maxWidth: "100%",
+                height: '90%',
+                width: '90%'
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
 }
 export class LastThreeItemList {
-  ItemID: any;
-  ItemName: string;
-  BatchNo: number;
-  BatchExpDate: number;
-  ReceiveQty: number;
-  FreeQty: number;
-  MRP: number;
-  Rate: number;
-  rate:any;
-  TotalAmount: number;
-  ConversionFactor: number;
-  VatPercentage: number;
+    ItemID: any;
+    ItemName: string;
+    BatchNo: number;
+    BatchExpDate: number;
+    ReceiveQty: number;
+    FreeQty: number;
+    MRP: number;
+    Rate: number;
+    rate: any;
+    TotalAmount: number;
+    ConversionFactor: number;
+    VatPercentage: number;
 
-  constructor(LastThreeItemList) {
-    {
+    constructor(LastThreeItemList) {
+        {
 
-      this.ItemID = LastThreeItemList.ItemID || 0;
-      this.rate = LastThreeItemList.rate || 0;
-      this.ItemName = LastThreeItemList.ItemName || "";
-      this.BatchNo = LastThreeItemList.BatchNo || 0;
-      this.BatchExpDate = LastThreeItemList.BatchExpDate || 0;
-      this.ReceiveQty = LastThreeItemList.ReceiveQty || 0;
-      this.FreeQty = LastThreeItemList.FreeQty || 0;
-      this.MRP = LastThreeItemList.MRP || 0;
+            this.ItemID = LastThreeItemList.ItemID || 0;
+            this.rate = LastThreeItemList.rate || 0;
+            this.ItemName = LastThreeItemList.ItemName || "";
+            this.BatchNo = LastThreeItemList.BatchNo || 0;
+            this.BatchExpDate = LastThreeItemList.BatchExpDate || 0;
+            this.ReceiveQty = LastThreeItemList.ReceiveQty || 0;
+            this.FreeQty = LastThreeItemList.FreeQty || 0;
+            this.MRP = LastThreeItemList.MRP || 0;
 
+        }
     }
-  }
 }
 

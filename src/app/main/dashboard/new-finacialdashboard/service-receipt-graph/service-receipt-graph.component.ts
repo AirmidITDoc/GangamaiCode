@@ -1,27 +1,24 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { Chart } from 'chart.js';
 import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from '../../dashboard.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-service-receipt-graph',
-  templateUrl: './service-receipt-graph.component.html',
-  styleUrls: ['./service-receipt-graph.component.scss'],
-      encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-service-receipt-graph',
+    templateUrl: './service-receipt-graph.component.html',
+    styleUrls: ['./service-receipt-graph.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class ServiceReceiptGraphComponent {
 
-  unitId = 1
-   
+    unitId = 1
+
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -61,7 +58,7 @@ export class ServiceReceiptGraphComponent {
     getServiceList() {
         debugger
 
-        this.fromDate =this.data.fdate
+        this.fromDate = this.data.fdate
         this.toDate = this.data.tdate
         const vadat = {
             "UnitId": this.unitId,
@@ -73,7 +70,7 @@ export class ServiceReceiptGraphComponent {
             this.trendData = this.Financedata.receiptPayment
 
             console.log(this.Financedata)
-            if (this.trendData){
+            if (this.trendData) {
 
                 this.modalityData = [
                     ...this.modalityData,
@@ -83,14 +80,14 @@ export class ServiceReceiptGraphComponent {
                         opcount: item.opCollection
                     }))
                 ];
-            this.modalityData1 = [
-                ...this.modalityData1,
-                ...this.trendData.map(item => ({
-                    modality: item.serviceName,
-                    opcount: item.ipCollection
-                }))
-            ];
-         }
+                this.modalityData1 = [
+                    ...this.modalityData1,
+                    ...this.trendData.map(item => ({
+                        modality: item.serviceName,
+                        opcount: item.ipCollection
+                    }))
+                ];
+            }
             console.log(this.modalityData)
 
             this.modalityChart = this.getModalityBarChart();

@@ -10,468 +10,468 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { CurrentStockService } from '../current-stock.service';
 
 @Component({
-  selector: 'app-item-movement-summery',
-  templateUrl: './item-movement-summery.component.html',
-  styleUrls: ['./item-movement-summery.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-item-movement-summery',
+    templateUrl: './item-movement-summery.component.html',
+    styleUrls: ['./item-movement-summery.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class ItemMovementSummeryComponent implements OnInit {
 
-  displayedColumns = [
-    'TranDate',
-    'TransactionType',
-    'DocumentNo',
-    'PatientName',
-    'BatchNo',
-    'BatchExpDate',
-    'ReceiptQty',
-    'IssueQty',
-    'BalQty',
-    'R_Qty'
-  ];
-  displayedColumns1 = [
-    'BatchNo',
-    'ExpDate',
-    'LandedRate',
-    'PurUnitRateWF',
-    'PurchaseRate',
-    'UnitMRP',
-    'TotalByMRP',
-    'TotalByPTR',
-    'BalQty'
-  ];
-  displayedColumns2 = [
-    'GrnNumber',
-    'GRNDate',
-    'BillDate',
-    'SupplierName',
-    'ReceiveQty',
-    'FreeQty',
-    'InvoiceNo',
-    'GST',
-    'TotalAmount',
-    'PaymentMode'
-  ];
-  displayedColumns3 = [
-    'SalesNo',
-    'Date',
-    'DoctorName',
-    'PatientName',
-    'MobileNo',
-    'Qty',
-    'TotalAmount'
-  ];
-  displayedColumns4 = [
-    'SalesNo',
-    'Date',
-    'DoctorName',
-    'PatientName',
-    'MobileNo',
-    'Qty',
-    'TotalAmount'
-  ];
+    displayedColumns = [
+        'TranDate',
+        'TransactionType',
+        'DocumentNo',
+        'PatientName',
+        'BatchNo',
+        'BatchExpDate',
+        'ReceiptQty',
+        'IssueQty',
+        'BalQty',
+        'R_Qty'
+    ];
+    displayedColumns1 = [
+        'BatchNo',
+        'ExpDate',
+        'LandedRate',
+        'PurUnitRateWF',
+        'PurchaseRate',
+        'UnitMRP',
+        'TotalByMRP',
+        'TotalByPTR',
+        'BalQty'
+    ];
+    displayedColumns2 = [
+        'GrnNumber',
+        'GRNDate',
+        'BillDate',
+        'SupplierName',
+        'ReceiveQty',
+        'FreeQty',
+        'InvoiceNo',
+        'GST',
+        'TotalAmount',
+        'PaymentMode'
+    ];
+    displayedColumns3 = [
+        'SalesNo',
+        'Date',
+        'DoctorName',
+        'PatientName',
+        'MobileNo',
+        'Qty',
+        'TotalAmount'
+    ];
+    displayedColumns4 = [
+        'SalesNo',
+        'Date',
+        'DoctorName',
+        'PatientName',
+        'MobileNo',
+        'Qty',
+        'TotalAmount'
+    ];
 
-  isItemSelected: boolean = false;
-  StoreList: any = [];
-  dateTimeObj: any;
-  filteredOptions: any;
-  ItemListfilteredOptions: any;
-  noOptionFound: boolean = false;
-  isLoadingStr: string = '';
-  isLoading: string = '';
-  sIsLoading: string = "";
-  registerObj: any;
-  fiveDaysAgo: any;
+    isItemSelected: boolean = false;
+    StoreList: any = [];
+    dateTimeObj: any;
+    filteredOptions: any;
+    ItemListfilteredOptions: any;
+    noOptionFound: boolean = false;
+    isLoadingStr: string = '';
+    isLoading: string = '';
+    sIsLoading: string = "";
+    registerObj: any;
+    fiveDaysAgo: any;
 
-  tabIndex: number = 0;
+    tabIndex: number = 0;
 
-  @ViewChild(MatTable) table: MatTable<any>;
+    @ViewChild(MatTable) table: MatTable<any>;
 
-ngAfterViewInit() {
-  this.table?.renderRows();
-}
-  dsItemMovementSummery = new MatTableDataSource<ItemMovementList>();
-  dsBatchExpWise = new MatTableDataSource<BatchExpWiseList>();
-  dsPurSupplierWise = new MatTableDataSource<PurSupplierWiseList>();
-  dsSaleList = new MatTableDataSource<SalesList>();
-  dsSalesReturnList = new MatTableDataSource<SalesReturnList>();
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
-  @ViewChild('Thirdpaginator', { static: true }) public Thirdpaginator: MatPaginator;
-  @ViewChild('Fourthpaginator', { static: true }) public Fourthpaginator: MatPaginator;
-  @ViewChild('Lastpaginator', { static: true }) public Lastpaginator: MatPaginator;
-
-  constructor(
-    public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ItemMovementSummeryComponent>,
-    public _CurrentStockService: CurrentStockService,
-    private _loggedService: AuthenticationService,
-  ) { }
-
-  ngOnInit(): void {
-    if (this.data.Obj) {
-      this.registerObj = this.data.Obj;
-      console.log("ddddttttaa:", this.registerObj);
-      this._CurrentStockService.ItemSummeryFrom.get("start").setValue(this.fiveDaysAgo);
+    ngAfterViewInit() {
+        this.table?.renderRows();
     }
-    this.gePharStoreList();
-    this.getItemMovementSummeryList();
-    this.getBatchExpWiseList();
-    this.getPueSupplierWiseList();
-    this.getSalesList();
-    this.getSalesReturnList();
+    dsItemMovementSummery = new MatTableDataSource<ItemMovementList>();
+    dsBatchExpWise = new MatTableDataSource<BatchExpWiseList>();
+    dsPurSupplierWise = new MatTableDataSource<PurSupplierWiseList>();
+    dsSaleList = new MatTableDataSource<SalesList>();
+    dsSalesReturnList = new MatTableDataSource<SalesReturnList>();
 
-    const currentDate = new Date();
-    const fiveDaysAgos = new Date(currentDate.setDate(currentDate.getDate() - 5));
-    this.fiveDaysAgo = this.datePipe.transform(new Date(currentDate.setDate(currentDate.getDate() - 5)), "yyyy-MM-dd 00:00:00.000");
-    this._CurrentStockService.ItemSummeryFrom.get("start").setValue(fiveDaysAgos);
-    //console.log(this.fiveDaysAgo)
-    //  this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  }
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
+    @ViewChild('Thirdpaginator', { static: true }) public Thirdpaginator: MatPaginator;
+    @ViewChild('Fourthpaginator', { static: true }) public Fourthpaginator: MatPaginator;
+    @ViewChild('Lastpaginator', { static: true }) public Lastpaginator: MatPaginator;
 
-  onCloseTabs() {
+    constructor(
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,
+        public datePipe: DatePipe,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<ItemMovementSummeryComponent>,
+        public _CurrentStockService: CurrentStockService,
+        private _loggedService: AuthenticationService,
+    ) { }
 
-  }
+    ngOnInit(): void {
+        if (this.data.Obj) {
+            this.registerObj = this.data.Obj;
+            console.log("ddddttttaa:", this.registerObj);
+            this._CurrentStockService.ItemSummeryFrom.get("start").setValue(this.fiveDaysAgo);
+        }
+        this.gePharStoreList();
+        this.getItemMovementSummeryList();
+        this.getBatchExpWiseList();
+        this.getPueSupplierWiseList();
+        this.getSalesList();
+        this.getSalesReturnList();
 
-  parseToDate(dateStr: string): Date | null {
-  if (!dateStr) return null;
-  const [datePart] = dateStr.split(' ');
-  const [day, month, year] = datePart.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
-  return isNaN(date.getTime()) ? null : date;
-}
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  gePharStoreList() {
-    const vdata = {
-      Id: this._loggedService.currentUserValue.storeId
+        const currentDate = new Date();
+        const fiveDaysAgos = new Date(currentDate.setDate(currentDate.getDate() - 5));
+        this.fiveDaysAgo = this.datePipe.transform(new Date(currentDate.setDate(currentDate.getDate() - 5)), "yyyy-MM-dd 00:00:00.000");
+        this._CurrentStockService.ItemSummeryFrom.get("start").setValue(fiveDaysAgos);
+        //console.log(this.fiveDaysAgo)
+        //  this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
     }
-    // this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
-    //   this.StoreList = data;
-    //   this._CurrentStockService.ItemSummeryFrom.get('StoreId').setValue(this.StoreList[0]);
-    // });
-  }
-  //itemMovement Summery
-  getItemMovementSummeryList() {
-    const vdata = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "ItemId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "FromDate",
-          "fieldValue": this.fiveDaysAgo || this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("start").value, "yyyy-MM-dd") || '1900-01-01',
-          "opType": "StartsWith"
-        },
-        {
-          "fieldName": "todate",
-          "fieldValue": this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd") || '1900-01-01',
-          "opType": "StartsWith"
-        },
-        {
-          "fieldName": "ItemId",
-          "fieldValue": String(this.registerObj.itemId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "FromStoreID",
-          "fieldValue": String(this.registerObj.storeId),
-          "opType": "Equals"
-        }
 
-      ],
-      "exportType": "JSON",
-      "columns": []
-    }
-    console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getItemMovementsummeryList(vdata).subscribe(Visit => {
-        this.dsItemMovementSummery.data = Visit.data as ItemMovementList[];
-        console.log("ItemMovementList:", this.dsItemMovementSummery.data);
-        this.dsItemMovementSummery.sort = this.sort;
-        this.dsItemMovementSummery.paginator = this.paginator;
-      }
-      );
-    }, 500);
-  }
-  //batchExpwiseList
-  getBatchExpWiseList() {
-    const vdata = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "ItemId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "ItemId",
-          "fieldValue": String(this.registerObj.itemId), //"77617"
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "StoreId",
-          "fieldValue": String(this.registerObj.storeId),
-          "opType": "Equals"
-        }
+    onCloseTabs() {
 
-      ],
-      "exportType": "JSON",
-      "columns": [
-        {
-          "data": "BillDate",
-          "name": "Billing Date"
-        }
-      ]
     }
-    console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getBatchExpWiseList(vdata).subscribe(data => {
-        this.dsBatchExpWise.data = data.data as BatchExpWiseList[];
-        console.log("BatchExpWiseList:", this.dsBatchExpWise.data);
-        this.dsBatchExpWise.sort = this.sort;
-        this.dsBatchExpWise.paginator = this.SecondPaginator;
-        this.sIsLoading = '';
-      }
-      );
-    }, 500);
-  }
-  //Purchase SupplierwiseList 
-  getPueSupplierWiseList() {
-    const vdata = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "SalesId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "ItemId",
-          "fieldValue": "77617",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "StoreId",
-          "fieldValue": "2",
-          "opType": "Equals"
-        }
 
-      ],
-      "exportType": "JSON",
-      "columns": [
-        {
-          "data": "BillDate",
-          "name": "Billing Date"
-        }
-      ]
+    parseToDate(dateStr: string): Date | null {
+        if (!dateStr) return null;
+        const [datePart] = dateStr.split(' ');
+        const [day, month, year] = datePart.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        return isNaN(date.getTime()) ? null : date;
     }
-    console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getPueSupplierWiseList(vdata).subscribe(data => {
-        this.dsPurSupplierWise.data = data.data as PurSupplierWiseList[];
-        console.log(this.dsPurSupplierWise.data);
-        this.dsPurSupplierWise.sort = this.sort;
-        this.dsPurSupplierWise.paginator = this.Thirdpaginator;
-        this.sIsLoading = '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
-      );
-    }, 500);
-  }
-  //Sales List 
-  getSalesList() {
-    const vdata = {
-      "first": 0,
-      "rows": 9999,
-      "sortField": "ItemId",
-      "sortOrder": 0,
-      "filters": [
-        {
-          "fieldName": "ItemId",
-          "fieldValue": String(this.registerObj.itemId), //"197874",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "StoreId",
-          "fieldValue": String(this.registerObj.storeId),
-          "opType": "Equals"
-        }
-      ],
-      "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
-    }
-    console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getSalesList(vdata).subscribe(data => {
-        this.dsSaleList.data = data.data as SalesList[];
-        console.log(this.dsSaleList.data);
-        this.dsSaleList.sort = this.sort;
-        this.dsSaleList.paginator = this.Fourthpaginator;
-      }
-      );
-    }, 500);
-  }
-  //SalesReturn List 
-  getSalesReturnList() {
-    this.sIsLoading = 'loading-data';
-    const vdata = {
-      "ItemId": this.registerObj.ItemId || 0,
-      "StoreId": this.registerObj.StoreId || 0
-    }
-    console.log(vdata)
-    // setTimeout(() => {
-    //   this._CurrentStockService.getSalesRetrunList(vdata).subscribe((data) => {
-    //     this.dsSalesReturnList.data = data as SalesReturnList[];
-    //     console.log(this.dsSalesReturnList);
-    //     this.dsSalesReturnList.sort = this.sort;
-    //     this.dsSalesReturnList.paginator = this.Lastpaginator;
-    //     this.sIsLoading = '';
-    //   },
-    //     (error) => {
-    //       this.isLoadingStr = 'no-data';
-    //     }
-    //   );
-    // }, 1000);
-  }
-  onClose() {
-    this._matDialog.closeAll();
-  }
-  onClear() {
 
-  }
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+    gePharStoreList() {
+        const vdata = {
+            Id: this._loggedService.currentUserValue.storeId
+        }
+        // this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
+        //   this.StoreList = data;
+        //   this._CurrentStockService.ItemSummeryFrom.get('StoreId').setValue(this.StoreList[0]);
+        // });
+    }
+    //itemMovement Summery
+    getItemMovementSummeryList() {
+        const vdata = {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "ItemId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "FromDate",
+                    "fieldValue": this.fiveDaysAgo || this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("start").value, "yyyy-MM-dd") || '1900-01-01',
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "todate",
+                    "fieldValue": this.datePipe.transform(this._CurrentStockService.ItemSummeryFrom.get("end").value, "yyyy-MM-dd") || '1900-01-01',
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": String(this.registerObj.itemId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "FromStoreID",
+                    "fieldValue": String(this.registerObj.storeId),
+                    "opType": "Equals"
+                }
+
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        console.log(vdata)
+        setTimeout(() => {
+            this._CurrentStockService.getItemMovementsummeryList(vdata).subscribe(Visit => {
+                this.dsItemMovementSummery.data = Visit.data as ItemMovementList[];
+                console.log("ItemMovementList:", this.dsItemMovementSummery.data);
+                this.dsItemMovementSummery.sort = this.sort;
+                this.dsItemMovementSummery.paginator = this.paginator;
+            }
+            );
+        }, 500);
+    }
+    //batchExpwiseList
+    getBatchExpWiseList() {
+        const vdata = {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "ItemId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": String(this.registerObj.itemId), //"77617"
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "StoreId",
+                    "fieldValue": String(this.registerObj.storeId),
+                    "opType": "Equals"
+                }
+
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "BillDate",
+                    "name": "Billing Date"
+                }
+            ]
+        }
+        console.log(vdata)
+        setTimeout(() => {
+            this._CurrentStockService.getBatchExpWiseList(vdata).subscribe(data => {
+                this.dsBatchExpWise.data = data.data as BatchExpWiseList[];
+                console.log("BatchExpWiseList:", this.dsBatchExpWise.data);
+                this.dsBatchExpWise.sort = this.sort;
+                this.dsBatchExpWise.paginator = this.SecondPaginator;
+                this.sIsLoading = '';
+            }
+            );
+        }, 500);
+    }
+    //Purchase SupplierwiseList 
+    getPueSupplierWiseList() {
+        const vdata = {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "SalesId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": "77617",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "StoreId",
+                    "fieldValue": "2",
+                    "opType": "Equals"
+                }
+
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "BillDate",
+                    "name": "Billing Date"
+                }
+            ]
+        }
+        console.log(vdata)
+        setTimeout(() => {
+            this._CurrentStockService.getPueSupplierWiseList(vdata).subscribe(data => {
+                this.dsPurSupplierWise.data = data.data as PurSupplierWiseList[];
+                console.log(this.dsPurSupplierWise.data);
+                this.dsPurSupplierWise.sort = this.sort;
+                this.dsPurSupplierWise.paginator = this.Thirdpaginator;
+                this.sIsLoading = '';
+            },
+                (error) => {
+                    this.isLoadingStr = 'no-data';
+                }
+            );
+        }, 500);
+    }
+    //Sales List 
+    getSalesList() {
+        const vdata = {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "ItemId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ItemId",
+                    "fieldValue": String(this.registerObj.itemId), //"197874",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "StoreId",
+                    "fieldValue": String(this.registerObj.storeId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "string",
+                    "name": "string"
+                }
+            ]
+        }
+        console.log(vdata)
+        setTimeout(() => {
+            this._CurrentStockService.getSalesList(vdata).subscribe(data => {
+                this.dsSaleList.data = data.data as SalesList[];
+                console.log(this.dsSaleList.data);
+                this.dsSaleList.sort = this.sort;
+                this.dsSaleList.paginator = this.Fourthpaginator;
+            }
+            );
+        }, 500);
+    }
+    //SalesReturn List 
+    getSalesReturnList() {
+        this.sIsLoading = 'loading-data';
+        const vdata = {
+            "ItemId": this.registerObj.ItemId || 0,
+            "StoreId": this.registerObj.StoreId || 0
+        }
+        console.log(vdata)
+        // setTimeout(() => {
+        //   this._CurrentStockService.getSalesRetrunList(vdata).subscribe((data) => {
+        //     this.dsSalesReturnList.data = data as SalesReturnList[];
+        //     console.log(this.dsSalesReturnList);
+        //     this.dsSalesReturnList.sort = this.sort;
+        //     this.dsSalesReturnList.paginator = this.Lastpaginator;
+        //     this.sIsLoading = '';
+        //   },
+        //     (error) => {
+        //       this.isLoadingStr = 'no-data';
+        //     }
+        //   );
+        // }, 1000);
+    }
+    onClose() {
+        this._matDialog.closeAll();
+    }
+    onClear() {
+
+    }
 }
 export class ItemMovementList {
-  TranDate: any;
-  TransactionType: any;
-  DocumentNo: number;
-  PatientName: string;
-  BatchNo: any;
-  BatchExpDate: number;
-  ReceiptQty: number;
-  IssueQty: number;
-  BalQty: number;
+    TranDate: any;
+    TransactionType: any;
+    DocumentNo: number;
+    PatientName: string;
+    BatchNo: any;
+    BatchExpDate: number;
+    ReceiptQty: number;
+    IssueQty: number;
+    BalQty: number;
 
-  constructor(ItemMovementList) {
-    {
-      this.TranDate = ItemMovementList.TranDate || 0;
-      this.TransactionType = ItemMovementList.TransactionType || '';
-      this.DocumentNo = ItemMovementList.DocumentNo || 0;
-      this.PatientName = ItemMovementList.PatientName || "";
-      this.BatchNo = ItemMovementList.BatchNo || '';
-      this.BatchExpDate = ItemMovementList.BatchExpDate || 0;
-      this.ReceiptQty = ItemMovementList.ReceiptQty || 0;
-      this.IssueQty = ItemMovementList.IssueQty || 0;
-      this.BalQty = ItemMovementList.BalQty || 0;
+    constructor(ItemMovementList) {
+        {
+            this.TranDate = ItemMovementList.TranDate || 0;
+            this.TransactionType = ItemMovementList.TransactionType || '';
+            this.DocumentNo = ItemMovementList.DocumentNo || 0;
+            this.PatientName = ItemMovementList.PatientName || "";
+            this.BatchNo = ItemMovementList.BatchNo || '';
+            this.BatchExpDate = ItemMovementList.BatchExpDate || 0;
+            this.ReceiptQty = ItemMovementList.ReceiptQty || 0;
+            this.IssueQty = ItemMovementList.IssueQty || 0;
+            this.BalQty = ItemMovementList.BalQty || 0;
+        }
     }
-  }
 }
 export class BatchExpWiseList {
-  LandedRate: any;
-  PurUnitRateWF: any;
-  PurchaseRate: number;
-  TotalByPTR: number;
-  BatchNo: any;
-  ExpDate: number;
-  UnitMRP: number;
-  TotalByMRP: number;
-  BalQty: number;
+    LandedRate: any;
+    PurUnitRateWF: any;
+    PurchaseRate: number;
+    TotalByPTR: number;
+    BatchNo: any;
+    ExpDate: number;
+    UnitMRP: number;
+    TotalByMRP: number;
+    BalQty: number;
 
-  constructor(BatchExpWiseList) {
-    {
-      this.LandedRate = BatchExpWiseList.LandedRate || 0;
-      this.PurUnitRateWF = BatchExpWiseList.PurUnitRateWF || '';
-      this.PurchaseRate = BatchExpWiseList.PurchaseRate || 0;
-      this.TotalByPTR = BatchExpWiseList.TotalByPTR || 0;
-      this.BatchNo = BatchExpWiseList.BatchNo || '';
-      this.ExpDate = BatchExpWiseList.ExpDate || 0;
-      this.UnitMRP = BatchExpWiseList.UnitMRP || 0;
-      this.TotalByMRP = BatchExpWiseList.TotalByMRP || 0;
-      this.BalQty = BatchExpWiseList.BalQty || 0;
+    constructor(BatchExpWiseList) {
+        {
+            this.LandedRate = BatchExpWiseList.LandedRate || 0;
+            this.PurUnitRateWF = BatchExpWiseList.PurUnitRateWF || '';
+            this.PurchaseRate = BatchExpWiseList.PurchaseRate || 0;
+            this.TotalByPTR = BatchExpWiseList.TotalByPTR || 0;
+            this.BatchNo = BatchExpWiseList.BatchNo || '';
+            this.ExpDate = BatchExpWiseList.ExpDate || 0;
+            this.UnitMRP = BatchExpWiseList.UnitMRP || 0;
+            this.TotalByMRP = BatchExpWiseList.TotalByMRP || 0;
+            this.BalQty = BatchExpWiseList.BalQty || 0;
+        }
     }
-  }
 }
 export class PurSupplierWiseList {
-  GrnNumber: any;
-  GRNDate: any;
-  BillDate: number;
-  SupplierName: string;
-  ReceiveQty: any;
-  FreeQty: number;
-  InvoiceNo: number;
-  PaymentMode: number;
-  TotalAmount: number;
-  GST: any;
+    GrnNumber: any;
+    GRNDate: any;
+    BillDate: number;
+    SupplierName: string;
+    ReceiveQty: any;
+    FreeQty: number;
+    InvoiceNo: number;
+    PaymentMode: number;
+    TotalAmount: number;
+    GST: any;
 
-  constructor(PurSupplierWiseList) {
-    {
-      this.GrnNumber = PurSupplierWiseList.GrnNumber || 0;
-      this.GRNDate = PurSupplierWiseList.GRNDate || 0;
-      this.BillDate = PurSupplierWiseList.BillDate || 0;
-      this.SupplierName = PurSupplierWiseList.SupplierName || '';
-      this.ReceiveQty = PurSupplierWiseList.ReceiveQty || 0;
-      this.FreeQty = PurSupplierWiseList.FreeQty || 0;
-      this.InvoiceNo = PurSupplierWiseList.InvoiceNo || 0;
-      this.PaymentMode = PurSupplierWiseList.PaymentMode || '';
-      this.TotalAmount = PurSupplierWiseList.TotalAmount || 0;
-      this.GST = PurSupplierWiseList.GST || 0;
+    constructor(PurSupplierWiseList) {
+        {
+            this.GrnNumber = PurSupplierWiseList.GrnNumber || 0;
+            this.GRNDate = PurSupplierWiseList.GRNDate || 0;
+            this.BillDate = PurSupplierWiseList.BillDate || 0;
+            this.SupplierName = PurSupplierWiseList.SupplierName || '';
+            this.ReceiveQty = PurSupplierWiseList.ReceiveQty || 0;
+            this.FreeQty = PurSupplierWiseList.FreeQty || 0;
+            this.InvoiceNo = PurSupplierWiseList.InvoiceNo || 0;
+            this.PaymentMode = PurSupplierWiseList.PaymentMode || '';
+            this.TotalAmount = PurSupplierWiseList.TotalAmount || 0;
+            this.GST = PurSupplierWiseList.GST || 0;
+        }
     }
-  }
 }
 export class SalesList {
-  SalesNo: any;
-  Date: any;
-  DoctorName: string;
-  PatientName: string;
-  MobileNo: any;
-  Qty: number;
-  TotalAmount: number;
+    SalesNo: any;
+    Date: any;
+    DoctorName: string;
+    PatientName: string;
+    MobileNo: any;
+    Qty: number;
+    TotalAmount: number;
 
-  constructor(SalesList) {
-    {
-      this.SalesNo = SalesList.SalesNo || 0;
-      this.Date = SalesList.Date || 0;
-      this.DoctorName = SalesList.DoctorName || '';
-      this.PatientName = SalesList.PatientName || '';
-      this.MobileNo = SalesList.MobileNo || 0;
-      this.Qty = SalesList.Qty || 0;
-      this.TotalAmount = SalesList.TotalAmount || 0;
+    constructor(SalesList) {
+        {
+            this.SalesNo = SalesList.SalesNo || 0;
+            this.Date = SalesList.Date || 0;
+            this.DoctorName = SalesList.DoctorName || '';
+            this.PatientName = SalesList.PatientName || '';
+            this.MobileNo = SalesList.MobileNo || 0;
+            this.Qty = SalesList.Qty || 0;
+            this.TotalAmount = SalesList.TotalAmount || 0;
+        }
     }
-  }
 }
 export class SalesReturnList {
-  SalesNo: any;
-  Date: any;
-  DoctorName: string;
-  PatientName: string;
-  MobileNo: any;
-  Qty: number;
-  TotalAmount: number;
+    SalesNo: any;
+    Date: any;
+    DoctorName: string;
+    PatientName: string;
+    MobileNo: any;
+    Qty: number;
+    TotalAmount: number;
 
-  constructor(SalesReturnList) {
-    {
-      this.SalesNo = SalesReturnList.SalesNo || 0;
-      this.Date = SalesReturnList.Date || 0;
-      this.DoctorName = SalesReturnList.DoctorName || '';
-      this.PatientName = SalesReturnList.PatientName || '';
-      this.MobileNo = SalesReturnList.MobileNo || 0;
-      this.Qty = SalesReturnList.Qty || 0;
-      this.TotalAmount = SalesReturnList.TotalAmount || 0;
+    constructor(SalesReturnList) {
+        {
+            this.SalesNo = SalesReturnList.SalesNo || 0;
+            this.Date = SalesReturnList.Date || 0;
+            this.DoctorName = SalesReturnList.DoctorName || '';
+            this.PatientName = SalesReturnList.PatientName || '';
+            this.MobileNo = SalesReturnList.MobileNo || 0;
+            this.Qty = SalesReturnList.Qty || 0;
+            this.TotalAmount = SalesReturnList.TotalAmount || 0;
+        }
     }
-  }
 }

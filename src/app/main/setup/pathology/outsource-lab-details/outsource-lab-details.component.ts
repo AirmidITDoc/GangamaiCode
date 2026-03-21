@@ -1,37 +1,36 @@
 import { DatePipe } from '@angular/common';
 import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { NewLabdetailsComponent } from './new-labdetails/new-labdetails.component';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { fuseAnimations } from '@fuse/animations';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { NewLabdetailsComponent } from './new-labdetails/new-labdetails.component';
 
 @Component({
     selector: 'app-outsource-lab-details',
     templateUrl: './outsource-lab-details.component.html',
     styleUrls: ['./outsource-lab-details.component.scss'],
-        encapsulation: ViewEncapsulation.None,
-        animations: fuseAnimations,
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class OutsourceLabDetailsComponent {
 
     hasSelectedContacts: boolean;
     labname = ""
-  mySearchForm: FormGroup;
+    mySearchForm: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PathCategoryMaster, permissionType.Add);
-   
-      
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PathCategoryMaster, permissionType.Add);
+
+
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
@@ -52,9 +51,9 @@ export class OutsourceLabDetailsComponent {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                   action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.MOutSourcelabMaster, permissionType.Edit), callback: (data: any) => {
-                                                                this.onSave(data);
-                                                            }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.MOutSourcelabMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._RequestforlabtestService.deactivateTheStatus(data.outSourceId).subscribe((response: any) => {
@@ -74,9 +73,9 @@ export class OutsourceLabDetailsComponent {
         { fieldName: "OutSourceLabName", fieldValue: "", opType: OperatorComparer.StartsWith },
         { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
-// 
+    // 
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.MOutSourcelabMaster,
+        permissionCode: permissionCodes.MOutSourcelabMaster,
         apiUrl: "OutSourcelabMaster/List",
         columnsList: this.allColumns,
         sortField: "outSourceId",
@@ -84,10 +83,10 @@ export class OutsourceLabDetailsComponent {
         filters: this.allFilters
     }
 
-  
+
     constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
         public toastr: ToastrService, private commonService: PrintserviceService, private _formBuilder: UntypedFormBuilder,
-        private _FormvalidationserviceService: FormvalidationserviceService, public datePipe: DatePipe,  public permissionService: PagePermissionService,) { }
+        private _FormvalidationserviceService: FormvalidationserviceService, public datePipe: DatePipe, public permissionService: PagePermissionService,) { }
     ngOnInit(): void {
         this.mySearchForm = this.cretatemySearchForm()
     }
@@ -109,7 +108,7 @@ export class OutsourceLabDetailsComponent {
             this.grid.bindGridData();
         });
     }
-  
+
     // editLab(row) {
     //     const dialogRef = this._matDialog.open(NewLabdetailsComponent,
     //         {

@@ -1,25 +1,23 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { interval, Subscription, switchMap } from 'rxjs';
-import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { UserDetail } from 'app/main/administration/create-user/newcreate-user/newcreate-user.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { interval, Subscription, switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { OpPaymentComponent } from '../../op-search-list/op-payment/op-payment.component';
 import { RegInsert } from '../../registration/registration.component';
 import { AppointmentBillService } from './appointment-bill.service';
-import { PacakgeList } from 'app/main/setup/billing/service-master/editpackage/editpackage.component';
 import { PackageDetailsComponent } from './package-details/package-details.component';
-import { ConfigService } from 'app/core/services/config.service';
-import { HospitalConfigService } from 'app/core/services/hospital-config.service';
-import { element } from 'protractor';
-import { UserDetail } from 'app/main/administration/create-user/newcreate-user/newcreate-user.component';
 
 @Component({
     selector: 'app-appointment-billing',
@@ -133,23 +131,24 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpDraftSaveForm = this.createDraftSaveform()
         debugger
 
-        if(this.data){
-        if (this.data.FormName = 'Appointment-OPBill') {
-            this.patientDetail = this.data.row
-            console.log("Data", this.patientDetail)
+        if (this.data) {
+            if (this.data.FormName = 'Appointment-OPBill') {
+                this.patientDetail = this.data.row
+                console.log("Data", this.patientDetail)
 
-             this.PatientName = this.patientDetail.patientName
-            this.patientDetail.doctorName = this.patientDetail.doctorname
-            this.DepartmentName = this.patientDetail.departmentName
-            this.AgeYear = this.patientDetail.ageYear
-            this.Doctorname = this.patientDetail.doctorname
-            this.vOPIPId = this.patientDetail.visitId;
-            this.vTariffId = this.patientDetail.tariffId;
-            this.vhospitalId = this.patientDetail.hospitalId;
-            this.vClassId = this.patientDetail.classId
-            this.RegNo = this.patientDetail.regNo
+                this.PatientName = this.patientDetail.patientName
+                this.patientDetail.doctorName = this.patientDetail.doctorname
+                this.DepartmentName = this.patientDetail.departmentName
+                this.AgeYear = this.patientDetail.ageYear
+                this.Doctorname = this.patientDetail.doctorname
+                this.vOPIPId = this.patientDetail.visitId;
+                this.vTariffId = this.patientDetail.tariffId;
+                this.vhospitalId = this.patientDetail.hospitalId;
+                this.vClassId = this.patientDetail.classId
+                this.RegNo = this.patientDetail.regNo
 
-        }}
+            }
+        }
         if (this.data) {
             // console.log(this.data)
             this.patientDetail = this.advanceDataStored.storage;

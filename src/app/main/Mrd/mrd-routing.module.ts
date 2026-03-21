@@ -14,7 +14,7 @@ const appRoutes: Routes = [
     //     loadChildren: () => import("./mrd-detail-list/mrd-details.module").then((m) => m.MrdDetailsModule),
 
     // },
-     {
+    {
         path: "certificates",
         loadChildren: () => import("./certificate/cretificate.module").then((m) => m.CretificateModule),
 

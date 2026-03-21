@@ -1,35 +1,28 @@
+import { DatePipe } from "@angular/common";
 import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { fuseAnimations } from "@fuse/animations";
-import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
-import { ToastrService } from "ngx-toastr";
-import { DoctorMaster } from "../doctor-master.component";
-import { DoctorMasterService } from "../doctor-master.service";
-import { SignatureViewComponent } from "../signature-view/signature-view.component";
+import { MatTableDataSource } from "@angular/material/table";
 import { MatTabChangeEvent } from "@angular/material/tabs";
-import Swal from "sweetalert2";
+import { fuseAnimations } from "@fuse/animations";
+import { ApiCaller } from "app/core/services/apiCaller";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { ConfigService } from "app/core/services/config.service";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
+import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
+import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
+import { ToastrService } from "ngx-toastr";
 import SignaturePad from "signature_pad";
+import Swal from "sweetalert2";
+import { ChargesDetail, DoctorChargesComponent } from "../doctor-charges/doctor-charges.component";
 import { DoctorEducationComponent, EducationDetail } from "../doctor-education/doctor-education.component";
 import { DoctorExperienceComponent, ExperienceDetail } from "../doctor-experience/doctor-experience.component";
-import { ChargesDetail, DoctorChargesComponent } from "../doctor-charges/doctor-charges.component";
-import { DoctorSchduleComponent, SchduleDetail } from "../doctor-schdule/doctor-schdule.component";
 import { DoctorLeaveComponent, LeaveDetail } from "../doctor-leave/doctor-leave.component";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { DatePipe } from "@angular/common";
-import { ConsentModule } from "app/main/nursingstation/consent/consent.module";
-import { indexOf } from "lodash";
-import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
-import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
-import { ApiCaller } from "app/core/services/apiCaller";
-import { filter } from 'rxjs/operators';
-import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
-import { ConfigService } from "app/core/services/config.service";
+import { DoctorMaster } from "../doctor-master.component";
+import { DoctorMasterService } from "../doctor-master.service";
+import { DoctorSchduleComponent, SchduleDetail } from "../doctor-schdule/doctor-schdule.component";
+import { SignatureViewComponent } from "../signature-view/signature-view.component";
 
 @Component({
     selector: "app-new-doctor",
@@ -145,7 +138,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     signature: any;
     visConsultant = true;
     visRefDoc = false;
-    vIsInHouseDoctor=false;
+    vIsInHouseDoctor = false;
     autocompleteModeprefix: string = "Prefix";
     autocompleteModegender: string = "Gender";
     autocompleteModecity: string = "City";
@@ -439,7 +432,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     createdDoctormasterForm(): FormGroup {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             DoctorId: [0],
             PrefixID: ["", Validators.required],
@@ -914,7 +907,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     getValidationMessages() {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-           const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return {
             PrefixID: [
                 { name: "required", Message: "Prefix Name is required" }

@@ -107,4 +107,4 @@ const appRoutes: Routes = [
     declarations: [],
     imports: [RouterModule.forChild(appRoutes)],
 })
-export class PersonaldetailModule {}
+export class PersonaldetailModule { }

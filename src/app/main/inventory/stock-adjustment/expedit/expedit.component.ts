@@ -1,101 +1,100 @@
-import { Component, ElementRef, Inject, ViewEncapsulation } from '@angular/core';
-import { StockAdjustmentService } from '../stock-adjustment.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import Swal from 'sweetalert2';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { ItemNameList } from 'app/main/purchase/purchase-order/purchase-order.component';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { StockAdjustmentService } from '../stock-adjustment.service';
 
 @Component({
-  selector: 'app-expedit',
-  templateUrl: './expedit.component.html',
-  styleUrls: ['./expedit.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-expedit',
+    templateUrl: './expedit.component.html',
+    styleUrls: ['./expedit.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class ExpeditComponent {
-  itemname: any;
-  oldExpdate: any;
-  newExpdate: any;
-  Expform: FormGroup;
-  Expform1: FormGroup;
-  registerObj: any;
-  vBatchNo:any;
-  vlastDay: string = '';
-lastDay1: string = '';
-lastDay2: string = '';
-vExpDate: string = '';
-  ExpDate: string = '';
-expflag=0
+    itemname: any;
+    oldExpdate: any;
+    newExpdate: any;
+    Expform: FormGroup;
+    Expform1: FormGroup;
+    registerObj: any;
+    vBatchNo: any;
+    vlastDay: string = '';
+    lastDay1: string = '';
+    lastDay2: string = '';
+    vExpDate: string = '';
+    ExpDate: string = '';
+    expflag = 0
 
-  constructor(
-    public _StockAdjustment: StockAdjustmentService,
-    private accountService: AuthenticationService,
-   private _FormvalidationserviceService: FormvalidationserviceService,
-     private _formBuilder: UntypedFormBuilder,
-    public datePipe: DatePipe,
-    public dialogRef: MatDialogRef<ExpeditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public _matDialog: MatDialog,
-    public toastr: ToastrService,
-    private elementRef: ElementRef,
-  ) { }
+    constructor(
+        public _StockAdjustment: StockAdjustmentService,
+        private accountService: AuthenticationService,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+        private _formBuilder: UntypedFormBuilder,
+        public datePipe: DatePipe,
+        public dialogRef: MatDialogRef<ExpeditComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        private elementRef: ElementRef,
+    ) { }
 
-  ngOnInit(): void {
-    if (this.data.Obj) {
-      this.registerObj = this.data.Obj;
-      console.log(this.registerObj)
-      debugger
-      this.oldExpdate = this.registerObj.batchExpDate;
-      // this.vBatchNo= this.registerObj.batchNo
-      // this.itemname = this.registerObj.itemName;
-      // this.vBatchNo= this.registerObj.batchNo
-      // this.itemname = this.registerObj.itemName;
-     this.Expform = this._StockAdjustment.createExpForm()
-      this.Expform1 = this.createExpForm()
-      
+    ngOnInit(): void {
+        if (this.data.Obj) {
+            this.registerObj = this.data.Obj;
+            console.log(this.registerObj)
+            debugger
+            this.oldExpdate = this.registerObj.batchExpDate;
+            // this.vBatchNo= this.registerObj.batchNo
+            // this.itemname = this.registerObj.itemName;
+            // this.vBatchNo= this.registerObj.batchNo
+            // this.itemname = this.registerObj.itemName;
+            this.Expform = this._StockAdjustment.createExpForm()
+            this.Expform1 = this.createExpForm()
+
+        }
+
     }
-    
-  }
 
 
-  createExpForm(){
-  return this._formBuilder.group({
-    batchAdjId:0,
-      storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      stkId: [this.registerObj.stockId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [this.registerObj.itemId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-      oldBatchNo: [this.registerObj.batchNo || ''],
-      oldExpDate: [this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd')],
-      newBatchNo: [ this.registerObj.batchNo || ''],
-      newExpDate: [this.Expform.get('NewexpDate').value],
-      addedBy: [this.accountService.currentUserValue.userId | 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
-    });
+    createExpForm() {
+        return this._formBuilder.group({
+            batchAdjId: 0,
+            storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            stkId: [this.registerObj.stockId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [this.registerObj.itemId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            oldBatchNo: [this.registerObj.batchNo || ''],
+            oldExpDate: [this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd')],
+            newBatchNo: [this.registerObj.batchNo || ''],
+            newExpDate: [this.Expform.get('NewexpDate').value],
+            addedBy: [this.accountService.currentUserValue.userId | 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
     }
-  
-  onSubmit() {
 
-if(this.expflag){
-  this.Expform1.get('oldExpDate').setValue(this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd'))
+    onSubmit() {
 
-    this.Expform1.get('newExpDate').setValue(this.Expform.get('NewexpDate').value)
-    console.log(this.Expform1.value);
-    this._StockAdjustment.BatchAdjSave(this.Expform1.value).subscribe(response => {
-      this._matDialog.closeAll();
-      
-    });
-  }else Swal.fire("Enter Exp Date:")
-}
+        if (this.expflag) {
+            this.Expform1.get('oldExpDate').setValue(this.datePipe.transform(this.Expform.get('OldexpDate').value, 'yyyy-MM-dd'))
 
- 
+            this.Expform1.get('newExpDate').setValue(this.Expform.get('NewexpDate').value)
+            console.log(this.Expform1.value);
+            this._StockAdjustment.BatchAdjSave(this.Expform1.value).subscribe(response => {
+                this._matDialog.closeAll();
 
-calculateLastDay() {
-  this.expflag=1
-  const inputDate = this.Expform.get("NewexpDate").value;
+            });
+        } else Swal.fire("Enter Exp Date:")
+    }
+
+
+
+    calculateLastDay() {
+        this.expflag = 1
+        const inputDate = this.Expform.get("NewexpDate").value;
         const numericPattern = /^[0-9]+$/;
         const CurrentDate = new Date();
         const Currentmonths = new Date();
@@ -133,8 +132,8 @@ calculateLastDay() {
                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
                 const newuserDate = this.datePipe.transform(this.lastDay2, 'yyyy-MM-dd')
                 this.Expform.get('NewexpDate').setValue(newuserDate)
-             
-            } 
+
+            }
         } else {
             this.vlastDay = '';
             this.Expform.get('NewexpDate').setValue(this.vlastDay)
@@ -144,18 +143,18 @@ calculateLastDay() {
             return;
         }
 
-}
-  private pad(num: number): string {
+    }
+    private pad(num: number): string {
         return num.toString().padStart(2, '0');
     }
-          private getLastDayOfMonth(month: number, year: number): number {
-  return new Date(year, month, 0).getDate();
-}
-OnReset() {
-  this.Expform.reset();
-  this._matDialog.closeAll();
-}
-onClose() {
-  this._matDialog.closeAll();
-}
+    private getLastDayOfMonth(month: number, year: number): number {
+        return new Date(year, month, 0).getDate();
+    }
+    OnReset() {
+        this.Expform.reset();
+        this._matDialog.closeAll();
+    }
+    onClose() {
+        this._matDialog.closeAll();
+    }
 }

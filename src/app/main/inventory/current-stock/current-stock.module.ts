@@ -44,10 +44,10 @@ import { NgxPrintModule } from 'ngx-print';
 //import { WebcamModule } from 'ngx-webcam';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: CurrentStockComponent 
-  },
+    {
+        path: '**',
+        component: CurrentStockComponent
+    },
 ];
 
 @NgModule({

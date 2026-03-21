@@ -39,10 +39,10 @@ import { ApointmentCardviewComponent } from './apointment-cardview.component';
 import { AppointcardviewService } from './appointcardview.service';
 
 const routes: Routes = [
-  {
-      path: '**',
-      component: ApointmentCardviewComponent,
-  },
+    {
+        path: '**',
+        component: ApointmentCardviewComponent,
+    },
 ];
 @NgModule({
     declarations: [ApointmentCardviewComponent],

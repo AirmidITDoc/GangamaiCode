@@ -8,75 +8,75 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { StockManagementService } from './stock-management.service';
 
 @Component({
-  selector: 'app-stock-management',
-  templateUrl: './stock-management.component.html',
-  styleUrls: ['./stock-management.component.scss']
+    selector: 'app-stock-management',
+    templateUrl: './stock-management.component.html',
+    styleUrls: ['./stock-management.component.scss']
 })
 export class StockManagementComponent implements OnInit {
 
-  StoreList: any = [];
-  
-  screenFromString = 'app-stock-management';
-  StockFormGroup: FormGroup;
-  dataSource = new MatTableDataSource<any>();
+    StoreList: any = [];
 
-  displayedColumns: string[] = [
-    'ItemCode',
-    'ItemName',
-    'Hk.Bal',
-    'ToStoreBal',
-    'IssueQty',
-    'MinQty',
-    'MaxQty',
+    screenFromString = 'app-stock-management';
+    StockFormGroup: FormGroup;
+    dataSource = new MatTableDataSource<any>();
+
+    displayedColumns: string[] = [
+        'ItemCode',
+        'ItemName',
+        'Hk.Bal',
+        'ToStoreBal',
+        'IssueQty',
+        'MinQty',
+        'MaxQty',
     ];
 
-  constructor(public _StockmangeService: StockManagementService,
-    private accountService: AuthenticationService,
-    // public notification: NotificationService,
-    public _matDialog: MatDialog,
-    public datePipe: DatePipe,
-    private formBuilder: FormBuilder,
-    private router: Router) { }
+    constructor(public _StockmangeService: StockManagementService,
+        private accountService: AuthenticationService,
+        // public notification: NotificationService,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+        private formBuilder: FormBuilder,
+        private router: Router) { }
 
-  ngOnInit(): void {
-    this.createStockForm();
-    
-    this.getStoreList();
+    ngOnInit(): void {
+        this.createStockForm();
 
-  }
+        this.getStoreList();
 
-  getStoreList() {
-    this._StockmangeService.getStoreCombo().subscribe(data => { this.StoreList = data; })
-  }
+    }
 
-  createStockForm() {
-     this.StockFormGroup = this.formBuilder.group({
-      IssueToStore: [''],
-      Linen: [''],
-      ToStock: [''],
-      StoreId1: [''],
-      StoreId: [''],
-      StockDate: [''],
-      StockTime: [''],
-      NoOfItem: [''],
-      Remark: [''],
-      RecivedBy: [''],
-      
-    });
-  }
+    getStoreList() {
+        this._StockmangeService.getStoreCombo().subscribe(data => { this.StoreList = data; })
+    }
 
-  onSave() {
-  }
+    createStockForm() {
+        this.StockFormGroup = this.formBuilder.group({
+            IssueToStore: [''],
+            Linen: [''],
+            ToStock: [''],
+            StoreId1: [''],
+            StoreId: [''],
+            StockDate: [''],
+            StockTime: [''],
+            NoOfItem: [''],
+            Remark: [''],
+            RecivedBy: [''],
 
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==',dateTimeObj);
-    this.dateTimeObj=dateTimeObj;
-  }
+        });
+    }
 
-  
-  onClose() {
-    // this.dialogRef.close();
-  }
+    onSave() {
+    }
+
+    dateTimeObj: any;
+    getDateTime(dateTimeObj) {
+        console.log('dateTimeObj==', dateTimeObj);
+        this.dateTimeObj = dateTimeObj;
+    }
+
+
+    onClose() {
+        // this.dialogRef.close();
+    }
 }
 

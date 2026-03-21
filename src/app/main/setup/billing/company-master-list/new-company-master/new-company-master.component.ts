@@ -1,13 +1,12 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { ConfigService } from 'app/core/services/config.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyMaster } from '../company-master-list.component';
 import { CompanyMasterService } from '../company-master.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { fuseAnimations } from '@fuse/animations';
-import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-company-master',

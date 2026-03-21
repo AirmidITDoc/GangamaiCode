@@ -60,7 +60,7 @@ export class ParametermasterService {
                 ],
             ],
             methodName: [""],
-            paraMultipleRange:[''],
+            paraMultipleRange: [''],
             formula: [""],
             unitId: [0],
             // unitId: ["",[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

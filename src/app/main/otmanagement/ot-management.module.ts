@@ -37,126 +37,126 @@ import { SharedModule } from '../shared/shared.module';
 import { OTManagementServiceService } from './ot-management-service.service';
 
 const approutes: Routes = [
-  {
-    path: "listofreservation",
-    loadChildren: () =>
-      import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
+    {
+        path: "listofreservation",
+        loadChildren: () =>
+            import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
 
-  },
-  // {
-  //   path: "endoscopylist",
-  //   loadChildren: () =>
-  //   import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
+    },
+    // {
+    //   path: "endoscopylist",
+    //   loadChildren: () =>
+    //   import("./ot-reservation/ot-reservation.module").then((m) => m.OTReservationModule),
 
-  // },
-  {
-    path: "otrequest",
-    loadChildren: () =>
-      import("./ot-request/ot-request.module").then((m) => m.OtRequestModule),
+    // },
+    {
+        path: "otrequest",
+        loadChildren: () =>
+            import("./ot-request/ot-request.module").then((m) => m.OtRequestModule),
 
-  },
-  {
-    path: "cathlablist",
-    loadChildren: () =>
-      import("./CathLab/cath-lab/cath-lab.module").then((m) => m.CathLabModule),
+    },
+    {
+        path: "cathlablist",
+        loadChildren: () =>
+            import("./CathLab/cath-lab/cath-lab.module").then((m) => m.CathLabModule),
 
-  },
-  {
-    path: "otnotes",
-    loadChildren: () =>
-      import("./ot-note/ot-note.module").then((m) => m.OTNoteModule),
-  },
-  {
-    path: "endoscopylist",
-    loadChildren: () =>
-      import("./Endoscopy/endoscopy/endoscopy.module").then((m) => m.EndoscopyModule),
-  },
-  {
-    path: "otconsents",
-    loadChildren: () =>
-      import("./ot-consents/ot-consents.module").then((m) => m.OtConsentsModule),
-  },
-  {
-    path: "patienttemporarymovement",
-    loadChildren: () =>
-      import("./patient-temporary-movement/patient-temporary-movement.module").then((m) => m.PatientTemporaryMovementModule),
-  },
-  {
-    path: "patientotmovementtracking",
-    loadChildren: () =>
-      import("./patient-otmovement-tracking/patient-otmovement-tracking.module").then((m) => m.PatientOtmovementTrackingModule),
-  },
-  {
-    path: "otpreoperation",
-    loadChildren: () =>
-      import("./ot-preoperation/ot-preoperation.module").then((m) => m.OtPreoperationModule),
-  },
-  {
-    path: "theaterin",
-    loadChildren: () =>
-      import("./theater-in/theater-in.module").then((m) => m.TheaterInModule),
-  },
-  {
-    path: "anesthesiarecord",
-    loadChildren: () =>
-      import("./anesthesia-record/anesthesia-record.module").then((m) => m.AnesthesiaRecordModule),
-  },
-  {
-    path: "inoperation",
-    loadChildren: () =>
-      import("./in-operation/in-operation.module").then((m) => m.InOperationModule),
-  },
-  {
-    path: "otbilling",
-    loadChildren: () =>
-      import("./ot-billing/ot-billing.module").then((m) => m.OtBillingModule),
-  }
+    },
+    {
+        path: "otnotes",
+        loadChildren: () =>
+            import("./ot-note/ot-note.module").then((m) => m.OTNoteModule),
+    },
+    {
+        path: "endoscopylist",
+        loadChildren: () =>
+            import("./Endoscopy/endoscopy/endoscopy.module").then((m) => m.EndoscopyModule),
+    },
+    {
+        path: "otconsents",
+        loadChildren: () =>
+            import("./ot-consents/ot-consents.module").then((m) => m.OtConsentsModule),
+    },
+    {
+        path: "patienttemporarymovement",
+        loadChildren: () =>
+            import("./patient-temporary-movement/patient-temporary-movement.module").then((m) => m.PatientTemporaryMovementModule),
+    },
+    {
+        path: "patientotmovementtracking",
+        loadChildren: () =>
+            import("./patient-otmovement-tracking/patient-otmovement-tracking.module").then((m) => m.PatientOtmovementTrackingModule),
+    },
+    {
+        path: "otpreoperation",
+        loadChildren: () =>
+            import("./ot-preoperation/ot-preoperation.module").then((m) => m.OtPreoperationModule),
+    },
+    {
+        path: "theaterin",
+        loadChildren: () =>
+            import("./theater-in/theater-in.module").then((m) => m.TheaterInModule),
+    },
+    {
+        path: "anesthesiarecord",
+        loadChildren: () =>
+            import("./anesthesia-record/anesthesia-record.module").then((m) => m.AnesthesiaRecordModule),
+    },
+    {
+        path: "inoperation",
+        loadChildren: () =>
+            import("./in-operation/in-operation.module").then((m) => m.InOperationModule),
+    },
+    {
+        path: "otbilling",
+        loadChildren: () =>
+            import("./ot-billing/ot-billing.module").then((m) => m.OtBillingModule),
+    }
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatChipsModule,
-    MatProgressSpinnerModule,
-    // WebcamModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatListModule,
-    SharedModule,
-    MatStepperModule,
-    NgxMatSelectSearchModule,
-    MatDatepickerModule,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule,
-    SharedModule,
-    MatBadgeModule,
-    MatIconModule,
-    RouterModule.forChild(approutes)
-  ],
-  providers: [OTManagementServiceService
-  ]
+    declarations: [],
+    imports: [
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
+        // WebcamModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        MatGridListModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatListModule,
+        SharedModule,
+        MatStepperModule,
+        NgxMatSelectSearchModule,
+        MatDatepickerModule,
+        // NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule,
+        SharedModule,
+        MatBadgeModule,
+        MatIconModule,
+        RouterModule.forChild(approutes)
+    ],
+    providers: [OTManagementServiceService
+    ]
 })
 export class OTManagementModule { }

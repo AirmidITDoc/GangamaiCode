@@ -1,40 +1,35 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { map, Observable, startWith } from 'rxjs';
-import { CasepaperService } from './casepaper.service';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { CasepaperService } from './casepaper.service';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ConfigService } from 'app/core/services/config.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dosemaster.component';
+import { InstructionmasterComponent } from 'app/main/setup/prescription/instructionmaster/instructionmaster.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
+import { certificateTemp } from '../medicalrecord/patientcertificate/patientcertificate.component';
 import { AddItemComponent } from './add-item/add-item.component';
+import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
-import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
-import { setValue } from '@ngx-translate/core';
-import { Console } from 'console';
-import { certificateTemp } from '../medicalrecord/patientcertificate/patientcertificate.component';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { OperatorComparer } from 'app/core/models/gridRequest';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { InstructionmasterComponent } from 'app/main/setup/prescription/instructionmaster/instructionmaster.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -1844,7 +1839,7 @@ export class NewCasepaperComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                
+
                 this.dsCopyItemList.data = result;
                 if (!this.dsItemList.data) {
                     this.dsItemList.data = [];
@@ -1962,7 +1957,7 @@ export class NewCasepaperComponent implements OnInit {
             }, 100);
         });
     }
-    
+
     getInstrMaster() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -2544,7 +2539,7 @@ export class NewCasepaperComponent implements OnInit {
         ];
     }
 
-          // it allowed only Digit & decimal
+    // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
         const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {

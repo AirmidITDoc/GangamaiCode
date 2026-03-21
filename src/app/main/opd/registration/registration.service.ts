@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -17,10 +17,10 @@ export class RegistrationService {
         private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
         private accountService: AuthenticationService,
         private _loaderService: LoaderService,
-        public _configue:ConfigService,
+        public _configue: ConfigService,
     ) {
 
-     }
+    }
 
     filterForm(): FormGroup {
         return this._formBuilder.group({

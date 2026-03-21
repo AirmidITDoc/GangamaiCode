@@ -19,7 +19,7 @@ export class NewTemplateComponent implements OnInit {
     myTemplateform: FormGroup;
     vTemplateDesc: any;
     isActive: boolean = true;
-  categoryType="0";
+    categoryType = "0";
 
     constructor(
         public _NursingnoteService: NursingnoteService,

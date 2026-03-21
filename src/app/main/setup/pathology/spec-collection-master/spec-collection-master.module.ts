@@ -1,4 +1,4 @@
-import { DatePipe } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -28,52 +28,51 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-import { CommonModule } from '@angular/common';
-import { SpecCollectionMasterComponent } from "./spec-collection-master.component";
 import { NewSpecCollectionMasterComponent } from "./new-spec-collection-master/new-spec-collection-master.component";
+import { SpecCollectionMasterComponent } from "./spec-collection-master.component";
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: SpecCollectionMasterComponent,
-  },
+    {
+        path: "**",
+        component: SpecCollectionMasterComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [SpecCollectionMasterComponent, NewSpecCollectionMasterComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatDividerModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    CommonModule
-  ],
-  providers: [SpecCollectionMasterModule, DatePipe]
+    declarations: [SpecCollectionMasterComponent, NewSpecCollectionMasterComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        CommonModule
+    ],
+    providers: [SpecCollectionMasterModule, DatePipe]
 })
 export class SpecCollectionMasterModule { }

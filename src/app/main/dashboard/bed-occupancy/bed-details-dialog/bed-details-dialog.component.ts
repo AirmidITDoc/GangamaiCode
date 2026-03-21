@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-bed-details-dialog',
@@ -10,7 +10,7 @@ export class BedDetailsDialogComponent {
     constructor(
         public dialogRef: MatDialogRef<BedDetailsDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
-    ) {}
+    ) { }
 
     isEmptyBed(): boolean {
         if (!this.data || !this.data.status) return false;
@@ -20,7 +20,7 @@ export class BedDetailsDialogComponent {
     getStatusClass(status: string): string {
         if (!status) return '';
         const normalizedStatus = status.toLowerCase().trim();
-        
+
         if (normalizedStatus === 'in use' || normalizedStatus === 'inuse') {
             return 'use';
         } else if (normalizedStatus === 'reserved') {
@@ -34,7 +34,7 @@ export class BedDetailsDialogComponent {
     getStatusIcon(status: string): string {
         if (!status) return 'info';
         const normalizedStatus = status.toLowerCase().trim();
-        
+
         if (normalizedStatus === 'in use' || normalizedStatus === 'inuse') {
             return 'hotel';
         } else if (normalizedStatus === 'reserved') {
@@ -48,7 +48,7 @@ export class BedDetailsDialogComponent {
     getStatusColor(status: string): string {
         if (!status) return '#666';
         const normalizedStatus = status.toLowerCase().trim();
-        
+
         if (normalizedStatus === 'in use' || normalizedStatus === 'inuse') {
             return '#1cb755';
         } else if (normalizedStatus === 'reserved') {

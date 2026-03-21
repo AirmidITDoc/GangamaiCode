@@ -87,7 +87,7 @@ export class ServiceMasterService {
     createTariffmasterForm(): FormGroup {
         return this._formBuilder.group({
             oldTariffId: [0, [Validators.required, notEmptyOrZeroValidator()]],
-            newTariffId: [0,[Validators.required, notEmptyOrZeroValidator()]],
+            newTariffId: [0, [Validators.required, notEmptyOrZeroValidator()]],
             // newTariffId: [[], [Validators.required, notEmptyOrZeroValidator()]],
         });
     }
@@ -111,11 +111,11 @@ export class ServiceMasterService {
     }
 
     createnewServiceSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      searchServiceName: ['', [Validators.pattern('^[a-zA-Z () ]*$')]],
-      searchTariffName: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    });
-  }
+        return this._formBuilder.group({
+            searchServiceName: ['', [Validators.pattern('^[a-zA-Z () ]*$')]],
+            searchTariffName: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
 
     initializeFormGroup() {
         this.createServicemasterForm();
@@ -147,9 +147,9 @@ export class ServiceMasterService {
         return this._httpClient.DeleteData(`BillingService/ServicDelete?Id=${Id}`);
     }
 
-    public serviceMasterInsert(Param: any,tariffId:any) {
+    public serviceMasterInsert(Param: any, tariffId: any) {
         if (Param.serviceId) {
-            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId +"/"+ tariffId, Param);
+            return this._httpClient.PutData("BillingService/Edit/" + Param.serviceId + "/" + tariffId, Param);
         } else return this._httpClient.PostData("BillingService/InsertEDMX", Param);
     }
 
@@ -173,7 +173,7 @@ export class ServiceMasterService {
 
 
     populateForm(param) {
-        
+
         this.myform.patchValue(param);
         this.edit_data = param;
         this.myform.get("IsPathology").setValue(param.IsPathology == "1" ? true : false);

@@ -1,15 +1,15 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { DrivermasterService } from './drivermaster.service';
-import { MatDialog } from '@angular/material/dialog';
-import { NewDriverComponent } from './new-driver/new-driver.component';
-import { ToastrService } from 'ngx-toastr';
-import { fuseAnimations } from '@fuse/animations';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { ToastrService } from 'ngx-toastr';
+import { DrivermasterService } from './drivermaster.service';
+import { NewDriverComponent } from './new-driver/new-driver.component';
 
 @Component({
     selector: 'app-driver-master',

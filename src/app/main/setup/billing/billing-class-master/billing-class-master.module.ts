@@ -57,4 +57,4 @@ const routes: Routes = [
     ],
     providers: [BillingClassMasterService, DatePipe]
 })
-export class BillingClassMasterModule {}
+export class BillingClassMasterModule { }

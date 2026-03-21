@@ -38,10 +38,10 @@ import { ReturnFromDepartmentComponent } from '../return-from-department/return-
 import { NewRetrunFromDepartmentComponent } from './new-retrun-from-department/new-retrun-from-department.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: ReturnFromDepartmentComponent 
-  },
+    {
+        path: '**',
+        component: ReturnFromDepartmentComponent
+    },
 ];
 
 @NgModule({

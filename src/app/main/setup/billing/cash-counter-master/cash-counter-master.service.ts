@@ -14,7 +14,7 @@ export class CashCounterMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService
-    
+
     ) {
         this.myform = this.createcashcounterForm();
         this.myformSearch = this.createSearchForm();
@@ -22,7 +22,7 @@ export class CashCounterMasterService {
 
     createcashcounterForm(): FormGroup {
         return this._formBuilder.group({
-            cashCounterId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cashCounterName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
@@ -36,14 +36,14 @@ export class CashCounterMasterService {
                     // Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            billNo: ["", 
+            billNo: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     // Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
-    
+
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
@@ -67,5 +67,5 @@ export class CashCounterMasterService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("CashCounter?Id=" + m_data.toString());
     }
-    
+
 }
