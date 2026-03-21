@@ -92,6 +92,7 @@ export class PrescriptionTemplateComponent implements OnInit {
   }
 
   onSave() {
+    
     if (!this.TemplateInsertForm.invalid) {
 
       this.TemplateInsertForm.removeControl('TemplateName');

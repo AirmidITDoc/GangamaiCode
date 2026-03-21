@@ -35,6 +35,20 @@ export class CanteenmanagementService {
     });
   }
 
+   CanBillbrowseform(): FormGroup {
+    return this._frombuilder.group({
+
+      CustomerName: ['', [Validators.maxLength(50),
+      Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+     
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo: '',
+      BillNo:['']
+    });
+  }
+
 
   createUseFrom() {
     return this._frombuilder.group({
@@ -82,5 +96,7 @@ export class CanteenmanagementService {
     return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
   }
 
-  
+   public canteenBillSave(employee) {
+    return this._httpClient.PostData("CanteenBill/Insert", employee);
+  }
 }

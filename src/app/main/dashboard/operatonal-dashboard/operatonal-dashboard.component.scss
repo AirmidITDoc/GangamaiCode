@@ -1,0 +1,171 @@
+.app-operatonal-dashboard{
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #2d3748;
+      --text-light: #718096;
+      --green: #10b981;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --orange: #f59e0b;
+      --purple: #8b5cf6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .badge {
+      background: var(--blue);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 5px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-icon {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      font-size: 1.6rem;
+      opacity: 0.15;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .card-value {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .change {
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .change.up { color: var(--green); }
+    .change.down { color: var(--red); }
+
+    .payments {
+      grid-column: span 2;
+    }
+
+    .payment-breakdown {
+      display: flex;
+      gap: 24px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .payment-item {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .payment-label {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+
+    .payment-amount {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #1e40af;
+    }
+
+    .small-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .tiny-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .tiny-title {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+
+    .tiny-value {
+      font-size: 1.28rem;
+      font-weight: 600;
+    }
+
+    .total-collection {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      grid-column: span 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .total-collection .card-value {
+      font-size: 2.4rem;
+      color: white;
+    }
+
+    @media (max-width: 900px) {
+      .payments { grid-column: span 1; }
+      .total-collection { grid-column: span 1; }
+    }
+}

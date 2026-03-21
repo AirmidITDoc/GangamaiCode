@@ -42,6 +42,7 @@ import { VisitDatagraphComponent } from './new-finacialdashboard/visit-datagraph
 import { BillingSummarygraphComponent } from './new-finacialdashboard/billing-summarygraph/billing-summarygraph.component';
 import { BedstausgraphComponent } from './new-finacialdashboard/bedstausgraph/bedstausgraph.component';
 import { ServiceReceiptGraphComponent } from './new-finacialdashboard/service-receipt-graph/service-receipt-graph.component';
+import { OperatonalDashboardComponent } from './operatonal-dashboard/operatonal-dashboard.component';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -67,6 +68,7 @@ import { ServiceReceiptGraphComponent } from './new-finacialdashboard/service-re
         BillingSummarygraphComponent,
         BedstausgraphComponent,
         ServiceReceiptGraphComponent,
+        OperatonalDashboardComponent,
         // FinancetestComponent
     ],
     imports: [

@@ -80,6 +80,11 @@ export class NursingnoteService {
     } else return this._httpClient.PostData("Nursing/NursingPatientHandoverInsert", employee)
   }
 
+  
+
+   public NursingMedicineInsert(employee) {
+    return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
+  }
   public insertMedicationChart(employee) {
     return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
   }

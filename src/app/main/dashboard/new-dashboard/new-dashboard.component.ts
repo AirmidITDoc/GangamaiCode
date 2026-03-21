@@ -36,6 +36,7 @@ export class NewDashboardComponent implements OnInit {
     this.loadDashboardData();
 
     this.getdrwiseList();
+    this.getDashRegistrationAgeWiseCount();
 
   }
 
@@ -165,7 +166,7 @@ export class NewDashboardComponent implements OnInit {
 
       let apiData = res && res.length ? res[0] : {};
       console.log(apiData)
-      
+
       this.metrics = [
         { label: 'Registrations', value: apiData?.RegistrationCount || 0, color: 'cream', icon: 'user-plus' },
         { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'cream', icon: 'calendar' },
@@ -205,7 +206,7 @@ export class NewDashboardComponent implements OnInit {
 
       this.dashboardService.allDashboarddata({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
         this.DailydashData = res;
-debugger
+        debugger
         if (this.DailydashData) {
 
           this.patientStats = {
@@ -215,7 +216,7 @@ debugger
             total: this.DailydashData.patientSummary.totalPatients
           };
           // this.paymentData= this.DailydashData.paymentOverview
- 
+
 
           this.trendSeries = [
             {
@@ -290,7 +291,7 @@ debugger
     }
       ;
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      
+
       let apiData = res && res.length ? res[0] : {};
       console.log("==api data", apiData);
       console.log(res)
@@ -334,6 +335,7 @@ debugger
   }
 
   getDashOPDepatmentWiseCount() {
+    debugger
     const payload = {
       "searchFields": [
         {
@@ -359,7 +361,8 @@ debugger
       console.log(res)
 
       debugger
-      this.departmentVisits =apiData
+      if (apiData)
+        this.departmentVisits = apiData
       // this.departmentVisits = [
       //   { name: 'Medicine', value: apiData?.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
       //   { name: 'Gastrologist', value: apiData?.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
@@ -392,11 +395,7 @@ debugger
 
 
   getDashRegistrationAgeWiseCount() {
-  //       if(this.modalityData1.length)
-  //       this.modalityData1 = [
-  //   { name: '', value: 0 }
-  // ];
-      
+
     const payload = {
       "searchFields": [
         {
@@ -419,18 +418,20 @@ debugger
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : {};
-          if (apiData) {
+      if (apiData) {
 
-this.modalityData1=apiData
-                    // this.modalityData1 = [
-                    //     ...this.modalityData1,
-                    //     ...apiData.map(item => ({
+        this.modalityData1 = apiData
+         if (this.modalityData1.length)
+      this.AgestatusPieChart = this.getAgeStatusPieChart()
+        // this.modalityData1 = [
+        //     ...this.modalityData1,
+        //     ...apiData.map(item => ({
 
-                    //         name: item.name,
-                    //         value: item.value
-                    //     }))
-                    // ];
-                }
+        //         name: item.name,
+        //         value: item.value
+        //     }))
+        // ];
+      }
 
       // this.ageData = [
       //   { name: '0-15 Years', value: apiData[0].value || 0 },
@@ -444,10 +445,10 @@ this.modalityData1=apiData
       return []
     })
 
-    if (this.modalityData1.length)
-      this.AgestatusPieChart = this.getAgeStatusPieChart()
+   
   }
   getAgeStatusPieChart() {
+    debugger
     if (this.AgestatusPieChart) {
       this.AgestatusPieChart.destroy();
     }
@@ -553,7 +554,7 @@ this.modalityData1=apiData
   // Chart data
   colorScheme = { domain: ['#a9aae5', '#87a8f4', '#8587d0', '#7498e1', '#ce95f5', '#a1f6d9', '#f7bcd9', '#3b82f6'] };
   colorScheme1 = { domain: ['#c97efa', '#ba5cf9', '#a978c9', '#9f70c0', '#bb65f5', '#beeede', '#eea6ca', '#3b82f6'] };
-  
+
   chartView: [number, number] = [420, 300];
   barChartView: [number, number] = [380, 300];
 
@@ -831,7 +832,7 @@ this.modalityData1=apiData
           labels: apiData?.map(data => data.name) || [],
           datasets: [
             {
-              backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6','#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
+              backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
               data: apiData?.map(data => data.value) || []
             }
           ]
@@ -1050,7 +1051,7 @@ this.modalityData1=apiData
     { name: '', value: 0 }
   ];
 
-    modalityData1 = [
+  modalityData1 = [
     { name: '', value: 0 }
   ];
 
@@ -1120,15 +1121,15 @@ this.modalityData1=apiData
             label: 'Dr. Name',
             data: this.modalityData.map(d => d.value),
             backgroundColor: [
-  '#bbdefb',   // very pale blue
-  '#90caf9',   // light sky blue
-  '#64b5f6',   // medium light blue
-  '#497df7',   // your bright one
-  '#6366f1',   // indigo transition
-  '#4b50f7',   // deep vivid blue
-  '#bb65f5',   // bluish purple
-  '#9c44d6'    // final vivid purple
-],
+              '#bbdefb',   // very pale blue
+              '#90caf9',   // light sky blue
+              '#64b5f6',   // medium light blue
+              '#497df7',   // your bright one
+              '#6366f1',   // indigo transition
+              '#4b50f7',   // deep vivid blue
+              '#bb65f5',   // bluish purple
+              '#9c44d6'    // final vivid purple
+            ],
             borderRadius: 6
           }
         ]

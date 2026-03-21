@@ -26,11 +26,12 @@
                     <div fxFlex="25%" fxFlex.sm="33%" fxFlex.xs="100%">
                         <mat-card class="overall-stats-card full-height">
                             <mat-card-content>
+                                
                                 <div class="chart-container">
                                     <div class="chart-header">
                                         <h3 class="chart-title">Bed Booking Chart</h3>
-                                        <h3 class="chart-title">Total Beds {{dashBedStatistics?.TotalBedCount ||
-                                            0}} | Booked  {{dashBedStatistics?.UsedCount || 0}} </h3>
+                                        <p class="chart-title">Total Beds {{dashBedStatistics?.TotalBedCount ||
+                                            0}} | Booked  {{dashBedStatistics?.UsedCount || 0}} </p>
 
                                         <!-- 
                                         <div class="overall-value">{{dashBedStatistics?.UsedCount || 0}}</div>
@@ -49,7 +50,7 @@
                                             <div class="overall-total-label">Total Beds</div>
                                         </div>
                                     </div> -->
-                                    <div class="overall-donut-wrap">
+                                    <div style="height:200px">
                                         <canvas id="BedOverallDoughnut" style="width:100%;"></canvas>
                                     </div>
                                     <div class="legend-mini">
