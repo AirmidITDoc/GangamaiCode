@@ -7,7 +7,6 @@
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Lab Appointment</span>
                 </div>
                 <div class="modal-header-right">
-                    <button class="btn btn-primary" (click)="demoOpen( $event.event)">Save </button>
                 </div>
             </div>
         </div>
@@ -151,13 +150,26 @@
                             <div class="layout-card-container" style="height: 60px;">
                                 <div fxLayout="row wrap" fxFlex fxLayoutGap="4px">
 
-                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                                    <form [formGroup]="myFilterform">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                            <!-- <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
                                             formStartControlName="fromDate" formEndControlName="enddate"
                                             [(fromValue)]="gridConfig.filters[0].fieldValue"
                                             [(toValue)]="gridConfig.filters[1].fieldValue">
-                                        </airmid-datepicker>
-                                    </div>
+                                        </airmid-datepicker> -->
+                                            <mat-form-field appearance="outline" fxFlex="250px">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="grnPicker">
+                                                    <input matStartDate formControlName="fromDate"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="grnPicker"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #grnPicker></mat-date-range-picker>
+                                            </mat-form-field>
+                                        </div>
+                                    </form>
 
                                     <div class="action-button-container">
                                         <div class="button-row-group">
@@ -174,40 +186,93 @@
                                 </div>
                             </div>
 
-                            <div
-                                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                                dynamicTableHeight>
+                            <!-- <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                                dynamicTableHeight> -->
+                            <div class="billing-middle-zone" dynamicTableHeight>
+                                <div class="airmid-table-container resize-form-fields">
+                                    <mat-table #table1 matSort [dataSource]="dstable1"
+                                        [@animateStagger]="{ value: '50' }" class="lab-modern-table">
 
-                                <ng-template #actionButtonTemplate let-element>
-                                    <div fxLayout="row" fxLayoutAlign="center center">
-                                        <!-- <button mat-icon-button matTooltip="Edit" (click)="onnew(element)"
-                                            [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
-                                            <mat-icon>edit</mat-icon>
-                                        </button> -->
+                                        <!-- Service Name Column -->
+                                        <ng-container matColumnDef="slot">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                                <span class="header-text">Date</span>
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-200">
+                                                <span class="service-name-text"
+                                                    [matTooltip]="contact.appTime | date:'dd/MM/yyyy HH:mm'">
+                                                    {{ contact.appTime | date:'dd/MM/yyyy HH:mm' }}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
 
-                                        <button mat-icon-button matTooltip="Process Bill"
-                                            (click)="onBillProcess(element)">
-                                            <mat-icon>replay</mat-icon>
-                                        </button>
+                                        <ng-container matColumnDef="category">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-150">
+                                                <span class="header-text">Category</span>
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-150">
+                                                <span class="service-name-text" [matTooltip]="contact.categoryName">
+                                                    {{contact.categoryName}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
 
-                                        <!-- <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-                                            [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
-                                            <mat-icon> cancel </mat-icon>
-                                        </button> -->
+                                        <ng-container matColumnDef="name">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                class="w-300">
+                                                <span class="header-text">Patient Name</span>
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-300">
+                                                <span class="service-name-text" [matTooltip]="contact.firstName">
+                                                    {{contact.firstName}}
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
 
-                                        <!-- <button mat-icon-button matTooltip="Print"
-                                            [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
-                                            <mat-icon>print</mat-icon>
-                                        </button> -->
-                                    </div>
-                                </ng-template>
+                                        <ng-container matColumnDef="buttons" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="w-100 action-col">
+                                                <span class="header-text">Actions</span>
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-100 action-cell">
+                                                <div class="action-buttons">
+                                                    <button mat-icon-button matTooltip="Process Bill"
+                                                        (click)="onBillProcess(contact)"
+                                                        [style.visibility]="contact.isCancelled == false ? 'visible' : 'hidden'">
+                                                        <mat-icon>replay</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </mat-cell>
+                                        </ng-container>
 
-                                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                        <mat-header-row class="lab-table-header"
+                                            *matHeaderRowDef="displayedServiceselected; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row
+                                            *matRowDef="let contact; columns: displayedServiceselected; let i = index"
+                                            class="lab-table-row" tabindex="999"
+                                            [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight>
+                                        </mat-row>
+
+                                    </mat-table>
+
+                                </div>
+
+                                <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                    <ng-template #actionButtonTemplate let-element>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <button mat-icon-button matTooltip="Process Bill"
+                                                (click)="onBillProcess(element)">
+                                                <mat-icon>replay</mat-icon>
+                                            </button>
+                                        </div>
+                                    </ng-template>
 
                                     <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"
                                         :ShowButtons="false">
                                     </airmid-table>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

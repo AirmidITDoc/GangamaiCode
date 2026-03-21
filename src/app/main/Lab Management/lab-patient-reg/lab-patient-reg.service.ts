@@ -149,4 +149,10 @@ export class LabPatientRegService {
     public getPatientType(type) {
         return this._httpClient.GetData("LabPatientRegistration/GetMConstant?ConstantType=" + type);
     }
+    public getAppById(Id) {
+        return this._httpClient.GetData("LabAppointment/" + Id);
+    }
+    public getAppDetById(param) {
+        return this._httpClient.PostData("LabAppointment/LabAppointmentDetailList", param);
+    }
 }

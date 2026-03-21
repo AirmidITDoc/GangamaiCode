@@ -1041,8 +1041,13 @@ export class NewLabAppointmentComponent {
 
   OnSubmit() {
     debugger
-    this.myForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-    this.myForm.get('appTime').setValue(this.datePipe.transform(this.now, 'HH:mm'));
+    const date = new Date(this.data.fromDate);
+    date.setHours(this.now.getHours(), this.now.getMinutes());
+
+    this.myForm.get('appDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
+    this.myForm.get('appTime').setValue(this.datePipe.transform(date, 'yyyy-MM-dd HH:mm'));
+    // this.myForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
+    // this.myForm.get('appTime').setValue(this.datePipe.transform(this.data.fromDate+this.now, 'HH:mm'));
     this.myForm.get('labPatRegId').setValue(this.VlabPatRegId ?? 0);
     this.myForm.get('stateId').setValue(this.stateId)
     this.myForm.get('countryId').setValue(String(this.counryId))
@@ -1061,9 +1066,9 @@ export class NewLabAppointmentComponent {
 
     console.log("Form values", formValue)
 
-    return;
+    // return;
     if (!this.myForm.invalid) {
-      this._appointmentService.appointmentMasterSave(this.myForm.value).subscribe((response) => {
+      this._appointmentService.appointmentMasterSave(formValue).subscribe((response) => {
         this.onClose();
       });
     } else {
