@@ -1030,7 +1030,7 @@ export class NewLabPatientRegComponent {
     // debugger
     const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
     const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
-    const totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
+    const totalDiscountPer = 0 //this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
     const totalNet = totalSum - totalDiscount;
 
     this.myForm.patchValue({
