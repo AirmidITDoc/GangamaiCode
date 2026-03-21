@@ -21,74 +21,73 @@ import { FuseSharedModule } from "@fuse/shared.module";
 
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 // import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
-import { MatDatepickerModule } from "@angular/material/datepicker";
 import { CommonModule, DatePipe } from "@angular/common";
-import { ScrollingModule } from "@angular/cdk/scrolling";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from "@angular/material/card";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatListModule } from "@angular/material/list";
+import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { MatSidenavModule } from "@angular/material/sidenav";
-import { AnesthesiaRecordService } from "./anesthesia-record.service";
-import { AnesthesiaRecordComponent } from "./anesthesia-record.component";
-import { NewAnesthesiaRecordComponent } from "./new-anesthesia-record/new-anesthesia-record.component";
 import { SharedModule } from "app/main/shared/shared.module";
+import { AnesthesiaRecordComponent } from "./anesthesia-record.component";
+import { AnesthesiaRecordService } from "./anesthesia-record.service";
+import { NewAnesthesiaRecordComponent } from "./new-anesthesia-record/new-anesthesia-record.component";
 
 const routes: Routes = [
-  {
-    path: "**",
-    component: AnesthesiaRecordComponent,
-  },
+    {
+        path: "**",
+        component: AnesthesiaRecordComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [AnesthesiaRecordComponent, NewAnesthesiaRecordComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    // MatSnackBarModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatProgressSpinnerModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatCardModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatListModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatTabsModule,
-    MatTooltipModule,
-    MatButtonToggleModule,
-    MatSidenavModule,
-  ],
-  providers: [DatePipe, AnesthesiaRecordService]
+    declarations: [AnesthesiaRecordComponent, NewAnesthesiaRecordComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        // MatSnackBarModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        MatProgressSpinnerModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatCardModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+        MatSidenavModule,
+    ],
+    providers: [DatePipe, AnesthesiaRecordService]
 })
 export class AnesthesiaRecordModule { }

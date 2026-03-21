@@ -1,25 +1,25 @@
+import { DatePipe } from '@angular/common';
 import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatAccordion } from '@angular/material/expansion';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDrawer } from '@angular/material/sidenav';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { SampleDetailObj } from '../result-entry.component';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatDrawer } from '@angular/material/sidenav';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ResultEntryService } from '../result-entry.service';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { MatAccordion } from '@angular/material/expansion';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { ConfigService } from 'app/core/services/config.service';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { fuseAnimations } from '@fuse/animations';
-import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
     selector: 'app-new-result-entry',
@@ -68,7 +68,7 @@ export class NewResultEntryComponent {
 
     configDoc: any;
     sIsLoading: string = '';
-    AgeType:any='YEAR'
+    AgeType: any = 'YEAR'
 
     currentDate: Date = new Date();
     autocompleteModeDoctor: string = "ConDoctor";
@@ -163,18 +163,18 @@ export class NewResultEntryComponent {
             });
 
 
-            if (this.selectedAdvanceObj2.ageYear){
+            if (this.selectedAdvanceObj2.ageYear) {
                 this.FinalAge = this.selectedAdvanceObj2.ageYear.trim();
-                this.AgeType  = 'YEAR'
-            } 
-            if (this.selectedAdvanceObj2.ageMonth && this.FinalAge == 0){
+                this.AgeType = 'YEAR'
+            }
+            if (this.selectedAdvanceObj2.ageMonth && this.FinalAge == 0) {
                 this.FinalAge = this.selectedAdvanceObj2.ageMonth.trim();
-                 this.AgeType  = 'MONTH'
-            } 
-            if (this.selectedAdvanceObj2.ageDay && this.FinalAge == 0){
+                this.AgeType = 'MONTH'
+            }
+            if (this.selectedAdvanceObj2.ageDay && this.FinalAge == 0) {
                 this.FinalAge = this.selectedAdvanceObj2.ageDay.trim();
-                 this.AgeType  = 'DAY'
-            } 
+                this.AgeType = 'DAY'
+            }
         }
 
         if (this.Iscompleted == 0) {
@@ -236,33 +236,33 @@ export class NewResultEntryComponent {
         });
         return Keys;
     }
-getValidatetabledata(){
-      if(this.dataSource.data.length){
-            this.dataSource.data.forEach(element=>{
-            this.onResultUp(element)
-            }) 
+    getValidatetabledata() {
+        if (this.dataSource.data.length) {
+            this.dataSource.data.forEach(element => {
+                this.onResultUp(element)
+            })
         }
-}
+    }
     onResultUp(data) {
-debugger
-//Changes done by Ambadas 07-03-2026
-        let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+        debugger
+        //Changes done by Ambadas 07-03-2026
+        const items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
-            let formulas = this.getShortNames(formula);
+            const formulas = this.getShortNames(formula);
             formulas.forEach(e => {
-                let itm = this.dataSource.data.find(x => x.ParameterShortName == e);
+                const itm = this.dataSource.data.find(x => x.ParameterShortName == e);
                 if (itm)
                     //formula = formula.replaceAll("{{" + e + "}}", itm.ResultValue || 0)
-                    formula = formula.replaceAll("{{" + e + "}}",  String(Number(itm?.ResultValue) || 0));
+                    formula = formula.replaceAll("{{" + e + "}}", String(Number(itm?.ResultValue) || 0));
             });
             //items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula); 
-             let result: any = "";
-try {
-    result = eval(formula);
-} catch (error) {
-    console.error("Invalid formula:", formula);
-}
+            let result: any = "";
+            try {
+                result = eval(formula);
+            } catch (error) {
+                console.error("Invalid formula:", formula);
+            }
             items[i].ResultValue = isNaN(result as any) ? "" : result;
             if (!isNaN(items[i].ResultValue))
                 items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
@@ -271,9 +271,9 @@ try {
         data.ParaBoldFlag = '';
         if (data.ParaIsNumeric || data.PIsNumeric) {
 
-            let a = parseFloat(data.ResultValue);
-            let b = parseFloat(data.MinValue);
-            let c = parseFloat(data.MaxValue);
+            const a = parseFloat(data.ResultValue);
+            const b = parseFloat(data.MinValue);
+            const c = parseFloat(data.MaxValue);
 
             if (b != null && c != null && a != null) {
                 if (a < b || a > c) {
@@ -435,7 +435,7 @@ try {
 
     getResultListIP(obj, rbj) {
 
-        var SelectQuery =
+        const SelectQuery =
         {
             "searchFields": [
                 {
@@ -468,7 +468,7 @@ try {
                     "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
                 },
-                 {
+                {
                     "fieldName": "AgeType",
                     "fieldValue": String(this.AgeType),
                     "opType": "Equals"
@@ -497,7 +497,7 @@ try {
         const pathReportIds = rbj.map(r => String(r.PathReportId));
 
 
-        var SelectQuery =
+        const SelectQuery =
         {
             "searchFields": [
                 {
@@ -530,12 +530,12 @@ try {
                     "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
                 },
-                 {
+                {
                     "fieldName": "AgeType",
                     "fieldValue": String(this.AgeType),
                     "opType": "Equals"
                 }
-            
+
             ],
             "mode": "PathologyResultEntryOP"
         }
@@ -564,7 +564,7 @@ try {
         const pathReportIds = rbj.map(r => String(r.PathReportId));
 
 
-        var SelectQuery =
+        const SelectQuery =
         {
             "searchFields": [
                 {
@@ -597,7 +597,7 @@ try {
                     "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
                 },
-                 {
+                {
                     "fieldName": "AgeType",
                     "fieldValue": String(this.AgeType),
                     "opType": "Equals"
@@ -738,7 +738,7 @@ try {
         debugger
         console.log(this.selectedAdvanceObj2)
         console.log(this.regObj)
-        
+
         if (this.OP_IPType == 0) {
             var SelectQuery =
             {
@@ -779,9 +779,9 @@ try {
                         "opType": "Equals"
                     },
                     {
-                    "fieldName": "AgeType",
-                    "fieldValue": String(this.AgeType),
-                    "opType": "Equals"
+                        "fieldName": "AgeType",
+                        "fieldValue": String(this.AgeType),
+                        "opType": "Equals"
                     }
                 ],
                 "mode": "PathologyResultEntryOPMachine"
@@ -843,11 +843,11 @@ try {
                         "fieldValue": String(this.sampleNo),
                         "opType": "Equals"
                     },
-                 {
-                    "fieldName": "AgeType",
-                    "fieldValue": String(this.AgeType),
-                    "opType": "Equals"
-                }
+                    {
+                        "fieldName": "AgeType",
+                        "fieldValue": String(this.AgeType),
+                        "opType": "Equals"
+                    }
                 ],
                 "mode": "PathologyResultEntryIPMachine"
             }
@@ -905,11 +905,11 @@ try {
                         "fieldValue": String(this.sampleNo),
                         "opType": "Equals"
                     },
-                 {
-                    "fieldName": "AgeType",
-                    "fieldValue": String(this.AgeType),
-                    "opType": "Equals"
-                }
+                    {
+                        "fieldName": "AgeType",
+                        "fieldValue": String(this.AgeType),
+                        "opType": "Equals"
+                    }
                 ],
                 "mode": "PathologyResultEntryLabMachine"
             }
@@ -947,7 +947,7 @@ try {
             // debugger
             if (flag.isConfirmed) {
 
-                let submitData = {
+                const submitData = {
                     "pathReportId": this.vPathReportId,
                     "isVerifyid": this.accountService.currentUserValue.userId,
                     "isVerifySign": true,
@@ -964,7 +964,7 @@ try {
 
     Printresultentry() {
 
-        let pathologyDelete = [];
+        const pathologyDelete = [];
 
         this.data.RIdData.forEach((element) => {
             pathologyDelete.push({ pathReportId: element.PathReportId });
@@ -1220,7 +1220,7 @@ try {
 }
 
 export class Pthologyresult {
-    TestName: String;
+    TestName: string;
     SubTestName: boolean;
     ParameterName: Date;
     NormalRange: any;
@@ -1279,8 +1279,8 @@ export class Pthologyresult {
 
 export class PthologyTemplateresult {
 
-    TemplateDesc: String;
-    PrintTestName: String;
+    TemplateDesc: string;
+    PrintTestName: string;
     PathReportID: any;
     TestId: any;
     PathResultDr1: any;
@@ -1311,7 +1311,7 @@ export class PthologyresultInsert {
     TestName: any;
     SubTestName: any;
     ParameterName: any;
-    UnitName: String;
+    UnitName: string;
     PatientName: any;
     RegNo: any;
     SampleID: any;

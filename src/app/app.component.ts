@@ -270,7 +270,7 @@ export class AppComponent implements OnInit, OnDestroy {
     AddList: any = [];
     public dsconfigList = new MatTableDataSource<ConfigList>();
     ConfigSettingParamNew() {
-        var Params =
+        const Params =
         {
             "searchFields": [],
             "mode": "NewSysConfig"  //SystemConfigList
@@ -297,7 +297,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ConfigSettingUnitWise() {
-        var Params =
+        const Params =
         {
             "searchFields": [ {
                     "fieldName": "UnitId",
@@ -333,7 +333,7 @@ onKeydownHandler(event: KeyboardEvent) {
 
 
 export class ConfigList {
-    SystemConfigId: Number;
+    SystemConfigId: number;
     SystemCategoryId: number;
     SystemName: number;
     SystemInputValue: any;

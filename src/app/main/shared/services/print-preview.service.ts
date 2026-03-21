@@ -121,7 +121,7 @@ print(PrintTemplate: any) {
       let componentInstance;
       componentInstance = this.attachHeaderContainer(outlet, injector);
       // console.log(windowInstance.document)
-      let template = windowInstance.document.createElement('div'); // is a node
+      const template = windowInstance.document.createElement('div'); // is a node
       template.innerHTML = this.printTemplate;
       windowInstance.document.body.appendChild(template);
     }

@@ -35,10 +35,10 @@ import { IPBillBrowseListComponent } from './ip-bill-browse-list.component';
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: IPBillBrowseListComponent 
-  },
+    {
+        path: '**',
+        component: IPBillBrowseListComponent
+    },
 ];
 
 @NgModule({

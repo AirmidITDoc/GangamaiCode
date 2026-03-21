@@ -1,24 +1,24 @@
+import { DatePipe } from '@angular/common';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ConfigurationService } from '../configuration.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
-import { FormGroup } from '@angular/forms';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { ConfigurationService } from '../configuration.service';
 
 @Component({
-  selector: 'app-all-config-details',
-  templateUrl: './all-config-details.component.html',
-  styleUrls: ['./all-config-details.component.scss']
+    selector: 'app-all-config-details',
+    templateUrl: './all-config-details.component.html',
+    styleUrls: ['./all-config-details.component.scss']
 })
 export class AllConfigDetailsComponent {
 
-  myFilterform: FormGroup;
+    myFilterform: FormGroup;
     myFilterFormIPBrowsePayment: FormGroup;
     myFilterFormIPBrowseRefund: FormGroup;
     menuActions: Array<string> = [];
@@ -216,7 +216,7 @@ export class AllConfigDetailsComponent {
         // this.myFilterFormIPBrowsePayment = this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
         // this.myFilterFormIPBrowseRefund = this._IPBrowseBillService.filterForm_IpdrefundBrowse()
 
-       
+
     }
 
     onChangeIPBill() {
@@ -465,7 +465,7 @@ export class AllConfigDetailsComponent {
         this.commonService.Onprint("RefundId", element.refundId, "IpBillRefundReceipt");
     }
 
- 
+
 
 }
 

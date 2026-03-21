@@ -75,4 +75,4 @@ const routes: Routes = [
     ],
     providers: [UnitmasterService, DatePipe]
 })
-export class UnitmasterModule {}
+export class UnitmasterModule { }

@@ -38,64 +38,64 @@ import { CustomerBillRaiseComponent } from './customer-bill-raise.component';
 import { NewBillRaiseComponent } from './new-bill-raise/new-bill-raise.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: CustomerBillRaiseComponent 
-  },
+    {
+        path: '**',
+        component: CustomerBillRaiseComponent
+    },
 ];
 
 @NgModule({
-  declarations: [
-    CustomerBillRaiseComponent,
-    NewBillRaiseComponent
-  ],
+    declarations: [
+        CustomerBillRaiseComponent,
+        NewBillRaiseComponent
+    ],
 
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatExpansionModule,
-    MatSlideToggleModule ,
-    MatListModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    MatChipsModule,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule
-  ],
-  providers: [
-      DatePipe,
-  ],
-  entryComponents: [
-    CustomerBillRaiseComponent,
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatExpansionModule,
+        MatSlideToggleModule,
+        MatListModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatRippleModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTabsModule,
+        MatCardModule,
+        MatDividerModule,
+        MatDialogModule,
+        FuseSharedModule,
+        FuseConfirmDialogModule,
+        FuseSidebarModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+        SharedModule,
+        NgxMatSelectSearchModule,
+        MatBadgeModule,
+        MatSelectModule,
+        MatSelectModule,
+        MatChipsModule,
+        // NgMultiSelectDropDownModule.forRoot(),
+        MatTooltipModule
+    ],
+    providers: [
+        DatePipe,
+    ],
+    entryComponents: [
+        CustomerBillRaiseComponent,
+    ]
 })
 export class CustomerBillRaiseModule { }

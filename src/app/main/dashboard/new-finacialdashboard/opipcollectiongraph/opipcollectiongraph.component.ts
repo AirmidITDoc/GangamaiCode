@@ -1,15 +1,13 @@
-import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridModel } from 'app/core/models/gridRequest';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { Chart } from 'chart.js';
 import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from '../../dashboard.service';
-import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-opipcollectiongraph',
@@ -70,7 +68,7 @@ export class OPIPCollectiongraphComponent {
 
         this.fromDate = this.data.fdate// this.datePipe.transform(this.data.fdate.toISOString(), "yyyy-MM-dd")
         this.toDate = this.data.tdate//this.datePipe.transform(this.data.tdate.toISOString(), "yyyy-MM-dd")
-        var vadat = {
+        const vadat = {
             "UnitId": this.unitId,
             'FromDate': this.fromDate,
             'ToDate': this.toDate

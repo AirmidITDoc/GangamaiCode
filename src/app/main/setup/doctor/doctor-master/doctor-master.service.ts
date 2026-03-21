@@ -28,7 +28,7 @@ export class DoctorMasterService {
             FlagActive: ["1"],
             // IsConsultant: [true],
             // IsRef: [false]
-            DoctorType: ["0"],       
+            DoctorType: ["0"],
             IsInHouseDoctor: [0],
             IsConsultant: [0],
             IsRefDoc: [0]

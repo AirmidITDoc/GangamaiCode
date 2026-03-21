@@ -6,46 +6,45 @@ import { ToastrService } from 'ngx-toastr';
 import { PatienttypeMasterService } from '../patienttype-master.service';
 
 @Component({
-  selector: 'app-new-patient-type',
-  templateUrl: './new-patient-type.component.html',
-  styleUrls: ['./new-patient-type.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-patient-type',
+    templateUrl: './new-patient-type.component.html',
+    styleUrls: ['./new-patient-type.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewPatientTypeComponent implements OnInit {
 
-  patienttypeForm: FormGroup;
-  isActive:boolean=true;
+    patienttypeForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor(
-      public _PatienttypeMasterService: PatienttypeMasterService,
-      public dialogRef: MatDialogRef<NewPatientTypeComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-  ) { }
+    constructor(
+        public _PatienttypeMasterService: PatienttypeMasterService,
+        public dialogRef: MatDialogRef<NewPatientTypeComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
 
 
-  ngOnInit(): void {
-      this.patienttypeForm = this._PatienttypeMasterService.createPatientTypeForm();
-      this.patienttypeForm.markAllAsTouched();
-      if((this.data?.patientTypeId??0) > 0)
-      {
-        this.isActive=this.data.isActive
-      this.patienttypeForm.patchValue(this.data);
+    ngOnInit(): void {
+        this.patienttypeForm = this._PatienttypeMasterService.createPatientTypeForm();
+        this.patienttypeForm.markAllAsTouched();
+        if ((this.data?.patientTypeId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.patienttypeForm.patchValue(this.data);
+        }
     }
-    }
 
-  
-  onSubmit() {
-   
-    
-    if (!this.patienttypeForm.invalid) {
+
+    onSubmit() {
+
+
+        if (!this.patienttypeForm.invalid) {
             console.log(this.patienttypeForm.value)
             this._PatienttypeMasterService.patienttypeMasterSave(this.patienttypeForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.patienttypeForm.invalid) {
                 for (const controlName in this.patienttypeForm.controls) {
                     if (this.patienttypeForm.controls[controlName].invalid) {
@@ -63,18 +62,18 @@ export class NewPatientTypeComponent implements OnInit {
         }
     }
 
-getValidationMessages() {
-    return {
-        patientType: [
-            { name: "required", Message: "PatientType Name is required" },
-            { name: "maxlength", Message: "PatientType name should not be greater than 50 char." },
-            { name: "pattern", Message: "Special char not allowed." }
-        ]
-    };
-}
+    getValidationMessages() {
+        return {
+            patientType: [
+                { name: "required", Message: "PatientType Name is required" },
+                { name: "maxlength", Message: "PatientType name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 
-  onClear(val: boolean) {
-      this.patienttypeForm.reset();
-      this.dialogRef.close(val);
-  }
+    onClear(val: boolean) {
+        this.patienttypeForm.reset();
+        this.dialogRef.close(val);
+    }
 }

@@ -5,8 +5,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { PrefixMasterService } from '../prefix-master.service';
 // import { SpeechService } from 'app/main/shared/services/speech.service';
-import { ReportService } from 'app/main/reports/report-generation/service/report-generation.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ReportService } from 'app/main/reports/report-generation/service/report-generation.service';
 
 
 @Component({

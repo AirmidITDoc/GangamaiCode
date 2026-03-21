@@ -16,19 +16,20 @@ export class AdmissionService {
 
     myFilterform: FormGroup;
     mySaveForm: FormGroup;
-        Is9_Digit_National_Id: boolean = false;
+    Is9_Digit_National_Id: boolean = false;
     populateFormpersonal(registerObj: RegInsert) {
         throw new Error('Method not implemented.');
     }
 
     constructor(public _httpClient: HttpClient, public _httpClient1: ApiCaller, private accountService: AuthenticationService,
-        public _configue:ConfigService,
+        public _configue: ConfigService,
         public _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService, private _FormvalidationserviceService: FormvalidationserviceService
-    ) { this.myFilterform = this.filterForm(); 
-                //this code for Mediforte 9 digit national id
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
+    ) {
+        this.myFilterform = this.filterForm();
+        //this code for Mediforte 9 digit national id
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
     }
 
     filterForm(): FormGroup {
@@ -67,11 +68,11 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     createPesonalForm() {
-         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                //   RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            //   RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             PrefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             FirstName: ['', [
                 Validators.required,
@@ -123,7 +124,7 @@ this.Is9_Digit_National_Id = id === "1";
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-                //   updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            //   updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             RegDate: [(new Date()).toISOString()],
             RegTime: [(new Date()).toISOString()],
             Photo: [''],
@@ -163,7 +164,7 @@ this.Is9_Digit_National_Id = id === "1";
     createAdmissionForm() {
         return this._formBuilder.group({
             AdmissionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            RegId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AdmissionDate: [(new Date()).toISOString()],
             AdmissionTime: [(new Date()).toISOString()],
             PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -358,7 +359,7 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     public getReportView(Param) {
-         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+        return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
 
     public getCompanyById(Id) {

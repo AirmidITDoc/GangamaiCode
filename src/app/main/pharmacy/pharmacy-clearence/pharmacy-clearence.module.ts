@@ -41,10 +41,10 @@ import { PharmacyClearenceComponent } from '../pharmacy-clearence/pharmacy-clear
 // import { NewBillRaiseComponent } from 'app/main/Customer/customer-bill-raise/new-bill-raise/new-bill-raise.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: PharmacyClearenceComponent 
-  },
+    {
+        path: '**',
+        component: PharmacyClearenceComponent
+    },
 ];
 
 @NgModule({

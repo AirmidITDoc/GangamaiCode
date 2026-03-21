@@ -1,12 +1,11 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
-import { fuseAnimations } from "@fuse/animations";
-import Chart, { Color } from 'chart.js/auto';
+import { UntypedFormGroup } from "@angular/forms";
 import { MatTableDataSource } from '@angular/material/table';
-import { DashboardService } from "../dashboard.service";
+import { fuseAnimations } from "@fuse/animations";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { SignalRService } from "app/core/services/signalr.service";
+import Chart, { Color } from 'chart.js/auto';
+import { DashboardService } from "../dashboard.service";
 
 @Component({
     selector: 'app-radiology-dashboard',
@@ -49,6 +48,9 @@ export class RadiologyDashboardComponent implements OnInit {
     trendData: TopTest1[] = [];
     trendData1: TopTest1[] = [];
     dsCountsummary: testcountsummary[] = [];
+    modalityData = [
+        { name: '', value: 0 }
+    ];
     modalityData = [
         { name: '', value: 0 }
     ];
@@ -137,9 +139,8 @@ export class RadiologyDashboardComponent implements OnInit {
 
     constructor(
         public datePipe: DatePipe,
-        private formBuilder: UntypedFormBuilder, public _accountServices: AuthenticationService,
+        public _accountServices: AuthenticationService,
         private dashboardService: DashboardService,
-        private signalRService: SignalRService
     ) {
 
         // this.initializeDateRange();
@@ -147,20 +148,16 @@ export class RadiologyDashboardComponent implements OnInit {
     pathologyData: any;
     RadiologyData: any;
     ngOnInit(): void {
-        this.signalRService.startConnection();
-        this.signalRService.addReceiveInvestigationDashboardListener((data, user) => {
-            if (data == "Investigation_Bill") {
-                var old = this.metrics.find(x => x.label == "Total Report");
-                this.metrics.find(x => x.label == "Total Report").value = old.value + user.BillCount;
-            }
-        });
+
         this.myFilterform = this.dashboardService.filterFormfinance();
         this.loadTableData();
+
 
         setTimeout(() => {
             this.initializePathologyCharts();
             this.initializeRadiologyCharts();
         }, 500);
+
 
 
     }
@@ -255,14 +252,17 @@ export class RadiologyDashboardComponent implements OnInit {
     }
     getRadiologyReportData() {
 
+
         this.dashboardService.getRadiologyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
             this.RadiologyData = res;
             console.log('Radiology Reports:', res);
+
 
             if (this.RadiologyData) {
                 this.dsRadiologyRecentReports.data = res.recentRadiologyReports;
                 this.dsTopTests.data = res.topOrderedTests;
                 this.dsRadiologistPerformance.data = res.radiologyWorkloads
+                debugger
                 debugger
                 if (this.RadiologyData.radiologyVolumes.length > 0)
                     this.RadiologyDepartmentChart = this.getRadiologyDepartmentChart()
@@ -298,7 +298,6 @@ export class RadiologyDashboardComponent implements OnInit {
         this.pendingReports = 0;
         this.cancelledScans = 0;
 
-
         this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
             this.dsRadiologyCount.data = res || [];
             this.dsRadiologyRecentReports.data = res || [];
@@ -328,7 +327,6 @@ export class RadiologyDashboardComponent implements OnInit {
                     }
                 });
             }
-
 
         });
     }
@@ -396,6 +394,7 @@ export class RadiologyDashboardComponent implements OnInit {
             }
         });
     }
+
 
 
     // Volume Trend Line Chart
@@ -471,7 +470,6 @@ export class RadiologyDashboardComponent implements OnInit {
         if (document.getElementById('pathologyTotalTestsChart')) {
             this.pathologyTotalTestsChart = this.getpathologyTotalTestsChart();
         } else if (document.getElementById('pathologyCompletedChart')) {
-        } else if (document.getElementById('pathologyCompletedChart')) {
             this.pathologyCompletedChart = this.getpathologyCompletedChart();
         } else if (document.getElementById('pathologyPendingChart')) {
             this.pathologyPendingChart = this.getpathologyPendingChart();
@@ -505,7 +503,6 @@ export class RadiologyDashboardComponent implements OnInit {
     getpathologyTotalTestsChart() {
 
 
-
         if (this.pathologyData.weeklyTestReport) {
             this.bartotalTests = this.pathologyData.weeklyTestReport.map(day => day.totalTests);
         }
@@ -521,6 +518,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     barCompletTests = []
     getpathologyCompletedChart() {
+
 
 
         if (this.pathologyData.weeklyTestReport) {
@@ -541,7 +539,6 @@ export class RadiologyDashboardComponent implements OnInit {
     getpathologyPendingChart() {
 
 
-
         if (this.pathologyData.weeklyTestReport) {
             this.barpendingTests = this.pathologyData.weeklyTestReport.map(day => day.pendingReports);
         }
@@ -558,7 +555,6 @@ export class RadiologyDashboardComponent implements OnInit {
 
     barrejectedTests = []
     getpathologyRejectedChart() {
-
 
 
         if (this.pathologyData.weeklyTestReport) {
@@ -593,6 +589,7 @@ export class RadiologyDashboardComponent implements OnInit {
                         label: 'Number of Tests',
                         data: this.pathologyData.pathologyValumes.map(d => d.categoryCount),
                         backgroundColor: ['#4c52f8', '#497df7', '#1347b0', '#9827e4'],
+                        backgroundColor: ['#4c52f8', '#497df7', '#1347b0', '#9827e4'],
                         borderRadius: 6
                     }
                 ]
@@ -626,7 +623,7 @@ export class RadiologyDashboardComponent implements OnInit {
         }
 
         // Pathology Status Data
-        let pathologyStatusData = [
+        const pathologyStatusData = [
             { status: 'Completed', count: this.pathologyData?.countSummary?.completedCount ?? 0 },
             { status: 'Pending', count: this.pathologyData?.countSummary?.pendingCount ?? 0 },
             { status: 'Rejected', count: this.pathologyData?.countSummary?.rejectedCount ?? 0 }
@@ -639,6 +636,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: pathologyStatusData.map(d => d.status),
                 datasets: [
                     {
+                        backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         data: pathologyStatusData.map(d => d.count),
                         borderWidth: 2
@@ -750,12 +748,9 @@ export class RadiologyDashboardComponent implements OnInit {
         if (document.getElementById('RadiologytotalTestsChart')) {
             this.RadiologytotalTestsChart = this.getradiologyTotalTestsChart();
         } else if (document.getElementById('RadiologycompletedReportsChart')) {
-        } else if (document.getElementById('RadiologycompletedReportsChart')) {
             this.RadiologycompletedReportsChart = this.getradiologyCompletTestsChart();
         } else if (document.getElementById('RadiologypendingReportsChart')) {
-        } else if (document.getElementById('RadiologypendingReportsChart')) {
             this.RadiologypendingReportsChart = this.getradiologyPendingTestsChart();
-        } else if (document.getElementById('RadiologycancelledScansChart')) {
         } else if (document.getElementById('RadiologycancelledScansChart')) {
             this.RadiologycancelledScansChart = this.getradiologyCancleTestsChart();
         } else // Department Bar Chart
@@ -786,7 +781,6 @@ export class RadiologyDashboardComponent implements OnInit {
     getradiologyTotalTestsChart() {
 
 
-
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobartotalTests = this.RadiologyData.radWeeklyTestReport.map(day => day.totalTests);
         }
@@ -803,6 +797,7 @@ export class RadiologyDashboardComponent implements OnInit {
     radiobarcomplTests = []
 
     getradiologyCompletTestsChart() {
+
 
 
         if (this.RadiologyData.radWeeklyTestReport) {
@@ -824,7 +819,6 @@ export class RadiologyDashboardComponent implements OnInit {
     getradiologyPendingTestsChart() {
 
 
-
         if (this.RadiologyData.radWeeklyTestReport) {
             this.radiobarpendingTests = this.RadiologyData.radWeeklyTestReport.map(day => day.pendingReports);
         }
@@ -842,7 +836,6 @@ export class RadiologyDashboardComponent implements OnInit {
     radiobarcancleTests = []
 
     getradiologyCancleTestsChart() {
-
 
 
         if (this.RadiologyData.radWeeklyTestReport) {
@@ -874,6 +867,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Number of Tests',
                         data: this.RadiologyData.radiologyVolumes.map(d => d.categoryCount),
+                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         borderRadius: 6
                     }
@@ -908,8 +902,9 @@ export class RadiologyDashboardComponent implements OnInit {
         }
 
         debugger
+        debugger
         // Pathology Status Data
-        let RadiologyStatusData = [
+        const RadiologyStatusData = [
             { status: 'Completed', count: this.RadiologyData?.countSummary?.completedCount ?? 0 },
             { status: 'Pending', count: this.RadiologyData?.countSummary?.pendingCount ?? 0 },
             { status: 'Rejected', count: this.RadiologyData?.countSummary?.rejectedCount ?? 0 }
@@ -922,6 +917,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: RadiologyStatusData.map(d => d.status),
                 datasets: [
                     {
+                        backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
                         data: RadiologyStatusData.map(d => d.count),
                         borderWidth: 2
@@ -963,6 +959,7 @@ export class RadiologyDashboardComponent implements OnInit {
             this.RadiologyVolumeTrendChart.destroy();
         }
         // this.RadiologyVolumeTrendChart = new Chart('RadiologyVolumeTrendChart', {
+
 
         return new Chart('RadiologyVolumeTrendChart', {
             type: 'line',
@@ -1061,7 +1058,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 this.pathologyData = res;
                 console.log('Pathology Reports:', res);
 
-                let apiData = this.pathologyData.pathologyReportStatus && this.pathologyData.pathologyReportStatus.length ? this.pathologyData.pathologyReportStatus[0] : {};
+                const apiData = this.pathologyData.pathologyReportStatus && this.pathologyData.pathologyReportStatus.length ? this.pathologyData.pathologyReportStatus[0] : {};
                 this.metrics = [
                     { label: 'Total Report', value: apiData?.totalReports || 0, color: 'cream', icon: 'assignment' },
                     { label: 'Completed', value: apiData?.completedReports || 0, color: 'cream', icon: 'check_circle' },
@@ -1074,7 +1071,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     { label: 'NoDispatch', value: apiData?.nonDispatchedReports || 0, color: 'cream', icon: 'pending_actions' }
                 ];
 
-            }, err => {
+            }, () => {
                 this.metrics = [
                     { label: 'Total Report', value: 0, color: 'lavender', icon: 'assignment' },
                     { label: 'Completed', value: 0, color: 'green', icon: 'check_circle' },

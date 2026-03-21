@@ -1,17 +1,16 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
-import { ItemFormMasterComponent } from "./item-form-master/item-form-master.component";
-import { ItemMasterService } from "./item-master.service";
+import { FormGroup } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
-import { FormGroup } from "@angular/forms";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { ItemGenericMasterComponent } from "../item-generic-master/item-generic-master.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { ToastrService } from "ngx-toastr";
+import { ItemFormMasterComponent } from "./item-form-master/item-form-master.component";
+import { ItemMasterService } from "./item-master.service";
 
 @Component({
     selector: "app-item-master",
@@ -22,7 +21,7 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class ItemMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemMaster, permissionType.Add);
-       
+
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string = "StoreName";
     autocompleteModeItemCategory: string = "ItemCategory";
@@ -74,12 +73,12 @@ export class ItemMasterComponent implements OnInit {
         { heading: "Stock UOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Conv Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Currency", key: "currencyName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA', width: 80  },
-        { heading: "Max Qty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA', width: 80  },
-        { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA', width: 80  },
-        { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA', width: 80  },
-        { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA', width: 80  },
-        { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' , width: 80 },
+        { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Max Qty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Manufacture Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -105,7 +104,7 @@ export class ItemMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.ItemMaster,
+        permissionCode: permissionCodes.ItemMaster,
         apiUrl: "ItemMaster/ItemMasterList",
         columnsList: this.allColumns,
         sortField: "ItemID",
@@ -226,7 +225,7 @@ export class ItemMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
                 maxWidth: "95vw",
@@ -276,7 +275,7 @@ export class ItemMaster {
     reOrder: number;
     isNursingFlag: boolean;
     hsNcode: string;
-    hsncode: String;
+    hsncode: string;
     cgst: any;
     sgst: any;
     igst: any;
@@ -301,7 +300,7 @@ export class ItemMaster {
     position: any;
     mAssignItemToStores: any[];
     isActive: any;
-    content:any;
+    content: any;
     stockUomid: any;
 
 
@@ -364,7 +363,7 @@ export class ItemMaster {
             this.itemCompnayId = ItemMaster.itemCompnayId || 0
             this.isActive = ItemMaster.isActiuve || true;
             this.mAssignItemToStores = ItemMaster.mAssignItemToStores || [];
-            this.content = ItemMaster.content ||''
+            this.content = ItemMaster.content || ''
             this.stockUomid = ItemMaster.stockUomid || 0
         }
     }

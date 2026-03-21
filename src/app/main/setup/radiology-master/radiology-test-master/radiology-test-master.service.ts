@@ -26,7 +26,7 @@ export class RadiologyTestMasterService {
             //  Validators.pattern('^[a-zA-Z ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
-            printTestName: ["", [Validators.required, 
+            printTestName: ["", [Validators.required,
                 // Validators.pattern('^[a-zA-Z ]*$')
             ]],
             categoryId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

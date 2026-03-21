@@ -61,4 +61,7 @@ export class LabAppointmentService {
   public appointmentCancle(Param: any) {
     return this._httpClient.DeleteData("LabAppointment?Id=" + Param.toString());
   }
+    public getRtevPackageDetList(param) {
+    return this._httpClient.PostData("BillingService/PackageDetailList", param);
+  }
 }

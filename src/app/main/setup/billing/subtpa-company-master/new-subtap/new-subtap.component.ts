@@ -2,10 +2,10 @@ import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angula
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { SubTpaCompanyMaster } from '../subtpa-company-master.component';
 import { SubtpaCompanyMasterService } from '../subtpa-company-master.service';
-import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
     selector: 'app-new-subtap',
@@ -47,11 +47,11 @@ export class NewSubtapComponent implements OnInit {
             console.log(this.data);
             this.isActive = this.data.isActive;
             this.regobj = this.data
-            this.regobj.phoneNo=this.data.phoneNo.trim()
-             this.regobj.faxNo=this.data.faxNo.trim()
-             this.subTpaForm.get("cityId").setValue(this.regobj.cityId)
-             this.subTpaForm.get("stateId").setValue(this.regobj.stateId)
-             this.subTpaForm.get("countryId").setValue(this.regobj.countryId)
+            this.regobj.phoneNo = this.data.phoneNo.trim()
+            this.regobj.faxNo = this.data.faxNo.trim()
+            this.subTpaForm.get("cityId").setValue(this.regobj.cityId)
+            this.subTpaForm.get("stateId").setValue(this.regobj.stateId)
+            this.subTpaForm.get("countryId").setValue(this.regobj.countryId)
         }
     }
 
@@ -72,15 +72,15 @@ export class NewSubtapComponent implements OnInit {
 
     onSubmit() {
 
-console.log(this.subTpaForm.value)
-debugger
+        console.log(this.subTpaForm.value)
+        debugger
         if (!this.subTpaForm.invalid) {
             this._subTpaServiceMaster.subTpaCompanyMasterInsert(this.subTpaForm.value).subscribe((response) => {
                 this.dialogRef.close()
             });
         }
         else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.subTpaForm.invalid) {
                 for (const controlName in this.subTpaForm.controls) {
                     if (this.subTpaForm.controls[controlName].invalid) {
@@ -104,7 +104,7 @@ debugger
         this.dialogRef.close(val);
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -135,7 +135,7 @@ debugger
                 { name: "maxlength", Message: "Company Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],
-             companyShortName: [
+            companyShortName: [
                 { name: "required", Message: "Company Name is required" },
                 { name: "maxlength", Message: "Company Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }

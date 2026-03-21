@@ -37,17 +37,17 @@ import { PharmacypayipadvmodeService } from './pharmacypayipadvmode.service';
 
 
 const routes: Routes = [
-  {
-      path: '**',
-      component: PharmacypayipadvmodeComponent,
-  },
+    {
+        path: '**',
+        component: PharmacypayipadvmodeComponent,
+    },
 ];
 @NgModule({
-  declarations: [PharmacypayipadvmodeComponent ],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
-    SharedModule,
+    declarations: [PharmacypayipadvmodeComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
+        SharedModule,
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -104,7 +104,7 @@ const routes: Routes = [
         MatCardModule,
         MatTooltipModule,
         MatExpansionModule,
-      ],
-        providers: [PharmacypayipadvmodeService, DatePipe]
+    ],
+    providers: [PharmacypayipadvmodeService, DatePipe]
 })
 export class PharmacypayipadvmodeModule { }

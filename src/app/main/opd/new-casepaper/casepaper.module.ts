@@ -5,7 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule, Routes } from '@angular/router';
 //import { BrowseOpdRefundListComponent } from './browse-opd-refund-list/browse-opd-refund-list.component';
 //import { BrowseOpdRefundSidebarComponent } from './browse-opd-refund-sidebar/browse-opd-refund-sidebar.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from '@angular/material/card';
@@ -109,7 +109,7 @@ const routes: Routes = [
         MatTreeModule,
         MatSliderModule,
         MatButtonToggleModule,
-        MatDialogModule ,
+        MatDialogModule,
         CommonModule,
     ],
     providers: [
@@ -117,8 +117,8 @@ const routes: Routes = [
         // NotificationService ,
         DatePipe
     ],
-     exports: [
-            FocusNextDirective
-        ],
+    exports: [
+        FocusNextDirective
+    ],
 })
 export class CasepaperModule { }

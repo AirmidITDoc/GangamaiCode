@@ -35,15 +35,15 @@ const routes = [
     //         import("./menu-configure/menu.module").then((m) => m.MenuModule),
     // },
     {
-        path :'menu-main',
+        path: 'menu-main',
         loadChildren: () => import("./menu-master/menu-master.module").then(m => m.MenuMasterModule)
     }
 ];
 
 @NgModule({
     imports: [
-    RouterModule.forChild(routes)
-],
+        RouterModule.forChild(routes)
+    ],
     declarations: [],
 })
 export class AuthModule { }

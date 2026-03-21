@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { GenderMasterService } from '../gender-master.service';
-import { FormGroup } from '@angular/forms';
-import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: "app-new-gendermaster",
@@ -14,8 +14,8 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class NewGendermasterComponent implements OnInit {
     genderForm: FormGroup;
-    isActive:boolean=true
-    
+    isActive: boolean = true
+
     constructor(
         public _GenderMasterService: GenderMasterService,
         public dialogRef: MatDialogRef<NewGendermasterComponent>,
@@ -27,24 +27,23 @@ export class NewGendermasterComponent implements OnInit {
     ngOnInit(): void {
         this.genderForm = this._GenderMasterService.createGenderForm();
         this.genderForm.markAllAsTouched();
-        
-        if((this.data?.genderId??0) > 0)
-        {
-            this.isActive=this.data.isActive
+
+        if ((this.data?.genderId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.genderForm.patchValue(this.data);
         }
     }
 
-    
+
     onSubmit() {
-        
-      if (!this.genderForm.invalid) {
+
+        if (!this.genderForm.invalid) {
             console.log(this.genderForm.value)
             this._GenderMasterService.genderMasterSave(this.genderForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.genderForm.invalid) {
                 for (const controlName in this.genderForm.controls) {
                     if (this.genderForm.controls[controlName].invalid) {

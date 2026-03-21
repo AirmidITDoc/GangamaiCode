@@ -3,10 +3,10 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AppointcardviewService {
 
-  constructor( private _httpClient: ApiCaller,
-      private _formBuilder: UntypedFormBuilder) { }
+    constructor(private _httpClient: ApiCaller,
+        private _formBuilder: UntypedFormBuilder) { }
 }

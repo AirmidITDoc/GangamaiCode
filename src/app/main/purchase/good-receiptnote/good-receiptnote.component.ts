@@ -7,29 +7,28 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
 import { QrcodegeneratorComponent } from 'app/main/purchase/good-receiptnote/qrcodegenerator/qrcodegenerator.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
+import { CreateBarcodeComponent } from './create-barcode/create-barcode.component';
+import { EditGRNDetailsComponent } from './edit-grndetails/edit-grndetails.component';
 import { GoodReceiptnoteService } from './good-receiptnote.service';
 import { NewGrnComponent } from './new-grn/new-grn.component';
 import { GSTType } from './new-grn/types';
-import { CreateBarcodeComponent } from './create-barcode/create-barcode.component';
-import { EditGRNDetailsComponent } from './edit-grndetails/edit-grndetails.component';
-import { ConfigService } from 'app/core/services/config.service';
 import { UpdateGRNComponent } from './update-grn/update-grn.component';
 
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { Subscription } from 'rxjs'
-import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -90,7 +89,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "", key: "grntime", sort: true, align: 'left', emptySign: 'NA', width: 90 },
         { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Invoice Date", key: "invDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "Invoice Date", key: "invDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         {
@@ -199,8 +198,8 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
                 { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
                 { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Hos.MRP(Strip)", key: "hmrpStrip", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-        { heading: "Hos.PerUnitMRP", key: "hmrpUnitPrice", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "Hos.MRP(Strip)", key: "hmrpStrip", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "Hos.PerUnitMRP", key: "hmrpUnitPrice", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
                 { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
                 { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160 }
@@ -456,7 +455,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     }
     onVerify(row) {
-        let GRNVerifyObj = {};
+        const GRNVerifyObj = {};
         GRNVerifyObj['grnid'] = row.grnid;
         GRNVerifyObj['verifiedBy'] = this.accountService.currentUserValue.userId;
 
@@ -469,7 +468,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
     }
     LastThreeItemList(contact) {
-        var vdata = {
+        const vdata = {
             'ItemId': contact.ItemId,
         }
         // this._GRNService.getLastThreeItemInfo(vdata).subscribe(data => {
@@ -477,7 +476,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         // });
     }
     getWhatsappshareSales(el) {
-        var m_data = {
+        const m_data = {
             "insertWhatsappsmsInfo": {
                 "mobileNumber": 22,//el.RegNo,
                 "smsString": "Dear" + el.PatientName + ",Your GRN has been successfully completed. UHID is " + el.SalesNo + " For, more deatils, call 08352249399. Thank You, JSS Super Speciality Hospitals, Near S-Hyper Mart, Vijayapur " || '',
@@ -534,7 +533,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     printBulkQrCode() {
         setTimeout(() => {
             this.SpinLoading = true;
-            let data = [];
+            const data = [];
             this.selection.selected.forEach(element => {
                 data.push({ QrCodeData: element["stockid"].toString(), Qty: element.ReceiveQty, Width: 15, Margin: 2, Between: 3 });
             });
@@ -675,13 +674,13 @@ export class GoodReceiptnoteComponent implements OnInit {
 
             const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
             const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
-           
+
             console.log(patientData)
             patientData.billNo = patientData.grnid
             patientData.patientName = patientData.supplierName
             patientData.regNo = patientData.supplierID
             patientData.mobileNo = patientData.mobile
-            patientData.emailId= patientData.email
+            patientData.emailId = patientData.email
 
 
             componentRef.instance.patientData = patientData;
@@ -841,21 +840,21 @@ export class GoodReceiptnoteComponent implements OnInit {
         })
     }
 
-        Onemail(contact) {
-            const dialogRef = this._matDialog.open(EmailSendComponent,
-                {
-                    maxWidth: "100%",
-                    height: '75%',
-                    width: '55%',
-                    data: {
-                        Obj: contact,
-                        emailType:'GRNReceipt'
-                    }
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                this.grid.bindGridData();
+    Onemail(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'GRNReceipt'
+                }
             });
-        }
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
 }
 
 export class GRNList {
@@ -1082,7 +1081,7 @@ export class ItemNameList {
     SrNo: number;
     DebitAmount: any;
     GSTType: GSTType | null;
-HospitalMRP:any;
+    HospitalMRP: any;
     cgst: number;
     sgst: number;
     igst: number;
@@ -1155,9 +1154,9 @@ HospitalMRP:any;
     isVerifiedDatetime: any;
     isVerifiedUserId: any;
     discAmt2: any;
-HospitalPerUnitMRP:any;
-hmrpStrip:any;
-hmrpUnitPrice:any;
+    HospitalPerUnitMRP: any;
+    hmrpStrip: any;
+    hmrpUnitPrice: any;
     /**
      * Constructor
      *
@@ -1208,7 +1207,7 @@ hmrpUnitPrice:any;
             this.DebitNote = ItemNameList.DebitNote || 0;
             this.CreditNote = ItemNameList.CreditNote || 0;
             this.RoundingAmt = ItemNameList.RoundingAmt || 0;
-            this.InvDate = ItemNameList.InvDate || this.CurrentDate;;
+            this.InvDate = ItemNameList.InvDate || this.CurrentDate;
             this.TotalDiscAmount = ItemNameList.TotalDiscAmount || 0;
             this.totalVATAmount = ItemNameList.totalVATAmount || 0;
             this.ReceivedBy = ItemNameList.ReceivedBy || ''
@@ -1244,7 +1243,7 @@ hmrpUnitPrice:any;
             this.HospitalMRP = ItemNameList.HospitalMRP || 0;
             this.GSTType = ItemNameList.GSTType || null;
             this.DebitAmount = ItemNameList.DebitAmount || 0
-              this.HospitalPerUnitMRP = ItemNameList.HospitalPerUnitMRP || 0;
+            this.HospitalPerUnitMRP = ItemNameList.HospitalPerUnitMRP || 0;
         }
     }
 }

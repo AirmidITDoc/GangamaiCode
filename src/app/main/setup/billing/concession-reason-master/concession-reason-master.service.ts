@@ -18,18 +18,18 @@ export class ConcessionReasonMasterService {
         this.myform = this.createConcessionreasonForm();
         this.myformSearch = this.createSearchForm();
     }
-    
+
     createConcessionreasonForm(): FormGroup {
         return this._formBuilder.group({
-            concessionId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            concessionReason: ["", 
+            concessionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            concessionReason: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {
@@ -42,7 +42,7 @@ export class ConcessionReasonMasterService {
     initializeFormGroup() {
         this.createConcessionreasonForm();
     }
-    
+
     public concessionreasonMasterSave(Param: any) {
         if (Param.concessionId) {
             return this._httpClient.PutData("ConcessionReasonMaster/" + Param.concessionId, Param);

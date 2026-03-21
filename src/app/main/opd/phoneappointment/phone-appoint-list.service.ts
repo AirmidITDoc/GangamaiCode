@@ -58,21 +58,21 @@ export class PhoneAppointListService {
             ]],
             address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             mobileNo: ['', [Validators.required,
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
-                this._FormvalidationserviceService.onlyNumberValidator()
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+            this._FormvalidationserviceService.onlyNumberValidator()
             ]],
             phAppDate: [(new Date()).toISOString(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
-            phAppTime: ['',[Validators.required]], //use as start time
+            phAppTime: ['', [Validators.required]], //use as start time
             // phAppToTime: ['',[Validators.required]],
             departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             regNo: [""],
-            startTime: ['',[Validators.required]],
-            endTime: ['',[Validators.required]] //use as end time
+            startTime: ['', [Validators.required]],
+            endTime: ['', [Validators.required]] //use as end time
         });
     }
 
@@ -106,10 +106,10 @@ export class PhoneAppointListService {
     public getRegistraionById(Id) {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
-    public getAppoinments(Id:number,fromDate:string,toDate:string) {
-        return this._httpClient.GetData("PhoneAppointment2/get-appoinments?DocId=" + Id+"&FromDate="+fromDate+"&ToDate="+toDate);
+    public getAppoinments(Id: number, fromDate: string, toDate: string) {
+        return this._httpClient.GetData("PhoneAppointment2/get-appoinments?DocId=" + Id + "&FromDate=" + fromDate + "&ToDate=" + toDate);
     }
     public getDateTimeChange(m_data) {
-        return this._httpClient.PutData("PhoneAppointment2/ReschedulePhoneAppointment",m_data);
+        return this._httpClient.PutData("PhoneAppointment2/ReschedulePhoneAppointment", m_data);
     }
 }

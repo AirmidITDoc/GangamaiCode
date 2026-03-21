@@ -11,7 +11,6 @@ import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { ToastrService } from "ngx-toastr";
 import { Observable } from "rxjs";
 import { ReportService } from "./service/report-generation.service";
-import { Validators } from "@angular/forms";
 
 
 interface FoodNode {
@@ -184,12 +183,12 @@ export class ReportGenerationComponent implements OnInit {
         this.GetAllReporConfig();
     }
     GetAllReporConfig() {
-        let paramFilter = [{
+        const paramFilter = [{
             "fieldName": "MenuId",
             "fieldValue": this.rid.toString(),
             "opType": OperatorComparer.Equals
         }];
-        var param: any =
+        const param: any =
         {
             "first": 0,
             "rows": 300,
@@ -207,7 +206,7 @@ export class ReportGenerationComponent implements OnInit {
                 console.log("List:", this.reportsData)
                 debugger
                 // let mainData = this.reportsData.filter(x => (x.parentid == undefined || x.parentid == null || x.parentid == '')).map((x) => ({ id: x.reportId, name: x.reportName, mode: x.reportMode }));
-                let mainData = this.reportsData
+                const mainData = this.reportsData
                     .filter(x => !x.parentid || x.parentid == 'NULL')               // shortest & very common
                     .map(x => ({
                         id: x.reportId,
@@ -235,7 +234,7 @@ export class ReportGenerationComponent implements OnInit {
         this.reportDetail = this.reportsData?.find(x => (x.reportId == node?.id));
         this.ReportName = this.reportDetail?.reportName;
         this.ReportSummary = this.reportDetail?.reportSummary;
-        let controllerPermission = this.reportDetail?.reportFilter?.split(",");
+        const controllerPermission = this.reportDetail?.reportFilter?.split(",");
         if (controllerPermission.filter(x => x == "Doctor")?.length > 0)
             this.flagDoctorSelected = true;
         if (controllerPermission.filter(x => x == "RefDoctor")?.length > 0)
@@ -583,7 +582,7 @@ export class ReportGenerationComponent implements OnInit {
     CallReportData(type) {
         this.StoreId = this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
-            let paramFilterList = [
+            const paramFilterList = [
                 {
                     "fieldName": "FromDate",
                     "fieldValue": this.datePipe.transform(this._ReportService.userForm.get("StartDate").value, "yyyy-MM-dd"),//"10-01-2024",
@@ -783,7 +782,7 @@ export class ReportGenerationComponent implements OnInit {
                     "opType": OperatorComparer.Equals
                 });
             //   
-            let param = {
+            const param = {
                 "searchFields": paramFilterList,
                 "reportId": this.reportDetail.reportId
                 // "mode": this.reportDetail?.reportMode,

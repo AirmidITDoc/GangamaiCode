@@ -40,10 +40,10 @@ import { NewConsentComponent } from './new-consent/new-consent.component';
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: ConsentComponent,
-  },
+    {
+        path: "**",
+        component: ConsentComponent,
+    },
 ];
 
 

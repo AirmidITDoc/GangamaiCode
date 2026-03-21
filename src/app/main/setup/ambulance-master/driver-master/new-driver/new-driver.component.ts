@@ -1,9 +1,9 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DrivermasterService } from '../drivermaster.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { DrivermasterService } from '../drivermaster.service';
 
 @Component({
     selector: 'app-new-driver',
@@ -55,7 +55,7 @@ export class NewDriverComponent {
             });
         }
         else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.Driverdataform.invalid) {
                 for (const controlName in this.Driverdataform.controls) {
                     if (this.Driverdataform.controls[controlName].invalid) {
@@ -88,7 +88,7 @@ export class NewDriverComponent {
         this.dialogRef.close(val);
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

@@ -23,23 +23,23 @@ export class StoreMasterService {
 
     createStoremasterForm(): FormGroup {
         return this._formBuilder.group({
-            storeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            storeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             storeShortName: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
                     //Validators.pattern("^[A-Za-z ]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             storeName: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                  //  Validators.pattern("^[A-Za-z ]*$")
+                    //  Validators.pattern("^[A-Za-z ]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             indentPrefix: ["",
@@ -47,7 +47,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             indentNo: ["",
@@ -55,7 +55,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             purchasePrefix: ["",
@@ -63,8 +63,8 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
-                
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
+
                 ]
             ],
             purchaseNo: ["",
@@ -72,7 +72,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnPrefix: ["",
@@ -80,7 +80,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnNo: ["",
@@ -88,7 +88,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern('^[0-9]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnreturnNoPrefix: ["",
@@ -96,7 +96,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             grnreturnNo: ["",
@@ -104,7 +104,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern("^[0-9 ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             issueToDeptPrefix: ["",
@@ -112,7 +112,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             issueToDeptNo: ["",
@@ -120,7 +120,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern("^[0-9 ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             returnFromDeptNoPrefix: ["",
@@ -128,7 +128,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern("^[A-Za-z ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             returnFromDeptNo: ["",
@@ -136,7 +136,7 @@ export class StoreMasterService {
                     Validators.required,
                     Validators.maxLength(30),
                     Validators.pattern("^[0-9 ]*$"),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             // isDeleted: ["true"],
@@ -205,15 +205,15 @@ export class StoreMasterService {
             hospitalMobileNo: ["",
                 [
                     // Validators.required,
-                Validators.minLength(10),
-                Validators.maxLength(10),
-                Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
-            ]],
-            hospitalEmailId: ["",[Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
+                    Validators.minLength(10),
+                    Validators.maxLength(10),
+                    Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+                ]],
+            hospitalEmailId: ["", [Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
             printStoreUnitName: [""],
-            termsAndCondition:[''],
-            addedBy:this._loggedService.currentUserValue.userId,
-            updatedBy:this._loggedService.currentUserValue.userId,
+            termsAndCondition: [''],
+            addedBy: this._loggedService.currentUserValue.userId,
+            updatedBy: this._loggedService.currentUserValue.userId,
             isPharStore: false,
             isWhatsAppMsg: true,
             whatsAppTemplateId: [""],
@@ -238,14 +238,14 @@ export class StoreMasterService {
     }
 
     public storeMasterSave(Param: any) {
-    if (Param.storeId) {
-            
-            return this._httpClient.PutData("StoreMaster/"+ Param.storeId, Param);
+        if (Param.storeId) {
+
+            return this._httpClient.PutData("StoreMaster/" + Param.storeId, Param);
         } else return this._httpClient.PostData("StoreMaster", Param);
     }
 
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("StoreMaster?Id="+ m_data.toString());
+        return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
     }
 }

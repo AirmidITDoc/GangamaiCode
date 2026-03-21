@@ -10,1213 +10,1213 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { SalePopupComponent } from 'app/main/pharmacy/sales/sale-popup/sale-popup.component';
 import { GRNItemResponseType } from 'app/main/purchase/good-receiptnote/new-grn/types';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { IssueToDeparmentAgainstIndentComponent } from '../issue-to-deparment-against-indent/issue-to-deparment-against-indent.component';
 import { IssueItemList, NewIssueList3 } from '../issue-to-department.component';
 import { IssueToDepartmentService } from '../issue-to-department.service';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
-  selector: 'app-issu-todept',
-  templateUrl: './issu-todept.component.html',
-  styleUrls: ['./issu-todept.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+    selector: 'app-issu-todept',
+    templateUrl: './issu-todept.component.html',
+    styleUrls: ['./issu-todept.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class IssuTodeptComponent {
-  NewIssueGroup: FormGroup;
-  IssueFinalForm: FormGroup;
-  StoreFrom: FormGroup;
-  FinalIssueForm: FormGroup;
-  IssueMainForm: FormGroup;
-  FinalIssueaginstForm: FormGroup;
-  dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
-  vsaveflag: boolean = true;
-  Isclosedchk: boolean = false;
-  savebtn: boolean = false;
+    NewIssueGroup: FormGroup;
+    IssueFinalForm: FormGroup;
+    StoreFrom: FormGroup;
+    FinalIssueForm: FormGroup;
+    IssueMainForm: FormGroup;
+    FinalIssueaginstForm: FormGroup;
+    dsTempItemNameList = new MatTableDataSource<NewIssueList3>();
+    vsaveflag: boolean = true;
+    Isclosedchk: boolean = false;
+    savebtn: boolean = false;
 
 
-  Indentid: any;
-  indentdetid: any;
-  IsClosed: any;
-  IndQty: any;
-  RQty: any = 0;
+    Indentid: any;
+    indentdetid: any;
+    IsClosed: any;
+    IndQty: any;
+    RQty: any = 0;
 
-  Itemchargeslist1: any = [];
-  QtyBalchk: any = 0;
-  Itemflag: boolean = false;
-  fromstoreId = 0
-  @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
+    Itemchargeslist1: any = [];
+    QtyBalchk: any = 0;
+    Itemflag: boolean = false;
+    fromstoreId = 0
+    @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
 
-  displayedNewIssuesList1: string[] = [
-    'ItemName',
-    'BalanceQty',
-    'Action'
-  ]
-  displayedNewIssuesList2: string[] = [
-    'BatchNo',
-    'ExpDateNo',
-    'BalQty'
-  ]
-  displayedNewIssuesList3: string[] = [
-    'ItemId',
-    'ItemName',
-    'BatchNO',
-    'ExpDate',
-    'BalanceQty',
-    'Qty',
-    // 'IssueQty',
-    // 'IssueBalQty',
-    // 'Status',
-    'UnitRate',
-    'GSTPer',
-    'GSTAmount',
-    'TotalAmount',
-    'Action'
-  ];
-  dateTimeObj: any;
-  sIsLoading: string = '';
-  isLoading = true;
+    displayedNewIssuesList1: string[] = [
+        'ItemName',
+        'BalanceQty',
+        'Action'
+    ]
+    displayedNewIssuesList2: string[] = [
+        'BatchNo',
+        'ExpDateNo',
+        'BalQty'
+    ]
+    displayedNewIssuesList3: string[] = [
+        'ItemId',
+        'ItemName',
+        'BatchNO',
+        'ExpDate',
+        'BalanceQty',
+        'Qty',
+        // 'IssueQty',
+        // 'IssueBalQty',
+        // 'Status',
+        'UnitRate',
+        'GSTPer',
+        'GSTAmount',
+        'TotalAmount',
+        'Action'
+    ];
+    dateTimeObj: any;
+    sIsLoading: string = '';
+    isLoading = true;
 
-  Charglist: any = [];
-  vIndentId: any = 0;
-  vIndtDetId: any;
-  vFinalTotalAmount: any;
-  vFinalNetAmount: any;
-  vFinalGSTAmount: any;
-  vTotalAmount: any;
-  vQty: any;
-  vBalanceQty: any;
-  vLandedRatee: any;
-  vremark: any;
-  vLandedRate: any;
+    Charglist: any = [];
+    vIndentId: any = 0;
+    vIndtDetId: any;
+    vFinalTotalAmount: any;
+    vFinalNetAmount: any;
+    vFinalGSTAmount: any;
+    vTotalAmount: any;
+    vQty: any;
+    vBalanceQty: any;
+    vLandedRatee: any;
+    vremark: any;
+    vLandedRate: any;
 
-  vBatchNo: any;
-  vBarcode: any;
+    vBatchNo: any;
+    vBarcode: any;
 
 
-  vBatchExpDate: any;
-  vUnitMRP: any;
-  IssQty: any;
-  vBal: any;
-  StoreName: any;
-  GSTPer: any;
-  vMRP: any;
-  vVatPer: any;
-  vCgstPer: any;
-  vSgstPer: any;
-  vIgstPer: any;
-  vVatAmount: any;
-  vStockId: any;
-  vStoreId: any;
-  vPurchaseRate: any;
-  ItemName: any
-  vItemID: any
-  vTotalMRP: any = 0;
-  vDiscAmt: any
-  vNetAmt: any
-  vItemObj: NewIssueList3;
-  chargeslist: any = [];
+    vBatchExpDate: any;
+    vUnitMRP: any;
+    IssQty: any;
+    vBal: any;
+    StoreName: any;
+    GSTPer: any;
+    vMRP: any;
+    vVatPer: any;
+    vCgstPer: any;
+    vSgstPer: any;
+    vIgstPer: any;
+    vVatAmount: any;
+    vStockId: any;
+    vStoreId: any;
+    vPurchaseRate: any;
+    ItemName: any
+    vItemID: any
+    vTotalMRP: any = 0;
+    vDiscAmt: any
+    vNetAmt: any
+    vItemObj: NewIssueList3;
+    chargeslist: any = [];
 
-  Addflag: boolean = false;
-  vAgainstIndet: boolean = false;
-  autocompletestore: string = "Store";
-  autocompletestore1: string = "Store";
-  dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
-  dsNewIssueList1 = new MatTableDataSource<IssueItemList>();
-  dsIndentList = new MatTableDataSource<IndentList>();
-  dsIndentItemDetList = new MatTableDataSource<IndentItemDetList>();
-  dstempdata = new MatTableDataSource<IndentItemDetList>();
+    Addflag: boolean = false;
+    vAgainstIndet: boolean = false;
+    autocompletestore: string = "Store";
+    autocompletestore1: string = "Store";
+    dsNewIssueList3 = new MatTableDataSource<NewIssueList3>();
+    dsNewIssueList1 = new MatTableDataSource<IssueItemList>();
+    dsIndentList = new MatTableDataSource<IndentList>();
+    dsIndentItemDetList = new MatTableDataSource<IndentItemDetList>();
+    dstempdata = new MatTableDataSource<IndentItemDetList>();
 
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-  @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  constructor(
-    public _IssueToDep: IssueToDepartmentService,
-    public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
-    public datePipe: DatePipe,
-    public toastr: ToastrService
-    , private commonService: PrintserviceService,
-    public _dialogRef: MatDialogRef<IssuTodeptComponent>,
-    private accountService: AuthenticationService,
-    private _formBuilder: UntypedFormBuilder,
-    private _FormvalidationserviceService: FormvalidationserviceService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    @ViewChild('SecondPaginator', { static: true }) public SecondPaginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+    constructor(
+        public _IssueToDep: IssueToDepartmentService,
+        public _matDialog: MatDialog,
+        private _fuseSidebarService: FuseSidebarService,
+        public datePipe: DatePipe,
+        public toastr: ToastrService
+        , private commonService: PrintserviceService,
+        public _dialogRef: MatDialogRef<IssuTodeptComponent>,
+        private accountService: AuthenticationService,
+        private _formBuilder: UntypedFormBuilder,
+        private _FormvalidationserviceService: FormvalidationserviceService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+    ) { }
 
-  ngOnInit(): void {
-    this.NewIssueGroup = this._IssueToDep.getNewIssueForm();
-    this.IssueFinalForm = this._IssueToDep.createfinal()
-    this.StoreFrom = this._IssueToDep.CreateStoreFrom();
+    ngOnInit(): void {
+        this.NewIssueGroup = this._IssueToDep.getNewIssueForm();
+        this.IssueFinalForm = this._IssueToDep.createfinal()
+        this.StoreFrom = this._IssueToDep.CreateStoreFrom();
 
-    this.IssueFinalForm.markAllAsTouched();
-    this.StoreFrom.markAllAsTouched();
+        this.IssueFinalForm.markAllAsTouched();
+        this.StoreFrom.markAllAsTouched();
 
-    this.FinalIssueForm = this.IssueFrom()
-    this.FinalIssueaginstForm = this.IssueaganistFrom()
-    // this.IssueMainForm = this.createIssueForm();
-    this.deptArray.push(this.Depatdetailform());
-    this.stockArray.push(this.currentstockform());
+        this.FinalIssueForm = this.IssueFrom()
+        this.FinalIssueaginstForm = this.IssueaganistFrom()
+        // this.IssueMainForm = this.createIssueForm();
+        this.deptArray.push(this.Depatdetailform());
+        this.stockArray.push(this.currentstockform());
 
-    this.deptArray1.push(this.Depatdetailform());
-    this.stockArray1.push(this.currentstockform());
-    this.indentdetailArray.push(this.indentdetailform());
+        this.deptArray1.push(this.Depatdetailform());
+        this.stockArray1.push(this.currentstockform());
+        this.indentdetailArray.push(this.indentdetailform());
 
-    if (this.data) {
-      console.log(this.data)
-      this.dsNewIssueList1.data = this.data
+        if (this.data) {
+            console.log(this.data)
+            this.dsNewIssueList1.data = this.data
+        }
+
     }
 
-  }
+    get deptArray(): FormArray {
+        return this.FinalIssueForm.get('issue.tIssueToDepartmentDetails') as FormArray;
+    }
 
-  get deptArray(): FormArray {
-    return this.FinalIssueForm.get('issue.tIssueToDepartmentDetails') as FormArray;
-  }
+    get stockArray(): FormArray {
+        return this.FinalIssueForm.get('tCurrentStock') as FormArray;
+    }
 
-  get stockArray(): FormArray {
-    return this.FinalIssueForm.get('tCurrentStock') as FormArray;
-  }
+    get deptArray1(): FormArray {
+        return this.FinalIssueaginstForm.get('updateIndent.tIssueToDepartmentDetails') as FormArray;
+    }
 
-  get deptArray1(): FormArray {
-    return this.FinalIssueaginstForm.get('updateIndent.tIssueToDepartmentDetails') as FormArray;
-  }
+    get stockArray1(): FormArray {
+        return this.FinalIssueaginstForm.get('tCurStockModel') as FormArray;
+    }
 
-  get stockArray1(): FormArray {
-    return this.FinalIssueaginstForm.get('tCurStockModel') as FormArray;
-  }
-
-  get indentdetailArray(): FormArray {
-    return this.FinalIssueaginstForm.get('tIndentDetails') as FormArray;
-  }
-  IssueFrom() {
-    return this._formBuilder.group({
-      "issue": this._formBuilder.group({
-        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "indentId": [this.vIndentId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "issueDate": [(new Date()).toISOString().split('T')[0]],
-        "issueTime": [(new Date()).toISOString()],
-        "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "isVerified": [false],
-        "isClosed": [false],
-        "tIssueToDepartmentDetails": this._formBuilder.array([]),
-      }),
-      tCurrentStock: this._formBuilder.array([]),
-    });
-  }
-
-  Depatdetailform(element: any = {}): FormGroup {
-
-    console.log(element)
-    return this._formBuilder.group({
-      issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      batchNo: [element.BatchNo],
-      batchExpDate: [(new Date()).toISOString().split('T')[0]],
-      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-    });
-  }
-  currentstockform(element: any = {}): FormGroup {
-
-    console.log(element)
-    return this._formBuilder.group({
-      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      istkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
-    });
-  }
-balQty=0
-  indentdetailform(element: any = {}): FormGroup {
-
-    console.log(element)
-    return this._formBuilder.group({
-      indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isClosed: [element.IsClosed],
-      indQty: [ element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]]
-    });
-  }
-
-
-  IssueaganistFrom() {
-    return this._formBuilder.group({
-      "updateIndent": this._formBuilder.group({
-        "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "indentId": [this.vIndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "issueDate": [(new Date()).toISOString().split('T')[0]],
-        "issueTime": [(new Date()).toISOString()],
-        "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "isVerified": [false],
-        "isClosed": [false],
-        "tIssueToDepartmentDetails": this._formBuilder.array([]),
-      }),
-      tCurStockModel: this._formBuilder.array([]),
-      "indentHeader": this._formBuilder.group({
-        "indentId": this.vIndentId,
-        "isClosed": true
-      }),
-      tIndentDetails: this._formBuilder.array([]),
-    });
-  }
-  ItemSamelist: any = [];
-  BatchSamelist: any = [];
-  MRPSamelist: any = [];
-  onAdd($event) {
-
-
-    this.StoreFrom.get('ToStoreId').setValue(this.fromstoreId);
-
-    if (this.vIndentId > 0)
-      if (!this.NewIssueGroup.get('ItemName')?.value) {
-        this.toastr.warning('Please select Item', 'Warning!', {
-          toastClass: 'tostr-tost custom-toast-warning',
+    get indentdetailArray(): FormArray {
+        return this.FinalIssueaginstForm.get('tIndentDetails') as FormArray;
+    }
+    IssueFrom() {
+        return this._formBuilder.group({
+            "issue": this._formBuilder.group({
+                "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "indentId": [this.vIndentId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "issueDate": [(new Date()).toISOString().split('T')[0]],
+                "issueTime": [(new Date()).toISOString()],
+                "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "isVerified": [false],
+                "isClosed": [false],
+                "tIssueToDepartmentDetails": this._formBuilder.array([]),
+            }),
+            tCurrentStock: this._formBuilder.array([]),
         });
-        return;
-      }
-
-    if (!this.NewIssueGroup.get('Qty')?.value) {
-      this.toastr.warning('Please select Qty', 'Warning!', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
     }
 
+    Depatdetailform(element: any = {}): FormGroup {
 
-    // this.dsNewIssueList3.data.forEach((element) => {
-
-    //   if (element.ItemId == this.NewIssueGroup.get('ItemID').value.ItemId) {
-    //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-    //       toastClass: 'tostr-tost custom-toast-warning',
-    //     });
-    //   }});
-    this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this.NewIssueGroup.get('ItemName').value.itemId)
-    if (this.ItemSamelist) {
-      if (this.ItemSamelist.some(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
-        this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
+        console.log(element)
+        return this._formBuilder.group({
+            issueDepId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            issueId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            batchNo: [element.BatchNo],
+            batchExpDate: [(new Date()).toISOString().split('T')[0]],
+            issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            perUnitLandedRate: [element.LandedRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            LandedTotalAmount: [element.LandedRateandedTotal, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitMRP: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            mrpTotalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitPurRate: [element.PurchaseRate, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            purTotalAmount: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            vatPercentage: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            stkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
-        this.NewIssueGroup.reset()
-        this.NewIssueGroup.get("Qty").setValue(1);
-        const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
-        if (serviceNameElement) {
-          serviceNameElement.focus();
-        }
-        return;
-      }
     }
-    // this.BatchSamelist = this.dsNewIssueList3.data.filter(item => item.BatchNo === this.vBatchNo)
-    // if (this.BatchSamelist) {
-    //     if (this.BatchSamelist.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.some(item => item.LandedRate === this.vLandedRate)) {
-    //         this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    // }
-    // this.MRPSamelist = this.dsNewIssueList3.data.filter(item => item.LandedRate === this.vLandedRate)
-    // if (this.MRPSamelist) {
-    //     if (this.MRPSamelist.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId) && this.MRPSamelist.some(item => item.BatchNo === this.vBatchNo)) {
-    //         this.toastr.warning('Selected Item already added with same Batch &  same MRP in the list', 'Warning !', {
-    //             toastClass: 'tostr-tost custom-toast-warning',
-    //         });
-    //         return;
-    //     }
-    // }
+    currentstockform(element: any = {}): FormGroup {
 
-    // if (!this.vBarcodeflag) {
-    // const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId);
-    // if (!isDuplicate) {
-    let gstper = 0
-    gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
-    debugger
-    this.chargeslist = this.dsTempItemNameList.data;
-    // if (this.dsNewIssueList3.data.length > 0) {
-    //   this.chargeslist = this.dsNewIssueList3.data;
-    // } 
-    let TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
-    let PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
-
-    let LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
-
-    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
-    // let  CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-    // let  SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
-    // let  IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2); 
-
-
-    this.chargeslist.push(
-      {
-        ItemId: this.NewIssueGroup.get('ItemName').value.itemId || 0,
-        ItemName: this.NewIssueGroup.get('ItemName').value.formattedText || '',
-        BatchNo: this.NewIssueGroup.get('BatchNO').value || "",
-        BatchExpDate: this.vBatchExpDate || '1900-01-01',
-        BalanceQty: this.NewIssueGroup.get('BalanceQty').value || "",
-        Qty: this.NewIssueGroup.get('Qty').value || 0,
-        LandedRate: this.NewIssueGroup.get("UnitRate").value,
-        UnitMRP: this.NewIssueGroup.get("UnitRate").value || 0,
-        VatPer: gstper || 0,
-        VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
-        TotalAmount: this.vTotalAmount || 0,
-        StockId: this.vStockId,
-        TotalMRP: TotalMRP,
-        DiscPer: 0,// contact.DiscPer || 0,
-        DiscAmt: 0,
-        NetAmt: LandedRateandedTotal,
-        RoundNetAmt: Math.round(LandedRateandedTotal),// Math.round(TotalNet),
-        mrpTotalAmount: TotalMRP,
-
-        //LandedRate: this.vLandedRate,
-        LandedRateandedTotal: LandedRateandedTotal,
-        CgstPer: this.vCgstPer,
-        //   CGSTAmt: CGSTAmt,
-        SgstPer: this.vSgstPer,
-        //   SGSTAmt: SGSTAmt,
-        IgstPer: this.vIgstPer,
-        //   IGSTAmt: IGSTAmt,
-        PurchaseRate: this.vPurchaseRate,
-        PurTotAmt: PurTotAmt,
-        purTotalAmount: PurTotAmt,
-        //   MarginAmt: v_marginamt,
-        SalesDraftId: 1
-      });
-    console.log(this.chargeslist);
-    this.dsNewIssueList3.data = this.chargeslist
-
-    // }
-
-    this.resetFormItem();
-    const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
-    if (serviceNameElement) {
-      serviceNameElement.focus();
-    }
-
-    this.Addflag = false;
-
-
-    if (!(this.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
-      this.vsaveflag = false;
-    }
-
-  }
-
-  getBatch() {
-    // this.Quantity.nativeElement.focus();
-    const dialogRef = this._matDialog.open(SalePopupComponent,
-      {
-        maxWidth: "800px",
-        minWidth: '800px',
-        width: '800px',
-        height: '380px',
-        disableClose: true,
-        data: {
-          "ItemId": this.NewIssueGroup.get('ItemName').value.itemId,
-          "StoreId": this.StoreFrom.get('FromStoreId').value
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      result = result.selectedData
-      this.vBatchNo = result.batchNo || '';
-      this.vBatchExpDate = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
-      this.vMRP = result.landedRate;
-      this.vQty = '';
-      this.vBal = result.BalanceAmt;
-      this.GSTPer = result.VatPercentage;
-      this.vTotalMRP = this.vQty * this.vLandedRate;
-      this.vDiscAmt = 0;
-      this.vNetAmt = this.vTotalMRP;
-      this.vBalanceQty = result.balanceQty;
-      this.vItemObj = result;
-      this.vVatPer = result.vatPercentage;
-      this.vCgstPer = result.cgstPer;
-      this.vSgstPer = result.sgstPer;
-      this.vIgstPer = result.igstPer;
-      this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(2),
-        this.vStockId = result.stockId
-      this.vStoreId = result.storeId;
-      this.vLandedRate = result.landedRate;
-      this.vPurchaseRate = result.purchaseRate;
-      this.vUnitMRP = result.unitMRP;
-      // this.vTotalAmount=  this.vQty * this.vLandedRate;
-
-      this.NewIssueGroup.get("Qty").setValue(0);
-      const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-      if (serviceNameElement) {
-        serviceNameElement.focus();
-      }
-    });
-
-  }
-
-
-  CalculateTotalAmt() {
-    if (this.NewIssueGroup.get("Qty").value > this.NewIssueGroup.get("BalanceQty").value) {
-      this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      this.NewIssueGroup.get('Qty').setValue(0);
-    }
-    if (this.NewIssueGroup.get("Qty").value && this.NewIssueGroup.get("UnitRate").value) {
-      this.vTotalAmount = (parseFloat(this.NewIssueGroup.get("Qty").value) * parseFloat(this.NewIssueGroup.get("UnitRate").value)).toFixed(2);
-    }
-
-
-  }
-  getTotalamt(element) {
-    
-    this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(2);
-    this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-    this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
-    return this.vFinalTotalAmount;
-  }
-  AgainstInd: boolean = true;
-  getAgainstIndet(event) {
-    if (event.checked == true) {
-      this.AgainstInd = false;
-    } else {
-      this.AgainstInd = true;
-    }
-
-  }
-  ItemID = 0;
-  getSelectedItem(item: GRNItemResponseType): void {
-
-    this.ItemID = item.itemId
-
-    this.NewIssueGroup.patchValue({
-      UOMId: item.umoId,
-      ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      Qty: item.balanceQty,
-      CGSTPer: item.cgstPer,
-      SGSTPer: item.sgstPer,
-      IGSTPer: item.igstPer,
-      GST: item.cgstPer + item.sgstPer + item.igstPer,
-      HSNcode: item.hsNcode
-
-    });
-    // if (this.BalanceQty > 0) {
-    this.getBatch();
-    // }
-    // this.NewIssueGroup.get("Qty").setValue(1);
-    //           const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-    //           if (serviceNameElement) {
-    //             serviceNameElement.focus();
-    //           }
-  }
-
-
-  OnSave() {
-    console.log(this.vIndentId)
-    if ((!this.dsNewIssueList3.data.length)) {
-      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-    if ((this.StoreFrom.get("ToStoreId").value == 0)) {
-      this.toastr.warning('Please select TostoreId', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    if (!this.IssueFinalForm.invalid) {
-      console.log(this.vIndentId)
-
-      if (this.vIndentId > 0) {
-        this.OnSaveAgaintIndent();
-      } else {
-        this.OnNewSave();
-      }
-    } else {
-      let invalidFields = [];
-
-      if (this.IssueFinalForm.invalid) {
-        for (const controlName in this.IssueFinalForm.controls) {
-          if (this.IssueFinalForm.controls[controlName].invalid) {
-            invalidFields.push(`IssueFinal Form : ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
+        console.log(element)
+        return this._formBuilder.group({
+            itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            issueQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            istkId: [element.StockId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            storeId: [this.accountService.currentUserValue.user.storeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
-      }
-
     }
-  }
+    balQty = 0
+    indentdetailform(element: any = {}): FormGroup {
 
-  OnNewSave1() {
-
-    const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
-
-    if (isChecked) {
-      let isertItemdetailsObj = [];
-      this.dsNewIssueList3.data.forEach(element => {
         console.log(element)
-
-        let insertitemdetail = {};
-        insertitemdetail['issueDepId'] = 0;
-        insertitemdetail['issueId'] = 0;
-        insertitemdetail['itemId'] = element.ItemId;
-        insertitemdetail['batchNo'] = element.BatchNo;
-        insertitemdetail['batchExpDate'] = element.BatchExpDate;
-        insertitemdetail['issueQty'] = element.Qty;
-        insertitemdetail['perUnitLandedRate'] = element.LandedRate;
-        insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
-        insertitemdetail['unitMRP'] = element.UnitMRP;
-        insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
-        insertitemdetail['unitPurRate'] = element.PurchaseRate;
-        insertitemdetail['purTotalAmount'] = element.PurTotAmt;
-        insertitemdetail['vatPercentage'] = element.VatPer || 0;
-        insertitemdetail['vatAmount'] = element.VatAmount || 0;
-        insertitemdetail['stkId'] = element.StockId;
-        isertItemdetailsObj.push(insertitemdetail);
-      });
-      let updateissuetoDepartmentStock = [];
-      this.dsNewIssueList3.data.forEach(element => {
-        let updateitemdetail = {};
-        updateitemdetail['itemId'] = element.ItemId;
-        updateitemdetail['issueQty'] = element.Qty;
-        updateitemdetail['stkId'] = element.StockId;
-        updateitemdetail['storeID'] = this.accountService.currentUserValue.userId;
-        updateissuetoDepartmentStock.push(updateitemdetail);
-      });
-
-      console.log(this.IssueFinalForm.value)
-      let submitData = {
-        issue: {
-          "issueId": 0,
-          "issueDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-          "issueTime": this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.time),
-          "fromStoreId": this.accountService.currentUserValue.userId,
-          "toStoreId": this.StoreFrom.get('ToStoreId').value || 0,
-          "totalAmount": this.IssueFinalForm.get('FinalTotalAmount').value || 0,
-          "totalVatAmount": this.IssueFinalForm.get('GSTAmount').value || 0,
-          "netAmount": this.IssueFinalForm.get('FinalNetAmount').value || 0,
-          "remark": this.IssueFinalForm.get('Remark').value || '',
-          "addedby": this.accountService.currentUserValue.userId || 0,
-          "isVerified": false,
-          "isClosed": false,
-          "indentId": 0,
-          tIssueToDepartmentDetails: isertItemdetailsObj
-        },
-        tCurrentStock: updateissuetoDepartmentStock
-
-      };
-
-      console.log(submitData);
-
-      this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-        console.log(response)
-        this.viewgetIssuetodeptReportPdf(response)
-        this._matDialog.closeAll();
-      });
+        return this._formBuilder.group({
+            indentId: [element.IndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            indentDetailsId: [element.IndentDetailsId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isClosed: [element.IsClosed],
+            indQty: [element.Qty, [this._FormvalidationserviceService.onlyNumberValidator()]]
+        });
     }
-  }
 
 
-  OnNewSave() {
-
-    const isChecked = 1
-    // this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
-
-    if (isChecked) {
-
-      this.deptArray.clear();
-      if (this.dsNewIssueList3.data.length === 0) {
-        this.toastr.warning('No data in the item list!', 'Warning');
-        return;
-      }
-
-      this.dsNewIssueList3.data.forEach(item => {
-        this.deptArray.push(this.Depatdetailform(item));
-      });
-
-      this.stockArray.clear();
-      this.dsNewIssueList3.data.forEach(item => {
-        this.stockArray.push(this.currentstockform(item));
-      });
-      debugger
-      this.FinalIssueForm.get("issue.issueId").setValue(0)
-      this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-      this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
-      this.FinalIssueForm.get("issue.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
-      this.FinalIssueForm.get("issue.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
-      this.FinalIssueForm.get("issue.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
-      this.FinalIssueForm.get("issue.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
-      this.FinalIssueForm.get("issue.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
-      this.FinalIssueForm.get("issue.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
-      this.FinalIssueForm.get("issue.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
-      this.FinalIssueForm.get("issue.isVerified").setValue(false)
-      this.FinalIssueForm.get("issue.isClosed").setValue(false)
-      this.FinalIssueForm.get("issue.indentId").setValue(0)
-
-      console.log(this.FinalIssueForm.value)
-      this._IssueToDep.IssuetodepSave(this.FinalIssueForm.value).subscribe(response => {
-        this.viewgetIssuetodeptReportPdf(response)
-        this._matDialog.closeAll();
-      });
+    IssueaganistFrom() {
+        return this._formBuilder.group({
+            "updateIndent": this._formBuilder.group({
+                "issueId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "indentId": [this.vIndentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "issueDate": [(new Date()).toISOString().split('T')[0]],
+                "issueTime": [(new Date()).toISOString()],
+                "fromStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "toStoreId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "totalAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "totalVatAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "netAmount": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "remark": ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "addedby": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                "isVerified": [false],
+                "isClosed": [false],
+                "tIssueToDepartmentDetails": this._formBuilder.array([]),
+            }),
+            tCurStockModel: this._formBuilder.array([]),
+            "indentHeader": this._formBuilder.group({
+                "indentId": this.vIndentId,
+                "isClosed": true
+            }),
+            tIndentDetails: this._formBuilder.array([]),
+        });
     }
-  }
+    ItemSamelist: any = [];
+    BatchSamelist: any = [];
+    MRPSamelist: any = [];
+    onAdd($event) {
 
 
-
-  OnSaveAgaintIndent() {
-    debugger
-    this.vsaveflag = true;
-    let isertItemdetailsObj = [];
-
-    const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
-    if (isChecked) {
-
-      this.deptArray1.clear();
-      if (this.dsNewIssueList3.data.length === 0) {
-        this.toastr.warning('No data in the item list!', 'Warning');
-        return;
-      }
-
-      this.dsNewIssueList3.data.forEach(item => {
-        this.deptArray1.push(this.Depatdetailform(item));
-      });
-
-      this.stockArray1.clear();
-      this.dsNewIssueList3.data.forEach(item => {
-        this.stockArray1.push(this.currentstockform(item));
-      });
-
-     
-
-      this.FinalIssueaginstForm.get("updateIndent.issueId").setValue(0)
-      this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-      this.FinalIssueaginstForm.get("updateIndent.issueTime").setValue(this.dateTimeObj.time)
-      this.FinalIssueaginstForm.get("updateIndent.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
-      this.FinalIssueaginstForm.get("updateIndent.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
-      this.FinalIssueaginstForm.get("updateIndent.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
-      this.FinalIssueaginstForm.get("updateIndent.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
-      this.FinalIssueaginstForm.get("updateIndent.isVerified").setValue(false)
-      this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(false)
-      this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(this.vIndentId)
-
-      this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(this.vIndentId)
-      this.FinalIssueaginstForm.get('indentHeader.isClosed').setValue(this.Isclosedchk)
-
-
- this.indentdetailArray.clear();
-      this.dsNewIssueList3.data.forEach(item => {
-debugger
-        this.balQty = (parseInt(item.IndQty) - parseInt(item.Qty))
-        if ( this.balQty == 0) {
-          this.Isclosedchk = true;
-        } else {
-          this.Isclosedchk = false;
-        }
-        item.IsClosed = this.Isclosedchk
-
-        // item.indQty=balQty
-        this.indentdetailArray.push(this.indentdetailform(item));
-      });
-      console.log(this.FinalIssueaginstForm.value)
-
-      // this._IssueToDep.IssuetodepAgaintIndetSave(this.FinalIssueaginstForm.value).subscribe(response => {
-      //   this.viewgetIssuetodeptReportPdf(response)
-      //   this._matDialog.closeAll();
-      // });
-    }
-  }
-
-
-  OnSaveAgaintIndent1() {
-
-    this.vsaveflag = true;
-    let isertItemdetailsObj = [];
-
-    const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
-    if (isChecked) {
-      // this.savebtn = true;
-      let insertheaderObj = {};
-      insertheaderObj['issueDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-        insertheaderObj['issueTime'] = this.dateTimeObj.time,
-        insertheaderObj['fromStoreId'] = this.accountService.currentUserValue.userId
-      insertheaderObj['toStoreId'] = Number(this.vstoreId1) || 0; //changed by raksha
-      insertheaderObj['totalAmount'] = Number(this.IssueFinalForm.get('FinalTotalAmount').value) || 0;
-      insertheaderObj['totalVatAmount'] = Number(this.IssueFinalForm.get('GSTAmount').value) || 0;
-      insertheaderObj['netAmount'] = Number(this.IssueFinalForm.get('FinalNetAmount').value) || 0;
-      insertheaderObj['remark'] = this.IssueFinalForm.get('Remark').value || '';
-      insertheaderObj['addedby'] = this.accountService.currentUserValue.userId || 0;
-      insertheaderObj['isVerified'] = false;
-      insertheaderObj['isclosed'] = false;
-      insertheaderObj['indentId'] = this.vIndentId;
-      insertheaderObj['issueId'] = 0;
-      insertheaderObj['tIssueToDepartmentDetails'] = isertItemdetailsObj;
-
-
-      this.dsNewIssueList3.data.forEach(element => {
-        console.log(element)
-
-        let insertitemdetail = {};
-        insertitemdetail['issueId'] = 0;
-        insertitemdetail['itemId'] = element.ItemId;
-        insertitemdetail['batchNo'] = element.BatchNo;
-        insertitemdetail['batchExpDate'] = element.BatchExpDate;
-        insertitemdetail['issueQty'] = element.IssueQty;
-        insertitemdetail['perUnitLandedRate'] = element.LandedRate;
-        insertitemdetail['LandedTotalAmount'] = Number(element.LandedRateandedTotal);
-        insertitemdetail['unitMRP'] = element.UnitMRP;
-        insertitemdetail['mrpTotalAmount'] = Number(element.TotalMRP);
-        insertitemdetail['unitPurRate'] = element.PurchaseRate;
-        insertitemdetail['purTotalAmount'] = Number(element.PurTotAmt);
-        insertitemdetail['vatPercentage'] = element.VatPer || 0;
-        insertitemdetail['vatAmount'] = Number(element.VatAmount) || 0;
-        insertitemdetail['stkId'] = element.StockId;
-        isertItemdetailsObj.push(insertitemdetail);
-      });
-
-      let updateissuetoDepartmentStock = [];
-      this.dsNewIssueList3.data.forEach(element => {
-
-        let updateitemdetail = {};
-        updateitemdetail['itemId'] = element.ItemId;
-        updateitemdetail['issueQty'] = element.Qty;
-        updateitemdetail['stkId'] = element.StockId;
-        updateitemdetail['storeID'] = this.accountService.currentUserValue.userId
-        updateissuetoDepartmentStock.push(updateitemdetail);
-      });
-
-
-      let update_IndentHeader_StatusObj = {};
-      update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
-      update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk || true;
-
-
-      let updateIndentStatusIndentDetails = [];
-      this.dsNewIssueList3.data.forEach(element => {
-        console.log(element)
-        debugger
-        let balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
-        if (balQty == 0) {
-          this.Isclosedchk = false;
-        } else {
-          this.Isclosedchk = true;
-        }
-        let updateIndentStatusIndentDetailsObj = {};
-        updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
-        updateIndentStatusIndentDetailsObj['indDetID'] = element.IndentDetailsId;
-        updateIndentStatusIndentDetailsObj['isClosed'] = this.Isclosedchk;
-        updateIndentStatusIndentDetailsObj['indQty'] = balQty;
-        updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
-      });
-
-      let submitData = {
-        updateIndent: insertheaderObj,
-        // tIssueToDepartmentDetails: isertItemdetailsObj,
-        tCurStockModel: updateissuetoDepartmentStock,
-        indentHeader: update_IndentHeader_StatusObj,
-        tIndentDetails: updateIndentStatusIndentDetails
-      };
-
-      console.log(submitData);
-
-      this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
-        this.viewgetIssuetodeptReportPdf(response)
-        this._matDialog.closeAll();
-      });
-    }
-  }
-  viewgetIssuetodeptReportPdf(issueId) {
-    this.commonService.Onprint("IssueId", issueId, "Issutodeptissuewise");
-  }
-
-
-
-  resetFormItem() {
-    const form = this.NewIssueGroup;
-
-    form.patchValue({
-      Barcode: '',
-      ItemName: '',
-      ItemID: [''],
-      BatchNO: '',
-      BalanceQty: '',
-      Qty: '',
-      UnitRate: '',
-      TotalAmount: '',
-    });
-    this.NewIssueGroup.markAsUntouched();
-  }
-
-  keyPressAlphanumeric(event) {
-    var inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
-    if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsNewIssueList3.data = [];
-      this.dsNewIssueList3.data = this.chargeslist;
-    }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-      toastClass: 'tostr-tost custom-toast-success',
-    });
-  }
-  onClose() {
-    this._matDialog.closeAll();
-  }
-  OnReset() {
-    this._matDialog.closeAll();
-    this.NewIssueGroup.reset();
-  }
-
-  vstoreId: any = '';
-  vstoreId1: any = '';
-  selectChangeStore(obj: any) {
-    console.log("Store:", obj);
-    this.vstoreId = obj.value
-  }
-  selectChangeStore1(obj: any) {
-    console.log("Store:", obj);
-    this.vstoreId1 = obj.value
-  }
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
-  getValidationMessages() {
-    return {
-      StoreId: [
-        { name: "required", Message: "Store Name is required" }
-      ],
-      // WardName: [
-      //   { name: "required", Message: "Ward Name is required" }
-      // ],
-      // ItemId: [
-      //   { name: "required", Message: "Item Name is required" }
-      // ],
-      // Qty: [
-      //   { name: "required", Message: "Qty is required" },
-      //   { name: "pattern", Message: "Only numbers allowed" }
-      // ],
-    };
-  }
-  showIndentFlag: boolean = false;
-  OnIndent() {
-    this.OnReset();
-    const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
-      {
-        maxWidth: "100%",
-        height: '95%',
-        width: '95%',
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-      this.dsNewIssueList1.data = result;
-      
-      if (result) {
-
-        this.StoreFrom.reset()
-        this.vIndentId = result[0].indentId;
-
-        this.vAgainstIndet = true;
-        this.StoreFrom.get("AgainstIndent").setValue(true)
-        debugger
-        this.fromstoreId = result[0].fromStoreId
-        console.log(this.fromstoreId)
         this.StoreFrom.get('ToStoreId').setValue(this.fromstoreId);
 
         if (this.vIndentId > 0)
-          this.showIndentFlag = true
-      }
-    });
-  }
-
-  testflag=0;
-
-  AddIndentItem(contact) {
-
-    console.log(contact)
-    this.vIndentId = contact.indentId;
-    this.indentdetid = contact.indentDetailsId;
-    this.IsClosed = contact.isClosed;
-    this.IndQty = contact.qty;
-    let DuplicateItem = 0;
-
-    if (this.dsNewIssueList3.data.length > 0) {
-      this.dsNewIssueList3.data.forEach((element) => {
-        if (element.ItemId == contact.itemId) {
-          this.toastr.warning('Selected Item already added in the list', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          DuplicateItem = 1
-          return;
-        }
-
-      });
-    }
-
-    if (!DuplicateItem) {
-      this.Itemchargeslist1 = [];
-      this.QtyBalchk = 0;
-      debugger
-      var m_data = {
-        "ItemId": contact.itemId,
-        "StoreId": this.accountService.currentUserValue.user.storeId || 0
-      }
-      this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
-        console.log(draftdata)
-        this.Itemchargeslist1 = draftdata as any;
-        console.log(this.Itemchargeslist1)
-        if (this.Itemchargeslist1.length == 0) {
-          Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
-        }
-        else if (this.Itemchargeslist1.length > 0) {
-          let ItemID = contact.itemId;
-
-          let remaing_qty = contact.balanceQty;
-          let bal_qnt = 0;
-          this.Itemchargeslist1.forEach((element) => {
-
-            let IndQty = remaing_qty;
-            if (IndQty > 0) {
-
-              if (ItemID != element.itemId) {
-                this.QtyBalchk = 0;
-              }
-              // if (this.QtyBalchk != 1) {
-              if (IndQty <= element.balanceQty) {
-                this.QtyBalchk = 1;
-                this.getFinalCalculation(element, IndQty);
-                ItemID = element.ItemId;
-                bal_qnt += element.balanceQty - IndQty;
-              }
-              else if (IndQty > element.balanceQty) {
-                this.QtyBalchk = 1;
-                this.getFinalCalculation(element, element.balanceQty);
-                ItemID = element.itemId;
-              }
-              // }
-
-              remaing_qty = IndQty - element.balanceQty;
-            } else {
-              bal_qnt += element.balanceQty;
+            if (!this.NewIssueGroup.get('ItemName')?.value) {
+                this.toastr.warning('Please select Item', 'Warning!', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
             }
 
-            const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-            if (QtyElement) {
-              QtyElement.focus();
-            }
-
-
-          });
-          Swal.fire("Balance Qty is :", String(bal_qnt))
+        if (!this.NewIssueGroup.get('Qty')?.value) {
+            this.toastr.warning('Please select Qty', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
-      });
+
+
+        // this.dsNewIssueList3.data.forEach((element) => {
+
+        //   if (element.ItemId == this.NewIssueGroup.get('ItemID').value.ItemId) {
+        //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+        //       toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //   }});
+        this.ItemSamelist = this.dsNewIssueList3.data.filter(item => item.ItemId === this.NewIssueGroup.get('ItemName').value.itemId)
+        if (this.ItemSamelist) {
+            if (this.ItemSamelist.some(item => item.BatchNo === this.vBatchNo) && this.ItemSamelist.some(item => item.LandedRate === this.vLandedRate)) {
+                this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                this.NewIssueGroup.reset()
+                this.NewIssueGroup.get("Qty").setValue(1);
+                const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+                if (serviceNameElement) {
+                    serviceNameElement.focus();
+                }
+                return;
+            }
+        }
+        // this.BatchSamelist = this.dsNewIssueList3.data.filter(item => item.BatchNo === this.vBatchNo)
+        // if (this.BatchSamelist) {
+        //     if (this.BatchSamelist.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId) && this.BatchSamelist.some(item => item.LandedRate === this.vLandedRate)) {
+        //         this.toastr.warning('Selected Item already added with same Batch & same MRP in the list', 'Warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         });
+        //         return;
+        //     }
+        // }
+        // this.MRPSamelist = this.dsNewIssueList3.data.filter(item => item.LandedRate === this.vLandedRate)
+        // if (this.MRPSamelist) {
+        //     if (this.MRPSamelist.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId) && this.MRPSamelist.some(item => item.BatchNo === this.vBatchNo)) {
+        //         this.toastr.warning('Selected Item already added with same Batch &  same MRP in the list', 'Warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         });
+        //         return;
+        //     }
+        // }
+
+        // if (!this.vBarcodeflag) {
+        // const isDuplicate = this.dsNewIssueList3.data.some(item => item.ItemId === this.NewIssueGroup.get('ItemID').value.ItemId);
+        // if (!isDuplicate) {
+        let gstper = 0
+        gstper = ((this.vCgstPer) + (this.vSgstPer) + (this.vIgstPer));
+        debugger
+        this.chargeslist = this.dsTempItemNameList.data;
+        // if (this.dsNewIssueList3.data.length > 0) {
+        //   this.chargeslist = this.dsNewIssueList3.data;
+        // } 
+        const TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
+        const PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
+
+        const LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
+
+        const GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
+        // let  CGSTAmt = (((contact.LandedRate) * (contact.CGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        // let  SGSTAmt = (((contact.LandedRate) * (contact.SGSTPer) / 100) * parseInt(this.RQty)).toFixed(2);
+        // let  IGSTAmt = (((contact.LandedRate) * (contact.IGSTPer) / 100) * parseInt(this.RQty)).toFixed(2); 
+
+
+        this.chargeslist.push(
+            {
+                ItemId: this.NewIssueGroup.get('ItemName').value.itemId || 0,
+                ItemName: this.NewIssueGroup.get('ItemName').value.formattedText || '',
+                BatchNo: this.NewIssueGroup.get('BatchNO').value || "",
+                BatchExpDate: this.vBatchExpDate || '1900-01-01',
+                BalanceQty: this.NewIssueGroup.get('BalanceQty').value || "",
+                Qty: this.NewIssueGroup.get('Qty').value || 0,
+                LandedRate: this.NewIssueGroup.get("UnitRate").value,
+                UnitMRP: this.NewIssueGroup.get("UnitRate").value || 0,
+                VatPer: gstper || 0,
+                VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
+                TotalAmount: this.vTotalAmount || 0,
+                StockId: this.vStockId,
+                TotalMRP: TotalMRP,
+                DiscPer: 0,// contact.DiscPer || 0,
+                DiscAmt: 0,
+                NetAmt: LandedRateandedTotal,
+                RoundNetAmt: Math.round(LandedRateandedTotal),// Math.round(TotalNet),
+                mrpTotalAmount: TotalMRP,
+
+                //LandedRate: this.vLandedRate,
+                LandedRateandedTotal: LandedRateandedTotal,
+                CgstPer: this.vCgstPer,
+                //   CGSTAmt: CGSTAmt,
+                SgstPer: this.vSgstPer,
+                //   SGSTAmt: SGSTAmt,
+                IgstPer: this.vIgstPer,
+                //   IGSTAmt: IGSTAmt,
+                PurchaseRate: this.vPurchaseRate,
+                PurTotAmt: PurTotAmt,
+                purTotalAmount: PurTotAmt,
+                //   MarginAmt: v_marginamt,
+                SalesDraftId: 1
+            });
+        console.log(this.chargeslist);
+        this.dsNewIssueList3.data = this.chargeslist
+
+        // }
+
+        this.resetFormItem();
+        const serviceNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+        if (serviceNameElement) {
+            serviceNameElement.focus();
+        }
+
+        this.Addflag = false;
+
+
+        if (!(this.NewIssueGroup.invalid) && this.dsNewIssueList3.data.length > 0) {
+            this.vsaveflag = false;
+        }
+
     }
-  }
 
-  getFinalCalculation(contact, DraftQty) {
+    getBatch() {
+        // this.Quantity.nativeElement.focus();
+        const dialogRef = this._matDialog.open(SalePopupComponent,
+            {
+                maxWidth: "800px",
+                minWidth: '800px',
+                width: '800px',
+                height: '380px',
+                disableClose: true,
+                data: {
+                    "ItemId": this.NewIssueGroup.get('ItemName').value.itemId,
+                    "StoreId": this.StoreFrom.get('FromStoreId').value
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+            result = result.selectedData
+            this.vBatchNo = result.batchNo || '';
+            this.vBatchExpDate = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
+            this.vMRP = result.landedRate;
+            this.vQty = '';
+            this.vBal = result.BalanceAmt;
+            this.GSTPer = result.VatPercentage;
+            this.vTotalMRP = this.vQty * this.vLandedRate;
+            this.vDiscAmt = 0;
+            this.vNetAmt = this.vTotalMRP;
+            this.vBalanceQty = result.balanceQty;
+            this.vItemObj = result;
+            this.vVatPer = result.vatPercentage;
+            this.vCgstPer = result.cgstPer;
+            this.vSgstPer = result.sgstPer;
+            this.vIgstPer = result.igstPer;
+            this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(2),
+                this.vStockId = result.stockId
+            this.vStoreId = result.storeId;
+            this.vLandedRate = result.landedRate;
+            this.vPurchaseRate = result.purchaseRate;
+            this.vUnitMRP = result.unitMRP;
+            // this.vTotalAmount=  this.vQty * this.vLandedRate;
 
-    console.log(contact)
+            this.NewIssueGroup.get("Qty").setValue(0);
+            const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+            if (serviceNameElement) {
+                serviceNameElement.focus();
+            }
+        });
 
-    this.RQty = parseInt(DraftQty);
-    if (this.RQty && contact.unitMRP) {
-      let TotalMRP = (parseInt(this.RQty) * (contact.unitMRP)).toFixed(2);
-
-      let LandedRateandedTotal = (parseInt(this.RQty) * (contact.landedRate)).toFixed(2);
-      let PurTotAmt = (parseInt(this.RQty) * (contact.purchaseRate)).toFixed(2);
-
-      let v_marginamt = (parseFloat(LandedRateandedTotal) - parseFloat(LandedRateandedTotal)).toFixed(2);
-
-      let GSTAmount = (((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
-      let CGSTAmt = (((contact.landedRate) * (contact.cgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      let SGSTAmt = (((contact.landedRate) * (contact.sgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-      let IGSTAmt = (((contact.landedRate) * (contact.igstPer) / 100) * parseInt(this.RQty)).toFixed(2);
-
-      let NetAmt = ((parseFloat(LandedRateandedTotal) + parseFloat(GSTAmount))).toFixed(2);
-
-      let BQty = contact.balanceQty - this.RQty;
+    }
 
 
-      if (contact.DiscPer > 0) {
-        // let  DiscAmt = ((TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
-        // let   NetAmt = (TotalMRP - this.DiscAmt).toFixed(2);
+    CalculateTotalAmt() {
+        if (this.NewIssueGroup.get("Qty").value > this.NewIssueGroup.get("BalanceQty").value) {
+            this.toastr.warning('Enter Qty less than Balance', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            this.NewIssueGroup.get('Qty').setValue(0);
+        }
+        if (this.NewIssueGroup.get("Qty").value && this.NewIssueGroup.get("UnitRate").value) {
+            this.vTotalAmount = (parseFloat(this.NewIssueGroup.get("Qty").value) * parseFloat(this.NewIssueGroup.get("UnitRate").value)).toFixed(2);
+        }
 
-      }
 
-      this.chargeslist = this.dsTempItemNameList.data;
+    }
+    getTotalamt(element) {
 
-      this.chargeslist.push(
-        {
-          ItemId: contact.itemId || 0,
-          ItemName: contact.itemName || '',
-          BatchNo: contact.batchNo,
-          BatchExpDate: this.datePipe.transform(contact.batchExpDate, "yyyy-MM-dd"),
-          BalanceQty: BQty || 0,
-          Qty: this.RQty || 0,
-          UnitRate: contact.unitMRP,
-          UnitMRP: contact.unitMRP,
-          TotalAmount: NetAmt || 0,
-          VatPer: contact.vatPercentage || 0,
-          VatAmount: GSTAmount || 0,
-          TotalMRP: TotalMRP,
-          DiscPer: 0,// contact.DiscPer || 0,
-          DiscAmt: 0,
-          NetAmt: NetAmt,
-          RoundNetAmt: parseInt(NetAmt),// Math.round(TotalNet),
-          StockId: contact.stockId,
-          LandedRate: contact.landedRate,
-          LandedRateandedTotal: LandedRateandedTotal,
-          CgstPer: contact.cgstPer,
-          CGSTAmt: CGSTAmt,
-          SgstPer: contact.sgstPer,
-          SGSTAmt: SGSTAmt,
-          IgstPer: contact.igstPer,
-          IGSTAmt: IGSTAmt,
-          PurchaseRate: contact.purchaseRate,
-          PurTotAmt: PurTotAmt,
-          MarginAmt: v_marginamt,
-          SalesDraftId: 1,
-          IndentId: this.vIndentId,
-          // IndentId: this.Indentid,
-          IndentDetailsId: this.indentdetid,
-          IsClosed: this.IsClosed,
-          IndQty: this.IndQty
+        this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(2);
+        this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+        this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
+        return this.vFinalTotalAmount;
+    }
+    AgainstInd: boolean = true;
+    getAgainstIndet(event) {
+        if (event.checked == true) {
+            this.AgainstInd = false;
+        } else {
+            this.AgainstInd = true;
+        }
+
+    }
+    ItemID = 0;
+    getSelectedItem(item: GRNItemResponseType): void {
+
+        this.ItemID = item.itemId
+
+        this.NewIssueGroup.patchValue({
+            UOMId: item.umoId,
+            ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
+            Qty: item.balanceQty,
+            CGSTPer: item.cgstPer,
+            SGSTPer: item.sgstPer,
+            IGSTPer: item.igstPer,
+            GST: item.cgstPer + item.sgstPer + item.igstPer,
+            HSNcode: item.hsNcode
 
         });
-      console.log(this.chargeslist);
-      this.dsNewIssueList3.data = this.chargeslist
-    }
-  }
-Indbalqty=0
-
-  getCellCalculation(contact, Qty) {
-    debugger
-
-     console.log(contact)
-    console.log(Qty)
-    this.Indbalqty = parseInt(contact.Qty) - parseInt(Qty);
-
-    if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)) {
-      this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      contact.Qty = 0;
-      contact.Qty = '';
-      contact.VatAmount = 0;
-      contact.LandedRateandedTotal = 0;
-      // contact.BalanceQty=contact.IndQty -contact.IssQty
-    }
-    else {
-      if (contact.Qty > 0) {
-        contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
-        contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
-        contact.IssueBalQty = parseInt(contact.Qty) - parseInt(Qty)
-        if (this.Indbalqty == 0)
-          contact.Status = true
-        else
-          contact.Status = false
-      }
-      else {
-        contact.Qty = 0;
-        contact.Qty = '';
-        contact.VatAmount = 0;
-        contact.LandedRateandedTotal = 0;
-      }
+        // if (this.BalanceQty > 0) {
+        this.getBatch();
+        // }
+        // this.NewIssueGroup.get("Qty").setValue(1);
+        //           const serviceNameElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+        //           if (serviceNameElement) {
+        //             serviceNameElement.focus();
+        //           }
     }
 
 
-  }
+    OnSave() {
+        console.log(this.vIndentId)
+        if ((!this.dsNewIssueList3.data.length)) {
+            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if ((this.StoreFrom.get("ToStoreId").value == 0)) {
+            this.toastr.warning('Please select TostoreId', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (!this.IssueFinalForm.invalid) {
+            console.log(this.vIndentId)
+
+            if (this.vIndentId > 0) {
+                this.OnSaveAgaintIndent();
+            } else {
+                this.OnNewSave();
+            }
+        } else {
+            const invalidFields = [];
+
+            if (this.IssueFinalForm.invalid) {
+                for (const controlName in this.IssueFinalForm.controls) {
+                    if (this.IssueFinalForm.controls[controlName].invalid) {
+                        invalidFields.push(`IssueFinal Form : ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
+    }
+
+    OnNewSave1() {
+
+        const isChecked = 1// this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+
+        if (isChecked) {
+            const isertItemdetailsObj = [];
+            this.dsNewIssueList3.data.forEach(element => {
+                console.log(element)
+
+                const insertitemdetail = {};
+                insertitemdetail['issueDepId'] = 0;
+                insertitemdetail['issueId'] = 0;
+                insertitemdetail['itemId'] = element.ItemId;
+                insertitemdetail['batchNo'] = element.BatchNo;
+                insertitemdetail['batchExpDate'] = element.BatchExpDate;
+                insertitemdetail['issueQty'] = element.Qty;
+                insertitemdetail['perUnitLandedRate'] = element.LandedRate;
+                insertitemdetail['LandedTotalAmount'] = element.LandedRateandedTotal;
+                insertitemdetail['unitMRP'] = element.UnitMRP;
+                insertitemdetail['mrpTotalAmount'] = element.TotalMRP;
+                insertitemdetail['unitPurRate'] = element.PurchaseRate;
+                insertitemdetail['purTotalAmount'] = element.PurTotAmt;
+                insertitemdetail['vatPercentage'] = element.VatPer || 0;
+                insertitemdetail['vatAmount'] = element.VatAmount || 0;
+                insertitemdetail['stkId'] = element.StockId;
+                isertItemdetailsObj.push(insertitemdetail);
+            });
+            const updateissuetoDepartmentStock = [];
+            this.dsNewIssueList3.data.forEach(element => {
+                const updateitemdetail = {};
+                updateitemdetail['itemId'] = element.ItemId;
+                updateitemdetail['issueQty'] = element.Qty;
+                updateitemdetail['stkId'] = element.StockId;
+                updateitemdetail['storeID'] = this.accountService.currentUserValue.userId;
+                updateissuetoDepartmentStock.push(updateitemdetail);
+            });
+
+            console.log(this.IssueFinalForm.value)
+            const submitData = {
+                issue: {
+                    "issueId": 0,
+                    "issueDate": this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+                    "issueTime": this.dateTimeObj.time,// this.datePipe.transform(this.dateTimeObj.time),
+                    "fromStoreId": this.accountService.currentUserValue.userId,
+                    "toStoreId": this.StoreFrom.get('ToStoreId').value || 0,
+                    "totalAmount": this.IssueFinalForm.get('FinalTotalAmount').value || 0,
+                    "totalVatAmount": this.IssueFinalForm.get('GSTAmount').value || 0,
+                    "netAmount": this.IssueFinalForm.get('FinalNetAmount').value || 0,
+                    "remark": this.IssueFinalForm.get('Remark').value || '',
+                    "addedby": this.accountService.currentUserValue.userId || 0,
+                    "isVerified": false,
+                    "isClosed": false,
+                    "indentId": 0,
+                    tIssueToDepartmentDetails: isertItemdetailsObj
+                },
+                tCurrentStock: updateissuetoDepartmentStock
+
+            };
+
+            console.log(submitData);
+
+            this._IssueToDep.IssuetodepSave(submitData).subscribe(response => {
+                this.toastr.success(response.message);
+                console.log(response)
+                this.viewgetIssuetodeptReportPdf(response)
+                this._matDialog.closeAll();
+            });
+        }
+    }
 
 
-  resetForm(): void {
-    this.NewIssueGroup.reset({
-      ItemName: "a",
-      ItemID: 0,
-      BatchNO: 0,
-      BalanceQty: 0,
-      Qty: 0,
-      UnitRate: 0,
-      TotalAmount: 0,
-      Remark: 0,
-      GSTAmount: '',
-      FinalTotalAmount: '',
-      FinalNetAmount: ''
-    });
+    OnNewSave() {
 
-  }
+        const isChecked = 1
+        // this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+
+        if (isChecked) {
+
+            this.deptArray.clear();
+            if (this.dsNewIssueList3.data.length === 0) {
+                this.toastr.warning('No data in the item list!', 'Warning');
+                return;
+            }
+
+            this.dsNewIssueList3.data.forEach(item => {
+                this.deptArray.push(this.Depatdetailform(item));
+            });
+
+            this.stockArray.clear();
+            this.dsNewIssueList3.data.forEach(item => {
+                this.stockArray.push(this.currentstockform(item));
+            });
+            debugger
+            this.FinalIssueForm.get("issue.issueId").setValue(0)
+            this.FinalIssueForm.get("issue.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+            this.FinalIssueForm.get("issue.issueTime").setValue(this.dateTimeObj.time)
+            this.FinalIssueForm.get("issue.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+            this.FinalIssueForm.get("issue.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
+            this.FinalIssueForm.get("issue.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+            this.FinalIssueForm.get("issue.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+            this.FinalIssueForm.get("issue.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+            this.FinalIssueForm.get("issue.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+            this.FinalIssueForm.get("issue.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+            this.FinalIssueForm.get("issue.isVerified").setValue(false)
+            this.FinalIssueForm.get("issue.isClosed").setValue(false)
+            this.FinalIssueForm.get("issue.indentId").setValue(0)
+
+            console.log(this.FinalIssueForm.value)
+            this._IssueToDep.IssuetodepSave(this.FinalIssueForm.value).subscribe(response => {
+                this.viewgetIssuetodeptReportPdf(response)
+                this._matDialog.closeAll();
+            });
+        }
+    }
+
+
+
+    OnSaveAgaintIndent() {
+        debugger
+        this.vsaveflag = true;
+        const isertItemdetailsObj = [];
+
+        const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+        if (isChecked) {
+
+            this.deptArray1.clear();
+            if (this.dsNewIssueList3.data.length === 0) {
+                this.toastr.warning('No data in the item list!', 'Warning');
+                return;
+            }
+
+            this.dsNewIssueList3.data.forEach(item => {
+                this.deptArray1.push(this.Depatdetailform(item));
+            });
+
+            this.stockArray1.clear();
+            this.dsNewIssueList3.data.forEach(item => {
+                this.stockArray1.push(this.currentstockform(item));
+            });
+
+
+
+            this.FinalIssueaginstForm.get("updateIndent.issueId").setValue(0)
+            this.FinalIssueaginstForm.get("updateIndent.issueDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+            this.FinalIssueaginstForm.get("updateIndent.issueTime").setValue(this.dateTimeObj.time)
+            this.FinalIssueaginstForm.get("updateIndent.fromStoreId").setValue(this.accountService.currentUserValue.user.storeId)
+            this.FinalIssueaginstForm.get("updateIndent.toStoreId").setValue(this.StoreFrom.get('ToStoreId').value || 0)
+            this.FinalIssueaginstForm.get("updateIndent.totalAmount").setValue(this.IssueFinalForm.get('FinalTotalAmount').value || 0)
+            this.FinalIssueaginstForm.get("updateIndent.totalVatAmount").setValue(this.IssueFinalForm.get('GSTAmount').value || 0)
+            this.FinalIssueaginstForm.get("updateIndent.netAmount").setValue(this.IssueFinalForm.get('FinalNetAmount').value || 0)
+            this.FinalIssueaginstForm.get("updateIndent.remark").setValue(this.IssueFinalForm.get('Remark').value || '')
+            this.FinalIssueaginstForm.get("updateIndent.addedby").setValue(this.accountService.currentUserValue.user.userId || 0)
+            this.FinalIssueaginstForm.get("updateIndent.isVerified").setValue(false)
+            this.FinalIssueaginstForm.get("updateIndent.isClosed").setValue(false)
+            this.FinalIssueaginstForm.get("updateIndent.indentId").setValue(this.vIndentId)
+
+            this.FinalIssueaginstForm.get('indentHeader.indentId').setValue(this.vIndentId)
+            this.FinalIssueaginstForm.get('indentHeader.isClosed').setValue(this.Isclosedchk)
+
+
+            this.indentdetailArray.clear();
+            this.dsNewIssueList3.data.forEach(item => {
+                debugger
+                this.balQty = (parseInt(item.IndQty) - parseInt(item.Qty))
+                if (this.balQty == 0) {
+                    this.Isclosedchk = true;
+                } else {
+                    this.Isclosedchk = false;
+                }
+                item.IsClosed = this.Isclosedchk
+
+                // item.indQty=balQty
+                this.indentdetailArray.push(this.indentdetailform(item));
+            });
+            console.log(this.FinalIssueaginstForm.value)
+
+            // this._IssueToDep.IssuetodepAgaintIndetSave(this.FinalIssueaginstForm.value).subscribe(response => {
+            //   this.viewgetIssuetodeptReportPdf(response)
+            //   this._matDialog.closeAll();
+            // });
+        }
+    }
+
+
+    OnSaveAgaintIndent1() {
+
+        this.vsaveflag = true;
+        const isertItemdetailsObj = [];
+
+        const isChecked = 1//this.ToStoreList.some(item => item.StoreName === this.NewIssueGroup.get('ToStoreId').value.StoreName);
+        if (isChecked) {
+            // this.savebtn = true;
+            const insertheaderObj = {};
+            insertheaderObj['issueDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+                insertheaderObj['issueTime'] = this.dateTimeObj.time,
+                insertheaderObj['fromStoreId'] = this.accountService.currentUserValue.userId
+            insertheaderObj['toStoreId'] = Number(this.vstoreId1) || 0; //changed by raksha
+            insertheaderObj['totalAmount'] = Number(this.IssueFinalForm.get('FinalTotalAmount').value) || 0;
+            insertheaderObj['totalVatAmount'] = Number(this.IssueFinalForm.get('GSTAmount').value) || 0;
+            insertheaderObj['netAmount'] = Number(this.IssueFinalForm.get('FinalNetAmount').value) || 0;
+            insertheaderObj['remark'] = this.IssueFinalForm.get('Remark').value || '';
+            insertheaderObj['addedby'] = this.accountService.currentUserValue.userId || 0;
+            insertheaderObj['isVerified'] = false;
+            insertheaderObj['isclosed'] = false;
+            insertheaderObj['indentId'] = this.vIndentId;
+            insertheaderObj['issueId'] = 0;
+            insertheaderObj['tIssueToDepartmentDetails'] = isertItemdetailsObj;
+
+
+            this.dsNewIssueList3.data.forEach(element => {
+                console.log(element)
+
+                const insertitemdetail = {};
+                insertitemdetail['issueId'] = 0;
+                insertitemdetail['itemId'] = element.ItemId;
+                insertitemdetail['batchNo'] = element.BatchNo;
+                insertitemdetail['batchExpDate'] = element.BatchExpDate;
+                insertitemdetail['issueQty'] = element.IssueQty;
+                insertitemdetail['perUnitLandedRate'] = element.LandedRate;
+                insertitemdetail['LandedTotalAmount'] = Number(element.LandedRateandedTotal);
+                insertitemdetail['unitMRP'] = element.UnitMRP;
+                insertitemdetail['mrpTotalAmount'] = Number(element.TotalMRP);
+                insertitemdetail['unitPurRate'] = element.PurchaseRate;
+                insertitemdetail['purTotalAmount'] = Number(element.PurTotAmt);
+                insertitemdetail['vatPercentage'] = element.VatPer || 0;
+                insertitemdetail['vatAmount'] = Number(element.VatAmount) || 0;
+                insertitemdetail['stkId'] = element.StockId;
+                isertItemdetailsObj.push(insertitemdetail);
+            });
+
+            const updateissuetoDepartmentStock = [];
+            this.dsNewIssueList3.data.forEach(element => {
+
+                const updateitemdetail = {};
+                updateitemdetail['itemId'] = element.ItemId;
+                updateitemdetail['issueQty'] = element.Qty;
+                updateitemdetail['stkId'] = element.StockId;
+                updateitemdetail['storeID'] = this.accountService.currentUserValue.userId
+                updateissuetoDepartmentStock.push(updateitemdetail);
+            });
+
+
+            const update_IndentHeader_StatusObj = {};
+            update_IndentHeader_StatusObj['indentId'] = this.vIndentId;
+            update_IndentHeader_StatusObj['isClosed'] = this.Isclosedchk || true;
+
+
+            const updateIndentStatusIndentDetails = [];
+            this.dsNewIssueList3.data.forEach(element => {
+                console.log(element)
+                debugger
+                const balQty = (parseInt(element.IndQty) - parseInt(element.Qty))
+                if (balQty == 0) {
+                    this.Isclosedchk = false;
+                } else {
+                    this.Isclosedchk = true;
+                }
+                const updateIndentStatusIndentDetailsObj = {};
+                updateIndentStatusIndentDetailsObj['indentId'] = element.IndentId;
+                updateIndentStatusIndentDetailsObj['indDetID'] = element.IndentDetailsId;
+                updateIndentStatusIndentDetailsObj['isClosed'] = this.Isclosedchk;
+                updateIndentStatusIndentDetailsObj['indQty'] = balQty;
+                updateIndentStatusIndentDetails.push(updateIndentStatusIndentDetailsObj);
+            });
+
+            const submitData = {
+                updateIndent: insertheaderObj,
+                // tIssueToDepartmentDetails: isertItemdetailsObj,
+                tCurStockModel: updateissuetoDepartmentStock,
+                indentHeader: update_IndentHeader_StatusObj,
+                tIndentDetails: updateIndentStatusIndentDetails
+            };
+
+            console.log(submitData);
+
+            this._IssueToDep.IssuetodepAgaintIndetSave(submitData).subscribe(response => {
+                this.viewgetIssuetodeptReportPdf(response)
+                this._matDialog.closeAll();
+            });
+        }
+    }
+    viewgetIssuetodeptReportPdf(issueId) {
+        this.commonService.Onprint("IssueId", issueId, "Issutodeptissuewise");
+    }
+
+
+
+    resetFormItem() {
+        const form = this.NewIssueGroup;
+
+        form.patchValue({
+            Barcode: '',
+            ItemName: '',
+            ItemID: [''],
+            BatchNO: '',
+            BalanceQty: '',
+            Qty: '',
+            UnitRate: '',
+            TotalAmount: '',
+        });
+        this.NewIssueGroup.markAsUntouched();
+    }
+
+    keyPressAlphanumeric(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    deleteTableRow(element) {
+        const index = this.chargeslist.indexOf(element);
+        if (index >= 0) {
+            this.chargeslist.splice(index, 1);
+            this.dsNewIssueList3.data = [];
+            this.dsNewIssueList3.data = this.chargeslist;
+        }
+        this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+            toastClass: 'tostr-tost custom-toast-success',
+        });
+    }
+    onClose() {
+        this._matDialog.closeAll();
+    }
+    OnReset() {
+        this._matDialog.closeAll();
+        this.NewIssueGroup.reset();
+    }
+
+    vstoreId: any = '';
+    vstoreId1: any = '';
+    selectChangeStore(obj: any) {
+        console.log("Store:", obj);
+        this.vstoreId = obj.value
+    }
+    selectChangeStore1(obj: any) {
+        console.log("Store:", obj);
+        this.vstoreId1 = obj.value
+    }
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
+    getValidationMessages() {
+        return {
+            StoreId: [
+                { name: "required", Message: "Store Name is required" }
+            ],
+            // WardName: [
+            //   { name: "required", Message: "Ward Name is required" }
+            // ],
+            // ItemId: [
+            //   { name: "required", Message: "Item Name is required" }
+            // ],
+            // Qty: [
+            //   { name: "required", Message: "Qty is required" },
+            //   { name: "pattern", Message: "Only numbers allowed" }
+            // ],
+        };
+    }
+    showIndentFlag: boolean = false;
+    OnIndent() {
+        this.OnReset();
+        const dialogRef = this._matDialog.open(IssueToDeparmentAgainstIndentComponent,
+            {
+                maxWidth: "100%",
+                height: '95%',
+                width: '95%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.dsNewIssueList1.data = result;
+
+            if (result) {
+
+                this.StoreFrom.reset()
+                this.vIndentId = result[0].indentId;
+
+                this.vAgainstIndet = true;
+                this.StoreFrom.get("AgainstIndent").setValue(true)
+                debugger
+                this.fromstoreId = result[0].fromStoreId
+                console.log(this.fromstoreId)
+                this.StoreFrom.get('ToStoreId').setValue(this.fromstoreId);
+
+                if (this.vIndentId > 0)
+                    this.showIndentFlag = true
+            }
+        });
+    }
+
+    testflag = 0;
+
+    AddIndentItem(contact) {
+
+        console.log(contact)
+        this.vIndentId = contact.indentId;
+        this.indentdetid = contact.indentDetailsId;
+        this.IsClosed = contact.isClosed;
+        this.IndQty = contact.qty;
+        let DuplicateItem = 0;
+
+        if (this.dsNewIssueList3.data.length > 0) {
+            this.dsNewIssueList3.data.forEach((element) => {
+                if (element.ItemId == contact.itemId) {
+                    this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    DuplicateItem = 1
+                    return;
+                }
+
+            });
+        }
+
+        if (!DuplicateItem) {
+            this.Itemchargeslist1 = [];
+            this.QtyBalchk = 0;
+            debugger
+            const m_data = {
+                "ItemId": contact.itemId,
+                "StoreId": this.accountService.currentUserValue.user.storeId || 0
+            }
+            this._IssueToDep.getBatchList(m_data).subscribe(draftdata => {
+                console.log(draftdata)
+                this.Itemchargeslist1 = draftdata as any;
+                console.log(this.Itemchargeslist1)
+                if (this.Itemchargeslist1.length == 0) {
+                    Swal.fire(contact.itemId + " : " + "Item Stock is Not Avilable:")
+                }
+                else if (this.Itemchargeslist1.length > 0) {
+                    let ItemID = contact.itemId;
+
+                    let remaing_qty = contact.balanceQty;
+                    let bal_qnt = 0;
+                    this.Itemchargeslist1.forEach((element) => {
+
+                        const IndQty = remaing_qty;
+                        if (IndQty > 0) {
+
+                            if (ItemID != element.itemId) {
+                                this.QtyBalchk = 0;
+                            }
+                            // if (this.QtyBalchk != 1) {
+                            if (IndQty <= element.balanceQty) {
+                                this.QtyBalchk = 1;
+                                this.getFinalCalculation(element, IndQty);
+                                ItemID = element.ItemId;
+                                bal_qnt += element.balanceQty - IndQty;
+                            }
+                            else if (IndQty > element.balanceQty) {
+                                this.QtyBalchk = 1;
+                                this.getFinalCalculation(element, element.balanceQty);
+                                ItemID = element.itemId;
+                            }
+                            // }
+
+                            remaing_qty = IndQty - element.balanceQty;
+                        } else {
+                            bal_qnt += element.balanceQty;
+                        }
+
+                        const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                        if (QtyElement) {
+                            QtyElement.focus();
+                        }
+
+
+                    });
+                    Swal.fire("Balance Qty is :", String(bal_qnt))
+                }
+            });
+        }
+    }
+
+    getFinalCalculation(contact, DraftQty) {
+
+        console.log(contact)
+
+        this.RQty = parseInt(DraftQty);
+        if (this.RQty && contact.unitMRP) {
+            const TotalMRP = (parseInt(this.RQty) * (contact.unitMRP)).toFixed(2);
+
+            const LandedRateandedTotal = (parseInt(this.RQty) * (contact.landedRate)).toFixed(2);
+            const PurTotAmt = (parseInt(this.RQty) * (contact.purchaseRate)).toFixed(2);
+
+            const v_marginamt = (parseFloat(LandedRateandedTotal) - parseFloat(LandedRateandedTotal)).toFixed(2);
+
+            const GSTAmount = (((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2);
+            const CGSTAmt = (((contact.landedRate) * (contact.cgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+            const SGSTAmt = (((contact.landedRate) * (contact.sgstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+            const IGSTAmt = (((contact.landedRate) * (contact.igstPer) / 100) * parseInt(this.RQty)).toFixed(2);
+
+            const NetAmt = ((parseFloat(LandedRateandedTotal) + parseFloat(GSTAmount))).toFixed(2);
+
+            const BQty = contact.balanceQty - this.RQty;
+
+
+            if (contact.DiscPer > 0) {
+                // let  DiscAmt = ((TotalMRP * (contact.DiscPer)) / 100).toFixed(2);
+                // let   NetAmt = (TotalMRP - this.DiscAmt).toFixed(2);
+
+            }
+
+            this.chargeslist = this.dsTempItemNameList.data;
+
+            this.chargeslist.push(
+                {
+                    ItemId: contact.itemId || 0,
+                    ItemName: contact.itemName || '',
+                    BatchNo: contact.batchNo,
+                    BatchExpDate: this.datePipe.transform(contact.batchExpDate, "yyyy-MM-dd"),
+                    BalanceQty: BQty || 0,
+                    Qty: this.RQty || 0,
+                    UnitRate: contact.unitMRP,
+                    UnitMRP: contact.unitMRP,
+                    TotalAmount: NetAmt || 0,
+                    VatPer: contact.vatPercentage || 0,
+                    VatAmount: GSTAmount || 0,
+                    TotalMRP: TotalMRP,
+                    DiscPer: 0,// contact.DiscPer || 0,
+                    DiscAmt: 0,
+                    NetAmt: NetAmt,
+                    RoundNetAmt: parseInt(NetAmt),// Math.round(TotalNet),
+                    StockId: contact.stockId,
+                    LandedRate: contact.landedRate,
+                    LandedRateandedTotal: LandedRateandedTotal,
+                    CgstPer: contact.cgstPer,
+                    CGSTAmt: CGSTAmt,
+                    SgstPer: contact.sgstPer,
+                    SGSTAmt: SGSTAmt,
+                    IgstPer: contact.igstPer,
+                    IGSTAmt: IGSTAmt,
+                    PurchaseRate: contact.purchaseRate,
+                    PurTotAmt: PurTotAmt,
+                    MarginAmt: v_marginamt,
+                    SalesDraftId: 1,
+                    IndentId: this.vIndentId,
+                    // IndentId: this.Indentid,
+                    IndentDetailsId: this.indentdetid,
+                    IsClosed: this.IsClosed,
+                    IndQty: this.IndQty
+
+                });
+            console.log(this.chargeslist);
+            this.dsNewIssueList3.data = this.chargeslist
+        }
+    }
+    Indbalqty = 0
+
+    getCellCalculation(contact, Qty) {
+        debugger
+
+        console.log(contact)
+        console.log(Qty)
+        this.Indbalqty = parseInt(contact.Qty) - parseInt(Qty);
+
+        if (parseFloat(contact.Qty) > parseFloat(contact.BalanceQty)) {
+            this.toastr.warning('Issue Qty cannot be greater than BalanceQty.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            contact.Qty = 0;
+            contact.Qty = '';
+            contact.VatAmount = 0;
+            contact.LandedRateandedTotal = 0;
+            // contact.BalanceQty=contact.IndQty -contact.IssQty
+        }
+        else {
+            if (contact.Qty > 0) {
+                contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
+                contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
+                contact.IssueBalQty = parseInt(contact.Qty) - parseInt(Qty)
+                if (this.Indbalqty == 0)
+                    contact.Status = true
+                else
+                    contact.Status = false
+            }
+            else {
+                contact.Qty = 0;
+                contact.Qty = '';
+                contact.VatAmount = 0;
+                contact.LandedRateandedTotal = 0;
+            }
+        }
+
+
+    }
+
+
+    resetForm(): void {
+        this.NewIssueGroup.reset({
+            ItemName: "a",
+            ItemID: 0,
+            BatchNO: 0,
+            BalanceQty: 0,
+            Qty: 0,
+            UnitRate: 0,
+            TotalAmount: 0,
+            Remark: 0,
+            GSTAmount: '',
+            FinalTotalAmount: '',
+            FinalNetAmount: ''
+        });
+
+    }
 }
 export class IndentList {
-  IndentNo: any;
-  IndentDate: any;
-  FromStoreName: string;
-  ToStoreName: string;
-  Addedby: any;
-  IndentId: any;
-  constructor(IndentList) {
-    {
-      this.IndentNo = IndentList.IndentNo || 0;
-      this.IndentDate = IndentList.IndentDate || 0;
-      this.FromStoreName = IndentList.FromStoreName || '';
-      this.ToStoreName = IndentList.ToStoreName || '';
-      this.Addedby = IndentList.Addedby || 0;
-      this.IndentId = IndentList.IndentId || 0;
+    IndentNo: any;
+    IndentDate: any;
+    FromStoreName: string;
+    ToStoreName: string;
+    Addedby: any;
+    IndentId: any;
+    constructor(IndentList) {
+        {
+            this.IndentNo = IndentList.IndentNo || 0;
+            this.IndentDate = IndentList.IndentDate || 0;
+            this.FromStoreName = IndentList.FromStoreName || '';
+            this.ToStoreName = IndentList.ToStoreName || '';
+            this.Addedby = IndentList.Addedby || 0;
+            this.IndentId = IndentList.IndentId || 0;
+        }
     }
-  }
 }
 export class IndentItemDetList {
-  IndentNo: any;
-  IndentDate: any;
-  FromStoreName: string;
-  ToStoreName: string;
-  Addedby: any;
-  IndentId: any;
-  constructor(IndentItemDetList) {
-    {
-      this.IndentNo = IndentItemDetList.IndentNo || 0;
-      this.IndentDate = IndentItemDetList.IndentDate || 0;
-      this.FromStoreName = IndentItemDetList.FromStoreName || '';
-      this.ToStoreName = IndentItemDetList.ToStoreName || '';
-      this.Addedby = IndentItemDetList.Addedby || 0;
-      this.IndentId = IndentItemDetList.IndentId || 0;
+    IndentNo: any;
+    IndentDate: any;
+    FromStoreName: string;
+    ToStoreName: string;
+    Addedby: any;
+    IndentId: any;
+    constructor(IndentItemDetList) {
+        {
+            this.IndentNo = IndentItemDetList.IndentNo || 0;
+            this.IndentDate = IndentItemDetList.IndentDate || 0;
+            this.FromStoreName = IndentItemDetList.FromStoreName || '';
+            this.ToStoreName = IndentItemDetList.ToStoreName || '';
+            this.Addedby = IndentItemDetList.Addedby || 0;
+            this.IndentId = IndentItemDetList.IndentId || 0;
+        }
     }
-  }
 }

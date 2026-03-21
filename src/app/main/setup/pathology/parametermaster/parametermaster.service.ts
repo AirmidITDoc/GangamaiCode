@@ -15,7 +15,7 @@ export class ParametermasterService {
     formulaform: FormGroup;
     numericform: FormGroup;
 
-    is_numeric: Boolean = true;
+    is_numeric: boolean = true;
     descriptiveList = [];
     numericList = [];
 
@@ -60,7 +60,7 @@ export class ParametermasterService {
                 ],
             ],
             methodName: [""],
-            paraMultipleRange:[''],
+            paraMultipleRange: [''],
             formula: [""],
             unitId: [0],
             // unitId: ["",[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

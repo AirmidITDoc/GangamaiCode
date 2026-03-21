@@ -5,11 +5,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../../registration/registration.component';
 import { PhoneAppointListService } from '../phone-appoint-list.service';
-import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-phone-appointment',
@@ -60,7 +60,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
         public dialogRef: MatDialogRef<NewPhoneAppointmentComponent>,
         public datePipe: DatePipe) {
 
-       
+
     }
 
     ngOnInit(): void {
@@ -70,7 +70,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
         this.phoneappForm = this._phoneAppointListService.createphoneForm();
         this.phoneappForm.markAllAsTouched();
         this.searchFormGroup = this.createSearchForm();
-         
+
 
         if (this.data) {
             this.isEditMode = true;
@@ -94,10 +94,10 @@ export class NewPhoneAppointmentComponent implements OnInit {
             this.phoneappForm.get('phAppTime')?.setValue(currentDateTime);
             this.phoneappForm.get('endTime')?.setValue(currentDateTime);
             this.phoneappForm.get('startTime').setValue(currentDateTime);
-           
+
         }
 
-      
+
     }
 
     createSearchForm(): FormGroup {
@@ -181,8 +181,8 @@ export class NewPhoneAppointmentComponent implements OnInit {
     }
 
     eventEmitForParent(actualDate, actualTime) {
-        let localaDateValues = actualDate.split('/');
-        let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+        const localaDateValues = actualDate.split('/');
+        const localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
         this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
     }
 
@@ -198,7 +198,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
                 this.onClear(true);
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.phoneappForm.invalid) {
                 for (const controlName in this.phoneappForm.controls) {
                     if (this.phoneappForm.controls[controlName].invalid) {
@@ -277,7 +277,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {

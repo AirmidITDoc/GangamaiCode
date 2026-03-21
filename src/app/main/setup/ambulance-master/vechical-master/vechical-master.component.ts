@@ -1,15 +1,15 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NewVechicalComponent } from './new-vechical/new-vechical.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { FormGroup } from '@angular/forms';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { VechicalMasterService } from './vechical-master.service';
+import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { ToastrService } from 'ngx-toastr';
+import { NewVechicalComponent } from './new-vechical/new-vechical.component';
+import { VechicalMasterService } from './vechical-master.service';
 
 @Component({
     selector: 'app-vechical-master',
@@ -105,7 +105,7 @@ export class VechicalMasterComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewVechicalComponent,
             {
                 maxWidth: "70vw",

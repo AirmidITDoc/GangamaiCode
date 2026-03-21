@@ -3,26 +3,26 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulati
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDrawer } from '@angular/material/sidenav';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
+import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { parseInt } from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { MatDrawer } from '@angular/material/sidenav';
-import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
-import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component'; 
+import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
+import { PrescriptionComponent } from './prescription/prescription.component';
 import { SalesHospitalService } from './sales-hospital-new.service';
-import { BalAvaListStore, DraftSale, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { PrescriptionComponent } from './prescription/prescription.component'; 
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
 import { SubstitutesComponent } from './substitutes/substitutes.component';
-import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.component';
+import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
 
 @Component({
     selector: 'app-sales-hospital',
@@ -34,7 +34,7 @@ import { UserDetail } from 'app/main/administration/create-user/nuser/nuser.comp
 export class SalesHospitalNewComponent implements OnInit {
     // Display Columns
     DraftSaleDisplayedCol: string[] = ['Action', 'UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName', 'DraftClose'];
-     selectedSaleDisplayedCol = ['itemMolecule','ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
+    selectedSaleDisplayedCol = ['itemMolecule', 'ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
     DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
     // View Children
     @ViewChild('qtyInputRef') qtyInputRef: ElementRef;
@@ -64,12 +64,12 @@ export class SalesHospitalNewComponent implements OnInit {
     dsDraftList = new MatTableDataSource<DraftSale>();
     dsBalAvaListStore = new MatTableDataSource<BalAvaListStore>();
     dsItemNameList1 = new MatTableDataSource<IndentList>();
-  saveflag: boolean = true
+    saveflag: boolean = true
 
 
     // Patient Related 
-    Focusstatus:boolean=true
-    CreditReasonShow:boolean=false
+    Focusstatus: boolean = true
+    CreditReasonShow: boolean = false
     type: any;
     PatientName: any;
     MobileNo: any;
@@ -77,7 +77,7 @@ export class SalesHospitalNewComponent implements OnInit {
     RegId: any = '';
     IPMedID: any;
     OPDNo: any;
-     RegNo: any;
+    RegNo: any;
     IPDNo: any;
     Itemchargeslist: any = [];
     Tempchargeslist: any = [];
@@ -93,13 +93,13 @@ export class SalesHospitalNewComponent implements OnInit {
     StockId: any;
     paymethod: boolean = true;
     Draftchk: boolean = true;
-    ConShow: Boolean = false; 
+    ConShow: boolean = false;
     Creditflag: boolean = false;
     Addflag: boolean = false;
     vBarcodeflag: boolean = false;
     Itemflag: boolean = false;
     barcodeflag: boolean = false;
-    add: Boolean = false;
+    add: boolean = false;
     sIsLoading: string = '';
     currentDate = new Date();
     DraftID: any = 0;
@@ -205,7 +205,7 @@ export class SalesHospitalNewComponent implements OnInit {
         } else {
             this.vCondition = true;
         }
-    this.getAccessDetail();
+        this.getAccessDetail();
     }
     ngOnDestroy() {
         this.ItemFormreset();
@@ -235,11 +235,11 @@ export class SalesHospitalNewComponent implements OnInit {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             ExternalPatID: [''],
-            IsPurchaseWsie:[false],
-            CredirReasonId:[0],
-            CredirReasonName:[0],
-            UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
-            
+            IsPurchaseWsie: [false],
+            CredirReasonId: [0],
+            CredirReasonName: [0],
+            UpiNo: [0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
+
         });
     }
     //sales save form
@@ -318,7 +318,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 payTmdate: "1999-01-01",
                 tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 unitId: [this._loggedService.currentUserValue.user.unitId],
-                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
+                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             }),
             //Sales current stock
             tCurrentStock: this.formBuilder.array([]),
@@ -331,7 +331,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isClosed: [true]
             }),
-                        //New Payments
+            //New Payments
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([]),
         })
@@ -375,34 +375,34 @@ export class SalesHospitalNewComponent implements OnInit {
             storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
         })
     }
-        CreateModePaymentform(item: any): FormGroup {
-            return this.formBuilder.group({
-                paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
-                billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                paymentDate: [item?.paymentDate ?? ''],
-                paymentTime: [item?.paymentTime ?? ''],
-                payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                validationDate: [item?.validationDate ?? ''],
-                advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
-                transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-            });
-        }
+    CreateModePaymentform(item: any): FormGroup {
+        return this.formBuilder.group({
+            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [item?.paymentDate ?? ''],
+            paymentTime: [item?.paymentTime ?? ''],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [item?.validationDate ?? ''],
+            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        });
+    }
     // Getters 
     get SalesDetailsAarry(): FormArray {
         return this.PharmaSalesForm.get('sales.tSalesDetails') as FormArray;
@@ -410,14 +410,14 @@ export class SalesHospitalNewComponent implements OnInit {
     get CurrentStockArray(): FormArray {
         return this.PharmaSalesForm.get('tCurrentStock') as FormArray;
     }
-     get ModeOfPaymentsArray(): FormArray {
+    get ModeOfPaymentsArray(): FormArray {
         return this.PharmaSalesForm.get('tPayments') as FormArray;
     }
     // Getters 
     get SalesDraftDetailsAarry(): FormArray {
         return this.PharmaSalesDraftForm.get('salesDraftDet') as FormArray;
     }
-       
+
     //sales draft save form
     CreatePharmasalesDraftform() {
         return this.formBuilder.group({
@@ -490,7 +490,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('doctorName').reset('');
             this.ItemSubform.get('regId').setValue('');
             this.saleSelectedDatasource.data = [];
-            this.Itemchargeslist = []; 
+            this.Itemchargeslist = [];
             this.IPMedID = 0;
             this.DraftID = 0;
         } else if (event.value == '1') {
@@ -506,7 +506,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('doctorName').reset('');
             this.ItemSubform.get('regId').setValue('');
             this.saleSelectedDatasource.data = [];
-            this.Itemchargeslist = []; 
+            this.Itemchargeslist = [];
             this.IPMedID = 0;
             this.DraftID = 0;
         } else {
@@ -521,12 +521,12 @@ export class SalesHospitalNewComponent implements OnInit {
             this.saleSelectedDatasource.data = [];
             this.Itemchargeslist = [];
             this.paymethod = false;
-             this.Draftchk = true;
+            this.Draftchk = true;
             this.IPMedID = 0;
             this.DraftID = 0;
         }
     }
-     getSelectedObjRegIP(obj) {
+    getSelectedObjRegIP(obj) {
         console.log(obj);
         let IsDischarged = 0;
         IsDischarged = obj.isDischarged;
@@ -534,7 +534,7 @@ export class SalesHospitalNewComponent implements OnInit {
             Swal.fire('Selected Patient is already discharged');
             this.RegId = '';
         } else {
-             this.Patientdetails = obj;
+            this.Patientdetails = obj;
             this.DoctorNamecheck = true;
             this.IPDNocheck = true;
             this.OPDNoCheck = false;
@@ -546,12 +546,12 @@ export class SalesHospitalNewComponent implements OnInit {
             this.HospitalId = obj.hospitalID;
             this.wardId = obj.wardId;
             this.bedId = obj.bedId;
-             this.RegNo =  obj?.regNo;
+            this.RegNo = obj?.regNo;
         }
-        this.getBillSummary(obj?.admissionID);  
-        this.ItemFormreset(); 
+        this.getBillSummary(obj?.admissionID);
+        this.ItemFormreset();
         this.saleSelectedDatasource.data = [];
-         this.Itemchargeslist = []; 
+        this.Itemchargeslist = [];
     }
     getSelectedObjOP(obj) {
         console.log(obj);
@@ -564,24 +564,24 @@ export class SalesHospitalNewComponent implements OnInit {
         this.OP_IP_Id = obj.visitId;
         this.OPDNo = obj.opdNo;
         this.HospitalId = obj.hospitalId;
-        this.DoctorName = obj.doctorName; 
-        this.RegNo =  obj?.regNo;
-        this.ItemFormreset(); 
+        this.DoctorName = obj.doctorName;
+        this.RegNo = obj?.regNo;
+        this.ItemFormreset();
         this.saleSelectedDatasource.data = [];
-         this.Itemchargeslist = [];
-         this.saveflag = false;
+        this.Itemchargeslist = [];
+        this.saveflag = false;
     }
-   
-    onItemChange(event: SalesItemModel): void { 
-            this._salesService.ItemSearchGroup.patchValue({ 
-            BatchNo: '',  
-            Qty: [1], 
+
+    onItemChange(event: SalesItemModel): void {
+        this._salesService.ItemSearchGroup.patchValue({
+            BatchNo: '',
+            Qty: [1],
             MRP: '',
             TotalMrp: '',
             DiscAmt: ' ',
             NetAmt: '',
             DiscPer: '',
-            MarginAmt: '0', 
+            MarginAmt: '0',
         })
         this.getBatch(event.itemId, event.storeId);
         this.m_getBalAvaListStore(event.itemId)
@@ -600,12 +600,12 @@ export class SalesHospitalNewComponent implements OnInit {
             },
         });
         dialogRef.afterClosed().subscribe((result1) => {
-            let isEscaped = result1.vEscflag;
+            const isEscaped = result1.vEscflag;
             if (isEscaped && !isEditable) {
                 this._salesService.ItemSearchGroup.get('ItemId').setValue('');
                 return;
             }
-            let result = result1.selectedData as SalesBatchItemModel;
+            const result = result1.selectedData as SalesBatchItemModel;
             const isAlreadyExists = this.Itemchargeslist.find((i) => i.StockId === result.stockId && i.ItemId === result.itemId);
             if (isAlreadyExists) {
                 this.toastr.warning('Selected Item already added in the list', 'Warning !', {
@@ -622,19 +622,19 @@ export class SalesHospitalNewComponent implements OnInit {
             }
             // const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLInputElement;
             const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLElement;
-if (QtyElement) {
-  setTimeout(() => QtyElement.focus(), 500);
-}
+            if (QtyElement) {
+                setTimeout(() => QtyElement.focus(), 500);
+            }
 
             this.selectedItem = result;
             let MRP = 0;
-            let IsPurRate= 0;
+            let IsPurRate = 0;
             if (this.ItemSubform.get('IsPurchaseWsie').value == true) {
                 MRP = +result?.landedRate;
-                IsPurRate = 1;  
+                IsPurRate = 1;
             } else {
                 MRP = result?.unitMRP;
-                 IsPurRate = 1; 
+                IsPurRate = 1;
             }
             if (isEditable) {
                 // If it is table row then update new values
@@ -663,19 +663,19 @@ if (QtyElement) {
             this._salesService.ItemSearchGroup.patchValue({
                 BatchNo: result?.batchNo || '',
                 BatchExpDate: this.datePipe.transform(result.batchExpDate, 'yyyy-MM-dd'),
-                BalanceQty: result?.balanceQty ||0,
+                BalanceQty: result?.balanceQty || 0,
                 Qty: '',
                 DiscAmt: 0,
                 GSTPer: result?.vatPercentage || 0,
                 MRP: MRP,
-                MRPRate:result?.unitMRP || 0,
+                MRPRate: result?.unitMRP || 0,
                 IsPurRate: IsPurRate
             })
         });
     }
-    calculateTotalAmt() { 
+    calculateTotalAmt() {
         const formvalues = this._salesService.ItemSearchGroup.value;
-        let qty = +formvalues.Qty;
+        const qty = +formvalues.Qty;
         if (qty > formvalues.BalanceQty) {
             Swal.fire({
                 icon: "warning",
@@ -688,7 +688,7 @@ if (QtyElement) {
         }
         let TotalMRP = '0';
         let LandedRateandedTotal = '0';
-         let MRPRateTotal = '0';
+        let MRPRateTotal = '0';
         let marginamt = '0';
         let PurTotAmt = '0';
         let GSTAmount = '0';
@@ -725,7 +725,7 @@ if (QtyElement) {
             SGSTAmt: SGSTAmt,
             IGSTAmt: IGSTAmt,
             PurTotAmt: PurTotAmt,
-            MRPRateTotal:MRPRateTotal
+            MRPRateTotal: MRPRateTotal
         })
     }
     checkQtyBeforeNext(event: KeyboardEvent) {
@@ -743,8 +743,8 @@ if (QtyElement) {
     public discperCal(): void {
         const formValue = this._salesService.ItemSearchGroup.value;
         const discPer = Number(formValue.DiscPer);
-        if((formValue?.MarginAmt ?? 0) <= 0){
-                   Swal.fire({
+        if ((formValue?.MarginAmt ?? 0) <= 0) {
+            Swal.fire({
                 icon: 'warning',
                 title: 'Discount not allowed!',
                 text: `Margin amount is zero. Please review the pricing before applying a discount.`,
@@ -752,47 +752,47 @@ if (QtyElement) {
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
-            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: 0,  DiscPer: '', NetAmt:formValue.TotalMrp});
-            return 
+            this._salesService.ItemSearchGroup.patchValue({ DiscAmt: 0, DiscPer: '', NetAmt: formValue.TotalMrp });
+            return
         }
         if (discPer < 0 && discPer > 100 || formValue.DiscPer == '') {
-                this.toastr.warning('Discount % should less than 100% & greater than 0', 'warning !', {
-                  toastClass: 'tostr-tost custom-toast-warning',
-                }); 
+            this.toastr.warning('Discount % should less than 100% & greater than 0', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
             this._salesService.ItemSearchGroup.patchValue({
                 DiscAmt: 0,
                 DiscPer: '',
-                NetAmt:formValue.TotalMrp
+                NetAmt: formValue.TotalMrp
             });
             this.ConShow = false;
             return;
         }
         if (formValue.TotalMrp && discPer > 0) {
             // Calculate discount amount from percentage
-            let DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
-            if(Number(DiscAmt) > Number(formValue?.MarginAmt ?? 0)){ 
+            const DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
+            if (Number(DiscAmt) > Number(formValue?.MarginAmt ?? 0)) {
                 Swal.fire({
-                icon: 'warning',
-                title: 'Discount exceeds margin!',
-                text: `Entered discount amount exceeds the margin. Maximum allowed is ₹${formValue?.MarginAmt}`,
-                timer: 3000, // auto close after 3 seconds
-                timerProgressBar: true,
-                showConfirmButton: false,
-            });
-            this._salesService.ItemSearchGroup.patchValue({ DiscAmt: 0,  DiscPer: '', NetAmt:formValue.TotalMrp });
-            return
-            } 
+                    icon: 'warning',
+                    title: 'Discount exceeds margin!',
+                    text: `Entered discount amount exceeds the margin. Maximum allowed is ₹${formValue?.MarginAmt}`,
+                    timer: 3000, // auto close after 3 seconds
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                });
+                this._salesService.ItemSearchGroup.patchValue({ DiscAmt: 0, DiscPer: '', NetAmt: formValue.TotalMrp });
+                return
+            }
             this._salesService.ItemSearchGroup.patchValue({
                 DiscAmt: DiscAmt,
             });
-              this.ConShow = true;
+            this.ConShow = true;
             this.calculateNetAmount();
         }
     }
     private calculateNetAmount(): void {
         const formValue = this._salesService.ItemSearchGroup.value;
         if (formValue.TotalMrp) {
-            let NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
+            const NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
             this._salesService.ItemSearchGroup.patchValue({
                 NetAmt: NetAmt,
             });
@@ -802,8 +802,8 @@ if (QtyElement) {
         const formValue = this._salesService.ItemSearchGroup.value;
         const discAmt = Number(formValue.DiscAmt);
 
-          if((formValue?.MarginAmt ?? 0) <= 0){ 
-                  Swal.fire({
+        if ((formValue?.MarginAmt ?? 0) <= 0) {
+            Swal.fire({
                 icon: 'warning',
                 title: 'Discount not allowed!',
                 text: `Margin amount is zero. Please review the pricing before applying a discount.`,
@@ -811,8 +811,8 @@ if (QtyElement) {
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
-            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: '',  DiscPer: 0, NetAmt:formValue.TotalMrp });
-            return 
+            this._salesService.ItemSearchGroup.patchValue({ DiscAmt: '', DiscPer: 0, NetAmt: formValue.TotalMrp });
+            return
         }
         if (discAmt > (formValue?.MarginAmt ?? 0)) {
             Swal.fire({
@@ -823,19 +823,19 @@ if (QtyElement) {
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
-            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: '',  DiscPer: 0, NetAmt:formValue.TotalMrp });
+            this._salesService.ItemSearchGroup.patchValue({ DiscAmt: '', DiscPer: 0, NetAmt: formValue.TotalMrp });
             return
-        } 
+        }
         if (discAmt < 0 || discAmt > Number(formValue.TotalMrp) || formValue.DiscAmt == '') {
             this.toastr.warning('Discount amount should less then Total MRP', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
-            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: '',  DiscPer: 0, NetAmt:formValue.TotalMrp });
+            this._salesService.ItemSearchGroup.patchValue({ DiscAmt: '', DiscPer: 0, NetAmt: formValue.TotalMrp });
             return;
         }
         if (formValue.TotalMrp && discAmt) {
             // Calculate discount percentage from amount
-            let DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
+            const DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
             this._salesService.ItemSearchGroup.patchValue({
                 DiscPer: DiscPer,
             });
@@ -897,7 +897,7 @@ if (QtyElement) {
         }
     }
 
-    OnAddItem() { 
+    OnAddItem() {
         if (this.saleSelectedDatasource.data.length > 0) {
             this.saleSelectedDatasource.data.forEach((element) => {
                 if (element.StockId == this.StockId) {
@@ -910,7 +910,7 @@ if (QtyElement) {
             });
         }
         if (this._salesService.ItemSearchGroup.invalid) {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this._salesService.ItemSearchGroup.invalid) {
                 for (const controlName in this._salesService.ItemSearchGroup.controls) {
                     if (this._salesService.ItemSearchGroup.controls[controlName].invalid) {
@@ -946,11 +946,11 @@ if (QtyElement) {
             SGSTAmt: formValue.SGSTAmt || 0,
             IGSTAmt: formValue.IGSTAmt || 0,
             PurTotAmt: formValue.PurTotAmt,
-            MarginAmt: formValue.MarginAmt, 
+            MarginAmt: formValue.MarginAmt,
             MRP: formValue.MRP,
-            MRPRate:formValue.MRPRate,
-            MRPRateTotal:formValue.MRPRateTotal,
-            IsPurRate:formValue.IsPurRate
+            MRPRate: formValue.MRPRate,
+            MRPRateTotal: formValue.MRPRateTotal,
+            IsPurRate: formValue.IsPurRate
         })
         console.log(this.ItemAddForm.value)
         if (!this.vBarcodeflag) {
@@ -958,7 +958,7 @@ if (QtyElement) {
                 this.Itemchargeslist.push(this.ItemAddForm.value)
                 this.saleSelectedDatasource.data = this.Itemchargeslist;
             } else {
-                let invalidFields = [];
+                const invalidFields = [];
                 if (this.ItemAddForm.invalid) {
                     for (const controlName in this.ItemAddForm.controls) {
                         if (this.ItemAddForm.controls[controlName].invalid) {
@@ -974,16 +974,16 @@ if (QtyElement) {
                     return
                 }
             }
-            this.add = false; 
+            this.add = false;
             this.ItemFormreset();
-            this.getUpdateNetAmtSum(this.saleSelectedDatasource.data) 
+            this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
             this._salesService.ItemSearchGroup.markAllAsTouched()
             const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
             if (ItemIdElement) {
                 ItemIdElement.focus();
             }
         }
-         this.saveflag = false;
+        this.saveflag = false;
     }
     ItemFormreset() {
         this._salesService.ItemSearchGroup.patchValue({
@@ -1024,21 +1024,21 @@ if (QtyElement) {
         this.ItemSubform.get('externalPatientName').reset('');
         this.ItemSubform.get('doctorName').reset('');
         this.ConShow = false;
-         this.CreditReasonShow = false;
+        this.CreditReasonShow = false;
         this.ItemSubform.get('concessionReasonId').clearValidators();
         this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
         this.ItemSubform.get('concessionReasonId').disable();
         this.ItemSubform.get('roundoffAmt').setValue(0);
         this.saleSelectedDatasource.data = [];
-         this.Itemchargeslist = [];
+        this.Itemchargeslist = [];
         this.getDraftorderList();
         this.TotalAdvanceAmt = 0;
         this.TotalBalanceAmt = 0;
         this.TotalCreditAmt = 0;
-         this.saveflag = true;
+        this.saveflag = true;
     }
     deleteTableRow(event, element) {
-        let index = this.Itemchargeslist.indexOf(element);
+        const index = this.Itemchargeslist.indexOf(element);
         if (index >= 0) {
             this.Itemchargeslist.splice(index, 1);
             this.saleSelectedDatasource.data = [];
@@ -1046,23 +1046,23 @@ if (QtyElement) {
         }
         Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
         this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
-     }
-     isdiscAmount:boolean=false;
-    getUpdateNetAmtSum(data) { 
-         const itemData = data
-        let FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
-        let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
-        let FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
-        let FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
-        let roundoffAmt = (Math.round(FinalNetAmt) - FinalNetAmt).toFixed(2);
+    }
+    isdiscAmount: boolean = false;
+    getUpdateNetAmtSum(data) {
+        const itemData = data
+        const FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
+        const FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
+        const FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
+        const FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
+        const roundoffAmt = (Math.round(FinalNetAmt) - FinalNetAmt).toFixed(2);
         this.ItemSubform.patchValue({
             roundoffAmt: roundoffAmt,
             totalAmount: FinalTotalAmt,
-            vatAmount: FinalGSTAmt, 
+            vatAmount: FinalGSTAmt,
             netAmount: Math.round(FinalNetAmt),
         })
         if (Number(FinalDiscAmt > 0)) {
-         this.ItemSubform.patchValue({discAmount: FinalDiscAmt}) 
+            this.ItemSubform.patchValue({ discAmount: FinalDiscAmt })
             this.ConShow = true;
             this.ItemSubform.get('FinalDiscPer').disable();
             this.isdiscAmount = true;
@@ -1071,42 +1071,42 @@ if (QtyElement) {
             this.ItemSubform.get('concessionReasonId').enable();
         } else {
             const finalDiscPerControl = this.ItemSubform.value.FinalDiscPer
-            if(!(this.saleSelectedDatasource.data.every((i) => i.DiscAmt > 0 && i.DiscPer > 0 ))){
-                 this.ItemSubform.get('FinalDiscPer').enable();
-                 this.ItemSubform.get('FinalDiscPer').setValue(finalDiscPerControl);
-                 this.isdiscAmount = false; 
-             }
-            if(this.ItemSubform.get('IsPurchaseWsie')?.value == true){
-                 this.ItemSubform.get('FinalDiscPer').disable();
-                 this.ItemSubform.get('discAmount').disable(); 
+            if (!(this.saleSelectedDatasource.data.every((i) => i.DiscAmt > 0 && i.DiscPer > 0))) {
+                this.ItemSubform.get('FinalDiscPer').enable();
+                this.ItemSubform.get('FinalDiscPer').setValue(finalDiscPerControl);
+                this.isdiscAmount = false;
             }
-           // this.ItemSubform.patchValue({discAmount: ''}) 
+            if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) {
+                this.ItemSubform.get('FinalDiscPer').disable();
+                this.ItemSubform.get('discAmount').disable();
+            }
+            // this.ItemSubform.patchValue({discAmount: ''}) 
             this.ConShow = false;
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').clearValidators();
             this.ItemSubform.get('concessionReasonId').disable();
-            if (finalDiscPerControl > 0) { 
-            this.getFinalDiscperAmt();
-           } else{
-             this.ItemSubform.patchValue({discAmount: ''}) 
-           }
-        } 
+            if (finalDiscPerControl > 0) {
+                this.getFinalDiscperAmt();
+            } else {
+                this.ItemSubform.patchValue({ discAmount: '' })
+            }
+        }
     }
-    StoreId:any=0;
+    StoreId: any = 0;
     getStoredet() {
         debugger
         this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
             const storename = data;
-            const filterStore = storename.filter(item=> item.value == this._loggedService.currentUserValue.user.storeId)
-           
+            const filterStore = storename.filter(item => item.value == this._loggedService.currentUserValue.user.storeId)
+
             this.StoreName = filterStore[0]?.text;
-             this.StoreId = filterStore[0]?.value;
+            this.StoreId = filterStore[0]?.value;
         });
     }
-    getFinalDiscperAmt() { 
+    getFinalDiscperAmt() {
         const formValues = this.ItemSubform.getRawValue();
         if (this.UserDicPerLimit > 0) {
-            let Disc = formValues.FinalDiscPer || 0;
+            const Disc = formValues.FinalDiscPer || 0;
             if (+Disc > +this.UserDicPerLimit) {
                 Swal.fire({
                     icon: 'warning',
@@ -1116,42 +1116,42 @@ if (QtyElement) {
                 });
                 this.ItemSubform.get("FinalDiscPer").setValue(this.UserDicPerLimit);
             }
-        }  
+        }
 
-        let Disc = formValues.FinalDiscPer || 0; 
+        const Disc = formValues.FinalDiscPer || 0;
         let NetAmount = formValues.netAmount;
-        let FinalDiscAmt = ''; 
+        let FinalDiscAmt = '';
         if (Disc > 0 && Disc <= 100) {
             this.ConShow = true;
             FinalDiscAmt = ((formValues?.totalAmount * Disc) / 100).toFixed(2);
             NetAmount = (formValues.totalAmount - parseFloat(FinalDiscAmt)).toFixed(2);
-           this.ItemSubform.patchValue({
-            discAmount: FinalDiscAmt,
-            netAmount:  Math.round(NetAmount),
-            roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
+            this.ItemSubform.patchValue({
+                discAmount: FinalDiscAmt,
+                netAmount: Math.round(NetAmount),
+                roundoffAmt: (Math.round(NetAmount) - NetAmount).toFixed(2)
             })
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
             this.ItemSubform.get('concessionReasonId').enable();
             this.ItemSubform.updateValueAndValidity();
         } else {
-            if(Disc > 100){
-             this.toastr.warning('Discount % should less than 100% & greater than 0', 'warning !', {
-                  toastClass: 'tostr-tost custom-toast-warning',
-                }); 
-            } 
-             this.ItemSubform.patchValue({
+            if (Disc > 100) {
+                this.toastr.warning('Discount % should less than 100% & greater than 0', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+            }
+            this.ItemSubform.patchValue({
                 FinalDiscPer: 0,
-                discAmount: 0, 
+                discAmount: 0,
                 netAmount: Math.round(formValues?.totalAmount),
-                roundoffAmt:(Math.round(formValues?.totalAmount) - formValues?.totalAmount).toFixed(2)
-            });   
+                roundoffAmt: (Math.round(formValues?.totalAmount) - formValues?.totalAmount).toFixed(2)
+            });
             this.ConShow = false;
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').clearValidators();
             this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
             this.ItemSubform.get('concessionReasonId').disable();
-        } 
+        }
     }
     getFinalDiscAmount() {
         const formValues = this.ItemSubform.getRawValue();
@@ -1159,19 +1159,19 @@ if (QtyElement) {
         let totDiscAmt = formValues?.discAmount || 0;
         let NetAmount = formValues?.totalAmount;
         if (totDiscAmt > 0 && totDiscAmt < parseInt(NetAmount)) {
-            Discper = ((totDiscAmt/NetAmount) * 100 ).toFixed(2);
-            NetAmount = (formValues?.totalAmount - totDiscAmt).toFixed(2); 
+            Discper = ((totDiscAmt / NetAmount) * 100).toFixed(2);
+            NetAmount = (formValues?.totalAmount - totDiscAmt).toFixed(2);
             this.ConShow = true;
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
             this.ItemSubform.get('concessionReasonId').enable();
         } else {
-            if(totDiscAmt > NetAmount){
-                  this.toastr.warning('Discount Amt should less than NetAmt & greater than 0', 'warning !', {
-                  toastClass: 'tostr-tost custom-toast-warning',
-                }); 
+            if (totDiscAmt > NetAmount) {
+                this.toastr.warning('Discount Amt should less than NetAmt & greater than 0', 'warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
             }
-            Discper= '';
+            Discper = '';
             totDiscAmt = '';
             NetAmount = formValues?.totalAmount;
             this.ConShow = false;
@@ -1181,16 +1181,16 @@ if (QtyElement) {
             //this.ConseId.nativeElement.focus();
         }
         this.ItemSubform.patchValue({
-            FinalDiscPer:Discper,
-            discAmount:totDiscAmt,
-            netAmount:  Math.round(NetAmount),
-            roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
+            FinalDiscPer: Discper,
+            discAmount: totDiscAmt,
+            netAmount: Math.round(NetAmount),
+            roundoffAmt: (Math.round(NetAmount) - NetAmount).toFixed(2)
         })
 
     }
     onSave(event) {
-         const formValue = this.ItemSubform.value
-          if (this.ItemSubform.get('opIpType').value == '2') {
+        const formValue = this.ItemSubform.value
+        if (this.ItemSubform.get('opIpType').value == '2') {
             if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
                 ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' ||
                 ((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) == '')) {
@@ -1200,23 +1200,23 @@ if (QtyElement) {
                 return;
             }
         }
-           if (this.ItemSubform.get('opIpType').value != '2') {
+        if (this.ItemSubform.get('opIpType').value != '2') {
             if ((this.RegNo || 0) == 0) {
                 this.toastr.warning('Please select Patient', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
             }
-        }  
+        }
         if (this.ItemSubform.get('CashPay').value == 'Online') {
-                const upi = this.ItemSubform.get('UpiNo')?.value;
-                if (!upi || upi.length < 4) {
+            const upi = this.ItemSubform.get('UpiNo')?.value;
+            if (!upi || upi.length < 4) {
                 this.toastr.warning('Enter UPI No (min 4 & max 12 characters)', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
-            }  
-        } 
+            }
+        }
         Swal.fire({
             title: 'Confirm Save',
             text: 'Are you sure you want to save this Sales bill?',
@@ -1241,8 +1241,8 @@ if (QtyElement) {
         if (!this.isValidForm()) {
             Swal.fire('Please enter valid table data.');
             return;
-        } 
-     
+        }
+
         if (Number(formValue.discAmount) > 0) {
             if (!formValue.concessionReasonId) {
                 this.toastr.warning('Please select Concession Reason ', 'Warning !', {
@@ -1252,7 +1252,7 @@ if (QtyElement) {
             }
         }
         this.saveflag = true;
-        let opIpType = formValue?.opIpType || 0
+        const opIpType = formValue?.opIpType || 0
         this.PharmaSalesForm.get('sales.date').setValue(formattedDate)
         this.PharmaSalesForm.get('sales.time').setValue(FormattedDateTime)
         this.PharmaSalesForm.get('sales.opIpType').setValue(formValue?.opIpType)
@@ -1265,13 +1265,13 @@ if (QtyElement) {
         this.PharmaSalesForm.get('sales.concessionReasonId').setValue(formValue?.concessionReasonId || 0)
         this.PharmaSalesForm.get('sales.opIpId').setValue(this.OP_IP_Id)
         this.PharmaSalesForm.get('sales.wardId').setValue(this.wardId)
-        this.PharmaSalesForm.get('sales.bedId').setValue(this.bedId) 
+        this.PharmaSalesForm.get('sales.bedId').setValue(this.bedId)
         this.PharmaSalesForm.get('sales.isPurBill').setValue(formValue?.IsPurchaseWsie || false)
         this.PharmaSalesForm.get('sales.isPrescription').setValue(this.IPMedID || 0)
         this.PharmaSalesForm.get('prescription.opIpId').setValue(this.IPMedID || 0)
         this.PharmaSalesForm.get('salesDraft.dsalesId').setValue(this.DraftID || 0)
         this.PharmaSalesForm.get('sales.externalPatientName').setValue(this.PatientName || '')
-        this.PharmaSalesForm.get('sales.doctorName').setValue(this.DoctorName || '') 
+        this.PharmaSalesForm.get('sales.doctorName').setValue(this.DoctorName || '')
 
         if (formValue.opIpType == 2) {
             this.PharmaSalesForm.get('sales.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
@@ -1291,18 +1291,18 @@ if (QtyElement) {
             this.saleSelectedDatasource.data.forEach((element) => {
                 //this.SalesDetailsAarry.push(this.CreateSalesDetailsform(element))
                 this.CurrentStockArray.push(this.CreateCurrentStockForm(element))
-                const formObj = this.CreateSalesDetailsform(element);  
-                formObj.patchValue({ isPurRate: formValue?.IsPurchaseWsie || false});  
-                this.SalesDetailsAarry.push(formObj);  
+                const formObj = this.CreateSalesDetailsform(element);
+                formObj.patchValue({ isPurRate: formValue?.IsPurchaseWsie || false });
+                this.SalesDetailsAarry.push(formObj);
             });
- 
+
             if (this.ItemSubform.get('CashPay').value == 'CashPay') {
                 this.PharmaSalesForm.get('sales.paidAmount').setValue((Math.round(formValue.netAmount)))
                 this.PharmaSalesForm.get('sales.balanceAmount').setValue(0)
                 this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
                 this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
                 this.PharmaSalesForm.get('payment.cashPayAmount').setValue((Math.round(formValue.netAmount)))
-                let ModePaymentObj = [];
+                const ModePaymentObj = [];
                 ModePaymentObj.push({
                     paymentId: 0,
                     unitId: this._loggedService.currentUserValue.user.unitId,
@@ -1328,7 +1328,7 @@ if (QtyElement) {
                     tranMode: "PHAR",
                     createdBy: this._loggedService.currentUserValue?.userId ?? 0,
                     transactionLabel: 'SALES_BILL'
-                }); 
+                });
                 this.ModeOfPaymentsArray.clear();
                 ModePaymentObj.forEach(item => {
                     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
@@ -1340,9 +1340,9 @@ if (QtyElement) {
                         this.onClose();
                     }
                 });
-            } 
+            }
             else if (this.ItemSubform.get('CashPay').value == 'Online') {
-                
+
                 this.PharmaSalesForm.get('sales.paidAmount').setValue((Math.round(formValue.netAmount)))
                 this.PharmaSalesForm.get('sales.balanceAmount').setValue(0)
                 this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
@@ -1351,7 +1351,7 @@ if (QtyElement) {
                 this.PharmaSalesForm.get('payment.payTmtranNo')?.setValue(formValue?.UpiNo || 0)
                 this.PharmaSalesForm.get('payment.payTmamount').setValue((Math.round(formValue.netAmount)))
 
-                let ModePaymentObj = [];
+                const ModePaymentObj = [];
                 ModePaymentObj.push({
                     paymentId: 0,
                     unitId: this._loggedService.currentUserValue.user.unitId,
@@ -1377,7 +1377,7 @@ if (QtyElement) {
                     tranMode: "PHAR",
                     createdBy: this._loggedService.currentUserValue?.userId ?? 0,
                     transactionLabel: 'SALES_BILL'
-                }); 
+                });
                 this.ModeOfPaymentsArray.clear();
                 ModePaymentObj.forEach(item => {
                     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
@@ -1389,16 +1389,16 @@ if (QtyElement) {
                         this.onClose();
                     }
                 });
-            } 
+            }
             else if (this.ItemSubform.get('CashPay').value == 'Credit') {
                 this.CreditReasonShow = true;
-                  if (!formValue.CredirReasonId) {
-                this.toastr.warning('Please select Credit Reason ', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                 this.saveflag = false;
-                return;
-            }  
+                if (!formValue.CredirReasonId) {
+                    this.toastr.warning('Please select Credit Reason ', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    this.saveflag = false;
+                    return;
+                }
                 this.PharmaSalesForm.get('sales.creditReason').setValue(formValue.CredirReasonName)
                 this.PharmaSalesForm.get('sales.creditReasonId').setValue(formValue.CredirReasonId)
                 this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
@@ -1413,9 +1413,9 @@ if (QtyElement) {
                     }
                 });
             } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
-                let PatientHeaderObj = {};
+                const PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-                PatientHeaderObj['PatientName'] = this.PatientName || '';
+                    PatientHeaderObj['PatientName'] = this.PatientName || '';
                 PatientHeaderObj['RegNo'] = this.RegNo || 0;
                 PatientHeaderObj['DoctorName'] = this.Patientdetails?.doctorName || '';
                 if (formValue.opIpType == '1') {
@@ -1424,10 +1424,10 @@ if (QtyElement) {
                     PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.opdNo || 0;
                 }
                 PatientHeaderObj['Age'] = this.Patientdetails?.age || 0;
-                PatientHeaderObj['NetPayAmount'] = Math.round(this.ItemSubform.get('netAmount').value); 
-                PatientHeaderObj['CompanyName'] = this.Patientdetails?.companyName || '';  
-                 PatientHeaderObj['CompanyId'] = this.Patientdetails?.companyId || 0;  
-                PatientHeaderObj['TransactionLabel'] = 'SALES_BILL'; 
+                PatientHeaderObj['NetPayAmount'] = Math.round(this.ItemSubform.get('netAmount').value);
+                PatientHeaderObj['CompanyName'] = this.Patientdetails?.companyName || '';
+                PatientHeaderObj['CompanyId'] = this.Patientdetails?.companyId || 0;
+                PatientHeaderObj['TransactionLabel'] = 'SALES_BILL';
                 const dialogRef = this._matDialog.open(OpPaymentComponent,
                     {
                         maxWidth: "80vw",
@@ -1458,7 +1458,7 @@ if (QtyElement) {
                 });
             }
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.PharmaSalesForm.invalid) {
                 for (const controlName in this.PharmaSalesForm.controls) {
                     const control = this.PharmaSalesForm.get(controlName);
@@ -1484,7 +1484,7 @@ if (QtyElement) {
         this.getDraftorderList();
         this.PharmaSalesForm.get('sales.balanceAmount')?.reset(0);
     }
-    onClose() { 
+    onClose() {
         this.PharmaSalesForm = this.CreatePharmasalesform()
         this.PharmaSalesDraftForm = this.CreatePharmasalesDraftform()
         this.Itemchargeslist = [];
@@ -1503,8 +1503,8 @@ if (QtyElement) {
     }
     // Table calculation
     updateCellDiscount(item: IndentList): void {
-        let discPer = +item?.DiscPer;
-        let totalMrp = +item?.TotalMRP;
+        const discPer = +item?.DiscPer;
+        const totalMrp = +item?.TotalMRP;
 
         if (discPer < 0 || discPer > 100) {
             this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
@@ -1518,7 +1518,7 @@ if (QtyElement) {
         item.DiscAmt = ((totalMrp * discPer) / 100).toFixed(2);
         this.calculateCellNetAmount(item);
     }
-    getCellCalculation(item: IndentList) { 
+    getCellCalculation(item: IndentList) {
         debugger
         let qty = +item?.Qty;
         if (!qty) {
@@ -1527,7 +1527,7 @@ if (QtyElement) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Invalid Quantity',
-                text: 'Please enter a quantity less than the balance quantity = '+ item.BalanceQty,
+                text: 'Please enter a quantity less than the balance quantity = ' + item.BalanceQty,
                 confirmButtonText: 'OK',
             });
             qty = 0;
@@ -1537,10 +1537,10 @@ if (QtyElement) {
         let IsPurRate
         if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) {
             MRP = +item?.LandedRate || 0;
-            IsPurRate=1  
+            IsPurRate = 1
         } else {
             MRP = +item?.MRP || 0;
-            IsPurRate=0; 
+            IsPurRate = 0;
         }
         const unitMrp = MRP
         const totalMrp = qty * unitMrp;
@@ -1554,16 +1554,16 @@ if (QtyElement) {
             UnitMRP: unitMrp.toFixed(2),
             TotalMRP: totalMrp.toFixed(2),
             MarginAmt: marginAmt.toFixed(2),
-            MRPRateTotal:mrpRateTotal.toFixed(2),
+            MRPRateTotal: mrpRateTotal.toFixed(2),
             Qty: qty,
-            IsPurRate:IsPurRate
+            IsPurRate: IsPurRate
         } as IndentList;
 
         Object.assign(item, updatedItem);
         this.updateCellDiscount(item);
         this.calculateCellNetAmount(item);
     }
-    calculateCellNetAmount(item: IndentList): void { 
+    calculateCellNetAmount(item: IndentList): void {
         const formValue = this.ItemSubform.value;
         const discAmt = +item?.DiscAmt;
         const totalMrp = +item.TotalMRP;
@@ -1579,7 +1579,7 @@ if (QtyElement) {
     }
     m_getBalAvaListStore(Param) {
         this.dsDraftList.data = [];
-        var m = {
+        const m = {
             "first": 0,
             "rows": 999,
             "sortField": "ItemId",
@@ -1603,7 +1603,7 @@ if (QtyElement) {
     ///////////////// //Darft part ---------------------------------------------------------------------------------------////////////////////////////
     getDraftorderList() {
         this.dsDraftList.data = [];
-        var m = {
+        const m = {
             "first": 0,
             "rows": 999,
             "sortField": "DSalesId",
@@ -1630,8 +1630,8 @@ if (QtyElement) {
         this.repeatItemList = row.value;
         this.Itemchargeslist = [];
         this.repeatItemList.forEach((element) => {
-            let Qty = parseInt(element.Qty.toString());
-            let UnitMrp = element.UnitMRP.split('|')[0];
+            const Qty = parseInt(element.Qty.toString());
+            const UnitMrp = element.UnitMRP.split('|')[0];
             // let GSTAmount = (((element.UnitMRP * this.GSTPer) / 100) * Qty).toFixed(2);
             // let CGSTAmt = (((element.UnitMRP * this.CgstPer) / 100) * Qty).toFixed(2);
             // let SGSTAmt = (((element.UnitMRP * this.SgstPer) / 100) * Qty).toFixed(2);
@@ -1674,7 +1674,7 @@ if (QtyElement) {
         this.saleSelectedDatasource.data = this.Itemchargeslist;
     }
     DraftbillCancel(Obj) {
-        var vdata = {
+        const vdata = {
             "dsalesId": Obj?.dsalesId
         }
         this._salesService.getDeleteDratf(vdata).subscribe((data) => {
@@ -1684,9 +1684,9 @@ if (QtyElement) {
         });
     }
     onSaveDraftBill() {
-    const formattedTime = this.dateTimeObj.time;
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,'yyyy-MM-dd');
-    const FormattedDateTime = formattedDate + ' ' + formattedTime 
+        const formattedTime = this.dateTimeObj.time;
+        const formattedDate = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd');
+        const FormattedDateTime = formattedDate + ' ' + formattedTime
         const formValue = this.ItemSubform.value
         if (!this.isValidForm()) {
             Swal.fire('Please enter valid table data.');
@@ -1707,7 +1707,7 @@ if (QtyElement) {
                 });
                 return;
             }
-        }  
+        }
         debugger
         this.PharmaSalesDraftForm.get('salesDraft.date').setValue(formattedDate)
         this.PharmaSalesDraftForm.get('salesDraft.time').setValue(FormattedDateTime)
@@ -1719,19 +1719,19 @@ if (QtyElement) {
         this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue?.netAmount)))
         this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
         this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue?.netAmount)))
- 
+
         if (formValue.opIpType == 2) {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
             this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
             this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue?.extAddress || '')
             this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
             this.PharmaSalesDraftForm.get('salesDraft.opIpId').clearValidators();
-           this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
+            this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
         } else {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
             this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
         }
-         this.SalesDraftDetailsAarry.clear();
+        this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {
             this.SalesDraftDetailsAarry.clear();
             this.saleSelectedDatasource.data.forEach((element) => {
@@ -1744,7 +1744,7 @@ if (QtyElement) {
             });
         }
         else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.PharmaSalesDraftForm.invalid) {
                 for (const controlName in this.PharmaSalesDraftForm.controls) {
                     const control = this.PharmaSalesDraftForm.get(controlName);
@@ -1768,35 +1768,35 @@ if (QtyElement) {
             }
         }
     }
-draftpatientlist:any=[];
-draftextMobilenolist:any=[];
-    onAddDraftList(contact) { 
+    draftpatientlist: any = [];
+    draftextMobilenolist: any = [];
+    onAddDraftList(contact) {
         debugger
         console.log(contact)
-         this.saveflag = false;
+        this.saveflag = false;
         this.DraftID = contact.dsalesId;
-        this.saleSelectedDatasource.data = []; 
+        this.saleSelectedDatasource.data = [];
         this.Itemchargeslist = [];
-        this.draftpatientlist=[];
+        this.draftpatientlist = [];
 
         if (contact.opipType == 2) {
-         
+
             this.draftpatientlist.push(
-            {
-                text:contact?.patientName, 
-                extMobileNo:contact?.extMobileNo,
-                doctorName:contact?.admDoctorName,
-                patientName:contact?.patientName
-            } 
-        )
-          this.draftextMobilenolist.push(
-            {
-                text:contact?.extMobileNo, 
-                extMobileNo:contact?.extMobileNo,
-                doctorName:contact?.admDoctorName,
-                patientName:contact?.patientName
-            } 
-        )
+                {
+                    text: contact?.patientName,
+                    extMobileNo: contact?.extMobileNo,
+                    doctorName: contact?.admDoctorName,
+                    patientName: contact?.patientName
+                }
+            )
+            this.draftextMobilenolist.push(
+                {
+                    text: contact?.extMobileNo,
+                    extMobileNo: contact?.extMobileNo,
+                    doctorName: contact?.admDoctorName,
+                    patientName: contact?.patientName
+                }
+            )
             this.vSelectedOption = '2';
             this.ItemSubform.get('extMobileNo').reset();
             this.ItemSubform.get('extMobileNo').setValidators([Validators.required]);
@@ -1808,11 +1808,11 @@ draftextMobilenolist:any=[];
             this.ItemSubform.get('extMobileNo').setValue(this.draftextMobilenolist[0]);
             this.ItemSubform.get('externalPatientName').setValue(this.draftpatientlist[0]);
             this.ItemSubform.get('doctorName').setValue(this.draftpatientlist[0]);
-            this.ItemSubform.updateValueAndValidity(); 
+            this.ItemSubform.updateValueAndValidity();
             this.paymethod = false;
             this.Draftchk = true;
             this.RegId = '';
-           // console.log(this.ItemAddForm.value) 
+            // console.log(this.ItemAddForm.value) 
         } else if (contact.opipType == 0) {
             this.paymethod = true;
             this.Draftchk = true;
@@ -1824,7 +1824,7 @@ draftextMobilenolist:any=[];
             this.DoctorName = contact.admDoctorName;
             this.PatientName = contact.patientName;
             this.RegId = contact.regID;
-            this.RegNo =  contact?.regNo;
+            this.RegNo = contact?.regNo;
             this.OP_IP_Id = contact?.opipid
             this.ItemSubform.get('extMobileNo').clearValidators();
             this.ItemSubform.get('externalPatientName').clearValidators();
@@ -1842,14 +1842,14 @@ draftextMobilenolist:any=[];
             this.DoctorName = contact.admDoctorName;
             this.PatientName = contact.patientName;
             this.RegId = contact.regID;
-            this.RegNo =  contact?.regNo;
+            this.RegNo = contact?.regNo;
             this.OP_IP_Id = contact?.opipid
             this.ItemSubform.get('extMobileNo').clearValidators();
             this.ItemSubform.get('externalPatientName').clearValidators();
             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
             this.ItemSubform.get('externalPatientName').updateValueAndValidity();
         }
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 9999,
             "sortField": "ItemId",
@@ -1875,10 +1875,10 @@ draftextMobilenolist:any=[];
         });
     }
     onAddDraftListTosale(contact, DraftQty) {
-        console.log(contact) 
+        console.log(contact)
         this.QtyBalchk = 0;
 
-        var m_data = {
+        const m_data = {
             "first": 0,
             "rows": 9999,
             "sortField": "ItemId",
@@ -1892,8 +1892,8 @@ draftextMobilenolist:any=[];
         };
         this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
             console.log(response)
-              const tempChargesList = response?.data || []; 
-                let qtyBalChk = 0;  
+            const tempChargesList = response?.data || [];
+            let qtyBalChk = 0;
             if (tempChargesList.length == 0) {
                 Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
             } else if (tempChargesList.length > 0) {
@@ -1913,10 +1913,10 @@ draftextMobilenolist:any=[];
                     }
                 });
             }
-             this.QtyBalchk = qtyBalChk 
+            this.QtyBalchk = qtyBalChk
         });
 
-        
+
     }
     vExpDate: any;
     getFinalCalculation(contact, DraftQty) {
@@ -1924,7 +1924,7 @@ draftextMobilenolist:any=[];
         if (DraftQty && contact.unitMrp) {
             this.saleSelectedDatasource.data = [];
             let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
-                v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0',MRPRateTotal = '0';
+                v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0', MRPRateTotal = '0';
 
             TotalMRP = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
             LandedRateandedTotal = (parseInt(DraftQty) * contact.landedRate).toFixed(2);
@@ -1934,9 +1934,9 @@ draftextMobilenolist:any=[];
             CGSTAmt = (((contact.unitMrp * contact.cgstper) / 100) * parseInt(DraftQty)).toFixed(2);
             SGSTAmt = (((contact.unitMrp * contact.sgstper) / 100) * parseInt(DraftQty)).toFixed(2);
             IGSTAmt = (((contact.unitMrp * contact.igstper) / 100) * parseInt(DraftQty)).toFixed(2);
-            MRPRateTotal =  (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
+            MRPRateTotal = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
             NetAmt = (parseFloat(TotalMRP) - 0).toFixed(2);
-            
+
             // if (contact.DiscPer > 0) {
             // this.DiscAmt = ((TotalMRP * contact.DiscPer) / 100).toFixed(2);
             // NetAmt = (tTotalMRP - this.DiscAmt).toFixed(2);
@@ -1985,10 +1985,10 @@ draftextMobilenolist:any=[];
                     MarginAmt: v_marginamt,
                     BalanceQty: contact?.balanceQty,
                     SalesDraftId: 0,
-                    StoreId: contact?.storeId, 
+                    StoreId: contact?.storeId,
                     MRP: contact?.unitMrp,
-                    MRPRate:contact?.unitMrp,
-                    MRPRateTotal:MRPRateTotal
+                    MRPRate: contact?.unitMrp,
+                    MRPRateTotal: MRPRateTotal
                 }
             )
             this.saleSelectedDatasource.data = this.Itemchargeslist;
@@ -2027,15 +2027,15 @@ draftextMobilenolist:any=[];
             });
             dialogRef.afterClosed().subscribe((result) => {
                 console.log('The dialog was closed - Insert Action', result);
-                 this.DoctorNamecheck = true;
+                this.DoctorNamecheck = true;
                 this.PatientName = result[0]?.PatientName;
                 this.RegId = result[0]?.RegId;
-                this.RegNo =  result[0]?.RegNo;
+                this.RegNo = result[0]?.RegNo;
                 this.OP_IP_Id = result[0]?.AdmissionID;
                 this.DoctorName = result[0]?.DoctorName;
                 this.ItemSubform.get('regId').setValue(result[0]?.RegId);
 
-                 this.saveflag = false;
+                this.saveflag = false;
                 if (result[0]?.IPMedID > 0) {
                     this.IPDNocheck = true;
                     this.OPDNoCheck = false;
@@ -2053,9 +2053,9 @@ draftextMobilenolist:any=[];
                     this.OP_IPType = 0;
                 }
                 this.getBillSummary(result[0]?.AdmissionID || 0)
-                this.dsItemNameList1.data = result; 
-                this.dsItemNameList1.data.forEach((contact) => { 
-                    var m_data = {
+                this.dsItemNameList1.data = result;
+                this.dsItemNameList1.data.forEach((contact) => {
+                    const m_data = {
                         "first": 0,
                         "rows": 9999,
                         "sortField": "ItemId",
@@ -2070,19 +2070,19 @@ draftextMobilenolist:any=[];
                     this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
                         debugger
                         this.Tempchargeslist = response.data as any;
-                        if (this.Tempchargeslist.length == 0) { 
+                        if (this.Tempchargeslist.length == 0) {
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'Stock Unavailable',
                                 text: `The item with ID ${contact.ItemId} is currently out of stock.`,
                                 showConfirmButton: true,
                                 confirmButtonText: 'OK'
-                            }); 
+                            });
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
                             let bal_qnt = 0;
                             this.Tempchargeslist.forEach((element) => {
-                                let PreQty = remaing_qty;
+                                const PreQty = remaing_qty;
                                 if (PreQty > 0) {
                                     if (contact.ItemId != element.itemId) {
                                         this.QtyBalchk = 0;
@@ -2113,7 +2113,7 @@ draftextMobilenolist:any=[];
     }
     getBillSummary(admissionID) {
         //Total Credit Amount
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 9999,
             "sortField": "OP_IP_ID",
@@ -2127,7 +2127,7 @@ draftextMobilenolist:any=[];
             this.TotalCreditAmt = response?.data[0]?.creditAmount || 0;
         });
         //Total advance and advance bal Amount
-        var m_data = {
+        const m_data = {
             "first": 0,
             "rows": 9999,
             "sortField": "AdmissionID",
@@ -2145,13 +2145,13 @@ draftextMobilenolist:any=[];
             });
             console.log(advancedetails)
         });
-    } 
+    }
 
     salesIdWiseObj: any;
     dummySalesIdNameArr = [];
     SalesIdWiseObj: any = {};
     getTopSalesDetailsList(MobileNo) {
-        var vdata = {
+        const vdata = {
             ExtMobileNo: MobileNo,
         };
         this.sIsLoading = 'get-sales-data';
@@ -2178,11 +2178,11 @@ draftextMobilenolist:any=[];
         this.getTopSalesDetailsprint();
     }
     getTopSalesDetailsprint() {
-        var strrowslist = '';
-        let onlySalesId = [];
+        let strrowslist = '';
+        const onlySalesId = [];
         this.reportPrintObjItemList.forEach((ele) => onlySalesId.push(ele.SalesId));
 
-        let SalesidNamesArr = [...new Set(onlySalesId)];
+        const SalesidNamesArr = [...new Set(onlySalesId)];
         SalesidNamesArr.forEach((ele) => this.dummySalesIdNameArr.push({ SalesId: ele, isHidden: false }));
 
         this.SalesIdWiseObj = this.reportPrintObjItemList.reduce((acc, item: any) => {
@@ -2194,9 +2194,9 @@ draftextMobilenolist:any=[];
         }, {});
 
         for (let i = 1; i <= this.reportPrintObjItemList.length; i++) {
-            var objreportPrint = this.reportPrintObjItemList[i - 1];
+            const objreportPrint = this.reportPrintObjItemList[i - 1];
 
-            var strabc =
+            const strabc =
                 this.getSalesIdName(objreportPrint.SalesId) +
                 `
   <div style="display:flex;margin:8px 0">
@@ -2209,11 +2209,11 @@ draftextMobilenolist:any=[];
             strrowslist += strabc;
         }
     }
-    getSalesIdName(SalesId: String) {
+    getSalesIdName(SalesId: string) {
         let groupDiv;
         for (let i = 0; i < this.dummySalesIdNameArr.length; i++) {
             if (this.dummySalesIdNameArr[i].SalesId == SalesId && !this.dummySalesIdNameArr[i].isHidden) {
-                let groupHeader =
+                const groupHeader =
                     `<div style="display:flex;width:960px;margin-left:20px;justify-content:space-between;">
           <div> <h3>` +
                     SalesId +
@@ -2236,7 +2236,7 @@ draftextMobilenolist:any=[];
     }
     CalPaidbackAmt() {
         const formvalue = this.ItemSubform.value
-        let PaidbacktoPatient = (parseFloat(formvalue?.roundoffAmt || 0) - parseFloat(formvalue?.PaidbyPatient || 0)).toFixed(2);
+        const PaidbacktoPatient = (parseFloat(formvalue?.roundoffAmt || 0) - parseFloat(formvalue?.PaidbyPatient || 0)).toFixed(2);
         this.ItemSubform.patchValue({
             PaidbacktoPatient: PaidbacktoPatient
         })
@@ -2249,7 +2249,7 @@ draftextMobilenolist:any=[];
         }
     }
     barcodeItemfetch() {
-        var d = {
+        const d = {
             StockId: this._salesService.ItemSearchGroup.get('Barcode').value || 0,
             StoreId: this._loggedService.currentUserValue.storeId || 0,
         };
@@ -2302,23 +2302,23 @@ draftextMobilenolist:any=[];
                         }
                     }
 
-                    let TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
-                    let Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
-                    let vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
-                    let LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
-                    let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-                    let PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
+                    const TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
+                    const Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
+                    const vFinalNetAmount = (parseFloat(Vatamount) + parseFloat(TotalMRP)).toFixed(2);
+                    const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
+                    const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+                    const PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
 
-                    let CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * this.DraftQty).toFixed(2);
-                    let SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * this.DraftQty).toFixed(2);
-                    let IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * this.DraftQty).toFixed(2);
+                    const CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * this.DraftQty).toFixed(2);
+                    const SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * this.DraftQty).toFixed(2);
+                    const IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * this.DraftQty).toFixed(2);
 
                     // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
 
-                    let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-                    let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+                    const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+                    const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
-                    let BalQty = contact.BalanceQty - this.DraftQty;
+                    const BalQty = contact.BalanceQty - this.DraftQty;
 
                     this.saleSelectedDatasource.data[i].Qty = this.DraftQty;
                     this.saleSelectedDatasource.data[i].VatAmount = Vatamount;
@@ -2369,19 +2369,19 @@ draftextMobilenolist:any=[];
                 }
             }
 
-            let TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
-            let Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
-            let TotalNet = parseFloat(TotalMRP + Vatamount).toFixed(2);
-            let LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
-            let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
-            let PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
+            const TotalMRP = (parseInt(this.DraftQty) * contact.UnitMRP).toFixed(2);
+            const Vatamount = ((parseFloat(TotalMRP) * contact.VatPercentage) / 100).toFixed(2);
+            const TotalNet = parseFloat(TotalMRP + Vatamount).toFixed(2);
+            const LandedRateandedTotal = (parseInt(this.DraftQty) * contact.LandedRate).toFixed(2);
+            const v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
+            const PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
 
-            let CGSTAmt = (((contact.UnitMRP * contact.CGSTPer) / 100) * this.DraftQty).toFixed(2);
-            let SGSTAmt = (((contact.UnitMRP * contact.SGSTPer) / 100) * this.DraftQty).toFixed(2);
-            let IGSTAmt = (((contact.UnitMRP * contact.IGSTPer) / 100) * this.DraftQty).toFixed(2);
+            const CGSTAmt = (((contact.UnitMRP * contact.CGSTPer) / 100) * this.DraftQty).toFixed(2);
+            const SGSTAmt = (((contact.UnitMRP * contact.SGSTPer) / 100) * this.DraftQty).toFixed(2);
+            const IGSTAmt = (((contact.UnitMRP * contact.IGSTPer) / 100) * this.DraftQty).toFixed(2);
 
-            let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-            let NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
+            const DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
+            const NetAmt = (parseFloat(TotalMRP) - parseFloat(DiscAmt)).toFixed(2);
 
             this.chargeslistBarcode.push({
                 ItemId: contact.ItemId || 0,
@@ -2460,10 +2460,10 @@ draftextMobilenolist:any=[];
             PatientName: [
                 { name: "required", Message: "Patient Name No is required" }
             ],
-              CredirReasonId: [
+            CredirReasonId: [
                 { name: "required", Message: "Patient Name No is required" }
             ],
-               UpiNo: [
+            UpiNo: [
                 { name: "required", Message: "UPI required!", },
                 { name: "pattern", Message: "only Number allowed.", },
                 { name: "min", Message: "Enter valid UPI No.", }
@@ -2511,24 +2511,24 @@ draftextMobilenolist:any=[];
     }
     onsubstitutes() {
         const dialogRef = this._matDialog.open(SubstitutesComponent,
-          {
-                 width:"45%",
-                height:"60%",
+            {
+                width: "45%",
+                height: "60%",
                 panelClass: 'responsive-dialog'
-           });
+            });
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);
         });
     }
-     Oncheckitemmolecule(contact) {
+    Oncheckitemmolecule(contact) {
         const dialogRef = this._matDialog.open(SubstitutesComponent,
-          {
-                 width:"45%",
-                height:"60%",
-                data:{
-                    obj:contact
+            {
+                width: "45%",
+                height: "60%",
+                data: {
+                    obj: contact
                 }
-           });
+            });
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);
         });
@@ -2537,7 +2537,7 @@ draftextMobilenolist:any=[];
         this.dateTimeObj = dateTimeObj;
     }
     getWhatsappshareSales(el, vmono) {
-        var m_data = {
+        const m_data = {
             insertWhatsappsmsInfo: {
                 mobileNumber: vmono || 0,
                 smsString:
@@ -2569,10 +2569,10 @@ draftextMobilenolist:any=[];
                 });
             }
         });
-    } 
+    }
     OnSalesprint(SalesID, OP_IP_Type) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     { "fieldName": "SalesID", "fieldValue": String(SalesID), "opType": "13" },
                     { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
@@ -2595,7 +2595,7 @@ draftextMobilenolist:any=[];
             });
         }, 100);
     }
-    getSelectedObjextMobile(event) { 
+    getSelectedObjextMobile(event) {
         if (event) {
             this.ItemSubform.get('externalPatientName').setValue(event)
             this.ItemSubform.get('doctorName').setValue(event)
@@ -2606,7 +2606,7 @@ draftextMobilenolist:any=[];
             extAddressNameElement.focus();
         }
     }
-    getSelectedObjextPatient(event: any): void { 
+    getSelectedObjextPatient(event: any): void {
         if (event) {
             this.ItemSubform.get('extMobileNo').setValue(event)
             this.ItemSubform.get('doctorName').setValue(event)
@@ -2617,16 +2617,16 @@ draftextMobilenolist:any=[];
             extAddressNameElement.focus();
         }
     }
-    getSelectedObjExtDocName(event) { 
+    getSelectedObjExtDocName(event) {
         const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
         if (extAddressNameElement) {
             extAddressNameElement.focus();
         }
     }
-  
+
     getPurchaseRateWise(event) {
         // Update gst type of table data  
-        if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) { 
+        if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) {
             this.ItemSubform.get('FinalDiscPer').reset();
             this.ItemSubform.get('discAmount').reset();
             this.ItemSubform.get('FinalDiscPer').disable();
@@ -2636,41 +2636,41 @@ draftextMobilenolist:any=[];
             this._salesService.ItemSearchGroup.get('DiscAmt').reset();
             this._salesService.ItemSearchGroup.get('DiscPer').disable();
             this._salesService.ItemSearchGroup.get('DiscAmt').disable();
-            
-              Swal.fire({
-                    icon: 'info',
-                    title: 'Discount Disabled',
-                    text: 'Discounts are disabled while Purchase Rate Wise mode is active.',
-                      timer: 3000, // auto close after 3 seconds
-                    confirmButtonText: 'OK',
-                });
 
-         } else {
+            Swal.fire({
+                icon: 'info',
+                title: 'Discount Disabled',
+                text: 'Discounts are disabled while Purchase Rate Wise mode is active.',
+                timer: 3000, // auto close after 3 seconds
+                confirmButtonText: 'OK',
+            });
+
+        } else {
             this.ItemSubform.get('FinalDiscPer').enable();
             this.ItemSubform.get('discAmount').enable();
             this._salesService.ItemSearchGroup.get('DiscPer').enable();
             this._salesService.ItemSearchGroup.get('DiscAmt').enable();
-        } 
+        }
         this.saleSelectedDatasource.data.forEach((item) => {
             this.getCellCalculation(item);
-        }) 
+        })
     }
-    checkCreditreason(){
+    checkCreditreason() {
         const formvalue = this.ItemSubform.getRawValue();
-        if(formvalue?.CashPay == 'Credit'){
+        if (formvalue?.CashPay == 'Credit') {
             this.CreditReasonShow = true
-        }else{
+        } else {
             this.CreditReasonShow = false
         }
     }
-    OnCreditReasonchange(event){
-       this.ItemSubform.patchValue({
-        CredirReasonName:event.text
-       })
+    OnCreditReasonchange(event) {
+        this.ItemSubform.patchValue({
+            CredirReasonName: event.text
+        })
     }
     // it allowed only Digit 
     keyPressDigitsOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -2678,46 +2678,46 @@ draftextMobilenolist:any=[];
             return false;
         }
     }
-        // it allowed only Digit & decimal
+    // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
             event.preventDefault();
             return false;
         }
-    } 
+    }
 
-               UserDicPerLimit: any = 0;
-              getAccessDetail() {
-                  // debugger
-                  var SelectQuery = {
-                      "first": 0,
-                      "rows": 999,
-                      "sortField": "AccessValueId",
-                      "sortOrder": 0,
-                      "filters": [
-                          {
-                              "fieldName": "LoginId",
-                              "fieldValue": String(this._loggedService.currentUserValue.userId), //"30091",
-                              "opType": "Equals"
-                          }
-                      ],
-                      "exportType": "JSON",
-                      "columns": []
-                  }
-                  this._salesService.getAccessDetailList(SelectQuery).subscribe(response => {
-                      const getUserAccesDetList = response.data as UserDetail[];
-                      console.log("get Access data:", getUserAccesDetList)
-          
-                      const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
-                      console.log(discountData)
-                      if (discountData?.accessValue) {
-                          this.UserDicPerLimit = discountData?.accessInputValue || 0
-                      }
-                  });
-              }
+    UserDicPerLimit: any = 0;
+    getAccessDetail() {
+        // debugger
+        const SelectQuery = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "AccessValueId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "LoginId",
+                    "fieldValue": String(this._loggedService.currentUserValue.userId), //"30091",
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        this._salesService.getAccessDetailList(SelectQuery).subscribe(response => {
+            const getUserAccesDetList = response.data as UserDetail[];
+            console.log("get Access data:", getUserAccesDetList)
+
+            const discountData = response.data.find(x => x.accessValueName === 'IsDiscount');
+            console.log(discountData)
+            if (discountData?.accessValue) {
+                this.UserDicPerLimit = discountData?.accessInputValue || 0
+            }
+        });
+    }
 }
 
 export class IndentList {
@@ -2764,9 +2764,9 @@ export class IndentList {
     NetAmount: any;
     MarginAmt: any;
     QtyPerDay: any;
-    MRP:any; 
-    MRPRate:any;
-    MRPRateTotal:any; 
+    MRP: any;
+    MRPRate: any;
+    MRPRateTotal: any;
     IsPurRate: any;
     /**
      * Constructor
@@ -2816,7 +2816,7 @@ export class IndentList {
             this.DiscPer = IndentList.DiscPer || 0;
             this.QtyPerDay = IndentList.QtyPerDay || 0;
             this.MRP = IndentList.MRP || 0;
-            this.MRPRate = IndentList.MRPRate || 0; 
+            this.MRPRate = IndentList.MRPRate || 0;
             this.MRPRateTotal = IndentList.MRPRateTotal || 0;
         }
     }

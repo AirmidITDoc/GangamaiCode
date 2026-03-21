@@ -35,11 +35,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [TypeMasterComponent,
-    NewTypeMasterComponent
-  ],
-  imports: [
-    RouterModule.forChild(routes),
+    declarations: [TypeMasterComponent,
+        NewTypeMasterComponent
+    ],
+    imports: [
+        RouterModule.forChild(routes),
         SharedModule,
         MatDialogModule,
         MatButtonModule,
@@ -64,7 +64,7 @@ const routes: Routes = [
         MatExpansionModule,
         MatCardModule,
         MatSlideToggleModule,
-  ],
-   providers: [DatePipe]
+    ],
+    providers: [DatePipe]
 })
 export class TypeMasterModule { }

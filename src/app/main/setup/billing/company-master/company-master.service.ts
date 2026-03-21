@@ -154,26 +154,26 @@ export class CompanyMasterService {
 
             emailId: ['', [Validators.email]],
             website: [''],
-         
-            compTypeId: ['', [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+            compTypeId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isSubCompany: [false],
             paymodeOfPayId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-         
-            tanno: ['',  Validators.maxLength(13)],
-            gstin: ['',  Validators.maxLength(10)],
-            panNo: ['',  Validators.maxLength(10)],
-            adminCharges: [0,  Validators.maxLength(3)],
+
+            tanno: ['', Validators.maxLength(13)],
+            gstin: ['', Validators.maxLength(10)],
+            panNo: ['', Validators.maxLength(10)],
+            adminCharges: [0, Validators.maxLength(3)],
             // isActive: [true],
             pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
             Validators.minLength(6),
             Validators.maxLength(6),]],
-            faxNo: [" ",  Validators.maxLength(10)],
+            faxNo: [" ", Validators.maxLength(10)],
             traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            creditDays: [0,  Validators.maxLength(3)],
-            
+            creditDays: [0, Validators.maxLength(3)],
+
             loginWebsiteUser: "",
             loginWebsitePassword: "",
-           
+
         });
     }
 

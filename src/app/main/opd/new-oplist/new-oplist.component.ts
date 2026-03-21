@@ -1,3 +1,5 @@
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { DatePipe } from '@angular/common';
 import { Component, ComponentRef, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -6,25 +8,21 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
 import { Color, gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ToastrService } from 'ngx-toastr';
-import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
-import { OPListService } from './oplist.service';
-import { ConfigService } from 'app/core/services/config.service';
-import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ConfigService } from 'app/core/services/config.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { PatientDetailsPopoverComponent } from '../appointment-list/patient-details-popover/patient-details-popover.component';
-import { ComponentPortal } from '@angular/cdk/portal';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { cond } from 'lodash';
- 
+import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
+import { OPListService } from './oplist.service';
+import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
+
 
 @Component({
     selector: 'app-new-oplist',
@@ -287,15 +285,15 @@ export class NewOPListComponent implements OnInit {
         } else {
             // Use thermal print with preview - shows preview first, then auto-prints
             this.viewgetOPBillThermalReportPdf(element.billNo)
-           // this.commonService.OnThermalPrint("BillNo", element.billNo, "OpBillReceiptT");
+            // this.commonService.OnThermalPrint("BillNo", element.billNo, "OpBillReceiptT");
         }
     }
-//All Good print is ok
-        currentDate= new Date();
+    //All Good print is ok
+    currentDate = new Date();
     viewgetOPBillThermalReportPdf(BillNo) {
- 
+
         debugger
-        let param = {
+        const param = {
             "searchFields": [
                 {
                     "fieldName": 'BillNo',
@@ -307,19 +305,19 @@ export class NewOPListComponent implements OnInit {
         }
         this._OPListService.getReportView(param).subscribe(res => {
             console.log(res)
-            this.reportPrintObjList = res as BrowseOPDBill[]; 
+            this.reportPrintObjList = res as BrowseOPDBill[];
             setTimeout(() => {
                 this.print3();
             }, 1000);
         });
     }
-  reportPrintObj: BrowseOPDBill;
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  reportPrintObjList: BrowseOPDBill[] = [];
+    reportPrintObj: BrowseOPDBill;
+    subscriptionArr: Subscription[] = [];
+    printTemplate: any;
+    reportPrintObjList: BrowseOPDBill[] = [];
 
- @ViewChild('billTemplate2') billTemplate2: ElementRef;
-   print3() {
+    @ViewChild('billTemplate2') billTemplate2: ElementRef;
+    print3() {
         const popupWin = window.open('', '_blank', 'top=0,left=0,width=300');
 
         popupWin.document.write(`
@@ -354,7 +352,7 @@ export class NewOPListComponent implements OnInit {
         `);
 
         popupWin.document.close();
-        }
+    }
 
     OnCompanyBill(element) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -363,10 +361,10 @@ export class NewOPListComponent implements OnInit {
             maxWidth: "98vw",
             height: "96vh",
             width: "100%",
-            data:{
-                Obj:element,
-                OPIPType:0
-            } 
+            data: {
+                Obj: element,
+                OPIPType: 0
+            }
         });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -377,18 +375,18 @@ export class NewOPListComponent implements OnInit {
 
         console.log('Third action clicked for:', element);
         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
-       
+
         if (m == "Bill Print-Package Info")
             this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
         else if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-        else if (m == "Patient Statement Print") {   
-             this.OnPaitentFinalPrint(element)
-          } 
+        else if (m == "Patient Statement Print") {
+            this.OnPaitentFinalPrint(element)
+        }
     }
     OnPaitentFinalPrint(element) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     { "fieldName": "OPIPId", "fieldValue": String(element.opdipdid), "opType": "13" },
                     { "fieldName": "OPIPType", "fieldValue": String(element.opD_IPD_Type), "opType": "13" }
@@ -414,9 +412,9 @@ export class NewOPListComponent implements OnInit {
 
     openPaymentpopup(contact) {
         console.log(contact)
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['RegNo'] = contact.regNo || 0;
+            PatientHeaderObj['RegNo'] = contact.regNo || 0;
         PatientHeaderObj['PatientName'] = contact.patientName || '';
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID || 0;
         PatientHeaderObj['Age'] = contact.patientAge || 0;
@@ -425,8 +423,8 @@ export class NewOPListComponent implements OnInit {
         PatientHeaderObj['TariffName'] = contact.tariffName || '';
         PatientHeaderObj['CompanyName'] = contact.companyName || '';
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
-        PatientHeaderObj['CompanyId'] = contact.companyId || 0; 
-        PatientHeaderObj['billNo'] = contact.billNo || 0;  
+        PatientHeaderObj['CompanyId'] = contact.companyId || 0;
+        PatientHeaderObj['billNo'] = contact.billNo || 0;
         PatientHeaderObj['TransactionLabel'] = 'OP-Settlement';
         this.vMobileNo = contact.mobileNo;
         const dialogRef = this._matDialog.open(OpPaymentComponent,
@@ -442,23 +440,23 @@ export class NewOPListComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result.IsSubmitFlag == true) {
-                let PaymentObj = result.submitDataPay.ipPaymentInsert 
-                
+                const PaymentObj = result.submitDataPay.ipPaymentInsert
+
                 this.vpaidamt = result.PaidAmt;
                 this.vbalanceamt = result.BalAmt
                 PaymentObj['BillNo'] = contact.billNo;
-                let updateBillobj = {};
+                const updateBillobj = {};
                 updateBillobj['BillNo'] = contact.billNo;
                 updateBillobj['balanceAmt'] = result.BillBalanceAmount;
-                console.log(result.submitDataPay.ipPaymentInsert) 
+                console.log(result.submitDataPay.ipPaymentInsert)
 
-                let data = {
+                const data = {
                     opCreditPayment: PaymentObj,
                     "billUpdate": {
                         "billNo": contact.billNo,
                         "balanceAmt": result.BillBalanceAmount
                     },
-                    tPayments: result.submitDataPay.ipModePaymentInsert, 
+                    tPayments: result.submitDataPay.ipModePaymentInsert,
 
                 }
                 console.log(data)
@@ -673,7 +671,7 @@ export class NewOPListComponent implements OnInit {
     private hoverTimeout: any = null;
     private patientCloseTimeout: any = null;
     private doctorCloseTimeout: any = null;
-    
+
     openEmailDetailsPopover(event: MouseEvent, patientData: any) {
         event.stopPropagation();
 
@@ -728,7 +726,7 @@ export class NewOPListComponent implements OnInit {
             const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
             const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
             componentRef.instance.patientData = patientData;
-            
+
             // Handle mouse events on the overlay element
             const overlayElement = this.EmailOverlayRef.overlayElement;
             overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
@@ -755,7 +753,7 @@ export class NewOPListComponent implements OnInit {
             }
         }, 200);
     }
-        openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
+    openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
         event.stopPropagation();
 
         // Clear any existing timeout
@@ -809,7 +807,7 @@ export class NewOPListComponent implements OnInit {
             const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
             const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
             componentRef.instance.patientData = patientData;
-            
+
             // Handle mouse events on the overlay element
             const overlayElement = this.whatsappOverlayRef.overlayElement;
             overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
@@ -843,15 +841,15 @@ export class NewOPListComponent implements OnInit {
             this.patientCloseTimeout = null;
         }
     }
-      
-        getWhatsappshareBill(el) {
+
+    getWhatsappshareBill(el) {
         console.log(el);
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
             smsType: "OPBill",
-            patientId:el.regNo
+            patientId: el.regNo
         })
     }
     //oppatment
@@ -910,7 +908,7 @@ export class NewOPListComponent implements OnInit {
     //         const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
     //         const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
     //         componentRef.instance.patientData = patientData;
-            
+
     //         // Handle mouse events on the overlay element
     //         const overlayElement = this.EmailOverlayRef.overlayElement;
     //         overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
@@ -937,7 +935,7 @@ export class NewOPListComponent implements OnInit {
     //         }
     //     }, 200);
     // }
-        openWhatsappDetailsPopoverpay(event: MouseEvent, patientData: any) {
+    openWhatsappDetailsPopoverpay(event: MouseEvent, patientData: any) {
         event.stopPropagation();
 
         // Clear any existing timeout
@@ -991,7 +989,7 @@ export class NewOPListComponent implements OnInit {
             const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
             const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
             componentRef.instance.patientData = patientData;
-            
+
             // Handle mouse events on the overlay element
             const overlayElement = this.whatsappOverlayRef.overlayElement;
             overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpenPayment());
@@ -1025,15 +1023,15 @@ export class NewOPListComponent implements OnInit {
             this.patientCloseTimeout = null;
         }
     }
-      
-        getWhatsappshareBillpayment(el) {
+
+    getWhatsappshareBillpayment(el) {
         console.log(el);
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.paymentId,
             smsType: "OPBill",
-            patientId:el.regNo
+            patientId: el.regNo
         })
     }
     Onemail(contact) {
@@ -1044,14 +1042,14 @@ export class NewOPListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType:'OPBill'
+                    emailType: 'OPBill'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
         });
     }
-       OnemailPaymentReceipt(contact) {
+    OnemailPaymentReceipt(contact) {
         console.log(contact)
         const dialogRef = this._matDialog.open(EmailSendComponent,
             {
@@ -1060,7 +1058,7 @@ export class NewOPListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType:'OPReceipt'
+                    emailType: 'OPReceipt'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -1068,40 +1066,40 @@ export class NewOPListComponent implements OnInit {
         });
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
             event.preventDefault();
             return false;
         }
-    } 
+    }
     Onmessage(data) { }
 
 
 }
 
 export class BrowseOPDBill {
-    BillNo: Number;
+    BillNo: number;
     RegNo: any;
-    PatientName: any;  
-    ConcessionAmount: any; 
-    NetPayableAmt: any; 
+    PatientName: any;
+    ConcessionAmount: any;
+    NetPayableAmt: any;
     AddedByName: any;
     BillTime: any;
     DiscComments: any;
     PaymentMode: any;
     TokenNo: any;
-    RegId: number; 
+    RegId: number;
     FirstName: string;
     Middlename: string;
     LastName: string;
 
     TotalAmt: number;
-    ConcessionAmt: number; 
+    ConcessionAmt: number;
     BillDate: any;
     IPDNo: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: number;
     price: number;
     Qty: number;
@@ -1121,13 +1119,13 @@ export class BrowseOPDBill {
     PBillNo: string;
     BDate: Date;
     VisitDate: Date;
-    BalanceAmt: number; 
+    BalanceAmt: number;
     Department: any;
     Address: any;
     MobileNo: any;
-    CashCounterID: number; 
-    RefundAmt:any;
-    HospitalHeaderLine:any;
+    CashCounterID: number;
+    RefundAmt: any;
+    HospitalHeaderLine: any;
     //NEFTPayAmount:number;
     /**
      * Constructor
@@ -1137,8 +1135,8 @@ export class BrowseOPDBill {
     constructor(BrowseOPDBill) {
         {
             this.BillNo = BrowseOPDBill.BillNo || '';
-             this.RefundAmt = BrowseOPDBill.RefundAmt || '';
-              this.ConcessionAmount = BrowseOPDBill.ConcessionAmount || '';
+            this.RefundAmt = BrowseOPDBill.RefundAmt || '';
+            this.ConcessionAmount = BrowseOPDBill.ConcessionAmount || '';
             this.RegId = BrowseOPDBill.RegId || '';
             this.RegNo = BrowseOPDBill.RegNo || '';
             this.PatientName = BrowseOPDBill.PatientName || '';

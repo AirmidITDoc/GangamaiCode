@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { DashboardService } from '../dashboard.service';
 import Chart, { Color } from 'chart.js/auto';
+import { DashboardService } from '../dashboard.service';
 import { BedDetailsDialogComponent } from './bed-details-dialog/bed-details-dialog.component';
 
 @Component({
@@ -257,7 +257,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             data: {
                 datasets: [
                     {
-                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3' ,],
+                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3',],
                         data: [this.totalOccupied, this.totalAvailable, 8, 3, 1]
                     }
                 ]
@@ -375,7 +375,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         };
 
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
-            let apiData = res && res.length ? res[0] : {};
+            const apiData = res && res.length ? res[0] : {};
             this.dashBedStatistics = apiData;
             console.log("apiDataapiDataapiData", apiData)
 
@@ -388,7 +388,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         || [],
                     datasets: [
                         {
-                            backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3' ],
+                            backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#4b48f3', '#4a25f3'],
                             data: Object.entries(apiData)
                                 .filter(([key]) => key !== 'TotalBedCount') // skip that key
                                 .map(([_, value]) => value) || []
@@ -418,7 +418,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             "mode": "DashAdmissionDateWiseCount"
         };
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
-            let apiData = res && res.length ? res : {};
+            const apiData = res && res.length ? res : {};
             console.log(res)
             return new Chart('BedAdmissionsLine', {
                 type: 'line',
@@ -471,8 +471,8 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         };
 
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
-            let apiData = res && res.length ? res : {};
-                console.log(res)
+            const apiData = res && res.length ? res : {};
+            console.log(res)
             return new Chart('BedDischargeLine', {
                 type: 'line',
                 data: {
@@ -529,7 +529,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
 
     getWardDetails(item: any) {
         this.isTableLoading = true;
-        let reqParam = {
+        const reqParam = {
             WardId: item
         }
         this._dashboardServices.getWardDetails(reqParam).subscribe(data => {

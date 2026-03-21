@@ -76,7 +76,7 @@ debugger
     if (control?.invalid) return;
 
     // Findin the next element.
-    let nextElement = this.formElements
+    const nextElement = this.formElements
       .slice(this.formElements.indexOf(this.el.nativeElement) + 1)
       .find(el => el && !el.hasAttribute('readonly') && !el.hasAttribute('disabled'));
 

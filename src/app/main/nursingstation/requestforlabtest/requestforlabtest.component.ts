@@ -3,16 +3,15 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@a
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab.component';
 import { RequestforlabtestService } from './requestforlabtest.service';
-import Swal from 'sweetalert2';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-requestforlabtest',
@@ -146,7 +145,7 @@ export class RequestforlabtestComponent implements OnInit {
     getSelectedRow(row: any): void {
 
         console.log("Selected row : ", row);
-        let vRequestId = row.requestId
+        const vRequestId = row.requestId
         // debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
@@ -189,7 +188,7 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -211,7 +210,7 @@ export class RequestforlabtestComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                let sub = {
+                const sub = {
                     "requestId": data.requestId
                 }
                 this._RequestforlabtestService.labreqCancle(sub).subscribe((response: any) => {
@@ -252,7 +251,7 @@ export class RequestforlabtestComponent implements OnInit {
     Printresultentry(row) {
         // debugger
         console.log("WithHeader", row);
-        let pathologyDelete = [{
+        const pathologyDelete = [{
             pathReportId: row.pathReportID
         }];
 
@@ -276,7 +275,7 @@ export class RequestforlabtestComponent implements OnInit {
     Printresultentrywithheader(row: any) {
 
         console.log("WithHeader", row);
-        let pathologyDelete = [{
+        const pathologyDelete = [{
             pathReportId: row.pathReportID
         }];
 

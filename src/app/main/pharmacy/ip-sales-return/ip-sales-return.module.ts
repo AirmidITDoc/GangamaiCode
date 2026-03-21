@@ -37,10 +37,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { IpSalesReturnComponent } from '../ip-sales-return/ip-sales-return.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: IpSalesReturnComponent 
-  },
+    {
+        path: '**',
+        component: IpSalesReturnComponent
+    },
 ];
 
 @NgModule({

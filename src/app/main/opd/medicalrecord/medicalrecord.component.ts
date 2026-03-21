@@ -1,32 +1,32 @@
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { DatePipe } from '@angular/common';
 import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
+import { ConfigService } from 'app/core/services/config.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
 import { AppointmentlistService } from '../appointment-list/appointmentlist.service';
 import { CrossConsultationComponent } from '../appointment-list/cross-consultation/cross-consultation.component';
+import { PatientDetailsPopoverComponent } from '../appointment-list/patient-details-popover/patient-details-popover.component';
 import { UpdateRegPatientInfoComponent } from '../appointment-list/update-reg-patient-info/update-reg-patient-info.component';
+import { GastrologyEmrComponent } from '../gastrology-emr/gastrology-emr.component';
 import { NewCasepaperComponent } from '../new-casepaper/new-casepaper.component';
 import { NewRegistrationComponent } from '../registration/new-registration/new-registration.component';
 import { RegInsert } from '../registration/registration.component';
 import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
-import Swal from 'sweetalert2';
-import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { ConfigService } from 'app/core/services/config.service';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
-import { GastrologyEmrComponent } from '../gastrology-emr/gastrology-emr.component';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { PatientDetailsPopoverComponent } from '../appointment-list/patient-details-popover/patient-details-popover.component';
-import { ComponentPortal } from '@angular/cdk/portal';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -77,7 +77,7 @@ export class MedicalrecordComponent implements OnInit {
         private formBuilder: FormBuilder,
         public _ConfigService: ConfigService, public permissionService: PagePermissionService,
         public toastr: ToastrService, public datePipe: DatePipe,
-         private overlay: Overlay, 
+        private overlay: Overlay,
     ) { }
 
     ngOnInit(): void {
@@ -98,7 +98,7 @@ export class MedicalrecordComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-       this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
 
     }
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -126,7 +126,7 @@ export class MedicalrecordComponent implements OnInit {
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300,type: gridColumnTypes.template },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
@@ -232,7 +232,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCasepaperComponent,
             {
                 maxWidth: "95vw",
@@ -253,7 +253,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(GastrologyEmrComponent,
             {
                 maxWidth: "95vw",
@@ -274,7 +274,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(PatientcertificateComponent,
             {
                 maxWidth: "95vw",
@@ -296,7 +296,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
@@ -393,7 +393,7 @@ export class MedicalrecordComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         console.log(element)
         const dialogRef = this._matDialog.open(CrossConsultationComponent,
             {
@@ -420,7 +420,7 @@ export class MedicalrecordComponent implements OnInit {
         console.log(data)
         this.Vtotalcount;
         console.log(data)
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i].patientOldNew == 1) {
                 this.VNewcount = this.VNewcount + 1;
             }
@@ -494,7 +494,7 @@ export class MedicalrecordComponent implements OnInit {
         this.VBillcount = 0;
         this.VCrossConscount = 0;
 
-        let data =
+        const data =
         {
             "first": 0,
             "rows": 150,
@@ -586,94 +586,94 @@ export class MedicalrecordComponent implements OnInit {
         };
     }
     private overlayRef: OverlayRef | null = null;
-    private patientOverlayRef: OverlayRef | null = null; 
+    private patientOverlayRef: OverlayRef | null = null;
     private hoverTimeout: any = null;
     private patientCloseTimeout: any = null;
     private doctorCloseTimeout: any = null;
-        openPatientDetailsPopover(event: MouseEvent, patientData: any) {
-            event.stopPropagation();
-    
-            // Clear any existing timeout
-            if (this.hoverTimeout) {
-                clearTimeout(this.hoverTimeout);
-            }
-    
-            // Add small delay to prevent flickering
-            this.hoverTimeout = setTimeout(() => {
-                // Close any existing patient popover
-                if (this.patientOverlayRef) {
-                    this.patientOverlayRef.dispose();
-                    this.patientOverlayRef = null;
-                }
-    
-                const positionStrategy = this.overlay.position()
-                    .flexibleConnectedTo(event.target as HTMLElement)
-                    .withPositions([
-                        {
-                            originX: 'start',
-                            originY: 'bottom',
-                            overlayX: 'start',
-                            overlayY: 'top',
-                        },
-                        {
-                            originX: 'start',
-                            originY: 'top',
-                            overlayX: 'start',
-                            overlayY: 'bottom',
-                        },
-                        {
-                            originX: 'end',
-                            originY: 'center',
-                            overlayX: 'start',
-                            overlayY: 'center',
-                        },
-                        {
-                            originX: 'start',
-                            originY: 'center',
-                            overlayX: 'end',
-                            overlayY: 'center',
-                        }
-                    ]);
-    
-                this.patientOverlayRef = this.overlay.create({
-                    positionStrategy,
-                    scrollStrategy: this.overlay.scrollStrategies.close(),
-                    hasBackdrop: false,
-                });
-    
-                const portal = new ComponentPortal(PatientDetailsPopoverComponent);
-                const componentRef: ComponentRef<PatientDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
-                componentRef.instance.patientData = patientData;
-    
-                // Handle mouse events on the overlay element
-                const overlayElement = this.patientOverlayRef.overlayElement;
-                overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
-                overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
-            }, 300); // 300ms delay before showing popover
-        }
-    
-        closePatientDetailsPopover() {
-            // Clear timeout if popover hasn't opened yet
-            if (this.hoverTimeout) {
-                clearTimeout(this.hoverTimeout);
-                this.hoverTimeout = null;
-            }
-    
-            // Clear any existing close timeout
-            if (this.patientCloseTimeout) {
-                clearTimeout(this.patientCloseTimeout);
-            }
-    
-            // Add delay before closing to allow moving mouse to popover
-            this.patientCloseTimeout = setTimeout(() => {
-                if (this.patientOverlayRef) {
-                    this.patientOverlayRef.dispose();
-                    this.patientOverlayRef = null;
-                }
-            }, 200);
+    openPatientDetailsPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
         }
 
-            keepPatientPopoverOpen() {
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.patientOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(PatientDetailsPopoverComponent);
+            const componentRef: ComponentRef<PatientDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.patientOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+
+    closePatientDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepPatientPopoverOpen() {
         // Clear close timeout when hovering over popover
         if (this.patientCloseTimeout) {
             clearTimeout(this.patientCloseTimeout);
@@ -681,13 +681,13 @@ export class MedicalrecordComponent implements OnInit {
         }
     }
 
-        ngOnDestroy() {
+    ngOnDestroy() {
         if (this.overlayRef) {
             this.overlayRef.dispose();
         }
         if (this.patientOverlayRef) {
             this.patientOverlayRef.dispose();
-        } 
+        }
         if (this.hoverTimeout) {
             clearTimeout(this.hoverTimeout);
         }
@@ -702,7 +702,7 @@ export class MedicalrecordComponent implements OnInit {
 
 
 export class VisitMaster1 {
-    visitId: Number;
+    visitId: number;
     regId: number;
     RegID: number;
     visitDate: any;
@@ -767,8 +767,8 @@ export class VisitMaster1 {
 
 
 export class Regdetail {
-    RegId: Number;
-    regId: Number;
+    RegId: number;
+    regId: number;
     RegDate: Date;
     RegTime: Date;
     PrefixId: number;
@@ -786,7 +786,7 @@ export class Regdetail {
     RegNo: string;
     DateofBirth: Date;
     Age: any;
-    GenderId: Number;
+    GenderId: number;
     PhoneNo: string;
     MobileNo: string;
     AddedBy: number;
@@ -797,7 +797,7 @@ export class Regdetail {
     StateId: number;
     CityId: number;
     MaritalStatusId: number;
-    IsCharity: Boolean;
+    IsCharity: boolean;
     ReligionId: number;
     AreaId: number;
     VillageId: number;
@@ -875,7 +875,7 @@ export class ChargesList {
     ChargesId: number;
     ServiceId: number;
     serviceId: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: any;
     Qty: any;
     TotalAmt: number;
@@ -883,7 +883,7 @@ export class ChargesList {
     DiscAmt: number;
     NetAmount: number;
     DoctorId: number;
-    ChargeDoctorName: String;
+    ChargeDoctorName: string;
     ChargesDate: Date;
     IsPathology: boolean;
     IsRadiology: boolean;

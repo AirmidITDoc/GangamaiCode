@@ -2,12 +2,12 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
-import { CasepaperService } from '../casepaper.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { CasepaperService } from '../casepaper.service';
 
 export interface MedicineItem {
     DrugId?: number;
@@ -35,8 +35,8 @@ export interface MedicineItem {
     precriptionId?: number;
     presId?: number;
     Presid?: number;
-    instructionId?:any;
-    doseId?:any;
+    instructionId?: any;
+    doseId?: any;
 }
 
 @Component({
@@ -120,7 +120,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     }
 
     get itemApiUrlFull(): string {
-       // return this.itemApiUrl || `ItemMaster/GetItemListForPrescription?StoreId=${this.storeId}&ItemName=`;
+        // return this.itemApiUrl || `ItemMaster/GetItemListForPrescription?StoreId=${this.storeId}&ItemName=`;
         return this.itemApiUrl || `ItemMaster/GetItemListForPrescriptionSearch?StoreId=${this.storeId}&ItemName=`;
     }
 
@@ -203,8 +203,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.doseName = '';
         this.vItemGenericNameId = 0;
         this.vItemGenericName = '';
-        this.instruction=''
-        this.instructionId=0
+        this.instruction = ''
+        this.instructionId = 0
     }
 
     // Add new row
@@ -237,6 +237,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
 
         const qty = this.doseQtyPerDay || 0;
         const days = this.medicineForm.get('Day').value || this.vDay;
+        const Instruction = this.instruction || this.medicineForm.get('Instruction')?.value || ''
 
         row.DrugId = this.drugId || 0;
         row.DrugName = this.drugName || '';
@@ -247,7 +248,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         row.Days = days;
         row.QtyPerDay = this.doseQtyPerDay || 0;
         row.totalQty = qty * days;
-        row.instruction = this.instruction || '';
+        row.instruction = Instruction;
         row.instructionId = this.instructionId || '';
         // row.instruction = this.medicineForm.get('Instruction').value || '';
         row.editable = false;
@@ -266,10 +267,17 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.dsItemList.data = [...this.dsItemList.data];
 
         const drugControlValue = this.buildDrugAutocompleteValue(row);
+        let Instruction = ''
+        // if(row.instructionId > 0)
+        //    Instruction = row.instructionId
+        // else
+        Instruction = row.instruction
+
+
         this.medicineForm.patchValue({
             ItemId: drugControlValue,
             Day: row.Days ?? row.days ?? '',
-            Instruction: (row.instructionId ?? '').toString(),
+            Instruction: Instruction, // (row.instructionId ?? '').toString() || row.instruction,
             // Instruction: row.instruction ?? row.Instruction ?? '',
             ItemGenericNameId: (row.GenericId ?? row.genericId ?? row.genericid ?? '').toString(),
             DoseId: (row.DoseId ?? row.doseId ?? '').toString()
@@ -279,7 +287,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.drugId = row.DrugId || 0;
         this.drugName = row.DrugName || row.drugName || '';
         this.doseId = row.DoseId || 0;
-        this.instructionId=row.instructionId || 0
+        this.instructionId = row.instructionId || 0
         this.doseName = row.DoseName || row.doseName || '';
         this.vItemGenericNameId = row.GenericId || row.genericId || row.genericid || 0;
         this.vItemGenericName = row.GenericName || row.genericName || '';
@@ -324,8 +332,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.drugId = 0;
         this.drugName = '';
         this.doseId = 0;
-        this.instruction='';
-        this.instructionId=0;
+        this.instruction = '';
+        this.instructionId = 0;
         this.doseName = '';
         this.vItemGenericNameId = 0;
         this.vItemGenericName = '';
@@ -574,7 +582,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
 
     onInsetSelected(row: any): void {
         this.instructionId = row.value;
-        this.instruction=row.text
+        this.instruction = row.text
+        this.medicineForm.get('Instruction')?.setValue(this.instruction)
     }
 
     onInstSelectionChange(event: MatSelectChange): void {

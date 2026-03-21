@@ -1,35 +1,35 @@
+import { DatePipe } from "@angular/common";
 import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from "ngx-toastr";
-import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
-import { NewReservationComponent } from "./new-reservation/new-reservation.component";
-import { OtReservationService } from "./ot-reservation.service";
-import { DatePipe } from "@angular/common";
-import { PrintserviceService } from "app/main/shared/services/printservice.service";
-import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
-import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
-import { OtPopupComponent } from "./ot-popup/ot-popup.component";
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView, CalendarMonthViewDay } from "angular-calendar";
-import { finalize, fromEvent, Subject, takeUntil } from "rxjs";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
-import Swal from "sweetalert2";
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from "angular-calendar";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { EventColor, WeekViewHourSegment } from "calendar-utils";
-import { addDays, addMinutes, endOfDay, endOfWeek, isSameDay, endOfMonth, isSameMonth, startOfDay } from "date-fns";
-import { NewCheckinComponent } from "../patient-otmovement-tracking/new-checkin/new-checkin.component";
-import { NewOtPreoperationComponent } from "../ot-preoperation/new-ot-preoperation/new-ot-preoperation.component";
-import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-operation/new-ot-post-operation.component";
-import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-in.component";
-import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
-import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesia-record/new-anesthesia-record.component";
-import { OtOperativeNoteComponent } from "./ot-operative-note/ot-operative-note.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 import { NewMaterialConsumptionComponent } from "app/main/inventory/material-consumption/new-material-consumption/new-material-consumption.component";
+import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { PrintserviceService } from "app/main/shared/services/printservice.service";
+import { EventColor, WeekViewHourSegment } from "calendar-utils";
+import { addDays, addMinutes, endOfDay, endOfWeek, isSameDay, isSameMonth, startOfDay } from "date-fns";
+import { ToastrService } from "ngx-toastr";
+import { finalize, fromEvent, Subject, takeUntil } from "rxjs";
+import Swal from "sweetalert2";
+import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesia-record/new-anesthesia-record.component";
+import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
+import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-operation/new-ot-post-operation.component";
+import { NewOtPreoperationComponent } from "../ot-preoperation/new-ot-preoperation/new-ot-preoperation.component";
+import { NewCheckinComponent } from "../patient-otmovement-tracking/new-checkin/new-checkin.component";
+import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-in.component";
+import { NewReservationComponent } from "./new-reservation/new-reservation.component";
+import { OtOperativeNoteComponent } from "./ot-operative-note/ot-operative-note.component";
+import { OtPopupComponent } from "./ot-popup/ot-popup.component";
+import { OtReservationService } from "./ot-reservation.service";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -62,7 +62,7 @@ export class OTReservationComponent implements OnInit {
     msg: any;
     RequestName: any = "";
     tOtbookingRequestsForm: FormGroup;
-    autocompleteModeOTTable: String = "OttableMaster";
+    autocompleteModeOTTable: string = "OttableMaster";
     registerObj2 = new OtReserInsert({});
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -204,7 +204,7 @@ export class OTReservationComponent implements OnInit {
                 this.onClear();
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.statusFormFinal.invalid) {
                 for (const controlName in this.statusFormFinal.controls) {
                     if (this.statusFormFinal.controls[controlName].invalid) {
@@ -230,7 +230,7 @@ export class OTReservationComponent implements OnInit {
     onNewotReservation(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewReservationComponent,
             {
                 maxWidth: "90vw",
@@ -377,7 +377,7 @@ export class OTReservationComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(OtOperativeNoteComponent,
             {
                 maxWidth: "90vw",
@@ -543,7 +543,7 @@ export class OTReservationComponent implements OnInit {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                let submitData = {
+                const submitData = {
                     otReservationId: data.otReservationId,
                     reason: result.value,
                     isCancelledBy: this._loggedService.currentUserValue.userId
@@ -615,7 +615,7 @@ export class OTReservationComponent implements OnInit {
         debugger
         let fromDate, toDate;
         if (this.dateDisplay) {
-            var dates = this.dateDisplay.nativeElement.textContent.split('-');
+            const dates = this.dateDisplay.nativeElement.textContent.split('-');
             if (this.view == CalendarView.Week) {
                 fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
                 toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
@@ -629,7 +629,7 @@ export class OTReservationComponent implements OnInit {
             }
         }
         else {
-            var d = this.getWeekRange();
+            const d = this.getWeekRange();
             fromDate = d.sunday; toDate = d.saturday;
         }
         // this._service.getAppoinments(this.TableId, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
@@ -918,7 +918,7 @@ export class OTReservationComponent implements OnInit {
 }
 
 export class OtReserInsert {
-    regId: Number;
+    regId: number;
     regDate: Date;
     patientName: string;
     prefixId: number;
@@ -931,7 +931,7 @@ export class OtReserInsert {
     dateOfBirth: Date;
     dateofBirth: Date;
     age: any;
-    GenderId: Number;
+    GenderId: number;
     genderId: any;
     PhoneNo: string;
     phoneNo: string;
@@ -1154,8 +1154,8 @@ export class OtReserInsert {
             this.AnesthesiaId = OtReserInsert.AnesthesiaId || 0
             this.anesthesiaId = OtReserInsert.anesthesiaId || 0
             this.toDepartment = OtReserInsert.toDepartment || 0
-             this.refDocName = OtReserInsert.refDocName || ''
-  
+            this.refDocName = OtReserInsert.refDocName || ''
+
         }
     }
 }

@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { NewSubtapComponent } from "./new-subtap/new-subtap.component";
 import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
-import { FormGroup } from "@angular/forms";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 
@@ -21,15 +21,15 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class SubtpaCompanyMasterComponent implements OnInit {
-    myformSearch:FormGroup
+    myformSearch: FormGroup
     companyName: any = "";
-   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SubTpacompanyMaster, permissionType.Add);
-       
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SubTpacompanyMaster, permissionType.Add);
 
- @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-    allColumns =  [
-       { heading: "TPA Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    allColumns = [
+        { heading: "TPA Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Main Company Name", key: "mainCompanyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -37,7 +37,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         { heading: "State", key: "stateName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Country", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
@@ -46,9 +46,9 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                     // action: gridActions.edit, callback: (data: any) => {
                     //     this.onNew(data)
                     // }
-                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SubTpacompanyMaster, permissionType.Edit), callback: (data: any) => {
-                                                this.onNew(data);
-                                            }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SubTpacompanyMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onNew(data);
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
@@ -64,10 +64,10 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
-    
+
 
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.SubTpacompanyMaster,
+        permissionCode: permissionCodes.SubTpacompanyMaster,
         apiUrl: "SubTpaCompany/List",
         columnsList: this.allColumns,
         sortField: "subCompanyId",
@@ -109,8 +109,8 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
-    ngOnInit(): void { 
-        this.myformSearch=this._subtpacompanyService.createSearchForm()
+    ngOnInit(): void {
+        this.myformSearch = this._subtpacompanyService.createSearchForm()
     }
 
 
@@ -118,7 +118,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewSubtapComponent,
             {
                 maxWidth: "70vw",
@@ -145,10 +145,10 @@ export class SubTpaCompanyMaster {
     cityId: any;
     stateId: any;
     countryId: any;
-    pinNo: String;
-    phoneNo: String;
-    mobileNo: String;
-    faxNo: String;
+    pinNo: string;
+    phoneNo: string;
+    mobileNo: string;
+    faxNo: string;
     traiffId: any;
     isDeleted: boolean;
     AddedBy: number;
@@ -156,7 +156,7 @@ export class SubTpaCompanyMaster {
     IsCancelled: boolean;
     IsCancelledBy: number;
     IsCancelledDate: Date;
-    TypeName:any;
+    TypeName: any;
 
     /**
    * Constructor
@@ -171,7 +171,7 @@ export class CompanyMaster {
             this.companyId = CompanyMaster.companyId || 0;
             this.compTypeId = CompanyMaster.CompTypeId || 0;
             this.companyName = CompanyMaster.CompanyName || "";
-               this.CompanyName = CompanyMaster.CompanyName || "";
+            this.CompanyName = CompanyMaster.CompanyName || "";
             this.companyShortName == CompanyMaster.CompanyName || "";
             this.address = CompanyMaster.Address || "";
             this.cityId = CompanyMaster.cityId || 0;
@@ -188,7 +188,7 @@ export class CompanyMaster {
             this.IsCancelled = CompanyMaster.IsCancelled || "false";
             this.IsCancelledBy = CompanyMaster.IsCancelledBy || "";
             this.IsCancelledDate = CompanyMaster.IsCancelledDate || "";
- this.TypeName = CompanyMaster.TypeName || "";
+            this.TypeName = CompanyMaster.TypeName || "";
 
         }
     }

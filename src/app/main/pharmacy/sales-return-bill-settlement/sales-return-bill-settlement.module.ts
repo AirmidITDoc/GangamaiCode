@@ -38,10 +38,10 @@ import { SalesReturnBillSettlementComponent } from '../sales-return-bill-settlem
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SalesReturnBillSettlementComponent 
-  },
+    {
+        path: '**',
+        component: SalesReturnBillSettlementComponent
+    },
 ];
 
 @NgModule({

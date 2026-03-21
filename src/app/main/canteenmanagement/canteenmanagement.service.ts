@@ -1,39 +1,38 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CanteenmanagementService {
-  userFormGroup: FormGroup;
-  BillListFrom: FormGroup;
+    userFormGroup: FormGroup;
+    BillListFrom: FormGroup;
 
-  constructor(
-    public _frombuilder: UntypedFormBuilder,
-    public _httpClient: ApiCaller
-  ) {
-    this.userFormGroup = this.createUseFrom(),
-    this.BillListFrom = this.createBillListFrom()
-  }
+    constructor(
+        public _frombuilder: UntypedFormBuilder,
+        public _httpClient: ApiCaller
+    ) {
+        this.userFormGroup = this.createUseFrom(),
+            this.BillListFrom = this.createBillListFrom()
+    }
 
 
-  myFilterbrowseform(): FormGroup {
-    return this._frombuilder.group({
+    myFilterbrowseform(): FormGroup {
+        return this._frombuilder.group({
 
-      FirstName: ['', [Validators.maxLength(50),
-      Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
-      ]],
-      LastName: ['', [Validators.maxLength(50),
-      Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
-      ]],
-      fromDate: [(new Date()).toISOString()],
-      enddate: [(new Date()).toISOString()],
-      RegNo: '',
-      
-    });
-  }
+            FirstName: ['', [Validators.maxLength(50),
+            Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            LastName: ['', [Validators.maxLength(50),
+            Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+            ]],
+            fromDate: [(new Date()).toISOString()],
+            enddate: [(new Date()).toISOString()],
+            RegNo: '',
+
+        });
+    }
 
    CanBillbrowseform(): FormGroup {
     return this._frombuilder.group({
@@ -66,35 +65,35 @@ export class CanteenmanagementService {
       roomId: 0,
       cashCounterId: 0,
 
-    })
-  }
-  createBillListFrom() {
-    return this._frombuilder.group({
-      startdate: [new Date().toISOString()],
-      enddate: [new Date().toISOString()],
+        })
+    }
+    createBillListFrom() {
+        return this._frombuilder.group({
+            startdate: [new Date().toISOString()],
+            enddate: [new Date().toISOString()],
 
-    })
-  }
-  public getItemTable1List(Param) {
-    return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
-  }
+        })
+    }
+    public getItemTable1List(Param) {
+        return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName=" + Param);
+    }
 
-  public canteenrequestSave(employee) {
-    return this._httpClient.PostData("CanteenRequest/Insert", employee);
-  }
-  public getBillList(Param) {
-    return this._httpClient.PostData("CanteenRequest/CanteenRequestHeaderList", Param);
-  }
-  public getBillDetailsList(Param) {
-    return this._httpClient.PostData("CanteenRequest/CanteenRequestList", Param);
-  }
-  public getNursingBill(Param) {
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
-  }
+    public canteenrequestSave(employee) {
+        return this._httpClient.PostData("CanteenRequest/Insert", employee);
+    }
+    public getBillList(Param) {
+        return this._httpClient.PostData("CanteenRequest/CanteenRequestHeaderList", Param);
+    }
+    public getBillDetailsList(Param) {
+        return this._httpClient.PostData("CanteenRequest/CanteenRequestList", Param);
+    }
+    public getNursingBill(Param) {
+        return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
+    }
 
- public getItemLatestList(Param) {
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
-  }
+    public getItemLatestList(Param) {
+        return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard", Param);
+    }
 
    public canteenBillSave(employee) {
     return this._httpClient.PostData("CanteenBill/Insert", employee);

@@ -37,13 +37,13 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     }
 
     gridConfig: gridModel = {
-        apiUrl:"IPPrescription/PatietWiseMatetialList",
+        apiUrl: "IPPrescription/PatietWiseMatetialList",
         columnsList: [
-            { heading: "DateTime", key: "datet", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "StoreName", key: "storen", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "LandedTotalAmt", key: "landed", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA'},
+            { heading: "DateTime", key: "datet", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "StoreName", key: "storen", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "LandedTotalAmt", key: "landed", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -88,48 +88,48 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
     isShowDetailTable: boolean = false;
 
     GetDetails(data) {
-        
+
         this.gridConfig1 = {
-        apiUrl:"IPPrescription/PatietWiseMatetialList",
-        columnsList: [
-            { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "BatchExpDate", key: "batchexpDate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PerUnitPurchase", key: "perunitPurchase", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PerUnitLandedR", key: "patientName", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PerUnitMRPRate", key: "perunitmrpRate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "PurTotalAmt", key: "purtotalamt", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "LandedTotalAmt", key: "landtotalamt", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "MRPTotalAmt", key: "mrptotalamt", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "StartDate", key: "startdate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "EndDate", key: "enddate", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA'},
-            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA'},
-        ],
-        sortField: "MaterialConsumptionId",
-        sortOrder: 0,
-        filters: [
-            // { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
-            // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
-            // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
-        ]
-      }
+            apiUrl: "IPPrescription/PatietWiseMatetialList",
+            columnsList: [
+                { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "BatchExpDate", key: "batchexpDate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PerUnitPurchase", key: "perunitPurchase", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PerUnitLandedR", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PerUnitMRPRate", key: "perunitmrpRate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PurTotalAmt", key: "purtotalamt", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "LandedTotalAmt", key: "landtotalamt", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "MRPTotalAmt", key: "mrptotalamt", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "StartDate", key: "startdate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "EndDate", key: "enddate", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+            ],
+            sortField: "MaterialConsumptionId",
+            sortOrder: 0,
+            filters: [
+                // { fieldName: "ToStoreId", fieldValue: "10009", opType: OperatorComparer.Equals },
+                // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                // { fieldName: "Start", fieldValue: "0", opType: OperatorComparer.Equals },
+                // { fieldName: "Length", fieldValue: "10", opType: OperatorComparer.Equals }
+            ]
+        }
         this.isShowDetailTable = true;
         this.grid1.gridConfig = this.gridConfig1;
         this.grid1.bindGridData();
     }
 
-    
+
 
 
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
             {
-               maxHeight: '95vh',
+                maxHeight: '95vh',
                 width: '90%',
                 data: row
             });
@@ -146,8 +146,8 @@ export class MaterialConsumptionPatientwiseComponent implements OnInit {
         this.StoreId = obj.value
     }
 
-    EditConsumption(row:any=null) { 
-        let that = this;
+    EditConsumption(row: any = null) {
+        const that = this;
         const dialogRef = this._matDialog.open(NewPatientwiseMaterialconsumptionComponent,
             {
                 maxWidth: "90vw",

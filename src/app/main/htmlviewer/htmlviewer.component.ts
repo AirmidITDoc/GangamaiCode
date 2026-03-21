@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HtmlViewerModule } from './htmlviewer.module';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-htmlviewer',

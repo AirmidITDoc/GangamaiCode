@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from "@angular/material/card";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -34,9 +35,8 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { NewOPListComponent } from "./new-oplist.component";
-import { OPListService } from "./oplist.service"; 
-import { MatButtonToggleModule } from "@angular/material/button-toggle";
-import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';  
+import { OPListService } from "./oplist.service";
+import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
 
 const routes: Routes = [
     {

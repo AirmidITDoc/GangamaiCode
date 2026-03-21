@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [DrugmasterService, DatePipe]
 })
-export class DrugmasterModule {}
+export class DrugmasterModule { }

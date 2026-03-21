@@ -26,7 +26,7 @@ export class CertificateserviceService {
                 // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                 this._FormvalidationserviceService.allowEmptyStringValidator()]
             ],
-            certificateDesc: ["",Validators.required],
+            certificateDesc: ["", Validators.required],
             isActive: [true,
                 // [Validators.required]
             ],

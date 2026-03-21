@@ -4,11 +4,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { NewTaxComponent } from "./new-tax/new-tax.component";
 import { TaxMasterService } from "./tax-master.service";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-tax-master",
@@ -19,41 +19,42 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class TaxMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TaxMaster, permissionType.Add);
-       
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     taxNature: any = "";
-         allcolumns = [
-            { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TaxNatureName", key: "taxNature", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+    allcolumns = [
+        { heading: "TaxId", key: "id", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TaxNatureName", key: "taxNature", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
                     // action: gridActions.edit, callback: (data: any) => {
                     //     this.onSave(data);
                     // }
-                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.TaxMaster, permissionType.Edit), callback: (data: any) => {
-                                                this.onSave(data);
-                                            }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.TaxMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
-                        
+
                         this._TaxMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
                             this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
                 }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-        allfilters = [
-            { fieldName: "taxNature", fieldValue: "", opType: OperatorComparer.Equals },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-        ]
-    
- gridConfig: gridModel = {
-      permissionCode: permissionCodes.TaxMaster,
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "taxNature", fieldValue: "", opType: OperatorComparer.Equals },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+    ]
+
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.TaxMaster,
         apiUrl: "TaxMaster/List",
         columnsList: this.allcolumns,
         sortField: "id",
@@ -65,9 +66,9 @@ export class TaxMasterComponent implements OnInit {
         public toastr: ToastrService,
         public _matDialog: MatDialog, public permissionService: PagePermissionService
     ) { }
-    
+
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-28/05/2025
+    //filters addedby avdhoot vedpathak date-28/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'TaxNatureSearch')
@@ -108,8 +109,8 @@ export class TaxMasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
-        let that = this;
+
+        const that = this;
         const dialogRef = this._matDialog.open(NewTaxComponent,
             {
                 maxWidth: "50vw",

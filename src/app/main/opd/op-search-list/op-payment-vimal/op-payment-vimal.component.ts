@@ -5,13 +5,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
 import { IpdAdvanceBrowseModel } from 'app/main/ipd/browse-ip-advance/browse-ip-advance.component';
 import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { OPSearhlistService } from '../op-searhlist.service';
-import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-op-payment',
@@ -31,29 +30,29 @@ export class OpPaymentVimalComponent implements OnInit {
         'buttons'
     ];
     autocompleteModebank: string = "Bank";
-    autocompleteModecompany: string = "Company"; 
-      autocompleteModePaymentMode: string = "CommonpaymentMode";
+    autocompleteModecompany: string = "Company";
+    autocompleteModePaymentMode: string = "CommonpaymentMode";
     currentDate = new Date();
     patientDetailsFormGrp: FormGroup;
     selectedPaymnet1: string = '';
     paymentArr1: any[] = this.opService.getPaymentArr();
     IsAdv: boolean = false;
-        RegNo: any;
+    RegNo: any;
     DoctorName: any;
     CompanyName: any;
     Date: any;
-    currency:any='';
+    currency: any = '';
     DepartmentName: any;
     Age: any;
-    OPD_IPD_Id: any; 
-    netPayAmt: any = 0; 
+    OPD_IPD_Id: any;
+    netPayAmt: any = 0;
     nowDate: Date;
     amount1: number;
     screenFromString = 'payment-form';
     paidAmt: number;
     balanceAmt: number = 0;
     advanceData: any = {};
-    PatientName: any;    
+    PatientName: any;
     submitted: boolean = false;
     displayedColumns = [
         'Date',
@@ -64,8 +63,8 @@ export class OpPaymentVimalComponent implements OnInit {
         'RefundAmount'
     ];
     BindPaymentTypes() {
-        let full = this.opService.getPaymentArr();
-        let final = [];
+        const full = this.opService.getPaymentArr();
+        const final = [];
         full.forEach((item) => {
             if (!this.Payments.data.find(x => x.PaymentType == item.value)) {
                 final.push(item);
@@ -73,57 +72,57 @@ export class OpPaymentVimalComponent implements OnInit {
         });
         this.paymentArr1 = final;
     }
-getselectObjPayMode(obj){
-  console.log(obj)
-   this.selectedPaymnet1 = obj.text
-   this.onChangePaymentType();
-} 
-  onChangePaymentType() {
-    if (this.selectedPaymnet1 == 'CASH') {
-      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
-      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
-      this.patientDetailsFormGrp.get('regDate1').clearValidators();
-      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
-      this.patientDetailsFormGrp.get('bankName1').clearValidators();
-      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+    getselectObjPayMode(obj) {
+        console.log(obj)
+        this.selectedPaymnet1 = obj.text
+        this.onChangePaymentType();
     }
-    else if (this.selectedPaymnet1 == 'TDS' || this.selectedPaymnet1 == 'WF') {
-      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
-      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
-      this.patientDetailsFormGrp.get('regDate1').clearValidators();
-      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
-      this.patientDetailsFormGrp.get('bankName1').clearValidators();
-      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+    onChangePaymentType() {
+        if (this.selectedPaymnet1 == 'CASH') {
+            this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+            this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+            this.patientDetailsFormGrp.get('regDate1').clearValidators();
+            this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+            this.patientDetailsFormGrp.get('bankName1').clearValidators();
+            this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+        }
+        else if (this.selectedPaymnet1 == 'TDS' || this.selectedPaymnet1 == 'WF') {
+            this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+            this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+            this.patientDetailsFormGrp.get('regDate1').clearValidators();
+            this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+            this.patientDetailsFormGrp.get('bankName1').clearValidators();
+            this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+        }
+        else {
+            this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+            this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+            if (this.selectedPaymnet1 == 'CHEQUE') {
+                this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+            }
+            else if (this.selectedPaymnet1 == 'CARD') {
+                this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+            }
+            else if (this.selectedPaymnet1 == 'NET BANKING') {
+                this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+            }
+            else if (this.selectedPaymnet1 == 'UPI') {
+                this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+                this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+                this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+                this.patientDetailsFormGrp.get('bankName1').clearValidators();
+                this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+                // Optionally revalidate the whole form
+                this.patientDetailsFormGrp.updateValueAndValidity();
+            }
+            else {
+                this.patientDetailsFormGrp.get('bankName1').clearValidators();
+                this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+            }
+        }
+        this.patientDetailsFormGrp.markAllAsTouched();
+        this.patientDetailsFormGrp.updateValueAndValidity();
     }
-    else {
-      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
-      this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
-      if (this.selectedPaymnet1 == 'CHEQUE') {
-        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-      }
-      else if (this.selectedPaymnet1 == 'CARD') {
-        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-      }
-      else if (this.selectedPaymnet1 == 'NET BANKING') {
-        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-      }
-      else if (this.selectedPaymnet1 == 'UPI') {
-        this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
-        this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
-        this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
-        this.patientDetailsFormGrp.get('bankName1').clearValidators();
-        this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-          // Optionally revalidate the whole form
-        this.patientDetailsFormGrp.updateValueAndValidity(); 
-      }
-      else {
-        this.patientDetailsFormGrp.get('bankName1').clearValidators();
-        this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-      }
-    }
-    this.patientDetailsFormGrp.markAllAsTouched();
-    this.patientDetailsFormGrp.updateValueAndValidity();
-  }
 
     get f(): { [key: string]: AbstractControl } {
         return this.patientDetailsFormGrp.controls;
@@ -131,11 +130,11 @@ getselectObjPayMode(obj){
     IsAllowAdd() {
         return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
     }
-    GetBalanceAmt() { 
+    GetBalanceAmt() {
         debugger
         this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
         this.balanceAmt = Number(this.netPayAmt || 0) - ((Number(this.paidAmt || 0) + Number(this.amount1 || 0)));
-           if (this.balanceAmt < 0) {
+        if (this.balanceAmt < 0) {
             this.toastr.warning('Balance amt should not be nagative', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             })
@@ -165,16 +164,16 @@ getselectObjPayMode(obj){
             return;
         }
         const isDuplicate = this.Payments.data.some(item => item?.PaymentType === this.selectedPaymnet1 &&
-              item.RefNo?.trim().toLowerCase() === this.patientDetailsFormGrp.get("referenceNo1")?.value?.trim().toLowerCase() &&
-              item.BankName?.trim().toLowerCase() === this.BankNam?.trim().toLowerCase() &&
-              Number(item.Amount) === Number(this.amount1)
-            );  
-          if (isDuplicate) {
-          Swal.fire('Already record added with same details');
-          return;
-        } 
+            item.RefNo?.trim().toLowerCase() === this.patientDetailsFormGrp.get("referenceNo1")?.value?.trim().toLowerCase() &&
+            item.BankName?.trim().toLowerCase() === this.BankNam?.trim().toLowerCase() &&
+            Number(item.Amount) === Number(this.amount1)
+        );
+        if (isDuplicate) {
+            Swal.fire('Already record added with same details');
+            return;
+        }
 
-        let tmp = this.Payments.data;
+        const tmp = this.Payments.data;
         tmp.push({
             Id: this.getNewId(),
             PaymentType: this.selectedPaymnet1, Amount: this.amount1,
@@ -182,8 +181,8 @@ getselectObjPayMode(obj){
             BankId: this.BankId,
             BankName: this.BankNam,
             RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? "",
-            AdvanceID:0,
-            AdvUsedAmt:0
+            AdvanceID: 0,
+            AdvUsedAmt: 0
 
         });
         this.Payments.data = tmp;
@@ -192,14 +191,14 @@ getselectObjPayMode(obj){
         this.patientDetailsFormGrp.get("referenceNo1").setValue('');
         this.patientDetailsFormGrp.get("bankName1").setValue(null);
         this.patientDetailsFormGrp.get("amount1").setValue(this.balanceAmt);
-        this.patientDetailsFormGrp.get("paymentType1").setValue(null);  
-        this.BankNam = ''; 
+        this.patientDetailsFormGrp.get("paymentType1").setValue(null);
+        this.BankNam = '';
         this.BankId = 0;
         this.BindPaymentTypes();
         this.GetBalanceAmt();
 
     }
-    setPaidAmount() { 
+    setPaidAmount() {
         debugger
         this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
     }
@@ -212,7 +211,7 @@ getselectObjPayMode(obj){
     }
     AdvanceId: any = 0;
     selectedRow: any = [];
-    filteredadvlist:any =[];
+    filteredadvlist: any = [];
     getAdvanceAmt(element, index) {
         this.filteredadvlist = this.selectedRow.filter(item => item.advanceDetailID == element.advanceDetailID)
         const balAmt = this.filteredadvlist[0]?.balanceAmount
@@ -231,7 +230,7 @@ getselectObjPayMode(obj){
     }
     getNewId() {
         return Math.max(...this.Payments.data.filter(x => x.Id > 0).map(o => o.Id), 0) + 1;
-    } 
+    }
     deletePayment(payment) {
         Swal.fire({
             title: "Are you sure to remove this payment?",
@@ -243,7 +242,7 @@ getselectObjPayMode(obj){
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                let tmp = this.Payments.data;
+                const tmp = this.Payments.data;
                 tmp.splice(this.Payments.data.findIndex(x => x.Id == payment.Id), 1);
                 if (payment.Id == -1)
                     this.IsAdv = false;
@@ -264,7 +263,7 @@ getselectObjPayMode(obj){
         private _loggedService: AuthenticationService,
         public datePipe: DatePipe,
         public toastr: ToastrService,
-        public _ConfigService:ConfigService,
+        public _ConfigService: ConfigService,
         public _IpSearchListService: IPSearchListService,
     ) {
         this.patientDetailsFormGrp = this.createForm();
@@ -286,7 +285,7 @@ getselectObjPayMode(obj){
             this.Date = this.advanceData.Date;
             this.Age = this.advanceData.Age;
             this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-            this.DepartmentName = this.advanceData.DepartmentName; 
+            this.DepartmentName = this.advanceData.DepartmentName;
         }
         //Ip-Settlemet
         if (this.data.FromName == "IP-SETTLEMENT") {
@@ -298,14 +297,14 @@ getselectObjPayMode(obj){
             this.Date = this.advanceData.Date;
             this.Age = this.advanceData.Age;
             this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-            this.DepartmentName = this.advanceData.DepartmentName; 
+            this.DepartmentName = this.advanceData.DepartmentName;
         }
         //IP-Pharmacy-Settlemet 
         if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
             this.netPayAmt = this.advanceData.NetPayAmount;
             this.amount1 = this.advanceData.NetPayAmount;
             this.paidAmt = this.advanceData.NetPayAmount;
-            this.PatientName = this.advanceData.PatientName; 
+            this.PatientName = this.advanceData.PatientName;
             this.Date = this.advanceData.Date;
             this.RegNo = this.advanceData.RegNo;
             this.DoctorName = this.advanceData.DoctorName;
@@ -319,28 +318,28 @@ getselectObjPayMode(obj){
     ngOnInit(): void {
         // this.patientDetailsFormGrp = this.createForm();
         //Advance Calculation need balAmt
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 9999,
             "sortField": "AdmissionID",
             "sortOrder": 0,
-            "filters": [{"fieldName": "AdmissionID","fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals"}],
+            "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals" }],
             "Columns": [],
             "exportType": "JSON"
         }
-        if(this.data.FromName == "IP-Pharma-SETTLEMENT"){
-        this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
-            this.selectedRow = response.data;
-        });
-        }else{ 
-        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-             this.selectedRow = response.data;
-        });
-        } 
+        if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
+            this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
+                this.selectedRow = response.data;
+            });
+        } else {
+            this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+                this.selectedRow = response.data;
+            });
+        }
 
-    //this is for curreny symbol
-    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
-    this.currency = CurrencyValue  
+        //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue
     }
     dateTimeObj: any;
     getDateTime(dateTimeObj) {
@@ -355,47 +354,47 @@ getselectObjPayMode(obj){
             regDate1: [(new Date()).toISOString()],
             paidAmountController: [this.paidAmt],
             balanceAmountController: [this.balanceAmt],
-            CompanyId:[0]
+            CompanyId: [0]
         });
     }
     onClose() {
         this.dialogRef.close();
     }
-      OnCheckFormValidity(): number {
-    this.patientDetailsFormGrp.markAllAsTouched();
-    this.patientDetailsFormGrp.updateValueAndValidity();
+    OnCheckFormValidity(): number {
+        this.patientDetailsFormGrp.markAllAsTouched();
+        this.patientDetailsFormGrp.updateValueAndValidity();
 
-    if (this.patientDetailsFormGrp.invalid && this.amount1 != 0) {
+        if (this.patientDetailsFormGrp.invalid && this.amount1 != 0) {
 
-      let invalidFields = [];
-      if (this.patientDetailsFormGrp.invalid) {
-        for (const controlName in this.patientDetailsFormGrp.controls) {
-          const control = this.patientDetailsFormGrp.get(controlName);
-          if (control?.invalid) {
-            invalidFields.push(`Payment From: ${controlName}`);
-          }
+            const invalidFields = [];
+            if (this.patientDetailsFormGrp.invalid) {
+                for (const controlName in this.patientDetailsFormGrp.controls) {
+                    const control = this.patientDetailsFormGrp.get(controlName);
+                    if (control?.invalid) {
+                        invalidFields.push(`Payment From: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+                return 0
+            }
         }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-          );
-        });
-        return 0
-      }
+        return 1;
     }
-    return 1;
-  }
     Paymentobj = {};
     RemainingAmt: any = [];
-    ModePaymentObj:any =[];
+    ModePaymentObj: any = [];
     onSubmit() {
         debugger
         let transactionType = 0;
         let opdipdtype = 1;
-        let result = this.OnCheckFormValidity(); 
+        const result = this.OnCheckFormValidity();
         this.onAddPayment();
-         if (result === 0) return; // stop execution if invalid
+        if (result === 0) return; // stop execution if invalid
         if (this.data.FromName != "IP-Bill" && this.data.FromName != "IP-SETTLEMENT") {
             if (this.patientDetailsFormGrp.get('balanceAmountController').value != 0) {
                 Swal.fire({
@@ -409,7 +408,7 @@ getselectObjPayMode(obj){
                 return
             }
             if (this.amount1 != 0) {
-                let balamt = this.netPayAmt - this.paidAmt
+                const balamt = this.netPayAmt - this.paidAmt
                 Swal.fire({
                     title: 'Balance Amount is : ' + balamt,
                     text: "select payment mode and pay remaing amount",
@@ -441,7 +440,7 @@ getselectObjPayMode(obj){
             this.Paymentobj['transactionType'] = 0;
             this.Paymentobj['remark'] = '';
             this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-            this.Paymentobj['isCancelled'] = false;
+                this.Paymentobj['isCancelled'] = false;
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['opdipdType'] = 1;
@@ -452,14 +451,14 @@ getselectObjPayMode(obj){
             this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
             this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0; 
+            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0;
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0; 
+            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
             this.Paymentobj['companyId'] = this.patientDetailsFormGrp.get('CompanyId')?.value || 0
         }
         else if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
             transactionType = 4;
-            opdipdtype=3
+            opdipdtype = 3
             this.Paymentobj['paymentId'] = 0;
             this.Paymentobj['billNo'] = this.advanceData.BillNo || 0;
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
@@ -479,7 +478,7 @@ getselectObjPayMode(obj){
             this.Paymentobj['transactionType'] = 4;
             this.Paymentobj['remark'] = '';
             this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-            this.Paymentobj['isCancelled'] = false;
+                this.Paymentobj['isCancelled'] = false;
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['opdipdType'] = 3;
@@ -490,9 +489,9 @@ getselectObjPayMode(obj){
             this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
             this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0; 
+            this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0;
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0; 
+            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
         }
         else if (this.data.FromName == "IP-Bill") {
             transactionType = 0
@@ -525,49 +524,49 @@ getselectObjPayMode(obj){
             this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
             this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0; 
+            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0;
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-            this.Paymentobj['wfAmount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0; 
+            this.Paymentobj['wfAmount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
         }
-          this.Payments.data.forEach(element => {
-        this.ModePaymentObj.push({
-          paymentId: 0,
-          unitId: this._loggedService.currentUserValue.user.unitId,
-          billNo: this.advanceData?.BillNo || 0,
-          opdipdtype:  opdipdtype || 1,
-          paymentDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01',
-          paymentTime: this.dateTimeObj.time,
-          payAmount: element.Amount ?? 0,
-          tranNo: element.RefNo ?? "",
-          bankName: element.BankName ?? "",
-          validationDate: this.datePipe.transform(element.RegDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-          advanceUsedAmount:element.AdvUsedAmt || 0,
-          comments: "",
-          payMode: element.PaymentType ?? "",
-          onlineTranNo: '0',
-          onlineTranResponse: '0',
-          companyId: this.patientDetailsFormGrp.get('CompanyId')?.value || 0,
-          advanceId:  element.AdvanceID || 0,
-          refundId: 0,
-          cashCounterId: this.advanceData?.CashCounterId || 0,
-          transactionType: transactionType,
-          isSelfOrcompany: this.advanceData?.CompanyId ? 1 : 0,
-          tranMode: "HOSP",
-          createdBy: this._loggedService.currentUserValue?.userId ?? 0,
-          transactionLabel:this.advanceData?.TransactionLabel || 0,
+        this.Payments.data.forEach(element => {
+            this.ModePaymentObj.push({
+                paymentId: 0,
+                unitId: this._loggedService.currentUserValue.user.unitId,
+                billNo: this.advanceData?.BillNo || 0,
+                opdipdtype: opdipdtype || 1,
+                paymentDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01',
+                paymentTime: this.dateTimeObj.time,
+                payAmount: element.Amount ?? 0,
+                tranNo: element.RefNo ?? "",
+                bankName: element.BankName ?? "",
+                validationDate: this.datePipe.transform(element.RegDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+                advanceUsedAmount: element.AdvUsedAmt || 0,
+                comments: "",
+                payMode: element.PaymentType ?? "",
+                onlineTranNo: '0',
+                onlineTranResponse: '0',
+                companyId: this.patientDetailsFormGrp.get('CompanyId')?.value || 0,
+                advanceId: element.AdvanceID || 0,
+                refundId: 0,
+                cashCounterId: this.advanceData?.CashCounterId || 0,
+                transactionType: transactionType,
+                isSelfOrcompany: this.advanceData?.CompanyId ? 1 : 0,
+                tranMode: "HOSP",
+                createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+                transactionLabel: this.advanceData?.TransactionLabel || 0,
+            });
         });
-      });
         console.log(JSON.stringify(this.Paymentobj));
 
-        let submitDataPay = {
+        const submitDataPay = {
             ipPaymentInsert: this.Paymentobj,
-            ipModePaymentInsert:this.ModePaymentObj
+            ipModePaymentInsert: this.ModePaymentObj
         };
         let IsSubmit
         if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill") {
-            let Advancesarr = [];
+            const Advancesarr = [];
             this.dataSource.data.forEach((element) => {
-                let Advanceobj = {};
+                const Advanceobj = {};
                 Advanceobj['AdvanceId'] = element?.advanceId;
                 Advanceobj['AdvanceDetailID'] = (element?.advanceDetailId ?? element?.advanceDetailID) || 0;
                 Advanceobj['AdvanceAmount'] = element?.advanceAmount || 0;
@@ -577,21 +576,21 @@ getselectObjPayMode(obj){
                 Advanceobj['RefundAmount'] = element?.refundAmount || 0;
                 Advancesarr.push(Advanceobj);
             });
-             let balamt = 0; 
-            if(this.data.FromName == "IP-Bill" || this.data.FromName == "IP-SETTLEMENT"){
-                if(this.patientDetailsFormGrp.get('balanceAmountController')?.value > 0){
+            let balamt = 0;
+            if (this.data.FromName == "IP-Bill" || this.data.FromName == "IP-SETTLEMENT") {
+                if (this.patientDetailsFormGrp.get('balanceAmountController')?.value > 0) {
+                    balamt = this.patientDetailsFormGrp.get('balanceAmountController')?.value || 0;
+                } else {
+                    balamt = this.amount1 || 0;
+                }
+            } else {
                 balamt = this.patientDetailsFormGrp.get('balanceAmountController')?.value || 0;
-                }else{ 
-                balamt = this.amount1 || 0;
-                } 
-            }else{
-               balamt = this.patientDetailsFormGrp.get('balanceAmountController')?.value || 0;
             }
             IsSubmit = {
                 "submitDataPay": submitDataPay,
                 "submitDataAdvancePay": Advancesarr,
                 "PaidAmt": this.paidAmt, // this.patientDetailsFormGrp.get('paidAmountController').value,
-                "BalAmt":balamt, // this.patientDetailsFormGrp.get('balanceAmountController').value,
+                "BalAmt": balamt, // this.patientDetailsFormGrp.get('balanceAmountController').value,
                 "IsSubmitFlag": true,
             }
         } else {
@@ -602,18 +601,18 @@ getselectObjPayMode(obj){
         }
         console.log(IsSubmit);
         this.dialogRef.close(IsSubmit);
-        this.advanceData =null
+        this.advanceData = null
     }
 
     onClose1() {
-        let IsSubmit = {
+        const IsSubmit = {
             "IsSubmitFlag": false,
             "BalAmt": this.netPayAmt
         }
         this.dialogRef.close(IsSubmit);
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -622,7 +621,7 @@ getselectObjPayMode(obj){
         }
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -633,43 +632,43 @@ getselectObjPayMode(obj){
     selectedAdvanceData: any = [];
     getAdvcanceDetails(isReset?: any) {
         this.dataSource.data = [];
-        var vdata = {  
-             "first": 0,
+        const vdata = {
+            "first": 0,
             "rows": 9999,
             "sortField": "AdmissionID",
             "sortOrder": 0,
-            "filters": [{"fieldName": "AdmissionID","fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals"}],
+            "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(this.advanceData.OPD_IPD_Id), "opType": "Equals" }],
             "Columns": [],
             "exportType": "JSON"
-        } 
+        }
         setTimeout(() => {
-        if(this.data.FromName == "IP-Pharma-SETTLEMENT"){
-        this.opService.AdvancePharamcylist(vdata).subscribe((response) => { 
-                this.dataSource.data = response.data; 
-                    this.IsAdv = true 
+            if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
+                this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
+                    this.dataSource.data = response.data;
+                    this.IsAdv = true
                     this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0;
-                    this.calculateBalance(); 
+                    this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
-                    this.GetBalanceAmt(); 
-        });
-        }else{ 
-        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => { 
-                this.dataSource.data = response.data; 
-                    this.IsAdv = true 
+                    this.GetBalanceAmt();
+                });
+            } else {
+                this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+                    this.dataSource.data = response.data;
+                    this.IsAdv = true
                     this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
-                    this.calculateBalance(); 
+                    this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
-                    this.GetBalanceAmt(); 
-        });
-        }  
+                    this.GetBalanceAmt();
+                });
+            }
         }, 500);
     }
     OnAdvAmt(e) {
         this.IsAdv = e.checked;
         if (this.IsAdv) {
-            var vdata = {
+            const vdata = {
                 "first": 0,
                 "rows": 9999,
                 "sortField": "AdmissionID",
@@ -683,7 +682,7 @@ getselectObjPayMode(obj){
                     this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
                         this.dataSource.data = response.data;
                         this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0;
-                        this.calculateBalance(); 
+                        this.calculateBalance();
                         this.SetAdvanceRow();
                         this.setPaidAmount();
                         this.GetBalanceAmt();
@@ -693,7 +692,7 @@ getselectObjPayMode(obj){
                         console.log(response)
                         this.dataSource.data = response.data;
                         this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
-                        this.calculateBalance(); 
+                        this.calculateBalance();
                         this.SetAdvanceRow();
                         this.setPaidAmount();
                         this.GetBalanceAmt();
@@ -709,7 +708,7 @@ getselectObjPayMode(obj){
         }
     }
     advanceUsedAmt: any = 0;
-    calculateBalance() { 
+    calculateBalance() {
         debugger
         if (this.dataSource.data && this.dataSource.data.length > 0) {
             let totalAdvanceAmt = 0;
@@ -735,14 +734,14 @@ getselectObjPayMode(obj){
         return netAmt
     }
     SetAdvanceRow() {
-        let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
-        let tmp = this.Payments.data.find(x => x.Id == -1);
+        const adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
+        const tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
             tmp.Amount = adv;
             tmp.AdvUsedAmt = adv;
         }
         else {
-            let tmp1 = this.Payments.data;
+            const tmp1 = this.Payments.data;
             tmp1.push({
                 Id: -1,
                 PaymentType: "ADVANCE_USED", Amount: adv,
@@ -750,8 +749,8 @@ getselectObjPayMode(obj){
                 BankId: 0,
                 BankName: "",
                 RegDate: new Date(),
-                AdvanceID:this.AdvanceId || 0,
-                AdvUsedAmt:adv
+                AdvanceID: this.AdvanceId || 0,
+                AdvUsedAmt: adv
             });
             this.Payments.data = tmp1;
         }
@@ -771,16 +770,16 @@ getselectObjPayMode(obj){
             consultantDocId: [
                 { name: "required", Message: "Doctor Name is required" }
             ],
-              CompanyId: [
+            CompanyId: [
                 { name: "required", Message: "Company is required" }
             ],
-             paymentType1: [
+            paymentType1: [
                 { name: "required", Message: "Payment Mode is required" }
             ],
         };
     }
-        onChangeCompany(value) {
-            console.log(value) 
+    onChangeCompany(value) {
+        console.log(value)
     }
 }
 export class PharPaymentInsert {
@@ -874,6 +873,6 @@ export class PaymentList {
     RegDate: Date;
     Id: number;
     BankId: number;
-    AdvanceID:any;
-    AdvUsedAmt:any;
+    AdvanceID: any;
+    AdvUsedAmt: any;
 }

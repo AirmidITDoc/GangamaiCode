@@ -41,10 +41,10 @@ import { MedicationErrorComponent } from './medication-error/medication-error.co
 import { PhlebitisScoreComponent } from './phlebitis-score/phlebitis-score.component';
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: ClinicalCareChartComponent,
-  },
+    {
+        path: "**",
+        component: ClinicalCareChartComponent,
+    },
 ];
 
 

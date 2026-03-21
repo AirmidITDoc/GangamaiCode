@@ -22,10 +22,10 @@ export class ReportConfigurationService {
 
     createForm(): FormGroup {
         return this._formBuilder.group({
-        reportSectionId: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+            reportSectionId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
 
             reportId: [0],
-            menuId: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+            menuId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             reportSection: ["",
                 [
                     // Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
@@ -74,7 +74,7 @@ export class ReportConfigurationService {
             ],
 
             reportTotalField: [""],
-            summaryLabel:[""],
+            summaryLabel: [""],
             reportGroupByLabel: [""],
             reportColumnWidths: [""],
             reportHeaderFile: ["",
@@ -137,7 +137,7 @@ export class ReportConfigurationService {
         } else return this._httpClient.PostData("ReportConfig", Param);
     }
 
-     public insertNewReportConfig(Param: any) {
+    public insertNewReportConfig(Param: any) {
         if (Param.reportId) {
             return this._httpClient.PutData("ReportConfig/ReportConfig/" + Param.reportId, Param);
         } else return this._httpClient.PostData("ReportConfig/ReportConfigsave", Param);
@@ -147,7 +147,7 @@ export class ReportConfigurationService {
         return this._httpClient.DeleteData("ReportConfig?Id=" + m_data.toString());
     }
 
-    public getReportList(param){
-    return this._httpClient.PostData("Common",param)
-  }
+    public getReportList(param) {
+        return this._httpClient.PostData("Common", param)
+    }
 }

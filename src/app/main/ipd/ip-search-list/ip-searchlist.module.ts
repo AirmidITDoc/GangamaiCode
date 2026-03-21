@@ -39,12 +39,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { SharedModule } from 'app/main/shared/shared.module'; 
-import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
-import { IPSearchListComponent } from './ip-search-list.component';
-import { IPSearchListService } from './ip-search-list.service';
+import { MatTreeModule } from '@angular/material/tree';
+import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 import { CompanyBillComponent } from './company-bill/company-bill.component';
@@ -54,20 +54,20 @@ import { DischargeInitiateProcessComponent } from './discharge/initiate-discharg
 import { InitiateDischargeComponent } from './discharge/initiate-discharge/initiate-discharge.component';
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 import { InterimBillComponent } from './interim-bill/interim-bill.component';
+import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
+import { IPUpdatesComponent } from './ip-billing/ipupdates/ipupdates.component';
 import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-details.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { IPUpdatesComponent } from './ip-billing/ipupdates/ipupdates.component';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSliderModule } from '@angular/material/slider';
+import { IPSearchListComponent } from './ip-search-list.component';
+import { IPSearchListService } from './ip-search-list.service';
 
 
 const routes: Routes = [
     {
         path: 'new-appointment',
-        component:IPSearchListComponent,
-    },{
+        component: IPSearchListComponent,
+    }, {
         path: '**',
         component: IPSearchListComponent,
     }
@@ -78,7 +78,7 @@ const routes: Routes = [
         IPSearchListComponent,
         BedTransferComponent,
         DischargeComponent,
-        IPAdvanceComponent, 
+        IPAdvanceComponent,
         //IPRefundofAdvanceComponent,
         IPRefundofBillComponent,
         IPBillingComponent,
@@ -93,7 +93,7 @@ const routes: Routes = [
         DischargeSummaryTemplateComponent,
         IPRefundofAdvanceComponent,
         IPUpdatesComponent
-        
+
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -134,15 +134,15 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
-       MatTooltipModule,
+        MatTooltipModule,
         MatStepperModule,
         MatTimepickerModule,
 
-                 MatTreeModule,
-                MatSliderModule,
-                MatButtonToggleModule,
-              
-          
+        MatTreeModule,
+        MatSliderModule,
+        MatButtonToggleModule,
+
+
     ],
     providers: [
         IPSearchListService,

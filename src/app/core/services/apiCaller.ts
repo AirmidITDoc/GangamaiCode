@@ -4,9 +4,9 @@ import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
+import Swal from "sweetalert2";
 import { apiResponse } from "../models/apiResponse";
 import { AppConfigService } from "./api-config.service";
-import Swal from "sweetalert2";
 
 @Injectable({ providedIn: "root" })
 export class ApiCaller {
@@ -21,12 +21,12 @@ export class ApiCaller {
                     return data.data;
                 }
                 else {
-                   
+
                     if (data.message == 'No data found.') {
                         // Swal.fire("Data Not Find .....")
-                    } else if(data.message == 'Not Found'){
+                    } else if (data.message == 'Not Found') {
                         // Swal.fire("Data Not Find .....")
-                    }else if(data.message == ''){
+                    } else if (data.message == '') {
                         //this if is added becasue in hospitalmaster 1st time nabh logo show error 
                     }
                     else {
@@ -46,18 +46,18 @@ export class ApiCaller {
                     this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
-             else {
-                   
-                    if (data.message == 'No data found.') {
-                        Swal.fire("Data Not Find .....")
-                    }
-                    else {
-                        this.toastr.error(data.message, 'Error !', {
-                            toastClass: 'tostr-tost custom-toast-error',
-                        });
-                    }
-                    return of(null); // Avoid returning anything invalid
+            else {
+
+                if (data.message == 'No data found.') {
+                    Swal.fire("Data Not Find .....")
                 }
+                else {
+                    this.toastr.error(data.message, 'Error !', {
+                        toastClass: 'tostr-tost custom-toast-error',
+                    });
+                }
+                return of(null); // Avoid returning anything invalid
+            }
             // else {
             //     this.toastr.error(data.message, 'Error !', {
             //         toastClass: 'tostr-tost custom-toast-error',

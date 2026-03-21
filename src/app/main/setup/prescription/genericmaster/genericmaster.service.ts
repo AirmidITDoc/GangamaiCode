@@ -18,15 +18,15 @@ export class GenericmasterService {
 
     createGenericForm(): FormGroup {
         return this._formBuilder.group({
-            genericId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            genericName: ["", 
+            genericId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            genericName: ["",
                 [
-                    Validators.required,Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(50),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                      this._FormvalidationserviceService.allowEmptyStringValidator()
-                ] 
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
+                ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 

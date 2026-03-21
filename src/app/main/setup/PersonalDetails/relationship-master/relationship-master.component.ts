@@ -4,11 +4,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { NewRelationshipComponent } from "./new-relationship/new-relationship.component";
 import { RelationshipMasterService } from "./relationship-master.service";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-relationship-master",
@@ -39,7 +39,7 @@ export class RelationshipMasterComponent implements OnInit {
                     }
 
                 }, {
-                    action: gridActions.delete,visible: this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Delete), callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Delete), callback: (data: any) => {
                         this._relationshipService.deactivateTheStatus(data.relationshipId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -73,7 +73,7 @@ export class RelationshipMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewRelationshipComponent,
             {
                 maxWidth: "50vw",

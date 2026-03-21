@@ -4,11 +4,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { NewTalukaComponent } from "./new-taluka/new-taluka.component";
 import { TalukaMasterService } from "./taluka-master.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 @Component({
     selector: "app-taluka-master",
@@ -70,7 +70,7 @@ export class TalukaMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewTalukaComponent,
             {
                 maxWidth: "50vw",

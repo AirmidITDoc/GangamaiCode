@@ -39,10 +39,10 @@ import { AdmissionCardviewComponent } from './admission-cardview.component';
 import { AdmissionCardviewService } from './admission-cardview.service';
 
 const routes: Routes = [
-  {
-      path: '**',
-      component: AdmissionCardviewComponent,
-  },
+    {
+        path: '**',
+        component: AdmissionCardviewComponent,
+    },
 ];
 @NgModule({
     declarations: [AdmissionCardviewComponent],

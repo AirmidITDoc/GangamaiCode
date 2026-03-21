@@ -4,12 +4,12 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { CompanyMasterService } from "./company-master.service";
 import { ComptoservComponent } from "./comptoserv/comptoserv.component";
 import { CompanyMasterListComponent } from "./newcompany-master/company-master-list.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-company-master",
@@ -19,8 +19,8 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class CompanyMasterComponent implements OnInit {
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Add);
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Add);
+
     @ViewChild('actionsisTemplateTest') actionsisTemplateTest!: TemplateRef<any>;
 
     ngAfterViewInit() {
@@ -56,16 +56,16 @@ export class CompanyMasterComponent implements OnInit {
 
         // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-         { heading: "IsSubCompany", key: "isSubCompany", type: gridColumnTypes.status, align: "center", width: 100 },
+        { heading: "IsSubCompany", key: "isSubCompany", type: gridColumnTypes.status, align: "center", width: 100 },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
                 {
                     // action: gridActions.edit, callback: (data: any) => {
                     //     this.onSave(data);
                     // }
-                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Edit), callback: (data: any) => {
-                                                this.onSave(data);
-                                            }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
@@ -81,7 +81,7 @@ export class CompanyMasterComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.CompanyMaster,
+        permissionCode: permissionCodes.CompanyMaster,
         apiUrl: "CompanyMaster/List",
         columnsList: this.allcolumns,
         sortField: "companyId",
@@ -139,7 +139,7 @@ export class CompanyMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(ComptoservComponent,
             {
                 maxWidth: "100vw",
@@ -158,7 +158,7 @@ export class CompanyMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(CompanyMasterListComponent,
             {
 
@@ -182,11 +182,11 @@ export class CompanyMaster {
     compTypeId: number;
     companyName: string;
     address: string;
-    cityId: String;
-    pinNo: String;
-    phoneNo: String;
-    mobileNo: String;
-    faxNo: String;
+    cityId: string;
+    pinNo: string;
+    phoneNo: string;
+    mobileNo: string;
+    faxNo: string;
     traiffId: any;
     isDeleted: boolean;
     AddedBy: number;

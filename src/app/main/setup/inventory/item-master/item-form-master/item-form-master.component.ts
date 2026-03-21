@@ -1,16 +1,14 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { fuseAnimations } from "@fuse/animations";
-import { ItemMasterService } from "../item-master.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ItemMaster, ItemMasterComponent } from "../item-master.component";
+import { fuseAnimations } from "@fuse/animations";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 import { ToastrService } from "ngx-toastr";
 import { ItemGenericMasterComponent } from "../../item-generic-master/item-generic-master.component";
-import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
-import { Console } from "console";
-import { ItemMasterModule } from "../item-master.module";
-import { ItemWiseSupplierRateComponent } from "../item-wise-supplier-rate/item-wise-supplier-rate.component";
 import { NewManufactureComponent } from "../../manufacture-master/new-manufacture/new-manufacture.component";
+import { ItemMaster, ItemMasterComponent } from "../item-master.component";
+import { ItemMasterService } from "../item-master.service";
+import { ItemWiseSupplierRateComponent } from "../item-wise-supplier-rate/item-wise-supplier-rate.component";
 
 @Component({
     selector: "app-item-form-master",
@@ -112,7 +110,7 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
     onNewItemWiseSupprate(row: any = null) {
-        let that = this;
+        const that = this;
 
         const dialogRef = this._matDialog.open(ItemWiseSupplierRateComponent,
             {
@@ -124,22 +122,22 @@ export class ItemFormMasterComponent implements OnInit {
             that.grid.bindGridData();
         });
     }
-    
+
     AddNewManufactur(row: any = null) {
-        let that = this; 
+        const that = this;
         const dialogRef = this._matDialog.open(NewManufactureComponent,
             {
                 height: '45%',
                 width: '80%',
                 data: row
             });
-        dialogRef.afterClosed().subscribe(result => { 
+        dialogRef.afterClosed().subscribe(result => {
         });
     }
 
     showDoseDropdownRefresh = true;
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
 
         const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
             {
@@ -157,7 +155,7 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
     removestore(item) {
-        let removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
+        const removedIndex = this.itemForm.value.mAssignItemToStores.findIndex(x => x.storeId == item.storeId);
         this.itemForm.value.mAssignItemToStores.splice(removedIndex, 1);
         this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
     }
@@ -170,7 +168,7 @@ export class ItemFormMasterComponent implements OnInit {
 
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -226,8 +224,8 @@ export class ItemFormMasterComponent implements OnInit {
         if (this.itemForm.valid) {
             // const formData = this.itemForm.getRawValue() as ItemMaster;
             //  console.log(formData)
-            if(!this.itemForm.get('hsNcode').value){
-              this.itemForm.get('hsNcode').setValue('0')  
+            if (!this.itemForm.get('hsNcode').value) {
+                this.itemForm.get('hsNcode').setValue('0')
             }
             console.log(this.itemForm.value)
             const formData = { ...this.itemForm.value };

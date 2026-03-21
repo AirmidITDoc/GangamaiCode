@@ -176,8 +176,7 @@ export class ProjectDashboardComponent implements OnInit {
     }
 }
 
-export class FilesDataSource extends DataSource<any>
-{
+export class FilesDataSource extends DataSource<any> {
     /**
      * Constructor
      *

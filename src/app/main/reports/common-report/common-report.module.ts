@@ -37,11 +37,11 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { CommonReportComponent } from './common-report.component';
 
 
-const routes : Routes =[
-  {
-    path:"**",
-    component:CommonReportComponent,
-  },
+const routes: Routes = [
+    {
+        path: "**",
+        component: CommonReportComponent,
+    },
 ];
 
 @NgModule({

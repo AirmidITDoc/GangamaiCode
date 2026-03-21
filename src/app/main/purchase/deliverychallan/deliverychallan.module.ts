@@ -39,10 +39,10 @@ import { UpdatedeliveryComponent } from './updatedelivery/updatedelivery.compone
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: DeliverychallanComponent
-  },
+    {
+        path: '**',
+        component: DeliverychallanComponent
+    },
 ];
 
 @NgModule({

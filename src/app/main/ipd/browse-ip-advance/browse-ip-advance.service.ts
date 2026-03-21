@@ -7,14 +7,15 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 })
 export class BrowseIpAdvanceService {
     UserFormGroup: FormGroup;
-    AdvanceOfRefund:FormGroup
+    AdvanceOfRefund: FormGroup
     MyForm: FormGroup;
 
     constructor(
         public _formBuilder: UntypedFormBuilder,
-        public _httpClient: ApiCaller) { this.UserFormGroup = this.createUserFormGroup() 
-            this.AdvanceOfRefund=this.createAdvacneofRefundForm()
-        }
+        public _httpClient: ApiCaller) {
+            this.UserFormGroup = this.createUserFormGroup()
+        this.AdvanceOfRefund = this.createAdvacneofRefundForm()
+    }
 
     /**
      * 

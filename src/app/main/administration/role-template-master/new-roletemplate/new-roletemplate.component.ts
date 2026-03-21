@@ -15,8 +15,8 @@ import { RoleTemplateService } from '../role-template.service';
 export class NewRoletemplateComponent implements OnInit {
 
     myform: FormGroup;
-    isActive:boolean=true;
-    vRoleId:any;
+    isActive: boolean = true;
+    vRoleId: any;
 
     constructor(
         public _RoleTemplateService: RoleTemplateService,
@@ -24,34 +24,32 @@ export class NewRoletemplateComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
- 
+
     ngOnInit(): void {
         this.myform = this._RoleTemplateService.createRoleForm();
         console.log(this.data)
-        if((this.data?.roleId??0) > 0)
-        {
+        if ((this.data?.roleId ?? 0) > 0) {
             console.log(this.data)
-            this.vRoleId=this.data.roleId;
-            this.isActive=this.data.isActive
+            this.vRoleId = this.data.roleId;
+            this.isActive = this.data.isActive
             this.myform.patchValue(this.data);
         }
     }
     onSubmit() {
         if (this.myform.valid) {
-        console.log("JSON :-",this.myform.value)
+            console.log("JSON :-", this.myform.value)
 
             this._RoleTemplateService.roleMasterSave(this.myform.value).subscribe((response) => {
-              this.onClear(true);
+                this.onClear(true);
             });
         }
-        else
-        {
+        else {
             this.toastr.warning('Please Enter Valid data.', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
+                toastClass: 'tostr-tost custom-toast-warning',
             });
         }
-    }     
-  
+    }
+
     onClear(val: boolean) {
         this.myform.reset();
         this.dialogRef.close(val);

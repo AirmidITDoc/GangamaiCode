@@ -55,7 +55,7 @@ export class MenuSubMenuComponent implements OnInit {
 
   
   getSubMenuList() {
-    var D_data = {
+    const D_data = {
       "master_id": this.MenuMasterid,
     }
     this._MenuService.getSubMenuMasterList(D_data).subscribe(report => {
@@ -73,7 +73,7 @@ export class MenuSubMenuComponent implements OnInit {
   onSubmitSubMenu() {
     if (!this._MenuService.myformMenuSubMenu.get("Menu_SubID").value) {
       console.log('insert');
-      var m_data = {
+      const m_data = {
         menuMasterDetailsInsert: {
           "menu_master_detail_master_id": Number(this._MenuService.myformMenuSubMenu.get("menu_master_detail_master_id").value),
           "menu_master_detail_sr_no": Number(this._MenuService.myformMenuSubMenu.get("menu_master_detail_display_sr_no").value),
@@ -92,7 +92,7 @@ export class MenuSubMenuComponent implements OnInit {
     }
 
     else {
-      var m_dataUpdate = {
+      const m_dataUpdate = {
         menuMasterDetailsUpdate: {
           "Menu_SubID": Number(this._MenuService.myformMenuSubMenu.get("Menu_SubID").value),
           "menu_master_detail_master_id": Number(this._MenuService.myformMenuSubMenu.get("menu_master_detail_master_id").value),
@@ -115,7 +115,7 @@ export class MenuSubMenuComponent implements OnInit {
   }
 
   onEdit(row) {
-    var m_data = {
+    const m_data = {
       "Menu_SubID": row.Menu_SubID,
       "menu_master_detail_master_id": row.menu_master_detail_master_id,
       "menu_master_detail_sr_no": row.menu_master_detail_sr_no,
@@ -130,7 +130,7 @@ export class MenuSubMenuComponent implements OnInit {
 
   onEditSub_Submenu(row) {
     //console.log(row);
-    var m_data = {
+    const m_data = {
       "menu_master_detail_master_id": row.menu_master_detail_master_id,
       "menu_master_detail_sr_no": row.menu_master_detail_sr_no
     }

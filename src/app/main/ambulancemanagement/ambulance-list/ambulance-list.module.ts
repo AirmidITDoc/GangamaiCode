@@ -33,17 +33,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
+import { MatTimepickerModule } from 'mat-timepicker';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AmbulanceListComponent } from './ambulance-list.component';
 import { NewAmbulanceDetailComponent } from './new-ambulance-detail/new-ambulance-detail.component';
-import { MatTimepickerModule } from 'mat-timepicker';
-;
- 
+
+
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: AmbulanceListComponent 
-  },
+    {
+        path: '**',
+        component: AmbulanceListComponent
+    },
 ];
 
 @NgModule({

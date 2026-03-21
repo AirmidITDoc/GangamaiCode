@@ -17,11 +17,11 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
+import { ReportService } from "app/main/reports/report-generation/service/report-generation.service";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NewPrefixComponent } from "./new-prefix/new-prefix.component";
 import { PrefixMasterComponent } from "./prefix-master.component";
 import { PrefixMasterService } from "./prefix-master.service";
-import { ReportService } from "app/main/reports/report-generation/service/report-generation.service";
 
 const routes: Routes = [
     {
@@ -52,6 +52,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [PrefixMasterService, DatePipe,ReportService]
+    providers: [PrefixMasterService, DatePipe, ReportService]
 })
-export class PrefixMasterModule {}
+export class PrefixMasterModule { }

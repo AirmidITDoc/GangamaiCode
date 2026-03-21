@@ -558,12 +558,26 @@
                                                 <span> {{contact.NetAmt | number:'1.2-2'}}</span>
                                             </mat-cell>
                                         </ng-container>
+
+                                         <ng-container matColumnDef="Specification">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
+                                               Specification
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
+                                    
+                                                <mat-form-field appearance="fill">
+                                                    <input matInput [(ngModel)]="contact.Specification" [id]="'Specification' + index"
+                                                      (keydown.arrowdown)="setFocus('Specification' + (index + 1))"
+                                                        (keydown.arrowup)="setFocus('Specification' + (index - 1))" type="text"   />
+                                                </mat-form-field>
+                                            </mat-cell>
+                                        </ng-container>
                                     
                                         <ng-container matColumnDef="Action" stickyEnd>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">Action
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-60">
-                                                <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
+                                                <button mat-icon-button (click)="deleteTableRow(contact)" color="warn">
                                                     <mat-icon>delete_outline</mat-icon>
                                                 </button>
                                             </mat-cell>
@@ -582,9 +596,9 @@
                                         </ng-container>
                                     
                                     
-                                        <mat-header-row class="accent min-width-1900" *matHeaderRowDef="displayedColumnspo; sticky: true"></mat-header-row>
+                                        <mat-header-row class="accent min-width-1950" *matHeaderRowDef="displayedColumnspo; sticky: true"></mat-header-row>
                                         <mat-row *matRowDef="let contact; columns: displayedColumnspo; let i = index" tabindex="999"
-                                            class="contact min-width-1900" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
+                                            class="contact min-width-1950" [@animate]="{ value: '*', params: { y: '100%' } }" appHighlight></mat-row>
                                         <mat-footer-row *matFooterRowDef="['loading']"
                                             [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
                                         <mat-footer-row *matFooterRowDef="['noData']"
@@ -634,7 +648,7 @@
                 <!-- <button type="button" class="btn btn-primary" (click)="calculateshare()">Calculate Share
                 </button> -->
                 <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                <button class="btn btn-primary" (click)="OnSave()">Save</button>
+                <button class="btn btn-primary" (click)="onsave1()">Save</button>
             </div>
         </div>
     </div>

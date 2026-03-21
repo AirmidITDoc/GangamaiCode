@@ -6,41 +6,40 @@ import { ToastrService } from 'ngx-toastr';
 import { CountryMasterService } from '../country-master.service';
 
 @Component({
-  selector: 'app-new-country-master',
-  templateUrl: './new-country-master.component.html',
-  styleUrls: ['./new-country-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-new-country-master',
+    templateUrl: './new-country-master.component.html',
+    styleUrls: ['./new-country-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewCountryMasterComponent implements OnInit {
-  countryForm: FormGroup;
-  isActive:boolean=true;
+    countryForm: FormGroup;
+    isActive: boolean = true;
 
-  constructor( public _CountryMasterService: CountryMasterService,
-    public dialogRef: MatDialogRef<NewCountryMasterComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService) { }
+    constructor(public _CountryMasterService: CountryMasterService,
+        public dialogRef: MatDialogRef<NewCountryMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService) { }
 
-  ngOnInit(): void {
-    this.countryForm = this._CountryMasterService.createCountryForm();
-    this.countryForm.markAllAsTouched();
-    
-    if ((this.data?.countryId??0) > 0) 
-        {
-            this.isActive=this.data.isActive
+    ngOnInit(): void {
+        this.countryForm = this._CountryMasterService.createCountryForm();
+        this.countryForm.markAllAsTouched();
+
+        if ((this.data?.countryId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.countryForm.patchValue(this.data);
         }
-}
+    }
 
 
-  onSubmit() {
-    if (!this.countryForm.invalid) {
+    onSubmit() {
+        if (!this.countryForm.invalid) {
             console.log(this.countryForm.value)
             this._CountryMasterService.countryMasterSave(this.countryForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.countryForm.invalid) {
                 for (const controlName in this.countryForm.controls) {
                     if (this.countryForm.controls[controlName].invalid) {
@@ -59,17 +58,17 @@ export class NewCountryMasterComponent implements OnInit {
     }
 
     getValidationMessages() {
-      return {
-          countryName: [
-              { name: "required", Message: "Country Name is required" },
-              { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
-              { name: "pattern", Message: "Special char not allowed." }
-          ]
-      };
-  }
+        return {
+            countryName: [
+                { name: "required", Message: "Country Name is required" },
+                { name: "maxlength", Message: "Country Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Special char not allowed." }
+            ]
+        };
+    }
 
-onClear(val: boolean) {
-    this.countryForm.reset();
-    this.dialogRef.close(val);
-}
+    onClear(val: boolean) {
+        this.countryForm.reset();
+        this.dialogRef.close(val);
+    }
 }

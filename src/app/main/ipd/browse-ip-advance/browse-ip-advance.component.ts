@@ -7,15 +7,14 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
-import { BrowseIpAdvanceService } from './browse-ip-advance.service';
-import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { BrowseIpAdvanceService } from './browse-ip-advance.service';
 
 import { ComponentPortal } from '@angular/cdk/portal';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -124,7 +123,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
         {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,width:120,
+            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 120,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
@@ -301,8 +300,8 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
             const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
             const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
-          
-               patientData.billNo = patientData.advanceId
+
+            patientData.billNo = patientData.advanceId
             componentRef.instance.patientData = patientData;
 
             // Handle mouse events on the overlay element
@@ -469,10 +468,10 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
             const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
             const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
-          
+
             console.log(patientData)
             patientData.billNo = patientData.advanceId
-                      componentRef.instance.patientData = patientData;
+            componentRef.instance.patientData = patientData;
             // Handle mouse events on the overlay element
             const overlayElement = this.whatsappOverlayRef.overlayElement;
             overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
@@ -569,7 +568,7 @@ export class BrowseIPAdvanceComponent implements OnInit {
 
 
 export class IpdAdvanceBrowseModel {
-    RegNo: Number;
+    RegNo: number;
     PatientName: string;
     date: Date;
     AdvanceNo: string;

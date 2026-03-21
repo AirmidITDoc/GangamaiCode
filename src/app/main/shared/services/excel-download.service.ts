@@ -20,7 +20,7 @@ export class ExcelDownloadService {
 
     const exportData = [];
     dataSource.forEach(element => {
-      let newOb = {};
+      const newOb = {};
       requiredHeaders.forEach(headerElement => {
         newOb[headerElement] = element[headerElement];
       });

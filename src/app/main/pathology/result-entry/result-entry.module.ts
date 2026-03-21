@@ -41,13 +41,13 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
 import { ResultEntryComponent } from './result-entry.component';
 
-import { ResultEntryService } from './result-entry.service';
+import { MatTimepickerModule } from 'mat-timepicker';
 import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
 import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
+import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
 import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
 import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
-import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
-import { MatTimepickerModule } from 'mat-timepicker';
+import { ResultEntryService } from './result-entry.service';
 
 const routes: Routes = [
 

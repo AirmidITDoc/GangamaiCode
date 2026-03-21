@@ -13,42 +13,41 @@ import { VillageMasterService } from '../village-master.service';
     animations: fuseAnimations,
 })
 export class NewVillageComponent implements OnInit {
-    
+
     myForm: FormGroup;
-    isActive:boolean=true;
-      
+    isActive: boolean = true;
+
     constructor(
         public _VillageMasterService: VillageMasterService,
         public dialogRef: MatDialogRef<NewVillageComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService
     ) { }
-    
+
     autocompleteModetaluka: string = "Taluka";
 
     talukaId = 0;
-    
+
     ngOnInit(): void {
         this.myForm = this._VillageMasterService.createVillageForm();
         this.myForm.markAllAsTouched();
-        
+
         console.log(this.data)
-        if ((this.data?.villageId??0) > 0) 
-        {
-            this.isActive=this.data.isActive
+        if ((this.data?.villageId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.myForm.patchValue(this.data);
-        }   
+        }
     }
-    
-      
-        onSubmit() {
+
+
+    onSubmit() {
         if (!this.myForm.invalid) {
             console.log(this.myForm.value)
             this._VillageMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
                     if (this.myForm.controls[controlName].invalid) {
@@ -65,29 +64,29 @@ export class NewVillageComponent implements OnInit {
 
         }
     }
-          
-        getValidationMessages() {
-            return {
-                talukaName: [
-                    { name: "required", Message: "Taluka Name is required" }
-                ],
-                villageName: [
-                    { name: "required", Message: "village Name is required" },
-                    { name: "maxlength", Message: "village Name should not be greater than 50 char." },
-                    { name: "pattern", Message: "Only char allowed." }
-                ]
-            };
-        }
-    
-    
-        selectChangecountry(obj: any){
-            console.log(obj);
-            this.talukaId=obj.value
-        }
-    
-        onClear(val: boolean) {
-          this.myForm.reset();
-          this.dialogRef.close(val);
-        }
+
+    getValidationMessages() {
+        return {
+            talukaName: [
+                { name: "required", Message: "Taluka Name is required" }
+            ],
+            villageName: [
+                { name: "required", Message: "village Name is required" },
+                { name: "maxlength", Message: "village Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Only char allowed." }
+            ]
+        };
+    }
+
+
+    selectChangecountry(obj: any) {
+        console.log(obj);
+        this.talukaId = obj.value
+    }
+
+    onClear(val: boolean) {
+        this.myForm.reset();
+        this.dialogRef.close(val);
+    }
 
 }

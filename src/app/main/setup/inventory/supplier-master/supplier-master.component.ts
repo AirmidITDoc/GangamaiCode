@@ -7,11 +7,11 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
 import { SupplierMasterService } from "./supplier-master.service";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-supplier-master",
@@ -22,7 +22,7 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class SupplierMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Add);
-       
+
     myformSearch: FormGroup;
     autocompleteModestoreName: string = "Store";
     autocompletecity: string = "City";
@@ -56,9 +56,9 @@ export class SupplierMasterComponent implements OnInit {
                     // action: gridActions.edit, callback: (data: any) => {
                     //     this.onSave(data);
                     // }
-                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Edit), callback: (data: any) => {
-                                                this.onSave(data);
-                                            }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
                 },
                 {
                     action: gridActions.delete, callback: (data: any) => {
@@ -151,7 +151,7 @@ export class SupplierMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(FixSupplierComponent,
             {
                 maxWidth: "95vw",
@@ -175,7 +175,7 @@ export class SupplierMasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        var m_data = {
+        const m_data = {
             SupplierName: row.supplierName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,
@@ -233,43 +233,43 @@ export class SupplierMasterComponent implements OnInit {
 
 }
 export class SupplierMaster {
-    SupplierId: Number;
-    supplierId: Number;
-    SupplierName: String;
-    supplierName: String;
-    ContactPerson: String;
-    contactPerson: String;
-    Address: String;
-    address: String;
-    CityId: Number;
-    StateId: Number;
-    CountryId: Number;
-    cityId: Number;
-    stateId: Number;
-    countryId: Number;
+    SupplierId: number;
+    supplierId: number;
+    SupplierName: string;
+    supplierName: string;
+    ContactPerson: string;
+    contactPerson: string;
+    Address: string;
+    address: string;
+    CityId: number;
+    StateId: number;
+    CountryId: number;
+    cityId: number;
+    stateId: number;
+    countryId: number;
 
-    CreditPeriod: String;
-    creditPeriod: String;
-    Mobile: String;
-    mobile: String;
-    Phone: String;
-    phone: String;
-    fax: String;
-    email: String;
-    ModeOfPayment: Number;
-    TermOfPayment: Number;
+    CreditPeriod: string;
+    creditPeriod: string;
+    Mobile: string;
+    mobile: string;
+    Phone: string;
+    phone: string;
+    fax: string;
+    email: string;
+    ModeOfPayment: number;
+    TermOfPayment: number;
 
-    modeofPayment: Number;
-    termofPayment: Number;
-    TaxNature: Number;
-    CurrencyId: Number;
-    Octroi: Number;
-    freight: Number;
+    modeofPayment: number;
+    termofPayment: number;
+    TaxNature: number;
+    CurrencyId: number;
+    Octroi: number;
+    freight: number;
     IsDeleted: boolean;
-    AddedBy: Number;
-    UpdatedBy: Number;
-    gstNo: String;
-    panNo: String;
+    AddedBy: number;
+    UpdatedBy: number;
+    gstNo: string;
+    panNo: string;
     ExpDate: Date;
     currentDate = new Date();
     IsDeletedSearch: number;

@@ -13,20 +13,20 @@ import { ReportConfigurationService } from '../report-configuration.service';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-export class NewReportConfigurationComponent implements OnInit{
+export class NewReportConfigurationComponent implements OnInit {
     myform: FormGroup;
-    isActive:boolean=true;
+    isActive: boolean = true;
     autocompleteModedReport: string = "ReportConfig";
-    autocompleteModedMenu:string ="MenuMaster";
+    autocompleteModedMenu: string = "MenuMaster";
 
     reportPageOrientation: string[] = ["Portrait", "Landscape"];
     reportPageSize: string[] = ["A4", "C5"];
     // reportBodyFile: string[] = ["SimpleReportFormat.html","MultiTotalReportFormat.html"];
     reportBodyFile: string[] = ["MultiTotalReportFormat.html"];
-    reportName=''
-    reportId=0
-    menuName=''
-    menuId=0
+    reportName = ''
+    reportId = 0
+    menuName = ''
+    menuId = 0
 
     constructor(
         public _ReportConfigurationService: ReportConfigurationService,
@@ -35,15 +35,14 @@ export class NewReportConfigurationComponent implements OnInit{
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<ReportConfigurationComponent>
     ) { }
-    
+
     ngOnInit(): void {
         this.myform = this._ReportConfigurationService.createForm();
         this.myform.markAllAsTouched();
-        if((this.data?.reportId??0) > 0)
-        {     
+        if ((this.data?.reportId ?? 0) > 0) {
             this.myform.get('reportSectionId').setValue(this.data.parentid)
-            this.reportName=this.data.reportSection
-            this.isActive=this.data.isActive
+            this.reportName = this.data.reportSection
+            this.isActive = this.data.isActive
             this.myform.patchValue(this.data);
         }
 
@@ -60,32 +59,31 @@ export class NewReportConfigurationComponent implements OnInit{
         });
     }
 
-     ListView(obj: any) {
+    ListView(obj: any) {
         console.log(obj)
-        this.reportId=obj.value
-        this.reportName=obj.text
+        this.reportId = obj.value
+        this.reportName = obj.text
         this.myform.get('parentid')?.setValue(this.reportId)
     }
 
-     ListView1(obj: any) {
+    ListView1(obj: any) {
         console.log(obj)
-        this.menuId=obj.value
-        this.menuName=obj.text
+        this.menuId = obj.value
+        this.menuName = obj.text
         this.myform.get('menuId')?.setValue(this.menuId)
     }
 
     onSubmit() {
-        if (!this.myform.invalid) 
-        {
+        if (!this.myform.invalid) {
             this.myform.get('reportSection')?.setValue(this.reportName)
             this.myform.removeControl('reportSectionId')
             console.log("Report-Config JSON :-", this.myform.value);
             this._ReportConfigurationService.insertReportConfig(this.myform.value).subscribe((data) => {
                 this.onClear(true);
             });
-        } 
-       else {
-            let invalidFields = [];
+        }
+        else {
+            const invalidFields = [];
             if (this.myform.invalid) {
                 for (const controlName in this.myform.controls) {
                     if (this.myform.controls[controlName].invalid) { invalidFields.push(`Report Form: ${controlName}`); }
@@ -105,55 +103,55 @@ export class NewReportConfigurationComponent implements OnInit{
                 { name: "maxlength", Message: "Report Section should not be greater than 50 char." },
                 { name: "pattern", Message: "Only Characters and Spaces Allowed." }
             ],
-            reportName:[
+            reportName: [
                 { name: "required", Message: "Report Name is required" },
                 { name: "maxlength", Message: "Report Name should not be greater than 200 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
-            parentid:[
+            parentid: [
                 { name: "required", Message: "Parent ID is required" },
                 { name: "maxlength", Message: "Parent ID should not be greater than 10 Numbers." },
                 { name: "pattern", Message: "Only Numbers Allowed." }
             ],
-            reportMode:[
+            reportMode: [
                 { name: "required", Message: "Report Name is required" },
                 { name: "maxlength", Message: "Report Name should not be greater than 200 char." },
                 // { name: "pattern", Message: "Only Characters Allowed." }
             ],
-            reportTitle:[
+            reportTitle: [
                 { name: "required", Message: "Report Title is required" },
                 { name: "maxlength", Message: "Report Title should not be greater than 500 char." },
                 // { name: "pattern", Message: "Only Characters Allowed." }
             ],
-            reportHeader:[
+            reportHeader: [
                 { name: "required", Message: "Report Header is required" },
                 { name: "maxlength", Message: "Report Header should not be greater than 1000 char." },
             ],
-            reportTotalField:[
+            reportTotalField: [
                 // { name: "required", Message: "Report column is required" },
                 // { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
             ],
-             summaryLabel:[
+            summaryLabel: [
                 { name: "maxlength", Message: "Report Column should not be greater than 2000 char." },
             ],
-            reportColumnWidths:[
+            reportColumnWidths: [
                 { name: "required", Message: "Report Column Widths is required" },
                 { name: "maxlength", Message: "Report Column Widths should not be greater than 2000 char." },
             ],
-            reportColumn:[
+            reportColumn: [
                 { name: "required", Message: "Report column is required" },
                 { name: "maxlength", Message: "Report Column should not be greater than 2000 char." },
             ],
-            reportGroupByLabel:[
+            reportGroupByLabel: [
                 // { name: "required", Message: "Report column is required" },
                 // { name: "maxlength", Message: "Report Column should not be greater than 100 char." },
             ],
-            reportHeaderFile:[
+            reportHeaderFile: [
                 { name: "required", Message: "Report Header File is required" },
                 { name: "maxlength", Message: "Report Header File should not be greater than 100 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
-            reportBodyFile:[
+            reportBodyFile: [
                 { name: "required", Message: "Report Body File is required" },
                 { name: "maxlength", Message: "Report Body File should not be greater than 200 char." },
             ],
@@ -162,21 +160,21 @@ export class NewReportConfigurationComponent implements OnInit{
                 { name: "maxlength", Message: "Report Folder Name should not be greater than 200 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
             ],
-            reportFileName:[
+            reportFileName: [
                 { name: "required", Message: "Report File Name is required" },
                 { name: "maxlength", Message: "Report File Name should not be greater than 200 char." },
             ],
-            reportSpname:[
+            reportSpname: [
                 { name: "required", Message: "Report SP Name is required" },
                 { name: "maxlength", Message: "Report SP Name should not be greater than 500 char." },
             ],
-            reportPageOrientation:[
+            reportPageOrientation: [
                 { name: "required", Message: "Report Page Orientation is required" },
             ],
-            reportPageSize:[
+            reportPageSize: [
                 { name: "required", Message: "Report Page Size is required" },
             ],
-            reportFilter:[
+            reportFilter: [
                 { name: "required", Message: "Report Filter is required" },
                 { name: "maxlength", Message: "Report Filter should not be greater than 30 char." },
                 { name: "pattern", Message: "Only Characters Allowed." }
@@ -184,8 +182,7 @@ export class NewReportConfigurationComponent implements OnInit{
         };
     }
 
-    onClear(val: boolean) 
-    {
+    onClear(val: boolean) {
         this.dialogRef.close(val);
     }
 

@@ -39,7 +39,7 @@ export class NewItemtypeComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.itemtypeForm.invalid) {
                 for (const controlName in this.itemtypeForm.controls) {
                     if (this.itemtypeForm.controls[controlName].invalid) {

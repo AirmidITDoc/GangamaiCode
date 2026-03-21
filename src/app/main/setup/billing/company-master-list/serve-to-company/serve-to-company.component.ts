@@ -1,22 +1,19 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { CompanyMasterService } from '../company-master.service';
-import { ToastrService } from 'ngx-toastr';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { MatTableDataSource } from '@angular/material/table';
-import { Servicedetail } from '../../service-master/service-master.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { CompanyMaster } from '../company-master-list.component';
-import Swal from 'sweetalert2';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { Servicedetail } from '../../service-master/service-master.component';
 import { SubTpaCompanyMaster } from '../../subtpa-company-master/subtpa-company-master.component';
+import { CompanyMaster } from '../company-master-list.component';
+import { CompanyMasterService } from '../company-master.service';
 
 @Component({
     selector: 'app-serve-to-company',
@@ -307,11 +304,11 @@ export class ServeToCompanyComponent {
             this.pageSize = event.pageSize;
         } else {
             this.pageIndex = 0;
-            this.pageSize = 10; 
+            this.pageSize = 10;
         }
-        
-        let classId = this.companyForm.get("ClassId2").value || 0
-        var param = {
+
+        const classId = this.companyForm.get("ClassId2").value || 0
+        const param = {
             // "first": 0,
             // "rows": 10,
             "first": this.pageIndex * this.pageSize,
@@ -430,7 +427,7 @@ export class ServeToCompanyComponent {
     // }
 
     getsubtpaList() {
-        var param = {
+        const param = {
             "searchFields": [
                 {
                     "fieldName": "CompanyId",
@@ -442,7 +439,7 @@ export class ServeToCompanyComponent {
         }
         console.log(param)
         this._CompanyMasterService.getsubtpaListRetrive(param).subscribe(data => {
-            this.subtpaList.data = data as SubTpaCompanyMaster[];;
+            this.subtpaList.data = data as SubTpaCompanyMaster[];
             console.log(this.subtpaList.data)
         });
 
@@ -477,7 +474,7 @@ export class ServeToCompanyComponent {
                 type = 3
             }
 
-            var param = {
+            const param = {
                 "first": 0,
                 "rows": 10,
                 "sortField": "ServiceId",
@@ -532,7 +529,7 @@ export class ServeToCompanyComponent {
             this.chargeList = this.DSServicedetailMainList.data
         }
 
-        let Serv = row.ServiceName
+        const Serv = row.ServiceName
         const newRow = (
             {
                 GroupId: row.GroupId,
@@ -660,7 +657,7 @@ export class ServeToCompanyComponent {
 
     maindeleteTableRow(element) {
         this.servlist = this.DSServicedetailMainList.data;
-        let index = this.servlist.indexOf(element);
+        const index = this.servlist.indexOf(element);
         if (index >= 0) {
             this.servlist.splice(index, 1);
             this.DSServicedetailMainList.data = [];
@@ -673,7 +670,7 @@ export class ServeToCompanyComponent {
 
 
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

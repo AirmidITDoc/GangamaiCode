@@ -1,21 +1,20 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { SubquestionMasterService } from './subquestion-master.service';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
 import { NewSubquestionComponent } from './new-subquestion/new-subquestion.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { fuseAnimations } from '@fuse/animations';
+import { SubquestionMasterService } from './subquestion-master.service';
 
 @Component({
     selector: 'app-sub-question-master',
     templateUrl: './sub-question-master.component.html',
     styleUrls: ['./sub-question-master.component.scss'],
-     encapsulation: ViewEncapsulation.None,
-        animations: fuseAnimations,
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class SubQuestionMasterComponent {
     // IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DepartmentMaster, permissionType.Add);
@@ -37,9 +36,9 @@ export class SubQuestionMasterComponent {
                     // action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DepartmentMaster, permissionType.Edit), callback: (data: any) => {
                     //     this.onSave(data);
                     // }
-                     action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
-                        }
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data) // EDIT Records
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._SubquestionMasterService.deactivateTheStatus(data.subQuestionId).subscribe((response: any) => {
@@ -48,7 +47,7 @@ export class SubQuestionMasterComponent {
                         });
                     }
                 }]
-        } 
+        }
     ]
 
     allfilters = [
@@ -75,7 +74,7 @@ export class SubQuestionMasterComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewSubquestionComponent,
             {
                 maxWidth: "70vw",

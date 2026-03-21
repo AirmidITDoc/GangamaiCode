@@ -5,14 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import Swal from 'sweetalert2';
+import { ExpeditComponent } from './expedit/expedit.component';
 import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component';
 import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
 import { StockAdjustmentService } from './stock-adjustment.service';
-import { ExpeditComponent } from './expedit/expedit.component';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-stock-adjustment',
@@ -130,7 +129,7 @@ export class StockAdjustmentComponent implements OnInit {
     }
 
     getStockList() {
-        var Param = {
+        const Param = {
             "first": 0,
             "rows": 9999,
             "sortField": "ItemId",
@@ -412,7 +411,7 @@ export class StockAdjustmentComponent implements OnInit {
         const dialogRef = this._matDialog.open(GSTAdjustmentComponent,
             {
                 maxWidth: "100vw",
-                maxHeight:'60vh',
+                maxHeight: '60vh',
                 // height: '55%',
                 width: '55%',
                 data: {
@@ -508,8 +507,8 @@ export class StockAdjustmentComponent implements OnInit {
         this.dsStockAdjList.data = []
     }
 
-     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+    keyPressAlphanumeric(event) {
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -517,7 +516,7 @@ export class StockAdjustmentComponent implements OnInit {
             return false;
         }
     }
-    
+
     AddQty(contact) {
         console.log(contact)
         if (contact.AddQty > 0) {
@@ -588,7 +587,7 @@ export class StockAdjustmentComponent implements OnInit {
                 this.getStockList();
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.StockUpdateForm.invalid) {
                 for (const controlName in this.StockUpdateForm.controls) {
                     if (this.StockUpdateForm.controls[controlName].invalid) {

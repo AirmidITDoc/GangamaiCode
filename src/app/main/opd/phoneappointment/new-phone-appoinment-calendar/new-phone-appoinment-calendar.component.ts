@@ -1,19 +1,18 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, ElementRef, ViewEncapsulation, ChangeDetectorRef, } from '@angular/core';
-import { startOfDay, endOfDay, subDays, addDays, endOfMonth, isSameDay, isSameMonth, addHours, addMinutes, endOfWeek, } from 'date-fns';
-import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView, } from 'angular-calendar';
-import { EventColor, WeekViewHourSegment } from 'calendar-utils';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { PhoneAppointListService } from '../phone-appoint-list.service';
-import { calendarFormat } from 'moment';
-import { NewPhoneAppointmentComponent } from '../new-phone-appointment/new-phone-appointment.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
-import { fuseAnimations } from '@fuse/animations';
-import { ToastrService } from 'ngx-toastr';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { DatePipe } from '@angular/common';
+import { ChangeDetectorRef, Component, ElementRef, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { EventColor, WeekViewHourSegment } from 'calendar-utils';
+import { addDays, addMinutes, endOfDay, endOfWeek, isSameDay, isSameMonth, startOfDay } from 'date-fns';
+import { ToastrService } from 'ngx-toastr';
+import { finalize, fromEvent, Subject, takeUntil } from 'rxjs';
+import { NewPhoneAppointmentComponent } from '../new-phone-appointment/new-phone-appointment.component';
+import { PhoneAppointListService } from '../phone-appoint-list.service';
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -115,7 +114,7 @@ export class NewPhoneAppoinmentCalendarComponent {
     bindData() {
         let fromDate, toDate;
         if (this.dateDisplay) {
-            var dates = this.dateDisplay.nativeElement.textContent.split('-');
+            const dates = this.dateDisplay.nativeElement.textContent.split('-');
             if (this.view == CalendarView.Week) {
                 fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
                 toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
@@ -129,7 +128,7 @@ export class NewPhoneAppoinmentCalendarComponent {
             }
         }
         else {
-            var d = this.getWeekRange();
+            const d = this.getWeekRange();
             fromDate = d.sunday; toDate = d.saturday;
         }
         this._service.getAppoinments(this.DoctorId, fromDate.toISOString().split('T')[0], toDate.toISOString().split('T')[0]).subscribe((data) => {
@@ -366,54 +365,54 @@ export class NewPhoneAppoinmentCalendarComponent {
     // }
 
     handleEvent(action: string, event: CalendarEvent): void {
-    if (action == "CellClicked") {
-        const buttonElement = document.activeElement as HTMLElement;
-        buttonElement?.blur();
+        if (action == "CellClicked") {
+            const buttonElement = document.activeElement as HTMLElement;
+            buttonElement?.blur();
 
-        const fromDate = new Date(event.start);
-        let toDate: Date;
+            const fromDate = new Date(event.start);
+            let toDate: Date;
 
-        if (event.end) {
-            toDate = new Date(event.end);
-        } else {
-            toDate = new Date(fromDate);
-            toDate.setMinutes(toDate.getMinutes() + 10);
-        }
-
-        const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent, {
-            maxWidth: "95vw",
-            maxHeight: '80%',
-            width: '90%',
-            data: {
-                fromDate: fromDate,
-                toDate: toDate,
-                deptNames: this.depName,
-                departmentId: this.depId,
-                doctorName: this.objDoctor.text,
-                doctorId: this.objDoctor.value
+            if (event.end) {
+                toDate = new Date(event.end);
+            } else {
+                toDate = new Date(fromDate);
+                toDate.setMinutes(toDate.getMinutes() + 10);
             }
-        });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.bindData();
-            }
-        });
-    }
-    else if (action == "Dropped or resized") {
-        if (Number(event.id) > 0) {
-            const data = {
-                phoneAppId: event.id,
-                startDate: event.start,
-                endDate: event.end
-            };
-            this._service.getDateTimeChange(data).subscribe(response => {
-                this.bindData();
-                this._matDialog.closeAll();
+            const dialogRef = this._matDialog.open(NewPhoneAppointmentComponent, {
+                maxWidth: "95vw",
+                maxHeight: '80%',
+                width: '90%',
+                data: {
+                    fromDate: fromDate,
+                    toDate: toDate,
+                    deptNames: this.depName,
+                    departmentId: this.depId,
+                    doctorName: this.objDoctor.text,
+                    doctorId: this.objDoctor.value
+                }
+            });
+
+            dialogRef.afterClosed().subscribe(result => {
+                if (result) {
+                    this.bindData();
+                }
             });
         }
+        else if (action == "Dropped or resized") {
+            if (Number(event.id) > 0) {
+                const data = {
+                    phoneAppId: event.id,
+                    startDate: event.start,
+                    endDate: event.end
+                };
+                this._service.getDateTimeChange(data).subscribe(response => {
+                    this.bindData();
+                    this._matDialog.closeAll();
+                });
+            }
+        }
     }
-}
 
 
     addEvent(): void {

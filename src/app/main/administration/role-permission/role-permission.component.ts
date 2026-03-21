@@ -76,7 +76,7 @@ export class RolePermissionComponent implements OnInit {
     nestedTreeControl: NestedTreeControl<FileNode>;
     nestedDataSource: FileNode[];
 
-    isLoading: String = '';
+    isLoading: string = '';
     sIsLoading: string = "";
 
     dsPermissionList = new MatTableDataSource<MenuMaster>();
@@ -96,7 +96,7 @@ export class RolePermissionComponent implements OnInit {
     hasNestedChild = (_: number, nodeData: FileNode) => nodeData.children;
 
     ngOnInit(): void {
-        
+
         if (this.data) {
             this.roleId = this.data.roleId;
             // debugger
@@ -119,14 +119,14 @@ export class RolePermissionComponent implements OnInit {
             descendants[i][proptype] = $event.checked;
             if ((descendants[i].children ?? []).length > 0) {
                 for (let j = 0; j < descendants[i].children.length; j++) {
-                    var objNode = this.dataSource.data.find(x => x["menuId"] == descendants[i].children[j].menuId);
+                    const objNode = this.dataSource.data.find(x => x["menuId"] == descendants[i].children[j].menuId);
                     if (objNode)
                         objNode[proptype] = $event.checked;
                     descendants[i].children[j][proptype] = $event.checked;
                 }
             }
         }
-        var objMatchedNode =this.dataSource["_flattenedData"].value.find(t => t.menuId == obj.menuId);// this.dataSource.data.find(x => x["menuId"] == obj.menuId);
+        const objMatchedNode = this.dataSource["_flattenedData"].value.find(t => t.menuId == obj.menuId);// this.dataSource.data.find(x => x["menuId"] == obj.menuId);
         if (objMatchedNode)
             objMatchedNode[proptype] = $event.checked;
     }
@@ -137,9 +137,9 @@ export class RolePermissionComponent implements OnInit {
     }
 
     onSubmit() {
-        var data = this.dataSource["_flattenedData"].value.map(obj => ({ ...obj, RoleId: this.roleId }));
+        const data = this.dataSource["_flattenedData"].value.map(obj => ({ ...obj, RoleId: this.roleId }));
         this._RoleTemplateService.savePermission(data).subscribe((Menu) => {
-           this.dialogRef.close()
+            this.dialogRef.close()
         });
     }
 

@@ -68,7 +68,7 @@ const appRoutes: Routes = [
                 (m) => m.NursingMasterModule
             ),
     },
-      {
+    {
         path: "ambulance",
         loadChildren: () =>
             import("./ambulance-master/ambulancemaster.module").then(
@@ -78,9 +78,9 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ 
-    
-  ],
+    declarations: [
+
+    ],
     imports: [RouterModule.forChild(appRoutes)],
 })
-export class SetupModule {}
+export class SetupModule { }

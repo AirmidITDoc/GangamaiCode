@@ -5,25 +5,24 @@ import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder } from '@angu
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 // import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse-payment-list.component';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { ConfigService } from 'app/core/services/config.service';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { RegInsert } from '../Admission/admission/admission.component';
-import { IPSettlementService } from './ip-settlement.service';
-import { IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { DiscountAfterFinalBillComponent } from '../ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { ConfigService } from 'app/core/services/config.service';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
+import { IPSettlementService } from './ip-settlement.service';
 
 
 @Component({
@@ -34,7 +33,7 @@ import { permissionCodes } from 'app/main/shared/model/permission.model';
     animations: fuseAnimations
 })
 export class IPSettlementComponent implements OnInit {
-        displayedColumns = [
+    displayedColumns = [
         'CheckBox',
         'BillDate',
         'PBillNo',
@@ -52,7 +51,7 @@ export class IPSettlementComponent implements OnInit {
     ];
     searchFormGroup: FormGroup;
     myFormGroup: FormGroup;
-    IPMultipleSettlForm: FormGroup; 
+    IPMultipleSettlForm: FormGroup;
     ipMultiSaveForm: FormGroup;
     IPBillMyForm: FormGroup;
     RegId1 = "0";
@@ -60,8 +59,8 @@ export class IPSettlementComponent implements OnInit {
     CompanyId = "0"
     BillNo: any;
     vpaidamt: any = 0;
-    regNo2:any=0;
-    currency:any = '';
+    regNo2: any = 0;
+    currency: any = '';
     vbalanceamt: any = 0;
     registerObj = new RegInsert({});
     vNetAmount: any = 0;
@@ -75,8 +74,8 @@ export class IPSettlementComponent implements OnInit {
     AdmissionId: any = 0;
     dsMultiplepayList = new MatTableDataSource<MultiplePayList>();
     @ViewChild(MatSort) sort: MatSort;
-    @ViewChild('paginator', { static: true }) public paginator: MatPaginator; 
-    autocompleteModecompany: string = "Company"; 
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    autocompleteModecompany: string = "Company";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -110,7 +109,7 @@ export class IPSettlementComponent implements OnInit {
         }
     ]
     gridConfig: gridModel = {
-         permissionCode: permissionCodes.Bill,
+        permissionCode: permissionCodes.Bill,
         apiUrl: "IPBill/IPBillList",
         columnsList: this.AllColumns,
         sortField: "BillNo",
@@ -124,7 +123,7 @@ export class IPSettlementComponent implements OnInit {
         private commonService: PrintserviceService,
         private accountService: AuthenticationService,
         public _matDialog: MatDialog,
-        public _configService:ConfigService,
+        public _configService: ConfigService,
         public datePipe: DatePipe,
         public toastr: ToastrService,
         public _FormvalidationserviceService: FormvalidationserviceService,
@@ -154,10 +153,10 @@ export class IPSettlementComponent implements OnInit {
                 }
             }
         });
-    // this.getmultiplePaymentList(true);
-    //this is for curreny symbol
-    const [CurrencyId, CurrencyValue] = this._configService.configParams.CurrencyValue.split(":");
-    this.currency = CurrencyValue
+        // this.getmultiplePaymentList(true);
+        //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._configService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue
     }
     BankId = 0
     BankNam: any;
@@ -183,7 +182,7 @@ export class IPSettlementComponent implements OnInit {
         if ((obj.regID ?? 0) > 0) {
             console.log("Admitted patient:", obj)
         }
-    } 
+    }
     getFinalDisc(contact) {
         const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
             {
@@ -205,7 +204,7 @@ export class IPSettlementComponent implements OnInit {
             RegId: 0,
             AppointmentDate: [(new Date()).toISOString()],
         });
-    } 
+    }
     //IP bill save form 
     CreateIPBillForm(): FormGroup {
         return this.formBuilder.group({
@@ -259,8 +258,8 @@ export class IPSettlementComponent implements OnInit {
                 advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             }),
-             // ✅ Fixed: should be FormArray
-             tPayments: this.formBuilder.array([])
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([])
         });
     }
     createAdvanceUpdate(item: any): FormGroup {
@@ -304,13 +303,13 @@ export class IPSettlementComponent implements OnInit {
     }
     get ModeOfPaymentsArray(): FormArray {
         return this.IPBillMyForm.get('tPayments') as FormArray;
-    } 
-    vIPDNo=''
+    }
+    vIPDNo = ''
     getSelectedObj(obj) {
         console.log(obj)
         this.RegId1 = obj.regID;
         this.registerObj = obj;
-        this.vIPDNo=obj.ipdNo
+        this.vIPDNo = obj.ipdNo
         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
         // setTimeout(() => {
         //     this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
@@ -320,19 +319,19 @@ export class IPSettlementComponent implements OnInit {
         //     });  
         // }, 500);                   "
         this.GetDetails(this.RegId1)
-    } 
+    }
     openPaymentpopup(contact) {
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
         const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate;
         PatientHeaderObj['PatientName'] = this.PatientName || '';
         PatientHeaderObj['AdvanceAmount'] = contact?.balanceAmt || 0;
         PatientHeaderObj['NetPayAmount'] = contact?.balanceAmt || 0;
-        PatientHeaderObj['BillNo'] = contact?.billNo || 0; 
+        PatientHeaderObj['BillNo'] = contact?.billNo || 0;
         PatientHeaderObj['OPD_IPD_Id'] = contact?.opdipdid;
         PatientHeaderObj['IPDNo'] = contact?.ipdNo || '';
         PatientHeaderObj['RegNo'] = contact?.regNo || 0;
@@ -340,7 +339,7 @@ export class IPSettlementComponent implements OnInit {
         PatientHeaderObj['CompanyName'] = contact?.companyName || '';
         PatientHeaderObj['CompanyId'] = contact?.companyId || 0;
         PatientHeaderObj['DepartmentName'] = contact?.departmentName || '';
-        PatientHeaderObj['Age'] = this.registerObj.age || 0; 
+        PatientHeaderObj['Age'] = this.registerObj.age || 0;
         PatientHeaderObj['TransactionLabel'] = 'IP_SETTLEMENT'
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
@@ -381,8 +380,8 @@ export class IPSettlementComponent implements OnInit {
                 this.IPBillMyForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
                 this.ModeOfPaymentsArray.clear();
                 result.submitDataPay.ipModePaymentInsert.forEach(item => {
-                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-                 }); 
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                });
                 console.log(this.IPBillMyForm.value);
                 this._IPSettlementService.InsertIPSettlementPayment(this.IPBillMyForm.value).subscribe(response => {
                     this.GetDetails(this.RegId1)
@@ -400,7 +399,7 @@ export class IPSettlementComponent implements OnInit {
         this.searchFormGroup.reset();
         this.PatientName = '';
         this.registerObj = new RegInsert({});
-    } 
+    }
     // Multiple settlement part------------------------------------------------------------------------------
     getSelectedObj1(obj) {
         console.log(obj)
@@ -409,7 +408,7 @@ export class IPSettlementComponent implements OnInit {
         this.registerObj = obj;
         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
         this.getmultiplePaymentListNew();
-    } 
+    }
     ListView(value) {
         console.log(value)
         if (value.value !== 0)
@@ -420,84 +419,84 @@ export class IPSettlementComponent implements OnInit {
         this.getmultiplePaymentListNew();
     }
     getmultiplePaymentListNew(validate = true) {
-            this.CompanyId = String(this.IPMultipleSettlForm.get('CompanyId').value)
-            this.RegId2 = this.IPMultipleSettlForm.get('RegId')?.value?.regID || 0
-    
-            if (validate &&
-                (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
-                (this.RegId2 === "0" || this.RegId2 === "" || this.RegId2 === undefined)) {
-                this.toastr.warning('Please select either a Company or a Patient before searching.');
-                this.dsMultiplepayList.data = []; // keep list empty
-                return;
-            } 
-            this.isSearchTriggered = true; 
-            let fromDate = this.IPMultipleSettlForm.get("fromDate").value || "";
-            let toDate = this.IPMultipleSettlForm.get("enddate").value || "";
-            fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
-            toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-            var vdata = {
-                "first": 0,
-                "rows": 999,
-                "sortField": "RegNo",
-                "sortOrder": 0,
-                "filters": [
-                    {
-                        "fieldName": "F_Name",
-                        "fieldValue": "%",
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "L_Name",
-                        "fieldValue": "%",
-                        "opType": "Equals"
-                    },
-                    {
-                        "fieldName": "From_Dt",
-                        "fieldValue": fromDate, //"2024-01-01",
-                        "opType": "StartsWith"
-                    },
-                    {
-                        "fieldName": "To_Dt",
-                        "fieldValue": toDate, //"2025-01-01",
-                        "opType": "StartsWith"
-                    },
-                    {
-                        "fieldName": "Reg_No",
-                        "fieldValue": String(this.regNo2), //"1",
-                        "opType": "Contains"
-                    },
-                    {
-                        "fieldName": "PBillNo",
-                        "fieldValue": "0",
-                        "opType": "Contains"
-                    },
-                    {
-                        "fieldName": "ReceiptNo",
-                        "fieldValue": "0",
-                        "opType": "Contains"
-                    },
-                    {
-                        "fieldName": "CompanyId",
-                        "fieldValue": String(this.CompanyId),
-                        "opType": "Contains"
-                    },
-                    {
-                        "fieldName": "OPIPType",
-                        "fieldValue": "1",
-                        "opType": "Contains"
-                    }
-                ],
-                "exportType": "JSON",
-                "columns": []
-            }
-            console.log(vdata)
-            this._IPSettlementService.getmultiplePayList(vdata).subscribe((data) => {
-                this.dsMultiplepayList.data = data.data as MultiplePayList[];
-                console.log(this.dsMultiplepayList.data)
-                this.dsMultiplepayList.sort = this.sort;
-                this.dsMultiplepayList.paginator = this.paginator;
-            });
-    }   
+        this.CompanyId = String(this.IPMultipleSettlForm.get('CompanyId').value)
+        this.RegId2 = this.IPMultipleSettlForm.get('RegId')?.value?.regID || 0
+
+        if (validate &&
+            (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
+            (this.RegId2 === "0" || this.RegId2 === "" || this.RegId2 === undefined)) {
+            this.toastr.warning('Please select either a Company or a Patient before searching.');
+            this.dsMultiplepayList.data = []; // keep list empty
+            return;
+        }
+        this.isSearchTriggered = true;
+        let fromDate = this.IPMultipleSettlForm.get("fromDate").value || "";
+        let toDate = this.IPMultipleSettlForm.get("enddate").value || "";
+        fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
+        toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
+        const vdata = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": "%",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": "%",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": fromDate, //"2024-01-01",
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": toDate, //"2025-01-01",
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": String(this.regNo2), //"1",
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "PBillNo",
+                    "fieldValue": "0",
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "ReceiptNo",
+                    "fieldValue": "0",
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "CompanyId",
+                    "fieldValue": String(this.CompanyId),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "OPIPType",
+                    "fieldValue": "1",
+                    "opType": "Contains"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        console.log(vdata)
+        this._IPSettlementService.getmultiplePayList(vdata).subscribe((data) => {
+            this.dsMultiplepayList.data = data.data as MultiplePayList[];
+            console.log(this.dsMultiplepayList.data)
+            this.dsMultiplepayList.sort = this.sort;
+            this.dsMultiplepayList.paginator = this.paginator;
+        });
+    }
     selection = new SelectionModel<MultiplePayList>(true, []);
     SelectedList: any = [];
     masterToggle() {
@@ -506,7 +505,7 @@ export class IPSettlementComponent implements OnInit {
             this.vNetAmount = 0;
             this.vPaidAmount = 0;
             this.vBalanceAmount = 0;
-             this.vTDSAmount = 0; 
+            this.vTDSAmount = 0;
             this.selection.clear();
             this.SelectedList = [];
         } else {
@@ -519,14 +518,14 @@ export class IPSettlementComponent implements OnInit {
                 this.vNetAmount += element.billAmount
                 this.vPaidAmount += element.PaidAmount
                 this.vBalanceAmount += element.balanceAmt
-                 this.vTDSAmount += element.tds ?? 0;
+                this.vTDSAmount += element.tds ?? 0;
                 this.SelectedList.push(element)
             })
         }
         this.SelectedList.push(this.selection.selected);
         console.log(this.SelectedList)
-    } 
-    
+    }
+
     isAllSelected() {
         const numSelected = this.selection.selected.length;
         const numRows = this.dsMultiplepayList.data.length;
@@ -535,8 +534,8 @@ export class IPSettlementComponent implements OnInit {
     }
     isSomeSelected() {
         return this.selection.selected.length > 0;
-    } 
-     OnSelectPayment(event, element) {
+    }
+    OnSelectPayment(event, element) {
         // debugger
         if (event.checked) {
 
@@ -575,7 +574,7 @@ export class IPSettlementComponent implements OnInit {
             element.CompanyDisc = 0;
             element.tds = 0;
 
-            let index = this.SelectedList.indexOf(element);
+            const index = this.SelectedList.indexOf(element);
             if (index >= 0) {
                 this.SelectedList.splice(index, 1);
             }
@@ -598,7 +597,7 @@ export class IPSettlementComponent implements OnInit {
     }
     roundAmount(value: number, decimals: number = 1): number {
         return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
-    } 
+    }
     onTDSChange(element: any) {
 
         if (!this.selection.isSelected(element)) {
@@ -622,7 +621,7 @@ export class IPSettlementComponent implements OnInit {
             });
             element.tds = 0;
             element.PaidAmount = this.roundAmount(origPaid);
-             this.recalculateTotals();
+            this.recalculateTotals();
             return;
         }
 
@@ -633,7 +632,7 @@ export class IPSettlementComponent implements OnInit {
         );
 
         this.vTDSAmount = this.roundAmount(
-        this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+            this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
         );
 
         this.vPaidAmount = this.roundAmount(
@@ -643,8 +642,8 @@ export class IPSettlementComponent implements OnInit {
         this.vBalanceAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + (x.balanceAmt || 0), 0)
         );
-    }  
-        recalculateTotals() {
+    }
+    recalculateTotals() {
         this.vNetAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + (x.netAmount || 0), 0)
         );
@@ -691,28 +690,28 @@ export class IPSettlementComponent implements OnInit {
         );
 
         this.vTDSAmount = this.roundAmount(
-        this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+            this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
         );
 
         this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
             toastClass: 'tostr-tost custom-toast-success',
         });
-    } 
+    }
 
-        CreateIPMultipleSettlInsertForm() {
+    CreateIPMultipleSettlInsertForm() {
         return this.formBuilder.group({
-            payment: this.formBuilder.array([]), 
+            payment: this.formBuilder.array([]),
             // ✅ Fixed: should be FormArray 
             billUpdate: this.formBuilder.array([]),
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([]),
         })
-    } 
-        CreateIPMultipleSettlLoopInsertForm(element: any = {}): FormGroup {
+    }
+    CreateIPMultipleSettlLoopInsertForm(element: any = {}): FormGroup {
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
-        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
         return this.formBuilder.group({
             // opCreditPayment: this.formBuilder.group({
@@ -738,7 +737,7 @@ export class IPSettlementComponent implements OnInit {
             addBy: [this.accountService.currentUserValue.userId],
             isCancelled: [false],
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            isCancelledDate: ['1999-01-01'], 
+            isCancelledDate: ['1999-01-01'],
             opdipdType: [1],
             neftpayAmount: [element.PaidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
             neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -754,11 +753,11 @@ export class IPSettlementComponent implements OnInit {
             // })
         })
     }
-        CreateMultipleModePaymentform(item: any): FormGroup { 
-                    const currentDate = new Date();
+    CreateMultipleModePaymentform(item: any): FormGroup {
+        const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
-        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
         return this.formBuilder.group({
             paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -777,9 +776,9 @@ export class IPSettlementComponent implements OnInit {
             onlineTranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             onlineTranResponse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            advanceId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            cashCounterId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -787,7 +786,7 @@ export class IPSettlementComponent implements OnInit {
             transactionLabel: ['IP_SETTLEMENT', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         });
     }
-        CreateIPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
+    CreateIPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
         return this.formBuilder.group({
             // billUpdate: this.formBuilder.group({
             billNo: [element.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -797,14 +796,14 @@ export class IPSettlementComponent implements OnInit {
     }
     get IPMulSetLoopArray(): FormArray {
         return this.ipMultiSaveForm.get('payment') as FormArray;
-    } 
+    }
     get ModeOfPaymentsMultipleArray(): FormArray {
-    return this.ipMultiSaveForm.get('tPayments') as FormArray;
+        return this.ipMultiSaveForm.get('tPayments') as FormArray;
     }
 
     get IPMulSetBillLoopArray(): FormArray {
         return this.ipMultiSaveForm.get('billUpdate') as FormArray;
-    } 
+    }
     CurrentDate = new Date()
     // OnSave1() {
     //     if ((this.vPaidAmount == 0 && this.vNetAmount == 0)) {
@@ -830,10 +829,10 @@ export class IPSettlementComponent implements OnInit {
     //     dialogRef.afterClosed().subscribe(result => {
     //         debugger
     //         console.log("payment:", result)
-           
+
     //     });
     // }
-        OnSave() {
+    OnSave() {
         if ((this.vPaidAmount == 0 && this.vNetAmount == 0)) {
             this.toastr.warning('Please select Check Box', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -851,9 +850,9 @@ export class IPSettlementComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        }  
+        }
         debugger
- 
+
         if (!this.IPMultipleSettlForm.invalid) {
             const upiNoValue = this.IPMultipleSettlForm.get('UPINO').value;
 
@@ -869,23 +868,23 @@ export class IPSettlementComponent implements OnInit {
                 this.IPMulSetBillLoopArray.push(this.CreateIPMultipleSettlBillLoopInsertForm(item))
             });
 
-                let ModePaymentObj = [];
-                this.SelectedList.forEach(item => {
-                 ModePaymentObj.push({  
-                    billNo:item?.billNo,
+            const ModePaymentObj = [];
+            this.SelectedList.forEach(item => {
+                ModePaymentObj.push({
+                    billNo: item?.billNo,
                     payAmount: item?.PaidAmount,
                     tranNo: this.IPMultipleSettlForm.get('UPINO').value || 0,
-                    bankName: this.BankNam, 
+                    bankName: this.BankNam,
                     payMode: "net banking",
-                    companyId: item?.companyId ?? 0,  
-                    isSelfOrcompany: item?.companyId ? 1 : 0, 
-                }); 
-                  })
+                    companyId: item?.companyId ?? 0,
+                    isSelfOrcompany: item?.companyId ? 1 : 0,
+                });
+            })
 
-                this.ModeOfPaymentsMultipleArray.clear();
-                ModePaymentObj.forEach(item => {
-                    this.ModeOfPaymentsMultipleArray.push(this.CreateMultipleModePaymentform(item));
-                });   
+            this.ModeOfPaymentsMultipleArray.clear();
+            ModePaymentObj.forEach(item => {
+                this.ModeOfPaymentsMultipleArray.push(this.CreateMultipleModePaymentform(item));
+            });
             console.log(this.ipMultiSaveForm.value)
             this._IPSettlementService.InsertIPMultiplesettlement(this.ipMultiSaveForm.value).subscribe(response => {
                 this.getmultiplePaymentListNew();
@@ -893,7 +892,7 @@ export class IPSettlementComponent implements OnInit {
                 // this.viewgetOPPayemntPdf(response, true);
             });
         } else {
-            const invalidFields = this.getInvalidFields(this.ipMultiSaveForm); 
+            const invalidFields = this.getInvalidFields(this.ipMultiSaveForm);
             if (invalidFields.length > 0) {
                 invalidFields.forEach(field => {
                     this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
@@ -902,22 +901,22 @@ export class IPSettlementComponent implements OnInit {
         }
     }
 
-       OnReset() {
+    OnReset() {
         this.vNetAmount = 0;
         this.vPaidAmount = 0;
         this.vTDSAmount = 0;
         this.vBalanceAmount = 0;
         this.SelectedList = [];
         this.selection.clear();
-        this.regNo2=0;
-    } 
-        IpMulSettFormReset() { 
+        this.regNo2 = 0;
+    }
+    IpMulSettFormReset() {
         this.RegId2 = "0"
         this.regNo2 = "0"
         this.getmultiplePaymentListNew();
     }
-        keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+    keyPressAlphanumeric(event) {
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -926,32 +925,32 @@ export class IPSettlementComponent implements OnInit {
         }
     }
 
-        private getInvalidFields(form: AbstractControl, path: string = ''): string[] {
-            let invalidFields: string[] = [];
-    
-            if (form instanceof FormGroup) {
-                Object.keys(form.controls).forEach(key => {
-                    const control = form.get(key);
-                    if (control) {
-                        invalidFields = invalidFields.concat(
-                            this.getInvalidFields(control, path ? `${path} -> ${key}` : key)
-                        );
-                    }
-                });
-            }
-            else if (form instanceof FormArray) {
-                form.controls.forEach((control, index) => {
+    private getInvalidFields(form: AbstractControl, path: string = ''): string[] {
+        let invalidFields: string[] = [];
+
+        if (form instanceof FormGroup) {
+            Object.keys(form.controls).forEach(key => {
+                const control = form.get(key);
+                if (control) {
                     invalidFields = invalidFields.concat(
-                        this.getInvalidFields(control, `${path}[${index + 1}]`)
+                        this.getInvalidFields(control, path ? `${path} -> ${key}` : key)
                     );
-                });
-            }
-            else if (form.invalid) {
-                invalidFields.push(path);
-            }
-    
-            return invalidFields;
+                }
+            });
         }
+        else if (form instanceof FormArray) {
+            form.controls.forEach((control, index) => {
+                invalidFields = invalidFields.concat(
+                    this.getInvalidFields(control, `${path}[${index + 1}]`)
+                );
+            });
+        }
+        else if (form.invalid) {
+            invalidFields.push(path);
+        }
+
+        return invalidFields;
+    }
 }
 
 export class MultiplePayList {

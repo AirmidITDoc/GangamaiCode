@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [CashCounterMasterService, DatePipe]
 })
-export class CashCounterMasterModule {}
+export class CashCounterMasterModule { }

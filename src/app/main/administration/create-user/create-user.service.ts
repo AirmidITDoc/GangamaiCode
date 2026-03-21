@@ -3,80 +3,80 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CreateUserService {
 
-  myformSearch: FormGroup;
-  myuserform: FormGroup;
+    myformSearch: FormGroup;
+    myuserform: FormGroup;
 
-  constructor(
-    private _httpClient: ApiCaller,
-    private _formBuilder: UntypedFormBuilder
-  ) {
-    this.myformSearch = this.createSearchForm();
-    // this.myuserform = this.createuserForm();
-  }
+    constructor(
+        private _httpClient: ApiCaller,
+        private _formBuilder: UntypedFormBuilder
+    ) {
+        this.myformSearch = this.createSearchForm();
+        // this.myuserform = this.createuserForm();
+    }
 
- 
 
-  createSearchForm(): FormGroup {
-    return this._formBuilder.group({
-      DoctorNameSearch: [""],
-      IsDeletedSearch: ["2"],
-    });
-  }
 
-  initializeFormGroup() {
-    // this.createuserForm();
-  }
+    createSearchForm(): FormGroup {
+        return this._formBuilder.group({
+            DoctorNameSearch: [""],
+            IsDeletedSearch: ["2"],
+        });
+    }
 
-  public insertuser(Param: any) {
-    if (Param.userId) {
-      return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
-    } else
-      return this._httpClient.PostData("LoginManager/Insert", Param);
-  }
+    initializeFormGroup() {
+        // this.createuserForm();
+    }
 
-  PasswordUpdate(Param: any) {
-    return this._httpClient.PostData("LoginManager/updatepassword", Param);
-  }
+    public insertuser(Param: any) {
+        if (Param.userId) {
+            return this._httpClient.PutData("LoginManager/Edit/" + Param.userId, Param);
+        } else
+            return this._httpClient.PostData("LoginManager/Insert", Param);
+    }
 
-  public deactivateTheStatus(m_data) {
-    return this._httpClient.PostData("LoginManager/LoginCanceled",m_data);
-  }
-  
+    PasswordUpdate(Param: any) {
+        return this._httpClient.PostData("LoginManager/updatepassword", Param);
+    }
 
-  public userInsert(employee) {
-    return this._httpClient.PostData("DoctorMaster/DoctorSave", employee);
-  }
+    public deactivateTheStatus(m_data) {
+        return this._httpClient.PostData("LoginManager/LoginCanceled", m_data);
+    }
 
-  public UserUpdate(employee) {
-    return this._httpClient.PostData("DoctorMaster/DoctorUpdate", employee);
-  }
 
-public getApprovalList(param){
-    return this._httpClient.PostData("Common",param)
-  }
-  
-   public getAccessDetailList(param){
-    return this._httpClient.PostData("LoginManager/loginAccessDetailsList",param)
-  }
+    public userInsert(employee) {
+        return this._httpClient.PostData("DoctorMaster/DoctorSave", employee);
+    }
 
-  public getUnitDetailList(param){
-    return this._httpClient.PostData("LoginManager/LoginUnitUserWiseList",param)
-  }
+    public UserUpdate(employee) {
+        return this._httpClient.PostData("DoctorMaster/DoctorUpdate", employee);
+    }
 
-  public getStoreDetailList(param){
-    return this._httpClient.PostData("LoginManager/LoginStoreUserWiseList",param)
-  }
+    public getApprovalList(param) {
+        return this._httpClient.PostData("Common", param)
+    }
 
-  public getpasswwordupdate(data) {
-    return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + data, {})
-  }
-  public getpasswwordChange(data) {
-    return this._httpClient.PostData("LoginManager/updatepassword", data)
-  }
+    public getAccessDetailList(param) {
+        return this._httpClient.PostData("LoginManager/loginAccessDetailsList", param)
+    }
+
+    public getUnitDetailList(param) {
+        return this._httpClient.PostData("LoginManager/LoginUnitUserWiseList", param)
+    }
+
+    public getStoreDetailList(param) {
+        return this._httpClient.PostData("LoginManager/LoginStoreUserWiseList", param)
+    }
+
+    public getpasswwordupdate(data) {
+        return this._httpClient.PostData("Generic/ExecByQueryStatement?query=" + data, {})
+    }
+    public getpasswwordChange(data) {
+        return this._httpClient.PostData("LoginManager/updatepassword", data)
+    }
 
 
 }

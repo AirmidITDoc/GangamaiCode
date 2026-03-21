@@ -35,14 +35,14 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { PurchaseRequisitionVerificationComponent } from './purchase-requisition-verification.component';
 import { NewPurchaserequisitionComponent } from './new-purchaserequisition/new-purchaserequisition.component';
+import { PurchaseRequisitionVerificationComponent } from './purchase-requisition-verification.component';
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: PurchaseRequisitionVerificationComponent,
-  },
+    {
+        path: "**",
+        component: PurchaseRequisitionVerificationComponent,
+    },
 ];
 
 @NgModule({

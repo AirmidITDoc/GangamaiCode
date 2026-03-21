@@ -1,13 +1,12 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { ConfigService } from 'app/core/services/config.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
 import { CompanyMaster } from '../company-master-list.component';
 import { CompanyMasterService } from '../company-master.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { fuseAnimations } from '@fuse/animations';
-import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-company-master',
@@ -94,7 +93,7 @@ export class NewCompanyMasterComponent {
                 this.dialogRef.close()
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.companyFormDemo.invalid) {
                 for (const controlName in this.companyFormDemo.controls) {
                     if (this.companyFormDemo.controls[controlName].invalid) {
@@ -170,7 +169,7 @@ export class NewCompanyMasterComponent {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -180,7 +179,7 @@ export class NewCompanyMasterComponent {
     }
     // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

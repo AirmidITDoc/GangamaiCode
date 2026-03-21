@@ -39,17 +39,17 @@ import { NursingBedtransferComponent } from './nursing-bedtransfer.component';
 
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: NursingBedtransferComponent,
-  },
+    {
+        path: "**",
+        component: NursingBedtransferComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [NursingBedtransferComponent],
-  imports: [
-    RouterModule.forChild(routes),
-    CommonModule,
+    declarations: [NursingBedtransferComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        CommonModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -87,11 +87,11 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         //  NgMultiSelectDropDownModule.forRoot(),
-         MatTooltipModule
-  ],
-  providers: [
-    DatePipe
-  ],
-  entryComponents: [NursingBedtransferComponent],
+        MatTooltipModule
+    ],
+    providers: [
+        DatePipe
+    ],
+    entryComponents: [NursingBedtransferComponent],
 })
 export class NurBedtransferModule { }

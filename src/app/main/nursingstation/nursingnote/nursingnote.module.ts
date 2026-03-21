@@ -42,10 +42,10 @@ import { NursingnoteComponent } from './nursingnote.component';
 import { NursingnoteService } from './nursingnote.service';
 
 const routes: Routes = [
-  {
-      path: "**",
-      component: NursingnoteComponent,
-  },
+    {
+        path: "**",
+        component: NursingnoteComponent,
+    },
 ];
 
 @NgModule({

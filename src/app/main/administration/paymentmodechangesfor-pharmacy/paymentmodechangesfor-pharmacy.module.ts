@@ -35,16 +35,16 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.component';
+import { NewTPaymenModeUpdateComponent } from './new-tpaymen-mode-update/new-tpaymen-mode-update.component';
 import { PaymentmodechangesforPharmacyComponent } from './paymentmodechangesfor-pharmacy.component';
 import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
-import { NewTPaymenModeUpdateComponent } from './new-tpaymen-mode-update/new-tpaymen-mode-update.component';
- 
+
 
 const routes: Routes = [
-  {
-      path: '**',
-      component: PaymentmodechangesforPharmacyComponent,
-  },
+    {
+        path: '**',
+        component: PaymentmodechangesforPharmacyComponent,
+    },
 ];
 
 @NgModule({

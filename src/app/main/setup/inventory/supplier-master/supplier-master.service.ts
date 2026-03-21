@@ -23,22 +23,22 @@ export class SupplierMasterService {
 
     createSuppliermasterForm(): FormGroup {
         return this._formBuilder.group({
-            supplierId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            supplierId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             supplierName: ["",
                 [
                     Validators.required,
                     Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             ContactPerson: ["", []],
             address: ["", [Validators.required]
             ],
-            cityId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            stateId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            countryId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             CreditPeriod: [""],
             mobile: ["",
@@ -69,8 +69,8 @@ export class SupplierMasterService {
                     // Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
                 ]
             ],
-            modeofPayment: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            termofPayment: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            modeofPayment: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            termofPayment: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             CurrencyId: [0],
             Octroi: [0],
             Freight: [0,
@@ -94,23 +94,23 @@ export class SupplierMasterService {
                 ]
             ],
             taluka: [0],
-            licNo: ["",[Validators.required]],
+            licNo: ["", [Validators.required]],
             pinCode: ["", [Validators.pattern("^[0-9]*$"),
-                Validators.minLength(6),
-                Validators.maxLength(6),]],
+            Validators.minLength(6),
+            Validators.maxLength(6),]],
             taxNature: [0, Validators.pattern("^[0-9]*$")],
             expDate: [new Date()],
-            dlno: ["",[Validators.required]],
+            dlno: ["", [Validators.required]],
             bankId: [0],
             bankName: [""],
             branch: [""],
             bankNo: [0, [Validators.pattern("^[0-9]*$")]],
             // bankNo: [0, [Validators.pattern("[0-9]{9,18}"), Validators.minLength(9), Validators.maxLength(18)]],
             ifsccode: ["", [Validators.pattern("^[A-Z]{4}0[A-Z0-9]{6}$")]],
-            venderTypeId:[0],
+            venderTypeId: [0],
             openingBalance: [0, [Validators.pattern("^[0-9]*$"),
-                Validators.minLength(1),
-                Validators.maxLength(10),]],
+            Validators.minLength(1),
+            Validators.maxLength(10),]],
             supplierTime: [(new Date()).toISOString()],
             mAssignSupplierToStores: [
                 {
@@ -121,15 +121,15 @@ export class SupplierMasterService {
             ],
 
             // 
-            
-           
+
+
             // MsmNo: [0],
             // MSMNo: ['', Validators.required],
             // CreateApproval: [true],
-            
+
             // addedby: this._loggedService.currentUserValue.userId,
             // 
-           
+
         });
     }
 
@@ -141,8 +141,8 @@ export class SupplierMasterService {
         return this._formBuilder.group({
             StoreId: this._loggedService.currentUserValue.user.storeId,
             SupplierNameSearch: [""],
-            cityId:[0],
-            mobileNo:""
+            cityId: [0],
+            mobileNo: ""
             // IsDeletedSearch: ["2"],
         });
     }
@@ -171,7 +171,7 @@ export class SupplierMasterService {
     }
 
     public SupplierMasterCancle(Id: any) {
-debugger
+        debugger
         return this._httpClient.DeleteData(`Supplier/SupplierDelete?Id=${Id}`);
     }
 

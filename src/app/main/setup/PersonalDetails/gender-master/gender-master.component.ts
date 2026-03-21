@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
-import { GenderMasterService } from "./gender-master.service";
 import { MatDialog } from "@angular/material/dialog";
-import { NewGendermasterComponent } from "./new-gendermaster/new-gendermaster.component";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { ToastrService } from "ngx-toastr";
+import { GenderMasterService } from "./gender-master.service";
+import { NewGendermasterComponent } from "./new-gendermaster/new-gendermaster.component";
 @Component({
     selector: "app-gender-master",
     templateUrl: "./gender-master.component.html",
@@ -20,11 +20,11 @@ export class GenderMasterComponent implements OnInit {
     GenderMasterList: any;
     msg: any;
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Gender, permissionType.Add);
-      
+
     options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     gridConfig: gridModel = {
-        permissionCode:permissionCodes.Gender,
+        permissionCode: permissionCodes.Gender,
         apiUrl: "Gender/List",
         columnsList: [
             // { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
@@ -33,11 +33,11 @@ export class GenderMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit,visible: this.permissionService.getPermission(permissionCodes.Gender, permissionType.Edit), callback: (data: any) => {
+                        action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Gender, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
-                        action: gridActions.delete,visible: this.permissionService.getPermission(permissionCodes.Gender, permissionType.Delete), callback: (data: any) => {
+                        action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.Gender, permissionType.Delete), callback: (data: any) => {
                             this._GenderService.deactivateTheStatus(data.genderId).subscribe((response: any) => {
                                 this.grid.bindGridData();
                             });
@@ -75,7 +75,7 @@ export class GenderMasterComponent implements OnInit {
     ];
     constructor(
         public _GenderService: GenderMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
+        public toastr: ToastrService, public _matDialog: MatDialog, public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void { }
@@ -83,7 +83,7 @@ export class GenderMasterComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewGendermasterComponent,
             {
                 maxWidth: "100vw",

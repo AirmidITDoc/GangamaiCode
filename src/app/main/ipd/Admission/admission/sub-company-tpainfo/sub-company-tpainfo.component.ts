@@ -10,137 +10,137 @@ import { AdmissionService } from '../admission.service';
 
 
 @Component({
-  selector: 'app-sub-company-tpainfo',
-  templateUrl: './sub-company-tpainfo.component.html',
-  styleUrls: ['./sub-company-tpainfo.component.scss']
+    selector: 'app-sub-company-tpainfo',
+    templateUrl: './sub-company-tpainfo.component.html',
+    styleUrls: ['./sub-company-tpainfo.component.scss']
 })
 export class SubCompanyTPAInfoComponent implements OnInit {
 
-  SubcompanyFormGroup: FormGroup;
-  dateTimeObj: any;
-  screenFromString = 'advance';
-  selectedAdvanceObj: AdmissionPersonlModel;
-  
-  AdmissionId: any;
-  CompanyName:any;
-  subCompanyId=0
-  CityName:any;
-  autocompleteModecity: string = "City";
-  autocompleteModecompany: string = "Company";
-  autocompleteModecompanytype: string = "CompanyType";
+    SubcompanyFormGroup: FormGroup;
+    dateTimeObj: any;
+    screenFromString = 'advance';
+    selectedAdvanceObj: AdmissionPersonlModel;
+
+    AdmissionId: any;
+    CompanyName: any;
+    subCompanyId = 0
+    CityName: any;
+    autocompleteModecity: string = "City";
+    autocompleteModecompany: string = "Company";
+    autocompleteModecompanytype: string = "CompanyType";
 
 
-  constructor(public _AdmissionService: AdmissionService,
-    private formBuilder: UntypedFormBuilder,
-    public _matDialog: MatDialog,
-    public datePipe: DatePipe,
-     public toastr: ToastrService,
-  @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<SubCompanyTPAInfoComponent>,
+    constructor(public _AdmissionService: AdmissionService,
+        private formBuilder: UntypedFormBuilder,
+        public _matDialog: MatDialog,
+        public datePipe: DatePipe,
+        public toastr: ToastrService,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<SubCompanyTPAInfoComponent>,
     ) { }
 
-  ngOnInit(): void {
-    this.SubcompanyFormGroup = this.createsubtpaForm();
-    this.SubcompanyFormGroup.markAllAsTouched();
-    console.log(this.data)
-    // if (this.data) {
-    //   this.selectedAdvanceObj = this.data;
-    //   this.subCompanyId= this.data.subTpaComId
-    //   console.log(this.selectedAdvanceObj);
-    // }
-}
- 
-  
-createsubtpaForm() {
-    return this.formBuilder.group({
-      subCompanyId : 0,
-      compTypeId:['', Validators.required],
-      companyName:['', Validators.required],
-      address: '',
-      city: ['', Validators.required],
-      pinNo:['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{7}$")]],
-      phoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      mobileNo: ['',Validators.required, [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      faxNo: '%',
-      IsActive:'',
+    ngOnInit(): void {
+        this.SubcompanyFormGroup = this.createsubtpaForm();
+        this.SubcompanyFormGroup.markAllAsTouched();
+        console.log(this.data)
+        // if (this.data) {
+        //   this.selectedAdvanceObj = this.data;
+        //   this.subCompanyId= this.data.subTpaComId
+        //   console.log(this.selectedAdvanceObj);
+        // }
+    }
 
 
-      addedBy:10,
-  updatedBy: 10,
-  isCancelled: true,
-  isCancelledBy: 0,
-  isCancelledDate: "2018-01-01",
-  createdBy: 10,
-  createdDate:"2018-01-01",
-  modifiedBy: 10,
-  modifiedDate: "2018-01-01"
+    createsubtpaForm() {
+        return this.formBuilder.group({
+            subCompanyId: 0,
+            compTypeId: ['', Validators.required],
+            companyName: ['', Validators.required],
+            address: '',
+            city: ['', Validators.required],
+            pinNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{7}$")]],
+            phoneNo: ['', [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+            mobileNo: ['', Validators.required, [Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+            faxNo: '%',
+            IsActive: '',
 
 
-    });
-  }
+            addedBy: 10,
+            updatedBy: 10,
+            isCancelled: true,
+            isCancelledBy: 0,
+            isCancelledDate: "2018-01-01",
+            createdBy: 10,
+            createdDate: "2018-01-01",
+            modifiedBy: 10,
+            modifiedDate: "2018-01-01"
 
 
- onSubmit() {
-    let data =this.SubcompanyFormGroup.value
-    
-    data["companyName"]=this.CompanyName
-    data["city"]=this.CityName
+        });
+    }
 
-// console.log(data)
-// if(this.SubcompanyFormGroup.value.valid){
-  this._AdmissionService.subcompanyTPAInsert(data).subscribe(response => {
-    this.toastr.success(response.message);
-      this._matDialog.closeAll();
-    }, (error) => {
-      this.toastr.error(error.message);
 
-    });
-  // }
-  // else
-  // Swal.fire("Enter Values..Form is Invalid")
-}
-onChangeCompany(event){
-  this.CompanyName=event.text
-}
-onChangeCity(event){
-  console.log(event)
-  this.CityName=event.text
-}
+    onSubmit() {
+        const data = this.SubcompanyFormGroup.value
 
-getValidationMessages() {
-  return {
-    RegId: [],
-    cityId: [
-      { name: "required", Message: "cityId is required" }
-    ],
-    CompanyId: [
-      { name: "required", Message: "CompanyId is required" }
-    ],
-    mobileNo: [
-      { name: "pattern", Message: "mobileNo allowed" },
+        data["companyName"] = this.CompanyName
+        data["city"] = this.CityName
 
-    ],
-    phoneNo: [
-      { name: "pattern", Message: "phoneNo Only numbers allowed" },
+        // console.log(data)
+        // if(this.SubcompanyFormGroup.value.valid){
+        this._AdmissionService.subcompanyTPAInsert(data).subscribe(response => {
+            this.toastr.success(response.message);
+            this._matDialog.closeAll();
+        }, (error) => {
+            this.toastr.error(error.message);
 
-    ],
-    pinNo: [
-      { name: "pattern", Message: "Only numbers allowed" },
-    ],
-    FaxNo: [
-      { name: "required", Message: "FaxNo Only numbers allowed" }
-    ]
-  };
-}
+        });
+        // }
+        // else
+        // Swal.fire("Enter Values..Form is Invalid")
+    }
+    onChangeCompany(event) {
+        this.CompanyName = event.text
+    }
+    onChangeCity(event) {
+        console.log(event)
+        this.CityName = event.text
+    }
 
-onReset(){
-  this.SubcompanyFormGroup.reset();
-}
-onClose() {
-  this.dialogRef.close();
-}
-  getDateTime(dateTimeObj) {
-    this.dateTimeObj = dateTimeObj;
-  }
+    getValidationMessages() {
+        return {
+            RegId: [],
+            cityId: [
+                { name: "required", Message: "cityId is required" }
+            ],
+            CompanyId: [
+                { name: "required", Message: "CompanyId is required" }
+            ],
+            mobileNo: [
+                { name: "pattern", Message: "mobileNo allowed" },
+
+            ],
+            phoneNo: [
+                { name: "pattern", Message: "phoneNo Only numbers allowed" },
+
+            ],
+            pinNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+            ],
+            FaxNo: [
+                { name: "required", Message: "FaxNo Only numbers allowed" }
+            ]
+        };
+    }
+
+    onReset() {
+        this.SubcompanyFormGroup.reset();
+    }
+    onClose() {
+        this.dialogRef.close();
+    }
+    getDateTime(dateTimeObj) {
+        this.dateTimeObj = dateTimeObj;
+    }
 }
 

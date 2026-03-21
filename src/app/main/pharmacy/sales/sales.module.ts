@@ -41,10 +41,10 @@ import { SubstitutesComponent } from './substitutes/substitutes.component';
 
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: SalesComponent 
-  },
+    {
+        path: '**',
+        component: SalesComponent
+    },
 ];
 
 @NgModule({

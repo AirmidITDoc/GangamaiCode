@@ -1,22 +1,18 @@
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MatAutocomplete } from "@angular/material/autocomplete";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { AuthenticationService } from "app/core/services/authentication.service";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from "ngx-toastr";
-import { Observable, ReplaySubject, Subject } from "rxjs";
-import { TemplatedetailList, TestList, TestMaster } from "../testmaster.component";
-import { TestmasterService } from "../testmaster.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
-import { element } from "protractor";
+import { ToastrService } from "ngx-toastr";
 import Swal from "sweetalert2";
+import { TemplatedetailList, TestList } from "../testmaster.component";
+import { TestmasterService } from "../testmaster.service";
 
 
 
@@ -91,7 +87,7 @@ export class TestFormMasterComponent implements OnInit {
             this.TemplateId = this.registerObj.TemplateId;
             this.isActive = this.registerObj.isActive;
             this.vsuggestionNote = this.registerObj?.suggestionNote || '';
-            this.ServiceID=this.registerObj.serviceID;
+            this.ServiceID = this.registerObj.serviceID;
 
 
             if (this.registerObj.isTemplateTest === "0" && !this.registerObj.isSubTest) {
@@ -122,7 +118,7 @@ export class TestFormMasterComponent implements OnInit {
         }
 
         this.getParameterList();
-        var m_data = {
+        const m_data = {
             TestId: this.data?.testId,
             TestName: this.data?.testName,
             PrintTestName: this.data?.printTestName,
@@ -252,7 +248,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTestlist(obj) {
-        var m_data =
+        const m_data =
         {
             "first": 0,
             "rows": 9999,
@@ -394,7 +390,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     fetchTemplate(obj) {
-        var m_data = {
+        const m_data = {
             "first": 0,
             "rows": 999,
             "sortField": "TemplateId",
@@ -520,8 +516,8 @@ export class TestFormMasterComponent implements OnInit {
 
     getParameterList() {
         // debugger
-        let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
-        var param = {
+        const parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
+        const param = {
             "first": 0,
             "rows": 999,
             "sortField": "ParameterId",
@@ -548,7 +544,7 @@ export class TestFormMasterComponent implements OnInit {
         }
         this._TestmasterService.getParameterMasterList(param).subscribe(data => {
 
-            this.paramterList.data = data.data as TestList[];;
+            this.paramterList.data = data.data as TestList[];
             this.paramterList.sort = this.sort;
             this.paramterList.paginator = this.paginator;
         });
@@ -556,8 +552,8 @@ export class TestFormMasterComponent implements OnInit {
 
     // isSubtest checkbox list 
     getSubTestMasterList() {
-        let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
-        var param = {
+        const parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
+        const param = {
             "first": 0,
             "rows": 999,
             "sortField": "TestId",
@@ -574,7 +570,7 @@ export class TestFormMasterComponent implements OnInit {
         }
         this._TestmasterService.getIsSubTestList(param).subscribe(data => {
 
-            this.paramterList.data = data.data as TestList[];;
+            this.paramterList.data = data.data as TestList[];
             this.paramterList.sort = this.sort;
             this.paramterList.paginator = this.paginator;
         });
@@ -614,7 +610,7 @@ export class TestFormMasterComponent implements OnInit {
     // }
 
     onDeleteRow(event) {
-        let paraid = event.parameterID ?? event.parameterId
+        const paraid = event.parameterID ?? event.parameterId
         // PARAMETER delete
         if (paraid && !event.testId) {
 
@@ -694,7 +690,7 @@ export class TestFormMasterComponent implements OnInit {
             this.chargeslist = [];
 
         if (this.chargeslist.length > 0 && this.chargeslist.length != 1) {
-            let isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
+            const isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected Parameter already added in the list', 'Warning!', {
@@ -717,7 +713,7 @@ export class TestFormMasterComponent implements OnInit {
         debugger
         this.ChargeList = this.DSTestList.data || [];
 
-        let exists = this.ChargeList.some(item => item.ParameterID === row.parameterId);
+        const exists = this.ChargeList.some(item => item.ParameterID === row.parameterId);
         if (!exists) {
             this.ChargeList.push({
                 parameterId: row.parameterId,
@@ -741,7 +737,7 @@ export class TestFormMasterComponent implements OnInit {
             this.chargeslist = [];
         }
         if (this.chargeslist.length > 0) {
-            let isDuplicate = this.chargeslist.some(ele => ele.testId === row.testId);
+            const isDuplicate = this.chargeslist.some(ele => ele.testId === row.testId);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected SubTest already added in the list', 'Warning!', {
@@ -782,7 +778,7 @@ export class TestFormMasterComponent implements OnInit {
             console.log('API returned:', apiData);
             if (!this.ChargeList) this.ChargeList = [];
 
-            let newItems = apiData.length > 0 ? apiData : [{
+            const newItems = apiData.length > 0 ? apiData : [{
                 parameterID: row.parameterId || 0,
                 parameterName: row.parameterName,
                 subTestID: row.subTestID || 0,

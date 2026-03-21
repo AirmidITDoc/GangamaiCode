@@ -21,7 +21,7 @@ export class ReportService {
         });
     }
     createUserFormGroup() {
-        var date = new Date();
+        const date = new Date();
         date.setDate(date.getDate() - 7);
         return this._formBuilder.group({
             // StartDate: [date.toISOString()],

@@ -1,26 +1,25 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { DiscountAfterFinalBillComponent } from 'app/main/ipd/ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { RegInsert } from '../registration/registration.component';
 import { CompanysettlementService } from './companysettlement.service';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DiscountAfterFinalBillComponent } from 'app/main/ipd/ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-companysettlement',
@@ -39,7 +38,7 @@ export class CompanysettlementComponent implements OnInit {
     regNo: any = "0"
     regNo2: any = "0"
     l_name: any = ""
-    CompanyId = "0" 
+    CompanyId = "0"
     PBillNo: any = "%"
     autocompleteModecompany: string = "Company";
     searchFormGroup: FormGroup
@@ -128,7 +127,7 @@ export class CompanysettlementComponent implements OnInit {
 
     ];
     gridConfig1: gridModel = {
-          permissionCode: permissionCodes.Bill,
+        permissionCode: permissionCodes.Bill,
         apiUrl: "OPBill/BrowseOPPaymentList",
         columnsList: this.AllColumns,
         sortField: "RegNo",
@@ -180,7 +179,7 @@ export class CompanysettlementComponent implements OnInit {
             }
         });
 
-       // this.getmultiplePaymentList(true);
+        // this.getmultiplePaymentList(true);
     }
 
     createSearchForm() {
@@ -260,12 +259,12 @@ export class CompanysettlementComponent implements OnInit {
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             }),
-                        //New Payments
+            //New Payments
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([]),
         })
     }
-    CreateModePaymentform(item: any): FormGroup { 
+    CreateModePaymentform(item: any): FormGroup {
         return this.formBuilder.group({
             paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
@@ -294,11 +293,11 @@ export class CompanysettlementComponent implements OnInit {
         });
     }
     get ModeOfPaymentsArray(): FormArray {
-    return this.OpSettlementForm.get('tPayments') as FormArray;
+        return this.OpSettlementForm.get('tPayments') as FormArray;
     }
     CreateOPMultipleSettlInsertForm() {
         return this.formBuilder.group({
-            opCreditPayment: this.formBuilder.array([]), 
+            opCreditPayment: this.formBuilder.array([]),
             // ✅ Fixed: should be FormArray 
             billUpdate: this.formBuilder.array([]),
             // ✅ Fixed: should be FormArray
@@ -310,7 +309,7 @@ export class CompanysettlementComponent implements OnInit {
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
-        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
         return this.formBuilder.group({
             // opCreditPayment: this.formBuilder.group({
@@ -355,11 +354,11 @@ export class CompanysettlementComponent implements OnInit {
         })
     }
 
-        CreateMultipleModePaymentform(item: any): FormGroup { 
-                    const currentDate = new Date();
+    CreateMultipleModePaymentform(item: any): FormGroup {
+        const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
-        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
         return this.formBuilder.group({
             paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -378,9 +377,9 @@ export class CompanysettlementComponent implements OnInit {
             onlineTranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             onlineTranResponse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            advanceId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            cashCounterId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -390,9 +389,9 @@ export class CompanysettlementComponent implements OnInit {
     }
     get OPMulSetLoopArray(): FormArray {
         return this.OPMultipleSettlLoopInsertForm.get('opCreditPayment') as FormArray;
-    } 
+    }
     get ModeOfPaymentsMultipleArray(): FormArray {
-    return this.OPMultipleSettlLoopInsertForm.get('tPayments') as FormArray;
+        return this.OPMultipleSettlLoopInsertForm.get('tPayments') as FormArray;
     }
     CreateOPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
         return this.formBuilder.group({
@@ -404,23 +403,23 @@ export class CompanysettlementComponent implements OnInit {
     }
     get OPMulSetBillLoopArray(): FormArray {
         return this.OPMultipleSettlLoopInsertForm.get('billUpdate') as FormArray;
-    } 
+    }
     getSelectedObj(obj) {
         this.RegId1 = obj.value;
         this.regNo = obj.regNo
         this.registerObj = obj
         this.GetDetails(obj.value)
-    } 
+    }
     getSelectedObj2(obj) {
         this.RegId2 = obj.value;
         this.regNo2 = obj.regNo
         this.registerObj = obj
         this.getmultiplePaymentList();
-    } 
+    }
     openPaymentpopup(contact) {
-        let PatientHeaderObj = {};
+        const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
+            PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
         PatientHeaderObj['PatientName'] = this.registerObj?.patientName || ''
         PatientHeaderObj['OPD_IPD_Id'] = contact.opdNo || '';
         PatientHeaderObj['Age'] = this.registerObj?.ageYear || 0
@@ -428,7 +427,7 @@ export class CompanysettlementComponent implements OnInit {
         PatientHeaderObj['billNo'] = contact.billNo || 0;
         PatientHeaderObj['CompanyName'] = contact.companyName || '';
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
-        PatientHeaderObj['CompanyId'] = contact.companyId || 0;  
+        PatientHeaderObj['CompanyId'] = contact.companyId || 0;
         PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
@@ -443,14 +442,14 @@ export class CompanysettlementComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.IsSubmitFlag == true) {
-                this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo) 
+                this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
                 this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result.BillBalanceAmount)
                 this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
 
                 this.ModeOfPaymentsArray.clear();
                 result.submitDataPay.ipModePaymentInsert.forEach(item => {
                     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-                });   
+                });
 
                 debugger
                 if (this.OpSettlementForm.valid) {
@@ -462,7 +461,7 @@ export class CompanysettlementComponent implements OnInit {
                         this.viewgetOPPayemntPdf(response, true);
                     });
                 } else {
-                    let invalidFields = []
+                    const invalidFields = []
                     if (this.OpSettlementForm.invalid) {
                         for (const controlName in this.OpSettlementForm.controls) {
                             const control = this.OpSettlementForm.get(controlName);
@@ -488,7 +487,7 @@ export class CompanysettlementComponent implements OnInit {
             }
         });
         this.searchFormGroup.get('RegId').setValue('')
-    } 
+    }
     viewgetOPPayemntPdf(data, status) {
         if (status)
             this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
@@ -559,7 +558,7 @@ export class CompanysettlementComponent implements OnInit {
         this.getmultiplePaymentList();
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -718,7 +717,7 @@ export class CompanysettlementComponent implements OnInit {
     @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
     getmultiplePaymentList(validate = true) {
         this.CompanyId = String(this.OPMultipleSettlForm.get('CompanyId').value)
-        this.RegId2 = this.OPMultipleSettlForm.get('RegId')?.value.value 
+        this.RegId2 = this.OPMultipleSettlForm.get('RegId')?.value.value
 
         if (validate &&
             (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
@@ -734,7 +733,7 @@ export class CompanysettlementComponent implements OnInit {
         let toDate = this.OPMultipleSettlForm.get("enddate").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-        var vdata = {
+        const vdata = {
             "first": 0,
             "rows": 9999,
             "sortField": "RegNo",
@@ -813,9 +812,9 @@ export class CompanysettlementComponent implements OnInit {
 
         // Clear table
         this.dsMultiplepayList.data = [];
-    } 
+    }
     selection = new SelectionModel<MultiplePayList>(true, []);
-    SelectedList: any = []; 
+    SelectedList: any = [];
     // masterToggle() {
     //     debugger;
 
@@ -880,7 +879,7 @@ export class CompanysettlementComponent implements OnInit {
         debugger;
 
         if (this.isAllSelected() || this.isSomeSelected()) {
-            
+
             this.selection.clear();
             this.SelectedList = [];
             this.vNetAmount = 0;
@@ -936,7 +935,7 @@ export class CompanysettlementComponent implements OnInit {
 
         this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
         console.log(this.SelectedList);
-    } 
+    }
     isAllSelected() {
         const numSelected = this.selection.selected.length;
         const numRows = this.dsMultiplepayList.data.length;
@@ -986,7 +985,7 @@ export class CompanysettlementComponent implements OnInit {
             element.CompanyDisc = 0;
             element.tds = 0;
 
-            let index = this.SelectedList.indexOf(element);
+            const index = this.SelectedList.indexOf(element);
             if (index >= 0) {
                 this.SelectedList.splice(index, 1);
             }
@@ -1065,7 +1064,7 @@ export class CompanysettlementComponent implements OnInit {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        } 
+        }
 
         debugger
         console.log(this.OPMultipleSettlLoopInsertForm.value)
@@ -1084,23 +1083,23 @@ export class CompanysettlementComponent implements OnInit {
                 this.OPMulSetBillLoopArray.push(this.CreateOPMultipleSettlBillLoopInsertForm(item))
             });
 
-                let ModePaymentObj = [];
-                this.SelectedList.forEach(item => {
-                 ModePaymentObj.push({  
-                    billNo:item?.billNo,
+            const ModePaymentObj = [];
+            this.SelectedList.forEach(item => {
+                ModePaymentObj.push({
+                    billNo: item?.billNo,
                     payAmount: item?.PaidAmount,
                     tranNo: this.OPMultipleSettlForm.get('UPINO').value || 0,
-                    bankName: this.BankNam, 
+                    bankName: this.BankNam,
                     payMode: "net banking",
-                    companyId: item?.companyId ?? 0,  
-                    isSelfOrcompany: item?.companyId ? 1 : 0, 
-                }); 
-                  })
+                    companyId: item?.companyId ?? 0,
+                    isSelfOrcompany: item?.companyId ? 1 : 0,
+                });
+            })
 
-                this.ModeOfPaymentsMultipleArray.clear();
-                ModePaymentObj.forEach(item => {
-                    this.ModeOfPaymentsMultipleArray.push(this.CreateMultipleModePaymentform(item));
-                });   
+            this.ModeOfPaymentsMultipleArray.clear();
+            ModePaymentObj.forEach(item => {
+                this.ModeOfPaymentsMultipleArray.push(this.CreateMultipleModePaymentform(item));
+            });
             console.log(this.OPMultipleSettlLoopInsertForm.value)
             this._CompanysettlementService.InsertOPMultiplesettlement(this.OPMultipleSettlLoopInsertForm.value).subscribe(response => {
                 this.getmultiplePaymentList();

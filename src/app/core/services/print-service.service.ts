@@ -15,9 +15,9 @@ import { Router } from "@angular/router";
 })
 export class PrintServiceService {
     isPritning = false;
-    constructor(private router: Router) {}
+    constructor(private router: Router) { }
 
-    printDocument(documentName: String, documentData: string[]) {
+    printDocument(documentName: string, documentData: string[]) {
         this.isPritning = true;
         this.router.navigate([
             "/",
@@ -29,15 +29,15 @@ export class PrintServiceService {
         ]);
     }
     exportPdf(canvas_div_pdf, fileName) {
-        var HTML_Width = canvas_div_pdf.width();
-        var HTML_Height = canvas_div_pdf.height();
-        var top_left_margin = 15;
-        var PDF_Width = HTML_Width + top_left_margin * 2;
-        var PDF_Height = PDF_Width * 1.5 + top_left_margin * 2;
-        var canvas_image_width = HTML_Width;
-        var canvas_image_height = HTML_Height + 5;
+        const HTML_Width = canvas_div_pdf.width();
+        const HTML_Height = canvas_div_pdf.height();
+        const top_left_margin = 15;
+        const PDF_Width = HTML_Width + top_left_margin * 2;
+        const PDF_Height = PDF_Width * 1.5 + top_left_margin * 2;
+        const canvas_image_width = HTML_Width;
+        const canvas_image_height = HTML_Height + 5;
 
-        var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+        const totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
         // html2canvas(canvas_div_pdf[0], {
         //     allowTaint: true,
         //     scale: 5,

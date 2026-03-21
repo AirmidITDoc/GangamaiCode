@@ -57,4 +57,4 @@ const routes: Routes = [
     ],
     providers: [InstructionmasterService, DatePipe]
 })
-export class InstructionmasterModule {}
+export class InstructionmasterModule { }

@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [LocationMasterService, DatePipe]
 })
-export class LocationMasterModule {}
+export class LocationMasterModule { }

@@ -14,7 +14,7 @@ export class PrefixMasterService {
     ) {
         this.myform = this.createPrefixForm();
         this.myformSearch = this.createSearchForm();
-       }
+    }
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
@@ -32,8 +32,8 @@ export class PrefixMasterService {
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            sexId:["", Validators.required] ,
-            isActive:[true,[Validators.required]],
+            sexId: ["", Validators.required],
+            isActive: [true, [Validators.required]],
         });
     }
 
@@ -53,6 +53,6 @@ export class PrefixMasterService {
 
 
     public deactivateTheStatus(m_data) {
-             return this._httpClient.DeleteData("Prefix?Id="+ m_data.toString());
+        return this._httpClient.DeleteData("Prefix?Id=" + m_data.toString());
     }
 }

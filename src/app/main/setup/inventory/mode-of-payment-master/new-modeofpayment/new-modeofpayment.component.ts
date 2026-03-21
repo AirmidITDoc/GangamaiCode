@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ModeOfPaymentMasterService } from '../mode-of-payment-master.service';
-import { ToastrService } from 'ngx-toastr';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
+import { ToastrService } from 'ngx-toastr';
+import { ModeOfPaymentMasterService } from '../mode-of-payment-master.service';
 
 @Component({
     selector: 'app-new-modeofpayment',
@@ -42,7 +42,7 @@ export class NewModeofpaymentComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.modeofpayForm.invalid) {
                 for (const controlName in this.modeofpayForm.controls) {
                     if (this.modeofpayForm.controls[controlName].invalid) {

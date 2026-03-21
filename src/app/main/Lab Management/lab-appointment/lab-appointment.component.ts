@@ -15,6 +15,11 @@ import { DatePipe } from '@angular/common';
 import { LabAppointmentService } from './lab-appointment.service';
 import { NewLabAppointmentComponent } from './new-lab-appointment/new-lab-appointment.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { MatTableDataSource } from '@angular/material/table';
+import { NewLabPatientRegComponent } from '../lab-patient-reg/new-lab-patient-reg/new-lab-patient-reg.component';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -58,13 +63,15 @@ export class LabAppointmentComponent {
   autocompleteRadioDD: string = "RadioCategory";
   autocompleteRefDoctorDD: string = "RefDoctor";
   now: Date = new Date();
-
   modalData: {
     action: string;
     event: CalendarEvent;
   };
-
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   activeDayIsOpen: boolean = true;
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   constructor(private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
@@ -131,9 +138,68 @@ export class LabAppointmentComponent {
 
   bindData() {
     debugger
-    let fromDate, toDate;
-    fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+    // let fromDate, toDate;
+    // fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    // toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+
+    // let fromDate, toDate;
+    // if (this.dateDisplay) {
+    //   const dates = this.dateDisplay.nativeElement.textContent.split('-');
+    //   if (this.view == CalendarView.Week) {
+    //     fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
+    //     toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
+    //   }
+    //   else if (this.view == CalendarView.Day) {
+    //     fromDate = new Date(dates[0].split(',')[2], this.months[dates[0].split(',')[1].trim().split(' ')[0].substring(0, 3)], dates[0].split(',')[1].trim().split(' ')[1]);
+    //   }
+    //   else {
+    //     fromDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)], 1);
+    //     toDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)] + 1, 0);
+    //   }
+    // }
+    // else {
+    //   const d = this.getWeekRange();
+    //   fromDate = d.sunday; toDate = d.saturday;
+    // }
+
+    let fromDate: any;
+    let toDate: any;
+
+    if (this.view === CalendarView.Week) {
+      const startOfWeek = new Date(this.viewDate);
+      const day = startOfWeek.getDay(); // 0 = Sunday
+
+      // Get Sunday
+      startOfWeek.setDate(startOfWeek.getDate() - day);
+
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+      fromDate = startOfWeek;
+      toDate = endOfWeek;
+    }
+    else if (this.view === CalendarView.Day) {
+      fromDate = new Date(this.viewDate);
+      toDate = new Date(this.viewDate);
+    }
+    else {
+      // Month view
+      const year = this.viewDate.getFullYear();
+      const month = this.viewDate.getMonth();
+
+      fromDate = new Date(year, month, 1);
+      toDate = new Date(year, month + 1, 0);
+    }
+
+    // ✅ Remove time
+    fromDate.setHours(0, 0, 0, 0);
+    toDate.setHours(0, 0, 0, 0);
+
+    // ✅ Convert to only date format
+    fromDate = this.datePipe.transform(fromDate, 'yyyy-MM-dd');
+    toDate = this.datePipe.transform(toDate, 'yyyy-MM-dd');
+
+    console.log(fromDate, toDate);
 
     this._service.getAppoinments(this.vRefDocId, fromDate, toDate, this.categoryId).subscribe((data) => {
       this.events = data;
@@ -152,67 +218,6 @@ export class LabAppointmentComponent {
 
     });
   }
-
-  assignToTestColumn(date: Date, test: string): Date {
-    const index = this.radiologyTests.indexOf(test);
-    const newDate = new Date(this.viewDate);
-
-    newDate.setDate(this.viewDate.getDate() + index);
-
-    newDate.setHours(date.getHours());
-    newDate.setMinutes(date.getMinutes());
-
-    return newDate;
-  }
-
-  isPastTime(segmentDate: Date): boolean {
-    const now = new Date();
-
-    const segmentMinutes = segmentDate.getHours() * 60 + segmentDate.getMinutes();
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-    return segmentMinutes < currentMinutes;
-  }
-
-  // actions: CalendarEventAction[] = [
-  //   {
-  //     label: '<i class="fas fa-fw fa-plus"></i>',
-  //     a11yLabel: 'Add',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.handleEvent('CellClicked', event);
-  //     },
-  //   },
-  //   {
-  //     label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-  //     a11yLabel: 'Edit',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       this.handleEvent('CellClicked', event);
-  //     },
-  //   },
-  //   {
-  //     label: '<i class="fas fa-fw fa-trash-alt"></i>',
-  //     a11yLabel: 'Delete',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
-  //       debugger
-  //       this.confirmDialogRef = this._matDialog.open(
-  //         FuseConfirmDialogComponent,
-  //         {
-  //           disableClose: false,
-  //         }
-  //       );
-  //       this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to cancel this appointment?";
-  //       this.confirmDialogRef.afterClosed().subscribe((result) => {
-  //         if (result) {
-  //           this._service.appointmentCancle(event.id).subscribe((response: any) => {
-  //             this.toastr.success(response.message);
-  //             this.bindData();
-  //           });
-  //         }
-  //         this.confirmDialogRef = null;
-  //       });
-  //     },
-  //   },
-  // ];
 
   actions: CalendarEventAction[] = [
     {
@@ -259,7 +264,8 @@ export class LabAppointmentComponent {
   ];
 
   refresh = new Subject<void>();
-  events: CalendarEvent[] = [];
+  events: CalendarEvent[] = [
+  ];
 
   floorToNearest(amount: number, precision: number) {
     return Math.floor(amount / precision) * precision;
@@ -343,38 +349,14 @@ export class LabAppointmentComponent {
     }
   }
 
-  // eventTimesChanged({
-  //   event,
-  //   newStart,
-  //   newEnd,
-  // }: CalendarEventTimesChangedEvent): void {
-  //   event.start = newStart;
-  //   event.end = newEnd;
-  //   this.handleEvent('Dropped or resized', event);
-  // }
   eventTimesChanged({
     event,
     newStart,
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
-
-    const fixedStart = this.fixToCurrentDate(newStart);
-    const fixedEnd = this.fixToCurrentDate(newEnd);
-
-    event.start = fixedStart;
-    event.end = fixedEnd;
-
+    event.start = newStart;
+    event.end = newEnd;
     this.handleEvent('Dropped or resized', event);
-  }
-
-  fixToCurrentDate(date: Date): Date {
-    const baseDate = new Date(this.viewDate); // or new Date() if always today
-
-    baseDate.setHours(date.getHours());
-    baseDate.setMinutes(date.getMinutes());
-    baseDate.setSeconds(0);
-
-    return baseDate;
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -382,11 +364,11 @@ export class LabAppointmentComponent {
       const buttonElement = document.activeElement as HTMLElement;
       buttonElement?.blur();
 
-      // const fromDate = new Date(event.start);
-      const fromDate = this.fixToCurrentDate(new Date(event.start));
+      const fromDate = new Date(event.start);
       let toDate: Date;
+
       if (event.end) {
-        toDate = this.fixToCurrentDate(new Date(event.end));
+        toDate = new Date(event.end);
       } else {
         toDate = new Date(fromDate);
         toDate.setMinutes(toDate.getMinutes() + 2);
@@ -394,7 +376,7 @@ export class LabAppointmentComponent {
 
       const dialogRef = this._matDialog.open(NewLabAppointmentComponent, {
         maxWidth: "95vw",
-        maxHeight: '80%',
+        height: '95%',
         width: '90%',
         data: {
           fromDate: fromDate,
@@ -407,6 +389,7 @@ export class LabAppointmentComponent {
       dialogRef.afterClosed().subscribe(result => {
         // if (result) {
         this.bindData();
+        this.searchRecords();
         // }
       });
     }
@@ -459,5 +442,101 @@ export class LabAppointmentComponent {
     setTimeout(() => {
       this.bindData();
     }, 100);
+  }
+
+  ////////////////// Side List///////////////////////
+
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  }
+
+  allcolumns = [
+    { heading: "Slot Date", key: "appTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
+    { heading: "Category", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Patient Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    {
+      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ];
+
+  gridConfig: gridModel = {
+    apiUrl: "LabAppointment/LabAppointmentList",
+    columnsList: this.allcolumns,
+    sortField: "LabAppId",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "FromDate ", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith }, //"2024-01-01"
+      { fieldName: "ToDate ", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }, //"2024-10-01"
+      { fieldName: "DoctorId ", fieldValue: "0", opType: OperatorComparer.StartsWith },
+      { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
+      { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals }
+    ]
+  }
+
+  searchRecords() {
+    let fromDate, toDate;
+    fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+    toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+
+    this.gridConfig = {
+      apiUrl: "LabAppointment/LabAppointmentList",
+
+      columnsList: this.allcolumns,
+      sortField: "LabAppId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "FromDate ", fieldValue: fromDate, opType: OperatorComparer.StartsWith }, //"2024-01-01"
+        { fieldName: "ToDate ", fieldValue: toDate, opType: OperatorComparer.StartsWith }, //"2024-10-01"
+        { fieldName: "DoctorId ", fieldValue: "0", opType: OperatorComparer.StartsWith },
+        { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
+        { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals }
+      ]
+    }
+    if (this.grid) {
+      this.grid.gridConfig = this.gridConfig;
+      this.grid.bindGridData();
+    }
+  }
+
+  onBillProcess(row: any = null) {
+    const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
+      {
+        maxWidth: "95vw",
+        height: '95%',
+        width: '90%',
+        data: { mode: 'appointment', row }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      debugger
+      // if (result == 'home') {
+      //   this.router.navigate(['/LabManagement/lab-patientreg']);
+      // }
+      this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.grid.bindGridData();
+      // this.GetAppointdetail();
+    });
+  }
+
+  demoOpen(event: CalendarEvent) {
+
+    const dialogRef = this._matDialog.open(NewLabAppointmentComponent, {
+      maxWidth: "95vw",
+      height: '95%',
+      width: '90%',
+      data: {
+        fromDate: "",
+        toDate: "",
+        categoryId: this.categoryId,
+        refDoctorId: this.vRefDocId,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result) {
+      this.bindData();
+      // }
+    });
   }
 }

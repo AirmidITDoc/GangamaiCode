@@ -46,7 +46,7 @@ export class MenuMasterComponent implements OnInit {
  
    getMenuMasterList() {
     
-    ;
+    
      this._MenuService.getMenuMasterList().subscribe(Menu => {
         this.dataSource.data = Menu as MenuMaster[];
         this.dataSource.sort =this.sort;
@@ -74,7 +74,7 @@ export class MenuMasterComponent implements OnInit {
     if (this._MenuService.myformMenu.valid) {
       if (!this._MenuService.myformMenu.get("Id").value) {
         console.log('insert');
-        var m_data = {
+        const m_data = {
           menuMasterInsert: {
             "menu_master_id": this._MenuService.myformMenu.get("menu_master_id").value,
             "menu_master_link_name": this._MenuService.myformMenu.get("menu_master_link_name").value,
@@ -92,7 +92,7 @@ export class MenuMasterComponent implements OnInit {
         this.notification.success('Record added successfully')
       }
       else {
-        var m_dataUpdate = {
+        const m_dataUpdate = {
           menuMasterUpdate: {
             "Id": this._MenuService.myformMenu.get("Id").value,
             "menu_master_id": this._MenuService.myformMenu.get("menu_master_id").value,
@@ -115,7 +115,7 @@ export class MenuMasterComponent implements OnInit {
   }
 
   onEditMenu(row) {
-    var m_data = {
+    const m_data = {
       "Id":row.Id,"menu_master_id": row.menu_master_id, 
       "menu_master_link_name": row.menu_master_link_name, 
       "menu_master_icon": row.menu_master_icon,

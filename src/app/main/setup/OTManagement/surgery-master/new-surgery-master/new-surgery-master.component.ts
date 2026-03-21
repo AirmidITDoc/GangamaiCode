@@ -24,8 +24,8 @@ export class NewSurgeryMasterComponent implements OnInit {
     ) { }
 
     autocompleteModeSurgeryCategory: string = "SurgeryCategory";
-    autocompleteModeDepartment: String = "Department";
-    autocompleteModeSiteDescription: String = "SiteDescription";
+    autocompleteModeDepartment: string = "Department";
+    autocompleteModeSiteDescription: string = "SiteDescription";
     SurgeryId = 0;
 
     ngOnInit(): void {
@@ -49,7 +49,7 @@ export class NewSurgeryMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
                     if (this.myForm.controls[controlName].invalid) {
@@ -99,7 +99,7 @@ export class NewSurgeryMasterComponent implements OnInit {
 
 
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

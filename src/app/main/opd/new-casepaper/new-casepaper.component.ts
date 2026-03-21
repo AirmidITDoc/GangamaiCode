@@ -1,40 +1,35 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { map, Observable, startWith } from 'rxjs';
-import { CasepaperService } from './casepaper.service';
 import { DatePipe } from '@angular/common';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { CasepaperService } from './casepaper.service';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { ConfigService } from 'app/core/services/config.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dosemaster.component';
+import { InstructionmasterComponent } from 'app/main/setup/prescription/instructionmaster/instructionmaster.component';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
+import { certificateTemp } from '../medicalrecord/patientcertificate/patientcertificate.component';
 import { AddItemComponent } from './add-item/add-item.component';
+import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
-import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
-import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
-import { setValue } from '@ngx-translate/core';
-import { Console } from 'console';
-import { certificateTemp } from '../medicalrecord/patientcertificate/patientcertificate.component';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { OperatorComparer } from 'app/core/models/gridRequest';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { InstructionmasterComponent } from 'app/main/setup/prescription/instructionmaster/instructionmaster.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -343,7 +338,7 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     removeService(item) {
-        let removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId === item.serviceId);
+        const removedIndex = this.caseFormGroup.value.mAssignService.findIndex(x => x.serviceId === item.serviceId);
         if (removedIndex !== -1) {
             this.caseFormGroup.value.mAssignService.splice(removedIndex, 1);
 
@@ -354,7 +349,7 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     removeService1(item) {
-        let removedIndex = this.caseFormGroup.value.mAssignService1.findIndex(x => x.serviceId === item.serviceId);
+        const removedIndex = this.caseFormGroup.value.mAssignService1.findIndex(x => x.serviceId === item.serviceId);
         if (removedIndex !== -1) {
             this.caseFormGroup.value.mAssignService1.splice(removedIndex, 1);
 
@@ -366,7 +361,7 @@ export class NewCasepaperComponent implements OnInit {
 
     onDaysChange() {
         const today = new Date();
-        let followUp = new Date(today);
+        const followUp = new Date(today);
 
         if (!this.vDays || isNaN(this.vDays) || parseInt(this.vDays) <= 0) {
             this.MedicineItemForm.get('start')?.setValue(today);
@@ -485,7 +480,7 @@ export class NewCasepaperComponent implements OnInit {
             daysOption2: [0],
             doseOption3: [0],
             daysOption3: [0],
-            instructionId: [element.instructionId ?? 0],
+            instructionId: [element.instructionId || 0],
             qtyPerDay: [element.QtyPerDay ?? element.qtyPerDay ?? 0],
             totalQty: [(element.QtyPerDay * element.Days) || (element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -690,7 +685,7 @@ export class NewCasepaperComponent implements OnInit {
                 this.onClose();
             });
         } else {
-            let invalidFields: string[] = [];
+            const invalidFields: string[] = [];
             if (this.caseFormGroup.invalid) {
                 for (const controlName in this.caseFormGroup.controls) {
                     if (this.caseFormGroup.controls[controlName].invalid) {
@@ -857,7 +852,7 @@ export class NewCasepaperComponent implements OnInit {
 
             if (response && Array.isArray(response.data)) {
                 this.RtrvDescriptionList = response.data;
-                let ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
+                const ChiefComplaint = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Complaint');
                 this.addCheiflist = [];
                 if (ChiefComplaint.length > 0) {
                     ChiefComplaint.forEach(element => {
@@ -871,7 +866,7 @@ export class NewCasepaperComponent implements OnInit {
                     this.caseFormGroup.get('mAssignChiefComplaint').setValue(this.addCheiflist);
                 }
                 // Process Diagnosis
-                let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+                const Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
                 if (Diagnosis.length > 0) {
                     Diagnosis.forEach(element => {
                         this.addDiagnolist.push(
@@ -884,7 +879,7 @@ export class NewCasepaperComponent implements OnInit {
                     this.caseFormGroup.get('mAssignDiagnosis').setValue(this.addDiagnolist);
                 }
                 // Process Examination
-                let Examination = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Examination');
+                const Examination = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Examination');
                 if (Examination.length > 0) {
                     Examination.forEach(element => {
                         this.addExaminlist.push(
@@ -998,7 +993,7 @@ export class NewCasepaperComponent implements OnInit {
     OnSaveEditGeneric(contact) {
         this.vPrescriptionId = contact.precriptionId || contact.PrecriptionId;
         if (this.vPrescriptionId) {
-            var m_dataUpdate = {
+            const m_dataUpdate = {
                 "precriptionId": this.vPrescriptionId,
                 "genericId": this.vItemGenericNameId || '',
             }
@@ -1021,7 +1016,7 @@ export class NewCasepaperComponent implements OnInit {
 
     FetchList: any = [];
     listrefresh(contact) {
-        var m_data2 = {
+        const m_data2 = {
             "first": 0,
             "rows": 9999,
             "sortField": "VisitId",
@@ -1102,7 +1097,7 @@ export class NewCasepaperComponent implements OnInit {
         this.vPrescriptionId = element.precriptionId || element.PrecriptionId;
 
         if (this.vPrescriptionId) {
-            var m_dataUpdate = {
+            const m_dataUpdate = {
                 "precriptionId": this.vPrescriptionId,
                 "doseId": this.doseId || '',
             }
@@ -1155,7 +1150,7 @@ export class NewCasepaperComponent implements OnInit {
     RtrvTestServiceList: any = [];
     getRtrvTestServiceList(obj) {
         // 
-        var m_data2 = {
+        const m_data2 = {
             "first": 0,
             "rows": 9999,
             "sortField": "VisitId",
@@ -1297,7 +1292,7 @@ export class NewCasepaperComponent implements OnInit {
         }
         debugger
 
-        let Qty = this.DoseQtyPerDay || 0
+        const Qty = this.DoseQtyPerDay || 0
         row.DrugId = this.durgId || 0,
             row.DrugName = this.durgName || '',
             row.DoseId = this.doseId || 0,
@@ -1354,9 +1349,9 @@ export class NewCasepaperComponent implements OnInit {
         const iscekDuplicate = this.dsItemList.data.some(item => item.DrugId == this.durgId)
         if (!iscekDuplicate) {
 
-            let Qty = this.DoseQtyPerDay || 0
+            const Qty = this.DoseQtyPerDay || 0
 
-            let newEntry = {
+            const newEntry = {
                 DrugId: this.durgId || 0,
                 DrugName: this.durgName || '',
                 DoseId: this.doseId || 0,
@@ -1397,7 +1392,7 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     deleteTableRow(event, element) {
-        let index = this.Chargelist.indexOf(element);
+        const index = this.Chargelist.indexOf(element);
         if (index >= 0) {
             this.Chargelist.splice(index, 1);
             this.dsItemList.data = [];
@@ -1443,7 +1438,7 @@ export class NewCasepaperComponent implements OnInit {
 
         const iscekDuplicate = this.dsItemList.data.some(item => item.Presid == this.MedicineItemForm.get('TemplateId').value)
         if (!iscekDuplicate) {
-            var vdata = {
+            const vdata = {
                 "first": 0,
                 "rows": 9999,
                 "sortField": "Presid",
@@ -1606,7 +1601,7 @@ export class NewCasepaperComponent implements OnInit {
     getWhatsappshareSales(el, vmono) {
 
         if (vmono != '' && vmono != '0') {
-            var m_data = {
+            const m_data = {
                 "insertWhatsappsmsInfo": {
                     "mobileNumber": vmono || 0,
                     "smsString": '',
@@ -1636,7 +1631,7 @@ export class NewCasepaperComponent implements OnInit {
         }
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -1645,7 +1640,7 @@ export class NewCasepaperComponent implements OnInit {
         }
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -1655,7 +1650,7 @@ export class NewCasepaperComponent implements OnInit {
     }
     // ///[^a-zA-Z0-9]/
     keyPressOk(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^[0-9!@#$%^&*()_+\-=\[\]{};:"\\|,.<>\/?]*$/.test(inp)) {
             return true;
         } else {
@@ -1718,7 +1713,7 @@ export class NewCasepaperComponent implements OnInit {
     // displayedColumns: string[] = ['patientName', 'age', 'gender'];
 
     getnewVisistListDemo(obj) {
-        var D_data = {
+        const D_data = {
             "first": 0,
             "rows": 9999,
             "sortField": "VisitId",
@@ -1748,7 +1743,7 @@ export class NewCasepaperComponent implements OnInit {
     // get prev visit complaint info
     groupedVisits: any[] = [];
     getPrevVisitDiagnosisList(obj) {
-        var D_data = {
+        const D_data = {
             "first": 0,
             "rows": 9999,
             "sortField": "RegID",
@@ -1768,7 +1763,7 @@ export class NewCasepaperComponent implements OnInit {
             // Group by VisitId
             const grouped = {};
 
-            for (let item of this.patientDiagnosis) {
+            for (const item of this.patientDiagnosis) {
                 const visitId = item.visitId;
 
                 if (!grouped[visitId]) {
@@ -1844,7 +1839,7 @@ export class NewCasepaperComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                ;
+
                 this.dsCopyItemList.data = result;
                 if (!this.dsItemList.data) {
                     this.dsItemList.data = [];
@@ -1946,7 +1941,7 @@ export class NewCasepaperComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(DosemasterComponent,
             {
                 maxWidth: "85vw",
@@ -1962,12 +1957,12 @@ export class NewCasepaperComponent implements OnInit {
             }, 100);
         });
     }
-    
+
     getInstrMaster() {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(InstructionmasterComponent,
             {
                 maxWidth: "85vw",
@@ -2073,7 +2068,7 @@ export class NewCasepaperComponent implements OnInit {
             });
         }
         else {
-            let invalidFields: string[] = [];
+            const invalidFields: string[] = [];
             if (this.mycertificateForm.invalid) {
                 for (const controlName in this.mycertificateForm.controls) {
                     if (this.mycertificateForm.controls[controlName].invalid) {
@@ -2209,7 +2204,7 @@ export class NewCasepaperComponent implements OnInit {
 
     getCertificateHistoryTab(obj) {
         // debugger
-        var D_data = {
+        const D_data = {
             "first": 0,
             "rows": 9999,
             "sortField": "VisitId",
@@ -2357,7 +2352,7 @@ export class NewCasepaperComponent implements OnInit {
     Printresultentry(row) {
         // debugger
         console.log("WithHeader", row);
-        let pathologyDelete = [{
+        const pathologyDelete = [{
             pathReportId: row.pathReportID
         }];
 
@@ -2381,7 +2376,7 @@ export class NewCasepaperComponent implements OnInit {
     Printresultentrywithheader(row: any) {
 
         console.log("WithHeader", row);
-        let pathologyDelete = [{
+        const pathologyDelete = [{
             pathReportId: row.pathReportID
         }];
 
@@ -2429,7 +2424,7 @@ export class NewCasepaperComponent implements OnInit {
 
     viewgetRadioloyTemplateReportPdf(contact) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     {
                         "fieldName": "RadReportId",
@@ -2465,7 +2460,7 @@ export class NewCasepaperComponent implements OnInit {
 
     viewgetRadioloyTemplateReportPdf1(contact) {
         setTimeout(() => {
-            let param = {
+            const param = {
                 "searchFields": [
                     {
                         "fieldName": "RadReportId",
@@ -2544,9 +2539,9 @@ export class NewCasepaperComponent implements OnInit {
         ];
     }
 
-          // it allowed only Digit & decimal
+    // it allowed only Digit & decimal
     keyPressDigitDecimalOnly(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {

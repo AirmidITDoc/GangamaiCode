@@ -4,22 +4,22 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class QuestionMasterService {
- QuestionForm: FormGroup;
-  
+    QuestionForm: FormGroup;
+
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.QuestionForm = this.createquestionForm();
-            }
+    }
 
     createquestionForm(): FormGroup {
         return this._formBuilder.group({
-           questionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            questionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             questionName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
@@ -32,15 +32,15 @@ export class QuestionMasterService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]],
             // isActive: [true, [Validators.required]],
-           
+
         });
     }
-  
+
     initializeFormGroup() {
         this.createquestionForm();
     }
 
-  
+
     public questionMasterSave(Param: any) {
         if (Param.questionId) {
             return this._httpClient.PutData("QuestionMaster/" + Param.questionId, Param);

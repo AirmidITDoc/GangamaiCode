@@ -4,11 +4,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { NewUMOComponent } from "./new-umo/new-umo.component";
 import { UomMasterService } from "./uom-master.service";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-uom-master",
@@ -18,39 +18,39 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class UomMasterComponent implements OnInit {
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.UnitOfMeasurement, permissionType.Add);
-        
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.UnitOfMeasurement, permissionType.Add);
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     unitofMeasurementName: any = "";
-        allcolumns = [
-            { heading: "UnitOfMeasurement Name", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        // action: gridActions.edit, callback: (data: any) => {
-                        //     this.onSave(data);
-                        // }
-                        action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.UnitOfMeasurement, permissionType.Edit), callback: (data: any) => {
-                                                    this.onSave(data);
-                                                }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._UomMasterService.deactivateTheStatus(data.unitofMeasurementId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-         allfilters =[
-            { fieldName: "unitofMeasurementName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-    
-gridConfig: gridModel = {
-      permissionCode: permissionCodes.UnitOfMeasurement,
+    allcolumns = [
+        { heading: "UnitOfMeasurement Name", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.UnitOfMeasurement, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._UomMasterService.deactivateTheStatus(data.unitofMeasurementId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "unitofMeasurementName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.UnitOfMeasurement,
         apiUrl: "UnitOfMeasurement/List",
         columnsList: this.allcolumns,
         sortField: "unitofMeasurementId",
@@ -61,12 +61,12 @@ gridConfig: gridModel = {
         public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
- 
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
-        let that = this;
+
+        const that = this;
         const dialogRef = this._matDialog.open(NewUMOComponent,
             {
                 maxWidth: "50vw",

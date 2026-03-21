@@ -1,17 +1,17 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { VechicalMasterService } from '../vechical-master.service';
-import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-new-vechical',
     templateUrl: './new-vechical.component.html',
     styleUrls: ['./new-vechical.component.scss'],
-          encapsulation: ViewEncapsulation.None,
-          animations: fuseAnimations,
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewVechicalComponent {
 
@@ -28,17 +28,17 @@ export class NewVechicalComponent {
 
         this.ambulanceform = this._AmbulancemasterService.createAmbulanceForm();
         this.ambulanceform.markAllAsTouched();
-   console.log(this.data);
-           
-          if ((this.data?.vehicleId ?? 0) > 0) {
-           this.ambulanceform.get("vehicleId").setValue(this.data.vehicleId)
-           
-             this.ambulanceform.get("vehicleName").setValue(this.data.vehicleName)
-             this.ambulanceform.get("manuDate").setValue(this.data.manuDate)
-             this.ambulanceform.get("vehicleNo").setValue(this.data.vehicleNo)
-                 this.ambulanceform.get("vehicleModel").setValue(this.data.vehicleModel)
-             this.ambulanceform.get("vehicleType").setValue(this.data.vehicleType)
-             this.ambulanceform.get("note").setValue(this.data.note)
+        console.log(this.data);
+
+        if ((this.data?.vehicleId ?? 0) > 0) {
+            this.ambulanceform.get("vehicleId").setValue(this.data.vehicleId)
+
+            this.ambulanceform.get("vehicleName").setValue(this.data.vehicleName)
+            this.ambulanceform.get("manuDate").setValue(this.data.manuDate)
+            this.ambulanceform.get("vehicleNo").setValue(this.data.vehicleNo)
+            this.ambulanceform.get("vehicleModel").setValue(this.data.vehicleModel)
+            this.ambulanceform.get("vehicleType").setValue(this.data.vehicleType)
+            this.ambulanceform.get("note").setValue(this.data.note)
         }
     }
 
@@ -56,7 +56,7 @@ export class NewVechicalComponent {
             });
         }
         else {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.ambulanceform.invalid) {
                 for (const controlName in this.ambulanceform.controls) {
                     if (this.ambulanceform.controls[controlName].invalid) {
@@ -80,7 +80,7 @@ export class NewVechicalComponent {
         this.dialogRef.close(val);
     }
     keyPressCharater(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
         } else {
@@ -102,7 +102,7 @@ export class NewVechicalComponent {
                 { name: "maxlength", Message: " Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ],
-             vechicalno: [
+            vechicalno: [
                 { name: "required", Message: "vechicalno is required" },
                 { name: "maxlength", Message: "vechicalno should not be greater than 20 char." },
                 { name: "pattern", Message: "Special char not allowed." }
@@ -110,7 +110,7 @@ export class NewVechicalComponent {
             VechicleModel: [
                 { name: "required", Message: "VechicleModel is required" },
             ],
-            vechicaltype:[]
+            vechicaltype: []
         }
     }
 

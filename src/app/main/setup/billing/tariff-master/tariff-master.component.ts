@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
-import { TariffMasterService } from "./tariff-master.service";
-import { fuseAnimations } from "@fuse/animations";
-import { ToastrService } from "ngx-toastr";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { MatDialog } from "@angular/material/dialog";
+import { fuseAnimations } from "@fuse/animations";
+import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
+import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { NewTariffComponent } from "./new-tariff/new-tariff.component";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { ToastrService } from "ngx-toastr";
+import { NewTariffComponent } from "./new-tariff/new-tariff.component";
+import { TariffMasterService } from "./tariff-master.service";
 
 @Component({
     selector: "app-tariff-master",
@@ -19,40 +19,40 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class TariffMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TariffMaster, permissionType.Add);
-       
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   tariffName: any = "";
-   
-        allcolumns = [
-             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
 
-                    {
-                        // action: gridActions.edit, callback: (data: any) => {
-                        //     this.onSave(data) // EDIT Records
-                        // }
-                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.TariffMaster, permissionType.Edit), callback: (data: any) => {
-                                                    this.onSave(data);
-                                                }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._TariffMasterService.deactivateTheStatus(data.tariffId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-         allfilters = [
-            { fieldName: "tariffName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-    
- gridConfig: gridModel = {
-     permissionCode: permissionCodes.TariffMaster,
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    tariffName: any = "";
+
+    allcolumns = [
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+
+                {
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data) // EDIT Records
+                    // }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.TariffMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._TariffMasterService.deactivateTheStatus(data.tariffId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "tariffName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.TariffMaster,
         apiUrl: "TarrifMaster/List",
         columnsList: this.allcolumns,
         sortField: "tariffId",
@@ -61,11 +61,11 @@ export class TariffMasterComponent implements OnInit {
     }
     constructor(
         public _TariffMasterService: TariffMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService
+        public toastr: ToastrService, public _matDialog: MatDialog, public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void { }
- //filters addedby avdhoot vedpathak date-27/05/2025
+    //filters addedby avdhoot vedpathak date-27/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'TariffNameSearch')
@@ -107,8 +107,8 @@ export class TariffMasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
-        let that = this;
+
+        const that = this;
         const dialogRef = this._matDialog.open(NewTariffComponent,
             {
                 maxWidth: "50vw",

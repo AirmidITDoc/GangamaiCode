@@ -4,14 +4,14 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { EditpackageComponent } from "./editpackage/editpackage.component";
+import { ServiceMasterFormNewComponent } from "./service-master-form-new/service-master-form-new.component";
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from "./tariff/tariff.component";
-import { ServiceMasterFormNewComponent } from "./service-master-form-new/service-master-form-new.component";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 
 @Component({
@@ -22,8 +22,8 @@ import { PagePermissionService } from "app/main/shared/services/page-permission.
     animations: fuseAnimations,
 })
 export class ServiceMasterComponent implements OnInit {
-IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Add);
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Add);
+
     autocompleteModetariff: string = "Tariff";
     autocompleteModegroupName: string = "GroupName";
     tariffId = "0";
@@ -75,9 +75,9 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
                     // action: gridActions.edit, callback: (data: any) => {
                     //     this.onNew(data);
                     // }
-                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Edit), callback: (data: any) => {
-                            this.onNew(data);
-                        }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onNew(data);
+                    }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
 
@@ -97,7 +97,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
     ]
 
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.BillingServiceMaster,
+        permissionCode: permissionCodes.BillingServiceMaster,
         apiUrl: "BillingService/BillingList",
         columnsList: this.allColumns,
         sortField: "ServiceId",
@@ -142,7 +142,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
     constructor(
         public _serviceMasterService: ServiceMasterService,
         public toastr: ToastrService,
- public permissionService: PagePermissionService,
+        public permissionService: PagePermissionService,
         public _matDialog: MatDialog
     ) { }
 
@@ -207,7 +207,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(TariffComponent,
             {
                 maxWidth: "50vw",
@@ -229,7 +229,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingSer
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(EditpackageComponent,
             {
                 // maxWidth: "90vw",

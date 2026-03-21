@@ -1,35 +1,28 @@
+import { DatePipe } from "@angular/common";
 import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { fuseAnimations } from "@fuse/animations";
-import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
-import { ToastrService } from "ngx-toastr";
-import { DoctorMaster } from "../doctor-master.component";
-import { DoctorMasterService } from "../doctor-master.service";
-import { SignatureViewComponent } from "../signature-view/signature-view.component";
+import { MatTableDataSource } from "@angular/material/table";
 import { MatTabChangeEvent } from "@angular/material/tabs";
-import Swal from "sweetalert2";
+import { fuseAnimations } from "@fuse/animations";
+import { ApiCaller } from "app/core/services/apiCaller";
+import { AuthenticationService } from "app/core/services/authentication.service";
+import { ConfigService } from "app/core/services/config.service";
+import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
+import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
+import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
+import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
+import { ToastrService } from "ngx-toastr";
 import SignaturePad from "signature_pad";
+import Swal from "sweetalert2";
+import { ChargesDetail, DoctorChargesComponent } from "../doctor-charges/doctor-charges.component";
 import { DoctorEducationComponent, EducationDetail } from "../doctor-education/doctor-education.component";
 import { DoctorExperienceComponent, ExperienceDetail } from "../doctor-experience/doctor-experience.component";
-import { ChargesDetail, DoctorChargesComponent } from "../doctor-charges/doctor-charges.component";
-import { DoctorSchduleComponent, SchduleDetail } from "../doctor-schdule/doctor-schdule.component";
 import { DoctorLeaveComponent, LeaveDetail } from "../doctor-leave/doctor-leave.component";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
-import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
-import { AuthenticationService } from "app/core/services/authentication.service";
-import { MatTableDataSource } from "@angular/material/table";
-import { DatePipe } from "@angular/common";
-import { ConsentModule } from "app/main/nursingstation/consent/consent.module";
-import { indexOf } from "lodash";
-import { AirmidFileModel } from "app/main/shared/componets/airmid-fileupload/airmid-fileupload.component";
-import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-crop.component";
-import { ApiCaller } from "app/core/services/apiCaller";
-import { filter } from 'rxjs/operators';
-import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
-import { ConfigService } from "app/core/services/config.service";
+import { DoctorMaster } from "../doctor-master.component";
+import { DoctorMasterService } from "../doctor-master.service";
+import { DoctorSchduleComponent, SchduleDetail } from "../doctor-schdule/doctor-schdule.component";
+import { SignatureViewComponent } from "../signature-view/signature-view.component";
 
 @Component({
     selector: "app-new-doctor",
@@ -145,7 +138,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     signature: any;
     visConsultant = true;
     visRefDoc = false;
-    vIsInHouseDoctor=false;
+    vIsInHouseDoctor = false;
     autocompleteModeprefix: string = "Prefix";
     autocompleteModegender: string = "Gender";
     autocompleteModecity: string = "City";
@@ -439,7 +432,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     createdDoctormasterForm(): FormGroup {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             DoctorId: [0],
             PrefixID: ["", Validators.required],
@@ -705,13 +698,13 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
 
     removeDepartment(item) {
-        let removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.departmentId == item.departmentId);
+        const removedIndex = this.myForm.value.MDoctorDepartmentDets.findIndex(x => x.departmentId == item.departmentId);
         this.myForm.value.MDoctorDepartmentDets.splice(removedIndex, 1);
         this.ddlDepartment.SetSelection(this.myForm.value.MDoctorDepartmentDets.map(x => x.departmentId));
     }
 
     removesignpage(item) {
-        let removedIndex = this.signatureForm.value.pageId.findIndex(x => x.value == item.value);
+        const removedIndex = this.signatureForm.value.pageId.findIndex(x => x.value == item.value);
         this.signatureForm.value.pageId.splice(removedIndex, 1);
         this.ddlsignpage.SetSelection(this.signatureForm.value.pageId.map(x => x.value));
     }
@@ -719,7 +712,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     onSubmit() {
 
-        let a = this.attachedFiles;
+        const a = this.attachedFiles;
 
         console.log(this.myForm.value)
         // Qualification detail assign to array
@@ -804,7 +797,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         debugger
         if (!this.myForm.invalid) {
 
-            let data = this.myForm.value;
+            const data = this.myForm.value;
             // data.IsConsultant = true
             // data.IsRefDoc = false
             // data.IsInHouseDoctor = false
@@ -838,7 +831,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 this.onClose();
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
 
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
@@ -914,7 +907,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     getValidationMessages() {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-           const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return {
             PrefixID: [
                 { name: "required", Message: "Prefix Name is required" }
@@ -1042,7 +1035,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     i = 0
 
     getdrschduleList() {
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocSchedId",
@@ -1085,7 +1078,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     getDrExperienceList() {
 
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocExpId",
@@ -1122,7 +1115,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     getDrEducationList() {
 
-        var m_data = {
+        const m_data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocQualfiId",
@@ -1154,7 +1147,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         });
     }
     getDrchargesList() {
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DocChargeId",
@@ -1188,7 +1181,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         });
     }
     getDrleaveList() {
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DoctorId",
@@ -1265,7 +1258,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         this.chargeexpList = []
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorExperienceComponent,
             {
                 maxWidth: "55vw",
@@ -1297,7 +1290,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorSchduleComponent,
             {
                 maxWidth: "55vw",
@@ -1378,7 +1371,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur();
         this.chargechargesList = []
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorChargesComponent,
             {
                 maxWidth: "65vw",
@@ -1405,7 +1398,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur();
 
-        let that = this;
+        const that = this;
         const dialogRef = this.matDialog.open(DoctorLeaveComponent,
             {
                 maxWidth: "65vw",
@@ -1436,7 +1429,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     getSignpagelist() {
 
-        var data = {
+        const data = {
             "first": 0,
             "rows": 10,
             "sortField": "DoctorId",
@@ -1512,7 +1505,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     Filename: any;
 
     deleteImage(element) {
-        let index = this.images.indexOf(element);
+        const index = this.images.indexOf(element);
         if (index >= 0) {
             this.images.splice(index, 1);
             this.dataSourcedrsign.data = this.images;
@@ -1523,7 +1516,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
 
     deletedocattachment(element) {
-        let index = this.images.indexOf(element);
+        const index = this.images.indexOf(element);
         if (index >= 0) {
             this.images.splice(index, 1);
             this.imgDataSource.data = this.images;
@@ -1666,7 +1659,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -1716,8 +1709,8 @@ export class SignDetail {
 
 export class PatientDocument {
     Id: string;
-    OPD_IPD_ID: Number;
-    OPD_IPD_Type: Number;
+    OPD_IPD_ID: number;
+    OPD_IPD_Type: number;
     FileName: string;
     DocFile: File;
     constructor(PatientDocument) {

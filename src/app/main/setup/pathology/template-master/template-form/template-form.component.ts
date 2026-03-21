@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation }
 import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { TemplateServieService } from '../template-servie.service';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-template-form',
@@ -52,8 +52,8 @@ export class TemplateFormComponent implements OnInit {
         return this._formBuilder1.group({
             templateId: [this.TemplateId, this._FormvalidationserviceService.allowEmptyStringValidator()],
             templateName: '',
-            templateDesc: ['',[Validators.required]],
-            templateDescInHtml: ['',[Validators.required]]
+            templateDesc: ['', [Validators.required]],
+            templateDescInHtml: ['', [Validators.required]]
             // IsDeleted: ['true']
         });
     }
@@ -70,7 +70,7 @@ export class TemplateFormComponent implements OnInit {
                 this.dialogRef.close()
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.templateForm.invalid) {
                 for (const controlName in this.templateForm.controls) {
                     if (this.templateForm.controls[controlName].invalid) {

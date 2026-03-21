@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, ComponentRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,41 +9,38 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { ResultEntryService } from './result-entry.service';
-import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
-import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
-import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
-import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
-import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
 import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
-import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
-import { Console } from 'console';
+import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
+import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
+import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
+import { ResultEntryService } from './result-entry.service';
 
-import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
 
 
 
+import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { ToastrService } from 'ngx-toastr';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-result-entry',
@@ -119,7 +116,7 @@ export class ResultEntryComponent implements OnInit {
     UnitId: any = this.accountService.currentUserValue.user.unitId;
     isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
-    IsEdit: boolean = true ; ///this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
+    IsEdit: boolean = true; ///this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -235,13 +232,13 @@ export class ResultEntryComponent implements OnInit {
         this.dataSource1.data = [];
         this.selection.clear();
 
-        let regno = this.myformSearch.get("RegNoSearch").value || "0";
+        const regno = this.myformSearch.get("RegNoSearch").value || "0";
         let fromDate = this.myformSearch.get("start").value || "";
         let toDate = this.myformSearch.get("end").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-        let patientType = this.myformSearch.get("PatientTypeSearch").value || "3";
-        let status = this.myformSearch.get("StatusSearch").value || "0";
+        const patientType = this.myformSearch.get("PatientTypeSearch").value || "3";
+        const status = this.myformSearch.get("StatusSearch").value || "0";
 
         this.GetResultdetail()
         // Update the filters dynamically
@@ -291,13 +288,13 @@ export class ResultEntryComponent implements OnInit {
     getSampledetailList1(row) {
         // debugger
         this.dataSource1.data = [];
-        let rawDate = row.pathDate;
-        let day = rawDate.split("T")[0];
-        let rest = rawDate.split("T")[1].split("-");
-        let month = rest[0];
-        let year = rest[1];
+        const rawDate = row.pathDate;
+        const day = rawDate.split("T")[0];
+        const rest = rawDate.split("T")[1].split("-");
+        const month = rest[0];
+        const year = rest[1];
 
-        let formattedDate = `${day}`
+        const formattedDate = `${day}`
 
         console.log(formattedDate);
 
@@ -315,7 +312,7 @@ export class ResultEntryComponent implements OnInit {
         if (this.opipType == '2')
             OPIP = "2"
 
-        var m_data = {
+        const m_data = {
             "first": 0,
             "rows": 9999,
             "sortField": "RegNo",
@@ -446,7 +443,7 @@ export class ResultEntryComponent implements OnInit {
             }
             else {
                 setTimeout(() => {
-                    let data = [];
+                    const data = [];
 
                     this.selection.selected.forEach(element => {
                         console.log(element)
@@ -521,7 +518,7 @@ export class ResultEntryComponent implements OnInit {
         console.log(contact)
         if (this.IsTemplateTest == 0) {
             setTimeout(() => {
-                let data = [];
+                const data = [];
                 const contactArray = Array.isArray(contact) ? contact : [contact];
                 contactArray.forEach(element => {
                     console.log(element)
@@ -577,7 +574,7 @@ export class ResultEntryComponent implements OnInit {
         console.log(contact)
         if (this.IsTemplateTest == 0) {
             setTimeout(() => {
-                let data = [];
+                const data = [];
                 const contactArray = Array.isArray(contact) ? contact : [contact];
                 contactArray.forEach(element => {
                     console.log(element)
@@ -633,7 +630,7 @@ export class ResultEntryComponent implements OnInit {
         console.log(contact)
         if (this.IsTemplateTest == 1) {
             setTimeout(() => {
-                let data = [];
+                const data = [];
                 const contactArray = Array.isArray(contact) ? contact : [contact];
                 contactArray.forEach(element => {
                     console.log(element)
@@ -716,7 +713,7 @@ export class ResultEntryComponent implements OnInit {
             // debugger
             if (flag.isConfirmed) {
 
-                let submitData = {
+                const submitData = {
                     "pathReportID": row.pathReportId
                 };
                 console.log(submitData);
@@ -860,28 +857,28 @@ export class ResultEntryComponent implements OnInit {
     // changed by raksha 5/11/25
     //Changed by ambadas 09/03/2026
     Printresultentry(row: any = null) {
-         debugger
+        debugger
         console.log(row);
         console.log(this.selection.selected);
-        let pathologyDelete = [];
+        const pathologyDelete = [];
 
         this.selectedItem = this.selection.selected[0];
 
         this.selection.selected.forEach((element) => {
-        if (element?.isCompleted){
-            this.CompletdFlag = 1
-            pathologyDelete.push({ pathReportId: element.pathReportId });
-        }
-        else{
-            this.CompletdFlag = 0
-        }
+            if (element?.isCompleted) {
+                this.CompletdFlag = 1
+                pathologyDelete.push({ pathReportId: element.pathReportId });
+            }
+            else {
+                this.CompletdFlag = 0
+            }
         });
         // if (this.selectedItem.isCompleted)
         //     this.CompletdFlag = 1
         // else
         //     this.CompletdFlag = 0
 
-       // pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
+        // pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
 
         const submitData = {
             pathPrintResultEntry: pathologyDelete
@@ -935,7 +932,7 @@ export class ResultEntryComponent implements OnInit {
     Printresultentrywithheader() {
 
         console.log(this.selection.selected);
-        let pathologyDelete = [];
+        const pathologyDelete = [];
 
         this.selectedItem = this.selection.selected[0];
 
@@ -995,14 +992,14 @@ export class ResultEntryComponent implements OnInit {
 
     whatsappresultentry() {
         console.log(this.selection.selected)
-        let pathologyDelete = [];
+        const pathologyDelete = [];
         this.selection.selected.forEach((element) => {
             this.SOPIPtype = element["OPD_IPD_Type"]
-            let pathologyDeleteObj = {};
+            const pathologyDeleteObj = {};
             pathologyDeleteObj['pathReportId'] = element["PathReportID"]
             pathologyDelete.push(pathologyDeleteObj);
         });
-        let submitData = {
+        const submitData = {
             "printInsert": pathologyDelete,
         };
         console.log(submitData);
@@ -1065,7 +1062,7 @@ export class ResultEntryComponent implements OnInit {
             // debugger
             if (flag.isConfirmed) {
 
-                let submitData = {
+                const submitData = {
 
                     "pathReportId": row.pathReportId,
                     "isVerifyid": this.accountService.currentUserValue.userId,
@@ -1090,7 +1087,7 @@ export class ResultEntryComponent implements OnInit {
         this.VCompletedcount = 0;
         this.Vpendingcount = 0;
 
-        let data =
+        const data =
         {
             "first": 0,
             "rows": 9999,
@@ -1254,7 +1251,7 @@ export class ResultEntryComponent implements OnInit {
         return this.selection.selected.length > 0;
     }
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -1736,12 +1733,12 @@ export class PatientList {
     DOA: Date;
     DOT: Date;
     RegNo: any;
-    PatientName: String;
+    PatientName: string;
     PBillNo: number;
     PatientType: number;
-    DoctorName: String;
+    DoctorName: string;
     AgeYear: any;
-    GenderName: String;
+    GenderName: string;
     MobileNo: any;
     isCompleted: any
 
@@ -1764,12 +1761,12 @@ export class PatientList {
 
 export class SampleList {
     VADate: Date;
-    ServiceName: String;
+    ServiceName: string;
     IsSampleCollection: boolean;
     SampleCollectionTime: Date;
     PathTestID: any;
     IsVerifySign: boolean;
-    TemplateDesc: String;
+    TemplateDesc: string;
     IsCompleted: boolean;
     CategoryId: any;
     opdipdtype: any;
@@ -1831,8 +1828,8 @@ export class SampleList {
 }
 
 export class SampleDetailObj {
-    RegNo: Number;
-    AdmissionID: Number;
+    RegNo: number;
+    AdmissionID: number;
     PatientName: string;
     AdmDocId: number;
     Doctorname: string;
@@ -1841,7 +1838,7 @@ export class SampleDetailObj {
     AgeMonth: number;
     AgeYear: number;
     ClassId: number;
-    TariffName: String;
+    TariffName: string;
     TariffId: number;
     PathReportID: any;
     TestId: any;
@@ -1932,14 +1929,14 @@ export class SampleDetailObj {
 
 
 export class Templateprintdetail {
-    Adm_Visit_docId: Number;
+    Adm_Visit_docId: number;
     AgeYear: number;
-    CategoryName: String;
+    CategoryName: string;
     ChargeId: number;
     DOA: Date;
     DOT: Date;
     DoctorName: string;
-    GenderName: String;
+    GenderName: string;
     IsCompleted: boolean;
     IsPrinted: boolean;
     IsSampleCollection: boolean;
@@ -1952,12 +1949,12 @@ export class Templateprintdetail {
     PathReportID: number;
     PathTestID: any;
     PatientName: string;
-    PatientType: String;
+    PatientType: string;
     RegNo: number;
     SampleCollectionTime: Date;
     SampleNo: string;
     ServiceId: number;
-    ServiceName: String;
+    ServiceName: string;
     VADate: Date;
     VATime: Date;
     Visit_Adm_ID: any;

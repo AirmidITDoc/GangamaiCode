@@ -39,10 +39,10 @@ import { IPRefundofAdvanceComponent } from './ip-refundof-advance.component';
 
 
 const routes: Routes = [
- {
-      path: '**',
-      component: IPRefundofAdvanceComponent,
-  }
+    {
+        path: '**',
+        component: IPRefundofAdvanceComponent,
+    }
 
 ];
 

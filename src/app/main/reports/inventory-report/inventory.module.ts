@@ -37,11 +37,11 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { InventoryReportComponent } from './inventory-report.component';
 
 
-const routes : Routes =[
-  {
-    path:"**",
-    component:InventoryReportComponent,
-  },
+const routes: Routes = [
+    {
+        path: "**",
+        component: InventoryReportComponent,
+    },
 ];
 
 @NgModule({

@@ -1,82 +1,81 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IssuetodeptAgainstIndentComponent } from './issuetodept-against-indent/issuetodept-against-indent.component';
 
 const appRoutes: Routes = [
-//   {
-//       path: "patientmaterialconsumption",
-//       loadChildren: () => import("./patient-material-consumption/patient-material-consumption.module").then((m) => m.PatientMaterialConsumptionModule),
-//   },
- 
-   {
-       path: "indent",
-      loadChildren: () => import("./indent/indent.module").then((m) => m.IndentModule),
-  },
+    //   {
+    //       path: "patientmaterialconsumption",
+    //       loadChildren: () => import("./patient-material-consumption/patient-material-consumption.module").then((m) => m.PatientMaterialConsumptionModule),
+    //   },
 
-  {
-      path: "issuetodepartment",
-      loadChildren: () => import("./issue-to-department/issue-to-department.module").then((m) => m.IssueToDepartmentModule),
-  },
-  
-  {
-      path: "batchandexpdateadjustment",
-      loadChildren: () =>
-          import("./batch-and-exp-date-adjustment/batch-and-exp-date-adjustment.module").then((m) => m.BatchAndExpDateAdjustmentModule),
-  },
-  {
-      path: "currentstock",
-      loadChildren: () =>
-          import("./current-stock/current-stock.module").then((m) => m.CurrentStockModule),
-  },
-  {
-      path: "stockadjustment",
-      loadChildren: () =>
-          import("./stock-adjustment/stock-adjustment.module").then((m) => m.StockAdjustmentModule),
-  },
-  {
-      path: "returnfromdepartment",
-      loadChildren : () =>import("../pharmacy/material-received-from-department/material-received-from-department.module").then((m)=>m.MaterialReceivedFromDepartmentModule),
-  },
-  {
-      path: "patientmaterialconsumptionreturn",
-      loadChildren: () =>
-          import("./patient-material-consumption-return/patient-material-consumption-return.module").then((m) => m.PatientMaterialConsumptionReturnModule),
-  },
+    {
+        path: "indent",
+        loadChildren: () => import("./indent/indent.module").then((m) => m.IndentModule),
+    },
 
-  {
-      path: "issuetodepartmentaginstindent",
-      loadChildren: () => import("./issuetodept-against-indent/issuetodeptagainst-indent.module").then((m) => m.IssuetodeptagainstIndentModule),
-  },
-  {
-      path: "materialconsumption",
-      loadChildren: () =>
-          import("./material-consumption/material-consumption.module").then((m) => m.MaterialConsumptionModule),
-  },
-     
-  {
-      path: "itemmovement",
-      loadChildren: () =>
-          import("./item-movemnent/item-movemnent.module").then((m) => m.ItemMovemnentModule),
-  },
-  // {
-  //     path: "issuefromdepartment",
-  //     loadChildren: () =>
-  //         import("./issueto-department/issueto-department.module").then((m) => m.IssuetoDepartmentModule),
-  // },
-//   {
-//       path: "gstadjustment",
-//       loadChildren: () =>
-//           import("./gst-adjustment/gst-adjustment.module").then((m) => m.GSTAdjustmentModule),
-//   },
+    {
+        path: "issuetodepartment",
+        loadChildren: () => import("./issue-to-department/issue-to-department.module").then((m) => m.IssueToDepartmentModule),
+    },
+
+    {
+        path: "batchandexpdateadjustment",
+        loadChildren: () =>
+            import("./batch-and-exp-date-adjustment/batch-and-exp-date-adjustment.module").then((m) => m.BatchAndExpDateAdjustmentModule),
+    },
+    {
+        path: "currentstock",
+        loadChildren: () =>
+            import("./current-stock/current-stock.module").then((m) => m.CurrentStockModule),
+    },
+    {
+        path: "stockadjustment",
+        loadChildren: () =>
+            import("./stock-adjustment/stock-adjustment.module").then((m) => m.StockAdjustmentModule),
+    },
+    {
+        path: "returnfromdepartment",
+        loadChildren: () => import("../pharmacy/material-received-from-department/material-received-from-department.module").then((m) => m.MaterialReceivedFromDepartmentModule),
+    },
+    {
+        path: "patientmaterialconsumptionreturn",
+        loadChildren: () =>
+            import("./patient-material-consumption-return/patient-material-consumption-return.module").then((m) => m.PatientMaterialConsumptionReturnModule),
+    },
+
+    {
+        path: "issuetodepartmentaginstindent",
+        loadChildren: () => import("./issuetodept-against-indent/issuetodeptagainst-indent.module").then((m) => m.IssuetodeptagainstIndentModule),
+    },
+    {
+        path: "materialconsumption",
+        loadChildren: () =>
+            import("./material-consumption/material-consumption.module").then((m) => m.MaterialConsumptionModule),
+    },
+
+    {
+        path: "itemmovement",
+        loadChildren: () =>
+            import("./item-movemnent/item-movemnent.module").then((m) => m.ItemMovemnentModule),
+    },
+    // {
+    //     path: "issuefromdepartment",
+    //     loadChildren: () =>
+    //         import("./issueto-department/issueto-department.module").then((m) => m.IssuetoDepartmentModule),
+    // },
+    //   {
+    //       path: "gstadjustment",
+    //       loadChildren: () =>
+    //           import("./gst-adjustment/gst-adjustment.module").then((m) => m.GSTAdjustmentModule),
+    //   },
 ];
 
 @NgModule({
-  declarations: [ 
-    
-  ],
-  imports: [
-    RouterModule.forChild(appRoutes),
-  ]
+    declarations: [
+
+    ],
+    imports: [
+        RouterModule.forChild(appRoutes),
+    ]
 })
 export class InventoryModule { }
 

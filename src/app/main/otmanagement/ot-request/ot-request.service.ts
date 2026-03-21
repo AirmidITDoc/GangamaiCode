@@ -50,7 +50,7 @@ export class OtRequestService {
     }
 
     public getReportView(Param) {
-         return this._httpClient.PostData("Report/ViewReportFromDB", Param);
+        return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
 
     public getRtrvdiagnosisList(employee) {

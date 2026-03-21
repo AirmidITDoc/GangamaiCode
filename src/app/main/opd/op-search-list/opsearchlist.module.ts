@@ -35,12 +35,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { SchduleTreeComponent } from '../schdule-tree/schdule-tree.component'; 
+import { SchduleTreeComponent } from '../schdule-tree/schdule-tree.component';
 import { OPSearhlistService } from './op-searhlist.service';
 import { OpdSearchListComponent } from './opd-search-list/opd-search-list.component';
 // import { OutstandingPaymentComponent } from './outstanding-payment/outstanding-payment.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { SharedModule } from 'app/main/shared/shared.module'; 
+import { SharedModule } from 'app/main/shared/shared.module';
 import { OpPaymentVimalComponent } from './op-payment-vimal/op-payment-vimal.component';
 import { OpPaymentComponent } from './op-payment/op-payment.component';
 
@@ -49,14 +49,14 @@ const routes: Routes = [
         path: '**',
         component: OpdSearchListComponent,
     },
-    
+
 ];
 @NgModule({
     declarations: [
-        OpdSearchListComponent,  
-        SchduleTreeComponent, 
+        OpdSearchListComponent,
+        SchduleTreeComponent,
         OpPaymentComponent,
-        OpPaymentVimalComponent, 
+        OpPaymentVimalComponent,
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -104,7 +104,7 @@ const routes: Routes = [
     providers: [
         OPSearhlistService,
         DatePipe,
-        
+
     ]
 })
 export class opseachlistModule {

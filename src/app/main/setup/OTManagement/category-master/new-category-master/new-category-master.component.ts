@@ -16,7 +16,7 @@ export class NewCategoryMasterComponent implements OnInit {
     myForm: FormGroup;
     isActive: boolean = true;
     categoryName: any = ''
-    surgeryCategoryId=0
+    surgeryCategoryId = 0
     constructor(
         public _CategoryMasterService: CategoryMasterService,
         public dialogRef: MatDialogRef<NewCategoryMasterComponent>,
@@ -32,7 +32,7 @@ export class NewCategoryMasterComponent implements OnInit {
         console.log(this.data)
         if ((this.data?.surgeryCategoryId ?? 0) > 0) {
             this.categoryName = this.data.surgeryCategoryName
-            this.surgeryCategoryId=this.data.surgeryCategoryId
+            this.surgeryCategoryId = this.data.surgeryCategoryId
             // this.myForm.patchValue(this.data);
         }
     }
@@ -45,7 +45,7 @@ export class NewCategoryMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
                     if (this.myForm.controls[controlName].invalid) {

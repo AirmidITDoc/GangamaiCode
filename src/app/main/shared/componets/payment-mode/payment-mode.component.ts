@@ -15,11 +15,11 @@ import { OnlinePaymentService } from '../../services/online-payment.service';
   animations: fuseAnimations,
 })
 export class PaymentModeComponent implements OnInit, OnDestroy {
-  isLoading: String = '';
-  heading: String = 'Please wait...';
-  statusStr: String = 'Please do not close window or tab, your payment is in process';
+  isLoading: string = '';
+  heading: string = 'Please wait...';
+  statusStr: string = 'Please do not close window or tab, your payment is in process';
   paymentRetryCout: number = 0;
-  isRetryOrClose: String = '';
+  isRetryOrClose: string = '';
   PlutusTransactionReferenceID: number;
 
   poller: Subscription;
@@ -55,7 +55,7 @@ export class PaymentModeComponent implements OnInit, OnDestroy {
     this.isLoading = 'init-payment';
     this.heading = 'Please wait...';
     this.statusStr = 'Please do not close window or tab, your payment is in process';
-    let req = {
+    const req = {
       "TransactionNumber": Math.floor(Math.random() * 10000000000),
       "SequenceNumber": environment.SEQUENCE_NUMBER,
       "AllowedPaymentMode": environment.ALLOWED_PAYMENT_MODE,
@@ -115,7 +115,7 @@ export class PaymentModeComponent implements OnInit, OnDestroy {
 
 
   getStatusOfPayment() {
-    let req = {
+    const req = {
       "MerchantID": environment.MERCHANT_ID,
       "SecurityToken": environment.SECURITY_TOKEN,
       "IMEI": environment.IMEI,
@@ -151,7 +151,7 @@ export class PaymentModeComponent implements OnInit, OnDestroy {
   }
 
   cancelPayment() {
-    let req = {
+    const req = {
       "MerchantID": environment.MERCHANT_ID,
       "SecurityToken": environment.SECURITY_TOKEN,
       "IMEI": environment.IMEI,

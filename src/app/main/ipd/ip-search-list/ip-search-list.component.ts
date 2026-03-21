@@ -18,6 +18,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { ConfigService } from 'app/core/services/config.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { MLCInformationComponent } from '../Admission/admission/mlcinformation/mlcinformation.component';
@@ -28,7 +29,6 @@ import { DischargeSummaryTemplateComponent } from './discharge-summary-template/
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
-import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -61,7 +61,8 @@ export class IPSearchListComponent implements OnInit {
     @ViewChild('mrdInFileStatus') mrdInFileStatus!: TemplateRef<any>;
     @ViewChild('isAnaesthetistPaidStatus') isAnaesthetistPaidStatus!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-       @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>;
+    @ViewChild('actionisReimbursement') actionisReimbursement!: TemplateRef<any>;
+    @ViewChild('isMaterialReplStatus') isMaterialReplStatus!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientCategory;
@@ -70,7 +71,8 @@ export class IPSearchListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'mrdInFileStatus')!.template = this.mrdInFileStatus;
         this.gridConfig.columnsList.find(col => col.key === 'isAnaesthetistPaid')!.template = this.isAnaesthetistPaidStatus;
-            this.gridConfig.columnsList.find(col => col.key === 'isReimbursement')!.template = this.actionisReimbursement;
+        this.gridConfig.columnsList.find(col => col.key === 'isReimbursement')!.template = this.actionisReimbursement;
+        this.gridConfig.columnsList.find(col => col.key === 'isMaterialReplacement')!.template = this.isMaterialReplStatus;
     }
 
     allcolumns = [
@@ -89,9 +91,15 @@ export class IPSearchListComponent implements OnInit {
         { heading: "Advance Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Charges Amount", key: "chargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Payer Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "MRD-InFileStatus", key: "mrdInFileStatus", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 150},
-        { heading: "Anaesthetist-Status", key: "isAnaesthetistPaid", sort: true, align: 'left', emptySign: 'NA',
-             type: gridColumnTypes.template , width: 150,  template: this.isAnaesthetistPaidStatus },
+        { heading: "MRD-InFileStatus", key: "mrdInFileStatus", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
+        {
+            heading: "Anaesthesia", key: "isAnaesthetistPaid", sort: true, align: 'left', emptySign: 'NA',
+            type: gridColumnTypes.template, width: 120, template: this.isAnaesthetistPaidStatus
+        },
+        {
+            heading: "Material Replcement", key: "isMaterialReplacement", sort: true, align: 'left', emptySign: 'NA',
+            type: gridColumnTypes.template, width: 140, template: this.isMaterialReplStatus
+        },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.template, width: 200,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -235,7 +243,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(DischargeSummaryComponent,
                 {
                     maxWidth: "95vw",
@@ -253,7 +261,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(DischargeSummaryTemplateComponent,
                 {
                     maxWidth: "95vw",
@@ -271,7 +279,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(OPIPFeedbackComponent,
                 {
                     maxWidth: "100%",
@@ -289,7 +297,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(IPRefundofBillComponent,
                 {
                     maxWidth: "100%",
@@ -306,7 +314,7 @@ export class IPSearchListComponent implements OnInit {
         else if (m == "Refund of Advance") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button 
-            let that = this;
+            const that = this;
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             console.log(this.advanceDataStored.storage)
             const dialogRef = this._matDialog.open(IPRefundofAdvanceComponent,
@@ -347,7 +355,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             const dialogRef = this._matDialog.open(IPBillingComponent,
                 {
@@ -374,7 +382,7 @@ export class IPSearchListComponent implements OnInit {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
+            const that = this;
             const dialogRef = this._matDialog.open(BedTransferComponent,
                 {
                     maxHeight: '95vh',
@@ -471,7 +479,7 @@ export class IPSearchListComponent implements OnInit {
         };
     }
     SubMenu(contact) {
-        let xx = {
+        const xx = {
             RegNo: contact.RegNo,
             AdmissionID: contact.AdmissionID,
             PatientName: contact.PatientName,
@@ -661,7 +669,7 @@ export class IPSearchListComponent implements OnInit {
 
 
 export class Bed {
-    BedId: Number;
+    BedId: number;
     BedName: string;
 
     /**
@@ -679,7 +687,7 @@ export class Bed {
 
 
 export class AdvanceDetail {
-    AdvanceDetailID: Number;
+    AdvanceDetailID: number;
     Date: Date;
     Time: Time;
     AdvanceId: number;
@@ -731,8 +739,8 @@ export class AdvanceDetail {
 }
 
 export class AdvanceDetailObj {
-    RegNo: Number;
-    AdmissionID: Number;
+    RegNo: number;
+    AdmissionID: number;
     PatientName: string;
     Doctorname: string;
     AdmDateTime: string;
@@ -740,8 +748,8 @@ export class AdvanceDetailObj {
     AgeMonth: number;
     AgeDay: number;
     ClassId: number;
-    ClassName: String;
-    TariffName: String;
+    ClassName: string;
+    TariffName: string;
     TariffId: number;
     IsDischarged: boolean;
     opD_IPD_Type: number;
@@ -752,8 +760,8 @@ export class AdvanceDetailObj {
     IPDNo: any;
     DoctorId: number;
     BedId: any;
-    BedName: String;
-    WardName: String;
+    BedName: string;
+    WardName: string;
     CompanyId: string;
     SubCompanyId: any;
     IsBillGenerated: any;
@@ -865,7 +873,7 @@ export class ChargesList {
     ChargesId: any
     chargesId: number;
     ServiceId: number;
-    ServiceName: String;
+    ServiceName: string;
     Price: number;
     Qty: number;
     TotalAmt: number;
@@ -873,7 +881,7 @@ export class ChargesList {
     DiscAmt: number;
     NetAmount: number;
     DoctorId: number;
-    ChargeDoctorName: String;
+    ChargeDoctorName: string;
     ChargesDate: Date;
     IsPathology: boolean;
     IsRadiology: boolean;
@@ -955,7 +963,7 @@ export class ChargesList {
     }
 }
 export class AdvanceHeader {
-    AdvanceId: Number;
+    AdvanceId: number;
     Date: Date;
     RefId: number;
     OPD_IPD_Type: number;
@@ -992,7 +1000,7 @@ export class AdvanceHeader {
     }
 }
 export class Payment {
-    PaymentId: Number;
+    PaymentId: number;
     BillNo: number;
     ReceiptNo: string;
     PaymentDate: Date;
@@ -1075,8 +1083,8 @@ export class Payment {
 }
 
 export class Discharge {
-    DischargeId: Number;
-    AdmissionID: Number;
+    DischargeId: number;
+    AdmissionID: number;
     DischargeDate: Date;
     DischargeTime: Date;
     DischargeTypeId: string;
@@ -1113,11 +1121,11 @@ export class Bedtransfer {
     ToDate: Date;
     ToTime: Date;
     ToBedId: number;
-    ToWardID: Number;
-    ToClassId: Number;
+    ToWardID: number;
+    ToClassId: number;
     AddedBy: number;
     IsCancelled: boolean;
-    IsCancelledBy: Number;
+    IsCancelledBy: number;
 
     /**
     * Constructor

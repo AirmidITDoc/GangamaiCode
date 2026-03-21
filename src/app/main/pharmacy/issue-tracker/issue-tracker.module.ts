@@ -42,10 +42,10 @@ import { IssueTrackerComponent } from './issue-tracker.component';
 import { NewIssueTrackerComponent } from './new-issue-tracker/new-issue-tracker.component';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: IssueTrackerComponent 
-  },
+    {
+        path: '**',
+        component: IssueTrackerComponent
+    },
 ];
 
 @NgModule({

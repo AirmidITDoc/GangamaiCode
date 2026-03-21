@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
-import { FormGroup, Validators } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { ToastrService } from "ngx-toastr";
@@ -76,7 +76,7 @@ export class StoreFormMasterComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.storeForm.invalid) {
                 for (const controlName in this.storeForm.controls) {
                     if (this.storeForm.controls[controlName].invalid) {

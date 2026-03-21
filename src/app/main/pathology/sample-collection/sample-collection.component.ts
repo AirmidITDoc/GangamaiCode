@@ -3,21 +3,20 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@a
 import { FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { SampleCollectionService } from './sample-collection.service';
-import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
 
 import { MatDialog } from "@angular/material/dialog";
+import { MatTableDataSource } from '@angular/material/table';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
-import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
-import { ToastrService } from 'ngx-toastr';
-import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
-import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
-import { MatTableDataSource } from '@angular/material/table';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { HtmlviewerComponent } from 'app/main/htmlviewer/htmlviewer.component';
+import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
+import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
 
 
 @Component({
@@ -48,7 +47,7 @@ export class SampleCollectionComponent implements OnInit {
     isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
     autocompleteModeunit: string = "Hospital";
 
-    IsEdit: boolean = true ; //this.permissionService.getPermission(permissionCodes.PathologyResultlist, permissionType.Edit);
+    IsEdit: boolean = true; //this.permissionService.getPermission(permissionCodes.PathologyResultlist, permissionType.Edit);
 
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
     @ViewChild('iconPatientType') iconPatientType!: TemplateRef<any>;
@@ -69,8 +68,8 @@ export class SampleCollectionComponent implements OnInit {
             heading: "-", key: "action1", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.statusbtnTemplate
         },
-        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6},
-        { heading: "", key: "pathTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+        { heading: "", key: "pathTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -130,15 +129,15 @@ export class SampleCollectionComponent implements OnInit {
     getSelectedRow(row: any): void {
         // debugger
         console.log("selectedRow:", row)
-        let billNo = row.billNo;
+        const billNo = row.billNo;
 
-        let rawDate = row.pathDate;
-        let day = rawDate.split("T")[0];
-        let rest = rawDate.split("T")[1].split("-");
-        let month = rest[0];
-        let year = rest[1];
+        const rawDate = row.pathDate;
+        const day = rawDate.split("T")[0];
+        const rest = rawDate.split("T")[1].split("-");
+        const month = rest[0];
+        const year = rest[1];
 
-        let formattedDate = `${day}`
+        const formattedDate = `${day}`
 
         console.log(formattedDate);
 
@@ -220,14 +219,14 @@ export class SampleCollectionComponent implements OnInit {
 
     GetSampleCollectiondetail() {
 
-        let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
-        let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
+        const fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
+        const toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
 
         this.Vtotalcount = 0;
         this.VCompletedcount = 0;
         this.Vpendingcount = 0;
         // debugger
-        let filters: any[] = [];
+        const filters: any[] = [];
 
         // Handle date range
         if (fromDateControl && toDateControl) {
@@ -273,7 +272,7 @@ export class SampleCollectionComponent implements OnInit {
             }
         );
 
-        let data = {
+        const data = {
             "first": 0,
             "rows": 999999,
             "sortField": "RegNo",
@@ -316,7 +315,7 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     onSave(row: any = null) {
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
                 maxHeight: '85vh',
@@ -330,7 +329,7 @@ export class SampleCollectionComponent implements OnInit {
         });
     }
     OnPrintPatientIcard(data) {
-        var opiptype;
+        let opiptype;
         if (data.lbl == "IP") {
             opiptype = 1
         } else {

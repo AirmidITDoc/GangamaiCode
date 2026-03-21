@@ -30,27 +30,27 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ItemDrugMasterComponent,NewitemDrugMasterComponent],
-  imports: [
-          RouterModule.forChild(routes),
-          SharedModule,
-          MatButtonModule,
-          MatCheckboxModule,
-          MatFormFieldModule,
-          MatIconModule,
-          MatInputModule,
-          MatMenuModule,
-          MatTableModule,
-          MatToolbarModule,
-          MatPaginatorModule,
-          MatSortModule,
-          MatSelectModule,
-          MatRadioModule,
-          MatSnackBarModule,
-          FuseSharedModule,
-          FuseSidebarModule,
-          MatDialogModule,
-      ],
-      providers: [ItemDrugMasterService, DatePipe]
+    declarations: [ItemDrugMasterComponent, NewitemDrugMasterComponent],
+    imports: [
+        RouterModule.forChild(routes),
+        SharedModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatMenuModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatSnackBarModule,
+        FuseSharedModule,
+        FuseSidebarModule,
+        MatDialogModule,
+    ],
+    providers: [ItemDrugMasterService, DatePipe]
 })
 export class ItemDrugMasterModule { }

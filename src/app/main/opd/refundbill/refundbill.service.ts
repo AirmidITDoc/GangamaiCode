@@ -3,7 +3,7 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class RefundbillService {
 
@@ -11,16 +11,15 @@ export class RefundbillService {
     myform: FormGroup;
 
     constructor(private _httpClient: ApiCaller,
-    private _formBuilder: UntypedFormBuilder) 
-    {
+        private _formBuilder: UntypedFormBuilder) {
         // this.myformSearch = this.createSearchForm();
         // this.myform = this.createForm(); 
     }
-   
+
 
     createForm(): FormGroup {
         return this._formBuilder.group({
-            
+
             companyName: [""],
             patientType: [""],
             billDate: [""],
@@ -57,14 +56,14 @@ export class RefundbillService {
 
         });
     }
-    
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             StoreNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-    
+
     initializeFormGroup() {
         this.createForm();
     }
@@ -77,22 +76,22 @@ export class RefundbillService {
         return this._httpClient.GetData("OutPatient/" + Id);
     }
 
-  
+
     public getRefundofBillOPDList(employee) {
         console.log(employee)
-        
-     return this._httpClient.PostData("RefundOfBill/OPBilllistforrefundList",employee);
+
+        return this._httpClient.PostData("RefundOfBill/OPBilllistforrefundList", employee);
 
     }
 
     public getRefundofBillServiceList(employee) {
-       return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList",employee);
+        return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList", employee);
     }
 
     public InsertOPRefundBilling(Param) {
-      
-            return this._httpClient.PostData("RefundOfBill/InsertOPRefundOfBill" ,Param);
-      }
+
+        return this._httpClient.PostData("RefundOfBill/InsertOPRefundOfBill", Param);
+    }
 
     getOprefundofbillview(RefundId) {
         return this._httpClient.GetData("OutPatient/view-OPRefundofBill?RefundId=" + RefundId)
@@ -101,8 +100,8 @@ export class RefundbillService {
     public getVisitById(Id) {
         return this._httpClient.GetData("VisitDetail/" + Id);
     }
-      
-    public globlePatientdetUpdates(employee, Id) { 
-    return this._httpClient.PutData("OutPatient/UpdateReg"+ Id, employee)
-  }
+
+    public globlePatientdetUpdates(employee, Id) {
+        return this._httpClient.PutData("OutPatient/UpdateReg" + Id, employee)
+    }
 }

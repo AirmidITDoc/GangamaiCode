@@ -55,7 +55,7 @@ export class NewCertificateComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.templateForm.invalid) {
                 for (const controlName in this.templateForm.controls) {
                     if (this.templateForm.controls[controlName].invalid) {

@@ -40,7 +40,7 @@ export class NewGroupComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.groupForm.invalid) {
                 for (const controlName in this.groupForm.controls) {
                     if (this.groupForm.controls[controlName].invalid) {

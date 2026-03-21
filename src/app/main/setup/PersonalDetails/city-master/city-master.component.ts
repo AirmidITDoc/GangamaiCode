@@ -4,11 +4,11 @@ import { fuseAnimations } from "@fuse/animations";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 import { ToastrService } from "ngx-toastr";
 import { CityMasterService } from "./city-master.service";
 import { NewCityComponent } from "./new-city/new-city.component";
-import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
-import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 @Component({
     selector: "app-city-master",
     templateUrl: "./city-master.component.html",
@@ -73,7 +73,7 @@ export class CityMasterComponent implements OnInit {
         buttonElement.blur(); // Remove focus from the button
 
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCityComponent,
             {
                 maxWidth: "50vw",

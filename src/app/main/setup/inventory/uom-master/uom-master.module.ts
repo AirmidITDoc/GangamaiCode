@@ -53,4 +53,4 @@ const routes: Routes = [
     ],
     providers: [UomMasterService, DatePipe]
 })
-export class UomMasterModule {}
+export class UomMasterModule { }

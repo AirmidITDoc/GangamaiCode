@@ -1,8 +1,6 @@
 import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
-import { CompanyMasterListComponent } from './company-master-list/company-master-list.component';
-import { NewCompanyMasterComponent } from './company-master-list/new-company-master/new-company-master.component';
 
 
 const appRoutes: Routes = [

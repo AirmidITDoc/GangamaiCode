@@ -19,7 +19,7 @@ export class NewTemplateComponent implements OnInit {
     myTemplateform: FormGroup;
     vTemplateDesc: any;
     isActive: boolean = true;
-  categoryType="0";
+    categoryType = "0";
 
     constructor(
         public _NursingnoteService: NursingnoteService,
@@ -49,7 +49,7 @@ export class NewTemplateComponent implements OnInit {
                 this.onClear(true);
             });
         } else {
-            let invalidFields = [];
+            const invalidFields = [];
 
             if (this.myTemplateform.invalid) {
                 for (const controlName in this.myTemplateform.controls) {

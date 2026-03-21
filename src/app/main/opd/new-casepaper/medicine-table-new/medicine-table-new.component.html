@@ -157,7 +157,7 @@
                         </ng-container>
                         <ng-container *ngIf="element.editable">
                             <div class="edit-cell">
-                                <mat-form-field appearance="outline" class="inline-select" floatLabel="never">
+                                 <!-- <mat-form-field appearance="outline" class="inline-select" floatLabel="never">
                                     <mat-select
                                         placeholder="Select Instruction"
                                         formControlName="Instruction"
@@ -169,7 +169,18 @@
                                             {{ option.text || option.Text }}
                                         </mat-option>
                                     </mat-select>
-                                </mat-form-field>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" class="inline-select" floatLabel="never">
+                                    <input matInput placeholder="Select Instruction" formControlName="Instruction"
+                                     #instructionInput
+                                        name="text"     [matAutocomplete]="auto" /> 
+                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onInstSelectionChange($event)">
+                                        <mat-option *ngFor="let option of InstructionOptions" [value]="option.value || option.Value">
+                                            {{ option.text || option.Text }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field> 
                             </div>
                         </ng-container>
                     </td>

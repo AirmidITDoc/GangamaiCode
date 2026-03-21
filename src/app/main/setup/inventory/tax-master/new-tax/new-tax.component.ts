@@ -40,7 +40,7 @@ export class NewTaxComponent implements OnInit {
                 this.onClear(true);
             });
         } {
-            let invalidFields = [];
+            const invalidFields = [];
             if (this.taxForm.invalid) {
                 for (const controlName in this.taxForm.controls) {
                     if (this.taxForm.controls[controlName].invalid) {

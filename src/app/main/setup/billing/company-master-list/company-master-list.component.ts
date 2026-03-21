@@ -1,18 +1,18 @@
 import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { CompanyMasterService } from './company-master.service';
-import { ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { ServeToCompanyComponent } from './serve-to-company/serve-to-company.component';
-import { NewCompanyMasterComponent } from './new-company-master/new-company-master.component';
-import { fuseAnimations } from '@fuse/animations';
-import { UpdateServCodePrintComponent } from './update-serv-code-print/update-serv-code-print.component';
 import { FormGroup } from '@angular/forms';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { MatDialog } from '@angular/material/dialog';
+import { fuseAnimations } from '@fuse/animations';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { ToastrService } from 'ngx-toastr';
 import { CompanyExecutiveComponent } from './company-executive/company-executive.component';
+import { CompanyMasterService } from './company-master.service';
+import { NewCompanyMasterComponent } from './new-company-master/new-company-master.component';
+import { ServeToCompanyComponent } from './serve-to-company/serve-to-company.component';
+import { UpdateServCodePrintComponent } from './update-serv-code-print/update-serv-code-print.component';
 
 @Component({
     selector: 'app-company-master-list',
@@ -146,7 +146,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(ServeToCompanyComponent,
             {
 
@@ -167,7 +167,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewCompanyMasterComponent,
             {
 
@@ -186,7 +186,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(UpdateServCodePrintComponent,
             {
 
@@ -212,7 +212,7 @@ export class CompanyMasterListComponent {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(CompanyExecutiveComponent,
             {
                 maxWidth: "50vw",
@@ -236,11 +236,11 @@ export class CompanyMaster {
     compTypeId: number;
     companyName: string;
     address: string;
-    cityId: String;
-    pinNo: String;
-    phoneNo: String;
-    mobileNo: String;
-    faxNo: String;
+    cityId: string;
+    pinNo: string;
+    phoneNo: string;
+    mobileNo: string;
+    faxNo: string;
     traiffId: any;
     classId: any;
     isDeleted: boolean;

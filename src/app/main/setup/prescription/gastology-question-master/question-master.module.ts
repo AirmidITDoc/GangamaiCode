@@ -17,10 +17,10 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { QuestionMasterService } from "./question-master.service";
+import { SharedModule } from "app/main/shared/shared.module";
 import { GastologyQuestionMasterComponent } from "./gastology-question-master.component";
 import { NewQuestionComponent } from './new-question/new-question.component';
-import { SharedModule } from "app/main/shared/shared.module";
+import { QuestionMasterService } from "./question-master.service";
 
 const routes: Routes = [
     {

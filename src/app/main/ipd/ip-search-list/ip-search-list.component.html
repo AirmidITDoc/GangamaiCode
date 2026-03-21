@@ -98,6 +98,16 @@
                     </button>   -->
             </ng-template>
 
+
+             <ng-template #isMaterialReplStatus let-element> 
+                 <span [ngClass]="{
+                'status-not-requested': element.isMaterialReplacement == 0,
+                'status-received': element.isMaterialReplacement > 0
+              }">
+                    {{ element.isMaterialReplacement == 0 ? 'Pending' : 'Completed' }}
+                </span> 
+            </ng-template>
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 

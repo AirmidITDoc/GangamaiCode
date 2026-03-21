@@ -11,106 +11,105 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { NewAdministrativeTaskComponent } from './new-administrative-task/new-administrative-task.component';
 
 
 const appRoutes: Routes = [
-  {
-    path: "createuser",
-    loadChildren: () => import("./create-user/create-user.module").then((m) => m.CreateUserModule),
-  },
-  {
-    path: "configuration",
-    loadChildren: () => import("./configuration/configuration.module").then((m) => m.ConfigurationModule),
-  },
-  {
-    path: "roletemplatemaster",
-    loadChildren: () => import("./role-template-master/role-template-master.module").then((m) => m.RoleTemplateMasterModule),
-  },
-  {
-    path: "doctorshare",
-    loadChildren: () => import("./doctor-share/doctor-share.module").then((m) => m.DOctorShareModule),
-  },
-  {
-    path: "cancellation",
-    loadChildren: () => import("./cancellation/cancellation.module").then((m) => m.CancellationModule),
-  },
-  {
-    path: "reportconfiguration",
-    loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
-  },
-  {
-    path: "dischargecancel1",
-    loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
-  },
-  // {
-  //   path:"dischargecancel",
-  //   loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
-  //  },
-  {
-    path: "paymentmodechanges",
-    loadChildren: () => import("./paymentmodechanges/paymentmodechanges.module").then((m) => m.PaymentmodechangesModule),
-  },
-  {
-    path: "paymentmodechangesforpharmacy",
-    loadChildren: () => import("./paymentmodechangesfor-pharmacy/paymentmodechangesfor-pharmacy.module").then((m) => m.PaymentmodechangesforPharmacyModule),
-  },
-   {
-    path:"tallyinterface",
-    loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
-   },
-  {
-    path: "dischargecancel",
-    loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
-  },
+    {
+        path: "createuser",
+        loadChildren: () => import("./create-user/create-user.module").then((m) => m.CreateUserModule),
+    },
+    {
+        path: "configuration",
+        loadChildren: () => import("./configuration/configuration.module").then((m) => m.ConfigurationModule),
+    },
+    {
+        path: "roletemplatemaster",
+        loadChildren: () => import("./role-template-master/role-template-master.module").then((m) => m.RoleTemplateMasterModule),
+    },
+    {
+        path: "doctorshare",
+        loadChildren: () => import("./doctor-share/doctor-share.module").then((m) => m.DOctorShareModule),
+    },
+    {
+        path: "cancellation",
+        loadChildren: () => import("./cancellation/cancellation.module").then((m) => m.CancellationModule),
+    },
+    {
+        path: "reportconfiguration",
+        loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
+    },
+    {
+        path: "dischargecancel1",
+        loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
+    },
+    // {
+    //   path:"dischargecancel",
+    //   loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
+    //  },
+    {
+        path: "paymentmodechanges",
+        loadChildren: () => import("./paymentmodechanges/paymentmodechanges.module").then((m) => m.PaymentmodechangesModule),
+    },
+    {
+        path: "paymentmodechangesforpharmacy",
+        loadChildren: () => import("./paymentmodechangesfor-pharmacy/paymentmodechangesfor-pharmacy.module").then((m) => m.PaymentmodechangesforPharmacyModule),
+    },
+    {
+        path: "tallyinterface",
+        loadChildren: () => import("./tally-interface/tally-interface.module").then((m) => m.TallyInterfaceModule),
+    },
+    {
+        path: "dischargecancel",
+        loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
+    },
 
 
-  {
-    path: "pharamacypayipadvmode",
-    loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m) => m.PharmacypayipadvmodeModule),
-  },
-  //  {
-  //   path:"scheduler",
-  //   loadChildren: () => import("./scheduler/scheduler.module").then((m)=>m.NewScdulerModule),
-  //  },
-  {
-    path: "smsconfigrationtool",
-    loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
-  },
-  {
-    path: "Template Description",
-    loadChildren: () => import("./template-description/templatedescription.module").then((m) => m.TemplatedescriptionModule),
-  },
-  {
-    path: "barcode-config",
-    loadChildren: () => import("./barcode-config/barcodeconfig.module").then((m) => m.BarcodeConfigModule),
-  },
-  {
-    path: "import-excel",
-    loadChildren: () => import("./import-excel/import-excel.module").then((m) => m.ImportExcelModule),
-  },
-  {
-    path:"labcancellation",
-    loadChildren: () => import("./lab-cancellation/lab-cancellation.module").then((m) => m.LabCancellationModule),
-   },
-  {
-    path:"lab-paymentmodechanges",
-    loadChildren: () => import("./lab-paymentmodechanges/lab-paymentmodechanges.module").then((m) => m.LabPaymentmodechangesModule),
-   },
+    {
+        path: "pharamacypayipadvmode",
+        loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m) => m.PharmacypayipadvmodeModule),
+    },
+    //  {
+    //   path:"scheduler",
+    //   loadChildren: () => import("./scheduler/scheduler.module").then((m)=>m.NewScdulerModule),
+    //  },
+    {
+        path: "smsconfigrationtool",
+        loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
+    },
+    {
+        path: "Template Description",
+        loadChildren: () => import("./template-description/templatedescription.module").then((m) => m.TemplatedescriptionModule),
+    },
+    {
+        path: "barcode-config",
+        loadChildren: () => import("./barcode-config/barcodeconfig.module").then((m) => m.BarcodeConfigModule),
+    },
+    {
+        path: "import-excel",
+        loadChildren: () => import("./import-excel/import-excel.module").then((m) => m.ImportExcelModule),
+    },
+    {
+        path: "labcancellation",
+        loadChildren: () => import("./lab-cancellation/lab-cancellation.module").then((m) => m.LabCancellationModule),
+    },
+    {
+        path: "lab-paymentmodechanges",
+        loadChildren: () => import("./lab-paymentmodechanges/lab-paymentmodechanges.module").then((m) => m.LabPaymentmodechangesModule),
+    },
 
 ];
 
 @NgModule({
-  declarations: [
+    declarations: [
 
 
 
-  ],
-  imports: [
-    RouterModule.forChild(appRoutes),
-    MatToolbarModule,
-    MatIconModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatButtonModule, CdkTreeModule, CdkTableModule, MatTreeModule,
-    SharedModule
-  ]
+    ],
+    imports: [
+        RouterModule.forChild(appRoutes),
+        MatToolbarModule,
+        MatIconModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatButtonModule, CdkTreeModule, CdkTableModule, MatTreeModule,
+        SharedModule
+    ]
 })
 export class AdministrationModule { }

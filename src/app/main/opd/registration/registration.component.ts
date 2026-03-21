@@ -5,16 +5,16 @@ import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
-import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
+import { gridColumnTypes } from "app/core/models/tableActions";
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
+import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { RegistrationService } from './registration.service';
-import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
-import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
-import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-registration',
@@ -113,7 +113,7 @@ export class RegistrationComponent implements OnInit {
     OnNewAppointment(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button 
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
                 maxWidth: "95vw",
@@ -144,7 +144,7 @@ export class RegistrationComponent implements OnInit {
     onNewregistration(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        let that = this;
+        const that = this;
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
@@ -242,7 +242,7 @@ export class RegistrationComponent implements OnInit {
     }
 
     keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
+        const inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
         } else {
@@ -255,10 +255,10 @@ export class RegistrationComponent implements OnInit {
 
 
 export class RegInsert {
-    RegId: Number;
-    regId: Number;
+    RegId: number;
+    regId: number;
     emailId: string;
-    RegID: Number;
+    RegID: number;
     RegDate: Date;
     regDate: Date;
     PatientName: string;
@@ -285,7 +285,7 @@ export class RegInsert {
     DateofBirth: Date;
     Age: any;
     age: any;
-    GenderId: Number;
+    GenderId: number;
     genderId: any;
     PhoneNo: string;
     phoneNo: string;
@@ -306,7 +306,7 @@ export class RegInsert {
     cityId: number;
     MaritalStatusId: number;
     maritalStatusId: number;
-    IsCharity: Boolean;
+    IsCharity: boolean;
     ReligionId: number;
     religionId: number;
     AreaId: number;
@@ -355,9 +355,9 @@ export class RegInsert {
     BillNo: any;
     BillTime: any;
     PatientType: any;
-adharCardNo: any;
-admissionID: any;
-tariffName: any;
+    adharCardNo: any;
+    admissionID: any;
+    tariffName: any;
     /**
      * Constructor
      *
@@ -462,13 +462,13 @@ tariffName: any;
             this.BillNo = RegInsert.BillNo || 0
             this.BillTime = RegInsert.BillTime || ''
             this.PatientType = RegInsert.PatientType || ''
-              this.adharCardNo = RegInsert.adharCardNo || ''
-             this.address = RegInsert.address || ''
-            this.admissionID= RegInsert.admissionID || ''
-  this.tariffName= RegInsert.tariffName || ''
+            this.adharCardNo = RegInsert.adharCardNo || ''
+            this.address = RegInsert.address || ''
+            this.admissionID = RegInsert.admissionID || ''
+            this.tariffName = RegInsert.tariffName || ''
 
-            
-            
+
+
         }
     }
 }

@@ -32,18 +32,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
+import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ExpeditComponent } from './expedit/expedit.component';
 import { GSTAdjustmentComponent } from './gstadjustment/gstadjustment.component';
 import { MRPAdjustmentComponent } from './mrpadjustment/mrpadjustment.component';
 import { StockAdjustmentComponent } from './stock-adjustment.component';
-import { ExpeditComponent } from './expedit/expedit.component';
-import { SharedModule } from 'app/main/shared/shared.module';
 
 const routes: Routes = [
-  { 
-      path: '**', 
-      component: StockAdjustmentComponent 
-  },
+    {
+        path: '**',
+        component: StockAdjustmentComponent
+    },
 ];
 
 @NgModule({
