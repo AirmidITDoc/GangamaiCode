@@ -11,6 +11,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { CanteenSalesComponent } from '../canteen-sales/canteen-sales.component';
 import { fuseAnimations } from '@fuse/animations';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-canteen-bill-list',
@@ -40,6 +41,7 @@ export class CanteenBillListComponent {
   gridConfig1: gridModel = new gridModel();
   @ViewChild('BillGrid', { static: false }) grid: AirmidTableComponent;
   @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+
   isShowDetailTable: boolean = false;
   ngOnInit(): void {
     this.myFilterbillform = this._CanteenmanagementService.CanBillbrowseform();
@@ -99,10 +101,10 @@ export class CanteenBillListComponent {
     { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
 
-    {
-      heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate
-    }  // Assign ng-template to the column
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate
+    // }  // Assign ng-template to the column
 
   ];
 
@@ -211,7 +213,29 @@ debugger
     // });
   }
 
-  Billcancle(element) { }
+
+
+   Billcancle(data) {
+          debugger
+          Swal.fire({
+              title: 'Do you want to cancel the Bill?',
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, Cancel it!"
+          }).then((flag) => {
+              if (flag.isConfirmed) {
+                  var data = {
+                      "BillNo": data.billNo
+                  }
+                  this._CanteenmanagementService.BillCancle(data).subscribe((response: any) => {
+                      this.grid.bindGridData();
+                  });
+              }
+          });
+      }
 
   viewgetReportPdf(element) { }
 }

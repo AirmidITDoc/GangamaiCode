@@ -295,7 +295,7 @@ export class NursingnoteComponent implements OnInit {
             nursingMedicationChart: this._formBuilder.array([]),
         });
     }
-
+ 
     FinalMedicineItemform(item: any): FormGroup {
 
         const MDate = this.datePipe.transform(new Date(), "yyyy-MM-dd") || '1900-01-01';
@@ -310,6 +310,7 @@ export class NursingnoteComponent implements OnInit {
             doseId: [item.doseId || 0],
             route: [item.timename || ''],
             freq: [item.doseName || ''],
+            routeId: this.timeId || 0,
             isAddedBy: this.accountService.currentUserValue.userId,
             nurseName: "",
             isCancelled: false,

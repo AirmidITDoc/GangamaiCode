@@ -593,5 +593,44 @@
     height: 18px;
     line-height: 18px;
   }
+
+
+  .highlight-total-field {
+  transition: all 0.4s ease;
+
+  // Base highlight for the field
+  .mat-mdc-form-field-flex {
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f0f7ff, #ffffff);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+  }
+
+  // Stronger when focused or has value
+  &.has-value .mat-mdc-form-field-flex,
+  &.mat-focused .mat-mdc-form-field-flex {
+    box-shadow: 0 8px 25px rgba(33, 150, 243, 0.35),
+                0 0 0 2px rgba(33, 150, 243, 0.2);
+    transform: translateY(-2px);
+  }
+
+  // Pulse/glow animation when value changes
+  &.pulse .mat-mdc-form-field-flex {
+    animation: pulse-glow 1.2s ease-in-out;
+  }
+
+  // Highlight the actual input text
+  .mdc-text-field__input {
+    font-weight: 600;
+    color: #0d47a1;
+    font-size: 1.1rem;
+    text-shadow: 0 0 6px rgba(33, 150, 243, 0.3);
+  }
+}
+
+@keyframes pulse-glow {
+  0%   { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.5); }
+  50%  { box-shadow: 0 0 0 12px rgba(33, 150, 243, 0.0); }
+  100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.0); }
+}
 }
 

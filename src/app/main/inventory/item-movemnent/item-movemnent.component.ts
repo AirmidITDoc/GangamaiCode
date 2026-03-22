@@ -34,7 +34,7 @@ export class ItemMovemnentComponent implements OnInit {
     @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
 
     allColumns = [
-        { heading: "No", key: "movementNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        // { heading: "No", key: "movementNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Date", key: "tranDate", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "TransactionType", key: "transactionType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
