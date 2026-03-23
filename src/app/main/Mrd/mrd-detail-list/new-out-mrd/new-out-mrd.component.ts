@@ -70,19 +70,24 @@ export class NewOutMrdComponent {
 
         return this.formBuilder.group({
             outFileId: 0,
-            opipid: [this.opipid, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            opipid: [this.opipid, [Validators.required]],
             givenUserId: this.accountService.currentUserValue.userId,
             personName: ['', [Validators.required]],
             outDate: [(new Date()).toISOString()],
-            outTime: ['', [Validators.required]],
+            outTime: [(new Date()).toISOString()],
             outReason: ['', [Validators.required]],
             CreatedBy: this.accountService.currentUserValue.userId,
         });
     }
 
     onSubmit() {
+
+        debugger
+
+            this.NewOutMrdForm.get('opipid').setValue(this.opipid)
         this.NewOutMrdForm.get('outDate').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, 'yyyy-MM-dd'))
         this.NewOutMrdForm.get('outTime').setValue(this.datePipe.transform(this.NewOutMrdForm.get('outDate').value, "yyyy-MM-dd hh:mm"))
+     
         if (!this.NewOutMrdForm.invalid) {
             console.log(this.NewOutMrdForm.value)
             this._MrdService.MrdOutFileUpdate(this.NewOutMrdForm.value).subscribe((response) => {

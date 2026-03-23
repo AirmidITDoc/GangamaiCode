@@ -36,39 +36,49 @@
                                 <div fxLayout="column" class="gap-8 h-100-p" style="padding-top: 4px;">
                                     <mat-card fxLayout="column" class="gap-8 h-100-p">
                                         <div class="modal-card-container">
-                                            <form [formGroup]="_CanteenmanagementService.userFormGroup" fxLayout="row"
-                                                fxLayoutGap="4px">
-                                                <mat-radio-group formControlName="Type" name="Type" fxFlex="20%"
-                                                    (change)="getItemTable1List()" style="padding: 5px 0px 5px 5px;">
-                                                    <mat-radio-button style="margin-right: 5px;"
-                                                        value="0">Other</mat-radio-button>
-                                                    <mat-radio-button style="margin-right: 5px;"
-                                                        value="1">Employee</mat-radio-button>
-                                                    <mat-radio-button style="margin-right: 5px;"
-                                                        value="2">Patient</mat-radio-button>
-                                                </mat-radio-group>
+                                            <form [formGroup]="_CanteenmanagementService.userFormGroup"
+                                                fxLayout="column" fxLayoutGap="4px">
+                                                <div fxLayout="row">
 
-                                                <mat-form-field appearance="outline" fxFlex="10%">
-                                                    <mat-label>Code</mat-label>
-                                                    <input matInput name="Code" #Code formControlName="Code"
-                                                        (keydown)="onEnterCode($event)"
-                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                </mat-form-field>&nbsp;&nbsp;&nbsp;
-                                                <!-- (keydown)="onEnterCustomer($event)" -->
-                                                <mat-form-field appearance="outline" fxFlex="20%">
-                                                    <mat-label>Customer Name</mat-label>
-                                                    <input matInput name="CustomerName" #CustomerName
-                                                        formControlName="CustomerName" required>
-                                                </mat-form-field>&nbsp;&nbsp;&nbsp;
 
-                                                <airmid-dropdown label="Ward Name" formControlName="roomId"
-                                                 [value]="wardId"
-                                                    [formGroup]="_CanteenmanagementService.userFormGroup" *ngIf="IsWard"
-                                                    [validations]="getValidationMessages().roomId" ValueField="roomId"
-                                                    TextField="roomName" (selectionChange)="onChangeWard($event)"
-                                                    ApiUrl="WardMaster/get-WardClass" #ddlWard>
-                                                </airmid-dropdown>
+                                                    <mat-radio-group formControlName="Type" name="Type" fxFlex="75%"
+                                                        (change)="getItemTable1List()"
+                                                        style="padding: 5px 0px 5px 5px;">
+                                                        <mat-radio-button style="margin-right: 5px;"
+                                                            value="0">Other</mat-radio-button>
+                                                        <mat-radio-button style="margin-right: 5px;"
+                                                            value="1">Employee</mat-radio-button>
+                                                        <mat-radio-button style="margin-right: 5px;"
+                                                            value="2">Patient</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                                <div fxLayout="row">
+                                                    <mat-form-field appearance="outline" fxFlex="6%">
+                                                        <mat-label>Code</mat-label>
+                                                        <input matInput name="Code" #Code formControlName="Code"
+                                                            (keydown)="onEnterCode($event)"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                                    </mat-form-field>&nbsp;&nbsp;&nbsp;
+                                                    <!-- (keydown)="onEnterCustomer($event)" -->
+                                                    <mat-form-field appearance="outline" fxFlex="12%">
+                                                        <mat-label>Customer Name</mat-label>
+                                                        <input matInput name="CustomerName" #CustomerName
+                                                            formControlName="CustomerName" required>
+                                                    </mat-form-field>&nbsp;&nbsp;&nbsp;
 
+                                                    <!-- <airmid-dropdown label="Ward Name" formControlName="roomId"
+                                                        [value]="wardId" fxFlex="12%"
+                                                        [formGroup]="_CanteenmanagementService.userFormGroup"
+                                                        *ngIf="IsWard" [validations]="getValidationMessages().roomId"
+                                                        ValueField="roomId" TextField="roomName"
+                                                        (selectionChange)="onChangeWard($event)"
+                                                        ApiUrl="WardMaster/get-WardClass" #ddlWard>
+                                                    </airmid-dropdown> -->
+
+                                                    <airmid-dropdown label="Ward" formControlName="roomId" *ngIf="IsWard" fxFlex="15%"
+                                [formGroup]="_CanteenmanagementService.userFormGroup" [mode]="autocompleteModeward"
+                                [value]="wardId"></airmid-dropdown>
+                                                </div>
                                                 <!-- <mat-form-field appearance="outline" fxFlex="16%">
                                             <mat-label>PaymentDate</mat-label>
                                             <input matInput [matDatepicker]="picker" formControlName="Start">
@@ -91,6 +101,167 @@
 
                                         <div class="modal-card-container">
                                             <div fxLayout="row" fxLayoutGap="4px">
+
+
+                                                <!-- ?//? -->
+                                                <div fxFlex="35%" fxFlex.sm="60%" fxFlex.xs="100%" class="table-left"
+                                                    [dynamicTableHeight]="100">
+
+                                                    <div class="canteen-right-table-area">
+                                                        <mat-table matSort [dataSource]="dsItemDetTable2"
+                                                            [@animateStagger]="{value:'100'}">
+
+
+                                                            <ng-container matColumnDef="ItemName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm class="w-220">ItemName
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-220">
+                                                                    {{contact.ItemName}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Price">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm class="w-60">Price
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-60">
+                                                                    {{contact.Price}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <!-- <ng-container matColumnDef="Qty">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        {{contact.Qty}}
+                                                    </mat-cell>
+                                                </ng-container> -->
+
+                                                            <ng-container matColumnDef="Qty">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm class="w-60">Qty
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-60" contenteditable="true"
+                                                                    (input)="onQtyEdit($event, contact)">{{contact.Qty}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Amount">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-80" fxShow.gt-sm>Amount
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-80">
+                                                                    {{contact.Amount}}
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                                <mat-header-cell *matHeaderCellDef
+                                                                    class="table-actions">Action</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <ng-container class="actions">
+                                                                        <mat-icon
+                                                                            (click)="deleteTableRow($event, contact)"
+                                                                            color="warn">delete</mat-icon>
+                                                                    </ng-container>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumns1; sticky: true">
+                                                            </mat-header-row>
+                                                            <mat-row
+                                                                *matRowDef="let contact; columns: displayedColumns1;"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+
+
+                                                        </mat-table>
+                                                    </div>
+                                                    <div>
+                                                        <form [formGroup]="_CanteenmanagementService.userFormGroup">
+                                                            <div fxLayout="row">
+
+                                                                <div fxLayout="column" class="gap-2 h-10-p">
+
+                                                                    <mat-radio-group formControlName="Status"
+                                                                        fxFlex="25%">
+                                                                        <mat-radio-button value="CashPay">Cash
+                                                                        </mat-radio-button>
+                                                                        <mat-radio-button value="CreditPay">Credit
+                                                                            Payment</mat-radio-button>
+                                                                        <!-- <mat-radio-button value="PayOption">Pay
+                                                                                    Option</mat-radio-button> -->
+                                                                        <mat-radio-button value="onlinepay">Online
+                                                                            Pay</mat-radio-button>
+                                                                    </mat-radio-group>
+                                                                    <!-- </div>
+                                                <div fxFlex="90%" fxLayout="row"> -->
+                                                                    <!-- (change)="onChangeReg($event)" -->
+
+
+                                                                    <!-- <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="30%">
+                        <mat-label>UPI NO</mat-label>
+                        <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO"
+                            maxlength="12" minlength="4" type="text" Onlynumber max="999999999999" min="100000000000"
+                            autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
+                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                            required="required" value="987665868822">
+                        <mat-error class="error"
+                            *ngIf="OPFooterForm.get('UPINO').invalid && OPFooterForm.get('UPINO').touched">12
+                            digits upi number is required</mat-error>
+                    </mat-form-field> -->
+                                                                </div>
+                                                            </div>
+                                                            <div fxLayout="row" class="gap-2 h-10-p">
+
+                                                                <mat-form-field appearance="outline" fxFlex
+                                                                    style="padding-left: 20px;">
+                                                                    <mat-label>Discount%</mat-label>
+                                                                    <input matInput name="Discount" #Discount
+                                                                        formControlName="Discount"
+                                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
+                                                                        (keyup)="CalculateDiscount()"
+                                                                        [(ngModel)]="vDisc">
+                                                                </mat-form-field>&nbsp;&nbsp;
+
+                                                                <mat-form-field appearance="outline" fxFlex>
+                                                                    <mat-label>DiscAmt</mat-label>
+                                                                    <input matInput name="DiscAmt" #DiscAmt
+                                                                        formControlName="DiscAmt" [(ngModel)]="vDiscAmt"
+                                                                        (keyup)="CalculateDisAmt()">
+                                                                </mat-form-field>&nbsp;&nbsp;
+
+                                                                <mat-form-field appearance="outline" fxFlex
+                                                                    class="highlight-total-field">
+                                                                    <mat-label>TotalAmount</mat-label>
+                                                                    <input matInput name="TotalAmount" #TotalAmount
+                                                                        formControlName="TotalAmount"
+                                                                        [(ngModel)]="vTotalFinalAmount">
+                                                                </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                                                                <div class="modal-footer">
+                                                                    <div class="footer-navigation-container">
+                                                                        <div class="modal-footer-buttons">
+                                                                            <button type="button"
+                                                                                class="btn btn-primary"
+                                                                                (click)="Save()">Save</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+
+                                                </div>
+
                                                 <div fxFlex="65%" fxFlex.sm="60%" fxFlex.xs="100%" class="table-left"
                                                     dynamicTableHeight>
 
@@ -99,7 +270,7 @@
                                                             <mat-card fxFlex="100%" fxLayout="row"
                                                                 fxLayoutAlign="space-between center"
                                                                 class="compact-search-card"
-                                                                style="padding: 2px 5px;margin-bottom: 2px; height: 50px;">
+                                                                style="padding: 2px 5px;margin-bottom: 2px; height: 50px;padding-left: 10px;">
 
                                                                 <mat-form-field appearance="outline" fxFlex="65%"
                                                                     class="compact-search-input">
@@ -302,165 +473,6 @@
                                                         <!-- (export)="onCardExport($event)"? -->
                                                     </div>
                                                 </div>
-
-                                                <!-- ?//? -->
-                                                <div fxFlex="35%" fxFlex.sm="60%" fxFlex.xs="100%" class="table-left"
-                                                    [dynamicTableHeight]="100">
-
-                                                    <div class="canteen-right-table-area">
-                                                        <mat-table matSort [dataSource]="dsItemDetTable2"
-                                                            [@animateStagger]="{value:'100'}">
-
-
-                                                            <ng-container matColumnDef="ItemName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm class="w-200">ItemName
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    class="w-200">
-                                                                    {{contact.ItemName}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="Price">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm class="w-70">Price
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    class="w-70">
-                                                                    {{contact.Price}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <!-- <ng-container matColumnDef="Qty">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Qty}}
-                                                    </mat-cell>
-                                                </ng-container> -->
-
-                                                            <ng-container matColumnDef="Qty">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm class="w-70">Qty
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    class="w-70" contenteditable="true"
-                                                                    (input)="onQtyEdit($event, contact)">{{contact.Qty}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="Amount">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    class="w-80" fxShow.gt-sm>Amount
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                    class="w-80">
-                                                                    {{contact.Amount}}
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <ng-container matColumnDef="Action" stickyEnd>
-                                                                <mat-header-cell *matHeaderCellDef
-                                                                    class="table-actions">Action</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact">
-                                                                    <ng-container class="actions">
-                                                                        <mat-icon
-                                                                            (click)="deleteTableRow($event, contact)"
-                                                                            color="warn">delete</mat-icon>
-                                                                    </ng-container>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <mat-header-row class="accent"
-                                                                *matHeaderRowDef="displayedColumns1; sticky: true">
-                                                            </mat-header-row>
-                                                            <mat-row
-                                                                *matRowDef="let contact; columns: displayedColumns1;"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-
-
-                                                        </mat-table>
-                                                    </div>
-                                                    <div>
-                                                        <form [formGroup]="_CanteenmanagementService.userFormGroup">
-                                                            <div fxLayout="row">
-
-                                                                <div fxLayout="column" class="gap-2 h-10-p">
-
-                                                                    <mat-radio-group formControlName="Status"
-                                                                        fxFlex="25%">
-                                                                        <mat-radio-button value="CashPay">Cash
-                                                                        </mat-radio-button>
-                                                                        <mat-radio-button value="CreditPay">Credit
-                                                                            Payment</mat-radio-button>
-                                                                        <!-- <mat-radio-button value="PayOption">Pay
-                                                                                    Option</mat-radio-button> -->
-                                                                        <mat-radio-button value="onlinepay">Online
-                                                                            Pay</mat-radio-button>
-                                                                    </mat-radio-group>
-                                                                    <!-- </div>
-                                                <div fxFlex="90%" fxLayout="row"> -->
-                                                                    <!-- (change)="onChangeReg($event)" -->
-
-
-                                                                    <!-- <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="30%">
-                        <mat-label>UPI NO</mat-label>
-                        <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO"
-                            maxlength="12" minlength="4" type="text" Onlynumber max="999999999999" min="100000000000"
-                            autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
-                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
-                            required="required" value="987665868822">
-                        <mat-error class="error"
-                            *ngIf="OPFooterForm.get('UPINO').invalid && OPFooterForm.get('UPINO').touched">12
-                            digits upi number is required</mat-error>
-                    </mat-form-field> -->
-                                                                </div>
-                                                            </div>
-                                                            <div fxLayout="row" class="gap-2 h-10-p">
-
-                                                                <mat-form-field appearance="outline" fxFlex
-                                                                    style="padding-left: 20px;">
-                                                                    <mat-label>Discount%</mat-label>
-                                                                    <input matInput name="Discount" #Discount
-                                                                        formControlName="Discount"
-                                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);"
-                                                                        (keyup)="CalculateDiscount()"
-                                                                        [(ngModel)]="vDisc">
-                                                                </mat-form-field>&nbsp;&nbsp;
-
-                                                                <mat-form-field appearance="outline" fxFlex>
-                                                                    <mat-label>DiscAmt</mat-label>
-                                                                    <input matInput name="DiscAmt" #DiscAmt
-                                                                        formControlName="DiscAmt" [(ngModel)]="vDiscAmt"
-                                                                        (keyup)="CalculateDisAmt()">
-                                                                </mat-form-field>&nbsp;&nbsp;
-
-                                                                <mat-form-field appearance="outline" fxFlex
-                                                                    class="highlight-total-field">
-                                                                   <mat-label>TotalAmount</mat-label>
-                                                                        <input matInput name="TotalAmount" #TotalAmount
-                                                                            formControlName="TotalAmount"
-                                                                            [(ngModel)]="vTotalFinalAmount">
-                                                                    </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
-
-
-                                                                    <div class="modal-footer">
-                                                                        <div class="footer-navigation-container">
-                                                                            <div class="modal-footer-buttons">
-                                                                                <button type="button"
-                                                                                    class="btn btn-primary"
-                                                                                    (click)="Save()">Save</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                            </div>
-                                                        </form>
-                                                    </div>
-
-
-                                                </div>
                                             </div>
                                         </div>
                                     </mat-card>
@@ -498,58 +510,27 @@
                     </button>
                 </form>
 
-
+                <!-- 
                 <mat-card fxLayout="column" class="gap-8" fxFlex="1 1 auto" style="min-height: 0;">
-                    <div class="modal-card-container" fxFlex="1 1 auto" style="min-height: 0;">
-                        <!-- <mat-table matSort [dataSource]="dsNursingBillList" [@animateStagger]="{value:'50'}">
-
-                                <ng-container matColumnDef="Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        Date </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.Date }}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="WardName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        Ward Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.WardName }}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-
-                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns2; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns2;" class="contact"
-                                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                </mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsNursingBillList!=null && dsNursingBillList.data.length==0)}">
-                                </mat-footer-row>
-
-                            </mat-table> -->
-
+                  
+                    <div fxLayout="row" style="height: calc(90vh - 100px); overflow-y: auto;">
 
                         <airmid-table [gridConfig]="gridConfig1" class="content" #WardGrid [ShowFilter]="false"
                             (onSelectRow)="GetDetails1($event)" [ShowButtons]="false">
                         </airmid-table>
                     </div>
-                </mat-card>
+                    
+                </mat-card> -->
+
+                <div class="modal-card-container h-100-p">
+                    <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">
+
+                        <airmid-table [gridConfig]="gridConfig1" class="content" #WardGrid [ShowFilter]="false"
+                            (onSelectRow)="GetDetails1($event)" [ShowButtons]="false">
+                        </airmid-table>
+                    </div>
+                </div>
+
             </div>
         </mat-drawer>
     </mat-drawer-container>

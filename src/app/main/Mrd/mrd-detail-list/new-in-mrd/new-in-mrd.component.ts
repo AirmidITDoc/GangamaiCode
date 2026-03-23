@@ -45,7 +45,7 @@ export class NewINMrdComponent {
         dialogRef.disableClose = true;
         this.date = new Date().toISOString().slice(0, 16);
     }
-
+outId=0
     ngOnInit(): void {
         this.NewInMrdForm = this.createINMrdForm();
         if (this.data) {
@@ -54,6 +54,7 @@ export class NewINMrdComponent {
             this.rmdrecordId = this.data.rmdrecordId
             this.opipid = this.data.opipid
             this.registerObj = this.data
+            this.outId= this.data.outFileId
         }
         const now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -64,22 +65,21 @@ export class NewINMrdComponent {
 
     createINMrdForm() {
         return this.formBuilder.group({
-            outFileId: 0,
-            opipid: [this.opipid, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            // outNo: ['', Validators.required],
-            // givenUserId:[''],
-            // personName:[''],
+            outFileId: [this.data?.outFileId, [Validators.required]],
+            opipid: [this.opipid, [Validators.required]],
+            outNo: [this.data?.outNo || "0" ],
+            givenUserId:[this.data?.givenUserId || 0],
+            personName:[this.data?.personName || ''],
 
-            // outDate: [(new Date()).toISOString()],
-            // outTime: [(new Date()).toISOString()],
-            // outReason:[''],
-
-            // inNo:[''],
+            outDate: [(new Date()).toISOString()],
+            outTime: [(new Date()).toISOString()],
+            outReason:[this.data?.outReason || ''],
+            inNo:[''],
             inDate: [(new Date()).toISOString()],
             inTime: [(new Date()).toISOString()],
             returnUserId: this.accountService.currentUserValue.userId,
             returnPersonName: ['', [Validators.required]],
-            inReason: [false, Validators.required],
+            inReason: ['', Validators.required],
 
 
         });
@@ -89,6 +89,9 @@ export class NewINMrdComponent {
         debugger
 
         this.NewInMrdForm.get('opipid').setValue(this.opipid)
+         this.NewInMrdForm.get('outDate').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, 'yyyy-MM-dd'))
+        this.NewInMrdForm.get('outTime').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, "yyyy-MM-dd hh:mm"))
+
         this.NewInMrdForm.get('inDate').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, 'yyyy-MM-dd'))
         this.NewInMrdForm.get('inTime').setValue(this.datePipe.transform(this.NewInMrdForm.get('inDate').value, "yyyy-MM-dd hh:mm"))
 

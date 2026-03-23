@@ -146,7 +146,7 @@
                   {{ element.mrdInFileStatus == 0 ? 'Not Requested' : 'Received' }}
                 </span>
               </ng-template>
-              <div fxLayout="row" style="height: calc(100vh - 200px); overflow-y: auto;">
+              <div fxLayout="row" style="height: calc(95vh - 100px);">
                 <airmid-table [gridConfig]="gridConfig" #DischargeGrid :ShowFilter="false" :ShowButtons="false"
                   (onSelectRow)="getSelectedRow($event)">
 

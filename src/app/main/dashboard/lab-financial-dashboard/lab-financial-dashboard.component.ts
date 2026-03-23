@@ -420,7 +420,8 @@ export class LabFinancialDashboardComponent {
             "columns": []
         };
         this._dashboardServices.getBranchList(data).subscribe((data: any) => {
-
+  console.log(data.data)
+  debugger
             this.Brancharray = data.data as [];
             this.branches = [...new Set(this.Brancharray.map(item => item.unitBranchName))];
 

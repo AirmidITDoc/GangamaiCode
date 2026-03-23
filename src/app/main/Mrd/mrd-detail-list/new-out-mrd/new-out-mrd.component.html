@@ -48,6 +48,7 @@
             <div fxLayout="row" fxLayoutAlign="start stretch">
               <div fxFlex="50">
                 <mat-card class="in-file-card">
+
                   <div class="card-header">
                     <mat-icon color="primary">folder_shared</mat-icon>
                     <span class="header-title">In File Data</span>
@@ -55,7 +56,7 @@
 
                   <mat-divider></mat-divider>
 
-                  <div class="card-content">
+                  <div class="card-content" style="margin-top: 10px;">
                     <div fxLayout="row wrap" fxLayoutGap="16px grid">
 
                       <div fxFlex="100" fxFlex.gt-sm="50" class="data-item">
@@ -83,37 +84,52 @@
                 </mat-card>
               </div>
               <div fxFlex="50">
+                <mat-card>
+                  <div fxLayout="row wrap" fxLayoutGap="2px 0px grid">
 
-                <mat-card class="p-16">
-                  <div class="mb-16">
-                    <span class="out-file-title">Out File Data</span>
+                    <div class="card-header">
+                      <mat-icon color="primary">folder_shared</mat-icon>
+                      <span class="header-title">OUT File Data</span>
+                    </div>
+
+                    <div fxFlex="60" fxFlex.xs="100" fxFlex.sm="33" style="margin-top: 10px;margin-left: 20px;">
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>OUT Date / Time</mat-label>
+                        <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                          (change)="date=$event.target.value" formControlName="outTime" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <!-- <mat-divider></mat-divider> -->
+                  <div fxLayout="row wrap" fxLayoutGap="2px 0px grid" style="padding-left: 10px;padding-right: 10px;">
+
+                    <!-- <div fxFlex="49" fxFlex.xs="100" fxFlex.sm="33">
+                        <mat-form-field appearance="outline">
+                        <mat-label>In Date / Time</mat-label>
+                        <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                          (change)="date=$event.target.value" formControlName="inTime" />
+
+                      </mat-form-field>
+                    </div> -->
+
+                    <div fxFlex="98" fxFlex.xs="100" fxFlex.sm="33">
+                      <airmid-textbox label="Person Name" formControlName="personName" [formGroup]="NewOutMrdForm"
+                        [validations]="getValidationMessages().personName" [maxLength]="50">
+                      </airmid-textbox>
+                    </div>
+
                   </div>
 
-                  <form [formGroup]="NewOutMrdForm">
-                    <div fxLayout="row wrap" fxLayoutGap="16px grid">
-
-                      <div fxFlex="100">
-                        <mat-form-field appearance="outline" class="w-100">
-                          <mat-label>OUT Date / Time</mat-label>
-                           <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
-                          (change)="date=$event.target.value" formControlName="outDate" />
-                        </mat-form-field>
-                      </div>
-
-                      <div fxFlex="100">
-                        <airmid-textbox label="Person Name" formControlName="personName" [formGroup]="NewOutMrdForm"
-                          [validations]="getValidationMessages().personName" [maxLength]="50">
-                        </airmid-textbox>
-                      </div>
-
-                      <div fxFlex="100">
-                        <airmid-textbox label="Return Reason" formControlName="outReason" [formGroup]="NewOutMrdForm"
-                          [validations]="getValidationMessages().outReason" [maxLength]="100">
-                        </airmid-textbox>
-                      </div>
-
+                  <div fxLayout="row wrap" fxLayoutGap="2px 0px grid" style="padding-left: 10px;padding-right: 10px;">
+                    <div fxFlex="98" fxFlex.xs="100" fxFlex.sm="33">
+                      <airmid-textbox label="Return Reason" formControlName="outReason" [formGroup]="NewOutMrdForm"
+                        [validations]="getValidationMessages().outReason" [maxLength]="100">
+                      </airmid-textbox>
                     </div>
-                  </form>
+
+
+                  </div>
                 </mat-card>
 
                 <!-- <mat-card style="padding: 5px;">
@@ -154,10 +170,11 @@
               </div>
 
             </div>
+
+
           </form>
+
         </div>
-
-
       </div>
       <div class="modal-footer">
         <div class="footer-navigation-container">

@@ -30,8 +30,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 export class CanteenSalesComponent implements OnInit {
 
   IsWard: boolean = false
-
-
+ autocompleteModeward: string = "Room";
   // card?
   @HostBinding('style.display') display = 'flex';
   @HostBinding('style.flex') flex = '1 1 auto';
@@ -137,18 +136,18 @@ export class CanteenSalesComponent implements OnInit {
     sortField: "ItemID",
     sortOrder: 1,
     filters: this.allcardFilters,
-    row: 50
+    row: 150
   }
 
   allcolumns = [
 
     // { heading: "-", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 60 },
     // { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150  },
     // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
 
-    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
     // { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     // { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     // { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -661,7 +660,7 @@ debugger
       this._CanteenmanagementService.userFormGroup.get('Discount').setValue(0);
       this._CanteenmanagementService.userFormGroup.get('DiscAmt').setValue(0);
       //this._CanteenmanagementService.userFormGroup.get('TotalAmount').setValue(this.vTotalFinalAmount);
-      this.vTotalFinalAmount.toFixed(2);
+      this.vTotalFinalAmount=this.vTotalFinalAmount.toFixed(2);
     }
     if (disc) {
       let dis = this._CanteenmanagementService.userFormGroup.get('Discount').value;
@@ -674,6 +673,7 @@ debugger
   }
   CalculateDisAmt() {
     this.vTotalFinalAmount = (parseInt(this.vTotalFinalAmount) - parseInt(this.vDiscAmt));
+   this.vTotalFinalAmount= this.vTotalFinalAmount.toFixed(2)
   }
 
   @ViewChild('Code') Code: ElementRef;
@@ -946,8 +946,8 @@ wardId=0
     console.log(data)
     debugger
     this.IsWard = true
-    this.wardId= parseInt(data.bedName)
-    // this._CanteenmanagementService.userFormGroup.get('roomId').setValue(parseInt(data.bedName))
+    // this.wardId= parseInt(data.bedName)
+    this._CanteenmanagementService.userFormGroup.get('roomId').setValue(parseInt(data.bedName))
     this._CanteenmanagementService.userFormGroup.get('CustomerName').setValue(data.patientName)
     this._CanteenmanagementService.userFormGroup.get('Code').setValue(data.oP_IP_ID)
 

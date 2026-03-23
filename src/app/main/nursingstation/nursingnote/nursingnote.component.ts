@@ -452,7 +452,7 @@ export class NursingnoteComponent implements OnInit {
         this._NursingStationService.getSchedulerdatalist(param).subscribe(data => {
             // this.dsItemList.data = data.data as MedicineItemList[];
             console.log(data)
-
+debugger
             if (data.data.length > 0) {
                 data.data.forEach(element => {
                     let newEntry = {
@@ -461,8 +461,8 @@ export class NursingnoteComponent implements OnInit {
                         doseName: element.doseName,
                         doseId: element.doseID,
                         days: element.days,
-                        timeId: 0,
-                        timename: data.route || '',
+                        timeId: element.routeId || 0,
+                        timename: element.route || '',
                         instruction: '',
                         route: element.timename || '',
                         freq: element.doseName,

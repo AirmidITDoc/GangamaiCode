@@ -51,25 +51,22 @@ export class MrdDetailListComponent {
 
     allcolumns = [
         { heading: "IsInOut", key: "isInOut", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-        { heading: "mrdno", key: "mrdno", sort: true, align: 'left', emptySign: 'NA', width: 70 },
+        { heading: "MRD No", key: "mrdno", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Patient Name | Age", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
+        { heading: "DOA", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 160 },
         // { heading: "DOD", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
         { heading: "IPNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "InFile Info", key: "inFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "OutFile Info", key: "outFileInfo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Location", key: "location", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Comments", key: "comments", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "createdBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "created By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
     ];
-
-
-
 
     IsInOut = "0"
     gridConfig: gridModel = {

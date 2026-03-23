@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
+
 const appRoutes: Routes = [
     {
         path: "personaldetail",
@@ -75,12 +76,19 @@ const appRoutes: Routes = [
                 (m) => m.AmbulancemasterModule
             ),
     },
+    ,
+    {
+        path: "Canteen",
+        loadChildren: () =>
+            import("./Canteen_Master/canteen-master.module").then(
+                (m) => m.CanteenMasterModule
+            ),
+    },
 ];
 
 @NgModule({
     declarations: [
-
-    ],
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class SetupModule { }

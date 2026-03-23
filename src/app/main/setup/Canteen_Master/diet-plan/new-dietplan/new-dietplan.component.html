@@ -1,0 +1,190 @@
+<div class="simple page-layout inner-scroll inner-sidebar left-sidebar resize-form-fields">
+    <mat-toolbar style="width: 100%;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Patient Diet Plan
+            </span>
+        </div>
+        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close"
+            (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+
+            <div class="content-card">
+
+                <form [formGroup]="fullForm" (ngSubmit)="onSubmit()">
+                    <ng-template matStepLabel>Patient Details</ng-template>
+
+                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                        <div fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                <div class="patient-info-sales">
+                                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="registerObj?.regNo"
+                                            [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                            [departmentName]="registerObj?.departmentName" [doa]="vDOA"
+                                            [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                            [refDocName]="vRefDocName"
+                                            [wardBedName]="(vWardName && vBedName) ? (vWardName + ' | ' + vBedName) : ''"
+                                            [patientType]="vPatientType" [tariffName]="vTariffName"
+                                            [companyName]="vCompanyName"></app-patient-information>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+
+                    <div class="step-content">
+                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                            <ng-template matStepLabel>Goals & Targets</ng-template>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Primary Goal</mat-label>
+                                <mat-select formControlName="primaryGoal" required>
+                                    <mat-option *ngFor="let t of dietTypes" [value]="t">{{t}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Target Weight (kg) – if applicable</mat-label>
+                                <input matInput type="number" formControlName="targetWeightKg">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Estimated Daily Calories</mat-label>
+                                <input matInput type="number" formControlName="dailyCalories">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Activity Level</mat-label>
+                                <mat-select formControlName="activityLevel" required>
+                                    <mat-option *ngFor="let lvl of activityLevels" [value]="lvl">{{lvl}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Meal Frequency</mat-label>
+                                <mat-select formControlName="mealsPerDay" required>
+                                    <mat-option *ngFor="let freq of mealFrequencies"
+                                        [value]="freq">{{freq}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="step-content">
+                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                            <ng-template matStepLabel>Restrictions</ng-template>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Allergies (comma separated)</mat-label>
+                                <input matInput formControlName="allergies" placeholder="e.g. peanuts, lactose">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Food Intolerances</mat-label>
+                                <input matInput formControlName="intolerances" placeholder="e.g. gluten, FODMAP">
+                            </mat-form-field>
+
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Preferred Cuisine / Likes</mat-label>
+                                <input matInput formControlName="preferredCuisine"
+                                    placeholder="e.g. South Indian, Punjabi, simple home food">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Foods to Strictly Avoid</mat-label>
+                                <textarea matInput formControlName="avoidFoods" rows="2"
+                                    placeholder="e.g. sugar, fried items, red meat"></textarea>
+                            </mat-form-field>
+
+
+                            <mat-radio-group formControlName="Status" fxFlex="25%">
+                                <mat-radio-button value="1">Diabetic
+                                </mat-radio-button>
+                                <mat-radio-button value="2">Normal
+                                    Payment</mat-radio-button>
+                                <!-- <mat-radio-button value="onlinepay">Online
+                                    Pay</mat-radio-button> -->
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+
+                        <ng-template matStepLabel>Meal Plan</ng-template>
+
+                        <div class="step-content">
+                            <h3>Sample Daily Plan</h3>
+
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Breakfast (Timing: e.g. 8 AM)</mat-label>
+                                <textarea matInput formControlName="breakfast" rows="2" required></textarea>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Mid-Morning Snack</mat-label>
+                                <textarea matInput formControlName="midMorningSnack" rows="2"></textarea>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Lunch</mat-label>
+                                <textarea matInput formControlName="lunch" rows="2" required></textarea>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Evening Snack</mat-label>
+                                <textarea matInput formControlName="eveningSnack" rows="2"></textarea>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Dinner</mat-label>
+                                <textarea matInput formControlName="dinner" rows="2" required></textarea>
+                            </mat-form-field>
+
+
+
+
+                        </div>
+
+
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>Total Carbs (g/day)</mat-label>
+                            <input matInput formControlName="totalCarbsG" type="number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="10%">
+                            <mat-label>Total Protein (g/day)</mat-label>
+                            <input matInput formControlName="totalProteinG" type="number">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Additional Notes / Instructions</mat-label>
+                            <textarea matInput formControlName="notes" rows="4"
+                                placeholder="e.g. Drink 2.5L water, avoid sweets, portion control tips..."></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="actions">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="fullForm.invalid">
+                            Save Diet Plan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
