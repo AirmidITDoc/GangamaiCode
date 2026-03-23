@@ -810,6 +810,7 @@ export class TestFormMasterComponent implements OnInit {
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#3085d6'
             });
+            this.testForm.get('ServiceId')?.setValue(0)
             return;
         }
 

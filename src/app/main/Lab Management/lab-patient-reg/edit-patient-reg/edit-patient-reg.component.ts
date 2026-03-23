@@ -155,7 +155,13 @@ export class EditPatientRegComponent {
                 this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
                     this.registerObj = response;
                     console.log("Master Data:", this.registerObj)
-                    this.myForm.patchValue(this.registerObj)
+                    // this.myForm.patchValue(this.registerObj)
+                    this.myForm.patchValue({
+                        ...this.registerObj,
+                        firstName: this.registerObj.firstName?.toUpperCase(),
+                        middleName: this.registerObj.middleName?.toUpperCase(),
+                        lastName: this.registerObj.lastName?.toUpperCase()
+                    });
                 });
             });
         }
@@ -306,6 +312,7 @@ export class EditPatientRegComponent {
 
                 this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId);
                 this.FinalForm.get('labPatientId').setValue(this.labPatientId);
+                this.myForm.get('adharCardNo').setValue('000000000000');
 
                 const payload = {
                     labPatientRegistrationMaster: this.myForm.getRawValue(),
@@ -408,8 +415,22 @@ export class EditPatientRegComponent {
                 && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
         });
     }
+
+    ChangeToUpperCase(changedField: string) {
+        const control = this.myForm.get(changedField);
+        if (control && control.value) {
+            control.setValue(control.value.toUpperCase(), { emitEvent: false });
+        }
+    }
+
     handleInputChange(changedField: string): void {
         // Get all current field values
+
+        const control = this.myForm.get(changedField);
+        if (control && control.value) {
+            control.setValue(control.value.toUpperCase(), { emitEvent: false });
+        }
+
         // debugger
         const firstName = this.myForm.get('firstName').value?.trim() || '';
         const lastName = this.myForm.get('lastName').value?.trim() || '';
@@ -520,9 +541,9 @@ export class EditPatientRegComponent {
                     this.onChangeDateofBirth(response.dateofBirth)
                     this.regflag = true
                     this.myForm.patchValue({
-                        firstName: this.registerObj.firstName.trim(),
-                        middleName: this.registerObj.middleName.trim(),
-                        LastName: this.registerObj.lastName.trim(),
+                        firstName: this.registerObj.firstName.trim().toUpperCase() || '',
+                        middleName: this.registerObj.middleName.trim().toUpperCase() || '',
+                        lastName: this.registerObj.lastName.trim().toUpperCase() || '',
                         MobileNo: this.registerObj.mobileNo.trim(),
                         address: this.registerObj.address.trim(),
                         // DateOfBirth:this.registerObj.dateofBirth,

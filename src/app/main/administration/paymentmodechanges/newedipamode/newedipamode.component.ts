@@ -151,7 +151,7 @@ export class NewedipamodeComponent {
                 this._FormvalidationserviceService.allowEmptyStringValidator()
             ]
             ],
-            tranNo: [item.tranNo],
+            tranNo: [item.tranNo ?? 0],
             bankName: [item.bankName],
 
         });
@@ -164,7 +164,7 @@ export class NewedipamodeComponent {
 
     chargelist: any = [];
     getPaylist() {
-        debugger
+        // debugger
         const vdata = {
             "first": 0,
             "rows": 100,
@@ -269,7 +269,7 @@ export class NewedipamodeComponent {
 
 
     onTranNoInput(contact: any, value?: string) {
-        debugger
+        // debugger
         const tranNo = contact.tranNo
 
         if (tranNo.length === 0) {
@@ -303,77 +303,125 @@ export class NewedipamodeComponent {
     }
     setflag = false
     totalPayment = 0
+    // Save() {
+
+    //     this.totalPayment = 0
+
+    //     this.dsPayList.data.forEach(item => {
+    //         debugger
+    //         if (item.payMode1 == 'CARD' || item.payMode1 == 'CHEQUE' || item.payMode1 == 'NET BANKIN' || item.payMode1 == 'UPI') {
+    //             if ((item.tranNo == '' || item.tranNo == null || item.tranNo == undefined)) {
+    //                 this.toastr.warning('Please enter a Tran No', 'Warning !--for ' + item.receiptNo + '  Amount:' + item.payAmount, {
+    //                     toastClass: 'tostr-tost custom-toast-warning',
+    //                 });
+    //                 this.setflag = false
+    //                 return;
+    //             } else {
+    //                 const tranNo = item.tranNo
+
+    //                 if (tranNo.length === 0) {
+    //                     this.toastr.warning('Please enter a Tran No', 'Warning !--for ' + item.receiptNo + '  Amount:' + item.payAmount, {
+    //                         toastClass: 'tostr-tost custom-toast-warning',
+    //                     });
+    //                     return;
+    //                 } else if (tranNo.length < 4) {
+    //                     this.toastr.warning('Please enter a Tran No', 'Warning !--for ' + item.receiptNo + '  Amount:' + item.payAmount, {
+    //                         toastClass: 'tostr-tost custom-toast-warning',
+    //                     });
+    //                     return;
+    //                 } else {
+    //                     this.setflag = false
+    //                 }
+    //             }
+    //             if ((item.bankName == '' || item.bankName == null || item.bankName == undefined)) {
+    //                 this.toastr.warning('Please Select Bank Name', 'Warning ! for ' + item.receiptNo + '  Amount:' + item.payAmount, {
+    //                     toastClass: 'tostr-tost custom-toast-warning',
+    //                 });
+    //                 this.setflag = false
+    //                 return;
+    //             }
+    //             else {
+    //                 this.setflag = true
+    //             }
+    //         }
+
+    //         this.totalPayment += item.payAmount
+
+    //     });
+
+    //     // if (this.totalPayment == this.vnetPayAmt) {
+
+    //     console.log(this.mainpaymentForm.value);
+
+    //     debugger
+    //     this.tpaymentsArray.clear();
+    //     this.dsPayList.data.forEach(item => {
+    //         this.tpaymentsArray.push(this.createpayFormarray(item as tPaymentChange));
+    //     });
+    //     if (this.setflag == true || this.dsPayList.data.length == 1 && this.dsPayList.data[0].payMode == "CASH") {
+    //         console.log(this.mainpaymentForm.value);
+    //         this._Paymentmodesevice.TPaymentUpdate(this.vpaymentId, this.mainpaymentForm.value).subscribe(response => {
+    //             this._matDialog.closeAll()
+    //         });
+
+    //     } else {
+    //         this.toastr.warning('Please check Payment Data', 'Check !', {
+    //             toastClass: 'tostr-tost custom-toast-success',
+    //         });
+    //     }
+    // }
+
+    // changed by Raksha 23/03/2026
     Save() {
+        this.totalPayment = 0;
+        this.setflag = true;
+        debugger
+        for (let item of this.dsPayList.data) {
 
-        this.totalPayment = 0
+            if (item.payMode1 === 'CASH') {
+                item.tranNo = "0";
+                item.bankName = '';
+            }
 
-        this.dsPayList.data.forEach(item => {
-            debugger
             if (item.payMode1 == 'CARD' || item.payMode1 == 'CHEQUE' || item.payMode1 == 'NET BANKIN' || item.payMode1 == 'UPI') {
-                if ((item.tranNo == '' || item.tranNo == null || item.tranNo == undefined)) {
-                    this.toastr.warning('Please enter a Card No', 'Warning !--for ' + item.receiptNo + '  Amount:' + item.payAmount, {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    this.setflag = false
-                    return;
-                } else {
-                    const tranNo = item.tranNo
 
-                    if (tranNo.length === 0) {
-                        this.toastr.warning('Please enter a Tran No', 'Warning !--for ' + item.receiptNo + '  Amount:' + item.payAmount, {
-                            toastClass: 'tostr-tost custom-toast-warning',
-                        });
-                        return;
-                    } else if (tranNo.length < 4) {
-                        this.toastr.warning('Please enter a Tran No', 'Warning !--for ' + item.receiptNo + '  Amount:' + item.payAmount, {
-                            toastClass: 'tostr-tost custom-toast-warning',
-                        });
-                        return;
-                    } else {
-                        this.setflag = false
-                    }
-                }
-                if ((item.bankName == '' || item.bankName == null || item.bankName == undefined)) {
-                    this.toastr.warning('Please Select Card Bank Name', 'Warning ! for ' + item.receiptNo + '  Amount:' + item.payAmount, {
-                        toastClass: 'tostr-tost custom-toast-warning',
-                    });
-                    this.setflag = false
-                    return;
-                }
-                else {
-                    this.setflag = true
+                // sachin sirs point to remove tranNo manditory
+                // if (!item.tranNo || item.tranNo.length < 4) {
+                //     this.toastr.warning(
+                //         'Please enter a Tran No',
+                //         'Warning !--for ' + item.receiptNo + ' Amount:' + item.payAmount
+                //     );
+                //     this.setflag = false;
+                //     break;
+                // }
+
+                if (!item.bankName || item.bankName == '') {
+                    this.toastr.warning(
+                        'Please Select Bank Name',
+                        'Warning ! for ' + item.receiptNo + ' Amount:' + item.payAmount
+                    );
+                    this.setflag = false;
+                    break;
                 }
             }
 
-            this.totalPayment += item.payAmount
+            this.totalPayment += item.payAmount;
+        }
 
-        });
+        if (!this.setflag) {
+            return;
+        }
 
-        // if (this.totalPayment == this.vnetPayAmt) {
-
-        console.log(this.mainpaymentForm.value);
-
-        debugger
+        // continue only if valid
         this.tpaymentsArray.clear();
         this.dsPayList.data.forEach(item => {
             this.tpaymentsArray.push(this.createpayFormarray(item as tPaymentChange));
         });
-        if (this.setflag == true || this.dsPayList.data.length == 1 && this.dsPayList.data[0].payMode == "CASH") {
-            console.log(this.mainpaymentForm.value);
-            this._Paymentmodesevice.TPaymentUpdate(this.vpaymentId, this.mainpaymentForm.value).subscribe(response => {
-                this._matDialog.closeAll()
-            });
 
-        } else {
-            this.toastr.warning('Please check Payment Data', 'Check !', {
-                toastClass: 'tostr-tost custom-toast-success',
+        this._Paymentmodesevice.TPaymentUpdate(this.vpaymentId, this.mainpaymentForm.value)
+            .subscribe(() => {
+                this._matDialog.closeAll();
             });
-        }
-        // } else {
-        //   this.toastr.error('Please check Balance Amount', 'Check !', {
-        //     toastClass: 'tostr-tost custom-toast-success',
-        //   });
-        // }
     }
 
     getselectObjPayMode(obj) {

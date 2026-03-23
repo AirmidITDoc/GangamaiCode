@@ -57,16 +57,16 @@ function formatDate(rawDate: string): string {
         return `${year}-${month}-${day}`; // 2026-01-15
     }
 
-        // Case 3: MM/DD/YYYY format → 3/21/2026 12:00:00 AM
+    // Case 3: MM/DD/YYYY format → 3/21/2026 12:00:00 AM
     if (rawDate.includes('/')) {
-        const d = new Date(rawDate); 
+        const d = new Date(rawDate);
         const pad = (n: number) => ('0' + n).slice(-2);
-        const ms = ('00' + d.getMilliseconds()).slice(-3); 
+        const ms = ('00' + d.getMilliseconds()).slice(-3);
         // return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ` +
         //        `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${ms}`;
 
-         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} `;
-    } 
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} `;
+    }
     return '';
 }
 
@@ -1173,77 +1173,83 @@ export class LabResultListComponent {
         );
     }
 
-    // masterToggle() {
-    //   // debugger
-    //   const totalTests = this.dataSource1.data.length;
-    //   const collectedTests = this.dataSource1.data.filter(
-    //     (row: any) => row.isSampleCollection === 'True'
-    //   );
-    //   const notCollectedCount = totalTests - collectedTests.length;
-    //   if (notCollectedCount > 0) {
-    //     Swal.fire(
-    //       'Sample Pending',
-    //       `Still ${notCollectedCount} test(s) remaining to collect sample`,
-    //       'warning'
-    //     );
-    //     return;
-    //   }
-
-    //   if (this.isSomeSelected()) {
-    //     this.selection.clear();
-    //   } else {
-    //     this.isAllSelected()
-    //       ? this.selection.clear()
-    //       : this.dataSource1.data.forEach(row => this.selection.select(row));
-    //   }
-
-    //   console.log('Selected items count:', this.selection.selected.length);
-    //   this.resultSource = [...this.selection.selected];
-    //   console.log('Selected items:', this.resultSource);
-    // }
-    masterToggle() {
-
-        // 🔴 1. Sample collection pending check
-        const notCollected = this.dataSource1.data.filter(
-            (row: any) => row.isSampleCollection === 'False'
+    hasVerifiedSelected(): boolean {
+        return this.selection.selected.some(
+            (row: any) => row.isVerifySign === true
         );
+    }
 
-        if (notCollected.length > 0) {
+    masterToggle() {
+        // debugger
+        const totalTests = this.dataSource1.data.length;
+        const collectedTests = this.dataSource1.data.filter(
+            (row: any) => row.isSampleCollection === 'True'
+        );
+        const notCollectedCount = totalTests - collectedTests.length;
+        if (notCollectedCount > 0) {
             Swal.fire(
                 'Sample Pending',
-                `${notCollected.length} test(s) remaining to collect sample`,
+                `Still ${notCollectedCount} test(s) remaining to collect sample`,
                 'warning'
             );
             return;
         }
 
-        // 🔴 2. Get selectable (pending & not verified) rows
-        const selectableRows = this.dataSource1.data.filter(
-            (row: any) =>
-                row.isSampleCollection === 'True' &&
-                row.isVerifySign === false &&
-                row.isTemplateTest != '1'
-        );
-
-        // 🔴 3. All tests already verified
-        if (selectableRows.length === 0) {
-            Swal.fire(
-                'No Pending Tests',
-                'All tests are already verified',
-                'info'
-            );
-            return;
-        }
-
-        // 🔁 Toggle selection
-        if (this.isAllSelected()) {
-            selectableRows.forEach(row => this.selection.deselect(row));
+        if (this.isSomeSelected()) {
+            this.selection.clear();
         } else {
-            selectableRows.forEach(row => this.selection.select(row));
+            this.isAllSelected()
+                ? this.selection.clear()
+                : this.dataSource1.data.forEach(row => this.selection.select(row));
         }
 
+        console.log('Selected items count:', this.selection.selected.length);
         this.resultSource = [...this.selection.selected];
+        console.log('Selected items:', this.resultSource);
     }
+    // masterToggle() {
+
+    //     // 🔴 1. Sample collection pending check
+    //     const notCollected = this.dataSource1.data.filter(
+    //         (row: any) => row.isSampleCollection === 'False'
+    //     );
+
+    //     if (notCollected.length > 0) {
+    //         Swal.fire(
+    //             'Sample Pending',
+    //             `${notCollected.length} test(s) remaining to collect sample`,
+    //             'warning'
+    //         );
+    //         return;
+    //     }
+
+    //     // 🔴 2. Get selectable (pending & not verified) rows
+    //     const selectableRows = this.dataSource1.data.filter(
+    //         (row: any) =>
+    //             row.isSampleCollection === 'True' &&
+    //             row.isVerifySign === false &&
+    //             row.isTemplateTest != '1'
+    //     );
+
+    //     // 🔴 3. All tests already verified
+    //     if (selectableRows.length === 0) {
+    //         Swal.fire(
+    //             'No Pending Tests',
+    //             'All tests are already verified',
+    //             'info'
+    //         );
+    //         return;
+    //     }
+
+    //     // 🔁 Toggle selection
+    //     if (this.isAllSelected()) {
+    //         selectableRows.forEach(row => this.selection.deselect(row));
+    //     } else {
+    //         selectableRows.forEach(row => this.selection.select(row));
+    //     }
+
+    //     this.resultSource = [...this.selection.selected];
+    // }
 
     isSomeSelected() {
         // console.log(this.selection.selected);
@@ -1262,27 +1268,27 @@ export class LabResultListComponent {
     onSearchClear() {
         this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
     }
-    isAllSelected() {
-        const selectableRows = this.dataSource1.data.filter(
-            (row: any) =>
-                row.isSampleCollection === 'True' &&
-                row.isVerifySign === false &&
-                row.isTemplateTest != '1'
-        );
-
-        return (
-            selectableRows.length > 0 &&
-            selectableRows.every(row => this.selection.isSelected(row))
-        );
-    }
-
-
     // isAllSelected() {
-    //   const numSelected = this.selection.selected.length;
-    //   const numRows = this.dataSource1.data.length;
+    //     const selectableRows = this.dataSource1.data.filter(
+    //         (row: any) =>
+    //             row.isSampleCollection === 'True' &&
+    //             row.isVerifySign === false &&
+    //             row.isTemplateTest != '1'
+    //     );
 
-    //   return numSelected === numRows;
+    //     return (
+    //         selectableRows.length > 0 &&
+    //         selectableRows.every(row => this.selection.isSelected(row))
+    //     );
     // }
+
+
+    isAllSelected() {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.dataSource1.data.length;
+
+        return numSelected === numRows;
+    }
 
     onClear() {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");

@@ -73,6 +73,7 @@ export class LabPatientRegComponent {
     @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
     @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
     @ViewChild('genderANDage') genderANDage!: TemplateRef<any>;
+    @ViewChild('appointmentIcon') appointmentIcon!: TemplateRef<any>;
 
     constructor(
         public _labPatientRegService: LabPatientRegService,
@@ -187,9 +188,11 @@ export class LabPatientRegComponent {
         this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'doctorName')!.template = this.doctorNameWithPopoverTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'genderName')!.template = this.genderANDage;
+        this.gridConfig.columnsList.find(col => col.key === 'labAppointmentId')!.template = this.appointmentIcon;
     }
 
     allcolumns = [
+        { heading: "-", key: "labAppointmentId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
         { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },

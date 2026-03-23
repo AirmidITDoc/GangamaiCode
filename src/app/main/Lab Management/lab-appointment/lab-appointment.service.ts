@@ -49,10 +49,12 @@ export class LabAppointmentService {
     return this._httpClient.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
   }
   public appointmentMasterSave(Param: any) {
-    return this._httpClient.PostData("LabAppointment/Insert", Param);
+    if (Param.labAppId) {
+      return this._httpClient.PutData("LabAppointment/Edit/" + Param.labAppId, Param);
+    } else
+      return this._httpClient.PostData("LabAppointment/Insert", Param);
   }
   public getAppoinments(Id: number, fromDate: string, toDate: string, categoryId: number) {
-    // return this._httpClient.PostData("LabAppointment/LabAppointmentList", param);
     return this._httpClient.GetData("LabAppointment/get-Labappoinments?DocId=" + Id + "&FromDate=" + fromDate + "&ToDate=" + toDate + "&CategoryId=" + categoryId);
   }
   public getDateTimeChange(m_data) {
@@ -66,5 +68,11 @@ export class LabAppointmentService {
   }
   public getAppoinmentsList(param) {
     return this._httpClient.PostData("LabAppointment/LabAppointmentList", param);
+  }
+  public getAppById(Id) {
+    return this._httpClient.GetData("LabAppointment/" + Id);
+  }
+  public getAppDetById(param) {
+    return this._httpClient.PostData("LabAppointment/LabAppointmentDetailList", param);
   }
 }

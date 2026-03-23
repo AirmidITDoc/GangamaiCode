@@ -116,7 +116,7 @@
                                                         <div fxFlex="33%">
                                                             <airmid-textbox label="First Name"
                                                                 formControlName="firstName"
-                                                                [value]="registerObj.firstName" [formGroup]="myForm"
+                                                                [formGroup]="myForm"
                                                                 [validations]="getValidationMessages().firstName"
                                                                 [maxLength]="100"
                                                                 (valueChange)="handleInputChangeDebounced('firstName')"></airmid-textbox>
@@ -124,14 +124,14 @@
                                                         <div fxFlex="33%">
                                                             <airmid-textbox label="Middle Name"
                                                                 formControlName="middleName" [formGroup]="myForm"
-                                                                [maxLength]="50" [value]="registerObj?.middleName">
+                                                                [maxLength]="50"
+                                                                (valueChange)="ChangeToUpperCase('middleName')">
                                                             </airmid-textbox>
                                                         </div>
                                                         <div fxFlex="33%">
                                                             <airmid-textbox label="Last Name" formControlName="lastName"
                                                                 [formGroup]="myForm" [maxLength]="50"
                                                                 [validations]="getValidationMessages().lastName"
-                                                                [value]="registerObj?.lastName"
                                                                 (valueChange)="handleInputChangeDebounced('lastName')">
                                                             </airmid-textbox>
                                                         </div>

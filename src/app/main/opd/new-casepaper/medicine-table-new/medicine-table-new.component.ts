@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import { CasepaperService } from '../casepaper.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 export interface MedicineItem {
     DrugId?: number;
@@ -271,9 +272,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         // if(row.instructionId > 0)
         //    Instruction = row.instructionId
         // else
-        Instruction = row.instruction
-
-
+        Instruction = row.instruction 
+     
         this.medicineForm.patchValue({
             ItemId: drugControlValue,
             Day: row.Days ?? row.days ?? '',
@@ -283,14 +283,14 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             DoseId: (row.DoseId ?? row.doseId ?? '').toString()
         }, { emitEvent: false });
 
-        // Set local values for editing
-        this.drugId = row.DrugId || 0;
-        this.drugName = row.DrugName || row.drugName || '';
-        this.doseId = row.DoseId || 0;
+        // Set local values for editing 
+        this.doseQtyPerDay = row?.qtyPerDay || 0 ;
+        this.drugId = row?.drugId || 0;
+        this.drugName = row.DrugName || row.drugName || ''; 
         this.instructionId = row.instructionId || 0
         this.doseName = row.DoseName || row.doseName || '';
         this.vItemGenericNameId = row.GenericId || row.genericId || row.genericid || 0;
-        this.vItemGenericName = row.GenericName || row.genericName || '';
+        this.vItemGenericName = row.GenericName || row.genericName || ''; 
         this.focusFirstEditableField();
     }
 
@@ -411,6 +411,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         const confirmed = this.confirmRow(row);
         if (confirmed) {
             this.handlePostConfirmation(row, wasExistingRecord);
+            this.instructionId=0
         }
     }
 
@@ -586,7 +587,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.medicineForm.get('Instruction')?.setValue(this.instruction)
     }
 
-    onInstSelectionChange(event: MatSelectChange): void {
+    onInstSelectionChange1(event: MatSelectChange): void {
         const option = this.InstructionOptions.find(opt => opt.value === event.value || opt.Value === event.value);
         if (option) {
             this.onInsetSelected({
@@ -595,6 +596,19 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             });
         }
     }
+ 
+onInstSelectionChange(event: MatAutocompleteSelectedEvent): void {
+  const selectedValue = event.option.value;
+
+  const option = this.InstructionOptions.find(opt => opt.value === selectedValue || opt.Value === selectedValue );
+
+  if (option) {
+    this.onInsetSelected({
+      value: option.value ?? option.Value,
+      text: option.text ?? option.Text
+    });
+  }
+}
 
     private loadDropdownOptions(): void {
         this.fetchDropdownOptions(this.autocompleteModeItemGeneric)

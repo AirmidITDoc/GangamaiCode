@@ -101,6 +101,7 @@ export class NewLabAppointmentComponent {
   IsPathology: any;
   IsRadiology: any;
   vIsPackage: any;
+  vLabAppId: any = 0;
   @ViewChild('serviceInput') serviceInput!: ElementRef<HTMLInputElement>;
   public chargeList: ChargesList[] = [];
 
@@ -155,29 +156,67 @@ export class NewLabAppointmentComponent {
 
     console.log("retrive Data:", this.data)
 
-    if (this.data) {
-      this.isEditMode = true;
-      console.log(this.data)
-      this.myForm.get('labAppDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
-      this.myForm.get('labAppTime').setValue(this.data.fromDate);
-      this.myForm.get('startTime').setValue(this.data.fromDate);
-      this.myForm.get('endTime').setValue(this.data.toDate);
-      this.myForm.get('categoryId').setValue(this.data.categoryId);
-      this.myForm.get('doctorId').setValue(this.data.refDoctorId);
-      this.fromDate = this.data.fromDate;
-      this.toDate = this.data.toDate;
+    if (this.data?.labAppId) {
+      this.vLabAppId = this.data?.labAppId
+      this.regNo = this.data?.seqNo
+      this._appointmentService.getAppById(this.data?.labAppId).subscribe((response) => {
+        console.log("App master", response)
+        this.registerObj = response;
+        this.value = response.dateofBirth
+        this.VlabPatRegId = this.registerObj.labPatRegId ?? 0
+        this.onChangeDateofBirth(response.dateofBirth)
+        this.regflag = true
+        this.myForm.patchValue({
+          firstName: this.registerObj.firstName.trim(),
+          middleName: this.registerObj.middleName.trim(),
+          LastName: this.registerObj.lastName.trim(),
+          MobileNo: String(this.registerObj.mobileNo).trim(),
+          address: this.registerObj.address.trim()
+        });
+        this.myForm.get('labAppDate').setValue(this.datePipe.transform(this.data.labAppDate, 'yyyy-MM-dd'));
+        // this.myForm.get('labAppTime').setValue(this.convertToTime(this.data.startTime));
+        // this.myForm.get('startTime').setValue(this.convertToTime(this.data.startTime));
+        // this.myForm.get('endTime').setValue(this.convertToTime(this.data.endTime));
+        this.myForm.get('labAppTime').setValue(new Date(this.data.startTime));
+        this.myForm.get('startTime').setValue(new Date(this.data.startTime));
+        this.myForm.get('endTime').setValue(this.convertISOToTime(this.data.endTime));
+        this.myForm.get('categoryId').setValue(this.data.categoryId);
+        this.myForm.get('doctorId').setValue(this.data.doctorId);
+        this.myForm.get('cityId').setValue(this.registerObj.cityId);
+        if (this.registerObj.cityId) {
+          this._appointmentService.getcityId(this.registerObj.cityId).subscribe((Response) => {
+            this.stateId = Response.stateId
+
+            this._appointmentService.getstateId(this.stateId).subscribe((Response) => {
+              this.counryId = Response.countryId
+            });
+          });
+        }
+      });
+      this.getAppointmentSerList();
     } else {
-      this.isEditMode = false;
-      const currentDateTime = new Date();
-      const today = new Date();
-      const utcMidnight = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
-      this.myForm.get('labAppDate').setValue(utcMidnight.toISOString());
-      this.myForm.get('labAppTime')?.setValue(currentDateTime);
-      this.myForm.get('endTime')?.setValue(currentDateTime);
-      this.myForm.get('startTime').setValue(currentDateTime);
-
+      if (this.data) {
+        this.isEditMode = true;
+        console.log(this.data)
+        this.myForm.get('labAppDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
+        this.myForm.get('labAppTime').setValue(this.data.fromDate);
+        this.myForm.get('startTime').setValue(this.data.fromDate);
+        this.myForm.get('endTime').setValue(this.data.toDate);
+        this.myForm.get('categoryId').setValue(this.data.categoryId);
+        this.myForm.get('doctorId').setValue(this.data.refDoctorId);
+        this.fromDate = this.data.fromDate;
+        this.toDate = this.data.toDate;
+      } else {
+        this.isEditMode = false;
+        const currentDateTime = new Date();
+        const today = new Date();
+        const utcMidnight = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+        this.myForm.get('labAppDate').setValue(utcMidnight.toISOString());
+        this.myForm.get('labAppTime')?.setValue(currentDateTime);
+        this.myForm.get('endTime')?.setValue(currentDateTime);
+        this.myForm.get('startTime').setValue(currentDateTime);
+      }
     }
-
 
     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
     // this.getServiceList();
@@ -196,6 +235,17 @@ export class NewLabAppointmentComponent {
     this.vlastNameConfig = lastnameid
 
     this.setNameValidations();
+  }
+
+  convertISOToTime(dateTime: string): Date | null {
+    if (!dateTime) return null;
+
+    const d = new Date(dateTime);
+
+    const timeOnly = new Date();
+    timeOnly.setHours(d.getHours(), d.getMinutes(), 0);
+
+    return timeOnly;
   }
 
   getDateTime(dateTimeObj) {
@@ -344,6 +394,55 @@ export class NewLabAppointmentComponent {
     }
 
     control.updateValueAndValidity({ emitEvent: false });
+  }
+
+  FetchList: any = [];
+  getAppointmentSerList() {
+    const param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "LabAppId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "LabAppId",
+          "fieldValue": String(this.vLabAppId),
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+
+    this._appointmentService.getAppDetById(param).subscribe(Menu => {
+      this.FetchList = Menu.data as ChargesList[];
+
+      let hasPrevDiscount = false;
+      if (Array.isArray(this.FetchList)) {
+        this.FetchList.forEach(item => {
+          item.serviceId = item.testId;
+          item.serviceName = item.serviceName;
+          item.price = item.price;
+          item.totalAmt = item.totalAmount;
+          item.netAmount = item.netAmount;
+          item.DiscPer = item.discPer
+          item.DiscAmt = item.discAmount
+          item.isPathology = 0;
+          item.isRadiology = 1;
+          item.isOtherService = 0;
+          item.isPackage = item.isPackage ?? item.IsPackage;
+
+          if (item.DiscAmt > 0 || item.DiscPer > 0) {
+            this.isDiscountApplied = true;
+            hasPrevDiscount = true;
+          }
+
+          this.onSaveEntry(item);
+
+        });
+      }
+    });
+
   }
 
   getSelectedserviceObj(obj) {
@@ -822,9 +921,9 @@ export class NewLabAppointmentComponent {
           this.onChangeDateofBirth(response.dateofBirth)
           this.regflag = true
           this.myForm.patchValue({
-            firstName: this.registerObj.firstName.trim(),
-            middleName: this.registerObj.middleName.trim(),
-            LastName: this.registerObj.lastName.trim(),
+            firstName: this.registerObj.firstName.trim().toUpperCase() || '',
+            middleName: this.registerObj.middleName.trim().toUpperCase() || '',
+            lastName: this.registerObj.lastName.trim().toUpperCase() || '',
             MobileNo: this.registerObj.mobileNo.trim(),
             address: this.registerObj.address.trim(),
             // DateOfBirth:this.registerObj.dateofBirth,
@@ -887,9 +986,23 @@ export class NewLabAppointmentComponent {
     });
   }
 
+  ChangeToUpperCase(changedField: string) {
+    const control = this.myForm.get(changedField);
+    if (control && control.value) {
+      control.setValue(control.value.toUpperCase(), { emitEvent: false });
+    }
+  }
+
   handleInputChange(changedField: string): void {
     // Get all current field values
     // debugger
+
+    // change in upper case letter
+    const control = this.myForm.get(changedField);
+    if (control && control.value) {
+      control.setValue(control.value.toUpperCase(), { emitEvent: false });
+    }
+
     const firstName = this.myForm.get('firstName').value?.trim() || '';
     const lastName = this.myForm.get('lastName').value?.trim() || '';
     const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
@@ -924,6 +1037,23 @@ export class NewLabAppointmentComponent {
       this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
       return;
     }
+
+    // required for lastname
+    // if (filledFields === 1 && changedField === 'lastName') {
+    //   const keyword = lastName;
+
+    //   if (keyword) {
+    //     this._appointmentService.getlabSuggestions(
+    //       `LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`,
+    //       keyword
+    //     ).subscribe(results => {
+    //       this.prevResults = results || [];
+    //       this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+    //     });
+    //   }
+
+    //   return;
+    // }
 
     // If more than one field is filled, filter from prevResults
     if (this.prevResults.length > 0) {
@@ -1044,11 +1174,17 @@ export class NewLabAppointmentComponent {
     const date = new Date(this.data.fromDate);
     date.setHours(this.now.getHours(), this.now.getMinutes());
 
-    this.myForm.get('appDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
-    this.myForm.get('appTime').setValue(this.datePipe.transform(date, 'yyyy-MM-dd HH:mm'));
-    // this.myForm.get('appDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'));
-    // this.myForm.get('appTime').setValue(this.datePipe.transform(this.data.fromDate+this.now, 'HH:mm'));
+    if (this.vLabAppId > 0) {
+      const dateedit = new Date();
+      dateedit.setHours(this.now.getHours(), this.now.getMinutes());
+      this.myForm.get('appDate').setValue(this.datePipe.transform(this.data.appDate, 'yyyy-MM-dd'));
+      this.myForm.get('appTime').setValue(this.datePipe.transform(dateedit, 'yyyy-MM-dd HH:mm'));
+    } else {
+      this.myForm.get('appDate').setValue(this.datePipe.transform(this.data.fromDate, 'yyyy-MM-dd'));
+      this.myForm.get('appTime').setValue(this.datePipe.transform(date, 'yyyy-MM-dd HH:mm'));
+    }
     this.myForm.get('labPatRegId').setValue(this.VlabPatRegId ?? 0);
+    this.myForm.get('labAppId').setValue(this.vLabAppId ?? 0);
     this.myForm.get('stateId').setValue(this.stateId)
     this.myForm.get('countryId').setValue(String(this.counryId))
 

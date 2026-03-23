@@ -130,15 +130,19 @@ export class LabAppointmentComponent {
     // this.vRefDocName = value.doctorName
     this.vRefDocId = value.value
     this.vRefDocName = value.text
+    this.bindData();
+    this.searchRecords();
   }
 
   selectChangeCategory(obj: any) {
     this.categoryId = obj.value
     this.CateName = obj.text
+    this.bindData();
+    this.searchRecords();
   }
 
   bindData() {
-    debugger
+    // debugger
     // let fromDate, toDate;
     // fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
     // toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
@@ -256,6 +260,7 @@ export class LabAppointmentComponent {
             this._service.appointmentCancle(event.id).subscribe((response: any) => {
               this.toastr.success(response.message);
               this.bindData();
+              this.searchRecords();
             });
           }
           this.confirmDialogRef = null;
@@ -445,65 +450,32 @@ export class LabAppointmentComponent {
     }, 100);
   }
 
+  onCancel(row: any = null) {
+    this.confirmDialogRef = this._matDialog.open(
+      FuseConfirmDialogComponent,
+      { disableClose: false }
+    );
+
+    this.confirmDialogRef.componentInstance.confirmMessage =
+      "Are you sure you want to cancel this appointment?";
+
+    this.confirmDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this._service.appointmentCancle(row.labAppId).subscribe((response: any) => {
+          this.toastr.success(response.message);
+          this.bindData();
+          this.searchRecords();
+        });
+      }
+      this.confirmDialogRef = null;
+    });
+  }
+
   ////////////////// Side List///////////////////////
-
-  // @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
-  // ngAfterViewInit() {
-  //   this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-  // }
-
-  // allcolumns = [
-  //   { heading: "Slot Date", key: "appTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-  //   { heading: "Category", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-  //   { heading: "Patient Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-  //   {
-  //     heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template
-  //     ,template: this.actionButtonTemplate 
-  //   }
-  // ];
-
-  // gridConfig: gridModel = {
-  //   apiUrl: "LabAppointment/LabAppointmentList",
-  //   columnsList: this.allcolumns,
-  //   sortField: "LabAppId",
-  //   sortOrder: 0,
-  //   filters: [
-  //     { fieldName: "FromDate ", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith }, //"2024-01-01"
-  //     { fieldName: "ToDate ", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }, //"2024-10-01"
-  //     { fieldName: "DoctorId ", fieldValue: "0", opType: OperatorComparer.StartsWith },
-  //     { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-  //     { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals }
-  //   ]
-  // }
-
-  // searchRecords() {
-  //   let fromDate, toDate;
-  //   fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-  //   toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-
-  //   this.gridConfig = {
-  //     apiUrl: "LabAppointment/LabAppointmentList",
-
-  //     columnsList: this.allcolumns,
-  //     sortField: "LabAppId",
-  //     sortOrder: 0,
-  //     filters: [
-  //       { fieldName: "FromDate ", fieldValue: fromDate, opType: OperatorComparer.StartsWith }, //"2024-01-01"
-  //       { fieldName: "ToDate ", fieldValue: toDate, opType: OperatorComparer.StartsWith }, //"2024-10-01"
-  //       { fieldName: "DoctorId ", fieldValue: "0", opType: OperatorComparer.StartsWith },
-  //       { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Equals },
-  //       { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals }
-  //     ]
-  //   }
-  //   if (this.grid) {
-  //     this.grid.gridConfig = this.gridConfig;
-  //     this.grid.bindGridData();
-  //   }
-  // }
 
   public dstable1 = new MatTableDataSource<any>();
   displayedServiceselected: string[] = [
+    'status',
     'slot',
     'category',
     'name',
@@ -574,10 +546,6 @@ export class LabAppointmentComponent {
         data: { mode: 'appointment', row }
       });
     dialogRef.afterClosed().subscribe(result => {
-      // debugger
-      // if (result == 'home') {
-      //   this.router.navigate(['/LabManagement/lab-patientreg']);
-      // }
       this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.grid.bindGridData();
@@ -585,24 +553,18 @@ export class LabAppointmentComponent {
     });
   }
 
-  demoOpen(event: CalendarEvent) {
+  onEdit(row: any = null) {
 
     const dialogRef = this._matDialog.open(NewLabAppointmentComponent, {
       maxWidth: "95vw",
       height: '95%',
       width: '90%',
-      data: {
-        fromDate: "",
-        toDate: "",
-        categoryId: this.categoryId,
-        refDoctorId: this.vRefDocId,
-      }
+      data: row
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // if (result) {
       this.bindData();
-      // }
+      this.searchRecords();
     });
   }
 }
