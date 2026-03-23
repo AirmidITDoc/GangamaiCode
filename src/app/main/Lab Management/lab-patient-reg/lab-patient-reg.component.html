@@ -85,6 +85,16 @@
         </span>
     </ng-template>
 
+    <ng-template #appointmentIcon let-element>
+        <div fxLayout="row" fxLayoutAlign="center center" class="optoip-action">
+            <!-- <span *ngIf="element.admissionType==2" class="ml-1 font-bold" matTooltip="Emergency To IP Converted">E</span> -->
+            <mat-icon matTooltip="Lab Appointment Patient" *ngIf="element.labAppointmentId > 0"
+                class="disabled-icon">
+                redo
+            </mat-icon>
+        </div>
+    </ng-template>
+
     <ng-template #actionsTemplate4 let-element>
         <div *ngIf="isSettlement==true">
             <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"

@@ -153,6 +153,7 @@ export class NewLabPatientRegComponent {
   stateId = 0
   counryId = 0
   patientTypeList: any = [];
+  vLabAppId: any = 0;
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -237,7 +238,7 @@ export class NewLabPatientRegComponent {
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim(),
             middleName: this.registerObj.middleName.trim(),
-            LastName: this.registerObj.lastName.trim(),
+            lastName: this.registerObj.lastName.trim(),
             MobileNo: this.registerObj.mobileNo.trim(),
             address: this.registerObj.address.trim()
           });
@@ -258,6 +259,7 @@ export class NewLabPatientRegComponent {
     } else if (this.data.mode == 'appointment') {
       if (this.data?.row?.labAppId) {
         this.regNo = this.data?.row?.seqNo
+        this.vLabAppId = this.data?.row?.labAppId
         this._labPatientRegService.getAppById(this.data?.row?.labAppId).subscribe((response) => {
           console.log("App master", response)
           this.registerObj = response;
@@ -268,18 +270,10 @@ export class NewLabPatientRegComponent {
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim(),
             middleName: this.registerObj.middleName.trim(),
-            LastName: this.registerObj.lastName.trim(),
-            // MobileNo: String(this.registerObj.mobileNo).trim(),
-            // MobileNo: this.registerObj.mobileNo?.trim(),
-            // MobileNo: this.registerObj.mobileNo.replace(/\s+/g, '').trim(),
+            lastName: this.registerObj.lastName.trim(),
+            MobileNo: this.registerObj.mobileNo?.trim(),
             address: this.registerObj.address.trim()
           });
-          // this.myForm.get('MobileNo').setValue(this.registerObj.mobileNo?.replace(/\s+/g, '').trim());
-          this.myForm.get('MobileNo').setValue(
-            this.registerObj.mobileNo?.replace(/\s+/g, '').trim(),
-            { emitEvent: true }
-          );
-          this.myForm.get('MobileNo').updateValueAndValidity();
           this.myForm.get('cityId').setValue(this.registerObj.cityId);
           // this.myForm.get('patientType').setValue(this.registerObj.patientType);
           if (this.registerObj.cityId) {
@@ -392,6 +386,7 @@ export class NewLabPatientRegComponent {
       Comments: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       ReferByName: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       companyExecutiveId: [0],
+      labAppointmentId: [0],
 
       // extra fields
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -786,9 +781,9 @@ export class NewLabPatientRegComponent {
           this.onChangeDateofBirth(response.dateofBirth)
           this.regflag = true
           this.myForm.patchValue({
-            firstName: this.registerObj.firstName.trim(),
-            middleName: this.registerObj.middleName.trim(),
-            LastName: this.registerObj.lastName.trim(),
+            firstName: this.registerObj.firstName.trim().toUpperCase() || '',
+            middleName: this.registerObj.middleName.trim().toUpperCase() || '',
+            lastName: this.registerObj.lastName.trim().toUpperCase() || '',
             MobileNo: this.registerObj.mobileNo.trim(),
             address: this.registerObj.address.trim(),
             // DateOfBirth:this.registerObj.dateofBirth,
@@ -1840,6 +1835,7 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regDate').setValue(formattedDate);
     this.myForm.get('regTime').setValue(formattedTime);
     this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId ?? 0);
+    this.myForm.get('labAppointmentId').setValue(this.vLabAppId ?? 0);
     this.myForm.get('adharCardNo').setValue(Number(this.myForm.get('adharCardNo').value) ?? 0);
 
     const overallDiscAmt = +this.myForm.get('discountAmt')?.value || 0; //bottom discount
@@ -2213,9 +2209,24 @@ export class NewLabPatientRegComponent {
         && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
     });
   }
+
+  ChangeToUpperCase(changedField: string) {
+    const control = this.myForm.get(changedField);
+    if (control && control.value) {
+      control.setValue(control.value.toUpperCase(), { emitEvent: false });
+    }
+  }
+
   handleInputChange(changedField: string): void {
     // Get all current field values
     // debugger
+
+    // change in upper case letter
+    const control = this.myForm.get(changedField);
+    if (control && control.value) {
+      control.setValue(control.value.toUpperCase(), { emitEvent: false });
+    }
+
     const firstName = this.myForm.get('firstName').value?.trim() || '';
     const lastName = this.myForm.get('lastName').value?.trim() || '';
     const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
@@ -2250,6 +2261,23 @@ export class NewLabPatientRegComponent {
       this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
       return;
     }
+
+    // required for lastname
+    // if (filledFields === 1 && changedField === 'lastName') {
+    //   const keyword = lastName;
+
+    //   if (keyword) {
+    //     this._appointmentService.getlabSuggestions(
+    //       `LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`,
+    //       keyword
+    //     ).subscribe(results => {
+    //       this.prevResults = results || [];
+    //       this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+    //     });
+    //   }
+
+    //   return;
+    // }
 
     // If more than one field is filled, filter from prevResults
     if (this.prevResults.length > 0) {

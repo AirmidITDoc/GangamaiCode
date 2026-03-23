@@ -238,11 +238,12 @@
 
                                                             <div style="height: 30px;">
                                                                 <button mat-raised-button
-                                                                    (click)="chkresultentry(selection.selected,true)">
+                                                                    (click)="chkresultentry(selection.selected,true)"
+                                                                    *ngIf="!hasVerifiedSelected()">
                                                                     Result Entry
                                                                 </button>
 
-                                                                <button mat-raised-button
+                                                                <!-- <button mat-raised-button
                                                                     (click)="PrintresultentryTop()"
                                                                     style="margin-left: 5px;"
                                                                     *ngIf="selection.selected.length>0">
@@ -252,6 +253,19 @@
                                                                 <button mat-raised-button
                                                                     (click)="PrintresultentrywithheaderTop()"
                                                                     *ngIf="selection.selected.length>0"
+                                                                    style="margin-left: 5px;">
+                                                                    Print With Header
+                                                                </button> -->
+                                                                <button mat-raised-button
+                                                                    (click)="PrintresultentryTop()"
+                                                                    style="margin-left: 5px;"
+                                                                    *ngIf="hasVerifiedSelected()">
+                                                                    Print Result
+                                                                </button>
+
+                                                                <button mat-raised-button
+                                                                    (click)="PrintresultentrywithheaderTop()"
+                                                                    *ngIf="hasVerifiedSelected()"
                                                                     style="margin-left: 5px;">
                                                                     Print With Header
                                                                 </button>
@@ -267,10 +281,14 @@
                                                     <mat-checkbox (change)="masterToggle()" [checked]="isAllSelected()"
                                                         [indeterminate]="selection.hasValue() && !isAllSelected()">
                                                     </mat-checkbox>
+                                                    <!-- <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                        [checked]="selection.hasValue()"
+                                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                    </mat-checkbox> -->
                                                 </th>
                                                 <td mat-cell *matCellDef="let contact">
-                                                    <span
-                                                        *ngIf="contact.isTemplateTest != '1' && contact.isVerifySign == false; else noMLC"
+                                                    <!-- *ngIf="contact.isTemplateTest != '1' && contact.isVerifySign == false; else noMLC" -->
+                                                    <span *ngIf="contact.isTemplateTest != '1'; else noMLC"
                                                         [matTooltip]="contact.isSampleCollection === 'False'
                                                             ? 'Please complete sample collection first'
                                                             : ''">
