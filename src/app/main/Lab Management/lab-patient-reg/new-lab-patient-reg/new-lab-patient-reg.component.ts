@@ -1208,19 +1208,6 @@ export class NewLabPatientRegComponent {
     // this.getServiceListRefresh();
   }
 
-  // serviceList: any[] = [];
-  // getServiceListRefresh() {
-  //   const url = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
-  //     + this.vTariffId
-  //     + "&ClassId=1"
-  //     + "&GroupId=" + this.groupId
-  //     + "&SubGroupId=" + this.subGroupId
-  //     + "&SrvcName=";
-
-  //   this.apiCaller.GetData(url).subscribe((res: any) => {
-  //     this.serviceList = res;   // ✅ store response here
-  //   });
-  // }
 
   selectChangesubGroupName(obj: any) {
     if (obj.value !== 0)
