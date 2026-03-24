@@ -10,6 +10,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { FuseSharedModule } from "@fuse/shared.module";
 
 import { LoginComponent } from "app/main/auth/login/login.component";
+import { MatDialogModule } from "@angular/material/dialog";
 
 const routes = [
     {
@@ -30,6 +31,7 @@ const routes = [
         MatInputModule,
         SharedModule,
         FuseSharedModule,
+        MatDialogModule
     ],
 })
 export class LoginModule { }

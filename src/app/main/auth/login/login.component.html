@@ -11,11 +11,12 @@
             <img src="/assets/images/login.png" alt="">
         </div>
     </div>
-    <div class="login-section-right">
+    <div class="login-section-right" fxLayout="column">
         <form name="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate class="mat-error-fix"
             [@animate]="{ value: '*', params: { delay: '200ms', x: '100%' } }">
             <div class="airmid-logo-square">
-                <img src="assets/images/logos/Airmid_Logo4.jpeg" alt="Airmid Logo">
+                <!-- <img src="assets/images/logos/Airmid_Logo4.jpeg" alt="Airmid Logo"> -->
+                <img src="assets/images/logos/TransparentLogo.png" alt="Airmid Logo">
             </div>
             <h2>LOGIN HERE</h2>
             <mat-form-field appearance="outline">
@@ -65,7 +66,7 @@
             <mat-error *ngIf="errorMessage !== ''" class="error-message">
                 {{ errorMessage }}
             </mat-error>
-            <div class="license-warning" *ngIf="licenseExpiryDate">
+            <!-- <div class="license-warning" *ngIf="licenseExpiryDate">
                 <div *ngIf="!isExpired; else expiredBlock">
                     ⚠️ Your license will expire on <strong>{{ licenseExpiryDate | date:'dd/MM/yyyy' }}</strong>.
                     Please renew soon to avoid disruption.
@@ -74,8 +75,56 @@
                     ❌ Your license expired on <strong>{{ licenseExpiryDate | date:'dd/MM/yyyy' }}</strong>.
                     Please contact support to renew your license.
                 </ng-template>
-            </div>
+            </div> -->
 
         </form>
+
+        <div class="footerdm">
+            <div class="footer-leftdm">
+                <span>All rights are reserved. Developed and powered by Airmid</span>
+                <div class="logo-sectiondm">
+                    <img src="assets/images/logos/TransparentLogo.png" alt="Airmid Logo" />
+                </div>
+            </div>
+
+            <div class="footer-rightdm">
+                <button class="link-btn" (click)="openStatus()">
+                    Terms of Services
+                </button>
+            </div>
+        </div>
+
     </div>
 </div>
+
+<ng-template #statusForm>
+    <div class="popup-header" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span style="font-size: 16px;">Privacy Policy</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="service-table1 p-12" fxLayout="column" fxLayoutGap="16px">
+
+        <!-- ✅ Add your div here -->
+        <div class="license-warning" *ngIf="licenseExpiryDate">
+            <div *ngIf="!isExpired; else expiredBlock">
+                ⚠️ Your license will expire on
+                <strong>{{ licenseExpiryDate | date:'dd/MM/yyyy' }}</strong>.
+                Please renew soon to avoid disruption.
+            </div>
+
+            <ng-template #expiredBlock>
+                ❌ Your license expired on
+                <strong>{{ licenseExpiryDate | date:'dd/MM/yyyy' }}</strong>.
+                Please contact support to renew your license.
+            </ng-template>
+        </div>
+
+    </div>
+</ng-template>

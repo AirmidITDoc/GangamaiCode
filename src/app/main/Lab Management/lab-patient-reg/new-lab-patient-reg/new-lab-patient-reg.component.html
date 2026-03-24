@@ -115,8 +115,7 @@
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="33%">
                                                             <airmid-textbox label="First Name"
-                                                                formControlName="firstName"
-                                                                [formGroup]="myForm"
+                                                                formControlName="firstName" [formGroup]="myForm"
                                                                 [validations]="getValidationMessages().firstName"
                                                                 [maxLength]="100"
                                                                 (valueChange)="handleInputChangeDebounced('firstName')"></airmid-textbox>
@@ -256,7 +255,21 @@
                                         </button>
                                     </div>
 
-                                    <form [formGroup]="myForm">
+                                    <form [formGroup]="myForm" class="gap-4">
+                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Group Name" formControlName="groupId"
+                                                [formGroup]="myForm"
+                                                (selectionChange)="selectChangegroupName($event)"
+                                                [mode]="autocompleteModegroupName"></airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="SubGroup Name" formControlName="subGroupId"
+                                                [formGroup]="myForm"
+                                                (selectionChange)="selectChangesubGroupName($event)"
+                                                [mode]="autocompleteModesubGroupName"></airmid-dropdown>
+                                        </div>
+
                                         <airmid-autocomplete #serviceInput label="Enter Service Name"
                                             [formGroup]="myForm" formControlName="ServiceId"
                                             placeholderText="Enter Service Name" fxFlex="50%" ApiUrl="{{ApiURL}}"

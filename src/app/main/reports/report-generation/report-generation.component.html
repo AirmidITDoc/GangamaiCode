@@ -75,12 +75,17 @@
                                 <div fxLayout="column" fxLayoutAlign="start none" class="autocomplete-section">
                                     <ng-container *ngIf="flagUserSelected">
                                         <div style="max-width: 265px;">
-                                            <airmid-autocomplete label="User" [formGroup]="_ReportService.userForm"
+                                            <!-- <airmid-autocomplete label="User" [formGroup]="_ReportService.userForm"
                                                 formControlName="UserId" placeholderText="Enter User"
                                                 ApiUrl="Report/UserList/auto-complete?Keyword="
                                                 (selectionChange)="SelectedUserObj($event)"
                                                 (onClearSelection)="clearUser()">
-                                            </airmid-autocomplete>
+                                            </airmid-autocomplete> -->
+
+                                            <airmid-dropdown label="User" formControlName="UserId"
+                                                [formGroup]="_ReportService.userForm"
+                                                ApiUrl="Report/UserList/auto-complete?Keyword=%"
+                                                (selectionChange)="SelectedUserObj($event)"></airmid-dropdown>
                                         </div>
                                     </ng-container>
                                     <ng-container *ngIf="flagDoctorSelected">
@@ -179,7 +184,7 @@
                                                 placeholderText="Select Discharge Type"
                                                 ApiUrl="Report/DischargeTypeList/auto-complete?Keyword="
                                                 (selectionChange)="SelectedDischargeObj($event)"
-                                                 (onClearSelection)="clearDischarge()">
+                                                (onClearSelection)="clearDischarge()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -191,7 +196,7 @@
                                                 placeholderText="Select Company Name"
                                                 ApiUrl="Report/CompanyList/auto-complete?Keyword="
                                                 (selectionChange)="SelectedCompanyObj($event)"
-                                                 (onClearSelection)="clearCompany()">
+                                                (onClearSelection)="clearCompany()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -341,7 +346,7 @@
                                         </div>
                                     </ng-container>
 
-                                     <ng-container *ngIf="flagExecSelected">
+                                    <ng-container *ngIf="flagExecSelected">
                                         <div style="max-width: 265px;">
                                             <airmid-autocomplete label="Executive Name"
                                                 [formGroup]="_ReportService.userForm" formControlName="ExecutiveId"
@@ -352,8 +357,8 @@
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
-                                    
-                                     <ng-container *ngIf="flagLoginUserSelected">
+
+                                    <ng-container *ngIf="flagLoginUserSelected">
                                         <div style="max-width: 265px;">
                                             <airmid-autocomplete label="Login User Name"
                                                 [formGroup]="_ReportService.userForm" formControlName="LoginUserId"
@@ -377,11 +382,10 @@
                                         </div>
                                     </ng-container>
 
-                                     <ng-container *ngIf="flagRegSelected">
+                                    <ng-container *ngIf="flagRegSelected">
                                         <div style="max-width: 265px;">
-                                            <airmid-autocomplete label="Reg No"
-                                                [formGroup]="_ReportService.userForm" formControlName="RegNo"
-                                                placeholderText="Select RegNo"
+                                            <airmid-autocomplete label="Reg No" [formGroup]="_ReportService.userForm"
+                                                formControlName="RegNo" placeholderText="Select RegNo"
                                                 ApiUrl="Report/SearchRegNo/auto-complete?Keyword="
                                                 (selectionChange)="SelectedRegObj($event)"
                                                 (onClearSelection)="clearRegNo()">
@@ -403,9 +407,8 @@
 
                                     <ng-container *ngIf="flagstatusSelected">
                                         <div style="max-width: 265px;">
-                                            <airmid-autocomplete label="status"
-                                                [formGroup]="_ReportService.userForm" formControlName="status"
-                                                placeholderText="Select status"
+                                            <airmid-autocomplete label="status" [formGroup]="_ReportService.userForm"
+                                                formControlName="status" placeholderText="Select status"
                                                 ApiUrl="Report/LabReportStatus/auto-complete?Keyword="
                                                 (selectionChange)="SelectedstatusObj($event)"
                                                 (onClearSelection)="clearstatus()">

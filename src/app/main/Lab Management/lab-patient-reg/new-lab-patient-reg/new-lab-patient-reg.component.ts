@@ -71,6 +71,8 @@ export class NewLabPatientRegComponent {
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeConcession: string = "Concession";
   autocompleteModeLabPatientType: string = "LabPatientType";
+  autocompleteModegroupName: string = "GroupName";
+  autocompleteModesubGroupName: string = "SubGroupName";
 
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   public dsPackageList = new MatTableDataSource<ChargesList>();
@@ -173,7 +175,7 @@ export class NewLabPatientRegComponent {
     public toastrService: ToastrService, public _ConfigService: ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _configue: ConfigService,
-    private apiCaller: ApiCaller,
+    private apiCaller: ApiCaller
   ) { }
 
   ngOnInit(): void {
@@ -294,7 +296,7 @@ export class NewLabPatientRegComponent {
     console.log(this.hospitalconfigservice.HospitalconfigParams)
     console.log(this._ConfigService.configParams)
 
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
 
     // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
     const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
@@ -392,6 +394,8 @@ export class NewLabPatientRegComponent {
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       IsPathRad: ['1'],
       ServiceId: [''],
+      groupId: [0],
+      subGroupId: [0],
       totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discountAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -744,7 +748,8 @@ export class NewLabPatientRegComponent {
       this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
       this.vTariffId = this.companyDet.traiffId
 
-      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+      // this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
     });
   }
 
@@ -756,7 +761,7 @@ export class NewLabPatientRegComponent {
 
   onChangeTariff(value) {
     this.vTariffId = value.value
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
   }
   urgentStatus: boolean = false;
   onUrgentToggleChange(event: any, contact: any) {
@@ -1186,6 +1191,44 @@ export class NewLabPatientRegComponent {
   chkIsEditable: boolean = true;
   serviceSelct = false
   @ViewChild('serviceInput', { read: ElementRef }) serviceInput!: ElementRef;
+
+  groupId = 0;
+  subGroupId = 0;
+
+  selectChangegroupName(obj: any) {
+    if (obj.value !== 0) {
+      this.groupId = obj.value
+      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    }
+    else {
+      this.groupId = 0
+      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    }
+    // this.groupId = obj.value !== 0 ? obj.value : 0;
+    // this.getServiceListRefresh();
+  }
+
+  // serviceList: any[] = [];
+  // getServiceListRefresh() {
+  //   const url = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
+  //     + this.vTariffId
+  //     + "&ClassId=1"
+  //     + "&GroupId=" + this.groupId
+  //     + "&SubGroupId=" + this.subGroupId
+  //     + "&SrvcName=";
+
+  //   this.apiCaller.GetData(url).subscribe((res: any) => {
+  //     this.serviceList = res;   // ✅ store response here
+  //   });
+  // }
+
+  selectChangesubGroupName(obj: any) {
+    if (obj.value !== 0)
+      this.subGroupId = obj.value
+    else
+      this.subGroupId = 0
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+  }
 
   getSelectedserviceObj(obj) {
     console.log(obj)
@@ -1899,7 +1942,7 @@ export class NewLabPatientRegComponent {
 
     const formValue = { ...this.myForm.value };
     const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-      'paymentType', 'servicedoctorId', 'appointmentId'];
+      'paymentType', 'servicedoctorId', 'appointmentId', 'groupId', 'subGroupId'];
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
 

@@ -50,7 +50,6 @@ export class EditPatientRegComponent {
     vlastNameConfig: any;
     patientTypeList: any = [];
     VlabPatRegId: any;
-    ApiURL: any = '';
     vTariffId: any = 1;
     vClassId: any = 1;
     dateTimeObj: any;
@@ -168,8 +167,6 @@ export class EditPatientRegComponent {
 
         // console.log(this.hospitalconfigservice.HospitalconfigParams)
         // console.log(this._ConfigService.configParams)
-
-        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
 
         // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
         const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
@@ -391,8 +388,6 @@ export class EditPatientRegComponent {
             this.companyDet = response;
             this.FinalForm.get('tariffId').setValue(this.companyDet.traiffId);
             this.vTariffId = this.companyDet.traiffId
-
-            this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
         });
     }
 
@@ -404,7 +399,6 @@ export class EditPatientRegComponent {
 
     onChangeTariff(value) {
         this.vTariffId = value.value
-        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
     }
 
     filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {

@@ -43,7 +43,8 @@
                                                 <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="6px">
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="33%">
-                                                            <mat-form-field appearance="outline" class="dateField" fxFlex>
+                                                            <mat-form-field appearance="outline" class="dateField"
+                                                                fxFlex>
                                                                 <mat-label>App Date</mat-label>
                                                                 <input matInput [matDatepicker]="picker1"
                                                                     [min]="minDate" formControlName="labAppDate"
@@ -55,7 +56,8 @@
                                                             </mat-form-field>
                                                         </div>
                                                         <div fxFlex="33%">
-                                                            <mat-form-field appearance="outline" class="timeField" fxFlex>
+                                                            <mat-form-field appearance="outline" class="timeField"
+                                                                fxFlex>
                                                                 <mat-label>Start Time</mat-label>
                                                                 <input matTimepicker #t="matTimepicker" mode="12h"
                                                                     formControlName="labAppTime"
@@ -66,7 +68,8 @@
                                                             </mat-form-field>
                                                         </div>
                                                         <div fxFlex="33%">
-                                                            <mat-form-field appearance="outline" class="timeField" fxFlex>
+                                                            <mat-form-field appearance="outline" class="timeField"
+                                                                fxFlex>
                                                                 <mat-label>End Time</mat-label>
                                                                 <input matTimepicker #t="matTimepicker" mode="12h"
                                                                     formControlName="endTime"
@@ -144,7 +147,7 @@
                                                         <div fxFlex="33%">
                                                             <airmid-textbox label="Middle Name"
                                                                 formControlName="middleName" [formGroup]="myForm"
-                                                                [maxLength]="50" 
+                                                                [maxLength]="50"
                                                                 (valueChange)="ChangeToUpperCase('middleName')">
                                                             </airmid-textbox>
                                                         </div>
@@ -194,10 +197,23 @@
                             <div class="detail-container billing-flex-layout">
 
                                 <div class="billing-top-zone">
-                                    <form [formGroup]="myForm">
-                                        <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm"
-                                            formControlName="ServiceId" placeholderText="Enter Service Name"
-                                            fxFlex="50%" ApiUrl="{{ApiURL}}"
+                                    <form [formGroup]="myForm" class="gap-4">
+                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Group Name" formControlName="groupId"
+                                                [formGroup]="myForm" (selectionChange)="selectChangegroupName($event)"
+                                                [mode]="autocompleteModegroupName"></airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="SubGroup Name" formControlName="subGroupId"
+                                                [formGroup]="myForm"
+                                                (selectionChange)="selectChangesubGroupName($event)"
+                                                [mode]="autocompleteModesubGroupName"></airmid-dropdown>
+                                        </div>
+
+                                        <airmid-autocomplete #serviceInput label="Enter Service Name"
+                                            [formGroup]="myForm" formControlName="ServiceId"
+                                            placeholderText="Enter Service Name" fxFlex="50%" ApiUrl="{{ApiURL}}"
                                             (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
                                             ValueField="serviceId"></airmid-autocomplete>
                                     </form>

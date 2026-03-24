@@ -197,3 +197,61 @@ login {
         }
     }
 }
+
+.footerdm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 13px;
+  width: 80%;
+}
+
+.footer-leftdm {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-sectiondm {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.logo-sectiondm img {
+  height: 50px;
+  margin-right: 8px;
+}
+
+.footer-rightdm a {
+  font-size: 13px;
+  font-weight: 600;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer-rightdm a:hover {
+  text-decoration: underline;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.license-warning {
+  padding: 10px;  
+  font-size: 20px;
+}
+
+.popup-header{
+    color: white;
+    background: rgb(34, 63, 149);
+    padding: 5px;
+    font-weight: bold;
+    font-size: 20px;
+}

@@ -317,8 +317,9 @@ export class LabSampleCollectionComponent {
         const that = this;
         const dialogRef = this._matDialog.open(LabsampleNewFromComponent,
             {
-                height: '85vh',
-                width: '85%',
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
