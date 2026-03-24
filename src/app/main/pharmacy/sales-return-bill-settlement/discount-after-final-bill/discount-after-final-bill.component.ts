@@ -120,7 +120,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         }
 
 
-        this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount));
+        this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2)) // + parseFloat(this.vDiscAmount));
         this.vNetamount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)).toFixed(2);
     }
     CalcDiscAmt() {
@@ -147,7 +147,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         }
 
 
-        this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount));
+        this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2)) ///+ parseFloat(this.vDiscAmount));
         this.vNetamount = Math.round(parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)).toFixed(2);
     }
     OnSave() {

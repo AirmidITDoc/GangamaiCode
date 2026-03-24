@@ -287,7 +287,8 @@ export class PurchaseRequisitionComponent implements OnInit {
             IGSTPer: 0,
             IGSTAmount: 0,
             GSTPer: contact?.vatPercentage || 0,
-            GSTAmount: GSTAmt || 0
+            GSTAmount: GSTAmt || 0,
+            PRId: row?.prid || 0
         })
         this.dsPRFinalitemlist.data = [...this.chargeslist]
         this.dsPRFinalitemlist.sort = this.sort;
@@ -393,9 +394,7 @@ export class PurchaseRequisitionComponent implements OnInit {
             contact.GSTAmount = gstAmount,
             contact.NetAmt = GrossAmt
 
-    }
-
-
+    } 
 
     CreatePRToHeader(item: any) {
         const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
@@ -409,6 +408,8 @@ export class PurchaseRequisitionComponent implements OnInit {
             purchaseNo: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
             purchaseDate: prdate,
             purchaseTime: prtime,
+            isPurchaseRequisitionId:[item?.PRId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isProceedToApproval:[false],
             storeId: [this.accountService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             supplierId: [item?.SupplierId || 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             totalAmount: [item?.TotalAmt.toFixed(2), [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -434,7 +435,8 @@ export class PurchaseRequisitionComponent implements OnInit {
             handlingCharges: [formValue?.HandlingCharges || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             freightCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             isCancelled: [false],
-            tPurchaseDetails: this._FormBuilder.array([])
+            tPurchaseDetails: this._FormBuilder.array([]),
+            tpr: this._FormBuilder.array([])
         });
     }
     // Purchase Save Details Form
@@ -466,10 +468,15 @@ export class PurchaseRequisitionComponent implements OnInit {
             vendDiscAm: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
         });
     }
+    CreatePRHeader(item:any = {}): FormGroup{
+          return this._FormBuilder.group({
+             prid: [item?.PRId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          })
+    }
 
     CreatePRToPoSaveForm() {
         return this._FormBuilder.group({
-            tPurchaseHeader: this._FormBuilder.array([]),
+            tPurchaseHeader: this._FormBuilder.array([]), 
         });
     }
     get purchaseHeaderArray(): FormArray {
@@ -533,9 +540,11 @@ export class PurchaseRequisitionComponent implements OnInit {
                 const items = groupedData[supplierId];
                 const header = this.CreatePRToHeader(items[0]);
                 const detailsArray = header.get('tPurchaseDetails') as FormArray;
+                const prHeaderArray = header.get('tpr') as FormArray;
 
                 items.forEach(element => {
                     detailsArray.push(this.createPurchasedetailForm(element));
+                    prHeaderArray.push(this.CreatePRHeader(element));
                 });
 
                 this.purchaseHeaderArray.push(header);
@@ -579,9 +588,7 @@ export class PurchaseRequisitionComponent implements OnInit {
 
         // console.log(finalPayload);
 
-    }
-
-
+    } 
 
     isValidForm(): boolean {
         const invalidItem = this.dsPRFinalitemlist.data.find((item, index) => {
@@ -621,338 +628,14 @@ export class PurchaseRequisitionComponent implements OnInit {
         });
 
         return !invalidItem; // valid only if no invalid row
-    }
-
-
-
-
-
-
-
-
-    getLastThreeItemInfo(ItemId) {
-        const vdata = {
-            "first": 0,
-            "rows": 9999,
-            "sortField": "ItemId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "ItemId",
-                    "fieldValue": String(ItemId),
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": [
-                {
-                    "data": "string",
-                    "name": "string"
-                }
-            ]
-        }
-        this._PurchaseOrder.getLastThreeItemInfo(vdata).subscribe(data => {
-            this.dsLastThreeItemList.data = data.data as LastThreeItemList[];
-        });
-    }
-    vSupplierId: any;
-    vsupplierName: any;
-    getSelectedSupplierObj(obj) {
-        // this.SupplierID = obj.SupplierId;
-
-        console.log(obj)
-        // setTimeout(() => {
-        //   this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
-        //     this.SupplierObj = response;
-
-        //     this.vAddress = this.SupplierObj.address;
-        //     this.vMobile = this.SupplierObj.mobile;
-        //     this.vContact = this.SupplierObj.contactPerson;
-        //     this.vGSTNo = this.SupplierObj.gstNo;
-        //     this.vEmail = this.SupplierObj.email; 
-        //   });
-
-        // }, 500);
-
-
-    }
-
-
-
-
-    updatePurchaseFinalForm() {
-        const form = this.userFormGroup;
-        // const itemList = this.dsItemNameList.data;
-        // const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-        // const updatableFormValues: GRNFinalFormModel = {
-        //   TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2),
-        //   VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(2),
-        //   NetPayamt: netAmount.toFixed(2),
-        //   RoundingAmt: Math.round(netAmount),
-        //   DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(2)
-        // } as GRNFinalFormModel;
-
-        form.patchValue({
-            //   ...updatableFormValues
-        });
-    }
-
-
-
-
-    OnSave() {
-        //   if ((!this.dsItemNameList.data.length)) {
-        //     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-        //       toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        //   }
-        //   // if (this.FinalPurchaseform.invalid) {
-        //   //   this.toastr.warning('please check from is invalid', 'Warning !', {
-        //   //     toastClass: 'tostr-tost custom-toast-warning',
-        //   //   });
-        //   //   return;
-        //   // }
-
-
-
-        //   let InsertpurchaseDetailObj = [];
-        //   this.dsItemNameList.data.forEach((element) => {
-
-        //     let purchaseDetailInsertObj = {};
-        //     purchaseDetailInsertObj['purchaseId'] = 0;
-        //     purchaseDetailInsertObj['itemId'] = element.ItemId;
-        //     purchaseDetailInsertObj['uomid'] = element.UOMID;
-        //     purchaseDetailInsertObj['qty'] = element.Qty || 0;
-        //     purchaseDetailInsertObj['rate'] = element.Rate || 0;
-        //     purchaseDetailInsertObj['totalAmount'] = element.TotalAmount;
-        //     purchaseDetailInsertObj['discAmount'] = element.DiscAmount;
-        //     purchaseDetailInsertObj['discPer'] = element.DiscPer;
-        //     purchaseDetailInsertObj['vatAmount'] = element.GSTAmount;
-        //     purchaseDetailInsertObj['vatPer'] = element.GST;;
-        //     purchaseDetailInsertObj['grandTotalAmount'] = element.NetAmount;
-        //     purchaseDetailInsertObj['mrp'] = element.MRP;
-        //     purchaseDetailInsertObj['specification'] = element.Specification;
-        //     purchaseDetailInsertObj['cgstper'] = element.CGSTPer;
-        //     purchaseDetailInsertObj['cgstamt'] = element.CGSTAmt;
-        //     purchaseDetailInsertObj['sgstper'] = element.SGSTPer;
-        //     purchaseDetailInsertObj['sgstamt'] = element.SGSTAmt;
-        //     purchaseDetailInsertObj['igstper'] = element.IGSTPer;
-        //     purchaseDetailInsertObj['igstamt'] = element.IGSTAmt;
-        //     purchaseDetailInsertObj['defRate'] = element.DefRate;
-        //     purchaseDetailInsertObj['vendDiscPer'] = 0;
-        //     purchaseDetailInsertObj['vendDiscAm'] = 0;
-        //     InsertpurchaseDetailObj.push(purchaseDetailInsertObj);
-        //   });
-
-        //   let submitData = {
-        //     "purchaseId": 0,
-        //     "purchaseNo": "string",
-        //     "storeId": 2,
-        //     "supplierId": this.userFormGroup.get('SupplierId').value || 0,
-        //     "totalAmount": this.FinalTotalAmt,
-        //     "discAmount": this.DiscAmount,
-        //     "taxAmount": (parseFloat(this.GSTAmount)).toFixed(2),
-        //     "freightAmount": this.FinalPurchaseform.get('Freight').value || 0,
-        //     "octriAmount": this.FinalPurchaseform.get('OctriAmount').value || 0,
-        //     "grandTotal": this.FinalNetAmount,
-        //     "isclosed": true,
-        //     "isVerified": true,
-        //     "remarks": this.FinalPurchaseform.get('Remark').value || '',
-        //     "taxId": 0,
-        //     "paymentTermId": this.paymentterm,// this.FinalPurchaseform.get('PaymentTerm').value.value || 0,
-        //     "modeofPayment": this.paymentmode,// this.FinalPurchaseform.get('PaymentMode').value.value || 0,
-        //     "worrenty": this.FinalPurchaseform.get('Worrenty').value || 0,
-        //     "roundVal": 0,
-        //     "prefix": "string",
-        //     "isVerifiedId": 0,
-        //     "verifiedDateTime":this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
-        //     "totCgstamt": (parseFloat(this.vCGSTAmt)).toFixed(2),
-        //     "totSgstamt": (parseFloat(this.vSGSTAmt)).toFixed(2),
-        //     "totIgstamt": (parseFloat(this.vIGSTAmt)).toFixed(2),
-        //     "transportChanges": this.FinalPurchaseform.get('TransportCharges').value || 0,
-        //     "handlingCharges": this.FinalPurchaseform.get('HandlingCharges').value || 0,
-        //     "freightCharges": this.FinalPurchaseform.get('Freight').value || 0,
-        //     "tPurchaseDetails": InsertpurchaseDetailObj
-        //   };
-        //   console.log(submitData);
-        //   this._PurchaseOrder.InsertPurchaseSave(submitData).subscribe(response => {
-        //     this.toastr.success(response.message);
-        //     if (response) {
-        //       this.viewgetPurchaseorderReportPdf(response)
-        //       this._matDialog.closeAll();
-        //     }
-
-        //   });
-    }
-
-
-
-    calculateTotalAmt() {
-        // let Qty = this.userFormGroup.get('Qty').value
-        // if (Qty > 0 && this.vRate > 0) {
-        //   if (Qty && this.vRate) {
-        //     this.vTotalAmount = ((this.vRate) * (this.vQty)).toFixed(2);
-        //     this.vNetAmount = this.vTotalAmount;
-        //     //Dicount calculation
-        //     this.vDiscAmt = ((this.vTotalAmount * this.vDis) / 100).toFixed(2);
-        //     let totalamt = this.vTotalAmount - this.userFormGroup.get('DiscAmount').value;
-        //     //GST Calculation 
-        //   }
-        // } else {
-        //   this.userFormGroup.get('TotalAmount').setValue(0);
-        //   this.userFormGroup.get('DiscAmount').setValue(0);
-        //   this.userFormGroup.get('GSTAmount').setValue(0);
-        //   this.userFormGroup.get('NetAmount').setValue(0);
-        // }
-
-    }
-    calculateDiscperAmount() {
-        const disc = this.userFormGroup.get('Dis').value
-        if (disc >= 100) {
-            // Swal.fire("Enter Discount less than 100");
-            this.toastr.warning('Enter Discount less than 100', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            this.userFormGroup.get('Dis').setValue(0);
-        }
-        // if (disc) {
-        //   let disc = this.userFormGroup.get('Dis').value
-        //   this.vNetAmount = ((this.vTotalAmount) - (this.userFormGroup.get('DiscAmount').value)).toFixed(2);
-        //   if (this.userFormGroup.get('Status3').value.Name == "GST After Disc") {
-
-        //     this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
-        //     let totalamt = (parseFloat(this.vTotalAmount) - parseFloat(this.vDiscAmt)).toFixed(2);
-
-        //     this.vSGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
-        //     this.vCGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
-        //     this.vIGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
-
-
-        //     this.vGSTAmt = ((parseFloat(totalamt) * parseFloat(this.vGSTPer)) / 100).toFixed(2);
-
-        //     this.vNetAmount = (parseFloat(totalamt) + parseFloat(this.vGSTAmt)).toFixed(2);
-
-        //   } else {
-        //     this.vDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(disc)) / 100).toFixed(2);
-        //     this.vSGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vSGSTPer)) / 100).toFixed(2);
-        //     this.vCGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vCGSTPer)) / 100).toFixed(2);
-        //     this.vIGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vIGSTPer)) / 100).toFixed(2);
-        //     this.vGSTAmt = ((parseFloat(this.vTotalAmount) * parseFloat(this.vGSTPer)) / 100).toFixed(2);
-        //     let totalamt = (parseFloat(this.vTotalAmount) + (parseFloat(this.vGSTAmt))).toFixed(2);
-
-        //     this.vNetAmount = ((parseFloat(totalamt)) - parseFloat(this.vDiscAmt)).toFixed(2);
-        //   }
-        // }
-    }
-
-
-
-    getTotalNet(element) {
-        // let NetAmt;
-        // this.FinalNetAmount = element.reduce((sum, { GrandTotalAmount }) => sum += +(GrandTotalAmount), 0);
-
-        // let handlingCharges = this.FinalPurchaseform.get('HandlingCharges').value;
-        // this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(handlingCharges)).toFixed(2);
-
-        // let transportChanges = this.FinalPurchaseform.get('TransportCharges').value;
-        // this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(transportChanges)).toFixed(2);
-
-        // let Freight = this.FinalPurchaseform.get('Freight').value;
-        // this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(Freight)).toFixed(2);
-
-        // let OctriAmt = this.FinalPurchaseform.get('OctriAmount').value;
-        // this.FinalNetAmount = (parseFloat(this.FinalNetAmount) + parseFloat(OctriAmt)).toFixed(2);
-
-        // return this.FinalNetAmount;
-    }
-
-
-
-
-
+    } 
     OnReset() {
         this.userFormGroup.reset();
         this._matDialog.closeAll();
-    }
-
+    } 
     onClose() {
         this.dialogRef.close();
-    }
-
-
-    calculateTotalamt() {
-        const form = this.userFormGroup;
-        // Get values with proper type conversion
-        const qty = +form.get('Qty').value || 0;
-        // const freeqty = +form.get('FreeQty').value || 0;
-        const rate = +form.get('Rate').value || 0;
-        const conversionFactor = +form.get('ConversionFactor').value || 1;
-        debugger
-        let totalAmount = 0;
-        let netAmount = 0;
-
-        if (qty > 0 && rate > 0) {
-            totalAmount = rate * qty;
-            netAmount = totalAmount;
-            form.patchValue({
-                TotalAmount: totalAmount,
-                NetAmount: netAmount,
-                // FinalTotalQty: totalQty
-            });
-
-            // Trigger discount and GST calculations
-            // this.calculateDiscperAmount();
-        } else {
-            // Reset all calculated values
-            form.patchValue({
-                TotalAmount: 0,
-                DiscAmount: 0,
-                DiscAmount2: 0,
-                CGSTAmount: 0,
-                SGSTAmount: 0,
-                IGSTAmount: 0,
-                GSTAmount: 0,
-                NetAmount: 0,
-                // FinalTotalQty: totalQty
-            });
-        }
-        this.calculateDiscountAmount();
-    }
-    calculateDiscper2Amt() { }
-    // Calculate discount when discount percentage changes
-    calculateDiscountAmount() {
-        debugger
-        const form = this.userFormGroup;
-        const values = form.getRawValue() as PurchaseFormModel;
-
-        // Get and validate discount percentage
-        const discountPercentage = Number(this.userFormGroup.get("Disc").value) // Number(values.Disc || 0);
-        if (discountPercentage >= 100 || discountPercentage < 0) {
-            this._PurchaseOrder.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);
-            form.patchValue({ Disc: 0 });
-            return;
-        }
-
-        // Calculate discount amount
-        const totalAmount = Number(values.TotalAmount || 0);
-        const discountAmount = Number(((totalAmount * discountPercentage) / 100).toFixed(2));
-
-        // Update form with new discount amount
-        form.patchValue({
-            DiscAmount: discountAmount
-        }, { emitEvent: false });
-
-        // // Recalculate GST after discount update 
-    }
-
-
-
-
-    resetForm() {
-        this.userFormGroup.reset();
-    }
-
+    }   
     // it allowed only Digit 
     keyPressDigitsOnly(event) {
         const inp = String.fromCharCode(event.keyCode);

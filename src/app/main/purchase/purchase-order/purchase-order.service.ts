@@ -145,8 +145,7 @@ export class PurchaseOrderService {
         return this._httpClient1.PostData("Purchase/OldPurchaseOrderList", Param);
     }
 
-    public InsertPurchaseSave(Param) {
-        debugger
+    public InsertPurchaseSave(Param) { 
         if (!Param.purchaseId)
             return this._httpClient1.PostData("Purchase/Insert", Param);
         else
