@@ -36,6 +36,8 @@ export class NewLabAppointmentComponent {
 
   autocompleteModegender: string = "Gender";
   autocompleteModecountry: string = "Country";
+  autocompleteModegroupName: string = "GroupName";
+  autocompleteModesubGroupName: string = "SubGroupName";
 
   vFirstNameConfig: any;
   vmiddleNameConfig: any;
@@ -219,7 +221,7 @@ export class NewLabAppointmentComponent {
       }
     }
 
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
     // this.getServiceList();
 
     // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
@@ -307,6 +309,8 @@ export class NewLabAppointmentComponent {
 
       // extra fields
       ServiceId: [''],
+      groupId: [0],
+      subGroupId: [0],
       totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discountAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -368,7 +372,6 @@ export class NewLabAppointmentComponent {
       this.counryId = Response.countryId
     });
   }
-
 
   private _Consessionres = false;
 
@@ -445,6 +448,18 @@ export class NewLabAppointmentComponent {
       }
     });
 
+  }
+
+  groupId = 0;
+  subGroupId = 0;
+
+  selectChangegroupName(obj: any) {
+    this.groupId = obj.value;
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+  }
+  selectChangesubGroupName(obj: any) {
+    this.subGroupId = obj.value;
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
   }
 
   getSelectedserviceObj(obj) {

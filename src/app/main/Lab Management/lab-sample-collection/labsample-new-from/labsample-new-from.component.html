@@ -128,153 +128,158 @@
 
                                         </div>
                                         <hr>
-                                        <table mat-table [dataSource]="getFirstPatientForDate(data.specimenColor)"
-                                            [@animateStagger]="{value:'50'}" style="width: 100%;overflow: auto">
+                                        <div style="max-height: 250px; overflow-y: auto; display: block;">
+                                            <table mat-table [dataSource]="getFirstPatientForDate(data.specimenColor)"
+                                                [@animateStagger]="{value:'50'}" style="width: 100%;">
 
-                                            <ng-container matColumnDef="select">
-                                                <th mat-header-cell *matHeaderCellDef>
-                                                    <mat-checkbox (change)="masterToggle(data.specimenColor)"
-                                                        [checked]="isAllSelected(data.specimenColor)"
-                                                        [indeterminate]="isSomeSelected(data.specimenColor)"
-                                                        [disabled]="getSelectableRowsForTable(data.specimenColor).length === 0">
-                                                    </mat-checkbox>
-                                                </th>
-                                                <td mat-cell *matCellDef="let contact">
-                                                    <mat-checkbox *ngIf="!contact.sampleNo; else noMLC"
-                                                        (click)="$event.stopPropagation()"
-                                                        (change)="rowCheckboxChange(contact)"
-                                                        [checked]="selection.isSelected(contact)"
-                                                        [disabled]="isCheckboxDisabled(contact)">
-                                                    </mat-checkbox>
+                                                <ng-container matColumnDef="select">
+                                                    <th mat-header-cell *matHeaderCellDef>
+                                                        <mat-checkbox (change)="masterToggle(data.specimenColor)"
+                                                            [checked]="isAllSelected(data.specimenColor)"
+                                                            [indeterminate]="isSomeSelected(data.specimenColor)"
+                                                            [disabled]="getSelectableRowsForTable(data.specimenColor).length === 0">
+                                                        </mat-checkbox>
+                                                    </th>
+                                                    <td mat-cell *matCellDef="let contact">
+                                                        <mat-checkbox *ngIf="!contact.sampleNo; else noMLC"
+                                                            (click)="$event.stopPropagation()"
+                                                            (change)="rowCheckboxChange(contact)"
+                                                            [checked]="selection.isSelected(contact)"
+                                                            [disabled]="isCheckboxDisabled(contact)">
+                                                        </mat-checkbox>
 
-                                                    <ng-template #noMLC>
-                                                        <div
-                                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                                            <span>----</span>
-                                                        </div>
-                                                    </ng-template>
-                                                </td>
+                                                        <ng-template #noMLC>
+                                                            <div
+                                                                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                                                <span>----</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </td>
 
-                                            </ng-container>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="testName">
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm>TestName
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.serviceName || '-'}}</span>
-                                                </mat-cell>
-                                            </ng-container>
+                                                <ng-container matColumnDef="testName">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        class="w-250">TestName
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250 ellipsis"
+                                                        matTooltip="{{contact.serviceName}}">
+                                                        <span> {{contact.serviceName || '-'}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="tat">
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm>TAT
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span class="tat-badge">
-                                                        <ng-container *ngIf="contact.tatday > 0">
-                                                            {{ contact.tatday }}d
-                                                        </ng-container>
-                                                        {{ contact.tathour }}h {{ contact.tatmin }}m
-                                                    </span>
-                                                </mat-cell>
-                                            </ng-container>
+                                                <ng-container matColumnDef="tat">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm>TAT
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <span class="tat-badge">
+                                                            <ng-container *ngIf="contact.tatday > 0">
+                                                                {{ contact.tatday }}d
+                                                            </ng-container>
+                                                            {{ contact.tathour }}h {{ contact.tatmin }}m
+                                                        </span>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="container">
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm>No.Of
-                                                    Container
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <span> {{contact.noofContainer || '-'}}</span>
-                                                </mat-cell>
-                                            </ng-container>
+                                                <ng-container matColumnDef="container">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm>No.Of
+                                                        Container
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <span> {{contact.noofContainer || '-'}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="SampleCollectionTime">
-                                                <th mat-header-cell *matHeaderCellDef>
-                                                    Collection Date/Time
-                                                </th>
+                                                <ng-container matColumnDef="SampleCollectionTime">
+                                                    <th mat-header-cell *matHeaderCellDef>
+                                                        Collection Date/Time
+                                                    </th>
 
-                                                <td mat-cell *matCellDef="let row">
+                                                    <td mat-cell *matCellDef="let row">
 
-                                                    <span *ngIf="row.isSampleCollection==true; else showInput">
-                                                        {{ row.sampleCollectionTime}}
-                                                        <!-- {{ row.sampleCollectionTime | date:'dd/MM/yyyy - h:mma' }} -->
-                                                    </span>
+                                                        <span *ngIf="row.isSampleCollection==true; else showInput">
+                                                            {{ row.sampleCollectionTime}}
+                                                            <!-- {{ row.sampleCollectionTime | date:'dd/MM/yyyy - h:mma' }} -->
+                                                        </span>
 
-                                                    <!-- SHOW input when value is empty -->
-                                                    <ng-template #showInput>
-                                                        <!-- <mat-form-field appearance="outline" floatLabel="never"
+                                                        <!-- SHOW input when value is empty -->
+                                                        <ng-template #showInput>
+                                                            <!-- <mat-form-field appearance="outline" floatLabel="never"
                                                             subscriptSizing="dynamic" class="compact-datetime">
 
                                                             <input matInput type="datetime-local"
                                                              class="sampletable-datetime-input"
                                                                 [(ngModel)]="row.sampleCollectionTime" />
                                                         </mat-form-field> -->
-                                                        <input type="datetime-local" class="sampletable-datetime-input"
-                                                            [(ngModel)]="row.sampleCollectionTime"
-                                                            [min]="minDateTime" />
+                                                            <input type="datetime-local"
+                                                                class="sampletable-datetime-input"
+                                                                [(ngModel)]="row.sampleCollectionTime"
+                                                                [min]="minDateTime" />
 
-                                                    </ng-template>
+                                                        </ng-template>
 
-                                                </td>
-                                            </ng-container>
+                                                    </td>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="editSampleCollectionTime">
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">
-                                                    <ng-container>
-                                                        <button mat-icon-button (click)="EditSampleDate(contact)"
-                                                            *ngIf="contact.sampleNo"
-                                                            matTooltip="Edit Sample  CollectionDate/Time">
-                                                            <mat-icon>edit</mat-icon></button>
-                                                    </ng-container>
-                                                </mat-cell>
-                                            </ng-container>
+                                                <ng-container matColumnDef="editSampleCollectionTime">
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
+                                                        <ng-container>
+                                                            <button mat-icon-button (click)="EditSampleDate(contact)"
+                                                                *ngIf="contact.sampleNo"
+                                                                matTooltip="Edit Sample  CollectionDate/Time">
+                                                                <mat-icon>edit</mat-icon></button>
+                                                        </ng-container>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="sampleNo">
-                                                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>
-                                                    SampleNo
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                    <span> {{contact.sampleNo }}</span>
-                                                </mat-cell>
-                                            </ng-container>
+                                                <ng-container matColumnDef="sampleNo">
+                                                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>
+                                                        SampleNo
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        <span> {{contact.sampleNo }}</span>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="action" stickyEnd>
-                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
-                                                    Action</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                                                        Action</mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact">
 
-                                                    <button mat-icon-button matTooltip="Consent"
-                                                        *ngIf="contact.isConsentRequired==true"
-                                                        class="action-btn consent-btn" color="primary">
-                                                        <mat-icon>insert_drive_file</mat-icon>
-                                                    </button>
+                                                        <button mat-icon-button matTooltip="Consent"
+                                                            *ngIf="contact.isConsentRequired==true"
+                                                            class="action-btn consent-btn" color="primary">
+                                                            <mat-icon>insert_drive_file</mat-icon>
+                                                        </button>
 
-                                                </mat-cell>
-                                            </ng-container>
+                                                    </mat-cell>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="loading">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    loading data...
-                                                </mat-footer-cell>
-                                            </ng-container>
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        loading data...
+                                                    </mat-footer-cell>
+                                                </ng-container>
 
-                                            <ng-container matColumnDef="noData">
-                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                    <span>No Data Found</span>
-                                                </mat-footer-cell>
-                                            </ng-container>
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        <span>No Data Found</span>
+                                                    </mat-footer-cell>
+                                                </ng-container>
 
-                                            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
-                                                style="height: 40px; min-height: 40px;" class="accent">
-                                            </mat-header-row>
+                                                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"
+                                                    style="height: 40px; min-height: 40px;" class="accent">
+                                                </mat-header-row>
 
-                                            <mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                style="height: 30px; min-height: 30px;"
-                                                [@animate]="{value:'*',params:{y:'100%'}}">
-                                            </mat-row>
+                                                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                                                    style="height: 30px; min-height: 30px;"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}">
+                                                </mat-row>
 
-                                        </table>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </mat-card>

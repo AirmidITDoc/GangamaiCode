@@ -357,6 +357,8 @@ export class NewPurchaseorderComponent {
             purchaseNo: this.PurchaseNo,
             purchaseDate: new Date(),
             purchaseTime: new Date(),
+            isPurchaseRequisitionId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isProceedToApproval:[false],
             storeId: this.vstoreId || 0,
             supplierId: this.vSupplierId || 0,
             totalAmount: this.FinalTotalAmt || 0,
@@ -582,7 +584,7 @@ export class NewPurchaseorderComponent {
 
 
     OnSave() {
-
+debugger
         let Pdate;
         let pTime;
         if (this.PurchaseID != 0) {
@@ -601,7 +603,7 @@ export class NewPurchaseorderComponent {
 
         const fomrValues = this.userFormGroup.value
         const FooterfomrValues = this.FinalPurchaseform.value
-
+debugger
         if (!this.FinalPurchaseform.invalid) {
 
             this.PurchaseInsertform.get("storeId").setValue(this.vstoreId)

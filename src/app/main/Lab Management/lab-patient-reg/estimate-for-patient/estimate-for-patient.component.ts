@@ -87,7 +87,7 @@ export class EstimateForPatientComponent {
 
     ngOnInit(): void {
         debugger
-        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + 1 + "&SubGroupId=" + 1 + "&SrvcName="
         this.estimateform = this.createEstimatefform()
         this.estimateform.markAllAsTouched();
         // this.myFilterbillform = this.myFilterbillbrowseform();

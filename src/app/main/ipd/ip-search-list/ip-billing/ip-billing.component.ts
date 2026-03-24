@@ -1999,12 +1999,12 @@ export class IPBillingComponent implements OnInit {
     }
     //For draft print  A5
     viewgetDraftBillclasswiseA5PageReportPdf(Id) {
-        this.commonService.Onprint("AdmissionID", Id, "IpDraftBillClassWiseA5");
+        this.commonService.OnprintOld("AdmissionID", Id, "IpDraftBillClassWiseA5");
     }
 
     //For draft print   A5
     viewgetDraftBillservicewiseA5PageReportPdf(Id) {
-        this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWiseA5");
+        this.commonService.OnprintOld("AdmissionID", Id, "IpDraftBillGroupWiseA5");
     }
     //draft print charge date wise
     viewgetDraftBillDateewiseReportPdf(Id) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
     isExpired: boolean = false;
     autocompleteModeUnitName: string = "Hospital";
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild('statusForm') statusForm!: TemplateRef<any>;
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: UntypedFormBuilder,
@@ -159,5 +160,16 @@ export class LoginComponent implements OnInit {
         return {
             unitId: { name: "required", Message: "Unit Name is required" },
         };
+    }
+
+    openStatus(row: any = null): void {
+        console.log(row)
+
+        const dialogRef = this._matDialog.open(this.statusForm, {
+            width: '50%',
+            height: '50%'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+        });
     }
 }
