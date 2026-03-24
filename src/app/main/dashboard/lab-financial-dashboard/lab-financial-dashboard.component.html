@@ -1,318 +1,492 @@
-<div id="lab-financial-dashboard" class="lab-fin-dashboard">
-
+<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll pharmacy-dashboard-wrapper"
+  fxLayout="column">
   <!-- HEADER -->
-  <div class="dashboard-header accent">
-    <div class="header-left">
-      <mat-icon class="header-icon">assessment</mat-icon>
-      <span class="header-title">Lab Financial Dashboard</span>
+  <div class="top-header accent">
+    <div class="top-header-info">
+      <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">local_pharmacy</mat-icon>
+      <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+        <span>Lab Financial Dashboard</span>
+      </div>
     </div>
-    <form [formGroup]="myFilterform" class="header-right  resize-form-fields">
-      <mat-form-field appearance="outline" class="date-range-field">
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate formControlName="fromDate" placeholder="Start date">
-          <input matEndDate formControlName="toDate" placeholder="End date">
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-      </mat-form-field>
-      <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">
-        <mat-icon>search</mat-icon> Go
-      </button>
-    </form>
+    <div class="date-filter-container resize-form-fields">
+      <form [formGroup]="myFilterform" class="header-right  resize-form-fields">
+        <mat-form-field appearance="outline" class="date-range-field">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate formControlName="fromDate" placeholder="Start date">
+            <input matEndDate formControlName="toDate" placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">
+          <mat-icon>search</mat-icon> Go
+        </button>
+      </form>
+    </div>
   </div>
 
-  <!-- CONTENT SCROLL AREA -->
-  <div class="dashboard-content" fusePerfectScrollbar>
+  <!-- CONTENT -->
+  <div class="center" fusePerfectScrollbar>
 
-    <!-- TOP SUMMARY CARDS -->
-    <div class="summary-cards-row">
 
-      <div class="summary-card card-registration">
-        <div class="card-icon-wrap bg-teal">
-          <mat-icon>person_add</mat-icon>
+    <div class="dashboard-container">
+      <!-- TOP SUMMARY CARDS -->
+      <div class="summary-cards-row">
+
+        <div class="summary-card card-registration">
+          <div class="card-icon-wrap bg-teal">
+            <mat-icon>person_add</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-label">Today's Registration</span>
+            <span class="card-value">{{ todayRegistration }}</span>
+            <span class="card-sub">(NEW BILL)</span>
+          </div>
         </div>
-        <div class="card-info">
-          <span class="card-label">Today's Registration</span>
-          <span class="card-value">{{ todayRegistration }}</span>
-          <span class="card-sub">(NEW BILL)</span>
+
+        <div class="summary-card card-sales">
+          <div class="card-icon-wrap bg-green">
+            <mat-icon>attach_money</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-label">Today's Sales</span>
+            <span class="card-value">{{ todaySales }}</span>
+            <span class="card-sub">This Month {{ thisMonthSales }}</span>
+          </div>
         </div>
+
+        <div class="summary-card card-tests">
+          <div class="card-icon-wrap bg-blue">
+            <mat-icon>biotech</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-label">Today's Test</span>
+            <span class="card-value">{{ todayTests }}</span>
+            <span class="card-sub pending-badge">({{ pendingTests }} pending)</span>
+            <span class="card-sub-link">(VIEW DETAILS)</span>
+          </div>
+        </div>
+
+
+         <!-- <div class="summary-card card-tests">
+          <div class="card-icon-wrap bg-blue">
+            <mat-icon>biotech</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-label">Today's Pending Test</span>
+            <span class="card-value">{{ todayTests }}</span>
+            <span class="card-sub pending-badge">({{ pendingTests }} pending)</span>
+            <span class="card-sub-link">(VIEW DETAILS)</span>
+          </div>
+        </div> -->
+
+
+        <div class="summary-card card-business">
+          <div class="card-icon-wrap bg-indigo">
+            <mat-icon>local_hospital</mat-icon>
+          </div>
+          <div class="card-info">
+            <span class="card-label">{{ labBusinessLabel }}</span>
+            <span class="card-sub-link">REPORT</span>
+          </div>
+        </div>
+
       </div>
-
-      <div class="summary-card card-sales">
-        <div class="card-icon-wrap bg-green">
-          <mat-icon>attach_money</mat-icon>
-        </div>
-        <div class="card-info">
-          <span class="card-label">Today's Sales</span>
-          <span class="card-value">{{ todaySales }}</span>
-          <span class="card-sub">This Month {{ thisMonthSales }}</span>
-        </div>
-      </div>
-
-      <div class="summary-card card-tests">
-        <div class="card-icon-wrap bg-blue">
-          <mat-icon>biotech</mat-icon>
-        </div>
-        <div class="card-info">
-          <span class="card-label">Today's Test</span>
-          <span class="card-value">{{ todayTests }}</span>
-          <span class="card-sub pending-badge">({{ pendingTests }} pending)</span>
-          <span class="card-sub-link">(VIEW DETAILS)</span>
-        </div>
-      </div>
-
-      <div class="summary-card card-business">
-        <div class="card-icon-wrap bg-indigo">
-          <mat-icon>local_hospital</mat-icon>
-        </div>
-        <div class="card-info">
-          <span class="card-label">{{ labBusinessLabel }}</span>
-          <span class="card-sub-link">REPORT</span>
-        </div>
-      </div>
-
     </div>
+    <!-- Branch Summary Cards - AFFECTED by date filter -->
+    <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+      <div fxFlex="100%">
+        <div fxFlex="calc(35% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+          <!-- <mat-card class="section-card branch-card">
+            <div class="chart-header">
+              <h3 class="chart-title">Branch Wise</h3>
 
-    <!-- MIDDLE ROW: Branch + Dept Sales + Chart -->
-    <div class="middle-row">
-
-      <!-- Branch Wise Dashboard -->
-      <mat-card class="section-card branch-card">
-        <div class="section-header accent">
-          <mat-icon class="section-icon">account_tree</mat-icon>
-          <span>Branch Wise Dashboard</span>
-        </div>
-        <div class="section-body branch-body">
-          <div class="branch-sub-header">BranchName</div>
-          <div class="branch-list">
-            <div class="branch-item" *ngFor="let b of branches" [class.active]="b === selectedBranch"
-              (click)="selectBranch(b)">
-              {{ b }}
             </div>
-          </div>
-        </div>
-      </mat-card>
-
-      <!-- Department Wise Sales -->
-      <mat-card class="section-card dept-card">
-        <div class="section-header accent">
-          <mat-icon class="section-icon">bar_chart</mat-icon>
-          <span>Department Wise Sales</span>
-        </div>
-        <div class="section-body">
-          <div class="dept-table-wrap">
-            <table mat-table [dataSource]="departmentSales" class="dept-table">
-
-              <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef> # </th>
-                <td mat-cell *matCellDef="let r; let i = index"> {{ i + 1 }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="department">
-                <th mat-header-cell *matHeaderCellDef> Department </th>
-                <td mat-cell *matCellDef="let r"> {{ r.categoryName }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="testCount">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Test Count </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.testCount }} </td>
-              </ng-container>
-
-              <!-- <ng-container matColumnDef="centerSale">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Center Sale </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.centerSale }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="corporate">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Corporate </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{r.corporate}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="digital">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Digital </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{r.digital }} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="referral">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Referral </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.referral }} </td>
-              </ng-container> -->
-
-              <ng-container matColumnDef="netSale">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Net Sale </th>
-                <td mat-cell *matCellDef="let r" class="num-col net-sale"> {{ r.totalAmount}} </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="departmentSalesColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: departmentSalesColumns;"></tr>
-            </table>
-          </div>
-
-          <!-- Today's & Month totals -->
-          <div class="dept-footer">
-            <div class="dept-footer-row today-row">
-              <span class="footer-label">Today's Sale</span>
-              <span class="footer-val" style="margin-left: 360px;">{{ deptTotalTestCount }}</span>
-              <!-- <span class="footer-val">{{ todaySaleTotal }}</span>
-              <span class="footer-val zero">0.00</span>
-              <span class="footer-val zero">0.00</span>
-              <span class="footer-val zero">0.00</span> -->
-              <span class="footer-val highlight" style="margin-left: 390px;">{{ deptTotalNetSale }}</span>
+            <div class="section-body branch-body">
+              <div class="branch-sub-header">BranchName</div>
+              <div class="branch-list">
+                <div class="branch-item" *ngFor="let b of branches" [class.active]="b === selectedBranch"
+                  (click)="selectBranch(b)">
+                  {{ b }}
+                </div>
+              </div>
             </div>
-            <!-- <div class="dept-footer-row month-row">
-              <span class="footer-label">This Month's Sale</span>
-              <span class="footer-val">{{ monthTestCount }}</span>
-              <span class="footer-val">{{ monthSaleTotal }}</span>
-              <span class="footer-val zero">0.00</span>
-              <span class="footer-val zero">0.00</span>
-              <span class="footer-val zero">0.00</span>
-              <span class="footer-val highlight">{{ monthSaleTotal }}</span>
-            </div> -->
-          </div>
-        </div>
-      </mat-card>
+          </mat-card> -->
+          <mat-card>
+            <mat-card-content>
+              <div class="chart-header">
+                <h3 class="chart-title">Branch List</h3>
+              <hr>
+              </div>
+              <div class="chart-container">
 
-      <!-- Daily Sales Chart -->
-      <mat-card class="section-card chart-card">
-        <div class="section-header accent">
-          <mat-icon class="section-icon">show_chart</mat-icon>
-          <span>Daily Sales Chart</span>
-        </div>
-        <div class="section-body chart-body">
-          <div class="chart-legend">
-            <span class="legend-dot"></span> Sales
-          </div>
-          <ngx-charts-bar-vertical [results]="dailySalesChartData" [scheme]="chartColorScheme" [xAxis]="true"
-            [yAxis]="true" [showXAxisLabel]="false" [showYAxisLabel]="false" [gradient]="true" [roundDomains]="true"
-            [barPadding]="4" [animations]="true">
-          </ngx-charts-bar-vertical>
-        </div>
-      </mat-card>
+                <mat-table matSort class="h-300 table-designed" [dataSource]="BranchList"
+                  [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
+                  <ng-container matColumnDef="hospitalName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                      Branch Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-200">
+                      {{report.hospitalName}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="serverIP">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      ServerIP
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.serverIP}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="serverDatabasename">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Database
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.serverDatabasename}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="serverPassword">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Password
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.serverPassword}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="userName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      UserName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.userName}}
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="loading">
+                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                    </mat-header-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                      No data found...
+                    </mat-footer-cell>
+                  </ng-container>
+
+                  <mat-header-row class="accent" *matHeaderRowDef="branchColumns; sticky: true">
+                  </mat-header-row>
+                  <mat-row *matRowDef="let report; columns: branchColumns;" class="contact"
+                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                  <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide':!(departmentSales!=null && departmentSales.data.length==0)}">
+                  </mat-footer-row>
+                </mat-table>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div fxFlex="calc(50% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+          <mat-card>
+
+            <mat-card-content>
+              <div class="chart-header">
+                <h3 class="chart-title">Sales Summary Overview</h3>
+                <hr>
+              </div>
+              <div class="chart-container">
+
+                <canvas id="DailysalesChart"></canvas>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
     </div>
+    <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
+      <div fxFlex="calc(33% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+        <mat-card>
+          <mat-card-content>
+            <div class="table-title">Department Wise Summary</div>
+             <hr>
+            <div class="panel-body">
+              <mat-table matSort class="h-300 table-designed" [dataSource]="departmentSales"
+                [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-    <!-- BOTTOM ROW: Doctor + CP + Marketing -->
-    <div class="bottom-row">
+                <ng-container matColumnDef="department">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                    Department
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-200">
+                    {{report.department}}
+                  </mat-cell>
+                </ng-container>
 
-      <!-- Doctor Wise Sales -->
-      <mat-card class="section-card">
-        <div class="section-header accent">
-          <mat-icon class="section-icon">medical_services</mat-icon>
-          <span>Doctor Wise Sales</span>
-        </div>
-        <div class="section-body">
-          <div class="table-scroll-wrap">
-            <table mat-table [dataSource]="doctorSales" class="data-table">
-              <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef> # </th>
-                <td mat-cell *matCellDef="let r; let i = index"> {{ i + 1 }} </td>
-              </ng-container>
-              <ng-container matColumnDef="doctorName">
-                <th mat-header-cell *matHeaderCellDef> Doctor Name </th>
-                <td mat-cell *matCellDef="let r"> {{ r.doctorName }} </td>
-              </ng-container>
-              <ng-container matColumnDef="totalPatient">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Total Patient </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.testCount }} </td>
-              </ng-container>
-              <ng-container matColumnDef="totalSales">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Total Sales </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.totalAmount }} </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="doctorSalesColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: doctorSalesColumns;"></tr>
-            </table>
-          </div>
-        </div>
-      </mat-card>
+                <ng-container matColumnDef="testCount">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Test Count
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.testCount}}
+                  </mat-cell>
+                </ng-container>
 
-      <!-- CP Wise Sales -->
-      <mat-card class="section-card">
-        <div class="section-header accent">
-          <mat-icon class="section-icon">business</mat-icon>
-          <span>CP Wise Sales</span>
-        </div>
-        <div class="section-body">
-          <div class="table-scroll-wrap">
-            <table mat-table [dataSource]="cpSales" class="data-table">
-              <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef> # </th>
-                <td mat-cell *matCellDef="let r; let i = index"> {{ i + 1 }} </td>
-              </ng-container>
-              <ng-container matColumnDef="cpName">
-                <th mat-header-cell *matHeaderCellDef> CP Name </th>
-                <td mat-cell *matCellDef="let r"> {{ r.companyName }} </td>
-              </ng-container>
-              <ng-container matColumnDef="totalPatient">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Total Patient </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.testCount }} </td>
-              </ng-container>
-              <ng-container matColumnDef="totalSales">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Total Sales </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.totalAmount }} </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="cpSalesColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: cpSalesColumns;"></tr>
-            </table>
-          </div>
-          <div class="table-total-footer cp-footer">
-            <span class="footer-label">Total</span>
-            <span class="footer-val" style="margin-left: 200px;">{{ cpTotalPatient }}</span>
-            <span class="footer-val highlight">{{ cpTotalSales }}</span>
-          </div>
-        </div>
-      </mat-card>
+                <ng-container matColumnDef="centerSale">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Center Sale
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.centerSale}}
+                  </mat-cell>
+                </ng-container>
 
-      <!-- Marketing Wise Sales -->
-      <mat-card class="section-card">
-        <div class="section-header accent">
-          <mat-icon class="section-icon">campaign</mat-icon>
-          <span>Marketing Wise Sales</span>
-        </div>
-        <div class="section-body">
-          <div class="table-scroll-wrap">
-            <table mat-table [dataSource]="marketingSales" class="data-table">
-              <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef> # </th>
-                <td mat-cell *matCellDef="let r; let i = index"> {{ i + 1 }} </td>
-              </ng-container>
-              <ng-container matColumnDef="marketingEx">
-                <th mat-header-cell *matHeaderCellDef> Marketing Ex. </th>
-                <td mat-cell *matCellDef="let r"> {{ r.marketingEx }} </td>
-              </ng-container>
-              <ng-container matColumnDef="gross">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Gross </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.gross }} </td>
-              </ng-container>
-              <ng-container matColumnDef="discount">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Discount </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.discount }} </td>
-              </ng-container>
-              <ng-container matColumnDef="reversal">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Reversal </th>
-                <td mat-cell *matCellDef="let r" class="num-col"> {{ r.reversal }} </td>
-              </ng-container>
-              <ng-container matColumnDef="net">
-                <th mat-header-cell *matHeaderCellDef class="num-col"> Net </th>
-                <td mat-cell *matCellDef="let r" class="num-col net-sale"> {{ r.net }} </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="marketingSalesColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: marketingSalesColumns;"></tr>
-            </table>
-          </div>
-          <div class="table-total-footer marketing-footer">
-            <span class="footer-label">Total</span>
-            <span class="footer-val" style="margin-left: 200px;">{{ marketingTotalGross }}</span>
-            <span class="footer-val" style="margin-left: 30px;">{{ marketingTotalDiscount }}</span>
-            <span class="footer-val" style="margin-left: 50px;">{{ marketingTotalReversal }}</span>
-            <span class="footer-val highlight" >{{ marketingTotalNet }}</span>
-          </div>
-        </div>
-      </mat-card>
+
+
+                <ng-container matColumnDef="corporate">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Corporate
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.corporate}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="digital">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Digital
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.digital}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="referral">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Referral
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.referral}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="netSale" stickyEnd>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    NetSale
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.netSale}}
+                  </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="loading">
+                  <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                  </mat-header-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="noData">
+                  <mat-footer-cell *matFooterCellDef colspan="6">
+                    No data found...
+                  </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row class="accent" *matHeaderRowDef="departmentSalesColumns; sticky: true">
+                </mat-header-row>
+                <mat-row *matRowDef="let report; columns: departmentSalesColumns;" class="contact"
+                  [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                  [ngClass]="{'hide':!(departmentSales!=null && departmentSales.data.length==0)}">
+                </mat-footer-row>
+              </mat-table>
+            
+              <!-- <div class="totals">
+                <div class="totals-row">
+                  <div class="totals-label">Total Amount</div>
+                  <div class="totals-num">{{ deptTotalTestCount}}</div>
+                  <div class="totals-num">{{ deptTotalNetSale}}</div>
+                </div>
+
+              </div> -->
+                <div class="totals">
+                <div class="totals-row">
+                  <div class="totals-label">Total Amount</div>
+                  <div class="totals-num">{{ deptTotalTestCount}}</div>
+                  <!-- <div class="totals-num">{{ deptTotalTotSale}}</div>
+                    <div class="totals-num">{{ deptTotalNetSale}}</div>
+                      <div class="totals-num">{{ deptTotalPaidSale}}</div> -->
+                </div>
+
+              </div>
+            </div>
+          </mat-card-content>
+
+        </mat-card>
+      </div>
+      <!-- //? -->
+      <div fxFlex="calc(33% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+        <mat-card>
+          <mat-card-content>
+            <div class="chart-container">
+              <div class="table-title">Doctor Wise Summary</div>
+              <hr>
+              <mat-table matSort class="h-300 table-designed" [dataSource]="doctorSales"
+                [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                <ng-container matColumnDef="doctorName">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                    Doctor Name
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-200">
+                    {{report.refDoctorname}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="totalPatient">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Total Patient
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.totalPatients}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="totalAmt">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Total Amt
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.totalAmt}}
+                  </mat-cell>
+                </ng-container>
+
+
+                <ng-container matColumnDef="totalSales">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Net Total
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.netAmount}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="paidAmount">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Paid Amt
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.paidAmount}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="loading">
+                  <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                  </mat-header-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="noData">
+                  <mat-footer-cell *matFooterCellDef colspan="6">
+                    No data found...
+                  </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row class="accent" *matHeaderRowDef="doctorSalesColumns; sticky: true">
+                </mat-header-row>
+                <mat-row *matRowDef="let report; columns: doctorSalesColumns;" class="contact"
+                  [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                  [ngClass]="{'hide':!(doctorSales!=null && doctorSales.data.length==0)}">
+                </mat-footer-row>
+              </mat-table>
+              <div class="totals">
+                <div class="totals-row">
+                  <div class="totals-label">Total Amount</div>
+                  <div class="totals-num">{{ drTotalTestCount}}</div>
+                  <div class="totals-num">{{ drTotalNetSale}}</div>
+                </div>
+
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex="calc(33% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+        <mat-card>
+          <mat-card-content>
+            <div class="chart-container">
+              <div class="table-title">Company Wise Summary</div>
+              <hr>
+              <mat-table matSort class="h-300 table-designed" [dataSource]="cpSales" [@animateStagger]="{value:'50'}"
+                style="overflow:auto;">
+
+                <ng-container matColumnDef="cpName">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                    CPName
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-200">
+                    {{report.cpName}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="totalPatient">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Total Patient
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.totalPatients}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="totalSales">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                    Total Sales
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let report" class="w-100">
+                    {{report.totalSales}}
+                  </mat-cell>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="loading">
+                  <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                  </mat-header-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="noData">
+                  <mat-footer-cell *matFooterCellDef colspan="6">
+                    No data found...
+                  </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row class="accent" *matHeaderRowDef="cpSalesColumns; sticky: true">
+                </mat-header-row>
+                <mat-row *matRowDef="let report; columns: cpSalesColumns;" class="contact"
+                  [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                  [ngClass]="{'hide':!(cpSales!=null && cpSales.data.length==0)}">
+                </mat-footer-row>
+              </mat-table>
+            </div>
+
+            <div class="totals">
+              <div class="totals-row">
+                <div class="totals-label">Total</div>
+                <div class="totals-num">{{ cpTotalPatient}}</div>
+                <div class="totals-num">{{ cpTotalSales}}</div>
+              </div>
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
 
     </div>
 
   </div>
-
 </div>

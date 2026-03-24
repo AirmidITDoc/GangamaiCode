@@ -271,6 +271,12 @@ export class DashboardService {
         return this._httpClient.PostData("Branch/UnitBranchWiseRevenueSummary", param)
     }
 
+   public getLabSummarydetailList(params) {
+
+         return this._httpClient.GetData("Dashboard/Lab-Financial-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
+
+    }
+  
     public getCompanywiseList(param) {
 
         return this._httpClient.PostData("Branch/UnitBranchWiseCompanySummary", param)

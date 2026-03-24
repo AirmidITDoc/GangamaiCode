@@ -7,6 +7,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { BillRevenuList } from 'app/main/Lab Management/branch-wise-summary/branch-wise-summary.component';
 import { DashboardService } from '../dashboard.service';
+import { Chart } from 'chart.js';
 
 @Component({
     selector: 'app-lab-financial-dashboard',
@@ -72,35 +73,20 @@ export class LabFinancialDashboardComponent {
     cpSales = new MatTableDataSource<CompanyList>();
     // Branch list
     branches: string[] = []
-    //   'SADAR HOSPITAL VAISHALI-BIHAR',
-    //   'SADAR HOSPITAL AURANGABAD-BIHAR',
-    //   'AAHCUTTACK',
-    //   'SADAR HOSPITAL GOPALGANJ-BIHAR',
-    //   'DHH SAMBALPUR CT CENTRE',
-    //   'AHRCC CT SCAN CENTER-CUTTACK',
-    //   'SADAR HOSPITAL GAYA(CT)-BIHAR',
-    //   'MALKANAGIRI',
-    //   'DHH ANGUL MRI CENTER-ANGUL',
-    //   'MKCG MCH CT SCAN CENTER-BERHAMPUR',
-    // ];
+
     selectedBranch = 'AAHCUTTACK';
 
-    // Department wise sales  'centerSale', 'corporate', 'digital', 'referral',
-    departmentSalesColumns: string[] = ['index', 'department', 'testCount', 'netSale'];
+    // Department wise sales  
+    departmentSalesColumns: string[] = [ 'department', 'testCount', 'centerSale', 'corporate', 'digital', 'referral','netSale'];
     departmentSales = new MatTableDataSource<any>([
-        // { department: 'CARDIOLOGY', testCount: 11, centerSale: 5550.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 5550.0 },
-        // { department: 'GASTROENTEROLOGY', testCount: 4, centerSale: 6000.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 6000.0 },
-        // { department: 'NEUROLOGY', testCount: 3, centerSale: 3700.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 3700.0 },
-        // { department: 'PATHOLOGY', testCount: 48, centerSale: 8381.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 8381.0 },
-        // { department: 'RADIOLOGY', testCount: 94, centerSale: 165528.27, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 165528.27 },
-        // { department: 'UROFLOWMETRY', testCount: 1, centerSale: 350.0, corporate: 0.0, digital: 0.0, referral: 0.0, netSale: 350.0 },
+
     ]);
 
     todaySaleTotal = 0;
     todaySaleTestCount = 0;
     monthSaleTotal = 0;
     monthTestCount = 0;
-
+    public DailysalesChart: any;
     // Daily sales chart (ngx-charts)
     dailySalesChartData: any[] = [
         { name: '01', value: 150000 },
@@ -136,7 +122,8 @@ export class LabFinancialDashboardComponent {
 
 
     // Doctor wise sales
-    doctorSalesColumns: string[] = ['index', 'doctorName', 'totalPatient', 'totalSales'];
+    doctorSalesColumns: string[] = [ 'doctorName', 'totalPatient','totalAmt', 'totalSales','paidAmount'];
+    branchColumns: string[] = ['hospitalName', 'serverIP', 'serverDatabasename','serverPassword','userName'];
     // doctorSales = new MatTableDataSource<any>([
     //   { doctorName: 'DESIRE TO LIFE', totalPatient: 4, totalSales: 12700.0 },
     //   { doctorName: 'CHANAKYA HOSPITAL', totalPatient: 4, totalSales: 12000.0 },
@@ -151,7 +138,7 @@ export class LabFinancialDashboardComponent {
     // ]);
 
     // CP wise sales
-    cpSalesColumns: string[] = ['index', 'cpName', 'totalPatient', 'totalSales'];
+    cpSalesColumns: string[] = [ 'cpName', 'totalPatient', 'totalSales'];
     // cpSales = new MatTableDataSource<any>([
     //   { cpName: "DOCTOR'S CARE HOSPITAL & RESEARCH CENTRE (BSKY)", totalPatient: 2, totalSales: 8858.0 },
     //   { cpName: 'RAKSHYA HOSPITAL BSKY', totalPatient: 3, totalSales: 3238.0 },
@@ -169,24 +156,18 @@ export class LabFinancialDashboardComponent {
         { label: 'Business', value: 0, color: 'butter', icon: 'user-plus' }
     ];
 
-    cpTotalPatient = 8;
-    cpTotalSales = 14196.0;
+    // cpTotalPatient = 0;
+    // cpTotalSales = 0;
 
     // Marketing wise sales
-    marketingSalesColumns: string[] = ['index', 'marketingEx', 'gross', 'discount', 'reversal', 'net'];
+    marketingSalesColumns: string[] = ['marketingEx', 'gross', 'discount', 'reversal', 'net'];
     marketingSales = new MatTableDataSource<any>([
-        { marketingEx: 'Hrushikesh Samal', gross: 70350.0, discount: 12100.0, reversal: 0.0, net: 58850.0 },
-        { marketingEx: 'Chitta Ranjan Nayak', gross: 53400.0, discount: 14350.0, reversal: 0.0, net: 39050.0 },
-        { marketingEx: 'Ashish Sharma', gross: 49000.0, discount: 11400.0, reversal: 0.0, net: 37600.0 },
-        { marketingEx: 'Susil Kumar Nayak', gross: 38006.0, discount: 3900.0, reversal: 978.0, net: 34106.0 },
-        { marketingEx: 'Swarup Kumar Jena', gross: 15300.0, discount: 4100.0, reversal: 0.0, net: 11200.0 },
-        { marketingEx: 'Japil Kasari Rout', gross: 5750.0, discount: 300.0, reversal: 0.0, net: 4950.0 },
-        { marketingEx: 'Others', gross: 11350.0, discount: 7600.0, reversal: 0.0, net: 3750.0 },
+       
     ]);
-    marketingTotalGross = 243156.0;
-    marketingTotalDiscount = 54250.0;
-    marketingTotalReversal = 978.0;
-    marketingTotalNet = 199506.0;
+    marketingTotalGross = 0;
+    marketingTotalDiscount =0;
+    marketingTotalReversal =0;
+    marketingTotalNet = 0;
 
     // Existing column definitions kept for backward compatibility
     wardHeadCountColumns: string[] = ['wardName', 'occupancyPct', 'patients'];
@@ -233,24 +214,26 @@ export class LabFinancialDashboardComponent {
 
     ngOnInit(): void {
         this.myFilterform = this._dashboardServices.filterFormfinance();
-        this.username = this._accountServices.currentUserValue.userName
-            ? this._accountServices.currentUserValue.userName
+        this.username = this._accountServices.currentUserValue.userName? this._accountServices.currentUserValue.userName
             : '';
 
         this.getwardpatientList();
         this.getDoctorwisesalesList()
-        this.getBranchList()
+        // this.getBranchList()
         this.GetBillRevenudetail()
         this.GetCompanywisesale()
         this.getDepartmentwisesalesList()
+
+        this.Mainsummarylist()
     }
 
     onGo(): void {
         this.getDoctorwisesalesList()
-        this.getBranchList()
+        // this.getBranchList()
         this.GetBillRevenudetail()
         this.GetCompanywisesale()
         this.getDepartmentwisesalesList()
+        this.Mainsummarylist()
     }
 
     selectBranch(branch: string): void {
@@ -331,6 +314,12 @@ export class LabFinancialDashboardComponent {
         return this.Billingsummary.data.reduce((sum, r) => sum + (r.cardPay || 0), 0);
     }
 
+        get cpTotalPatient(): number {
+        return this.cpSales.data.reduce((sum, r) => sum + (r.totalPatients || 0), 0);
+    }
+    get cpTotalSales(): number {
+        return this.cpSales.data.reduce((sum, r) => sum + (r.totalSales || 0), 0);
+    }
     get deptTotalTestCount(): number {
         return this.departmentSales.data.reduce((sum, r) => sum + (r.testCount || 0), 0);
     }
@@ -338,8 +327,21 @@ export class LabFinancialDashboardComponent {
         return this.departmentSales.data.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
     }
 
+    //   get deptTotalTotSale(): number {
+    //     return this.departmentSales.data.reduce((sum, r) => sum + (r.testCount || 0), 0);
+    // }
+    // get deptTotalNetSale(): number {
+    //     return this.departmentSales.data.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
+    // }
 
 
+
+ get drTotalTestCount(): number {
+        return this.doctorSales.data.reduce((sum, r) => sum + (r.totalPatients || 0), 0);
+    }
+    get drTotalNetSale(): number {
+        return this.doctorSales.data.reduce((sum, r) => sum + (r.netAmount || 0), 0);
+    }
     getDoctorwisesalesList() {
 
         const filters: any[] = [];
@@ -379,56 +381,56 @@ export class LabFinancialDashboardComponent {
         this._dashboardServices.getDoctorwisesales(data).subscribe((data: any) => {
             this.Financedata = data;
             console.log(data)
-            this.doctorSales.data = data.data;
+            // this.doctorSales.data = data.data;
         })
     }
     Brancharray = []
-    getBranchList() {
+    // getBranchList() {
 
-        const filters: any[] = [];
-        // UnitId: this.UnitId,
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
-            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
+    //     const filters: any[] = [];
+    //     // UnitId: this.UnitId,
+    //     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+    //         this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
 
 
-            filters.push(
+    //         filters.push(
 
-                {
-                    "fieldName": "UnitId",
-                    "fieldValue": String(this.UnitId),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "FromDate",
-                    "fieldValue": String(this.fromDate),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "ToDate",
-                    "fieldValue": String(this.toDate),
-                    "opType": "Equals"
-                }
-            );
+    //             {
+    //                 "fieldName": "UnitId",
+    //                 "fieldValue": String(this.UnitId),
+    //                 "opType": "Contains"
+    //             },
+    //             {
+    //                 "fieldName": "FromDate",
+    //                 "fieldValue": String(this.fromDate),
+    //                 "opType": "Contains"
+    //             },
+    //             {
+    //                 "fieldName": "ToDate",
+    //                 "fieldValue": String(this.toDate),
+    //                 "opType": "Equals"
+    //             }
+    //         );
 
-        const data = {
-            "first": 0,
-            "rows": 999999,
-            "sortField": "DoctorName",
-            "sortOrder": 0,
-            "filters": filters,
-            "exportType": "JSON",
-            "columns": []
-        };
-        this._dashboardServices.getBranchList(data).subscribe((data: any) => {
-  console.log(data.data)
-  debugger
-            this.Brancharray = data.data as [];
-            this.branches = [...new Set(this.Brancharray.map(item => item.unitBranchName))];
+    //     const data = {
+    //         "first": 0,
+    //         "rows": 999999,
+    //         "sortField": "DoctorName",
+    //         "sortOrder": 0,
+    //         "filters": filters,
+    //         "exportType": "JSON",
+    //         "columns": []
+    //     };
+    //     this._dashboardServices.getBranchList(data).subscribe((data: any) => {
+    //         console.log(data.data)
+    //         debugger
+    //         // this.Brancharray = data.data as [];
+    //         // this.branches = [...new Set(this.Brancharray.map(item => item.unitBranchName))];
 
-            console.log(this.branches)
+    //         // console.log(this.branches)
 
-        })
-    }
+    //     })
+    // }
 
     GetCompanywisesale() {
 
@@ -468,7 +470,7 @@ export class LabFinancialDashboardComponent {
         };
         this._dashboardServices.getCompanywiseList(data).subscribe((data: any) => {
 
-            this.cpSales.data = data.data as [];
+            // this.cpSales.data = data.data as [];
             // this.branches = [...new Set(this.Brancharray.map(item => item.unitBranchName))];
 
             console.log(this.cpSales.data)
@@ -515,12 +517,118 @@ export class LabFinancialDashboardComponent {
         debugger
         this._dashboardServices.getDeptwisesales(data).subscribe((data: any) => {
             console.log(data)
-            this.departmentSales.data = data.data;
+            // this.departmentSales.data = data.data;
         })
     }
     Billdetaildatasource = new MatTableDataSource<BillRevenuList>();
     paydata = []
     paymentModeData1: any[] = []
+
+    modalityData = [
+        { name: '', value: 0 }
+    ];
+    salesdata: any
+    trendData: any
+    Mainsummarylist() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
+
+        
+         this._dashboardServices.getLabSummarydetailList({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((data) => {
+      console.log(data)
+            debugger
+            this.salesdata = data.dailySalesTrend
+            this.trendData =  data.dailySalesTrend
+            this.BranchList =data.branchList
+            this.marketingSales.data=data.executiveWiseSales
+              this.departmentSales.data = data.departmentWiseSales;
+            this.doctorSales.data = data.refDoctorWiseSales;
+             this.cpSales.data = data.cpWiseSales;
+
+
+              this.todayRegistration = data.topBoxes.todayRegistration
+            this.todaySales =data.topBoxes.todaySales
+            // this.thisMonthSales =data.topBoxes.todayRegistration
+            this.todayTests =data.topBoxes.todayTotalTests
+            this.pendingTests =data.topBoxes.todayPendingReports
+
+
+                this.Brancharray = data.branchList as [];
+            this.branches = [...new Set(this.Brancharray.map(item => item.hospitalName))];
+
+            console.log(this.branches)
+
+            if (this.trendData) {
+
+                this.modalityData = [
+                    ...this.modalityData,
+                    ...this.trendData.map(item => ({
+
+                        name: item.billDate,
+                        value: item.dailySales
+                    }))
+                ];
+            }
+
+            console.log(this.modalityData)
+
+            if (this.modalityData)
+                this.DailysalesChart = this.getSalesBarChart();
+
+        })
+    }
+
+    getSalesBarChart() {
+        if (this.DailysalesChart) {
+            this.DailysalesChart.destroy();
+        }
+
+
+        return new Chart('DailysalesChart', {
+            type: 'bar',
+            data: {
+                labels: this.modalityData.map(d => d.name),
+                datasets: [
+                    {
+                        label: 'Date',
+                        data: this.modalityData.map(d => d.value),
+                        backgroundColor: [
+                            '#bbdefb',   // very pale blue
+                            '#90caf9',   // light sky blue
+                            '#64b5f6',   // medium light blue
+                            '#497df7',   // your bright one
+                            '#6366f1',   // indigo transition
+                            '#4b50f7',   // deep vivid blue
+                            '#bb65f5',   // bluish purple
+                            '#9c44d6'    // final vivid purple
+                        ],
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: { size: 11 }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: { size: 11 }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
     GetBillRevenudetail() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
             this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
@@ -558,8 +666,8 @@ export class LabFinancialDashboardComponent {
             this.Billdetaildatasource.data = data.data as BillRevenuList[]
             console.log(this.Billdetaildatasource.data)
 
-            this.todayRegistration = this.Billdetaildatasource.data[0]['patientCount'];
-            this.todaySales = this.Billdetaildatasource.data[0]['totalRevenue'];
+            // this.todayRegistration = this.Billdetaildatasource.data[0]['patientCount'];
+            // this.todaySales = this.Billdetaildatasource.data[0]['totalRevenue'];
             // this.thisMonthSales =this.Billdetaildatasource.data.patientCount;
             // this.todayTests =this.Billdetaildatasource.data.patientCount;
             // this.pendingTests = 0;
@@ -572,14 +680,8 @@ export class LabFinancialDashboardComponent {
                 { label: 'Todays Test', value: 0, color: 'sky', icon: 'logout' },
                 { label: 'Business', value: 0, color: 'butter', icon: 'user-plus' }
             ];
-
-
-
             this.paydata = [];
 
-            // if (this.paymentModeChart) {
-            //   this.paymentModeChart.destroy();
-            // }
             this.Billdetaildatasource.data.forEach(element => {
                 console.log(element)
                 this.paydata.push({
@@ -848,14 +950,15 @@ export class Insurance {
 
 export class DoctorSalesList {
 
-    doctorName: string;
-    testCount: number;
-    totalAmount: number;
+    refDoctorname: string;
+    totalPatients: number;
+    netAmount: number;
+    
     constructor(DoctorSalesList) {
 
-        this.doctorName = DoctorSalesList.doctorName;
-        this.testCount = DoctorSalesList.testCount || 0;
-        this.totalAmount = DoctorSalesList.totalAmount || '0';
+        this.refDoctorname = DoctorSalesList.refDoctorname;
+        this.totalPatients = DoctorSalesList.totalPatients || 0;
+        this.netAmount = DoctorSalesList.netAmount || '0';
 
     }
 }
@@ -880,14 +983,14 @@ export class branchList {
 export class CompanyList {
 
     companyName: string;
-    testCount: number;
-    totalAmount: number;
+    totalPatients: number;
+    totalSales: number;
 
     constructor(CompanyList) {
 
         this.companyName = CompanyList.companyName;
-        this.testCount = CompanyList.testCount || 0;
-        this.totalAmount = CompanyList.totalAmount || '0';
+        this.totalPatients = CompanyList.totalPatients || 0;
+        this.totalSales = CompanyList.totalSales || '0';
 
     }
 }
