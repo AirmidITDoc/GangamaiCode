@@ -134,6 +134,7 @@ export class NewLabAppointmentComponent {
   @ViewChild('ddlcompanyExec') ddlcompanyExec: AirmidDropDownComponent;
   autocompleteRadioDD: string = "RadioCategory";
   autocompleteRefDoctorDD: string = "RefDoctor";
+  autocompleteModeConcession: string = "Concession";
 
   constructor(public _appointmentService: LabAppointmentService,
     public _matDialog: MatDialog,
@@ -309,7 +310,8 @@ export class NewLabAppointmentComponent {
       totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discountAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netPayableAmt: [0],
+      // netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       patientName: [''],
       servicedoctorId: [0],
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
