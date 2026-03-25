@@ -69,7 +69,7 @@
         </div>
 
 
-         <!-- <div class="summary-card card-tests">
+        <!-- <div class="summary-card card-tests">
           <div class="card-icon-wrap bg-blue">
             <mat-icon>biotech</mat-icon>
           </div>
@@ -97,7 +97,7 @@
     <!-- Branch Summary Cards - AFFECTED by date filter -->
     <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
       <div fxFlex="100%">
-        <div fxFlex="calc(35% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+        <div fxFlex="calc(15% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
           <!-- <mat-card class="section-card branch-card">
             <div class="chart-header">
               <h3 class="chart-title">Branch Wise</h3>
@@ -117,7 +117,7 @@
             <mat-card-content>
               <div class="chart-header">
                 <h3 class="chart-title">Branch List</h3>
-              <hr>
+                <hr>
               </div>
               <div class="chart-container">
 
@@ -133,7 +133,7 @@
                     </mat-cell>
                   </ng-container>
 
-                  <ng-container matColumnDef="serverIP">
+                  <!-- <ng-container matColumnDef="serverIP">
                     <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                       ServerIP
                     </mat-header-cell>
@@ -166,7 +166,7 @@
                     <mat-cell *matCellDef="let report" class="w-100">
                       {{report.userName}}
                     </mat-cell>
-                  </ng-container>
+                  </ng-container> -->
 
 
                   <ng-container matColumnDef="loading">
@@ -192,12 +192,12 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div fxFlex="calc(50% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+        <div fxFlex="calc(45% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
           <mat-card>
 
             <mat-card-content>
               <div class="chart-header">
-                <h3 class="chart-title">Sales Summary Overview</h3>
+                <h3 class="chart-title">Sales Summary Overview (Current Month)</h3>
                 <hr>
               </div>
               <div class="chart-container">
@@ -208,80 +208,174 @@
             </mat-card-content>
           </mat-card>
         </div>
+        <div fxFlex="calc(40% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+          <mat-card>
+            <mat-card-content>
+              <div class="chart-header">
+                <h3 class="chart-title">Department Wise Summary</h3>
+                <hr>
+              </div>
+              <div class="chart-container">
+
+                <mat-table matSort class="h-300 table-designed" [dataSource]="departmentSales"
+                  [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                  <ng-container matColumnDef="department">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
+                      Department
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-300">
+                      {{report.department}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="testCount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Test Count
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.testCount}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="centerSale">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Center Sale
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.centerSale}}
+                    </mat-cell>
+                  </ng-container>
+
+
+
+                  <ng-container matColumnDef="corporate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Corporate
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.corporate}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="digital">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Digital
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.digital}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="referral">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Referral
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.referral}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="netSale" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      NetSale
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.netSale}}
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="loading">
+                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                    </mat-header-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                      No data found...
+                    </mat-footer-cell>
+                  </ng-container>
+
+                  <mat-header-row class="accent" *matHeaderRowDef="departmentSalesColumns; sticky: true">
+                  </mat-header-row>
+                  <mat-row *matRowDef="let report; columns: departmentSalesColumns;" class="contact"
+                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                  <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide':!(departmentSales!=null && departmentSales.data.length==0)}">
+                  </mat-footer-row>
+                </mat-table>
+
+
+                <div class="totals">
+                  <div class="totals-rowDept">
+                    <div class="totals-label">Total </div>
+                    <div class="totals-num">{{ deptTotalTestCount}}</div>
+                    <div class="totals-num">Cen:{{ deptTotalCenSale}}</div>
+                    <!-- <div class="totals-num">Cop:{{ deptTotalCopSale}}</div>
+                    <div class="totals-num">Dig:{{ deptTotalDigSale}}</div>
+                    <div class="totals-num">Ref:{{ deptTotalrefSale}}</div> -->
+                    <div class="totals-num">Net:{{ deptTotalNetSale}}</div>
+                  </div>
+
+                </div>
+              </div>
+            </mat-card-content>
+
+          </mat-card>
+        </div>
       </div>
     </div>
     <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
       <div fxFlex="calc(33% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
         <mat-card>
           <mat-card-content>
-            <div class="table-title">Department Wise Summary</div>
-             <hr>
+            <div class="table-title">Marketing Wise Summary</div>
+            <hr>
             <div class="panel-body">
-              <mat-table matSort class="h-300 table-designed" [dataSource]="departmentSales"
+              <mat-table matSort class="h-300 table-designed" [dataSource]="marketingSales"
                 [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                <ng-container matColumnDef="department">
+                <ng-container matColumnDef="marketingEx">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
-                    Department
+                    MarketingEx
                   </mat-header-cell>
                   <mat-cell *matCellDef="let report" class="w-200">
-                    {{report.department}}
+                    {{report.executiveName}}
                   </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="testCount">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Test Count
+                <ng-container matColumnDef="gross">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="70">
+                    Gross
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
-                    {{report.testCount}}
+                  <mat-cell *matCellDef="let report" class="w-70">
+                    {{report.gross}}
                   </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="centerSale">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Center Sale
+                <ng-container matColumnDef="discount">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="70">
+                    Discount
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
-                    {{report.centerSale}}
+                  <mat-cell *matCellDef="let report" class="70">
+                    {{report.discount}}
                   </mat-cell>
                 </ng-container>
 
-
-
-                <ng-container matColumnDef="corporate">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Corporate
+                <ng-container matColumnDef="reversal">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
+                    Reversal
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
-                    {{report.corporate}}
+                  <mat-cell *matCellDef="let report" class="w-70">
+                    {{report.reversal}}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="digital">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Digital
+                <ng-container matColumnDef="net">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
+                    Net
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
-                    {{report.digital}}
+                  <mat-cell *matCellDef="let report" class="w-70">
+                    {{report.net}}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="referral">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Referral
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
-                    {{report.referral}}
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="netSale" stickyEnd>
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    NetSale
-                  </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
-                    {{report.netSale}}
-                  </mat-cell>
-                </ng-container>
-
 
                 <ng-container matColumnDef="loading">
                   <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -294,30 +388,30 @@
                   </mat-footer-cell>
                 </ng-container>
 
-                <mat-header-row class="accent" *matHeaderRowDef="departmentSalesColumns; sticky: true">
+                <mat-header-row class="accent" *matHeaderRowDef="marketingSalesColumns; sticky: true">
                 </mat-header-row>
-                <mat-row *matRowDef="let report; columns: departmentSalesColumns;" class="contact"
+                <mat-row *matRowDef="let report; columns: marketingSalesColumns;" class="contact"
                   [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
                 <mat-footer-row *matFooterRowDef="['noData']"
-                  [ngClass]="{'hide':!(departmentSales!=null && departmentSales.data.length==0)}">
+                  [ngClass]="{'hide':!(marketingSales!=null && marketingSales.data.length==0)}">
                 </mat-footer-row>
               </mat-table>
-            
+
               <!-- <div class="totals">
                 <div class="totals-row">
-                  <div class="totals-label">Total Amount</div>
+                  <div class="totals-label">Total </div>
                   <div class="totals-num">{{ deptTotalTestCount}}</div>
                   <div class="totals-num">{{ deptTotalNetSale}}</div>
                 </div>
 
               </div> -->
-                <div class="totals">
-                <div class="totals-row">
-                  <div class="totals-label">Total Amount</div>
-                  <div class="totals-num">{{ deptTotalTestCount}}</div>
-                  <!-- <div class="totals-num">{{ deptTotalTotSale}}</div>
-                    <div class="totals-num">{{ deptTotalNetSale}}</div>
-                      <div class="totals-num">{{ deptTotalPaidSale}}</div> -->
+              <div class="totals">
+                <div class="totals-rowEx">
+                  <div class="totals-label">Total </div>
+                  <div class="totals-num">{{ marketingTotalGross }}</div>
+                  <div class="totals-num">{{ marketingTotalDiscount}}</div>
+                  <div class="totals-num">{{ marketingTotalReversal}}</div>
+                  <div class="totals-num">{{ marketingTotalNet }}</div>
                 </div>
 
               </div>
@@ -346,38 +440,38 @@
                 </ng-container>
 
                 <ng-container matColumnDef="totalPatient">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Total Patient
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
+                    PCount
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
+                  <mat-cell *matCellDef="let report" class="w-70">
                     {{report.totalPatients}}
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="totalAmt">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
                     Total Amt
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
+                  <mat-cell *matCellDef="let report" class="w-70">
                     {{report.totalAmt}}
                   </mat-cell>
                 </ng-container>
 
 
                 <ng-container matColumnDef="totalSales">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Net Total
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
+                    Net Amt
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
+                  <mat-cell *matCellDef="let report" class="w-70">
                     {{report.netAmount}}
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="paidAmount">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
                     Paid Amt
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
+                  <mat-cell *matCellDef="let report" class="w-70">
                     {{report.paidAmount}}
                   </mat-cell>
                 </ng-container>
@@ -404,10 +498,12 @@
                 </mat-footer-row>
               </mat-table>
               <div class="totals">
-                <div class="totals-row">
-                  <div class="totals-label">Total Amount</div>
+                <div class="totals-rowEx">
+                  <div class="totals-label">Total </div>
                   <div class="totals-num">{{ drTotalTestCount}}</div>
+                  <div class="totals-num">{{ drTotaltotSale}}</div>
                   <div class="totals-num">{{ drTotalNetSale}}</div>
+                  <div class="totals-num">{{ drTotalpaidSale}}</div>
                 </div>
 
               </div>
@@ -425,17 +521,17 @@
                 style="overflow:auto;">
 
                 <ng-container matColumnDef="cpName">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
-                    CPName
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
+                    Company Name
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-200">
+                  <mat-cell *matCellDef="let report" class="w-300">
                     {{report.cpName}}
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="totalPatient">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Total Patient
+                    Patient Count
                   </mat-header-cell>
                   <mat-cell *matCellDef="let report" class="w-100">
                     {{report.totalPatients}}
@@ -475,7 +571,7 @@
             </div>
 
             <div class="totals">
-              <div class="totals-row">
+              <div class="totals-rowCP">
                 <div class="totals-label">Total</div>
                 <div class="totals-num">{{ cpTotalPatient}}</div>
                 <div class="totals-num">{{ cpTotalSales}}</div>

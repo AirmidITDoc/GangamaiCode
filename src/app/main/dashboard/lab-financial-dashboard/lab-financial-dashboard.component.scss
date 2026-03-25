@@ -824,19 +824,49 @@
     align-items: center;
   }
 
+  .totals-rowEx{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 170px 70px 70px 80px 80px;
+    gap: 2px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: center;
+  }
+.totals-rowCP{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 270px 90px 90px ;
+    gap: 2px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: center;
+  }
+.totals-rowDept{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 270px 90px 90px 90px 90px 90px 90px ;
+    gap: 2px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: center;
+  }
+
   .totals-row:nth-child(odd) {
     background: #f5f5f9;
   }
 
   .totals-label {
-    font-weight: 700;
-    font-size: 12px;
-    color: #283593;
+    font-weight: bold;
+    font-size: 18px;
+    color: #1f2552;
   }
 
   .totals-num {
     text-align: center;
-    font-weight: 600;
+    font-weight: bold;
+    color: rgb(54, 4, 54);
+    font-size: 15px;
   }
 
   .totals-strong {
