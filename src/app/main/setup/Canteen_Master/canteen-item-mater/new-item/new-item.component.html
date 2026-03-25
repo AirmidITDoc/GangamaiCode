@@ -32,6 +32,7 @@
           <div fxLayout="column" fxLayoutAlign="start none">
 
             <form [formGroup]="itemForm" noValidate fxLayout="column" style="padding: 0 10px;">
+              <input type="hidden" name="itemId" formControlName="itemId">
 
               <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
                 class="top-header accent heading-container h-40 border-radius-4">
@@ -44,26 +45,28 @@
                 <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start center"
                   style="padding: 10px;">
 
-                  <!-- 1st row -->
-                  <!-- <airmid-textbox label="HSN Code" formControlName="hsNcode" [value]="registerObj?.hsncode"
-                    [formGroup]="itemForm" [validations]="getValidationMessages().hsNcode" [maxLength]="30" fxFlex="25%"
-                    (input)="onHSNChange($event)">
-                  </airmid-textbox>
 
-                  <airmid-textbox label="Item Short Name" formControlName="itemShortName"
-                    [value]="registerObj?.itemShortName" [formGroup]="itemForm"
-                    [validations]="getValidationMessages().itemShortName" [maxLength]="150" fxFlex="25%">
-                  </airmid-textbox>
-
-                  <airmid-textbox label="Item Name" formControlName="itemName" [value]="registerObj?.itemName"
-                    [formGroup]="itemForm" [validations]="getValidationMessages().itemName" [maxLength]="150"
+                  <airmid-textbox label="Item Short Name" formControlName="itemShortName" [value]="data?.itemShortName"
+                    [formGroup]="itemForm" [validations]="getValidationMessages().itemShortName" [maxLength]="50"
                     fxFlex="25%">
                   </airmid-textbox>
 
-                  <airmid-dropdown label="Item Type Name" formControlName="itemTypeId" [value]="registerObj?.itemTypeId"
+                  <airmid-textbox label="Item Name" formControlName="itemName" [value]="data?.itemName"
+                    [formGroup]="itemForm" [validations]="getValidationMessages().itemName" [maxLength]="50"
+                    fxFlex="75%">
+                  </airmid-textbox>
+
+                  <!-- <airmid-textbox label="Item Name" formControlName="itemName" [value]="registerObj?.itemName"
+                    [formGroup]="itemForm" [validations]="getValidationMessages().itemName" [maxLength]="150"
+                    fxFlex="25%">
+                  </airmid-textbox> -->
+
+
+
+                  <!-- <airmid-dropdown label="Item Type Name" formControlName="itemTypeId" [value]="registerObj?.itemTypeId"
                     [formGroup]="itemForm" [validations]="getValidationMessages().itemTypeId"
                     [mode]="autocompleteModeItemType" fxFlex="25%">
-                  </airmid-dropdown> -->
+                  </airmid-dropdown>  -->
 
                   <!-- 2nd row -->
 
@@ -93,75 +96,47 @@
 
             <br>
 
-            <!-- ItemDetails end -->
 
-            <form [formGroup]="itemForm" noValidate fxLayout="column" style="padding: 0 10px;">
+            <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+              class="top-header accent heading-container h-40 border-radius-4">
+              <span style="font-size:15px; font-weight: bolder; color:white;padding:5px;">
+                Rate Details
+              </span>
+            </div>
 
-              <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                class="top-header accent heading-container h-40 border-radius-4">
-                <span style="font-size:15px; font-weight: bolder; color:white;padding:5px;">
-                  GST Details
-                </span>
+            <mat-card>
+              <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="5px grid" style="padding: 10px"
+                fxLayoutAlign="start center">
+
+                <!-- (onClearSelection)="getchangegstper($event)" -->
+                <!-- <airmid-dropdown label="CGST/SGST" formControlName="cgst" fxFlex="25%" [formGroup]="itemForm"
+                  [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
+                 > </airmid-dropdown> -->
+
+                <airmid-textbox label="Price" formControlName="price" [value]="data?.price" [formGroup]="itemForm"
+                  [validations]="getValidationMessages().price" [maxLength]="4" fxFlex="24%">
+                </airmid-textbox>
+
+                <airmid-textbox label="empPrice" formControlName="empPrice" [value]="data?.empPrice"
+                  [formGroup]="itemForm" [validations]="getValidationMessages().empPrice" [maxLength]="4" fxFlex="24%">
+                </airmid-textbox>
+                <airmid-dropdown label="CGST" formControlName="cgst" [formGroup]="itemForm"
+                  [value]="data?.cgst" [validations]="getValidationMessages().cgst" fxFlex="24%"
+                  [mode]="autocompleteModeGSTTypesValues" >
+                </airmid-dropdown>
+                <!-- (selectionChange)="getchangeIgstper($event)" -->
+                <!-- <airmid-dropdown label="IGST" formControlName="igst" fxFlex="25%" [formGroup]="itemForm"
+                  [mode]="autocompleteModeGSTTypesValues1" >
+                </airmid-dropdown> -->
+
+                <airmid-dropdown label="SGST" formControlName="sgst" [formGroup]="itemForm" [value]="data?.sgst"
+                  [validations]="getValidationMessages().sgst" [mode]="autocompleteModeGSTTypesValues1" fxFlex="24%">
+                </airmid-dropdown>
               </div>
-
-              <mat-card>
-                <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px"
-                  fxLayoutAlign="start center">
-
-<!-- 
-                  <airmid-dropdown label="CGST/SGST" formControlName="cgst" fxFlex="25%" [formGroup]="itemForm"
-                    [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
-                    (onClearSelection)="getchangegstper($event)"> </airmid-dropdown>
-
-
-
-                  <airmid-dropdown label="IGST" formControlName="igst" fxFlex="25%" [formGroup]="itemForm"
-                    [mode]="autocompleteModeGSTTypesValues1" (selectionChange)="getchangeIgstper($event)">
-                  </airmid-dropdown> -->
-
-                </div>
-              </mat-card>
-            </form>
+            </mat-card>
+            <!-- </form> -->
 
             <br>
-
-            <form [formGroup]="itemForm" noValidate fxLayout="column" style="padding: 0 10px;">
-
-              <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
-                class="top-header accent heading-container h-40 border-radius-4">
-                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
-                  Store Details
-                </span>
-              </div>
-
-              <mat-card>
-                <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px"
-                  style="padding: 10px">
-
-                  <!-- Dropdown -->
-                  <!-- <airmid-dropdown label="Store" formControlName="mAssignItemToStores" [formGroup]="itemForm"
-                    [IsMultiPle]="true" [value]="registerObj.mAssignItemToStores"
-                    [validations]="getValidationMessages().mAssignItemToStores" #ddlStore ValueField="storeId"
-                    TextField="storeName" ApiUrl="StoreMaster/get-store" [ReqFullObj]="true" fxFlex="25">
-                  </airmid-dropdown> -->
-
-                  <!-- Chips -->
-                  <div fxFlex="50" fxLayout="row wrap" fxLayoutAlign="start center">
-                    <mat-chip-listbox #chipList>
-                      <mat-chip *ngFor="let item of itemForm.value.mAssignItemToStores">
-                        {{ item.storeName }}
-                        <mat-icon (click)="removestore(item)">close</mat-icon>
-                      </mat-chip>
-                    </mat-chip-listbox>
-                  </div>
-
-                </div>
-
-              </mat-card>
-            </form>
-
-
-
 
           </div>
         </div>
@@ -175,20 +150,20 @@
     <!-- Left Side: Checkboxes -->
     <div fxLayout="row" fxLayoutAlign="start center" style="padding: 5px;">
       <form [formGroup]="itemForm" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-        <mat-checkbox aria-label="IsActive" formControlName="isActive" [(ngModel)]="vchkactive"
+        <mat-checkbox aria-label="IsActive" formControlName="isdeleted" [(ngModel)]="vchkactive"
           style="font-weight: bold;">
           IsActive
         </mat-checkbox>
 
-        <!-- <mat-checkbox aria-label="CreateApproval" formControlName="CreateApproval" (change)="onChangeMode($event)" style="font-weight: bold;">
-                      Create / Approval
-                    </mat-checkbox> -->
+        <mat-checkbox aria-label="IsBatchRequired" formControlName="isBatchRequired" style="font-weight: bold;">
+          Is Batch
+        </mat-checkbox>
       </form>
     </div>
 
     <!-- Right Side: Buttons -->
     <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="padding: 5px;">
-      
+
       <button class="btn btn-danger-outline" (click)="onClear(false)"> Close </button>
 
       <button class="btn btn-primary " (click)="onSubmit()"> Save </button>

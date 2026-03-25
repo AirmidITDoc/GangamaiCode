@@ -6,7 +6,7 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Item Master
+                    Diet Plans Master
                 </span>
             </div>
         </div>
@@ -25,10 +25,10 @@
                     class="pill pink-600 s-16">circle</mat-icon> -->
 
 
-                <mat-icon *ngIf="element.isHighRisk == true" title="IsHighRisk"
+                <!-- <mat-icon *ngIf="element.isHighRisk == true" title="IsHighRisk"
                     style="background-color: rgb(232, 127, 52);">
                     <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
-                </mat-icon>
+                </mat-icon> -->
 
             </div>
         </ng-template>
@@ -38,47 +38,11 @@
 
                 <!-- <mat-icon *ngIf="element.isEmgerency==true" title="IsEmgerency"
                     class="pill red-600 s-16">circle</mat-icon> -->
-                <mat-icon *ngIf="element.isEmgerency == 1" title="IsEmgerency" style="background-color: red;">
+                <!-- <mat-icon *ngIf="element.isEmgerency == 1" title="IsEmgerency" style="background-color: red;">
                     <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
-                </mat-icon>
+                </mat-icon> -->
             </div>
         </ng-template>
-
-
-        <ng-template #actionsTemplatenarcotic let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <!-- <mat-icon *ngIf="element.isNarcotic==true" title="IsNarcotic"
-                    class="pill green-600 s-16">circle</mat-icon> -->
-
-                <mat-icon *ngIf="element.isNarcotic == 1" title="IsNarcotic" style="background-color: blue;">
-                    <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
-                </mat-icon>
-            </div>
-        </ng-template>
-
-        <ng-template #actionsTemplateisH1Drug let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <!-- <mat-icon *ngIf="element.isH1Drug==true" title="IsH1Drug" class="pill blue-600 s-16">circle</mat-icon> -->
-                <mat-icon *ngIf="element.isH1Drug == 1" title="IsH1Drug" style="background-color: rgb(89, 237, 78);">
-                    <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
-                </mat-icon>
-            </div>
-        </ng-template>
-
-        <!-- <ng-template #actionsTemplatehigh let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <mat-icon *ngIf="element.isHighRisk=='1'" title="IsHighRisk" class="pill green-600 s-16">circle</mat-icon>
-               
-                </mat-icon>
-
-            </div>
-        </ng-template> -->
-
-
-
 
 
         <ng-template #actionButtonTemplate let-element>

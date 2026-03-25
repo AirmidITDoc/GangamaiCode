@@ -6,80 +6,38 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Item Master
+                    Canteen Item Master
                 </span>
             </div>
         </div>
-         <!-- *ngIf="IsAdd" -->
+        <!-- *ngIf="IsAdd" -->
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()" >+ New Item
+            <button mat-raised-button (click)="onSave()">+ New Item
             </button>
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <ng-template #actionsTemplatehigh let-element>
+
+        <ng-template #actionsTemplateactive let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <!-- <mat-icon *ngIf="element.isHighRisk==true" title="IsHighRisk"
-                    class="pill pink-600 s-16">circle</mat-icon> -->
+                <mat-icon *ngIf="element.isdeleted == 1" title="Isdeleted" style="background-color: red;">
+                    <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
+                </mat-icon>
+            </div>
+        </ng-template>
 
+        <!-- <ng-template #actionsTemplatebatch let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-icon *ngIf="element.isHighRisk == true" title="IsHighRisk"
+                <mat-icon *ngIf="element.isBatchRequired == true" title="IsBatchRequired"
                     style="background-color: rgb(232, 127, 52);">
                     <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
                 </mat-icon>
 
             </div>
-        </ng-template>
-
-        <ng-template #actionsTemplateisEmgerency let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <!-- <mat-icon *ngIf="element.isEmgerency==true" title="IsEmgerency"
-                    class="pill red-600 s-16">circle</mat-icon> -->
-                <mat-icon *ngIf="element.isEmgerency == 1" title="IsEmgerency" style="background-color: red;">
-                    <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
-                </mat-icon>
-            </div>
-        </ng-template>
-
-
-        <ng-template #actionsTemplatenarcotic let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <!-- <mat-icon *ngIf="element.isNarcotic==true" title="IsNarcotic"
-                    class="pill green-600 s-16">circle</mat-icon> -->
-
-                <mat-icon *ngIf="element.isNarcotic == 1" title="IsNarcotic" style="background-color: blue;">
-                    <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
-                </mat-icon>
-            </div>
-        </ng-template>
-
-        <ng-template #actionsTemplateisH1Drug let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <!-- <mat-icon *ngIf="element.isH1Drug==true" title="IsH1Drug" class="pill blue-600 s-16">circle</mat-icon> -->
-                <mat-icon *ngIf="element.isH1Drug == 1" title="IsH1Drug" style="background-color: rgb(89, 237, 78);">
-                    <img width="30px" height="30px" src="assets/images/logos/drugtype.png">
-                </mat-icon>
-            </div>
-        </ng-template>
-
-        <!-- <ng-template #actionsTemplatehigh let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-                <mat-icon *ngIf="element.isHighRisk=='1'" title="IsHighRisk" class="pill green-600 s-16">circle</mat-icon>
-               
-                </mat-icon>
-
-            </div>
         </ng-template> -->
-
-
-
-
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -101,9 +59,7 @@
             <ng-container filters>
                 <form [formGroup]="myformSearch" fxLayout="column">
 
-                    <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
-                        (selectionChange)="StoreView($event)" [formGroup]="myformSearch" [mode]="autocompletestore">
-                    </airmid-dropdown>
+
 
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Item Name</mat-label>
@@ -114,7 +70,9 @@
                         </button>
                     </mat-form-field>
 
-                    <airmid-dropdown label="Item Category Name" formControlName="CatId"
+
+
+                    <!-- <airmid-dropdown label="Item Category Name" formControlName="CatId"
                         (selectionChange)="Catlist($event)" [(ngModel)]="gridConfig.filters[2].fieldValue"
                         [formGroup]="myformSearch" [mode]="autocompleteModeItemCategory">
                     </airmid-dropdown>
@@ -122,9 +80,9 @@
                     <airmid-dropdown label="Item Generic Name" formControlName="GenericId"
                         (selectionChange)="Genericlist($event)" [(ngModel)]="gridConfig.filters[3].fieldValue"
                         [formGroup]="myformSearch" [mode]="autocompleteModeItemGenericName">
-                    </airmid-dropdown>
+                    </airmid-dropdown> -->
 
-                    <airmid-dropdown label="Drug Type" formControlName="DrugTypeId" (selectionChange)="druglist($event)"
+                    <!-- <airmid-dropdown label="Drug Type" formControlName="DrugTypeId" (selectionChange)="druglist($event)"
                         [formGroup]="myformSearch" [mode]="autocompleteModeDrugType"
                         [(ngModel)]="gridConfig.filters[6].fieldValue"></airmid-dropdown>
 
@@ -132,22 +90,22 @@
                     <airmid-dropdown label="Manufacture Name" formControlName="ManufId"
                         (selectionChange)="Manulist($event)" [formGroup]="myformSearch" [mode]="autocompleteModeMenu"
                         [(ngModel)]="gridConfig.filters[5].fieldValue">
-                    </airmid-dropdown>
+                    </airmid-dropdown> -->
 
 
-                    <mat-form-field appearance="outline">
+                    <!-- <mat-form-field appearance="outline">
                         <mat-label>Storage Location</mat-label>
                         <input matInput placeholder="Storage Location" autocomplete="off" [formGroup]="myformSearch"
                             formControlName="ProdLocation" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('ProdLocation')">
                             <mat-icon>close</mat-icon>
                         </button>
-                    </mat-form-field>
+                    </mat-form-field> -->
 
-                   <span> <mat-icon class="pill pink s-16">circle</mat-icon> HighRisk Drug</span>
-                    <span> <mat-icon class="pill red s-16">circle</mat-icon>Emergency Drug</span>
+                    <!-- <span> <mat-icon class="pill pink s-16">circle</mat-icon> HighRisk Drug</span> -->
+                    <!-- <span> <mat-icon class="pill red s-16">circle</mat-icon>Emergency Drug</span>
                     <span> <mat-icon class="pill blue s-16">circle</mat-icon>Narcotic Drug</span>
-                    <span> <mat-icon class="pill green s-16">circle</mat-icon>H1 Drug</span>
+                    <span> <mat-icon class="pill green s-16">circle</mat-icon>H1 Drug</span> -->
 
                 </form>
 

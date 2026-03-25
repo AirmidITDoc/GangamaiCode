@@ -98,6 +98,9 @@ export class CanteenmanagementService {
    public canteenBillSave(employee) {
     return this._httpClient.PostData("CanteenBill/Insert", employee);
   }
+     public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 
     public BillCancle(Param) {
         return this._httpClient.PostData("CanteenBill/Cancel", Param)

@@ -12,13 +12,14 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
 import { CanteenSalesComponent } from '../canteen-sales/canteen-sales.component';
 import { fuseAnimations } from '@fuse/animations';
 import Swal from 'sweetalert2';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-canteen-bill-list',
   templateUrl: './canteen-bill-list.component.html',
   styleUrls: ['./canteen-bill-list.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class CanteenBillListComponent {
 
@@ -37,10 +38,17 @@ export class CanteenBillListComponent {
     public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
-  //  data
+
   gridConfig1: gridModel = new gridModel();
-  @ViewChild('BillGrid', { static: false }) grid: AirmidTableComponent;
-  @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+  
+
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('grid1') grid1: AirmidTableComponent;
+
+  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+  @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+  @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
+  @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
 
   isShowDetailTable: boolean = false;
   ngOnInit(): void {
@@ -49,6 +57,9 @@ export class CanteenBillListComponent {
   }
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'isOtherOrIsEmpBill')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.actionsTemplate2;
+    this.gridConfig.columnsList.find(col => col.key === 'balanceAmt1')!.template = this.actionsTemplate4;
 
   }
 
@@ -62,19 +73,19 @@ export class CanteenBillListComponent {
 
 
   allbillcolumns = [
-    // { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 45 },
-    // { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "", key: "isOtherOrIsEmpBill", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 45 },
+    { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     // { heading: "", key: "refundAmount1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    // { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
     { heading: "BillDate", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' , width: 120},
+    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Customer Name", key: "customerName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     // { heading: "Total Amount", key: "totalAmt", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount }, // It is just example of apply color based on condition
     // { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 120 },
     { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 120 },
-    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "", width: 120 },
+    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "", width: 120 },
 
     {
       heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -99,7 +110,7 @@ export class CanteenBillListComponent {
     { heading: "Disc Amount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
+    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
 
     // {
     //   heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -117,8 +128,8 @@ export class CanteenBillListComponent {
     filters: this.allBillfilters
   }
 
-GetDetails1(data: any): void {
-debugger
+  GetDetails1(data: any): void {
+    debugger
     console.log("detailList:", data)
     let BillNo = data.billNo;
 
@@ -213,29 +224,56 @@ debugger
     // });
   }
 
+ openPaymentpopup(contact) {}
 
-
-   Billcancle(data) {
-          debugger
-          Swal.fire({
-              title: 'Do you want to cancel the Bill?',
-              text: "You won't be able to revert this!",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, Cancel it!"
-          }).then((flag) => {
-              if (flag.isConfirmed) {
-                  var data = {
-                      "BillNo": data.billNo
-                  }
-                  this._CanteenmanagementService.BillCancle(data).subscribe((response: any) => {
-                      this.grid.bindGridData();
-                  });
-              }
-          });
+  Billcancle(data) {
+    debugger
+    Swal.fire({
+      title: 'Do you want to cancel the Bill?',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        var data = {
+          "BillNo": data.billNo
+        }
+        this._CanteenmanagementService.BillCancle(data).subscribe((response: any) => {
+          this.grid.bindGridData();
+        });
       }
+    });
+  }
 
-  viewgetReportPdf(element) { }
+ 
+   viewgetReportPdf(element) {
+     debugger
+     const param = {
+       "searchFields": [
+         {
+           "fieldName": 'BillNo',
+           "fieldValue": String(element.billNo),
+           "opType": "13"
+         }
+       ],
+       "mode": 'CanteenBillReceiptT'
+     }
+     this._CanteenmanagementService.getReportView(param).subscribe(res => {
+       const matDialog = this._matDialog.open(PdfviewerComponent,
+         {
+           maxWidth: "85vw",
+           height: '750px',
+           width: '100%',
+           data: {
+             base64: res["base64"] as string,
+             title: 'Bill' + " " + "Viewer"
+           }
+         });
+       matDialog.afterClosed().subscribe(result => {
+       });
+     });
+   }
 }

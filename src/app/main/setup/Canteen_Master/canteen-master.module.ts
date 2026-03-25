@@ -6,7 +6,7 @@ import { RouterModule, Routes } from "@angular/router";
 
 const appRoutes: Routes = [
     {
-        path: "ItemMaster",
+        path: "ItemMaser",
         loadChildren: () =>
             import("./canteen-item-mater/item-maser.module").then(
                 (m) => m.ItemMaserModule
@@ -18,6 +18,7 @@ const appRoutes: Routes = [
             import("./diet-plan/dietplan.module").then(
                 (m) => m.DietplanModule
             ),
+            
     }
 ];
 

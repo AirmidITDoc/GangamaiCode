@@ -12,7 +12,7 @@
             </span>
         </div>
 
-        
+
     </mat-toolbar>
 
     <div fusePerfectScrollbar
@@ -21,34 +21,63 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
+
+            <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isOtherOrIsEmpBill=='true'" matTooltip="Patient Category Employe">account_box
+                    </mat-icon>
+                    <mat-icon *ngIf="!element.isOtherOrIsEmpBill=='true'" matTooltip="Patient Category other">business
+                    </mat-icon>
+                </div>
+
+            </ng-template>
+
+            <ng-template #actionsTemplate2 let-element>
+                <div>
+
+                    <mat-icon title="Cancelled Bill" *ngIf="element.isCancelled=='1'" [disabled]="element.disabled"
+                        class="pill red s-16" matTooltip="Cancelled Bill">circle</mat-icon>
+                </div>
+            </ng-template>
+
+             <ng-template #actionsTemplate4 let-element>
+        <div>
+           
+            <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                *ngIf="element.balanceAmount!='0'">
+                <mat-icon title="Settlement" *ngIf="element.balanceAmount!=0 && element.isCancelled !=1"
+                    class="disabled-icon">receipt</mat-icon>
+                <mat-icon title="paid" *ngIf="element.balanceAmount==0" [disabled]="element.disabled"
+                    class="disabled-icon">payment</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <!-- <button mat-icon-button (click)="onSave(element)" matTooltip="Bill Edit">
+                    <button mat-icon-button (click)="onSave(element)" matTooltip="Bill Edit">
                         <mat-icon>edit</mat-icon>
                     </button>
 
-                    <button mat-icon-button (click)="viewgetReportPdf(element)"
-                        matTooltip="Bill Print">
+                    <button mat-icon-button (click)="viewgetReportPdf(element)" matTooltip="Bill Print">
                         <mat-icon title="Bill Print">print</mat-icon>
                     </button>
 
                     <button mat-icon-button (click)="Billcancle(element)" matTooltip="Bill Cancel"
                         *ngIf="element.isCancelled==false">
                         <mat-icon title="Cancel Bill">cancel</mat-icon>
-                    </button> -->
+                    </button>
                 </div>
             </ng-template>
-            <airmid-table [gridConfig]="gridConfig"  class="content" :ShowButtons="false"
+
+            
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
                 (onSelectRow)="GetDetails1($event)">
                 <ng-container filters>
                     <form [formGroup]="myFilterbillform" fxLayout="column">
-                        <!-- <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
-                            formStartControlName="startdate" formEndControlName="enddate"
-                            (dateChange)="getfilterdata()">
-                        </airmid-datepicker> -->
 
-
-                         <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
+                        <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
                             [(fromValue)]="gridConfig.filters[0].fieldValue"
                             [(toValue)]="gridConfig.filters[1].fieldValue">
@@ -57,9 +86,8 @@
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Bill No</mat-label>
                             <input matInput placeholder="Search UHID" autocomplete="off"
-                                (keypress)="keyPressAlphanumeric($event)"
-                                [formGroup]="myFilterbillform" formControlName="BillNo"
-                                (input)="onChangeBill()" />
+                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="myFilterbillform"
+                                formControlName="BillNo" (input)="onChangeBill()" />
                             <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('BillNo')">
                                 <mat-icon>close</mat-icon>
                             </button>
@@ -76,7 +104,7 @@
                         </mat-form-field>
 
 
-<!-- 
+                        <!-- 
                         <mat-form-field appearance="outline" fxFlex>
                             <mat-label>Last Name</mat-label>
                             <input matInput placeholder="Search Last Name" autocomplete="off"
@@ -94,7 +122,7 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
 
-        
+
             <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
             </airmid-table>
         </div>

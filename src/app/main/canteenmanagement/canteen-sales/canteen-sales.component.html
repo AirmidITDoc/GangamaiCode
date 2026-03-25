@@ -35,78 +35,68 @@
 
                                 <div fxLayout="column" class="gap-8 h-100-p" style="padding-top: 4px;">
                                     <mat-card fxLayout="column" class="gap-8 h-100-p">
-                                        <div class="modal-card-container">
-                                            <form [formGroup]="_CanteenmanagementService.userFormGroup"
-                                                fxLayout="column" fxLayoutGap="4px">
-                                                <div fxLayout="row">
-
-
-                                                    <mat-radio-group formControlName="Type" name="Type" fxFlex="75%"
-                                                        (change)="getItemTable1List()"
-                                                        style="padding: 5px 0px 5px 5px;">
-                                                        <mat-radio-button style="margin-right: 5px;"
-                                                            value="0">Other</mat-radio-button>
-                                                        <mat-radio-button style="margin-right: 5px;"
-                                                            value="1">Employee</mat-radio-button>
-                                                        <mat-radio-button style="margin-right: 5px;"
-                                                            value="2">Patient</mat-radio-button>
-                                                    </mat-radio-group>
-                                                </div>
-                                                <div fxLayout="row">
-                                                    <mat-form-field appearance="outline" fxFlex="6%">
-                                                        <mat-label>Code</mat-label>
-                                                        <input matInput name="Code" #Code formControlName="Code"
-                                                            (keydown)="onEnterCode($event)"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
-                                                    </mat-form-field>&nbsp;&nbsp;&nbsp;
-                                                    <!-- (keydown)="onEnterCustomer($event)" -->
-                                                    <mat-form-field appearance="outline" fxFlex="12%">
-                                                        <mat-label>Customer Name</mat-label>
-                                                        <input matInput name="CustomerName" #CustomerName
-                                                            formControlName="CustomerName" required>
-                                                    </mat-form-field>&nbsp;&nbsp;&nbsp;
-
-                                                    <!-- <airmid-dropdown label="Ward Name" formControlName="roomId"
-                                                        [value]="wardId" fxFlex="12%"
-                                                        [formGroup]="_CanteenmanagementService.userFormGroup"
-                                                        *ngIf="IsWard" [validations]="getValidationMessages().roomId"
-                                                        ValueField="roomId" TextField="roomName"
-                                                        (selectionChange)="onChangeWard($event)"
-                                                        ApiUrl="WardMaster/get-WardClass" #ddlWard>
-                                                    </airmid-dropdown> -->
-
-                                                    <airmid-dropdown label="Ward" formControlName="roomId" *ngIf="IsWard" fxFlex="15%"
-                                [formGroup]="_CanteenmanagementService.userFormGroup" [mode]="autocompleteModeward"
-                                [value]="wardId"></airmid-dropdown>
-                                                </div>
-                                                <!-- <mat-form-field appearance="outline" fxFlex="16%">
-                                            <mat-label>PaymentDate</mat-label>
-                                            <input matInput [matDatepicker]="picker" formControlName="Start">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker></mat-datepicker>
-                                        </mat-form-field>&nbsp;&nbsp;&nbsp; -->
-
-                                                <!-- <mat-form-field appearance="outline" fxFlex="18%">
-                                                            <mat-label>TotalAmount</mat-label>
-                                                            <input matInput name="TotalAmount" #TotalAmount
-                                                                formControlName="TotalAmount"
-                                                                [(ngModel)]="vTotalFinalAmount">
-                                                        </mat-form-field>&nbsp; -->
-                                                <!-- <span
-                                                    style="border: 2px solid #4a90e2; padding: 10px 10px; border-radius: 8px; display: inline-block; background-color: #f8fbff; font-weight: bold;align-items: end;">Total
-                                                    Bill :{{vTotalFinalAmount}}</span> -->
-                                            </form>
-
-                                        </div>
 
                                         <div class="modal-card-container">
                                             <div fxLayout="row" fxLayoutGap="4px">
-
-
                                                 <!-- ?//? -->
                                                 <div fxFlex="35%" fxFlex.sm="60%" fxFlex.xs="100%" class="table-left"
                                                     [dynamicTableHeight]="100">
+                                                    <div class="modal-card-container">
+                                                        <form [formGroup]="_CanteenmanagementService.userFormGroup"
+                                                            fxLayout="column" fxLayoutGap="4px">
+                                                            <div fxLayout="row">
 
+
+                                                                <mat-radio-group formControlName="Type" name="Type"
+                                                                    fxFlex="75%" (change)="getItemTable1List()"
+                                                                    style="padding: 5px 0px 5px 5px;">
+                                                                    <mat-radio-button style="margin-right: 5px;"
+                                                                        value="0">Other</mat-radio-button>
+                                                                    <mat-radio-button style="margin-right: 5px;"
+                                                                        value="1">Employee</mat-radio-button>
+                                                                    <mat-radio-button style="margin-right: 5px;"
+                                                                        value="2">Patient</mat-radio-button>
+                                                                </mat-radio-group>
+                                                            </div>
+                                                            
+                                                            <div fxLayout="row">
+                                                                <mat-form-field appearance="outline" fxFlex="25%">
+                                                                    <mat-label>Code</mat-label>
+                                                                    <input matInput name="Code" #Code
+                                                                        formControlName="Code"
+                                                                        (keydown)="onEnterCode($event)"
+                                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0,3);">
+                                                                </mat-form-field>&nbsp;&nbsp;&nbsp;
+                                                                <!-- (keydown)="onEnterCustomer($event)" -->
+                                                                <mat-form-field appearance="outline" fxFlex="40%">
+                                                                    <mat-label>Customer Name</mat-label>
+                                                                    <input matInput name="CustomerName" #CustomerName
+                                                                        formControlName="CustomerName" required>
+                                                                </mat-form-field>&nbsp;&nbsp;&nbsp;
+
+                                                                <!-- <span style="background-color: aqua;color: blue;">Total Bill:{{ vTotalFinalAmount }}</span> -->
+                                                                <!-- <mat-form-field appearance="outline" fxFlex="15%"
+                                                                style="background-color: rgb(173, 243, 255);border-color: blue;">
+                                                                    <mat-label>TotalAmount</mat-label>
+                                                                    <input matInput name="TotalAmount" #TotalAmount
+                                                                        formControlName="TotalAmount"
+                                                                        [(ngModel)]="vTotalFinalAmount" >
+                                                                </mat-form-field>&nbsp; -->
+
+                                                                <!-- <airmid-dropdown label="Ward" formControlName="roomId"
+                                                                    *ngIf="IsWard" fxFlex="15%"
+                                                                    [formGroup]="_CanteenmanagementService.userFormGroup"
+                                                                    [mode]="autocompleteModeward"
+                                                                    [value]="wardId"></airmid-dropdown> -->
+                                                            </div>
+
+
+                                                            <!-- <span
+                                                    style="border: 2px solid #4a90e2; padding: 10px 10px; border-radius: 8px; display: inline-block; background-color: #f8fbff; font-weight: bold;align-items: end;">Total
+                                                    Bill :{{vTotalFinalAmount}}</span> -->
+                                                        </form>
+
+                                                    </div>
                                                     <div class="canteen-right-table-area">
                                                         <mat-table matSort [dataSource]="dsItemDetTable2"
                                                             [@animateStagger]="{value:'100'}">
@@ -132,14 +122,7 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <!-- <ng-container matColumnDef="Qty">
-                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty
-                                                    </mat-header-cell>
-                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                        {{contact.Qty}}
-                                                    </mat-cell>
-                                                </ng-container> -->
-
+                                                          
                                                             <ng-container matColumnDef="Qty">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     fxShow.gt-sm class="w-60">Qty
@@ -510,17 +493,6 @@
                     </button>
                 </form>
 
-                <!-- 
-                <mat-card fxLayout="column" class="gap-8" fxFlex="1 1 auto" style="min-height: 0;">
-                  
-                    <div fxLayout="row" style="height: calc(90vh - 100px); overflow-y: auto;">
-
-                        <airmid-table [gridConfig]="gridConfig1" class="content" #WardGrid [ShowFilter]="false"
-                            (onSelectRow)="GetDetails1($event)" [ShowButtons]="false">
-                        </airmid-table>
-                    </div>
-                    
-                </mat-card> -->
 
                 <div class="modal-card-container h-100-p">
                     <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">

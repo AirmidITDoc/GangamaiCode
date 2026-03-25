@@ -19,7 +19,7 @@ export class ItemmasterService {
           private _loggedService: AuthenticationService,
           private _FormvalidationserviceService: FormvalidationserviceService
       ) {
-          this.itemForm = this.createItemmasterForm();
+        //   this.itemForm = this.createItemmasterForm();
           // this.myformSearch = this.createSearchForm();
       }
   
@@ -27,37 +27,20 @@ export class ItemmasterService {
       createSearchForm(): FormGroup {
           return this._formBuilder.group({
               ItemNameSearch: [""],
-              ToStoreId: this._loggedService.currentUserValue.user.storeId,
-              CatId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-              GenericId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-              ProdLocation: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-              ManufId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-              DrugTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            
           });
       }
 
-      createItemmasterForm(): FormGroup {
-          return this._formBuilder.group({
-              ItemNameSearch: [""],
-              ToStoreId: this._loggedService.currentUserValue.user.storeId,
-              CatId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-              GenericId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-              ProdLocation: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-              ManufId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-              DrugTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          });
-      }
+    
 
          public insertItemMaster(Param: any) {
-        return this._httpClient.PostData("ItemMaster/InsertEDMX", Param);
+         if (Param.itemId) {
+            return this._httpClient.PutData("CanteenMatster/" + Param.itemId, Param);
+        } else return this._httpClient.PostData("CanteenMatster", Param);
     }
 
-    public updateItemMaster(Param: any) {
-        if (Param.itemID) {
-            return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemID, Param);
-        }
-    }
+  
        public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("ItemMaster?Id=" + m_data);
+        return this._httpClient.DeleteData("CanteenMatster?Id=" + m_data);
     }
 }

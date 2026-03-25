@@ -18,6 +18,7 @@ import { AirmidCardViewComponent } from 'app/main/shared/componets/airmid-card-v
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-canteen-sales',
@@ -30,7 +31,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 export class CanteenSalesComponent implements OnInit {
 
   IsWard: boolean = false
- autocompleteModeward: string = "Room";
+  autocompleteModeward: string = "Room";
   // card?
   @HostBinding('style.display') display = 'flex';
   @HostBinding('style.flex') flex = '1 1 auto';
@@ -85,23 +86,7 @@ export class CanteenSalesComponent implements OnInit {
   ];
 
   allbillcolumns = [
-    // { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 45 },
-    // { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    // { heading: "", key: "refundAmount1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    // { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    // { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-    // { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-    // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Customer Name", key: "customerName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    // { heading: "Total Amount", key: "totalAmt", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount }, // It is just example of apply color based on condition
-    // { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    // { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    // { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    // { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-    // { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    // { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    // { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-
     {
       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
@@ -124,10 +109,7 @@ export class CanteenSalesComponent implements OnInit {
   ];
   allcardcolumns = [{ heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
   { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    //  {
-    //       heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
-    //       template: this.actionButtonTemplate
-    //     } 
+
   ]
 
   gridConfigcard: gridModel = {
@@ -144,20 +126,8 @@ export class CanteenSalesComponent implements OnInit {
     // { heading: "-", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 60 },
-    // { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 150  },
-    // { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-
     { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-    // { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    // { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    // { heading: "AddUserName", key: "addedUserName", sort: true, align: 'left', emptySign: 'NA' },
 
-    // {
-    //   heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
-    //   template: this.actionButtonTemplate  // Assign ng-template to the column
-    // }
   ]
 
 
@@ -217,8 +187,8 @@ export class CanteenSalesComponent implements OnInit {
   chargeslist: any = [];
   Itemsearch: string;
   vTotalFinalAmount: any;
-  vDiscAmt: any;
-  vDisc: any;
+  vDiscAmt: any = 0;
+  vDisc = 0;
 
   dsItemTable1 = new MatTableDataSource<ItemTable1List>();
   dsItemDetTable2 = new MatTableDataSource<ItemDetTable2List>();
@@ -237,25 +207,25 @@ export class CanteenSalesComponent implements OnInit {
 
 
   constructor(
-    public _CanteenmanagementService: CanteenmanagementService, public toastr: ToastrService,  private commonService: PrintserviceService,
+    public _CanteenmanagementService: CanteenmanagementService, public toastr: ToastrService, private commonService: PrintserviceService,
     private _loggedService: AuthenticationService, private _FormBuilder: UntypedFormBuilder, private _matDialog: MatDialog,
     public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
-    
+
     this.myFilterbillform = this._CanteenmanagementService.myFilterbrowseform();
 
 
     this.CanteenForm = this.createCanteenform()
     this.billdetailArray.push(this.CanteenBillDetails());
-this.getItemTable1List();
+    this.getItemTable1List();
     // this.getBillListData()
   }
 
   autocompleteModeCashcounter: string = "CashCounter";
   RegId = 0
-  Opipid = 1
+  Opipid = 0
   ReqId = 0
 
 
@@ -281,9 +251,7 @@ this.getItemTable1List();
       cashCounterId: 0,
       isPrint: true,
       isFree: true,
-      unitId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // addedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // updatedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isCancelled: false,
       reqId: this.ReqId,
       isOtherOrIsEmpBill: false,
@@ -327,7 +295,7 @@ this.getItemTable1List();
     this.dsItemTable1.filter = this.Itemsearch.trim().toLowerCase();
   }
 
-
+  vTotalTotAmount: any
 
   Save() {
 
@@ -338,27 +306,35 @@ this.getItemTable1List();
       return;
     }
 
-debugger
-      if (this.dsItemDetTable2.data.length ==0) {
+    debugger
+    if (this.dsItemDetTable2.data.length == 0) {
       this.toastr.warning('Please select a Item Name .', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
       });
       return;
     }
+    debugger
+    if (this.vDiscAmt == 0)
+      this.vTotalTotAmount = this.vTotalFinalAmount
+    else
+      this.vTotalTotAmount = this.vTotalFinalAmount + this.vDiscAmt
 
-    // if (!this.CanteenForm.invalid) {
+    if (this._CanteenmanagementService.userFormGroup.get('Type').value == '0')
+      this.CanteenForm.get('isOtherOrIsEmpBill').setValue(true)
+    else
+      this.CanteenForm.get('isOtherOrIsEmpBill').setValue(false)
 
     this.CanteenForm.get("date").setValue(this.datePipe.transform(new Date(), "yyyy-MM-dd"))
-    this.CanteenForm.get("time").setValue(new Date(),"HH:mm:ss")
+    this.CanteenForm.get("time").setValue(new Date(), "HH:mm:ss")
+    this.CanteenForm.get('reqId').setValue(this.ReqId)
+    this.CanteenForm.get('discAmount')?.setValue(this.vDiscAmt)
 
-    this.CanteenForm.get('balanceAmount').setValue(0)
-     this.CanteenForm.get('paidAmount')?.setValue(this.vTotalFinalAmount)
+    this.CanteenForm.get('totalAmount')?.setValue(this.vTotalTotAmount)
+
     this.CanteenForm.get('netAmount')?.setValue(this.vTotalFinalAmount)
     this.CanteenForm.get('customerName').setValue(this._CanteenmanagementService.userFormGroup.get('CustomerName').value)
     this.CanteenForm.get('opIpId')?.setValue(this.Opipid)
 
-    // const formattedDate = this.datePipe.transform(this.CanteenForm.get('billDate').value, "yyyy-MM-dd");
-    // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
 
     // if (!this.CanteenForm.invalid) {
     this.billdetailArray.clear();
@@ -369,80 +345,68 @@ debugger
 
     console.log("form values", this.CanteenForm.value)
 
-    if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'PayOption') {
-      let PatientHeaderObj = {};
-      PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-        PatientHeaderObj['PatientName'] = this.CustomerName;
-      PatientHeaderObj['RegNo'] = this.regNo || 0;
-      PatientHeaderObj['OPD_IPD_Id'] = this.Opipid;
-      PatientHeaderObj['CashCounterId'] = this._CanteenmanagementService.userFormGroup.get('CashCounterID')?.value || 0;
-      PatientHeaderObj['TransactionLabel'] = 'CANTEEN-Bill';
-      PatientHeaderObj['NetPayAmount'] = Math.round(this._CanteenmanagementService.userFormGroup.get('netPayableAmt').value);
-      const dialogRef = this._matDialog.open(OpPaymentComponent,
-        {
-          maxWidth: "80vw",
-          height: '750px',
-          width: '80%',
-          data: {
-            vPatientHeaderObj: PatientHeaderObj,
-            FromName: "CANTEEN-Bill",
-            advanceObj: PatientHeaderObj,
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result && result.IsSubmitFlag == true) {
-          console.log(this.CanteenForm.value)
-          console.log(result.submitDataPay.ipPaymentInsert)
-          console.log(result.BillBalanceAmount)
-          this.CanteenForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
-          this.CanteenForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
+    // if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'PayOption') {
+    //   let PatientHeaderObj = {};
+    //   PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+    //     PatientHeaderObj['PatientName'] = this.CustomerName;
+    //   PatientHeaderObj['RegNo'] = this.regNo || 0;
+    //   PatientHeaderObj['OPD_IPD_Id'] = this.Opipid;
+    //   PatientHeaderObj['CashCounterId'] = this._CanteenmanagementService.userFormGroup.get('CashCounterID')?.value || 0;
+    //   PatientHeaderObj['TransactionLabel'] = 'CANTEEN-Bill';
+    //   PatientHeaderObj['NetPayAmount'] = Math.round(this._CanteenmanagementService.userFormGroup.get('netPayableAmt').value);
+    //   const dialogRef = this._matDialog.open(OpPaymentComponent,
+    //     {
+    //       maxWidth: "80vw",
+    //       height: '750px',
+    //       width: '80%',
+    //       data: {
+    //         vPatientHeaderObj: PatientHeaderObj,
+    //         FromName: "CANTEEN-Bill",
+    //         advanceObj: PatientHeaderObj,
+    //       }
+    //     });
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     if (result && result.IsSubmitFlag == true) {
+    //       console.log(this.CanteenForm.value)
+    //       console.log(result.submitDataPay.ipPaymentInsert)
+    //       console.log(result.BillBalanceAmount)
+    //       this.CanteenForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
+    //       this.CanteenForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-          // this.ModeOfPaymentsArray.clear();
-          // result.submitDataPay.ipModePaymentInsert.forEach(item => {
-          //     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
-          // });
+    //       // this.ModeOfPaymentsArray.clear();
+    //       // result.submitDataPay.ipModePaymentInsert.forEach(item => {
+    //       //     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+    //       // });
 
-          console.log(this.CanteenForm.value)
-          this._CanteenmanagementService.canteenBillSave(this.CanteenForm.value).subscribe(response => {
-            this.resetform();
-            this.viewgetBillThermalReportPdf(response)
+    //       console.log(this.CanteenForm.value)
+    //       this._CanteenmanagementService.canteenBillSave(this.CanteenForm.value).subscribe(response => {
+    //         this.resetform();
+    //         this.viewgetBillThermalReportPdf(response)
 
-          });
-        }
-      });
+    //       });
+    //     }
+    //   });
+    // }else 
+
+    if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'CashPay') {//Cash pay  
+
+      this.CanteenForm.get('balanceAmount').setValue(0)
+      this.CanteenForm.get('paidAmount')?.setValue(this.vTotalFinalAmount)
+
+    } else if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'CreditPay') {
+
+      this.CanteenForm.get('balanceAmount').setValue(this.vTotalFinalAmount)
+      this.CanteenForm.get('paidAmount')?.setValue(0)
+
     }
-    else if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'CashPay') {//Cash pay  
-      let ModePaymentObj = [];
-      // ModePaymentObj.push({
-      //     paymentDate: formattedDate,
-      //     paymentTime: formattedTime,
-      //     payAmount: this._CanteenmanagementService.userFormGroup.get('netPayableAmt')?.value ?? 0,
-      //     tranNo: "",
-      //     bankName: "",
-      //     validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-      //     comments: "",
-      //     payMode: "CASH",
-      //     onlineTranNo: "0",
-      //     onlineTranResponse: "0",
-      //     companyId: 0,
-      //     cashCounterId: 0,
-      //     transactionType: 0,
-      //     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
-      // });
+    debugger
+    console.log(this.CanteenForm.value)
+    this._CanteenmanagementService.canteenBillSave(this.CanteenForm.value).subscribe(response => {
+      console.log(response)
+      this.viewgetBillThermalReportPdf(response)
+      this.resetform();
+    });
 
-      // this.CanteenForm.get('payments.cashPayAmount')?.setValue(Number(this._CanteenmanagementService.userFormGroup.get('netPayableAmt')?.value))
-      // this.CanteenForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-      // this.CanteenForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
-      // this.CanteenForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
-
-      debugger
-      console.log(this.CanteenForm.value)
-      this._CanteenmanagementService.canteenBillSave(this.CanteenForm.value).subscribe(response => {
-        this.resetform();
-        // this.viewgetBillThermalReportPdf(response)
-
-      });
-    }
     // else if (this._CanteenmanagementService.userFormGroup.get('Status').value == 'OnlinePay') {
     //     let ModePaymentObj = [];
     //     ModePaymentObj.push({
@@ -547,7 +511,8 @@ debugger
 
   getItemTable1List() {
 
-    var vdata = this._CanteenmanagementService.userFormGroup.get('ItemID').value
+    debugger
+    var vdata = this._CanteenmanagementService.userFormGroup.get('ItemID').value || '%'
 
     this._CanteenmanagementService.getItemTable1List(vdata).subscribe(data => {
       this.dsItemTable1.data = data as ItemTable1List[];
@@ -562,31 +527,48 @@ debugger
   resetform() {
     this._CanteenmanagementService.userFormGroup.reset()
     this._CanteenmanagementService.userFormGroup.get('Type').setValue('2')
-       this._CanteenmanagementService.userFormGroup.get('Status').setValue('CashPay')
-    this.dsItemDetTable2.data=[]
-   }
-
-  viewgetBillThermalReportPdf(BillNo) {
-    this.commonService.Onprint("BillNo", BillNo, "CanteenBillReceiptT");
+    this._CanteenmanagementService.userFormGroup.get('Status').setValue('CashPay')
+    this.dsItemDetTable2.data = []
+    this.chargeslist = []
   }
 
 
+
+  viewgetBillThermalReportPdf(BillNo) {
+    debugger
+    const param = {
+      "searchFields": [
+        {
+          "fieldName": 'BillNo',
+          "fieldValue": String(BillNo),
+          "opType": "13"
+        }
+      ],
+      "mode": 'CanteenBillReceiptT'
+    }
+    this._CanteenmanagementService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: res + " " + "Viewer"
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+  }
+
   getItemDetailList(row) {
-    // console.log(row);
+    console.log(row);
     this.sIsLoading = 'loading-data';
     this.sIsLoading = 'save';
     this.dsItemDetTable2.data = [];
-    // if (this.chargeslist && this.chargeslist.length > 0) {
-    //   let duplicateItem = this.chargeslist.filter((con, index) => con.ItemID === row.ItemID);
-    //   if (duplicateItem && duplicateItem.length == 0) {
-    //     this.addChargList(row);
-    //     return;
-    //   }
-    //   this.sIsLoading = '';
-    //   this.dsItemDetTable2.data = this.chargeslist;
-    // } else if (this.chargeslist && this.chargeslist.length == 0) {
+
     this.addChargList(row);
-    // }
 
   }
   @ViewChild(AirmidCardViewComponent) cardView: AirmidCardViewComponent;
@@ -603,8 +585,6 @@ debugger
 
       ]
     }
-    // this.grid1.gridConfig = this.gridConfigcard;
-    // this.grid1.bindGridData();
 
     this.cardView.gridConfig = this.gridConfigcard;
     this.cardView.bindGridData();
@@ -613,23 +593,30 @@ debugger
 
 
   addChargList(row) {
-    // 
+    const existingItem = this.dsItemDetTable2.data.find(
+      item => item.ItemID === row.itemID
+    );
 
-    this.chargeslist.push(
-      {
+    if (existingItem) {
+      // Item already exists → Increase quantity
+      existingItem.Qty += 1;
+      existingItem.Amount = existingItem.Qty * (existingItem.Price || 0);
+      this.getTotalAmount()
+    } else {
+      // New item → Add to list
+      this.chargeslist.push({
         ItemID: row.itemID,
         ItemName: row.itemName,
         Price: row.price || 0,
         Qty: 1,
-        Amount: row.price
+        Amount: row.price || 0
       });
-    this.sIsLoading = '';
-    //  console.log(this.chargeslist);
-    this.dsItemDetTable2.data = this.chargeslist;
+      this.sIsLoading = '';
+      this.dsItemDetTable2.data = this.chargeslist;
 
-    this.getTotalAmount()
+      this.getTotalAmount()
+    }
   }
-
   onQtyEdit(event: any, contact: ItemDetTable2List) {
     const editedQty = parseFloat(event.target.textContent) || 0;
     contact.Qty = editedQty;
@@ -660,20 +647,21 @@ debugger
       this._CanteenmanagementService.userFormGroup.get('Discount').setValue(0);
       this._CanteenmanagementService.userFormGroup.get('DiscAmt').setValue(0);
       //this._CanteenmanagementService.userFormGroup.get('TotalAmount').setValue(this.vTotalFinalAmount);
-      this.vTotalFinalAmount=this.vTotalFinalAmount.toFixed(2);
+      this.vTotalFinalAmount = this.vTotalFinalAmount.toFixed(2);
     }
     if (disc) {
       let dis = this._CanteenmanagementService.userFormGroup.get('Discount').value;
       this.vDiscAmt = ((dis * parseInt(this.vTotalFinalAmount)) / 100).toFixed(2);
       this.vTotalFinalAmount = this.vTotalFinalAmount - this.vDiscAmt;
-      //  total = this.vTotalFinalAmount.toFixed(2);
+      this.vTotalFinalAmount = this.vTotalFinalAmount.toFixed(2);
       // this.CalculateDisAmt();
     }
 
   }
+
   CalculateDisAmt() {
     this.vTotalFinalAmount = (parseInt(this.vTotalFinalAmount) - parseInt(this.vDiscAmt));
-   this.vTotalFinalAmount= this.vTotalFinalAmount.toFixed(2)
+    this.vTotalFinalAmount = this.vTotalFinalAmount.toFixed(2)
   }
 
   @ViewChild('Code') Code: ElementRef;
@@ -941,12 +929,13 @@ debugger
     this.wardgrid.gridConfig = this.gridConfig;
     this.wardgrid.bindGridData();
   }
-wardId=0
+  wardId = 0
   GetDetails1(data) {
     console.log(data)
     debugger
     this.IsWard = true
-    // this.wardId= parseInt(data.bedName)
+
+    this.ReqId = parseInt(data.reqId)
     this._CanteenmanagementService.userFormGroup.get('roomId').setValue(parseInt(data.bedName))
     this._CanteenmanagementService.userFormGroup.get('CustomerName').setValue(data.patientName)
     this._CanteenmanagementService.userFormGroup.get('Code').setValue(data.oP_IP_ID)
@@ -957,19 +946,20 @@ wardId=0
   }
 
 
-  Chargelist=[]
-    deleteTableRow(event, element) {
-      this.Chargelist=this.dsItemDetTable2.data
-       const index = this.Chargelist.indexOf(element);
-        if (index >= 0) {
-            this.Chargelist.splice(index, 1);
-            this.dsItemDetTable2.data = [];
-            this.dsItemDetTable2.data = this.Chargelist;
-        }
-        this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
-            toastClass: 'tostr-tost custom-toast-success',
-        });
+  Chargelist = []
+  deleteTableRow(event, element) {
+    this.Chargelist = this.dsItemDetTable2.data
+    const index = this.Chargelist.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist.splice(index, 1);
+      this.dsItemDetTable2.data = [];
+      this.dsItemDetTable2.data = this.Chargelist;
     }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+    this.getTotalAmount()
+  }
 
 }
 export class ItemTable1List {
@@ -991,7 +981,7 @@ export class ItemTable1List {
   }
 }
 export class ItemDetTable2List {
-
+  ItemID: any;
   ItemName: string;
   Qty: any;
   Price: number;
@@ -999,6 +989,7 @@ export class ItemDetTable2List {
 
   constructor(ItemTable1List) {
     {
+      this.ItemID = ItemTable1List.ItemID || 0;
       this.Qty = ItemTable1List.Qty || 0;
       this.Amount = ItemTable1List.Amount || 0;
       this.Price = ItemTable1List.Price || 0;
