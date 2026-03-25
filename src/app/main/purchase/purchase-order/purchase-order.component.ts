@@ -48,10 +48,13 @@ export class PurchaseOrderComponent implements OnInit {
 
     @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('isPRTOPoStatus') isPRTOPoStatus!: TemplateRef<any>;
+
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.isVerifiedstatus;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isPurchaseRequisitionId')!.template = this.isPRTOPoStatus;
 
     }
     @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
@@ -62,6 +65,9 @@ export class PurchaseOrderComponent implements OnInit {
     allcolumns = [
 
         { heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+        { heading: "IsPR", key: "isPurchaseRequisitionId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70,
+             template: this.actionButtonTemplate 
+        },
         { heading: "Purchase No", key: "purchaseNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Date", key: "pDate", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -629,6 +635,7 @@ export class ItemNameList {
     Price: any
     unitofMeasurementName: any;
     SupplierId: any;
+    PRId:any;
     /**
      * Constructor
      *
@@ -727,6 +734,7 @@ export class ItemNameList {
             this.DocAmt = ItemNameList.DocAmt || "";
             this.Price = ItemNameList.Price || "";
             this.SupplierId = ItemNameList.SupplierId || 0;
+             this.PRId = ItemNameList.PRId || 0;
             this.unitofMeasurementName = ItemNameList.unitofMeasurementName || "";
         }
     }

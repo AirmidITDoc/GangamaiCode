@@ -540,24 +540,32 @@ export class PurchaseRequisitionComponent implements OnInit {
                 const items = groupedData[supplierId];
                 const header = this.CreatePRToHeader(items[0]);
                 const detailsArray = header.get('tPurchaseDetails') as FormArray;
-                const prHeaderArray = header.get('tpr') as FormArray;
+                 const prHeaderArray = header.get('tpr') as FormArray;
+              
 
                 items.forEach(element => {
                     detailsArray.push(this.createPurchasedetailForm(element));
+                 
+                });  
+                 const seen = new Set();
+                this.dsPRFinalitemlist.data.forEach(element => { 
+                     if (!seen.has(element.PRId)) {
+                    seen.add(element.PRId);
                     prHeaderArray.push(this.CreatePRHeader(element));
-                });
-
+                     } 
+                  }); 
                 this.purchaseHeaderArray.push(header);
-            });
-            console.log(this.PRTOPoSaveForm.value.tPurchaseHeader);
-
+            });  
+            
+            console.log(this.PRTOPoSaveForm.value.tPurchaseHeader); 
             this._PurchaseOrder.InsertPRtoPurchaseSave(
                 this.PRTOPoSaveForm.value.tPurchaseHeader
             ).subscribe(response => {
                 if (response) {
                     this._matDialog.closeAll();
                 }
-            });
+            });  
+            
         } else {
             let invalidFields = [];
             if (this.userFormGroup.invalid) {

@@ -123,7 +123,7 @@ export class LabFinancialDashboardComponent {
 
     // Doctor wise sales
     doctorSalesColumns: string[] = [ 'doctorName', 'totalPatient','totalAmt', 'totalSales','paidAmount'];
-    branchColumns: string[] = ['hospitalName', 'serverIP', 'serverDatabasename','serverPassword','userName'];
+    branchColumns: string[] = ['hospitalName'];
     // doctorSales = new MatTableDataSource<any>([
     //   { doctorName: 'DESIRE TO LIFE', totalPatient: 4, totalSales: 12700.0 },
     //   { doctorName: 'CHANAKYA HOSPITAL', totalPatient: 4, totalSales: 12000.0 },
@@ -164,11 +164,7 @@ export class LabFinancialDashboardComponent {
     marketingSales = new MatTableDataSource<any>([
        
     ]);
-    marketingTotalGross = 0;
-    marketingTotalDiscount =0;
-    marketingTotalReversal =0;
-    marketingTotalNet = 0;
-
+   
     // Existing column definitions kept for backward compatibility
     wardHeadCountColumns: string[] = ['wardName', 'occupancyPct', 'patients'];
     pharmacyopsalesColumns: string[] = ['Total Sales', 'Toal Cost', 'Profit'];
@@ -323,18 +319,36 @@ export class LabFinancialDashboardComponent {
     get deptTotalTestCount(): number {
         return this.departmentSales.data.reduce((sum, r) => sum + (r.testCount || 0), 0);
     }
-    get deptTotalNetSale(): number {
-        return this.departmentSales.data.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
+    get deptTotalCenSale(): number {
+        return this.departmentSales.data.reduce((sum, r) => sum + (r.centerSale || 0), 0);
     }
 
-    //   get deptTotalTotSale(): number {
-    //     return this.departmentSales.data.reduce((sum, r) => sum + (r.testCount || 0), 0);
-    // }
-    // get deptTotalNetSale(): number {
-    //     return this.departmentSales.data.reduce((sum, r) => sum + (r.totalAmount || 0), 0);
-    // }
+      get deptTotalCopSale(): number {
+        return this.departmentSales.data.reduce((sum, r) => sum + (r.corporate || 0), 0);
+    }
+    get deptTotalDigSale(): number {
+        return this.departmentSales.data.reduce((sum, r) => sum + (r.digital || 0), 0);
+    }
 
+    get deptTotalrefSale(): number {
+        return this.departmentSales.data.reduce((sum, r) => sum + (r.referral || 0), 0);
+    }
+     get deptTotalNetSale(): number {
+        return this.departmentSales.data.reduce((sum, r) => sum + (r.netSale || 0), 0);
+    }
 
+       get marketingTotalGross(): number {
+        return this.marketingSales.data.reduce((sum, r) => sum + (r.gross || 0), 0);
+    }
+    get marketingTotalDiscount(): number {
+        return this.marketingSales.data.reduce((sum, r) => sum + (r.discount || 0), 0);
+    }
+    get marketingTotalReversal(): number {
+        return this.marketingSales.data.reduce((sum, r) => sum + (r.reversal || 0), 0);
+    }
+    get marketingTotalNet(): number {
+        return this.marketingSales.data.reduce((sum, r) => sum + (r.net || 0), 0);
+    }
 
  get drTotalTestCount(): number {
         return this.doctorSales.data.reduce((sum, r) => sum + (r.totalPatients || 0), 0);
@@ -342,6 +356,15 @@ export class LabFinancialDashboardComponent {
     get drTotalNetSale(): number {
         return this.doctorSales.data.reduce((sum, r) => sum + (r.netAmount || 0), 0);
     }
+
+    
+ get drTotaltotSale(): number {
+        return this.doctorSales.data.reduce((sum, r) => sum + (r.totalAmt || 0), 0);
+    }
+    get drTotalpaidSale(): number {
+        return this.doctorSales.data.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+    }
+
     getDoctorwisesalesList() {
 
         const filters: any[] = [];
@@ -953,12 +976,15 @@ export class DoctorSalesList {
     refDoctorname: string;
     totalPatients: number;
     netAmount: number;
-    
+    totalAmt:any
+    paidAmount:any
     constructor(DoctorSalesList) {
 
         this.refDoctorname = DoctorSalesList.refDoctorname;
         this.totalPatients = DoctorSalesList.totalPatients || 0;
         this.netAmount = DoctorSalesList.netAmount || '0';
+        this.totalAmt = DoctorSalesList.totalAmt || 0;
+        this.paidAmount = DoctorSalesList.paidAmount || '0';
 
     }
 }
