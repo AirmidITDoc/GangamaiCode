@@ -131,42 +131,30 @@ export class LabAppointmentComponent {
     this.vRefDocId = value.value
     this.vRefDocName = value.text
     this.bindData();
-    this.searchRecords();
+    // this.searchRecords();
   }
+
+  // selectChangeCategory(obj: any) {
+  //   this.categoryId = obj.value
+  //   this.CateName = obj.text
+  //   this.bindData();
+  //   // this.searchRecords();
+  // }
+  categoryTimeout: any;
 
   selectChangeCategory(obj: any) {
-    this.categoryId = obj.value
-    this.CateName = obj.text
-    this.bindData();
-    this.searchRecords();
+    clearTimeout(this.categoryTimeout);
+
+    this.categoryTimeout = setTimeout(() => {
+      this.categoryId = obj.value;
+      this.CateName = obj.text;
+      this.bindData();
+    }, 300); // 300ms delay
   }
 
+  isLoading = false;
   bindData() {
-    // debugger
-    // let fromDate, toDate;
-    // fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    // toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-
-    // let fromDate, toDate;
-    // if (this.dateDisplay) {
-    //   const dates = this.dateDisplay.nativeElement.textContent.split('-');
-    //   if (this.view == CalendarView.Week) {
-    //     fromDate = new Date(dates[0].split(',').length > 1 ? dates[0].split(',')[1] : dates[1].split(',')[1], this.months[dates[0].split(' ')[0]], dates[0].split(' ')[1].split(',')[0]);
-    //     toDate = new Date(dates[1].split(',')[1], this.months[dates[1].trim().split(' ')[0]], dates[1].trim().split(' ')[1].split(',')[0]);
-    //   }
-    //   else if (this.view == CalendarView.Day) {
-    //     fromDate = new Date(dates[0].split(',')[2], this.months[dates[0].split(',')[1].trim().split(' ')[0].substring(0, 3)], dates[0].split(',')[1].trim().split(' ')[1]);
-    //   }
-    //   else {
-    //     fromDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)], 1);
-    //     toDate = new Date(dates[0].split(' ')[1], this.months[dates[0].split(' ')[0].substring(0, 3)] + 1, 0);
-    //   }
-    // }
-    // else {
-    //   const d = this.getWeekRange();
-    //   fromDate = d.sunday; toDate = d.saturday;
-    // }
-
+    this.isLoading = true;
     let fromDate: any;
     let toDate: any;
 
@@ -220,7 +208,7 @@ export class LabAppointmentComponent {
         // },
         actions: this.actions.filter(x => x.a11yLabel == "Delete"),
       }));
-
+      this.isLoading = false;
     });
   }
 
@@ -546,10 +534,9 @@ export class LabAppointmentComponent {
         data: { mode: 'appointment', row }
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-      this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-      this.grid.bindGridData();
-      // this.GetAppointdetail();
+      // this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      // this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+      this.searchRecords();
     });
   }
 

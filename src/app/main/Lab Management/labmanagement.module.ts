@@ -96,6 +96,10 @@ const appRoutes: Routes = [
         loadChildren: () => import("./branch-wise-summary/branchwise-summary.module").then((m) => m.BranchwiseSummaryModule),
     },
     {
+        path: "BranchCollectionDetail",
+        loadChildren: () => import("./branch-collection-detail/branch-collection-detail.module").then((m) => m.BranchCollectionDetailModule),
+    },
+    {
         path: "radiology-list",
         loadChildren: () => import("./lab-radiology/lab-radiology.module").then((m) => m.LabRadiologyModule),
     },

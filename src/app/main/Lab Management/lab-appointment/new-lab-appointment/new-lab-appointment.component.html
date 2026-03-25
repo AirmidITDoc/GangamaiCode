@@ -200,14 +200,13 @@
                                     <form [formGroup]="myForm" class="gap-4">
                                         <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Group Name" formControlName="groupId"
-                                                [formGroup]="myForm" (selectionChange)="selectChangegroupName($event)"
+                                                [formGroup]="myForm"
                                                 [mode]="autocompleteModegroupName"></airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="SubGroup Name" formControlName="subGroupId"
                                                 [formGroup]="myForm"
-                                                (selectionChange)="selectChangesubGroupName($event)"
                                                 [mode]="autocompleteModesubGroupName"></airmid-dropdown>
                                         </div>
 
