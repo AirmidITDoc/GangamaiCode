@@ -2047,7 +2047,19 @@ export class SalesHospitalKenyaComponent {
 
         return true;
     }
-
+// NoStockItemlist:any=[
+//     {ItemId:2,ItemName:'Dolo'},
+//       {ItemId:1,ItemName:'Doloe 25'},
+//         {ItemId:5,ItemName:'Paracetmole'}
+// ];
+NoStockItemlist:any=[];
+getItemNames(): string {
+  if (!this.NoStockItemlist || this.NoStockItemlist.length === 0) {
+    return '';
+  }
+  const unique = [...new Set(this.NoStockItemlist.map(item => item.ItemName))];
+  return unique.join(', ');
+}
     getPRESCRIPTION() {
         if (this.ItemSubform.get('opIpType').value != '2') {
             const dialogRef = this._matDialog.open(PrescriptionComponent, {
@@ -2129,7 +2141,16 @@ export class SalesHospitalKenyaComponent {
                                 html: `The item <strong>${contact.ItemName}</strong> is currently out of stock.`,
                                 showConfirmButton: true,
                                 confirmButtonText: 'OK'
-                            });
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                             this.NoStockItemlist.push({
+                                ItemId:contact?.ItemId || 0,
+                                ItemName:contact?.ItemName || ''
+                             })
+                             console.log(this.NoStockItemlist)
+                                 }
+                               })
+                           
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
                             let bal_qnt = 0;

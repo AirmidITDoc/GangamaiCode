@@ -1,0 +1,64 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar branch-summary-wrapper resize-form-fields"
+    dynamicTableHeight>
+
+    <div class="top-header">
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
+
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Branch Collection Details</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layout-body p-8" style="height: 60px;">
+
+        <form [formGroup]="myformSearch" class="mat-error-fix">
+
+            <!-- <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4"> -->
+                <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+
+                    <airmid-dropdown label="Unit Name" formControlName="UnitId" (selectionChange)="ListView($event)"
+                        fxFlex="15%" [(ngModel)]="gridConfig.filters[2].fieldValue" [formGroup]="myformSearch"
+                        [mode]="autocompleteModeunit"></airmid-dropdown>
+
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue">
+                    </airmid-datepicker>
+
+                    <div class="action-button-container" style="padding-left: 20px;">
+                        <div class="button-row-group">
+                            <button class="btn btn-primary btn-with-icon btn-xs" (click)="onChangeFirst()">
+                                <span>Search</span>
+                                <span class="btn-icon">
+                                    <mat-icon>search</mat-icon>
+                                </span>
+                            </button>
+
+                            <button class="btn btn-primary btn-with-icon btn-xs">
+                                <span>Export To Excel</span>
+                                <span class="btn-icon">
+                                    <mat-icon>insert_drive_file</mat-icon>
+                                </span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+
+        </form>
+
+    </div>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" [ShowButtons]="false">
+
+        </airmid-table>
+    </div>
+
+</div>

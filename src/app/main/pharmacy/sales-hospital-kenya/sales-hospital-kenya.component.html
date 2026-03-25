@@ -555,6 +555,14 @@
                   </mat-table>
                 </div>
               </div>
+               <div class="modal-card-container"> 
+                      <div fxLayout="row"> 
+                        <!-- <span><b>Out of Stock Items : </b></span> -->
+                        <span style="color: red; margin-left: 5px;">
+                        {{ getItemNames() }}  </span>
+                      </div> 
+                </div>
+
               <div class="modal-card-container">
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <mat-card-content class="py-4">

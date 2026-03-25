@@ -11,7 +11,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Observable, of, Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ChargesList, LabPatientList, LabRequest } from '../lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg.service';
@@ -182,7 +182,7 @@ export class NewLabPatientRegComponent {
     this.myForm = this.CreateMyForm();
     this.myForm.markAllAsTouched();
 
-    this.loadDropdownOptions();
+    // this.loadDropdownOptions();
 
     this.LabBillfinalform = this.createFinalFormView()
     //  this.chargeForm = this.createChargeForm();
@@ -212,6 +212,89 @@ export class NewLabPatientRegComponent {
     this.myForm.get('tariffId').setValue(this.data?.row?.tariffId ?? 1);
     this.myForm.get('companyId').disable() // disable for 1st time when form will open after comp select enable
 
+    console.log(this.hospitalconfigservice.HospitalconfigParams)
+    console.log(this._ConfigService.configParams)
+
+    // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
+    const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
+    const [firstnameid, firstnameval] = firstValue.includes(":") ? firstValue.split(":") : [null, null];
+    this.vFirstNameConfig = firstnameid
+
+    const middleValue = this?._configue?.configParams?.MiddleNameMandatory || "";
+    const [middlenameid, middlenameval] = middleValue.includes(":") ? middleValue.split(":") : [null, null];
+    this.vmiddleNameConfig = middlenameid
+
+    const lastValue = this?._configue?.configParams?.LastNameMandatory || "";
+    const [lastnameid, lastnameval] = lastValue.includes(":") ? lastValue.split(":") : [null, null];
+    this.vlastNameConfig = lastnameid
+
+    this.setNameValidations();
+    this.toggleConcessionValidator();
+
+    // this.myForm.get('ServiceId')?.valueChanges.subscribe(value => {
+    //   let rawValue = value || '';
+    //   let encodedValue = encodeURIComponent(rawValue);
+
+    //   let url = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
+    //     + this.vTariffId
+    //     + "&ClassId=1"
+    //     + "&GroupId=" + this.groupId
+    //     + "&SubGroupId=" + this.subGroupId
+    //     + "&SrvcName=" + encodedValue;
+
+    //   // ✅ FORCE remove duplicate raw value at end
+    //   if (rawValue) {
+    //     url = url.replace(encodedValue + rawValue, encodedValue);
+    //   }
+
+    //   this.ApiURL = url;
+
+    //   console.log(this.ApiURL);
+    // });
+    // this.myForm.get('ServiceId')?.valueChanges.subscribe(value => {
+    //   let rawValue = value || '';
+    //   let encodedValue = encodeURIComponent(rawValue);
+
+    //   // ✅ Remove duplicate raw value if appended
+    //   let finalValue = encodedValue;
+
+    //   if (encodedValue.includes(rawValue)) {
+    //     finalValue = encodedValue.replace(rawValue, '');
+    //   }
+
+    //   this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
+    //     + this.vTariffId
+    //     + "&ClassId=1"
+    //     + "&GroupId=" + this.groupId
+    //     + "&SubGroupId=" + this.subGroupId
+    //     + "&SrvcName=" + finalValue;
+
+    //   console.log(this.ApiURL);
+    // });
+
+
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+
+    this.myForm.get('groupId')?.valueChanges.pipe(debounceTime(300)).subscribe(val => {
+      this.groupId = val || 0;
+      this.updateApiUrl();
+    });
+
+    this.myForm.get('subGroupId')?.valueChanges.pipe(debounceTime(300)).subscribe(val => {
+      this.subGroupId = val || 0;
+      this.updateApiUrl();
+    });
+  }
+
+  ngAfterViewInit() {
+    this.dialogRef.afterOpened().subscribe(() => {
+      this.loadDropdownOptions();
+      this.getServiceList();
+      this.loadPatientData(); // your mode logic
+    });
+  }
+
+  loadPatientData() {
     if (this.data.mode == 'add') {
       if (this.data?.row?.labPatRegId) {
         this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatRegId).subscribe((response) => {
@@ -291,28 +374,15 @@ export class NewLabPatientRegComponent {
         this.getAppointmentSerList();
       }
     }
+  }
 
-    this.getServiceList();
-    console.log(this.hospitalconfigservice.HospitalconfigParams)
-    console.log(this._ConfigService.configParams)
-
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-
-    // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
-    const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
-    const [firstnameid, firstnameval] = firstValue.includes(":") ? firstValue.split(":") : [null, null];
-    this.vFirstNameConfig = firstnameid
-
-    const middleValue = this?._configue?.configParams?.MiddleNameMandatory || "";
-    const [middlenameid, middlenameval] = middleValue.includes(":") ? middleValue.split(":") : [null, null];
-    this.vmiddleNameConfig = middlenameid
-
-    const lastValue = this?._configue?.configParams?.LastNameMandatory || "";
-    const [lastnameid, lastnameval] = lastValue.includes(":") ? lastValue.split(":") : [null, null];
-    this.vlastNameConfig = lastnameid
-
-    this.setNameValidations();
-    this.toggleConcessionValidator();
+  updateApiUrl() {
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
+      + this.vTariffId
+      + "&ClassId=1"
+      + "&GroupId=" + this.groupId
+      + "&SubGroupId=" + this.subGroupId
+      + "&SrvcName=";
   }
 
   setNameValidations() {
@@ -748,7 +818,6 @@ export class NewLabPatientRegComponent {
       this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
       this.vTariffId = this.companyDet.traiffId
 
-      // this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&SrvcName="
       this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
     });
   }
@@ -1195,27 +1264,27 @@ export class NewLabPatientRegComponent {
   groupId = 0;
   subGroupId = 0;
 
-  selectChangegroupName(obj: any) {
-    if (obj.value !== 0) {
-      this.groupId = obj.value
-      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-    }
-    else {
-      this.groupId = 0
-      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-    }
-    // this.groupId = obj.value !== 0 ? obj.value : 0;
-    // this.getServiceListRefresh();
-  }
+  // selectChangegroupName(obj: any) {
+  //   if (obj.value !== 0) {
+  //     this.groupId = obj.value
+  //     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+  //   }
+  //   else {
+  //     this.groupId = 0
+  //     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+  //   }
+  //   // this.groupId = obj.value !== 0 ? obj.value : 0;
+  //   // this.getServiceListRefresh();
+  // }
 
 
-  selectChangesubGroupName(obj: any) {
-    if (obj.value !== 0)
-      this.subGroupId = obj.value
-    else
-      this.subGroupId = 0
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-  }
+  // selectChangesubGroupName(obj: any) {
+  //   if (obj.value !== 0)
+  //     this.subGroupId = obj.value
+  //   else
+  //     this.subGroupId = 0
+  //   this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+  // }
 
   getSelectedserviceObj(obj) {
     console.log(obj)
@@ -2113,7 +2182,7 @@ export class NewLabPatientRegComponent {
         console.log(this.LabBillfinalform.value)
 
         this._labPatientRegService.InsertlabregCredit(this.LabBillfinalform.value).subscribe(response => {
-          // this.viewgetOPBillReportPdf(response)
+          this.viewgetOPBillReportPdf(response)
           // this._matDialog.closeAll();
           this.dialogRef.close('home');
           this.savebtn = true
@@ -2233,7 +2302,7 @@ export class NewLabPatientRegComponent {
   viewgetOPBillReportPdf(element) {
     // this.commonService.Onprint("BillNo", element, "LabregisterBillReceipt");
     // this.commonService.Onprint("BillNo", element, "LabMoneyReceipt");
-    this.commonService.OnprintOld("BillNo", element, "LabMoneyReceiptPatientCopy");
+    this.commonService.Onprint("BillNo", element, "LabMoneyReceiptPatientCopy");
   }
   filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
     const { firstName, lastName, mobileNo } = fields;

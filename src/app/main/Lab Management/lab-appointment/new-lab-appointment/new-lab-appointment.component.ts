@@ -238,6 +238,28 @@ export class NewLabAppointmentComponent {
     this.vlastNameConfig = lastnameid
 
     this.setNameValidations();
+
+    // Dropdown clear & search option
+    this.myForm.get('groupId')?.valueChanges.subscribe(val => {
+      if (val == 0) {
+        this.groupId = 0;
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+      } else {
+        this.groupId = val;
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+      }
+    });
+
+    this.myForm.get('subGroupId')?.valueChanges.subscribe(val => {
+      if (val == 0) {
+        this.subGroupId = 0;
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+      } else {
+        this.subGroupId = val;
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+      }
+    });
+
   }
 
   convertISOToTime(dateTime: string): Date | null {

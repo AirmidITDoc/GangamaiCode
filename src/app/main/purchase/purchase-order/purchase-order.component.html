@@ -30,6 +30,13 @@
                 </div>
             </ng-template>
 
+             <ng-template #isPRTOPoStatus let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isPurchaseRequisitionId != 0" matTooltip="IsPurchaseRequisition"
+                        style="color: green;">where_to_vote</mat-icon> 
+                </div>
+            </ng-template>
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button matTooltip="Print Purchase Order"
@@ -46,7 +53,7 @@
                         <mat-icon>signal_cellular_no_sim</mat-icon>
                     </button>
 
-                    <button *ngIf="!element.isVerified && IsPoverify" mat-icon-button (click)="onVerify(element)">
+                    <button *ngIf="!element.isVerified && IsPoverify && isProceedToApproval != 0" mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" matTooltip="verify Menu"
                             title="verify Menu">verified_user</mat-icon>
                     </button>

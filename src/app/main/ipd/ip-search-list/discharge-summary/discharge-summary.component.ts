@@ -489,11 +489,11 @@ export class DischargeSummaryComponent implements OnInit {
 
     viewgetDischargesummaryPdf(AdmId) {
         console.log(AdmId)
-        this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReport");
+        this.commonService.OnprintOld("AdmissionID", AdmId, "IpDischargeSummaryReport");
     }
 
     viewgetDischargesummaryHeaderPdf(AdmId) {
-        this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryReportWithoutHeader");
+        this.commonService.OnprintOld("AdmissionID", AdmId, "IpDischargeSummaryReportWithoutHeader");
     }
 
     getItemMaster() {

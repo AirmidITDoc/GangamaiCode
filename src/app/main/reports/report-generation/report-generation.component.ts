@@ -181,6 +181,40 @@ export class ReportGenerationComponent implements OnInit {
         if (this.rid == 0)
             this.toastr.error("Report not found");
         this.GetAllReporConfig();
+
+        // require fo clear dropdown & pass 0
+        this._ReportService.userForm.get('UserId')?.valueChanges.subscribe(val => {
+            this.UserId = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('HospitalId')?.valueChanges.subscribe(val => {
+            this.HospitalId = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('ExecutiveId')?.valueChanges.subscribe(val => {
+            this.ExecutiveId = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('LoginUserId')?.valueChanges.subscribe(val => {
+            this.LoginUserId = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('LabPatientId')?.valueChanges.subscribe(val => {
+            this.LabPatientId = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('RegNo')?.valueChanges.subscribe(val => {
+            this.RegNo = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('PatientType')?.valueChanges.subscribe(val => {
+            this.PatientType = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('status')?.valueChanges.subscribe(val => {
+            this.status = (val == 0) ? 0 : val
+        });
+
     }
     GetAllReporConfig() {
         const paramFilter = [{
