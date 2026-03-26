@@ -242,10 +242,10 @@
                         <div fxFlex="70">
                             <div class="detail-container billing-flex-layout">
 
-                                <div style="align-items: start center; height: 40px;margin-top: 5px;">
+                                <div style="align-items: start center; height: 40px;margin-top: 5px;"
+                                    fxLayoutAlign="space-between center">
                                     <h3 style="font-weight: bold;">Enter Services</h3>
-                                </div>
-                                <div class="billing-top-zone">
+
                                     <div *ngIf="showPrevBtn" fxLayoutAlign="end"
                                         style="margin-bottom: 5px;margin-right: 10px;">
                                         <button class="btn btn-primary" style=" height: 36px;display: flex; align-items: center;
@@ -254,6 +254,8 @@
                                             <span>Load Previous</span>
                                         </button>
                                     </div>
+                                </div>
+                                <div class="billing-top-zone">
 
                                     <form [formGroup]="myForm" class="gap-4">
                                         <div fxFlex="22%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -270,7 +272,7 @@
 
                                         <airmid-autocomplete #serviceInput label="Enter Service Name"
                                             [formGroup]="myForm" formControlName="ServiceId"
-                                            placeholderText="Enter Service Name" fxFlex="50%" ApiUrl="{{ApiURL}}"
+                                            placeholderText="Enter Service Name" fxFlex="350px" ApiUrl="{{ApiURL}}"
                                             (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
                                             (input)="onServiceInput($event)"
                                             ValueField="serviceId"></airmid-autocomplete>
