@@ -1061,6 +1061,313 @@
         color: #ee7ccd;
     }
     
-}
+    // New Dashboard Cards Styles
+    .dashboard-section {
+        margin: 10px 0 16px 0;
+        background: #fdfdfd;
+        border-radius: 8px;
+        padding: 12px;
+        border: 1px solid #e2e8f0;
 
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+
+            .sh-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+                mat-icon {
+                    color: white;
+                }
+            }
+
+            .sh-text {
+                .sh-title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #333;
+                }
+                .sh-subtitle {
+                    font-size: 12px;
+                    color: #777;
+                }
+            }
+        }
+
+        .cards-grid-new {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+
+            .dashboard-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 8px !important;
+                padding: 10px 12px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                gap: 4px !important;
+                height: auto !important;
+
+                &.collection-card {
+                    grid-column: span 2;
+                    @media (max-width: 768px) {
+                        grid-column: span 1;
+                    }
+                }
+
+                .card-header {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: center !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+
+                    &.approval-header {
+                        margin-bottom: 2px !important;
+                        .card-title {
+                            display: flex !important;
+                            align-items: center !important;
+                            gap: 4px !important;
+                            margin: 0 !important;
+                            mat-icon {
+                                font-size: 16px !important;
+                                width: 16px !important;
+                                height: 16px !important;
+                            }
+                        }
+                    }
+
+                    .card-title {
+                        font-size: 10px !important;
+                        font-weight: 600 !important;
+                        color: #777 !important;
+                        text-transform: uppercase !important;
+                        letter-spacing: 0.5px !important;
+                        margin: 0 !important;
+                        line-height: 1 !important;
+                    }
+
+                    .card-icon {
+                        margin: 0 !important;
+                        mat-icon {
+                            font-size: 18px !important;
+                            width: 18px !important;
+                            height: 18px !important;
+                            opacity: 0.6 !important;
+                            border-radius: 50% !important;
+                            background: rgba(0,0,0,0.03) !important;
+                            padding: 4px !important;
+                            display: flex !important;
+                            align-items: center !important;
+                            justify-content: center !important;
+                        }
+                    }
+                }
+
+                .card-body {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: flex-end !important;
+                    flex: none !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+
+                    .card-info {
+                        display: flex !important;
+                        flex-direction: column !important;
+                        gap: 2px !important;
+                        justify-content: flex-end !important;
+                        margin: 0 !important;
+                        
+                        .card-value {
+                            font-size: 20px !important;
+                            font-weight: 700 !important;
+                            color: #222 !important;
+                            line-height: 1 !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                        }
+
+                        .card-footer {
+                            display: flex !important;
+                            align-items: center !important;
+                            gap: 4px !important;
+                            font-size: 9.5px !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+
+                            .card-trend {
+                                display: flex !important;
+                                align-items: center !important;
+                                font-weight: 600 !important;
+                                margin: 0 !important;
+
+                                mat-icon {
+                                    font-size: 11px !important;
+                                    width: 11px !important;
+                                    height: 11px !important;
+                                    margin: 0 !important;
+                                }
+                                &.trend-up {
+                                    color: #2bb179 !important;
+                                }
+                                &.trend-down {
+                                    color: #f46a6a !important;
+                                }
+                            }
+
+                            .card-trend-diff, .card-subtitle {
+                                color: #999 !important;
+                                font-weight: 500 !important;
+                                margin: 0 !important;
+                            }
+                        }
+                    }
+
+                    .card-sparkline {
+                        width: 45px !important;
+                        height: 20px !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+
+                        .sparkline {
+                            width: 100%;
+                            height: 100%;
+                            path {
+                                vector-effect: non-scaling-stroke;
+                            }
+                            &.up path {
+                                stroke: #2bb179;
+                            }
+                            &.down path {
+                                stroke: #f46a6a;
+                            }
+                        }
+                    }
+                }
+
+                .approval-body {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .approval-stat {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 2px;
+
+                        .av-val {
+                            font-size: 18px;
+                            font-weight: 700;
+                            color: #222;
+                            line-height: 1;
+                        }
+                        .av-lbl {
+                            font-size: 9px;
+                            color: #777;
+                            display: flex;
+                            align-items: center;
+                            gap: 4px;
+                            mat-icon {
+                                font-size: 12px;
+                                width: 12px;
+                                height: 12px;
+                            }
+                        }
+                    }
+                }
+
+                .col-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    margin-bottom: 12px;
+
+                    .col-title {
+                        font-size: 11px;
+                        font-weight: 600;
+                        color: #777;
+                        text-transform: uppercase;
+                    }
+                    .col-total {
+                        font-size: 18px;
+                        font-weight: 700;
+                        line-height: 1;
+                        color: #176ab4;
+                    }
+                }
+
+                .col-breakdown {
+                    display: flex;
+                    justify-content: flex-start;
+                    gap: 8px;
+                    flex-wrap: wrap;
+
+                    .col-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        background: #f8f9fa;
+                        padding: 6px 10px;
+                        border-radius: 6px;
+
+                        mat-icon {
+                            color: #999;
+                            font-size: 18px;
+                            width: 18px;
+                            height: 18px;
+                        }
+
+                        .col-item-text {
+                            display: flex;
+                            flex-direction: column;
+
+                            .ci-val {
+                                font-size: 12px;
+                                font-weight: 700;
+                                color: #333;
+                            }
+                            .ci-lbl {
+                                font-size: 9px;
+                                color: #777;
+                            }
+                        }
+                    }
+
+                    .col-trend-wrap {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        font-size: 12px;
+                        margin-bottom: 4px;
+                        width: 100%;
+
+                        .card-trend {
+                            display: flex;
+                            align-items: center;
+                            font-weight: 600;
+                            mat-icon { font-size: 14px; width: 14px; height: 14px; }
+                        }
+                        .trend-down { color: #f46a6a; }
+                        .card-trend-diff { color: #999; }
+                    }
+
+                    .col-sub-total {
+                        font-size: 12px;
+                        color: #999;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+}
 // end .new-dashboard-section

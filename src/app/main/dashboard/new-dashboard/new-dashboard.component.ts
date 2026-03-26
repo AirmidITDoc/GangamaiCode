@@ -583,6 +583,90 @@ export class NewDashboardComponent implements OnInit {
         ]
     };
 
+    // --- New Dashboard Dummy Data & Charts ---
+    getSparklinePath(data: number[]): string {
+      if (!data || data.length === 0) return '';
+      const max = Math.max(...data);
+      const min = Math.min(...data);
+      const range = max - min || 1;
+      const width = 100;
+      const height = 30;
+      const stepX = width / Math.max(1, data.length - 1);
+      
+      const points = data.map((val, i) => {
+          const x = i * stepX;
+          // Pad 2px top and bottom
+          const y = 28 - ((val - min) / range) * 26; 
+          // Use 'S', 'Q', 'C' for pure smooth curves if desired, but L works fine for small charts
+          return `${i === 0 ? 'M' : 'L'}${x},${y}`;
+      });
+      
+      return points.join(' ');
+    }
+  
+    isTrendUp(data: number[]): boolean {
+      if (!data || data.length < 2) return true;
+      return data[data.length - 1] >= data[data.length - 2];
+    }
+  
+    opCards = [
+      { label: 'REGISTRATIONS', value: '148', trend: '+16', trendDiff: 'vs yesterday', history: [80, 100, 95, 120, 110, 130, 148], icon: 'person_add', isApproval: false, iconColor: '#4caeef' },
+      { label: 'APPOINTMENTS', value: '215', trend: '-5', trendDiff: 'vs yesterday', history: [220, 230, 210, 240, 225, 230, 215], icon: 'calendar_today', isApproval: false, iconColor: '#2bb179' },
+      { label: 'CHECKED IN', value: '89', trend: '+7', trendDiff: 'vs yesterday', history: [60, 75, 70, 85, 80, 82, 89], icon: 'input', isApproval: false, iconColor: '#4caeef' },
+      { label: 'CHECKED OUT', value: '64', trend: '-6', trendDiff: 'vs yesterday', history: [80, 70, 75, 90, 85, 78, 64], icon: 'exit_to_app', isApproval: false, iconColor: '#2486f5' },
+      { label: 'PENDING & WAITING', value: '25', trend: '-5', trendDiff: 'vs yesterday', history: [35, 30, 40, 28, 32, 30, 25], icon: 'schedule', isApproval: false, iconColor: '#f1b44c' },
+      { label: 'ER TO OP', value: '12', trend: '+3', trendDiff: 'vs yesterday', history: [5, 8, 6, 12, 10, 9, 12], icon: 'warning', isApproval: false, iconColor: '#f46a6a' },
+      { label: 'OP BILLS (CASH)', value: '92', trend: '+7', trendDiff: 'vs yesterday', history: [70, 85, 80, 95, 88, 85, 92], icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
+      { label: 'OP BILLS (CREDIT)', value: '56', trend: '-4', trendDiff: 'vs yesterday', history: [65, 50, 60, 55, 62, 60, 56], icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
+      { label: 'REFUND COUNT', value: '4', trend: '-2', trendDiff: 'vs yesterday', history: [8, 5, 7, 4, 6, 6, 4], icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
+      { label: 'HCP COUNT', value: '38', trend: '+2', trendDiff: 'vs yesterday', history: [20, 30, 35, 32, 40, 36, 38], icon: 'local_hospital', isApproval: false, iconColor: '#9566d3' },
+      { label: 'DISCOUNT APPROVAL', approved: '18', pending: '7', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' },
+      { label: 'REFUND APPROVAL', approved: '3', pending: '1', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' }
+    ];
+    opCollection = { total: '₹4,85,600', cash: '₹1,85,000', card: '₹1,42,600', upi: '₹98,000', bank: '₹60,000' };
+  
+    ipCards = [
+      { label: 'TODAY\'S ADMISSIONS', value: '34', trend: '+6', trendDiff: 'vs yesterday', history: [20, 25, 22, 30, 28, 30, 34], icon: 'hotel', isApproval: false, iconColor: '#4caeef' },
+      { label: 'CURRENT OCCUPANCY', value: '78%', trend: '+4', trendDiff: 'vs yesterday', subtitle: '312 / 400 beds', history: [65, 70, 68, 75, 72, 74, 78], icon: 'domain', isApproval: false, iconColor: '#2bb179' },
+      { label: 'ER TO IP', value: '8', trend: '+2', trendDiff: 'vs yesterday', history: [4, 6, 5, 8, 7, 6, 8], icon: 'warning', isApproval: false, iconColor: '#f46a6a' },
+      { label: 'TODAY\'S DISCHARGE', value: '22', trend: '-3', trendDiff: 'vs yesterday', history: [30, 25, 28, 20, 26, 25, 22], icon: 'exit_to_app', isApproval: false, iconColor: '#2bb179' },
+      { label: 'DISCHARGE CLEARANCE', value: '18', trend: '-2', trendDiff: 'vs yesterday', subtitle: 'Cleared', history: [22, 18, 20, 16, 21, 20, 18], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+      { label: 'DISCHARGE PENDING', value: '4', trend: '-1', trendDiff: 'vs yesterday', history: [8, 6, 7, 5, 6, 5, 4], icon: 'schedule', isApproval: false, iconColor: '#f1b44c' },
+      { label: 'IP BILLS (CASH)', value: '45', trend: '+5', trendDiff: 'vs yesterday', history: [30, 35, 38, 42, 40, 42, 45], icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
+      { label: 'IP BILLS (CREDIT)', value: '67', trend: '-5', trendDiff: 'vs yesterday', history: [75, 70, 72, 80, 68, 70, 67], icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
+      { label: 'REFUND COUNT', value: '2', trend: '-1', trendDiff: 'vs yesterday', history: [5, 4, 3, 4, 2, 3, 2], icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
+      { label: 'DISCOUNT APPROVAL', approved: '12', pending: '5', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' },
+      { label: 'REFUND APPROVAL', approved: '2', pending: '0', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' }
+    ];
+    ipCollection = { total: '₹12,56,000', cash: '₹3,20,000', card: '₹4,56,000', upi: '₹2,80,000', bank: '₹2,00,000' };
+  
+    pharmacyCards = [
+      { label: 'RX CLOSED', value: '124', trend: '+14', trendDiff: 'vs yesterday', history: [80, 95, 100, 110, 105, 120, 124], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+      { label: 'RX OPEN', value: '31', trend: '-7', trendDiff: 'vs yesterday', history: [50, 45, 40, 35, 42, 38, 31], icon: 'assignment', isApproval: false, iconColor: '#f1b44c' },
+      { label: 'WALKING SALES', value: '87', trend: '+7', trendDiff: 'vs yesterday', history: [60, 70, 75, 80, 78, 85, 87], icon: 'shopping_cart', isApproval: false, iconColor: '#4caeef' },
+      { label: 'DISCHARGE CLEARANCE', value: '16', trend: '+2', trendDiff: 'vs yesterday', history: [10, 12, 11, 15, 14, 15, 16], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+      { label: 'DISCHARGE PENDING', value: '6', trend: '-2', trendDiff: 'vs yesterday', history: [12, 8, 10, 7, 9, 8, 6], icon: 'schedule', isApproval: false, iconColor: '#f46a6a' },
+      { label: 'IP ISSUED', value: '52', trend: '+4', trendDiff: 'vs yesterday', history: [40, 45, 48, 50, 46, 50, 52], icon: 'store', isApproval: false, iconColor: '#2486f5' },
+      { label: 'IP PENDING', value: '9', trend: '-3', trendDiff: 'vs yesterday', history: [15, 18, 14, 12, 11, 12, 9], icon: 'schedule', isApproval: false, iconColor: '#f46a6a' },
+      { label: 'SALES (CASH)', value: '98', trend: '+8', trendDiff: 'vs yesterday', history: [70, 80, 85, 90, 88, 92, 98], icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
+      { label: 'SALES (CREDIT)', value: '43', trend: '-5', trendDiff: 'vs yesterday', history: [50, 45, 48, 52, 46, 48, 43], icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
+      { label: 'DISCOUNT APPROVAL', approved: '8', pending: '3', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' }
+    ];
+    pharmacyCollection = { total: '₹3,42,500', cash: '₹1,45,000', card: '₹98,500', upi: '₹72,000', bank: '₹27,000' };
+  
+    procurementCards = [
+      { label: 'PO CLOSED', value: '42', trend: '+4', trendDiff: 'vs yesterday', history: [25, 30, 32, 38, 35, 40, 42], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+      { label: 'PO OPEN', value: '15', trend: '-3', trendDiff: 'vs yesterday', history: [22, 20, 18, 20, 19, 17, 15], icon: 'assignment', isApproval: false, iconColor: '#f46a6a' },
+      { label: 'INDENT ISSUED', value: '28', trend: '+4', trendDiff: 'vs yesterday', history: [15, 20, 22, 25, 24, 26, 28], icon: 'description', isApproval: false, iconColor: '#4caeef' },
+      { label: 'INDENT CLOSED', value: '22', trend: '+2', trendDiff: 'vs yesterday', history: [12, 15, 18, 20, 19, 21, 22], icon: 'done_all', isApproval: false, iconColor: '#2bb179' },
+      { label: 'INDENT PENDING', value: '6', trend: '+2', trendDiff: 'vs yesterday', history: [3, 4, 3, 5, 4, 5, 6], icon: 'schedule', isApproval: false, iconColor: '#2bb179' },
+      { label: 'GRN COUNT', value: '35', trend: '+5', trendDiff: 'vs yesterday', history: [20, 25, 28, 32, 30, 34, 35], icon: 'local_mall', isApproval: false, iconColor: '#9566d3' },
+      { label: 'GRN APPROVAL PENDING', value: '8', trend: '-2', trendDiff: 'vs yesterday', history: [12, 10, 11, 9, 10, 9, 8], icon: 'schedule', isApproval: false, iconColor: '#f46a6a' }
+    ];
+    procurementCollection = { label: 'GRN VALUE', total: '₹12.4L', trend: '- 0', trendDiff: 'vs yesterday', trendUp: false, subtitle: '₹12,40,000' };
+    // --- End New Dashboard Dummy Data ---
+
+
     DropdData = [
         { name: 'Registrations', value: 0 },
         { name: 'Appointments', value: 0 },

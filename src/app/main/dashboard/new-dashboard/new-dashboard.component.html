@@ -31,18 +31,118 @@
     <div class="center p-12">
       <div class="dashboard-container">
 
-        <div class="metrics-grid">
-          <mat-card *ngFor="let m of metrics" class="metric-card1 mat-elevation-z2 count-cards"
-            [ngClass]="'theme-' + m.color">
-            <mat-card-content class="metric-content">
-
-              <div class="metric-text">
-                <div class="metric-label">{{ m.label }}</div>
-                <div class="metric-value1"><mat-icon>{{ getMatIcon(m.icon) }}</mat-icon> {{ m.value }}</div>
+        <!-- New Dashboard Sections -->
+        <ng-template #sectionTemplate let-title="title" let-subtitle="subtitle" let-icon="icon" let-cards="cards" let-collection="collection" let-headerColor="headerColor" let-colTitle="colTitle">
+          <div class="dashboard-section">
+            <div class="section-header">
+              <div class="sh-icon" [ngStyle]="{'background-color': headerColor}">
+                <mat-icon>{{icon}}</mat-icon>
               </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
+              <div class="sh-text">
+                <div class="sh-title">{{title}}</div>
+                <div class="sh-subtitle">{{subtitle}}</div>
+              </div>
+            </div>
+            <div class="cards-grid-new">
+              <!-- small cards -->
+              <mat-card *ngFor="let card of cards" class="dashboard-card" [ngClass]="{'approval-card': card.isApproval}">
+                <ng-container *ngIf="!card.isApproval">
+                  <div class="card-header">
+                    <div class="card-title">{{card.label}}</div>
+                    <div class="card-icon" [style.color]="card.iconColor">
+                      <mat-icon>{{card.icon}}</mat-icon>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="card-info">
+                      <div class="card-value">{{card.value}}</div>
+                      <div class="card-footer">
+                        <div class="card-trend" [ngClass]="{'trend-up': isTrendUp(card.history), 'trend-down': !isTrendUp(card.history)}">
+                            <mat-icon *ngIf="isTrendUp(card.history)">trending_up</mat-icon>
+                            <mat-icon *ngIf="!isTrendUp(card.history)">trending_down</mat-icon>
+                            <span>{{card.trend}}</span>
+                        </div>
+                        <div class="card-trend-diff" *ngIf="card.trendDiff">{{card.trendDiff}}</div>
+                        <div class="card-subtitle" *ngIf="card.subtitle">{{card.subtitle}}</div>
+                      </div>
+                    </div>
+                    <div class="card-sparkline" *ngIf="card.history">
+                       <svg viewBox="0 0 100 30" class="sparkline" [ngClass]="{'up': isTrendUp(card.history), 'down': !isTrendUp(card.history)}">
+                         <path [attr.d]="getSparklinePath(card.history)" fill="none" stroke-width="2"></path>
+                       </svg>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="card.isApproval">
+                  <div class="card-header approval-header">
+                    <div class="card-title"><mat-icon color="primary" class="tiny-icon">verified_user</mat-icon> {{card.label}}</div>
+                  </div>
+                  <div class="approval-body">
+                     <div class="approval-stat">
+                       <div class="av-val">{{card.approved}}</div>
+                       <div class="av-lbl"><mat-icon class="tiny-icon" style="color: green">check_circle</mat-icon> APPROVED</div>
+                     </div>
+                     <div class="approval-stat">
+                       <div class="av-val">{{card.pending}}</div>
+                       <div class="av-lbl"><mat-icon class="tiny-icon" style="color: orange">schedule</mat-icon> PENDING</div>
+                     </div>
+                  </div>
+                </ng-container>
+              </mat-card>
+
+              <!-- Large Collection Card -->
+              <mat-card class="dashboard-card collection-card" *ngIf="collection">
+                  <div class="col-header">
+                    <div class="col-title">{{colTitle}}</div>
+                    <div class="col-total">{{collection.total}}</div>
+                  </div>
+                  <div class="col-breakdown" *ngIf="collection.cash">
+                     <div class="col-item">
+                       <mat-icon>account_balance_wallet</mat-icon>
+                       <div class="col-item-text">
+                          <div class="ci-val">{{collection.cash}}</div>
+                          <div class="ci-lbl">CASH</div>
+                       </div>
+                     </div>
+                     <div class="col-item">
+                       <mat-icon>credit_card</mat-icon>
+                       <div class="col-item-text">
+                          <div class="ci-val">{{collection.card}}</div>
+                          <div class="ci-lbl">CARD</div>
+                       </div>
+                     </div>
+                     <div class="col-item">
+                       <mat-icon>phone_iphone</mat-icon>
+                       <div class="col-item-text">
+                          <div class="ci-val">{{collection.upi}}</div>
+                          <div class="ci-lbl">UPI</div>
+                       </div>
+                     </div>
+                     <div class="col-item">
+                       <mat-icon>account_balance</mat-icon>
+                       <div class="col-item-text">
+                          <div class="ci-val">{{collection.bank}}</div>
+                          <div class="ci-lbl">BANK TRANSFER</div>
+                       </div>
+                     </div>
+                  </div>
+                  <div class="col-breakdown" *ngIf="!collection.cash">
+                     <div class="col-trend-wrap">
+                       <div class="card-trend trend-down"><mat-icon>trending_down</mat-icon> <span>{{collection.trend}}</span></div>
+                       <div class="card-trend-diff">{{collection.trendDiff}}</div>
+                     </div>
+                     <div class="col-sub-total">{{collection.subtitle}}</div>
+                  </div>
+              </mat-card>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-container *ngTemplateOutlet="sectionTemplate; context: {title: 'Out-Patient (OP)', subtitle: 'Today\'s OP overview and collections', icon: 'local_hospital', headerColor: '#176ab4', cards: opCards, collection: opCollection, colTitle: 'OP COLLECTION'}"></ng-container>
+        <ng-container *ngTemplateOutlet="sectionTemplate; context: {title: 'In-Patient (IP)', subtitle: 'Today\'s IP admissions, discharges & billing', icon: 'hotel', headerColor: '#176ab4', cards: ipCards, collection: ipCollection, colTitle: 'IP COLLECTION'}"></ng-container>
+        <ng-container *ngTemplateOutlet="sectionTemplate; context: {title: 'Pharmacy', subtitle: 'Prescriptions, sales & inventory status', icon: 'local_pharmacy', headerColor: '#176ab4', cards: pharmacyCards, collection: pharmacyCollection, colTitle: 'PHARMACY COLLECTION'}"></ng-container>
+        <ng-container *ngTemplateOutlet="sectionTemplate; context: {title: 'Procurement', subtitle: 'Purchase orders, indents & GRN status', icon: 'local_shipping', headerColor: '#176ab4', cards: procurementCards, collection: procurementCollection, colTitle: 'GRN VALUE'}"></ng-container>
+        <!-- End New Dashboard Sections -->
 
         <!-- <div class="metrics-grid finance-grid">
           <mat-card *ngFor="let f of financeSummary" class="metric-card1 mat-elevation-z2 count-cards"

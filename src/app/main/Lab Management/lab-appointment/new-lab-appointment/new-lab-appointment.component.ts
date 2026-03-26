@@ -221,7 +221,7 @@ export class NewLabAppointmentComponent {
       }
     }
 
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
     // this.getServiceList();
 
     // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
@@ -243,20 +243,20 @@ export class NewLabAppointmentComponent {
     this.myForm.get('groupId')?.valueChanges.subscribe(val => {
       if (val == 0) {
         this.groupId = 0;
-        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+        this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
       } else {
         this.groupId = val;
-        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+        this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
       }
     });
 
     this.myForm.get('subGroupId')?.valueChanges.subscribe(val => {
       if (val == 0) {
         this.subGroupId = 0;
-        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+        this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
       } else {
         this.subGroupId = val;
-        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+        this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
       }
     });
 
@@ -475,13 +475,16 @@ export class NewLabAppointmentComponent {
   groupId = 0;
   subGroupId = 0;
 
-  selectChangegroupName(obj: any) {
-    this.groupId = obj.value;
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-  }
-  selectChangesubGroupName(obj: any) {
-    this.subGroupId = obj.value;
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+  onServiceInput(event: any) {
+    let value = event.target.value;
+
+    if (!value) return;
+    // ✅ replace only +
+    let encoded = value.replace(/\+/g, '%2B');
+
+    if (value !== encoded) {
+      this.myForm.get('ServiceId')?.setValue(encoded, { emitEvent: false });
+    }
   }
 
   getSelectedserviceObj(obj) {
