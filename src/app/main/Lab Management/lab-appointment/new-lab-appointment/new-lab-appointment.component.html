@@ -214,6 +214,7 @@
                                             [formGroup]="myForm" formControlName="ServiceId"
                                             placeholderText="Enter Service Name" fxFlex="50%" ApiUrl="{{ApiURL}}"
                                             (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
+                                            (input)="onServiceInput($event)"
                                             ValueField="serviceId"></airmid-autocomplete>
                                     </form>
                                 </div>

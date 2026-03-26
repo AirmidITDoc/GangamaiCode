@@ -231,49 +231,14 @@ export class NewLabPatientRegComponent {
     this.setNameValidations();
     this.toggleConcessionValidator();
 
-    // this.myForm.get('ServiceId')?.valueChanges.subscribe(value => {
-    //   let rawValue = value || '';
-    //   let encodedValue = encodeURIComponent(rawValue);
+    this.loadDropdownOptions();
+    this.loadPatientData();
 
-    //   let url = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
-    //     + this.vTariffId
-    //     + "&ClassId=1"
-    //     + "&GroupId=" + this.groupId
-    //     + "&SubGroupId=" + this.subGroupId
-    //     + "&SrvcName=" + encodedValue;
+    setTimeout(() => {
+      this.getServiceList();
+    }, 500);
 
-    //   // ✅ FORCE remove duplicate raw value at end
-    //   if (rawValue) {
-    //     url = url.replace(encodedValue + rawValue, encodedValue);
-    //   }
-
-    //   this.ApiURL = url;
-
-    //   console.log(this.ApiURL);
-    // });
-    // this.myForm.get('ServiceId')?.valueChanges.subscribe(value => {
-    //   let rawValue = value || '';
-    //   let encodedValue = encodeURIComponent(rawValue);
-
-    //   // ✅ Remove duplicate raw value if appended
-    //   let finalValue = encodedValue;
-
-    //   if (encodedValue.includes(rawValue)) {
-    //     finalValue = encodedValue.replace(rawValue, '');
-    //   }
-
-    //   this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
-    //     + this.vTariffId
-    //     + "&ClassId=1"
-    //     + "&GroupId=" + this.groupId
-    //     + "&SubGroupId=" + this.subGroupId
-    //     + "&SrvcName=" + finalValue;
-
-    //   console.log(this.ApiURL);
-    // });
-
-
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
 
     this.myForm.get('groupId')?.valueChanges.pipe(debounceTime(300)).subscribe(val => {
       this.groupId = val || 0;
@@ -286,13 +251,13 @@ export class NewLabPatientRegComponent {
     });
   }
 
-  ngAfterViewInit() {
-    this.dialogRef.afterOpened().subscribe(() => {
-      this.loadDropdownOptions();
-      this.getServiceList();
-      this.loadPatientData(); // your mode logic
-    });
-  }
+  // ngAfterViewInit() {
+  //   this.dialogRef.afterOpened().subscribe(() => {
+  //     this.loadDropdownOptions();
+  //     this.getServiceList();
+  //     this.loadPatientData(); // your mode logic
+  //   });
+  // }
 
   loadPatientData() {
     if (this.data.mode == 'add') {
@@ -377,7 +342,7 @@ export class NewLabPatientRegComponent {
   }
 
   updateApiUrl() {
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId="
+    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId="
       + this.vTariffId
       + "&ClassId=1"
       + "&GroupId=" + this.groupId
@@ -818,7 +783,7 @@ export class NewLabPatientRegComponent {
       this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
       this.vTariffId = this.companyDet.traiffId
 
-      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+      this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
     });
   }
 
@@ -830,7 +795,7 @@ export class NewLabPatientRegComponent {
 
   onChangeTariff(value) {
     this.vTariffId = value.value
-    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
   }
   urgentStatus: boolean = false;
   onUrgentToggleChange(event: any, contact: any) {
@@ -1264,27 +1229,17 @@ export class NewLabPatientRegComponent {
   groupId = 0;
   subGroupId = 0;
 
-  // selectChangegroupName(obj: any) {
-  //   if (obj.value !== 0) {
-  //     this.groupId = obj.value
-  //     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-  //   }
-  //   else {
-  //     this.groupId = 0
-  //     this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-  //   }
-  //   // this.groupId = obj.value !== 0 ? obj.value : 0;
-  //   // this.getServiceListRefresh();
-  // }
+  onServiceInput(event: any) {
+    let value = event.target.value;
 
+    if (!value) return;
+    // ✅ replace only +
+    let encoded = value.replace(/\+/g, '%2B');
 
-  // selectChangesubGroupName(obj: any) {
-  //   if (obj.value !== 0)
-  //     this.subGroupId = obj.value
-  //   else
-  //     this.subGroupId = 0
-  //   this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
-  // }
+    if (value !== encoded) {
+      this.myForm.get('ServiceId')?.setValue(encoded, { emitEvent: false });
+    }
+  }
 
   getSelectedserviceObj(obj) {
     console.log(obj)

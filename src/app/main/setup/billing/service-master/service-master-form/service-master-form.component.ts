@@ -70,6 +70,8 @@ export class ServiceMasterFormComponent implements OnInit {
         'classId',
         'className',
         'classRate',
+        'patientRate',
+        'cpRate'
         // 'action'
     ];
 
@@ -196,12 +198,15 @@ export class ServiceMasterFormComponent implements OnInit {
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discountAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discountPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            patientRate: [item.patientRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cprate: [item.cprate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     get serviceDetailsArray(): FormArray {
         return this.serviceForm.get('serviceDetails') as FormArray;
     }
 
+    classList: any = [];
     getClassList() {
         debugger
         if (this.ServiceId) {
@@ -238,8 +243,26 @@ export class ServiceMasterFormComponent implements OnInit {
             }
             this._serviceMasterService.getClassMasterList(param1).subscribe(Menu => {
                 this.DSServicedetailList.data = Menu.data as Servicedetail[];
+                this.DSServicedetailList.data.forEach(element => {
+                    this.classList.push({
+                        ...element,          // copy existing data
+                        patientRate: 0,      // new field
+                        cprate: 0,            // new field (fix name)
+                        isRateEdited: false //if dont want then comment
+                    });
+                });
+                this.DSServicedetailList.data = this.classList
                 console.log(this.DSServicedetailList.data)
             });
+        }
+    }
+
+    //if dont want then comment
+    onClassRateChange(element: any) {
+        // Only update if user has NOT edited patientRate
+        if (!element.isRateEdited) {
+            element.patientRate = element.classRate;
+            element.cprate = element.classRate;
         }
     }
 
