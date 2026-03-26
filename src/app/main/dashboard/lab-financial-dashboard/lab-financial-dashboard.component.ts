@@ -606,11 +606,11 @@ export class LabFinancialDashboardComponent {
             this.DailysalesChart.destroy();
         }
 
-
+debugger
         return new Chart('DailysalesChart', {
             type: 'bar',
             data: {
-                labels: this.modalityData.map(d => d.name),
+                labels: this.modalityData.map(d => this.datePipe.transform(d.name, 'dd-MMM')),
                 datasets: [
                     {
                         label: 'Date',

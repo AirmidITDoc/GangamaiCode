@@ -47,7 +47,7 @@
 
         <div class="summary-card card-sales">
           <div class="card-icon-wrap bg-green">
-            <mat-icon>attach_money</mat-icon>
+           <mat-icon>₹</mat-icon>
           </div>
           <div class="card-info">
             <span class="card-label">Today's Sales</span>
@@ -327,9 +327,9 @@
       <div fxFlex="calc(33% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
         <mat-card>
           <mat-card-content>
-            <div class="table-title">Marketing Wise Summary</div>
-            <hr>
-            <div class="panel-body">
+            <div class="chart-container">
+              <div class="table-title">MarketingEx Wise Summary</div>
+              <hr>
               <mat-table matSort class="h-300 table-designed" [dataSource]="marketingSales"
                 [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
