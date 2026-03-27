@@ -215,6 +215,14 @@ export class ReportGenerationComponent implements OnInit {
             this.status = (val == 0) ? 0 : val
         });
 
+        this._ReportService.userForm.get('RefDoctorId')?.valueChanges.subscribe(val => {
+            this.RefDoctorId = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('CompanyId')?.valueChanges.subscribe(val => {
+            this.CompanyId = (val == 0) ? 0 : val
+        });
+
     }
     GetAllReporConfig() {
         const paramFilter = [{

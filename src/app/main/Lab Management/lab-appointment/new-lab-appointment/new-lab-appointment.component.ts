@@ -19,7 +19,7 @@ import { LabAppointmentService } from '../lab-appointment.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
+import { LabPackageDetailsComponent } from '../../lab-patient-reg/lab-package-details/lab-package-details.component';
 
 @Component({
   selector: 'app-new-lab-appointment',
@@ -123,7 +123,9 @@ export class NewLabAppointmentComponent {
     'buttons'
   ]
   public displayedColumnspackage: string[] =
-    ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'DoctorName'];
+    ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price',
+      // 'DoctorName'
+    ];
 
   chargeslist: any = [];
   @ViewChild(MatSort) sort: MatSort;
@@ -729,7 +731,7 @@ export class NewLabAppointmentComponent {
   }
 
   getPacakgeDetail(contact) {
-    const dialogRef = this._matDialog.open(PackageDetailsComponent,
+    const dialogRef = this._matDialog.open(LabPackageDetailsComponent,
       {
         maxWidth: "100%",
         height: '75%',
@@ -1215,6 +1217,41 @@ export class NewLabAppointmentComponent {
     debugger
     const date = new Date(this.data.fromDate);
     date.setHours(this.now.getHours(), this.now.getMinutes());
+
+    const DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
+    if (DateOfBirth1) {
+
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth1);
+      let ageYear = (todayDate.getFullYear() - dob.getFullYear());
+      let ageMonth = (todayDate.getMonth() - dob.getMonth());
+      let ageDay = (todayDate.getDate() - dob.getDate());
+
+      this.ageYear = ageYear
+      this.ageMonth = ageMonth
+      this.ageDay = ageDay
+
+      if (ageDay < 0) {
+        (ageMonth)--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        ageDay += previousMonth.getDate();
+      }
+
+      if (ageMonth < 0) {
+        ageYear--;
+        ageMonth += 12;
+      }
+      if (
+        (!ageYear || ageYear == 0) &&
+        (!ageMonth || ageMonth == 0) &&
+        (!ageDay || ageDay == 0)
+      ) {
+        this.toastrService.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
 
     if (this.vLabAppId > 0) {
       const dateedit = new Date();

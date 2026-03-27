@@ -1,0 +1,500 @@
+import { DatePipe } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { OPSearhlistService } from 'app/main/opd/op-search-list/op-searhlist.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2';
+import { LabPatientRegService } from '../lab-patient-reg.service';
+
+@Component({
+  selector: 'app-lab-package-details',
+  templateUrl: './lab-package-details.component.html',
+  styleUrls: ['./lab-package-details.component.scss'],
+  animations: fuseAnimations
+})
+export class LabPackageDetailsComponent {
+  displayedColumnspackage = [
+    'IsCheck',
+    'ServiceName',
+    'Qty',
+    'Price',
+    'TotalAmt',
+    'DoctorName',
+    'DiscPer',
+    'DiscAmt',
+    'NetAmount',
+    'action'
+  ];
+  registerObj: any;
+  PacakgeList: any = [];
+  SavePacList: any = [];
+  vTariffId: any = 0;
+  vClassId: any = 0;
+  groupId = 0
+  subGroupId = 0
+  CreditedtoDoctor: any;
+  SrvcName: any;
+  ChargesDoctorname: any;
+  ChargeDoctorId: any;
+  vBillWiseTotalAmt: any;
+  FormName: any;
+  ApiURL: any = '';
+  vMainServiceName: any = '';
+  EditDoctor: boolean = false;
+  vBillWiseTotal: boolean = false;
+  isDoctor: boolean = false;
+  isChkbillwiseAmt: boolean = false;
+  autocompleteModedeptdoc: string = "ConDoctor"
+  PacakgeUpdateForm: FormGroup;
+  PacakgeInsertForm: FormGroup;
+  PackageForm: FormGroup;
+  dsPackageDet = new MatTableDataSource<ChargesList>();
+
+  constructor(
+    public _LabService: LabPatientRegService,
+    public _oPSearhlistService: OPSearhlistService,
+    private _loggedService: AuthenticationService,
+    public _matDialog: MatDialog,
+    public datePipe: DatePipe,
+    public toastr: ToastrService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<LabPackageDetailsComponent>,
+    public formBuilder: FormBuilder,
+    private _FormvalidationService: FormvalidationserviceService,
+  ) { }
+
+  ngOnInit(): void {
+    if (this.data) {
+      this.registerObj = this.data.Obj;
+      this.vMainServiceName = this.registerObj.ServiceName;
+      this.getOPDpackagedetList(this.registerObj);
+      console.log(this.registerObj)
+      //GetServiceListwithTraiff
+      this.ApiURL = "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=" + this.vTariffId + "&ClassId=" + 1 + "&GroupId=" + this.groupId + "&SubGroupId=" + this.subGroupId + "&SrvcName="
+    }
+    this.createForm();
+    this.CreatePacakgeUpdateForm();
+    this.createPackageInsertForm();
+  }
+
+  createForm() {
+    this.PackageForm = this.formBuilder.group({
+      SrvcName: [''],
+      DoctorID: [''],
+      BillWiseTotal: [''],
+      MainServiceName: [''],
+      EditDoctor: [''],
+      Finalnetamt: [0],
+      TotalPrice: [0],
+      FinalQty: [0],
+    });
+  }
+  getBillwiseAmt(event) {
+    if (event.checked) {
+      this.isChkbillwiseAmt = true;
+      this.gettablecalculation(event)
+    } else {
+      this.isChkbillwiseAmt = false;
+      this.gettablecalculation(event)
+    }
+  }
+
+  //Service selectedObj  
+  getSelectedserviceObj(obj) {
+    console.log(obj)
+    const isItemAlreadyAdded = this.dsPackageDet.data.find((element) => element.serviceId == obj.serviceId);
+    if (isItemAlreadyAdded) {
+      Swal.fire({
+        title: 'Message',
+        text: "Selected Service already available in the list",
+        icon: "warning"
+      });
+      this.PackageForm.get('SrvcName').setValue('')
+      const serviceNameElement = document.querySelector(`[name='SrvcName']`) as HTMLElement;
+      if (serviceNameElement) {
+        serviceNameElement.focus();
+      }
+      return;  // Exit the function early
+    }
+    this.SrvcName = obj.serviceName;
+    if (obj?.creditedtoDoctor == true) {
+      this.isDoctor = true;
+      this.PackageForm.get('DoctorID').reset();
+      this.PackageForm.get('DoctorID').setValidators([Validators.required]);
+      this.PackageForm.get('DoctorID').enable();
+    } else {
+      this.isDoctor = false;
+      this.PackageForm.get('DoctorID').reset();
+      this.PackageForm.get('DoctorID').clearValidators();
+      this.PackageForm.get('DoctorID').updateValueAndValidity();
+      this.PackageForm.get('DoctorID').disable();
+    }
+  }
+  //OPD Package list
+  getOPDpackagedetList(obj) {
+    this.PacakgeList = [];
+    const vdata =
+    {
+      "first": 0,
+      "rows": 999,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj?.ServiceId ?? 0), "opType": "Equals" }],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    }
+    this._LabService.getRtevPackageDetList(vdata).subscribe(data => {
+      this.dsPackageDet.data = data.data as ChargesList[];
+      this.dsPackageDet.data.forEach(element => {
+        this.PacakgeList.push(
+          {
+            serviceId: element.packageServiceId,
+            serviceName: element.serviceName,
+            price: element.price || 0,
+            Qty: element.Qty || 1,
+            TotalAmt: (element.price * 1) || 0,
+            ConcessionPercentage: element.ConcessionPercentage || 0,
+            DiscAmt: element.ConcessionAmount || 0,
+            NetAmount: (element.price * 1) || 0,
+            isPathology: element.isPathology,
+            isRadiology: element.isRadiology,
+            packageId: element.packageId,
+            PackageServiceId: element.serviceId,
+            pacakgeServiceName: element.pacakgeServiceName,
+            doctorName: element.doctorName || '',
+            doctorId: element.doctorId || 0,
+          })
+      })
+      this.dsPackageDet.data = this.PacakgeList
+    });
+  }
+
+  // Create servie form 
+  createPackageInsertForm() {
+    this.PacakgeInsertForm = this.formBuilder.group({
+      chargesId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
+      opdIpdType: [1, [this._FormvalidationService.onlyNumberValidator()]],
+      opdIpdId: [0, [this._FormvalidationService.notEmptyOrZeroValidator(), this._FormvalidationService.onlyNumberValidator()]],
+      serviceId: [0, [this._FormvalidationService.onlyNumberValidator(), this._FormvalidationService.notEmptyOrZeroValidator()]],
+      price: [0, [this._FormvalidationService.notEmptyOrZeroValidator(), this._FormvalidationService.onlyNumberValidator()]],
+      qty: [1, [this._FormvalidationService.notEmptyOrZeroValidator(), this._FormvalidationService.onlyNumberValidator()]],
+      totalAmt: [0, [this._FormvalidationService.notEmptyOrZeroValidator(), this._FormvalidationService.onlyNumberValidator()]],
+      concessionPercentage: [0, [Validators.min(0), Validators.max(100), this._FormvalidationService.onlyNumberValidator()]],
+      concessionAmount: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      netAmount: [0, [this._FormvalidationService.notEmptyOrZeroValidator(), this._FormvalidationService.onlyNumberValidator()]],
+      doctorId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      docPercentage: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      docAmt: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      hospitalAmt: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      isGenerated: [false],
+      addedBy: this._loggedService.currentUserValue.userId,
+      isCancelled: [false],
+      isCancelledBy: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      isCancelledDate: "1900-01-01",
+      isPathology: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      isRadiology: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      isPackage: [1],
+      isSelfOrCompanyService: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      packageId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
+      packageMainChargeId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      classId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      wardId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
+      bedId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
+    });
+
+  }
+  // Service Add 
+  onSaveAddCharges() {
+    debugger
+    const formValue = this.PackageForm.value
+    if ((formValue?.SrvcName?.serviceId == 0 || formValue?.SrvcName?.serviceId == null || formValue?.SrvcName?.serviceId == undefined)) {
+      this.toastr.warning('Please select Service', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.isDoctor == true) {
+      if ((formValue?.DoctorID == undefined || formValue?.DoctorID == null || formValue?.DoctorID == "")) {
+        this.toastr.warning('Please select Doctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    this.dsPackageDet.data = [];
+    this.PacakgeList.push(
+      {
+        serviceId: formValue?.SrvcName?.serviceId,
+        serviceName: formValue?.SrvcName?.serviceName,
+        price: formValue?.SrvcName?.classRate || 0,
+        Qty: 1,
+        TotalAmt: (formValue?.SrvcName?.classRate * 1) || 0,
+        ConcessionPercentage: 0,
+        DiscAmt: 0,
+        NetAmount: (formValue?.SrvcName?.classRate * 1) || 0,
+        isPathology: formValue?.SrvcName?.isPathology,
+        isRadiology: formValue?.SrvcName?.isRadiology,
+        packageId: formValue?.SrvcName?.isPackage,
+        doctorName: this.ChargesDoctorname || '',
+        doctorId: formValue.DoctorID || 0,
+      });
+    this.dsPackageDet.data = this.PacakgeList;
+
+    this.isDoctor = false;
+    this.ChargesDoctorname = ''
+    this.PackageForm.get('SrvcName').setValue('');
+    this.PackageForm.get('DoctorID').reset('%');
+    this.PackageForm.get('MainServiceName').setValue(this.vMainServiceName);
+  }
+
+  // service delete
+  deleteTableRowPackage(contact) {
+    Swal.fire({
+      title: 'Do you want to Delete Service',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete it!"
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        const index = this.PacakgeList.indexOf(contact);
+        if (index >= 0) {
+          this.PacakgeList.splice(index, 1);
+          this.dsPackageDet.data = [];
+          this.dsPackageDet.data = this.PacakgeList;
+        }
+        Swal.fire('Success !', 'PacakgeList Row Deleted Successfully', 'success');
+
+      }
+    });
+  }
+  // Table calculation
+  gettablecalculation(element) {
+    if (element.Qty == 0 || element.Qty == '') {
+      element.Qty = 1;
+      this.toastr.warning('Qty is connot be Zero By default Qty is 1', 'error!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.isChkbillwiseAmt == true) {
+      element.Qty = 1;
+      element.price = 0;
+      element.TotalAmt = 0;
+      element.DiscAmt = 0;
+      element.NetAmount = 0;
+    }
+    else if (element.price > 0 && element.Qty > 0) {
+      element.TotalAmt = element.Qty * element.price || 0;
+      element.DiscAmt = (element.ConcessionPercentage * element.TotalAmt) / 100 || 0;
+      element.NetAmount = element.TotalAmt - element.DiscAmt
+    }
+    else if (element.price == 0 || element.price == '' || element.Qty == '' || element.Qty == 0) {
+      element.TotalAmt = 0;
+      element.DiscAmt = 0;
+      element.NetAmount = 0;
+    }
+  }
+  //Total amt
+  getTotalAmtSum(element) {
+    const Finalnetamt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
+    const TotalPrice = element.reduce((sum, { price }) => sum += +(price || 0), 0).toFixed(2);
+    this.PackageForm.patchValue({
+      Finalnetamt: Finalnetamt,
+      TotalPrice: TotalPrice,
+      FinalQty: 1
+    })
+  }
+  // Pacakge service details update form
+  CreatePacakgeUpdateForm() {
+    this.PacakgeUpdateForm = this.formBuilder.group({
+      chargesId: [0, [this._FormvalidationService.notEmptyOrZeroValidator()]],
+      price: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
+      qty: [1, [this._FormvalidationService.onlyNumberValidator(), this._FormvalidationService.notEmptyOrZeroValidator()]],
+      totalAmt: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
+      concessionPercentage: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
+      concessionAmount: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
+      netAmount: [0, [this._FormvalidationService.AllowDecimalNumberValidator()]],
+      doctorId: [0, [this._FormvalidationService.onlyNumberValidator()]],
+      isInclusionExclusion: [false],
+      ModifiedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationService.onlyNumberValidator()]]
+    })
+  }
+  // Pacakge service details update save
+  OnSaveEditedValue(element) {
+    if (this.dsPackageDet.data.length > 0) {
+      this.PacakgeUpdateForm.get('chargesId').setValue(element.chargesId);
+      this.PacakgeUpdateForm.get('price').setValue(element.price);
+      this.PacakgeUpdateForm.get('qty').setValue(element.Qty);
+      this.PacakgeUpdateForm.get('totalAmt').setValue(element.TotalAmt);
+      this.PacakgeUpdateForm.get('concessionPercentage').setValue(element.ConcessionPercentage);
+      this.PacakgeUpdateForm.get('concessionAmount').setValue(element.DiscAmt);
+      this.PacakgeUpdateForm.get('netAmount').setValue(element.NetAmount);
+      this.PacakgeUpdateForm.get('doctorId').setValue(element.doctorId);
+    }
+    console.log(this.PacakgeUpdateForm.value);
+    // this._LabService.UpdatePacakgeDet(this.PacakgeUpdateForm.value, element.chargesId).subscribe(response => {
+    // });
+  }
+
+  // final save 
+  onSavePackage() {
+    debugger
+    if (this.dsPackageDet.data.length < 0) {
+      this.toastr.warning('please add services list is blank ', 'error!', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const formValue = this.PackageForm.value
+    this.dsPackageDet.data.forEach((element) => {
+      const OpPacakgesave = {}
+      OpPacakgesave['ServiceId'] = element.serviceId;
+      OpPacakgesave['ServiceName'] = element.serviceName || '';
+      OpPacakgesave['Price'] = element.price || 0;
+      OpPacakgesave['Qty'] = element.Qty || 0;
+      OpPacakgesave['TotalAmt'] = element.TotalAmt || 0;
+      OpPacakgesave['ConcessionPercentage'] = element.ConcessionPercentage || 0;
+      OpPacakgesave['DiscAmt'] = element.DiscAmt || 0;
+      OpPacakgesave['NetAmount'] = element.NetAmount || 0;
+      OpPacakgesave['IsPathology'] = element.isPathology || 0;
+      OpPacakgesave['IsRadiology'] = element.isRadiology || 0;
+      OpPacakgesave['PackageId'] = element.packageId;
+      OpPacakgesave['PackageServiceId'] = this.registerObj.ServiceId || 0;
+      OpPacakgesave['PacakgeServiceName'] = this.registerObj.ServiceName || '';
+      OpPacakgesave['BillwiseTotalAmt'] = this.vBillWiseTotalAmt || 0;
+      OpPacakgesave['DoctorId'] = element.doctorId || 0;
+      OpPacakgesave['DoctorName'] = element.doctorName || 0;
+      this.SavePacList.push(OpPacakgesave)
+    });
+
+
+    this.vBillWiseTotalAmt = '';
+    this.onClose();
+  }
+  onClose() {
+    this.dialogRef.close(this.SavePacList);
+
+    this.SavePacList = [];
+    this.PacakgeList = [];
+    this.dsPackageDet.data = [];
+    this.PacakgeUpdateForm.reset();
+  }
+  //doctor editable
+  DocenableEditing(row: ChargesList) {
+    row.EditDoctor = true;
+    row.doctorName = '';
+  }
+  DoctorisableEditing(row: ChargesList) {
+    row.EditDoctor = false;
+    this.getOPDpackagedetList(this.registerObj)
+  }
+  DropDownValue(Obj, contact) {
+    this.PacakgeList = this.PacakgeList.map(item => {
+      if (item.serviceId === contact.serviceId) {
+        return {
+          ...item,
+          doctorId: Obj.value,
+          doctorName: Obj.text,
+          EditDoctor: false
+        };
+      }
+      return item; // unchanged if serviceId doesn't match
+    });
+    this.dsPackageDet.data = this.PacakgeList
+  }
+  // doctor selectedObj
+  getSelectedDoctorObj(event) {
+    this.ChargesDoctorname = event.text
+  }
+  keyPressAlphanumeric(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressCharater(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/^\d*\.?\d*$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+}
+
+export class ChargesList {
+  ChargesId: number;
+  ServiceId: number;
+  ServiceName: string;
+  Price: number;
+  Qty: number;
+  TotalAmt: number;
+  DiscPer: number;
+  DiscAmt: number;
+  NetAmount: number;
+  DoctorId: number;
+  ChargeDoctorName: string;
+  ChargesDate: Date;
+  IsPathology: boolean;
+  IsRadiology: boolean;
+  ClassId: number;
+  ClassName: string;
+  ChargesAddedName: string;
+  PackageId: any;
+  PackageServiceId: any;
+  IsPackage: any;
+  PacakgeServiceName: any;
+  DoctorName: any;
+  EditDoctor: any;
+  ConcessionPercentage: any;
+  ConcessionAmount: any;
+  serviceName: string;
+  serviceId: number;
+  doctorName: any;
+  doctorId: any;
+  isPathology: any;
+  isRadiology: any;
+  pacakgeServiceName: any;
+  packageServiceId: any;
+  price: any;
+  packageId: any;
+  chargesId: any;
+
+  constructor(ChargesList) {
+    this.ChargesId = ChargesList.ChargesId || '';
+    this.ServiceId = ChargesList.ServiceId || '';
+    this.ServiceName = ChargesList.ServiceName || '';
+    this.Price = ChargesList.Price || '';
+    this.Qty = ChargesList.Qty || '';
+    this.TotalAmt = ChargesList.TotalAmt || '';
+    this.DiscPer = ChargesList.DiscPer || '';
+    this.DiscAmt = ChargesList.DiscAmt || '';
+    this.NetAmount = ChargesList.NetAmount || '';
+    this.DoctorId = ChargesList.DoctorId || 0;
+    this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
+    this.ChargesDate = ChargesList.ChargesDate || '';
+    this.IsPathology = ChargesList.IsPathology || '';
+    this.IsRadiology = ChargesList.IsRadiology || '';
+    this.ClassId = ChargesList.ClassId || 0;
+    this.ClassName = ChargesList.ClassName || '';
+    this.ChargesAddedName = ChargesList.ChargesAddedName || '';
+    this.PackageId = ChargesList.PackageId || 0;
+    this.PackageServiceId = ChargesList.PackageServiceId || 0;
+    this.IsPackage = ChargesList.IsPackage || 0;
+    this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
+  }
+}

@@ -26,9 +26,9 @@ import { debounce } from 'lodash';
 import { PreviousDeptListComponent } from 'app/main/opd/appointment-list/update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { MatSelectChange } from '@angular/material/select';
 import { ApiCaller } from 'app/core/services/apiCaller';
-import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
 import { PrevlabHistoryComponent } from '../prevlab-history/prevlab-history.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { LabPackageDetailsComponent } from '../lab-package-details/lab-package-details.component';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -648,13 +648,13 @@ export class NewLabPatientRegComponent {
       opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdIpdId: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      price: [item?.price, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionPercentage: [item?.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netAmount: [item?.NetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       doctorId: [item?.doctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorName: [item?.doctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1625,14 +1625,15 @@ export class NewLabPatientRegComponent {
   }
 
   getPacakgeDetail(contact) {
-    const dialogRef = this._matDialog.open(PackageDetailsComponent,
+    console.log(contact)
+    const dialogRef = this._matDialog.open(LabPackageDetailsComponent,
       {
         maxWidth: "100%",
         height: '75%',
         width: '70%',
         data: {
           Obj: contact,
-          PatientDet: this.registerObj,
+          PatientDet: this.registerObj
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -1960,7 +1961,7 @@ export class NewLabPatientRegComponent {
     // Bill data
     const formattedDate1 = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
     const formattedTime1 = this.datePipe.transform(new Date(), "HH:mm:ss");
-    debugger
+    
     this.OpBillForm.get('billDate').setValue(formattedDate1);
     this.OpBillForm.get('billTime').setValue(formattedDate1 + ' ' + formattedTime1);
     this.OpBillForm.get('opdipdid')?.setValue(0)
@@ -2007,11 +2008,11 @@ export class NewLabPatientRegComponent {
         'Please select Doctor for added service', 'Warning!');
       return;
     }
-
+debugger
     this.dstable1.data.forEach(item => {
       this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
       this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-
+debugger
       if (item.IsPackage == 1) {
         this.packcagechargesArray.clear();
         this.dsPackageList.data.forEach(item => {
@@ -2022,7 +2023,6 @@ export class NewLabPatientRegComponent {
     console.log("1. from values", this.OpBillForm.value)
     console.log('2. Invalid Checks Form status:', this.OpBillForm.status);
 
-    debugger
     // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     if (!this.OpBillForm.invalid) {
 
@@ -2210,31 +2210,6 @@ export class NewLabPatientRegComponent {
         return;
       }
     }
-    // else {
-    //   let invalidFields = [];
-    //   if (this.OpBillForm.invalid) {
-    //     for (const controlName in this.OpBillForm.controls) {
-    //       const control = this.OpBillForm.get(controlName);
-
-    //       if (control instanceof FormGroup || control instanceof FormArray) {
-    //         for (const nestedKey in control.controls) {
-    //           if (control.get(nestedKey)?.invalid) {
-    //             invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
-    //           }
-    //         }
-    //       } else if (control?.invalid) {
-    //         invalidFields.push(`OpBill From: ${controlName}`);
-    //       }
-    //     }
-    //   }
-    //   if (invalidFields.length > 0) {
-    //     invalidFields.forEach(field => {
-    //       this.toastrService.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-    //       );
-    //     });
-    //     return
-    //   }
-    // }
   }
 
   collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {

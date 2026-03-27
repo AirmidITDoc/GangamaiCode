@@ -49,6 +49,7 @@ import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-
 import { LabTrackingDetailsComponent } from './lab-tracking-details/lab-tracking-details.component';
 import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
 import { PrevlabHistoryComponent } from './prevlab-history/prevlab-history.component';
+import { LabPackageDetailsComponent } from './lab-package-details/lab-package-details.component';
 
 const routes: Routes = [
     {
@@ -59,7 +60,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent, EstimateForPatientComponent, DiscountAfterFinalLabbillComponent,
-        EditLabregComponent, PrevlabHistoryComponent, LabTrackingDetailsComponent, EditPatientRegComponent],
+        EditLabregComponent, PrevlabHistoryComponent, LabTrackingDetailsComponent, EditPatientRegComponent, LabPackageDetailsComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),

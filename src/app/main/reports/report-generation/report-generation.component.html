@@ -99,12 +99,15 @@
                                     </ng-container>
                                     <ng-container *ngIf="flagRefDoctorSelected">
                                         <div style="max-width: 265px;">
-                                            <airmid-autocomplete label="RefDoctor" [formGroup]="_ReportService.userForm"
+                                            <!-- <airmid-autocomplete label="RefDoctor" [formGroup]="_ReportService.userForm"
                                                 formControlName="RefDoctorId" placeholderText="Enter RefDoctor"
                                                 ApiUrl="Report/RefDoctorList/auto-complete?Keyword="
                                                 (selectionChange)="SelectedRefDoctorObj($event)"
                                                 (onClearSelection)="clearRefDoctor()">
-                                            </airmid-autocomplete>
+                                            </airmid-autocomplete> -->
+                                            <airmid-dropdown label="RefDoctor" formControlName="RefDoctorId"
+                                                [formGroup]="_ReportService.userForm"
+                                                ApiUrl="Report/RefDoctorList/auto-complete?Keyword=%"></airmid-dropdown>
                                         </div>
                                     </ng-container>
                                     <ng-container *ngIf="flagServiceSelected">
@@ -190,13 +193,16 @@
 
                                     <ng-container *ngIf="flagCompanySelected">
                                         <div style="max-width: 265px;">
-                                            <airmid-autocomplete label="Company Name"
+                                            <!-- <airmid-autocomplete label="Company Name"
                                                 [formGroup]="_ReportService.userForm" formControlName="CompanyId"
                                                 placeholderText="Select Company Name"
                                                 ApiUrl="Report/CompanyList/auto-complete?Keyword="
                                                 (selectionChange)="SelectedCompanyObj($event)"
                                                 (onClearSelection)="clearCompany()">
-                                            </airmid-autocomplete>
+                                            </airmid-autocomplete> -->
+                                            <airmid-dropdown label="Company Name" formControlName="CompanyId"
+                                                [formGroup]="_ReportService.userForm"
+                                                ApiUrl="Report/CompanyList/auto-complete?Keyword=%"></airmid-dropdown>
                                         </div>
                                     </ng-container>
 
