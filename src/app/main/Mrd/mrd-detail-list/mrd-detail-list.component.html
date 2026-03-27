@@ -16,17 +16,16 @@
 
         </div>
     </div>
+
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
+                <button mat-icon-button matTooltip="View File Entery Detail" (click)="OnPrint(element)">
+                    <mat-icon>view_module</mat-icon>
+                </button>
                 <button mat-icon-button matTooltip="Edit MRD Data" (click)="OnEdit(element)">
                     <mat-icon>edit</mat-icon>
-                </button>
-
-
-                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
-                    <mat-icon> print</mat-icon>
                 </button>
 
             </div>
@@ -47,11 +46,17 @@
                     <mat-icon>send</mat-icon>
                 </button> -->
 
-                <button mat-icon-button *ngIf="element.isInOut==false" matTooltip="File OUt Process" (click)="OnOutFile(element)">
-                    <img width="20" height="20" src="assets/images/logos/outfile.png">
+                <button mat-icon-button *ngIf="element.isInOut==false" matTooltip="File OUt Process"
+                    (click)="OnOutFile(element)">
+                    <!-- <img width="20" height="20" src="assets/images/logos/outfile.png"> -->
+                    <mat-icon  matTooltip="File OUt Process" class="s-20 mr-4"
+                        color="warn">
+                        transfer_within_a_station
+                    </mat-icon>
                 </button>
 
-                <button mat-icon-button *ngIf="element.isInOut==true" matTooltip="File In Process" (click)="OnInFile(element)">
+                <button mat-icon-button *ngIf="element.isInOut==true" matTooltip="File In Process"
+                    (click)="OnInFile(element)">
                     <img width="20" height="20" src="assets/images/logos/Infile.png">
                 </button>
 
@@ -71,10 +76,28 @@
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
                         [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
-                    <mat-slide-toggle name="IsInout" (change)="onChangeIsInout($event)" formControlName="IsInout"
+                    <!-- <mat-slide-toggle name="IsInout" (change)="onChangeIsInout($event)" formControlName="IsInout"
                         [(ngModel)]="IsInout">
                         IsIn/Out
-                    </mat-slide-toggle>
+                    </mat-slide-toggle> -->
+
+                    <div class="info-badge-top p-12 border-bottom">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
+                            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                                <div style="color: rgb(247, 200, 200)" fxLayout="row" fxLayoutAlign="start center"
+                                    class="gap-4">
+                                    <mat-icon class="pill rgb(240, 206, 206)-600 s-16">circle</mat-icon>
+                                    <span class="rgb(240, 206, 206)-600-fg">File Out</span>
+                                </div>
+                                <div style="color: rgb(199, 255, 232)" fxLayout="row" fxLayoutAlign="start center"
+                                    class="gap-4">
+                                    <mat-icon class="pill rgb(207, 250, 232)-600 s-16">circle</mat-icon>
+                                    <span class="rgb(207, 250, 232)-600-fg">File In</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
                 </form>
             </ng-container>

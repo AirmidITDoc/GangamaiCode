@@ -315,6 +315,7 @@ export class NursingnoteComponent implements OnInit {
             nurseName: "",
             isCancelled: false,
             doseName: [item.doseName || ''],
+            days: [item.days || 0],
         });
 
     }
