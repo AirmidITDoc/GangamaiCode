@@ -82,20 +82,23 @@ import { PatientSearchComponent } from './componets/patient-search/patient-searc
 import { MatDialogModule } from '@angular/material/dialog';
 import { SMSDetailsPopupOverComponent } from './componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from './componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
-import { MatRadioModule } from '@angular/material/radio'; 
+import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StoreUnitComponent } from './componets/store-unit/store-unit.component';
 import { AirmidAuditComponent } from './componets/airmid-audit/airmid-audit.component';
 import { AirmidAuditIconComponent } from './componets/airmid-audit-icon/airmid-audit-icon.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { PatientInformationComponent } from './componets/patient-information/patient-information.component';
+import { AirmidExcelImportButtonComponent } from './componets/airmid-excel-import-button/airmid-excel-import-button.component';
+import { AirmidExcelImportDialogComponent } from './componets/airmid-excel-import/airmid-excel-import.component';
 
 @NgModule({
     declarations: [
-        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent,StoreUnitComponent, PaymentModeComponent,AirmidAuditComponent, AirmidAuditIconComponent,ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, 
-        AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
-        AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent, SMSDetailsPopupOverComponent, WhatsappDetPopUpOverComponent, PatientInformationComponent
+        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, StoreUnitComponent, PaymentModeComponent, AirmidAuditComponent, AirmidAuditIconComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent,
+        AirmidFullDatepickerComponent, AirmidFileuploadComponent, AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
+        AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent, SMSDetailsPopupOverComponent, WhatsappDetPopUpOverComponent, PatientInformationComponent,
+        AirmidExcelImportButtonComponent, AirmidExcelImportButtonComponent, AirmidExcelImportDialogComponent
     ],
     imports: [
         CommonModule,
@@ -183,7 +186,8 @@ import { PatientInformationComponent } from './componets/patient-information/pat
         AirmidCardViewComponent,
         AirmidImageviewComponent,
         AirmidImageIconComponent,
-        PatientInformationComponent
+        PatientInformationComponent,
+        AirmidExcelImportButtonComponent, AirmidExcelImportButtonComponent, AirmidExcelImportDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

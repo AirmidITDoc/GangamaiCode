@@ -208,3 +208,17 @@
 .icon-fahrenheit:before {
     content: "\e92e";
 }
+
+/* // Removes default Material dialog padding so our custom wrapper
+// controls all spacing and border-radius. */
+.excel-import-dialog-panel {
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+  }
+
+  .mdc-dialog__surface {
+    border-radius: 12px !important;
+  }
+}

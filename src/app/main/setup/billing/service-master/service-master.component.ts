@@ -12,6 +12,7 @@ import { ServiceMasterFormNewComponent } from "./service-master-form-new/service
 import { ServiceMasterFormComponent } from "./service-master-form/service-master-form.component";
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from "./tariff/tariff.component";
+import { ExcelImportConfig, ImportDialogResult } from "app/main/shared/model/excel-import.models";
 
 
 @Component({
@@ -104,7 +105,27 @@ export class ServiceMasterComponent implements OnInit {
         sortOrder: 0,
         filters: this.allFilters
     }
+    importConfig: ExcelImportConfig = {
+        title: 'Import Services',
+        subtitle: 'Upload an Excel file to bulk-import services',
+        importApi: '/api/services/import',
+        previewApi: '/api/services/preview',   // optional
+        previewLimit: 10,
+        columns: [
+            { key: 'name', label: 'Product Name', required: true, icon: 'inventory_2' },
+            { key: 'sku', label: 'SKU', required: true, icon: 'qr_code' },
+            { key: 'price', label: 'Price', required: true, icon: 'attach_money' },
+            { key: 'category', label: 'Category', icon: 'category' },
+            { key: 'description', label: 'Description', icon: 'description' },
+            { key: 'stock', label: 'Stock Qty', icon: 'warehouse' },
+        ],
+    };
 
+    onImported(result: ImportDialogResult): void {
+        debugger
+        console.log(`✅ Imported ${result.count} products`);
+        // refresh your table / call loadProducts()
+    }
     Clearfilter(event) {
         console.log(event)
         if (event == 'ServiceNameSearch')
