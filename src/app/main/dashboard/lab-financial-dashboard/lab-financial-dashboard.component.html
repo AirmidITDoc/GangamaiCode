@@ -97,7 +97,7 @@
     <!-- Branch Summary Cards - AFFECTED by date filter -->
     <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
       <div fxFlex="100%">
-        <div fxFlex="calc(15% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+        <div fxFlex="calc(20% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
           <!-- <mat-card class="section-card branch-card">
             <div class="chart-header">
               <h3 class="chart-title">Branch Wise</h3>
@@ -208,7 +208,7 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div fxFlex="calc(40% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+        <div fxFlex="calc(35% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
           <mat-card>
             <mat-card-content>
               <div class="chart-header">
@@ -530,10 +530,10 @@
                 </ng-container>
 
                 <ng-container matColumnDef="totalPatient">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
-                    Patient Count
+                  <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                  PCount
                   </mat-header-cell>
-                  <mat-cell *matCellDef="let report" class="w-100">
+                  <mat-cell *matCellDef="let report" class="w-80">
                     {{report.totalPatients}}
                   </mat-cell>
                 </ng-container>

@@ -282,25 +282,23 @@ export class DashboardService {
         return this._httpClient.PostData("Branch/UnitBranchWiseCompanySummary", param)
     }
 
-
-
     public getDeptwisesales(param) {
-
-        return this._httpClient.PostData("Branch/UnitBranchWiseCategorySummary", param)
+    return this._httpClient.PostData("Branch/UnitBranchWiseCategorySummary", param)
     }
 
     public allDashboarddata(params) {
-
-        return this._httpClient.GetData("Dashboard/Daily-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
-
+    return this._httpClient.GetData("Dashboard/Daily-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
     }
-
 
     public getcashlessDashboard(params) {
+    return this._httpClient.GetData("Dashboard/Cashless-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
+        }
 
-        return this._httpClient.GetData("Dashboard/Cashless-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
-
-    }
+         public getPbillsummary(params) {
+    // return this._httpClient.GetData("CashLess/CashlessPatientBillInfoList?OPIPId=" + params.OPIPId);
+ return this._httpClient.PostData("CashLess/CashlessPatientBillInfoList", params)       
+}
+    
 
 }
 

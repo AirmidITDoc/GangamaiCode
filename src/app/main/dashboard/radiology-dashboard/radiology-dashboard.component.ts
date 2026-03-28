@@ -405,7 +405,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Daily Test Count',
                         data: this.RadiologyData.volumeTrendData.map(d => d.count),
-                        backgroundColor: 'rgba(150, 97, 219, 0.2)',
+                        backgroundColor: 'rgba(163, 120, 218, 0.2)',
                         borderColor: '#9661db',
                         borderWidth: 3,
                         tension: 0.4,
@@ -586,7 +586,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Number of Tests',
                         data: this.pathologyData.pathologyValumes.map(d => d.categoryCount),
-                        backgroundColor: ['#4c52f8', '#497df7', '#1347b0', '#9827e4'],
+                        backgroundColor: ['#676cf8', '#6e97f7', '#3c62ad', '#a456d7'],
                        borderRadius: 6
                     }
                 ]
@@ -633,7 +633,7 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: pathologyStatusData.map(d => d.status),
                 datasets: [
                     {
-                        backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
+                        backgroundColor: ['#c57df5', '#9798e6', '#497df7', '#7a7ef9', '#7ca3f0', '#b3f3dd', '#f9a0cd', '#7fa5e1', '#ca7e94', '#b1a37d', '#66a588', '#5ac8fa', '#a283f6'],
                        data: pathologyStatusData.map(d => d.count),
                         borderWidth: 2
                     }
@@ -684,7 +684,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Daily Test Count',
                         data: this.pathologyData.dailyTestCounts.map(d => d.dayCount),
-                        backgroundColor: 'rgba(255, 107, 157, 0.2)',
+                        backgroundColor: 'rgba(232, 133, 166, 0.2)',
                         borderColor: '#3d4ff7',
                         borderWidth: 3,
                         tension: 0.4,
@@ -863,8 +863,8 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Number of Tests',
                         data: this.RadiologyData.radiologyVolumes.map(d => d.categoryCount),
-                        backgroundColor: ['#6366f1', '#497df7', '#4c52f8', '#5287f0', '#bb65f5', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
-                        borderRadius: 6
+                         backgroundColor: ['#c57df5', '#9798e6', '#497df7', '#7a7ef9', '#7ca3f0', '#b3f3dd', '#f9a0cd', '#7fa5e1', '#ca7e94', '#b1a37d', '#66a588', '#5ac8fa', '#a283f6'],
+                       borderRadius: 6
                     }
                 ]
             },
@@ -912,8 +912,8 @@ export class RadiologyDashboardComponent implements OnInit {
                 labels: RadiologyStatusData.map(d => d.status),
                 datasets: [
                     {
-                        backgroundColor: ['#bb65f5', '#6366f1', '#497df7', '#4c52f8', '#5287f0', '#a1f6d9', '#f97fbc', '#3b82f6', '#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
-                        data: RadiologyStatusData.map(d => d.count),
+                       backgroundColor: ['#c57df5', '#9798e6', '#497df7', '#7a7ef9', '#7ca3f0', '#b3f3dd', '#f9a0cd', '#7fa5e1', '#ca7e94', '#b1a37d', '#66a588', '#5ac8fa', '#a283f6'],
+                         data: RadiologyStatusData.map(d => d.count),
                         borderWidth: 2
                     }
                 ]
@@ -963,7 +963,7 @@ export class RadiologyDashboardComponent implements OnInit {
                     {
                         label: 'Daily Test Count',
                         data: this.RadiologyData.dailyTestCounts.map(d => d.dayCount),
-                        backgroundColor: 'rgba(255, 107, 157, 0.2)',
+                        backgroundColor: 'rgba(225, 137, 166, 0.2)',
                         borderColor: '#ff6b9d',
                         borderWidth: 3,
                         tension: 0.4,

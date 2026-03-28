@@ -20,6 +20,8 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { ChangePasswordComponent } from "app/main/administration/create-user/change-password/change-password.component";
 import { NotificationService } from "app/core/notification.service";
 import { SignalRService } from "app/core/services/signalr.service";
+import { ConfigService } from "app/core/services/config.service";
+import { ApiCaller } from "app/core/services/apiCaller";
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 // import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
@@ -42,6 +44,15 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     user: any;
     currentDate: Date = new Date();
 
+
+    dailydashflag: boolean = false
+    Investigationdashflag: boolean = false
+    Financedashflag: boolean = false
+    Cashlessdashflag: boolean = false
+    beddashflag: boolean = false
+    Labfinancedashflag: boolean = false
+    Pharmacydashflag: boolean = false
+
     // Demo notification array
     notifications = [];
     unreadCount = 0;
@@ -58,9 +69,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _fuseSidebarService: FuseSidebarService,
-        private _translateService: TranslateService,
-        private accountService: AuthenticationService,
+        private _fuseSidebarService: FuseSidebarService, private _httpClient1: ApiCaller,
+
+        private _translateService: TranslateService, private configService: ConfigService,
+        private accountService: AuthenticationService, public _configue: ConfigService,
         private router: Router, private signalRService: SignalRService,
         public _matDialog: MatDialog, public _notificationService: NotificationService
     ) {
@@ -123,6 +135,38 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        this.ConfigSettingParamNew();
+
+        //         const dailyValue1 = this?.configSettingParam1?.DailyDashBoard || "";
+        //         const [id1, val1] = dailyValue1.includes(":") ? dailyValue1.split(":") : [null, null];
+        //         this.dailydashflag = id1 === "1";
+
+        //         const bedValue1 = this?.configSettingParam1?.BedDashBoard || "";
+        //         const [id2, val2] = bedValue1.includes(":") ? bedValue1.split(":") : [null, null];
+        //         this.beddashflag = id2 === "1";
+        // 
+        //         const InvValue1 = this?.configSettingParam1?.InvestigationDashBoard || "";
+        //         const [id3, val3] = InvValue1.includes(":") ? InvValue1.split(":") : [null, null];
+        //         this.Investigationdashflag = id3 === "1";
+
+        //         const CashlessValue1 = this?.configSettingParam1?.CashlessDashBoard || "";
+        //         const [id4, val4] = CashlessValue1.includes(":") ? CashlessValue1.split(":") : [null, null];
+        //         this.Cashlessdashflag = id4 === "1";
+
+        //         const pharValue1 = this?.configSettingParam1?.PharmacyDashBoard || "";
+        //         const [id5, val5] = pharValue1.includes(":") ? pharValue1.split(":") : [null, null];
+        //         this.Pharmacydashflag = id5 === "1";
+
+        //         const labFinanceValue1 = this?.configSettingParam1?.LabFinanceDashBoard || "";
+        //         const [id6, val6] = labFinanceValue1.includes(":") ? labFinanceValue1.split(":") : [null, null];
+        //         this.Labfinancedashflag = id6 === "1";
+
+        //         const FinanceValue1 = this?.configSettingParam1?.FinanceDashBoard || "";
+        //         const [id7, val7] = FinanceValue1.includes(":") ? FinanceValue1.split(":") : [null, null];
+        //         this.Financedashflag = id7 === "1";
+
+
+
         this.signalRService.addReceiveMessageListener((data, user) => {
             if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
                 this.notifications.unshift({ notiTitle: data.NotiTitle, notiBody: data.NotiBody, id: data.Id, createdDate: data.CreatedDate, redirectUrl: data.RedirectUrl });
@@ -167,34 +211,34 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     // }
 
     navigateToBedOccupancyDashboard() {
-       
+
         this.router.navigate(['/dashboard/bed-occupancy']);
     }
 
     navigateToRadiologyDashboard() {
-       
+
         this.router.navigate(['/dashboard/Radiology-dashboard']);
     }
 
     navigateToCashlessDashboard() {
-       
+
         this.router.navigate(['/dashboard/Cashless-dashboard']);
     }
 
     navigateToPharmacyDashboard() {
-       
+
         this.router.navigate(['/dashboard/Pharmacy-dashboard']);
     }
-    
+
     navigateToFinancialDashboard() {
-       
+
         this.router.navigate(['/dashboard/Financial-dashboard']);
     }
-     navigateToLabFinancialDashboard() {
-       
+    navigateToLabFinancialDashboard() {
+
         this.router.navigate(['/dashboard/Lab-Financial-dashboard']);
     }
-   
+
     /**
      * On destroy
      */
@@ -259,6 +303,52 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             });
         dialogRef.afterClosed().subscribe(result => {
 
+        });
+    }
+    configSettingParam1: any = [];
+    ConfigSettingParamNew() {
+        const Params =
+        {
+            "searchFields": [],
+            "mode": "NewSysConfig"  //SystemConfigList
+        }
+        
+        this._httpClient1.PostData("Common", Params).subscribe(data => {
+            console.log(data)
+            this.configSettingParam1 = data[0];
+            console.log(this.configSettingParam1)
+            // this.configService.setCongiParam(this.configSettingParam1[0]);
+            if (this.configSettingParam1) {
+                const dailyValue1 = this?.configSettingParam1?.DailyDashBoard || "";
+                const [id1, val1] = dailyValue1.includes(":") ? dailyValue1.split(":") : [null, null];
+                this.dailydashflag = id1 === "1";
+
+                const bedValue1 = this?.configSettingParam1?.BedDashBoard || "";
+                const [id2, val2] = bedValue1.includes(":") ? bedValue1.split(":") : [null, null];
+                this.beddashflag = id2 === "1";
+                
+                const InvValue1 = this?.configSettingParam1?.InvestigationDashBoard || "";
+                const [id3, val3] = InvValue1.includes(":") ? InvValue1.split(":") : [null, null];
+                this.Investigationdashflag = id3 === "1";
+
+                const CashlessValue1 = this?.configSettingParam1?.CashlessDashBoard || "";
+                const [id4, val4] = CashlessValue1.includes(":") ? CashlessValue1.split(":") : [null, null];
+                this.Cashlessdashflag = id4 === "1";
+
+                const pharValue1 = this?.configSettingParam1?.PharmacyDashBoard || "";
+                const [id5, val5] = pharValue1.includes(":") ? pharValue1.split(":") : [null, null];
+                this.Pharmacydashflag = id5 === "1";
+
+                const labFinanceValue1 = this?.configSettingParam1?.LabFinanceDashBoard || "";
+                const [id6, val6] = labFinanceValue1.includes(":") ? labFinanceValue1.split(":") : [null, null];
+                this.Labfinancedashflag = id6 === "1";
+
+                const FinanceValue1 = this?.configSettingParam1?.FinanceDashBoard || "";
+                const [id7, val7] = FinanceValue1.includes(":") ? FinanceValue1.split(":") : [null, null];
+                this.Financedashflag = id7 === "1";
+
+
+            }
         });
     }
     // navigateToImportExcel() {

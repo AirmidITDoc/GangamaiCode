@@ -62,25 +62,25 @@
                                     </div>
                                 </button>
                                 <mat-menu #dashboardMenu="matMenu" [overlapTrigger]="false">
-                                    <button mat-menu-item (click)="navigateToDailyDashboard()">
+                                    <button mat-menu-item (click)="navigateToDailyDashboard()" *ngIf="dailydashflag">
                                         <span>Daily Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()">
+                                    <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()" *ngIf="beddashflag">
                                         <span>Bed Occupancy Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()">
+                                    <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()" *ngIf="Investigationdashflag">
                                         <span>Investigation Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToCashlessDashboard()">
+                                    <button mat-menu-item class="" (click)="navigateToCashlessDashboard()" *ngIf="Cashlessdashflag">
                                         <span>CashLess Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()">
+                                    <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()" *ngIf="Pharmacydashflag">
                                         <span>Pharmacy Dashboard</span>
                                     </button>
-                                       <button mat-menu-item class="" (click)="navigateToFinancialDashboard()">
+                                       <button mat-menu-item class="" (click)="navigateToFinancialDashboard()" *ngIf="Financedashflag">
                                         <span>Financial Dashboard</span>
                                     </button>
-                                      <button mat-menu-item class="" (click)="navigateToLabFinancialDashboard()">
+                                      <button mat-menu-item class="" (click)="navigateToLabFinancialDashboard()" *ngIf="Labfinancedashflag">
                                         <span>Lab Financial Dashboard</span>
                                     </button>
                                       <!-- <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()">

@@ -58,6 +58,7 @@ export class NewOutMrdComponent {
         this.NewOutMrdForm = this.createOutMrdForm();
         if (this.data) {
             debugger
+            console.log(this.data)
             this.rmdrecordId = this.data.rmdrecordId
             this.opipid = this.data.opipid
             this.registerObj = this.data
@@ -69,14 +70,32 @@ export class NewOutMrdComponent {
     createOutMrdForm() {
 
         return this.formBuilder.group({
-            outFileId: 0,
-            opipid: [this.opipid, [Validators.required]],
-            givenUserId: this.accountService.currentUserValue.userId,
-            personName: ['', [Validators.required]],
-            outDate: [(new Date()).toISOString()],
-            outTime: [(new Date()).toISOString()],
-            outReason: ['', [Validators.required]],
-            CreatedBy: this.accountService.currentUserValue.userId,
+            // outFileId: this.data?.outFileId,
+            // opipid: [this.opipid, [Validators.required]],
+            // givenUserId: this.accountService.currentUserValue.userId,
+            // personName: ['', [Validators.required]],
+            // outDate: [(new Date()).toISOString()],
+            // outTime: [(new Date()).toISOString()],
+            // outReason: ['', [Validators.required]],
+            // CreatedBy: this.accountService.currentUserValue.userId,
+
+
+               outFileId: [this.data?.outFileId, [Validators.required]],
+                        opipid: [this.opipid, [Validators.required]],
+                        outNo: [this.data?.outNo || "0" ],
+                        givenUserId:[this.data?.givenUserId || 0],
+                        personName:[this.data?.personName || ''],
+            
+                        outDate: [(new Date()).toISOString()],
+                        outTime: [(new Date()).toISOString()],
+                        outReason:[this.data?.outReason || ''],
+                        inNo:[this.data?.inNo || ''],
+                        inDate: [(new Date()).toISOString()],
+                        inTime: [(new Date()).toISOString()],
+                        returnUserId: this.accountService.currentUserValue.userId,
+                        returnPersonName: ['', [Validators.required]],
+                        inReason: ['', Validators.required],
+            
         });
     }
 
@@ -90,9 +109,9 @@ export class NewOutMrdComponent {
      
         if (!this.NewOutMrdForm.invalid) {
             console.log(this.NewOutMrdForm.value)
-            this._MrdService.MrdOutFileUpdate(this.NewOutMrdForm.value).subscribe((response) => {
-                this._matDialog.closeAll();
-            });
+            // this._MrdService.MrdOutFileUpdate(this.NewOutMrdForm.value).subscribe((response) => {
+            //     this._matDialog.closeAll();
+            // });
         } else {
             const invalidFields = [];
             if (this.NewOutMrdForm.invalid) {
