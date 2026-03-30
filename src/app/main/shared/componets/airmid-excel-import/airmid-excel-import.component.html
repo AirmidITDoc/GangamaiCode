@@ -1,303 +1,337 @@
 <div class="import-dialog-wrapper">
-  <!-- Header -->
-  <div class="dialog-header">
-    <div class="header-content">
-      <mat-icon class="header-icon">upload_file</mat-icon>
-      <div class="header-text">
-        <h2 class="dialog-title">{{ config.title || 'Import Data' }}</h2>
-        <p class="dialog-subtitle">{{ config.subtitle || 'Upload an Excel file to import your data' }}</p>
-      </div>
-    </div>
-    <button mat-icon-button class="close-btn" (click)="close()" matTooltip="Close">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
 
-  <!-- Stepper Tabs -->
-  <div class="step-tabs">
-    <div
-      *ngFor="let step of steps; let i = index"
-      class="step-tab"
-      [class.active]="currentStep === step"
-      [class.completed]="completedSteps.has(step)"
-      [class.disabled]="!isStepEnabled(step)"
-      (click)="navigateTo(step)"
-    >
-      <div class="step-indicator">
-        <span *ngIf="!completedSteps.has(step)" class="step-number">{{ i + 1 }}</span>
-        <mat-icon *ngIf="completedSteps.has(step)" class="step-check">check</mat-icon>
-      </div>
-      <span class="step-label">
-        {{ step === 'upload' ? 'Upload Excel' : step === 'mapping' ? 'Map Columns' : 'Preview & Import' }}
-      </span>
-      <div *ngIf="i < steps.length - 1" class="step-connector">
-        <div class="connector-line" [class.filled]="completedSteps.has(step)"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Step Content -->
-  <div class="step-content">
-
-    <!-- ═══════════════════════════════════════════════════════
-         STEP 1: Upload Excel
-    ═══════════════════════════════════════════════════════ -->
-    <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel" @fadeSlide>
-
-      <ng-container *ngIf="!uploadedFile; else fileUploaded">
-        <!-- Drop Zone -->
-        <div
-          class="drop-zone"
-          [class.dragging]="isDragging"
-          (dragover)="onDragOver($event)"
-          (dragleave)="onDragLeave()"
-          (drop)="onDrop($event)"
-          (click)="openFilePicker()"
-        >
-          <input
-            #fileInput
-            type="file"
-            accept=".xlsx,.xls"
-            style="display:none"
-            (change)="onFileSelected($event)"
-          />
-          <div class="drop-zone-inner">
-            <div class="drop-icon-wrap">
-              <mat-icon class="drop-icon">cloud_upload</mat-icon>
+    <!-- ── Header ─────────────────────────────────────────────────── -->
+    <div class="dialog-header">
+        <div class="header-content">
+            <mat-icon class="header-icon">upload_file</mat-icon>
+            <div class="header-text">
+                <h2 class="dialog-title">{{ config.title || 'Import Data' }}</h2>
+                <p class="dialog-subtitle">{{ config.subtitle || 'Upload an Excel file to import your data' }}</p>
             </div>
-            <p class="drop-primary">Drop your Excel file here</p>
-            <p class="drop-secondary">or <span class="browse-link">browse to choose a file</span></p>
-            <div class="file-types">
-              <span class="badge">.xlsx</span>
-              <span class="badge">.xls</span>
-            </div>
-          </div>
         </div>
+        <button mat-icon-button class="close-btn" (click)="close()" matTooltip="Close">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
 
-        <!-- Instructions -->
-        <div class="upload-tips" *ngIf="config.columns">
-          <p class="tips-title">
-            <mat-icon>info_outline</mat-icon>
-            Expected columns
-          </p>
-          <div class="chip-list">
-            <span *ngFor="let col of config.columns" class="col-chip" [class.required]="col.required">
-              {{ col.label || col.key }}
-              <span *ngIf="col.required" class="req-dot">*</span>
+    <!-- ── Step Tabs ───────────────────────────────────────────────── -->
+    <div class="step-tabs">
+        <div *ngFor="let step of steps; let i = index" class="step-tab" [class.active]="currentStep === step"
+            [class.completed]="completedSteps.has(step)" [class.disabled]="!isStepEnabled(step)"
+            (click)="navigateTo(step)">
+            <div class="step-indicator">
+                <span *ngIf="!completedSteps.has(step)" class="step-number">{{ i + 1 }}</span>
+                <mat-icon *ngIf="completedSteps.has(step)" class="step-check">check</mat-icon>
+            </div>
+            <span class="step-label">
+                {{ step === 'upload' ? 'Upload Excel' : step === 'mapping' ? 'Map Columns' : 'Preview & Import' }}
             </span>
-          </div>
+            <div *ngIf="i < steps.length - 1" class="step-connector">
+                <div class="connector-line" [class.filled]="completedSteps.has(step)"></div>
+            </div>
         </div>
-      </ng-container>
-
-      <!-- File uploaded success state -->
-      <ng-template #fileUploaded>
-        <div class="file-success-card">
-          <div class="file-icon-wrap">
-            <mat-icon class="file-icon">description</mat-icon>
-          </div>
-          <div class="file-info">
-            <p class="file-name">{{ uploadedFile!.name }}</p>
-            <p class="file-meta">
-              {{ excelColumns.length }} columns detected &bull;
-              {{ rawData.length }} rows &bull;
-              {{ (uploadedFile!.size / 1024).toFixed(1) }} KB
-            </p>
-          </div>
-          <button mat-icon-button color="warn" (click)="removeFile()" matTooltip="Remove file">
-            <mat-icon>delete_outline</mat-icon>
-          </button>
-        </div>
-
-        <div class="detected-columns">
-          <p class="detected-label">Detected columns from file:</p>
-          <div class="chip-list">
-            <span *ngFor="let col of excelColumns" class="col-chip excel-chip">{{ col }}</span>
-          </div>
-        </div>
-      </ng-template>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════
-         STEP 2: Column Mapping
-    ═══════════════════════════════════════════════════════ -->
-    <div *ngIf="currentStep === 'mapping'" class="step-panel mapping-panel" @fadeSlide>
-      <p class="mapping-desc">
-        Map your target fields to the corresponding columns in the uploaded Excel file.
-        <span class="req-note">* Required fields must be mapped.</span>
-      </p>
+    <!-- ── Step Content ────────────────────────────────────────────── -->
+    <div class="step-content">
 
-      <div class="mapping-table">
-        <div class="mapping-header">
-          <span>Target Field</span>
-          <mat-icon class="arrow-icon">arrow_forward</mat-icon>
-          <span>Excel Column</span>
+        <!-- ═══════════════════════════════════════════════════
+         STEP 1 — Upload Excel
+    ═══════════════════════════════════════════════════ -->
+        <div *ngIf="currentStep === 'upload'" class="step-panel upload-panel">
+
+            <ng-container *ngIf="!uploadedFile; else fileUploaded">
+                <div class="drop-zone" [class.dragging]="isDragging" (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave()" (drop)="onDrop($event)" (click)="openFilePicker()">
+                    <input #fileInput type="file" accept=".xlsx,.xls" style="display:none"
+                        (change)="onFileSelected($event)" />
+                    <div class="drop-zone-inner">
+                        <div class="drop-icon-wrap">
+                            <mat-icon class="drop-icon">cloud_upload</mat-icon>
+                        </div>
+                        <p class="drop-primary">Drop your Excel file here</p>
+                        <p class="drop-secondary">or <span class="browse-link">browse to choose a file</span></p>
+                        <div class="file-types">
+                            <span class="badge">.xlsx</span>
+                            <span class="badge">.xls</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-tips" *ngIf="config.columns">
+                    <p class="tips-title"><mat-icon>info_outline</mat-icon> Expected columns</p>
+                    <div class="chip-list">
+                        <span *ngFor="let col of config.columns" class="col-chip" [class.required]="col.required">
+                            {{ col.label || col.key }}<span *ngIf="col.required" class="req-dot">*</span>
+                        </span>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-template #fileUploaded>
+                <div class="file-success-card">
+                    <div class="file-icon-wrap"><mat-icon class="file-icon">description</mat-icon></div>
+                    <div class="file-info">
+                        <p class="file-name">{{ uploadedFile!.name }}</p>
+                        <p class="file-meta">
+                            {{ excelColumns.length }} columns detected &bull;
+                            {{ (uploadedFile!.size / 1024).toFixed(1) }} KB
+                        </p>
+                    </div>
+                    <button mat-icon-button color="warn" (click)="removeFile()" matTooltip="Remove file">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </div>
+                <div class="detected-columns">
+                    <p class="detected-label">Detected columns from file:</p>
+                    <div class="chip-list">
+                        <span *ngFor="let col of excelColumns" class="col-chip excel-chip">{{ col }}</span>
+                    </div>
+                </div>
+            </ng-template>
         </div>
 
-        <div class="mapping-rows">
-          <div *ngFor="let m of mappings" class="mapping-row" [class.mapped]="m.sourceColumn">
-            <div class="target-field">
-              <mat-icon class="field-icon">{{ m.targetColumn.icon || 'label_outline' }}</mat-icon>
-              <div class="field-text">
-                <span class="field-label">
-                  {{ m.targetColumn.label || m.targetColumn.key }}
-                  <span *ngIf="m.targetColumn.required" class="req-star">*</span>
-                </span>
-                <span class="field-key">{{ m.targetColumn.key }}</span>
-              </div>
+        <!-- ═══════════════════════════════════════════════════
+         STEP 2 — Map Columns
+    ═══════════════════════════════════════════════════ -->
+        <div *ngIf="currentStep === 'mapping'" class="step-panel mapping-panel">
+            <p class="mapping-desc">
+                Match your target fields to the corresponding Excel columns.
+                <span class="req-note">* Required fields must be mapped.</span>
+            </p>
+
+            <div class="mapping-table">
+                <div class="mapping-header">
+                    <span>Target Field</span>
+                    <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+                    <span>Excel Column</span>
+                </div>
+                <div class="mapping-rows">
+                    <div *ngFor="let m of mappings" class="mapping-row" [class.mapped]="m.sourceColumn">
+                        <div class="target-field">
+                            <mat-icon class="field-icon">{{ m.targetColumn.icon || 'label_outline' }}</mat-icon>
+                            <div class="field-text">
+                                <span class="field-label">
+                                    {{ m.targetColumn.label || m.targetColumn.key }}
+                                    <span *ngIf="m.targetColumn.required" class="req-star">*</span>
+                                </span>
+                                <span class="field-key">{{ m.targetColumn.key }}</span>
+                            </div>
+                        </div>
+                        <mat-icon class="row-arrow">chevron_right</mat-icon>
+                        <mat-form-field appearance="outline" class="source-select">
+                            <mat-label>Select column</mat-label>
+                            <mat-select [(ngModel)]="m.sourceColumn">
+                                <mat-option [value]="null">— Skip —</mat-option>
+                                <mat-option *ngFor="let col of excelColumns" [value]="col">{{ col }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-icon class="map-status" [class.ok]="m.sourceColumn" [class.skip]="!m.sourceColumn">
+                            {{ m.sourceColumn ? 'check_circle' : 'radio_button_unchecked' }}
+                        </mat-icon>
+                    </div>
+                </div>
             </div>
 
-            <mat-icon class="row-arrow">chevron_right</mat-icon>
-
-            <mat-form-field appearance="outline" class="source-select">
-              <mat-label>Select column</mat-label>
-              <mat-select [(ngModel)]="m.sourceColumn">
-                <mat-option [value]="null">— Skip —</mat-option>
-                <mat-option *ngFor="let col of excelColumns" [value]="col">
-                  {{ col }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-icon class="map-status" [class.ok]="m.sourceColumn" [class.skip]="!m.sourceColumn">
-              {{ m.sourceColumn ? 'check_circle' : 'radio_button_unchecked' }}
-            </mat-icon>
-          </div>
+            <div *ngIf="!requiredMappingsDone" class="mapping-warning">
+                <mat-icon>warning_amber</mat-icon> Please map all required fields before proceeding.
+            </div>
         </div>
-      </div>
 
-      <div *ngIf="!requiredMappingsDone" class="mapping-warning">
-        <mat-icon>warning_amber</mat-icon>
-        Please map all required fields before proceeding.
-      </div>
+        <!-- ═══════════════════════════════════════════════════
+         STEP 3 — Preview & Import
+    ═══════════════════════════════════════════════════ -->
+        <div *ngIf="currentStep === 'preview'" class="step-panel preview-panel">
+
+            <!-- Loading spinner -->
+            <div *ngIf="isLoadingPreview" class="preview-loading">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p>Validating data via server…</p>
+            </div>
+
+            <!-- API Error -->
+            <div *ngIf="previewError && !isLoadingPreview" class="import-error-banner">
+                <mat-icon>error_outline</mat-icon>
+                <div>
+                    <strong>Preview failed</strong>
+                    <p style="margin:4px 0 0">{{ previewError }}</p>
+                    <button mat-button color="primary" style="padding:0;margin-top:4px" (click)="loadPreview()">
+                        <mat-icon>refresh</mat-icon> Retry
+                    </button>
+                </div>
+            </div>
+
+            <!-- Import Success -->
+            <div *ngIf="importSuccess" class="import-success-banner">
+                <mat-icon>check_circle</mat-icon>
+                <span>Import successful! {{ totalRows }} records saved.</span>
+            </div>
+
+            <!-- Import Error -->
+            <div *ngIf="importError" class="import-error-banner">
+                <mat-icon>error_outline</mat-icon>
+                <span>{{ importError }}</span>
+            </div>
+
+            <!-- Preview Table -->
+            <ng-container *ngIf="!isLoadingPreview && !previewError && !importSuccess && previewRows.length > 0">
+
+                <!-- Summary stats -->
+                <div class="preview-stats">
+                    <div class="stat-chip total">
+                        <mat-icon>table_rows</mat-icon>
+                        <span><strong>{{ totalRows }}</strong> Total Rows</span>
+                    </div>
+                    <div class="stat-chip valid">
+                        <mat-icon>check_circle</mat-icon>
+                        <span><strong>{{ validCount }}</strong> Valid</span>
+                    </div>
+                    <div class="stat-chip invalid" [class.has-errors]="hasValidationErrors">
+                        <mat-icon>cancel</mat-icon>
+                        <span><strong>{{ invalidCount }}</strong> Invalid</span>
+                    </div>
+
+                    <!-- Filter toggle -->
+                    <div class="filter-toggle" *ngIf="hasValidationErrors">
+                        <button mat-stroked-button [class.active-filter]="showOnlyErrors"
+                            (click)="showOnlyErrors = !showOnlyErrors" matTooltip="Show only rows with errors">
+                            <mat-icon>filter_list</mat-icon>
+                            {{ showOnlyErrors ? 'Show All' : 'Show Errors Only' }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Validation error notice -->
+                <div *ngIf="hasValidationErrors" class="validation-notice">
+                    <mat-icon>info</mat-icon>
+                    <span>
+                        <strong>{{ invalidCount }} row(s)</strong> have validation errors (shown in red).
+                        Fix the source file and re-upload, or proceed to import only the valid rows.
+                    </span>
+                </div>
+
+                <!-- Data Table -->
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+
+                        <!-- Header -->
+                        <th mat-header-cell *matHeaderCellDef>
+                            {{ getColumnLabel(column) }}
+                        </th>
+
+                        <!-- Cell -->
+                        <td mat-cell *matCellDef="let element">
+                            {{ element[column] }}
+                        </td>
+
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                </table>
+                <!-- <div class="preview-table-wrap">
+                    <table class="preview-table">
+                        <thead>
+                            <tr>
+                                <th class="row-num">#</th>
+                                <th class="status-col">Status</th>
+                                <th *ngFor="let col of previewColumns">{{ getColumnLabel(col) }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of displayedRows" [class.row-invalid]="!row.isValid"
+                                [class.row-valid]="row.isValid">
+                                <td class="row-num">{{ row.rowIndex }}</td>
+
+                                <td class="status-col">
+                                    <span class="status-badge" [class.badge-valid]="row.isValid"
+                                        [class.badge-invalid]="!row.isValid">
+                                        <mat-icon>{{ row.isValid ? 'check_circle' : 'cancel' }}</mat-icon>
+                                        {{ row.isValid ? 'Valid' : 'Error' }}
+                                    </span>
+                                </td>
+                                <td *ngFor="let col of previewColumns" [class.cell-error]="getCellError(row, col)"
+                                    [matTooltip]="getCellError(row, col) || ''" matTooltipClass="error-tooltip">
+                                    <div class="cell-inner">
+                                        <span class="cell-value" [class.null-val]="row.data[col] == null">
+                                            {{ row.data[col] != null ? row.data[col] : '—' }}
+                                        </span>
+                                        <mat-icon *ngIf="getCellError(row, col)"
+                                            class="cell-error-icon">error</mat-icon>
+                                    </div>
+                                    <div *ngIf="getCellError(row, col)" class="cell-error-msg">
+                                        {{ getCellError(row, col) }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+
+                <!-- Footer summary -->
+                <div class="preview-summary">
+                    <div class="summary-chip">
+                        <mat-icon>view_column</mat-icon>
+                        <span>{{ previewColumns.length }} columns mapped</span>
+                    </div>
+                    <div class="summary-chip" *ngIf="displayedRows.length !== totalRows">
+                        <mat-icon>filter_list</mat-icon>
+                        <span>Showing {{ displayedRows.length }} of {{ totalRows }} rows</span>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Empty state (API returned no rows) -->
+            <div *ngIf="!isLoadingPreview && !previewError && previewRows.length === 0" class="empty-preview">
+                <mat-icon>inbox</mat-icon>
+                <p>No data returned from server.</p>
+            </div>
+
+        </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════
-         STEP 3: Preview & Import
-    ═══════════════════════════════════════════════════════ -->
-    <div *ngIf="currentStep === 'preview'" class="step-panel preview-panel" @fadeSlide>
+    <!-- ── Footer Actions ──────────────────────────────────────────── -->
+    <div class="dialog-footer">
+        <button mat-stroked-button (click)="close()" [disabled]="isImporting">
+            {{ importSuccess ? 'Close' : 'Cancel' }}
+        </button>
 
-      <!-- Loading -->
-      <div *ngIf="isLoadingPreview" class="preview-loading">
-        <mat-spinner diameter="40"></mat-spinner>
-        <p>Loading preview…</p>
-      </div>
+        <div class="footer-actions">
+            <!-- Step 1 → 2 -->
+            <button *ngIf="currentStep === 'upload'" mat-flat-button color="primary"
+                [disabled]="!uploadedFile || excelColumns.length === 0" (click)="proceedToMapping()">
+                Next: Map Columns <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+            </button>
 
-      <!-- Success Banner -->
-      <div *ngIf="importSuccess" class="import-success-banner">
-        <mat-icon>check_circle</mat-icon>
-        <span>Import successful! Data has been saved.</span>
-      </div>
+            <!-- Step 2 → 3 -->
+            <button *ngIf="currentStep === 'mapping'" mat-stroked-button (click)="navigateTo('upload')"
+                style="margin-right:8px">
+                <mat-icon>arrow_back</mat-icon> Back
+            </button>
+            <button *ngIf="currentStep === 'mapping'" mat-flat-button color="primary" [disabled]="!requiredMappingsDone"
+                (click)="proceedToPreview()">
+                Next: Preview <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+            </button>
 
-      <!-- Error Banner -->
-      <div *ngIf="importError" class="import-error-banner">
-        <mat-icon>error_outline</mat-icon>
-        <span>{{ importError }}</span>
-      </div>
+            <!-- Step 3 actions -->
+            <button *ngIf="currentStep === 'preview' && !importSuccess" mat-stroked-button
+                (click)="navigateTo('mapping')" style="margin-right:8px" [disabled]="isImporting">
+                <mat-icon>arrow_back</mat-icon> Back
+            </button>
 
-      <ng-container *ngIf="!isLoadingPreview && !importSuccess">
-        <div class="preview-info">
-          <mat-icon>table_chart</mat-icon>
-          <span>
-            Showing <strong>{{ previewData.length }}</strong> of
-            <strong>{{ rawData.length }}</strong> rows
-          </span>
+            <!-- Import button — disabled if all rows are invalid -->
+            <button *ngIf="currentStep === 'preview' && !importSuccess" mat-flat-button color="primary"
+                [disabled]="isImporting || isLoadingPreview || !!previewError || validCount === 0"
+                (click)="importData()" [matTooltip]="validCount === 0 ? 'No valid rows to import' : ''">
+                <mat-spinner *ngIf="isImporting" diameter="18"
+                    style="display:inline-block;margin-right:8px"></mat-spinner>
+                {{ isImporting ? 'Importing…' : ('Import ' + (hasValidationErrors ? validCount + ' Valid Rows' : 'All
+                Rows')) }}
+                <mat-icon *ngIf="!isImporting" iconPositionEnd>file_upload</mat-icon>
+            </button>
         </div>
-
-        <div class="preview-table-wrap">
-          <table class="preview-table">
-            <thead>
-              <tr>
-                <th class="row-num">#</th>
-                <th *ngFor="let col of previewColumns">{{ getColumnLabel(col) }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of previewData; let i = index">
-                <td class="row-num">{{ i + 1 }}</td>
-                <td *ngFor="let col of previewColumns" [title]="row[col]">
-                  <span class="cell-value" [class.null-val]="row[col] == null">
-                    {{ row[col] != null ? row[col] : '—' }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="preview-summary">
-          <div class="summary-chip">
-            <mat-icon>storage</mat-icon>
-            <span>{{ rawData.length }} total records</span>
-          </div>
-          <div class="summary-chip">
-            <mat-icon>view_column</mat-icon>
-            <span>{{ previewColumns.length }} columns mapped</span>
-          </div>
-        </div>
-      </ng-container>
     </div>
-  </div>
 
-  <!-- Footer Actions -->
-  <div class="dialog-footer">
-    <button mat-stroked-button (click)="close()" [disabled]="isImporting">
-      {{ importSuccess ? 'Close' : 'Cancel' }}
-    </button>
-
-    <div class="footer-actions">
-      <!-- Upload → Mapping -->
-      <button
-        *ngIf="currentStep === 'upload'"
-        mat-flat-button
-        color="primary"
-        [disabled]="!uploadedFile || excelColumns.length === 0"
-        (click)="proceedToMapping()"
-      >
-        Next: Map Columns
-        <mat-icon iconPositionEnd>arrow_forward</mat-icon>
-      </button>
-
-      <!-- Mapping → Preview -->
-      <button
-        *ngIf="currentStep === 'mapping'"
-        mat-stroked-button
-        (click)="navigateTo('upload')"
-        style="margin-right:8px"
-      >
-        <mat-icon>arrow_back</mat-icon> Back
-      </button>
-      <button
-        *ngIf="currentStep === 'mapping'"
-        mat-flat-button
-        color="primary"
-        [disabled]="!requiredMappingsDone"
-        (click)="proceedToPreview()"
-      >
-        Next: Preview
-        <mat-icon iconPositionEnd>arrow_forward</mat-icon>
-      </button>
-
-      <!-- Preview → Import -->
-      <button
-        *ngIf="currentStep === 'preview' && !importSuccess"
-        mat-stroked-button
-        (click)="navigateTo('mapping')"
-        style="margin-right:8px"
-        [disabled]="isImporting"
-      >
-        <mat-icon>arrow_back</mat-icon> Back
-      </button>
-      <button
-        *ngIf="currentStep === 'preview' && !importSuccess"
-        mat-flat-button
-        color="primary"
-        [disabled]="isImporting || isLoadingPreview"
-        (click)="importData()"
-      >
-        <mat-spinner *ngIf="isImporting" diameter="18" style="display:inline-block;margin-right:8px"></mat-spinner>
-        {{ isImporting ? 'Importing…' : 'Import Data' }}
-        <mat-icon *ngIf="!isImporting" iconPositionEnd>file_upload</mat-icon>
-      </button>
-    </div>
-  </div>
 </div>

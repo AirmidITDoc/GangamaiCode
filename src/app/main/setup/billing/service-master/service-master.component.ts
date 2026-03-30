@@ -109,17 +109,19 @@ export class ServiceMasterComponent implements OnInit {
         title: 'Import Services',
         subtitle: 'Upload an Excel file to bulk-import services',
         importApi: '/api/services/import',
-        previewApi: '/api/services/preview',   // optional
+        previewApi: 'import/preview',   // optional
         previewLimit: 10,
         columns: [
-            { key: 'name', label: 'Product Name', required: true, icon: 'inventory_2' },
-            { key: 'sku', label: 'SKU', required: true, icon: 'qr_code' },
-            { key: 'price', label: 'Price', required: true, icon: 'attach_money' },
-            { key: 'category', label: 'Category', icon: 'category' },
-            { key: 'description', label: 'Description', icon: 'description' },
-            { key: 'stock', label: 'Stock Qty', icon: 'warehouse' },
+            { key: 'ServiceDetailId', label: 'Service Detail Id', required: true },
+            { key: 'TariffId', label: 'Tariff Id', required: true },
+            { key: 'TariffName', label: 'Tariff Name', required: true },
+            { key: 'ServiceId', label: 'Service Id', required: true },
+            { key: 'ServiceName', label: 'Service Name', required: true },
+            { key: 'ClassId', label: 'Class Id', required: true },
+            { key: 'ClassRate', label: 'Class Rate', required: true },
         ],
     };
+
 
     onImported(result: ImportDialogResult): void {
         debugger
