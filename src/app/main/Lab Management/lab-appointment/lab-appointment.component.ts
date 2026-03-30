@@ -91,6 +91,22 @@ export class LabAppointmentComponent {
 
   ngOnInit(): void {
     this.unitId = this.accountService.currentUserValue.user.unitId
+
+    // debugger
+    const SelectQuery = {
+      "searchFields": [{
+        "fieldName": "LoginId",
+        "fieldValue": String(this.accountService.currentUserValue.userId),
+        "opType": "Equals"
+      }],
+      "mode": "LoginWiseAccessConfigList"
+    }
+    this._service.commonList(SelectQuery).subscribe(response => {
+      const CategoryData = response.find(x => x.AccessValueName === 'IsSetCategoryId');
+      console.log(CategoryData)
+      this.categoryId = Number(CategoryData.AccessInputValue)
+      this.myFilterform.get('categoryId').setValue(this.categoryId)
+    });
   }
   getWeekRange(date = new Date()) {
     // Clone the date to avoid modifying the original
@@ -148,7 +164,7 @@ export class LabAppointmentComponent {
     this.categoryTimeout = setTimeout(() => {
       this.categoryId = obj.value;
       this.CateName = obj.text;
-      this.bindData();
+      // this.bindData();
     }, 300); // 300ms delay
   }
 

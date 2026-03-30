@@ -400,10 +400,12 @@
                                                 <ng-container *ngIf="
                                                         (element.IsInputField &&
                                                         (element.AccessValueId === 'IsDiscount' ||
-                                                        element.AccessValueId === 'IsLoginTimeOut')) ||
+                                                        element.AccessValueId === 'IsLoginTimeOut' ||
+                                                        element.AccessValueId === 'IsSetCategoryId')) ||
                                                         (element.accessValue &&
                                                         (element.accessValueName === 'IsDiscount' ||
-                                                        element.accessValueName === 'IsLoginTimeOut'))
+                                                        element.accessValueName === 'IsLoginTimeOut' ||
+                                                        element.accessValueName === 'IsSetCategoryId'))
                                                     ">
                                                     <mat-form-field appearance="fill">
                                                         <input matInput [maxLength]="100"
