@@ -1,0 +1,65 @@
+<div id="dashboard-project" class="simple page-layout right-sidebar inner-scroll pharmacy-dashboard-wrapper"
+    fxLayout="column">
+    <!-- HEADER -->
+    <div class="top-header accent">
+        <div class="top-header-info">
+            <mat-icon class="logo-icon"
+                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">local_pharmacy</mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Radiology Collection Dashboard</span>
+            </div>
+        </div>
+        <div class="modal-header-right">
+            <div class="comman-date-container">
+
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutGap="3px">
+
+        <!-- dynamicTableHeight -->
+        <div fusePerfectScrollbar
+            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
+
+            <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
+                <!-- Tests by Modality Bar Chart -->
+                <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-card style="background-color: rgb(243, 250, 250);">
+
+                        <mat-card-content>
+                            <div class="chart-header">
+                                <h3 class="chart-title">Radiology Summary Overview</h3>
+                                <hr>
+                            </div>
+                            <div class="chart-container">
+
+                                <canvas id="RadioDailysalesChart"></canvas>
+                            </div>
+
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+
+                <!-- <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-card class="chart-card">
+                            <mat-card-content>
+                                <div class="chart-header">
+                                    <h3 class="chart-title">Consultant Patient Count </h3>
+                                  </div>
+                                <div style="height: 350px;">
+                                    <canvas id="modalityChart1"></canvas>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div> -->
+            </div>
+
+        </div>
+
+    </div>
