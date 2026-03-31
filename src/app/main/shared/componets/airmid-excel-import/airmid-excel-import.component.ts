@@ -32,8 +32,6 @@ export class AirmidExcelImportDialogComponent implements OnInit {
     // ── Preview state ───────────────────────────────────────────────
     isLoadingPreview = false;
     previewError: string | null = null;
-    previewRows: PreviewRow[] = [];         // rows returned by API (with validation)
-    previewColumns: string[] = [];          // mapped target keys to show as columns
     totalRows = 0;
     validCount = 0;
     invalidCount = 0;
@@ -131,7 +129,6 @@ export class AirmidExcelImportDialogComponent implements OnInit {
     removeFile(): void {
         this.uploadedFile = null;
         this.excelColumns = [];
-        this.previewRows = [];
         this.completedSteps.clear();
         this.currentStep = 'upload';
         this.previewError = null;
@@ -177,7 +174,6 @@ export class AirmidExcelImportDialogComponent implements OnInit {
     loadPreview(): void {
         this.isLoadingPreview = true;
         this.previewError = null;
-        this.previewRows = [];
         this.showOnlyErrors = false;
         let result = this.mappings.map(x => ({
             targetColumn: x.targetColumn.key,
@@ -209,17 +205,12 @@ export class AirmidExcelImportDialogComponent implements OnInit {
                 });
 
                 // ✅ Dynamically set columns from first row
-                this.displayedColumns = Object.keys(cleanedData[0]);
+                this.displayedColumns = Object.keys(cleanedData[0]).filter(x=>x!="message");
 
                 this.dataSource.data = cleanedData;
-
-                this.previewRows = res ?? [];
                 this.totalRows = res.length;
-                this.validCount = res.validCount ?? this.previewRows.filter((r) => r.isValid).length;
-                this.invalidCount = res.invalidCount ?? this.previewRows.filter((r) => !r.isValid).length;
-                this.previewColumns = this.mappings
-                    .filter((m) => m.sourceColumn)
-                    .map((m) => m.targetColumn.key);
+                this.validCount = res.filter((x: { status: number; }) => x.status == 1).length ?? 0;
+                this.invalidCount = res.filter((x: { status: number; }) => x.status != 1).length ?? 0;
                 this.isLoadingPreview = false;
                 this.cdr.detectChanges();
             },
@@ -231,22 +222,12 @@ export class AirmidExcelImportDialogComponent implements OnInit {
         });
     }
 
-    get displayedRows(): PreviewRow[] {
-        return this.showOnlyErrors
-            ? this.previewRows.filter((r) => !r.isValid)
-            : this.previewRows;
-    }
-
     get hasValidationErrors(): boolean {
         return this.invalidCount > 0;
     }
 
-    getCellError(row: PreviewRow, key: string): string | null {
-        return row.errors?.[key] ?? null;
-    }
-
     getColumnLabel(key: string): string {
-        return this.config.columns.find((c) => c.key === key)?.label ?? key;
+        return this.config.columns.find((c) => c.key.toLowerCase() === key.toLowerCase())?.label ?? key;
     }
 
     // ── Import ──────────────────────────────────────────────────────

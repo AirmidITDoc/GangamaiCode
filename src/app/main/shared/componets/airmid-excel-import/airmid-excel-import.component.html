@@ -174,7 +174,7 @@
             </div>
 
             <!-- Preview Table -->
-            <ng-container *ngIf="!isLoadingPreview && !previewError && !importSuccess && previewRows.length > 0">
+            <ng-container *ngIf="!isLoadingPreview && !previewError && !importSuccess && dataSource.data.length > 0">
 
                 <!-- Summary stats -->
                 <div class="preview-stats">
@@ -189,15 +189,6 @@
                     <div class="stat-chip invalid" [class.has-errors]="hasValidationErrors">
                         <mat-icon>cancel</mat-icon>
                         <span><strong>{{ invalidCount }}</strong> Invalid</span>
-                    </div>
-
-                    <!-- Filter toggle -->
-                    <div class="filter-toggle" *ngIf="hasValidationErrors">
-                        <button mat-stroked-button [class.active-filter]="showOnlyErrors"
-                            (click)="showOnlyErrors = !showOnlyErrors" matTooltip="Show only rows with errors">
-                            <mat-icon>filter_list</mat-icon>
-                            {{ showOnlyErrors ? 'Show All' : 'Show Errors Only' }}
-                        </button>
                     </div>
                 </div>
 
@@ -222,69 +213,30 @@
 
                         <!-- Cell -->
                         <td mat-cell *matCellDef="let element">
-                            {{ element[column] }}
+                            <div class="stat-chip valid" *ngIf="column=='status' && element[column]==1">
+                                <mat-icon>check_circle</mat-icon>
+                                <span> {{ element['message'] }}</span>
+                            </div>
+                            <div class="stat-chip invalid" [class.has-errors]="hasValidationErrors"
+                                *ngIf="column=='status' && element[column]!=1">
+                                <mat-icon>cancel</mat-icon>
+                                <span> {{ element['message'] }}</span>
+                            </div>
+                            <span *ngIf="column!='status'">
+                                {{ element[column] }}
+                            </span>
                         </td>
 
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-header-row *matHeaderRowDef=" displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                 </table>
-                <!-- <div class="preview-table-wrap">
-                    <table class="preview-table">
-                        <thead>
-                            <tr>
-                                <th class="row-num">#</th>
-                                <th class="status-col">Status</th>
-                                <th *ngFor="let col of previewColumns">{{ getColumnLabel(col) }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of displayedRows" [class.row-invalid]="!row.isValid"
-                                [class.row-valid]="row.isValid">
-                                <td class="row-num">{{ row.rowIndex }}</td>
-
-                                <td class="status-col">
-                                    <span class="status-badge" [class.badge-valid]="row.isValid"
-                                        [class.badge-invalid]="!row.isValid">
-                                        <mat-icon>{{ row.isValid ? 'check_circle' : 'cancel' }}</mat-icon>
-                                        {{ row.isValid ? 'Valid' : 'Error' }}
-                                    </span>
-                                </td>
-                                <td *ngFor="let col of previewColumns" [class.cell-error]="getCellError(row, col)"
-                                    [matTooltip]="getCellError(row, col) || ''" matTooltipClass="error-tooltip">
-                                    <div class="cell-inner">
-                                        <span class="cell-value" [class.null-val]="row.data[col] == null">
-                                            {{ row.data[col] != null ? row.data[col] : '—' }}
-                                        </span>
-                                        <mat-icon *ngIf="getCellError(row, col)"
-                                            class="cell-error-icon">error</mat-icon>
-                                    </div>
-                                    <div *ngIf="getCellError(row, col)" class="cell-error-msg">
-                                        {{ getCellError(row, col) }}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div> -->
-
-                <!-- Footer summary -->
-                <div class="preview-summary">
-                    <div class="summary-chip">
-                        <mat-icon>view_column</mat-icon>
-                        <span>{{ previewColumns.length }} columns mapped</span>
-                    </div>
-                    <div class="summary-chip" *ngIf="displayedRows.length !== totalRows">
-                        <mat-icon>filter_list</mat-icon>
-                        <span>Showing {{ displayedRows.length }} of {{ totalRows }} rows</span>
-                    </div>
-                </div>
             </ng-container>
 
             <!-- Empty state (API returned no rows) -->
-            <div *ngIf="!isLoadingPreview && !previewError && previewRows.length === 0" class="empty-preview">
+            <div *ngIf="!isLoadingPreview && !previewError && dataSource.data.length === 0" class="empty-preview">
                 <mat-icon>inbox</mat-icon>
                 <p>No data returned from server.</p>
             </div>
