@@ -403,7 +403,6 @@
                                 </ng-container>
 
 
-
                                 <ng-container matColumnDef="discAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                         Disc Amt
@@ -465,6 +464,19 @@
                                 </mat-footer-row>
                             </mat-table>
                         </div>
+                     
+                          <div class="totals">
+                <div class="totals-rowcat">
+                  <div class="totals-label">Total </div>
+                    <div class="totals-num">{{catTotalcount }}</div>
+                  <div class="totals-num">{{ catTotalGross }}</div>
+                  <div class="totals-num">{{ catTotalDiscount}}</div>
+                  <div class="totals-num">{{ catTotalReversal}}</div>
+                  <div class="totals-num">{{ catpaidTotal }}</div>
+                    <div class="totals-num">{{ catrefundTotal }}</div>
+                </div>
+
+              </div>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -546,124 +558,7 @@
             </div>
             <!--  -->
         </div>
-        <!-- RecentCollection Reports Table -->
-        <!-- <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-card>
-                    <mat-card-content>
-                        <div class="table-title">Recent Collection Count Summary</div>
-                        <hr>
-                        <mat-table matSort class="h-200 table-designed" [dataSource]="dsCollectioncount"
-                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                            <ng-container matColumnDef="countPatient">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Count Patient
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.countPatient}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="totalCollection">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Total Collection
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.totalCollection}}
-                                </mat-cell>
-                            </ng-container>
-
-
-                            <ng-container matColumnDef="discAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Disc Amount
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.discAmount}}
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="totalRevenue">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Total Revenue
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.totalRevenue}}
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="paidAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Paid Amount
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.paidAmount}}
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="creditAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Credit Amount
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.creditAmount}}
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="refundAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Refund Amount
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.refundAmount}}
-                                </mat-cell>
-                            </ng-container><ng-container matColumnDef="advAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Adv Amount
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.advAmount}}
-                                </mat-cell>
-                            </ng-container><ng-container matColumnDef="advusedAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Adv usedAmount
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.advusedAmount}}
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="advRefundAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                    Adv Ref.Amount
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let report">
-                                    {{report.advRefundAmount}}
-                                </mat-cell>
-                            </ng-container>
-
-
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    No data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="recentReportsColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let report; columns: recentReportsColumns;" class="contact"
-                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsCollectioncount!=null && dsCollectioncount.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div> -->
-
+      
 
         <!-- Expiry & Quick Stats Section - NOT affected by date filter -->
         <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">

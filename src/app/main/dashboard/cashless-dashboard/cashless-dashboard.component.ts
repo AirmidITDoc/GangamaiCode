@@ -26,16 +26,15 @@ export class CashlessDashboardComponent implements OnInit {
     public CompanyrevenuStatusPieChart: any;
 
     compReportsColumns: string[] = ['companyName', 'cashlessPatientCount', 'billAmount', 'discAmount', 'compDiscAmount', 'netBillAmount'];
-
-
+    PbillsummaryColumns: string[] = ['BillDate', 'PBillNo', 'VisitCompanyName', 'BillAmount', 'PaidAmt', 'BalAmount','FirstCompanyName', 'GovtApprovedAmt', 'GovtRefNo', 'SecondCompanyName','CompanyApprovedAmt','CompRefNo'];
+OPIPId=0
+PcompbillsummaryData = new MatTableDataSource<Pcompbillsummary>();
+ dsCompsummaryReports = new MatTableDataSource<Compsummary>();
     constructor(
         public datePipe: DatePipe,
         private formBuilder: UntypedFormBuilder, public _accountServices: AuthenticationService,
         private dashboardService: DashboardService,
-    ) {
-
-        // this.initializeDateRange();
-    }
+    ) {}
 
 
     metrics = [
@@ -54,8 +53,7 @@ export class CashlessDashboardComponent implements OnInit {
         this.loadDashboardData();
 
         setTimeout(() => {
-            // this.initializePathologyCharts();
-            // this.initializeRadiologyCharts();
+           
         }, 500);
     }
 
@@ -69,11 +67,11 @@ export class CashlessDashboardComponent implements OnInit {
             this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020'
 
         this.getCashlessdata()
-        // this.getCompanydailyTrendChart()
-        // this.getCompnayRevenuChart()
+         this.getPatientbillsummarydata()
+      
     }
 
-    dsCompsummaryReports = new MatTableDataSource<Compsummary>();
+   
     getCashlessdata() {
 
 
@@ -84,7 +82,7 @@ export class CashlessDashboardComponent implements OnInit {
             if (this.cashlessallData) {
                 this.dsCompsummaryReports.data = res.companyBillSummaries;
                 //  this.dsCompsummaryReports.data = res.companyBillSummaries;
-                debugger
+                
                 this.metrics = [
                     { label: 'Total OP Count', value: this.cashlessallData?.cashlessPatientSummary[0].cashlessPatientCount || 0, color: 'cream', icon: 'assignment' },
                     { label: 'Total IP Count', value: this.cashlessallData?.cashlessPatientSummary[1].cashlessPatientCount || 0, color: 'cream', icon: 'check_circle' },
@@ -216,6 +214,72 @@ export class CashlessDashboardComponent implements OnInit {
         });
     }
 
+
+     getPatientbillsummarydata() {
+
+        var para={
+  "first": 0,
+  "rows": 10,
+  "sortField": "BillDate",
+  "sortOrder": 0,
+  "filters": [
+    {
+      "fieldName": "OPIPId",
+      "fieldValue": "193777",
+      "opType": "Equals"
+    }
+  ],
+  "exportType": "JSON",
+  "columns": [
+    {
+      "data": "string",
+      "name": "string"
+    }
+  ]
+}
+        this.dashboardService.getPbillsummary(para).subscribe((res) => {
+            this.PcompbillsummaryData = res.data;
+            debugger
+            console.log('Paient Bill Summary Reports:', res);
+
+          
+        });
+
+    }
+
+
+      get CpTotalcount(): number {
+        return this.dsCompsummaryReports.data.reduce((sum, r) => sum + (r.cashlessPatientCount || 0), 0);
+    }
+    get CpBillamt(): number {
+        return this.dsCompsummaryReports.data.reduce((sum, r) => sum + (r.billAmount || 0), 0);
+    }
+
+      get CpDisc(): number {
+        return this.dsCompsummaryReports.data.reduce((sum, r) => sum + (r.discAmount || 0), 0);
+    }
+    get CpCompDisc(): number {
+        return this.dsCompsummaryReports.data.reduce((sum, r) => sum + (r.compDiscAmount || 0), 0);
+    }
+      get CompsummaryCount(): number {
+        return this.dsCompsummaryReports.data.reduce((sum, r) => sum + (r.cashlessPatientCount || 0), 0);
+    }
+    
+
+    get CpNetotals(): number {
+        return this.dsCompsummaryReports.data.reduce((sum, r) => sum + (r.netBillAmount || 0), 0);
+    }
+     get PBillAmount(): number {
+        return this.PcompbillsummaryData.data.reduce((sum, r) => sum + (r.billAmount || 0), 0);
+    }
+
+       get  pPaidAmount(): number {
+        return this.PcompbillsummaryData.data.reduce((sum, r) => sum + (r.paidAmt || 0), 0);
+    }
+    get pbalanceAmount(): number {
+        return this.PcompbillsummaryData.data.reduce((sum, r) => sum + (r.balAmount || 0), 0);
+    }
+  
     getMatIcon(icon: string): string {
         switch (icon) {
             case 'assignment':
@@ -258,5 +322,38 @@ export class Compsummary {
         this.discAmount = Compsummary.discAmount || '0';
         this.compDiscAmount = Compsummary.compDiscAmount || '0';
         this.netBillAmount = Compsummary.netBillAmount || '0';
+    }
+}
+
+
+
+
+export class Pcompbillsummary {
+    billDate:any;
+    pBillNo:any;
+    visitCompanyName:any;
+    billAmount:any;
+    paidAmt:any;
+    balAmount:any;
+    firstCompanyName:any;
+    govtApprovedAmt:any;
+    govtRefNo:any;
+    secondCompanyName:any;
+    companyApprovedAmt:any;
+    compRefNo:any;
+    constructor(Pcompbillsummary) {
+        this.billDate = Pcompbillsummary.billDate || '';
+        this.pBillNo = Pcompbillsummary.pBillNo || '0';
+        this.visitCompanyName = Pcompbillsummary.visitCompanyName || '';
+        this.billAmount = Pcompbillsummary.billAmount || '0';
+        this.paidAmt = Pcompbillsummary.paidAmt || '0';
+        this.balAmount = Pcompbillsummary.balAmount || '0';
+          this.firstCompanyName = Pcompbillsummary.firstCompanyName || '';
+        this.govtApprovedAmt = Pcompbillsummary.govtApprovedAmt || '0';
+        this.govtRefNo = Pcompbillsummary.govtRefNo || '0';
+        this.secondCompanyName = Pcompbillsummary.secondCompanyName || '';
+        this.companyApprovedAmt = Pcompbillsummary.companyApprovedAmt || '0';
+        this.compRefNo = Pcompbillsummary.compRefNo || '0';
+    
     }
 }
