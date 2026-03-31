@@ -75,4 +75,7 @@ export class LabAppointmentService {
   public getAppDetById(param) {
     return this._httpClient.PostData("LabAppointment/LabAppointmentDetailList", param);
   }
+   public commonList(Param) {
+        return this._httpClient.PostData("Common", Param);
+    }
 }

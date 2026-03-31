@@ -12,8 +12,8 @@
         </div>
         <!-- *ngIf="IsAdd" -->
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <!-- <airmid-excel-import-button [config]="importConfig" label="Import Services" color="warn"
-                (imported)="onImported($event)"></airmid-excel-import-button> -->
+            <airmid-excel-import-button [config]="importConfig" label="Import Services" color="warn"
+                (imported)="onImported($event)"></airmid-excel-import-button>
             <button mat-raised-button (click)="onTariff()">+ New Tariff
             </button>
             <button mat-raised-button (click)="onNew()">+ New Service

@@ -8,12 +8,14 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class LabPaymentmodechangesService {
 
     tpayFormGroup: FormGroup
+    paymentform: FormGroup
 
     constructor(
         public _formBuilder: UntypedFormBuilder,
         public _httpClient: ApiCaller
     ) {
         this.tpayFormGroup = this.createUserFormGroup()
+        this.paymentform = this.createpaymentForm();
     }
 
     createUserFormGroup() {
@@ -55,5 +57,21 @@ export class LabPaymentmodechangesService {
             BalAmount: ''
 
         })
+    }
+
+    public getpaybBillBrowseList(m_data) {
+        return this._httpClient.PostData("PaymentMode/OPBillListForPaymentModeChangeListBillNoWise", m_data);
+    }
+
+    public TPaymentUpdate(paymentId, m_data) {
+        return this._httpClient.PutData("PaymentMode/NewPaymentMode" + paymentId, m_data);
+    }
+
+    public getpaymodeList(m_data) {
+        return this._httpClient.PostData("Common", m_data)
+    }
+
+    public getBankNameList(m_data) {
+        return this._httpClient.PostData("Common", m_data)
     }
 }

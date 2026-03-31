@@ -212,7 +212,7 @@
 
                                         <airmid-autocomplete #serviceInput label="Enter Service Name"
                                             [formGroup]="myForm" formControlName="ServiceId"
-                                            placeholderText="Enter Service Name" fxFlex="50%" ApiUrl="{{ApiURL}}"
+                                            placeholderText="Enter Service Name" fxFlex="70%" ApiUrl="{{ApiURL}}"
                                             (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
                                             (input)="onServiceInput($event)"
                                             ValueField="serviceId"></airmid-autocomplete>
@@ -284,9 +284,9 @@
                                                         </mat-header-cell>
                                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                                             <mat-form-field appearance="fill" class="compact-input">
-                                                                <input matInput [(ngModel)]="contact.Price"
-                                                                    type="number" [id]="'Price' + index" [min]="0"
-                                                                    [readonly]="chkIsEditable"
+                                                                <input matInput [(ngModel)]="contact.Price" type="text"
+                                                                    pattern="[0-9]*" [id]="'Price' + index" [min]="0"
+                                                                    [readonly]="chkIsEditable" inputmode="numeric"
                                                                     (ngModelChange)="getCellCalculation(contact)" />
                                                             </mat-form-field>
                                                         </mat-cell>

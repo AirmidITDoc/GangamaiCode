@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DateUpdateComponent } from '../paymentmodechanges/date-update/date-update.component';
 import { NewedipamodeComponent } from '../paymentmodechanges/newedipamode/newedipamode.component';
 import { LabPaymentmodechangesService } from './lab-paymentmodechanges.service';
+import { EditPaymentModeComponent } from './edit-payment-mode/edit-payment-mode.component';
 
 @Component({
     selector: 'app-lab-paymentmodechanges',
@@ -153,7 +154,7 @@ export class LabPaymentmodechangesComponent {
 
     onEdit1(row) {
         console.log(row)
-        const dialogRef = this._matDialog.open(NewedipamodeComponent,
+        const dialogRef = this._matDialog.open(EditPaymentModeComponent,
             {
                 height: "85%",
                 width: '80%',

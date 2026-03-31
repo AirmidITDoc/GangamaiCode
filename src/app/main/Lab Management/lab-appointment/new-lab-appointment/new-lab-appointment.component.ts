@@ -352,7 +352,8 @@ export class NewLabAppointmentComponent {
       labAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       testId: [item.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      price: [item.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      price: [item.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // price: [item.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmount: [item.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discPer: [item.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -460,7 +461,11 @@ export class NewLabAppointmentComponent {
           item.isRadiology = 1;
           item.isOtherService = 0;
           item.isPackage = item.isPackage ?? item.IsPackage;
-
+          if (item?.isEditable == true) {
+            this.chkIsEditable = false; //price should not get edit
+          } else {
+            this.chkIsEditable = true; //price should get edit
+          }
           if (item.DiscAmt > 0 || item.DiscPer > 0) {
             this.isDiscountApplied = true;
             hasPrevDiscount = true;
@@ -1287,22 +1292,31 @@ export class NewLabAppointmentComponent {
         this.onClose();
       });
     } else {
-      const invalidFields = [];
-      if (this.myForm.invalid) {
-        for (const controlName in this.myForm.controls) {
-          if (this.myForm.controls[controlName].invalid) {
-            invalidFields.push(`Appointment Form: ${controlName}`);
-          }
-        }
-      }
+      const invalidFields = this.collectErrors(this.myForm);
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
+          this.toastrService.warning(`Field "${field}" is invalid.`, 'Warning');
         });
+        return;
       }
-
     }
+  }
+
+  collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {
+    let errors: string[] = [];
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        // go deeper
+        errors = errors.concat(this.collectErrors(control, newKey));
+      } else {
+        if (control?.invalid) {
+          errors.push(newKey);
+        }
+      }
+    });
+    return errors;
   }
 
   onClose() {

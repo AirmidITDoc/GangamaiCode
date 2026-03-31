@@ -36,6 +36,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { LabPaymentmodechangesComponent } from './lab-paymentmodechanges.component';
 import { LabPaymentmodechangesService } from './lab-paymentmodechanges.service';
+import { EditPaymentModeComponent } from './edit-payment-mode/edit-payment-mode.component';
 
 const routes: Routes = [
     {
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [LabPaymentmodechangesComponent],
+    declarations: [LabPaymentmodechangesComponent, EditPaymentModeComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
