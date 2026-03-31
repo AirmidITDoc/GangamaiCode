@@ -73,29 +73,29 @@ export class PharmacyDashboardComponent implements OnInit {
 
     // Weekly revenue data (last 7 days) - NOT affected by date filter
     weeklyRevenueData = [
-        { day: 'Mon', revenue: 38000 },
-        { day: 'Tue', revenue: 42000 },
-        { day: 'Wed', revenue: 35000 },
-        { day: 'Thu', revenue: 48000 },
-        { day: 'Fri', revenue: 45000 },
-        { day: 'Sat', revenue: 52000 },
-        { day: 'Sun', revenue: 25000 }
+        { day: 'Mon', revenue: 0 },
+        { day: 'Tue', revenue: 0 },
+        { day: 'Wed', revenue: 0 },
+        { day: 'Thu', revenue: 0 },
+        { day: 'Fri', revenue: 0 },
+        { day: 'Sat', revenue: 0 },
+        { day: 'Sun', revenue: 0 }
     ];
 
     // Monthly revenue data (last 12 months) - NOT affected by date filter
     monthlyRevenueData = [
-        { month: 'Jan', revenue: 95000 },
-        { month: 'Feb', revenue: 88000 },
-        { month: 'Mar', revenue: 102000 },
-        { month: 'Apr', revenue: 98000 },
-        { month: 'May', revenue: 115000 },
-        { month: 'Jun', revenue: 108000 },
-        { month: 'Jul', revenue: 125000 },
-        { month: 'Aug', revenue: 118000 },
-        { month: 'Sep', revenue: 105000 },
-        { month: 'Oct', revenue: 132000 },
-        { month: 'Nov', revenue: 128000 },
-        { month: 'Dec', revenue: 142000 }
+        { month: 'Jan', revenue: 0 },
+        { month: 'Feb', revenue: 0 },
+        { month: 'Mar', revenue: 0 },
+        { month: 'Apr', revenue: 0 },
+        { month: 'May', revenue: 0 },
+        { month: 'Jun', revenue: 0 },
+        { month: 'Jul', revenue: 0 },
+        { month: 'Aug', revenue: 0 },
+        { month: 'Sep', revenue: 0 },
+        { month: 'Oct', revenue: 0 },
+        { month: 'Nov', revenue: 0 },
+        { month: 'Dec', revenue: 0 }
     ];
 
     // Payment mode distribution - AFFECTED by date filter
@@ -180,14 +180,6 @@ export class PharmacyDashboardComponent implements OnInit {
         // This method will be called when date range changes
         // Here you would filter the date-dependent data
         console.log('Date range changed:', this.dateFilterForm.value);
-
-        // For now, using static data
-        // When you add APIs, filter these data based on date:
-        // - totalOrders
-        // - totalCustomers
-        // - paymentModeData
-        // - topMedicinesData
-
         // Re-render affected charts
         this.updateDateFilteredCharts();
     }
@@ -204,15 +196,11 @@ export class PharmacyDashboardComponent implements OnInit {
     getpharmacyData() {
         this.fromDate = this.datePipe.transform(this.dateFilterForm.get('start').value, "yyyy-MM-dd") || '01/01/2020',
             this.toDate = this.datePipe.transform(this.dateFilterForm.get('end').value, "yyyy-MM-dd ") || '01/01/2020',
-
-
             this.dashboardService.getPharmacyDashboard({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
                 this.pharmacyData = res;
                 debugger
                 this.dsCollectioncount.data[0] = this.pharmacyData.collectionCountSummary
-
                 this.dspcategorycount.data = this.pharmacyData.patientCategoryWiseSummary
-
 
                 console.log('Pharmacy Reports:', res);
 
@@ -318,43 +306,7 @@ export class PharmacyDashboardComponent implements OnInit {
         if (this.topMedicinesChart) {
             this.topMedicinesChart.destroy();
         }
-        //  if (this.expiryData) {
-        //             this.expiryData.destroy();
-        //         }
-        // Reinitialize the affected charts
-        // setTimeout(() => {
-        //     if (document.getElementById('ordersChart')) {
-        //         this.ordersChart = this.getLineChartData(
-        //             'ordersChart',
-        //             '#d1efad',
-        //             '#c5e999',
-        //             ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        //             [45, 52, 48, 65, 58, 72, 38],
-        //             'Days',
-        //             'Orders'
-        //         );
-        //     }
-
-        //     if (document.getElementById('customersChart')) {
-        //         this.customersChart = this.getLineChartData(
-        //             'customersChart',
-        //             '#c5f1ef',
-        //             '#a1e6e3',
-        //             ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        //             [28, 35, 32, 42, 38, 45, 25],
-        //             'Days',
-        //             'Customers'
-        //         );
-        //     }
-
-        //     if (document.getElementById('paymentModeChart')) {
-        //         // this.paymentModeChart = this.getPaymentDoughnutChart();
-        //     }
-
-        //     if (document.getElementById('topMedicinesChart')) {
-        //         // this.topMedicinesChart = this.getTopMedicinesChart();
-        //     }
-        // }, 100);
+     
     }
 
     initializeCharts(): void {
@@ -571,9 +523,6 @@ export class PharmacyDashboardComponent implements OnInit {
         });
     }
 
-    // paymodedata = []
-
-
     // Payment Mode Doughnut Chart
     getPaymentDoughnutChart() {
 
@@ -711,6 +660,28 @@ export class PharmacyDashboardComponent implements OnInit {
                 }
             }
         });
+    }
+// cat??
+    get catTotalcount(): number {
+        return this.dspcategorycount.data.reduce((sum, r) => sum + (r.countPatient || 0), 0);
+    }
+
+ get catTotalGross(): number {
+        return this.dspcategorycount.data.reduce((sum, r) => sum + (r.totalCollection || 0), 0);
+    }
+    get catTotalDiscount(): number {
+        return this.dspcategorycount.data.reduce((sum, r) => sum + (r.discAmount || 0), 0);
+    }
+
+    
+ get catTotalReversal(): number {
+        return this.dspcategorycount.data.reduce((sum, r) => sum + (r.totalRevenue || 0), 0);
+    }
+    get catpaidTotal(): number {
+        return this.dspcategorycount.data.reduce((sum, r) => sum + (r.paidAmount || 0), 0);
+    }
+ get catrefundTotal(): number {
+        return this.dspcategorycount.data.reduce((sum, r) => sum + (r.creditAmount || 0), 0);
     }
 
     getMatIcon(icon: string): string {

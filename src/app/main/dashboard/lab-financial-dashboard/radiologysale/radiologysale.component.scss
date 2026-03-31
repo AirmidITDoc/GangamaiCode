@@ -675,10 +675,10 @@
   }
 
   .chart-container {
-    height: 380px;
+    height: 350px;
     min-height: 320px;
     width: 100%;
-     padding-right: 10px;
+     padding-right: 5px;
     
   }
 
@@ -715,16 +715,230 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: #1f2937;
     }
+    
+/* ========== SUMMARY CARDS ========== */
+.summary-cards-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
 
-     .totals-rowEx{
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  border-left: 5px solid transparent;
+  min-height: 90px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+}
+//card
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.card-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: #222;
+  line-height: 1.1;
+}
+
+.card-sub {
+  font-size: 11px;
+  color: #888;
+  font-weight: 500;
+}
+
+.pending-badge {
+  color: #f04438;
+  font-weight: 700;
+}
+
+.card-sub-link {
+  font-size: 10px;
+  color: #2196F3;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+  .panel-header {
+      font-size: 12px;
+      padding: 5px 8px;
+    }
+
+    .big-total {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    // .totals-row {
+    //   grid-template-columns: 1fr 70px 70px;
+    // }
+//     .totals-row {
+//   grid-template-columns: 100px 100px 100px 100px;
+// }
+    /* ─── Totals Section (Charges/Receipts) ─── */
+  .totals {
+    margin-top: 4px;
+    border-top: 2px solid #9fa8da;
+    padding-top: 4px;
+  }
+
+  .totals-row {
     display: grid;
     // grid-template-columns: 1fr 10px 20px;
-    grid-template-columns: 100px 100px 90px 90px 90px 90px 90px 90px;
+    grid-template-columns: 150px 100px 100px 100px;
+    gap: 6px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: center;
+       background-color: #c4e2f7;
+  }
+
+  .totals-rowEx{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 80px 90px 90px 90px 90px;
+    gap: 2px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: right;
+       background-color: #c4e2f7;
+  }
+
+    .totals-rowDr{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 240px 50px 95px 95px 95px;
+    gap: 2px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: right;
+       background-color: #c4e2f7;
+  }
+.totals-rowCP{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 280px 50px 100px ;
+    gap: 2px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: right;
+       background-color: #c4e2f7;
+  }
+.totals-rowDept{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 260px 60px 95px 95px 100px;
     gap: 2px;
     padding: 2px 6px;
     font-size: 11px;
     align-items: center;
+    background-color: #c4e2f7;
   }
+
+  .totals-rowBr{
+    display: grid;
+    // grid-template-columns: 1fr 10px 20px;
+    grid-template-columns: 200px 90px 90px;
+    gap: 2px;
+    padding: 2px 6px;
+    font-size: 11px;
+    align-items: center;
+    background-color: #c4e2f7;
+  }
+
+  //wrap
+
+  .w-190.wrap-text {
+  max-width: 100px !important;
+  width: 100px !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  hyphens: auto;
+  line-height: 1.4;
+  vertical-align: middle;
+  padding: 2px 2px !important;
+}
+
+/* Optional: Make header also wrap nicely */
+.w-190.wrap-text.mat-mdc-header-cell {
+  white-space: normal !important;
+  text-align: left;
+}
+  .totals-row:nth-child(odd) {
+    background: #f5f5f9;
+  }
+
+  .totals-label {
+    font-weight: bold;
+    font-size: 18px;
+    color: #1f2552;
+  }
+
+  .totals-num {
+    text-align: righ;
+    font-weight: bold;
+    color: rgb(54, 4, 54);
+    font-size: 15px;
+  }
+
+  .totals-strong {
+    background: #e8eaf6 !important;
+    border-top: 1px solid #9fa8da;
+  }
+
+  .totals-strong .totals-label,
+  .totals-strong .totals-num {
+    font-weight: 800;
+    color: #283593;
+  }
+
+
+  .mat-mdc-row {
+  background-color: #f0ecee !important;   /* Light Pink */
+}
+
+/* Optional: Hover effect */
+.mat-mdc-row:hover {
+  background-color: #f7d1dd !important;   /* Slightly darker pink on hover */
+}
+
+/* Change Total row background (optional) */
+.mat-mdc-footer-row {
+  background-color: #f5e5eb !important;   /* Stronger pink for total */
+}
 }
 
 // end .pharmacy-dashboard-wrapper

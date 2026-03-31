@@ -9,7 +9,7 @@
                 <span>CashLess Dashboard</span>
             </div>
         </div>
-        <form [formGroup]="myFilterform">
+        <form [formGroup]="myFilterform" class="resize-form-fields">
             <div class="date-filter-container">
 
                 <mat-form-field appearance="outline">
@@ -36,7 +36,7 @@
                 <div class="metrics-grid">
                     <mat-card *ngFor="let m of metrics" class="metric-card1 mat-elevation-z2 count-cards"
                         [ngClass]="'theme-' + m.color">
-                        <mat-card-content class="metric-content" >
+                        <mat-card-content class="metric-content">
                             <div class="metric-icon">
                                 <mat-icon>{{ getMatIcon(m.icon) }}</mat-icon>
                             </div>
@@ -52,223 +52,333 @@
         <!-- TABS -->
 
 
-       
+
         <!-- Charts Section -->
         <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
             <!-- Test Volume by Department Bar Chart -->
-            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-card class="chart-card">
+            <div fxFlex="calc(50% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                <!-- <mat-card class="chart-card">
                     <mat-card-content>
                         <div class="chart-header">
                             <h3 class="chart-title">Total Company Wise Count</h3>
-                            <!-- <p class="chart-subtitle">Distribution across lab departments</p> -->
-                        </div>
-                        <div style="height: 350px;">
+                           </div>
+                        <div style="height: 320px;">
                             <canvas id="CompanycountChart"></canvas>
                         </div>
                     </mat-card-content>
+                </mat-card> -->
+
+                <mat-card class="chart-card">
+
+                    <mat-card-content>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Total Company Wise Count</h3>
+
+                            </div>
+                            <div style="height: 300px;">
+                                <canvas id="CompanycountChart"></canvas>
+                            </div>
+                        </div>
+                    </mat-card-content>
                 </mat-card>
-                
+
             </div>
 
             <!-- Test Status Pie Chart -->
-           <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-              <!--    <mat-card class="chart-card">
-                    <mat-card-content>
-                        <div class="chart-header">
-                            <h3 class="chart-title">Company Revenu Distribution</h3>
-                           </div>
-                        <div style="height: 350px; display: flex; align-items: center; justify-content: center;">
-                            <canvas id="CompanyrevenuStatusPieChart"></canvas>
-                        </div>
-                    </mat-card-content>
-                </mat-card>-->
+            <div fxFlex="calc(50% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-card class="chart-card">
 
-                 <mat-card class="chart-card">
                     <mat-card-content>
-                        <div class="chart-header">
-                            <h3 class="chart-title">Daily  Count Trend</h3>
-                            <!-- <p class="chart-subtitle">Last 7 days performance</p> -->
-                        </div>
-                        <div style="height: 320px;">
-                            <canvas id="CompanydailyTrendChart"></canvas>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Daily Count Trend</h3>
+
+                            </div>
+                            <div style="height: 300px;">
+                                <canvas id="CompanydailyTrendChart"></canvas>
+                            </div>
                         </div>
                     </mat-card-content>
                 </mat-card>
-            </div> 
-        </div>
 
-        <!-- Test Volume Trend -->
-        <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="100%">
-               
+                <!-- <mat-card class="chart-card">
+                    <mat-card-content>
+                        <div class="chart-header">
+                            <h3 class="chart-title">Daily Count Trend</h3>
+                            
+            </div>
+            <div style="height: 320px;">
+                <canvas id="CompanydailyTrendChart"></canvas>
+            </div>
+            </mat-card-content>
+            </mat-card> -->
             </div>
         </div>
 
+    
         <!-- Recent Reports Table -->
         <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="calc(50% - 16px)" fxFlex.xs="100%" fxFlex.sm="100%">
-                
+            <div fxFlex="calc(50% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+
                 <mat-card>
-                    
+
                     <mat-card-content>
-                           <div class="chart-header">
+                        <div class="chart-header">
                             <h3 class="chart-title">Recent Company Summary</h3>
-                            
+
                         </div>
                         <hr>
-                        <mat-table matSort class="h-200 table-designed" [dataSource]="dsCompsummaryReports"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="companyName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Company Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.companyName}}
-                                        </mat-cell>
-                                    </ng-container>
+                        <mat-table matSort class="h-300 table-designed" [dataSource]="dsCompsummaryReports"
+                            [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
-                                    <ng-container matColumnDef="cashlessPatientCount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                           Toal Count
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.cashlessPatientCount}}
-                                        </mat-cell>
-                                    </ng-container>
+                            <ng-container matColumnDef="companyName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
+                                    Company Name
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report" class="w-300">
+                                    {{report.companyName}}
+                                </mat-cell>
+                            </ng-container>
 
-                                   
+                            <ng-container matColumnDef="cashlessPatientCount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                     Count
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report" class="w-80">
+                                    {{report.cashlessPatientCount}}
+                                </mat-cell>
+                            </ng-container>
 
-                                    <ng-container matColumnDef="billAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Bill Amount
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.billAmount}}
-                                        </mat-cell>
-                                    </ng-container>
 
-                                    <ng-container matColumnDef="discAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Disc Amount
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.discAmount}}
-                                        </mat-cell>
-                                    </ng-container>
 
-                                    <ng-container matColumnDef="compDiscAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                          Comp  Disc Amount
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.compDiscAmount}}
-                                        </mat-cell>
-                                    </ng-container>
+                            <ng-container matColumnDef="billAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    Bill Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report" class="w-80">
+                                    {{report.billAmount}}
+                                </mat-cell>
+                            </ng-container>
 
-                                    <ng-container matColumnDef="netBillAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Net Amount
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let report">
-                                            {{report.netBillAmount}}
-                                        </mat-cell>
-                                    </ng-container>
+                            <ng-container matColumnDef="discAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    Disc Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report" class="w-80">
+                                    {{report.discAmount}}
+                                </mat-cell>
+                            </ng-container>
 
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
+                            <ng-container matColumnDef="compDiscAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    Comp Disc Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report" class="w-80">
+                                    {{report.compDiscAmount}}
+                                </mat-cell>
+                            </ng-container>
 
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            No data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
+                            <ng-container matColumnDef="netBillAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    Net Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let report" class="w-80">
+                                    {{report.netBillAmount}}
+                                </mat-cell>
+                            </ng-container>
 
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="compReportsColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let report; columns: compReportsColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsCompsummaryReports!=null && dsCompsummaryReports.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    No data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent" *matHeaderRowDef="compReportsColumns; sticky: true">
+                            </mat-header-row>
+                            <mat-row *matRowDef="let report; columns: compReportsColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dsCompsummaryReports!=null && dsCompsummaryReports.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+                        <div class="totals">
+                            <div class="totals-rowDept">
+                                <div class="totals-label">Total </div>
+                                <div class="totals-num">{{CompsummaryCount}}</div>
+                                <div class="totals-num">Cnt:{{CpTotalcount}}</div>
+                                <div class="totals-num">Bill:{{CpBillamt}}</div>
+                                <div class="totals-num">Dis:{{CpDisc}}</div>
+                                <div class="totals-num">Cdisc:{{CpCompDisc}}</div>
+                                <div class="totals-num">Net:{{CpNetotals}}</div>
+                            </div>
+
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="chart-header">
+                            <h3 class="chart-title">Patient Company Bill Summary</h3>
+
+                        </div>
+                        <hr>
+                        <div class="chart-header">
+
+                            <mat-table matSort class="h-300 table-designed" [dataSource]="PcompbillsummaryData"
+                                [@animateStagger]="{value:'50'}" style="overflow:auto;">
+
+                                <ng-container matColumnDef="BillDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                                        BillDate
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-100">
+                                        {{m.billDate | date:'shortDate'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="PBillNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        PBillNo
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.pBillNo}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="VisitCompanyName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">
+                                        Visit CompanyName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-280">
+                                        {{m.visitCompanyName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="BillAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        BillAmt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.billAmount}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="PaidAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        PaidAmt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.paidAmt}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="BalAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        BalAmt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.balAmount}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="FirstCompanyName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                        First CompanyName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-180">
+                                        {{m.firstCompanyName}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="GovtApprovedAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        Govt App.Amt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.govtApprovedAmt}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="GovtRefNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        Govt RefNo
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.govtRefNo}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="SecondCompanyName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
+                                        Second class="w-80"CompanyName
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-180">
+                                        {{m.secondCompanyName}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="CompanyApprovedAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        Comp.App.Amt
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.companyApprovedAmt}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="CompRefNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                        Comp RefNo
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let m" class="w-80">
+                                        {{m.compRefNo}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        No data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="PbillsummaryColumns; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let m; columns: PbillsummaryColumns;" class="contact"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(PcompbillsummaryData!=null && PcompbillsummaryData.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                            <div class="totals">
+                                <div class="totals-rowDept">
+                                    <div class="totals-label">Total </div>
+                                    <div class="totals-num">{{ PBillAmount}}</div>
+                                    <div class="totals-num">Cen:{{ pPaidAmount}}</div>
+                                    <div class="totals-num">Net:{{ pbalanceAmount}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </mat-card-content>
                 </mat-card>
             </div>
         </div>
-
-        <!-- Top Tests & Pathologist Performance -->
-        <div class="dashboard-container gap-2" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <!-- Top Ordered Tests -->
-            <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-card>
-                    <!-- <mat-card-content> -->
-                    <div class="table-title">Top Company (This Week)</div>
-                    <hr>
-                    <div style="height: 230px;overflow-y: auto;">
-                        <!-- <mat-table matSort class="h-200 table-designed" [dataSource]="dsPathologyTopTests"
-                                    [@animateStagger]="{value:'50'}" style="overflow:auto;">
-
-                                    <ng-container matColumnDef="TestName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Test Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let test">
-                                            {{test.testName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Count">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Count
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let test">
-                                            {{test.count}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            No data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="pathologyTopTestsColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let test; columns: pathologyTopTestsColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dsPathologyTopTests!=null && dsPathologyTopTests.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table> -->
-                    </div>
-                    <div class="panel-footer">
-                        <div class="totals-label" style="font-weight: bold;color: rgb(10, 63, 81);margin-left: 10px;">
-                            Total
-
-                            <!-- <span class="totals-num" style="padding-left: 280px;">{{
-                                            TotalTest}}</span> -->
-                        </div>
-                    </div>
-                    <!-- </mat-card-content> -->
-                </mat-card>
-            </div>
-
-
-        </div>
-
 
 
     </div>
-    <!-- </div> -->
+    
 </div>
