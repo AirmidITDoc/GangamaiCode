@@ -1,0 +1,277 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Payment Mode Changes. </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+
+            <div fxLayout="column" class="gap-12">
+
+                <div class="modal-card-container" style="padding: 1px 2px 5px 0px ;">
+                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                        <mat-card>
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span style="color: rgb(5, 89, 102);font-size: large;font-weight: bold;">Patient
+                                            Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                        fxLayoutAlign="space-between center" class="patient-info">
+                                        <div class="patient-sub" style="font-size: x-large;font-weight: bold;">
+                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Patient Name
+                                                    </span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.patientName}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Transaction Id</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.paymentId}}</span>
+                                                </div>
+                                                <div class="patient-col">
+                                                    <span class="patient-col-key">Net Amount</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.payAmount |
+                                                        currency:'INR'}}</span>
+                                                </div>
+
+                                                <div class="patient-col"
+                                                    style="font-weight: bold;color: rgb(7, 90, 126);font-size: large;
+                                                    border: 2px solid rgb(7, 90, 126);border-radius: 8px;padding: 4px 10px;display: inline-block;">
+                                                    <span class="patient-col-key">Total Paid Amount</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{registerObj.payAmount |
+                                                        currency:'INR'}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+
+                    <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                        <div class="airmid-table-container">
+                            <mat-table class="airmid-table h-280" #table matSort [dataSource]="dsPayList"
+                                [@animateStagger]="{ value: '50' }" style="overflow: auto">
+
+                                <ng-container matColumnDef="billNo">
+                                    <mat-header-cell *matHeaderCellDef class="w-110"
+                                        mat-sort-header>BillNo</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" class="w-110">
+                                        <span> {{ contact.billNo }}</span>
+
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="paymentDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110"
+                                        fxShow.gt-sm>Payment Date</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                        <span> {{ contact.paymentDate | date:ShortDate }}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="receiptNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
+                                        fxShow.gt-sm>Receipt No</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                        <span> {{ contact.receiptNo }}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="payAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150"
+                                        fxShow.gt-sm>Payment Amt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                        <span> {{ contact.payAmount }}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="payMode">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150" fxShow.gt-sm>Pay
+                                        Mode</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                        <span> {{ contact.payMode }}</span>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="payMode1">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                        New Paymode
+                                    </mat-header-cell>
+
+                                    <mat-cell *matCellDef="let contact" class="w-200">
+
+                                        <mat-form-field appearance="fill" style="width: 100%;">
+                                            <input matInput autocomplete="off" matTooltip="New PayMode"
+                                                [(ngModel)]="contact.payMode1" [matAutocomplete]="auto"
+                                                (ngModelChange)="filterList($event)" [disabled]="contact.isSplit">
+
+                                            <mat-autocomplete #auto="matAutocomplete"
+                                                (optionSelected)="onOptionSelected(contact,$event)">
+
+                                                <mat-option *ngFor="let item of filteredpayList" [value]="item.Value">
+                                                    <b>{{ item.Value }}</b>
+
+                                                </mat-option>
+
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="updateAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">Update
+                                        Amt</mat-header-cell>
+                                    <mat-cell class="w-150" *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill">
+                                            <input matInput placeholder="Amt" [(ngModel)]="contact.updateAmt"
+                                                (input)="onAmountChange(contact)" [disabled]="contact.isSplit"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="tranNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">Tran
+                                        No</mat-header-cell>
+                                    <mat-cell class="w-150" *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill">
+
+                                            <input matInput placeholder="Tran No" required max="999999999999"
+                                                [(ngModel)]="contact.tranNo" (input)="onTranNoInput(contact, $event)"
+                                                min="1000" autocomplete="off" maxlength="12" minlength="4"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
+                                        </mat-form-field>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="bankName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                        Bank Name
+                                    </mat-header-cell>
+
+                                    <mat-cell *matCellDef="let contact" class="w-200">
+
+                                        <mat-form-field appearance="fill" style="width: 100%;">
+                                            <input matInput autocomplete="off" matTooltip="New BankName"
+                                                [(ngModel)]="contact.bankName" [matAutocomplete]="auto"
+                                                (ngModelChange)="filterbankList($event)">
+
+                                            <mat-autocomplete #auto="matAutocomplete"
+                                                (optionSelected)="onOptionSelected(contact,$event)">
+
+                                                <mat-option *ngFor="let item of filteredbankList"
+                                                    [value]="item.BankName">
+                                                    <b>{{ item.BankName }}</b>
+
+                                                </mat-option>
+
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef class="w-150">
+                                        Actions
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact; let i = index" class="w-150">
+
+                                        <!-- ADD Button -->
+                                        <button mat-icon-button matTooltip="Add"
+                                            *ngIf="!contact.isSplit && contact.payAmount > 0"
+                                            (click)="splitPayment(contact)">
+                                            <mat-icon>add_circle_outline</mat-icon>
+                                        </button>
+
+                                        <!-- DELETE Button -->
+                                        <button mat-icon-button color="warn"
+                                            *ngIf="contact.isSplit || contact.payAmount == 0"
+                                            (click)="deleteRow(contact, i)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6"
+                                        style="display: none"></mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                        <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent min-width-1300"
+                                    *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumn" class="min-width-1300"
+                                    [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{ hide: dsPayList != null }"></mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{ hide: !(dsPayList != null && dsPayList.data.length == 0) }"></mat-footer-row>
+                            </mat-table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form [formGroup]="_Paymentmodesevice.paymentform">
+
+        <mat-card style="padding: 10px">
+            <div fxLayout="row" fxLayoutGap="6px">
+            </div>
+        </mat-card>
+    </form>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="Save()" [disabled]="vbalanceAmt>0">Payment</button>
+            </div>
+        </div>
+    </div>
+</div>
