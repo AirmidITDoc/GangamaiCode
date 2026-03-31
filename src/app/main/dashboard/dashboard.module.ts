@@ -43,6 +43,7 @@ import { VisitDatagraphComponent } from './new-finacialdashboard/visit-datagraph
 import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
 import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
+import { RadiologysaleComponent } from './lab-financial-dashboard/radiologysale/radiologysale.component';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -69,6 +70,7 @@ import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-das
         BedstausgraphComponent,
         ServiceReceiptGraphComponent,
         OperatonalDashboardComponent,
+        RadiologysaleComponent,
         // FinancetestComponent
     ],
     imports: [
