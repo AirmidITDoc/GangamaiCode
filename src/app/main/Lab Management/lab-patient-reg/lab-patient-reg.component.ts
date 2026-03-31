@@ -225,7 +225,7 @@ export class LabPatientRegComponent {
             template: this.PatientTypeColorCode
         },
         {
-            heading: "Action", key: "action", align: "right", width: 230, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 250, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ]
@@ -677,6 +677,32 @@ export class LabPatientRegComponent {
                 this.viewgetOPBillReportPdf(contact, "LabMoneyReceiptWithoutHeader");
             }
         });
+    }
+
+    getPackagePrint(contact) {
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                this.viewgetPackageBillReportPdf(contact, "PackageBillWithHeader");
+            } else if (result.isDenied) {
+                this.viewgetPackageBillReportPdf(contact, "PackageBillWithoutHeader");
+            }
+        });
+    }
+    viewgetPackageBillReportPdf(element, mode: string) {
+        // this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+        this.commonService.Onprint("BillNo", element.billNo, mode);
     }
 
     OnEstimate() {

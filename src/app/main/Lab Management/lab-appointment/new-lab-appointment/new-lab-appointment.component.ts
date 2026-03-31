@@ -376,10 +376,10 @@ export class NewLabAppointmentComponent {
   }
 
   onChangeRefdoc(value) {
-    // this.vRefDocId = value.doctorId
-    // this.vRefDocName = value.doctorName
-    this.vdoctorId = value.value
-    this.vdoctorName = value.text
+    this.vdoctorId = value.doctorId
+    this.vdoctorName = value.doctorName
+    // this.vdoctorId = value.value
+    // this.vdoctorName = value.text
   }
 
   selectChangeCategory(obj: any) {

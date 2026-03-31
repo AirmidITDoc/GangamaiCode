@@ -89,9 +89,14 @@
                                                                 (selectionChange)="selectChangeCategory($event)"></airmid-dropdown>
                                                         </div>
                                                         <div fxFlex="33%">
-                                                            <airmid-dropdown fxFlex label="Doctor Name"
+                                                            <!-- <airmid-dropdown fxFlex label="Doctor Name"
                                                                 formControlName="doctorId" [formGroup]="myForm"
                                                                 [mode]="autocompleteRefDoctorDD"
+                                                                (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown> -->
+                                                            <airmid-dropdown label="Ref Doctor Name"
+                                                                formControlName="doctorId" [formGroup]="myForm"
+                                                                TextField="doctorName" ValueField="doctorId"
+                                                                ApiUrl="Doctor/RefdoctorComboList?keywoard="
                                                                 (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
                                                         </div>
                                                     </div>

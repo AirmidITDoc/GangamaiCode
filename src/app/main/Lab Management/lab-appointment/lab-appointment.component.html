@@ -17,7 +17,7 @@
                 <div fxLayout="column" class="gap-8 h-100-p">
                     <div class="modal-card-container calender-header input-error-hidden">
                         <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
-                            <form [formGroup]="myFilterform" class="resize-form-fields gap-4">
+                            <form [formGroup]="myFilterform" class="resize-form-fields gap-4" fxFlex="750px">
                                 <!-- <div fxFlex="50%" fxFlex.xs="100%">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Enter a date range</mat-label>
@@ -29,14 +29,18 @@
                                         <mat-date-range-picker #picker></mat-date-range-picker>
                                     </mat-form-field>
                                 </div> -->
-                                <div fxFlex="50%" fxFlex.xs="100%">
+                                <div fxFlex="60%" fxFlex.xs="100%">
                                     <airmid-dropdown fxFlex label="Category Name" formControlName="categoryId"
                                         [formGroup]="myFilterform" [mode]="autocompleteRadioDD"
                                         (selectionChange)="selectChangeCategory($event)"></airmid-dropdown>
                                 </div>
-                                <div fxFlex="50%" fxFlex.xs="100%">
-                                    <airmid-dropdown fxFlex label="Doctor Name" formControlName="refDocId"
+                                <div fxFlex="60%" fxFlex.xs="100%">
+                                    <!-- <airmid-dropdown fxFlex label="Doctor Name" formControlName="refDocId"
                                         [formGroup]="myFilterform" [mode]="autocompleteRefDoctorDD"
+                                        (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown> -->
+                                    <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
+                                        [formGroup]="myFilterform" TextField="doctorName" ValueField="doctorId"
+                                        ApiUrl="Doctor/RefdoctorComboList?keywoard="
                                         (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
                                 </div>
                             </form>

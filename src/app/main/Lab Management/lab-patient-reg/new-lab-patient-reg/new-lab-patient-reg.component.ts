@@ -29,6 +29,7 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { PrevlabHistoryComponent } from '../prevlab-history/prevlab-history.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { LabPackageDetailsComponent } from '../lab-package-details/lab-package-details.component';
+import { O } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -317,6 +318,7 @@ export class NewLabPatientRegComponent {
           this.VlabPatRegId = this.registerObj.labPatRegId ?? 0
           this.onChangeDateofBirth(response.dateofBirth)
           this.regflag = true
+          this.myForm.get('refDocId').setValue(this.registerObj.doctorId);
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim(),
             middleName: this.registerObj.middleName.trim(),
@@ -492,7 +494,7 @@ export class NewLabPatientRegComponent {
     return this._formbuilder.group({
       //bill header  
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdipdid: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdid: [this.vlabPatientId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       regNo: ["0", [this._FormvalidationserviceService.onlyNumberValidator()]],
       patientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       ipdno: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -585,12 +587,12 @@ export class NewLabPatientRegComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-    // debugger
+    debugger
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdIpdId: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdId: [this.vlabPatientId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -646,7 +648,7 @@ export class NewLabPatientRegComponent {
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      opdIpdId: [this.VlabPatRegId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdId: [this.vlabPatientId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.price, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -806,12 +808,14 @@ export class NewLabPatientRegComponent {
 
   regflag = false
   VlabPatRegId: any;
+  vlabPatientId:any=0;
   showPrevBtn: boolean = false
   getSelectedObj(obj) {
     console.log(obj)
     // this.PatientName = obj.patientName;
     this.PatientName = obj.firstName + ' ' + obj.lastName;
     this.VlabPatRegId = obj.visitId;
+    this.vlabPatientId=obj.labPatientId
     if (this.VlabPatRegId) {
       setTimeout(() => {
         this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
@@ -2034,7 +2038,7 @@ debugger
         PatientHeaderObj['DoctorName'] = this.doctorname || '';
         PatientHeaderObj['CompanyName'] = this.companyName;
         PatientHeaderObj['DepartmentName'] = this.departmentname;
-        PatientHeaderObj['OPD_IPD_Id'] = this.VlabPatRegId;
+        PatientHeaderObj['OPD_IPD_Id'] = this.vlabPatientId;
         PatientHeaderObj['CompanyId'] = this.companyId || 0;
         PatientHeaderObj['CashCounterId'] = this.OpBillForm.get('cashCounterId')?.value || 0;
         PatientHeaderObj['Age'] = this.ageYear;

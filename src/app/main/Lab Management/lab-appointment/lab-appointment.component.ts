@@ -142,10 +142,10 @@ export class LabAppointmentComponent {
   };
 
   onChangeRefdoc(value) {
-    // this.vRefDocId = value.doctorId
-    // this.vRefDocName = value.doctorName
-    this.vRefDocId = value.value
-    this.vRefDocName = value.text
+   this.vRefDocId = value.doctorId
+    this.vRefDocName = value.doctorName
+    // this.vRefDocId = value.value
+    // this.vRefDocName = value.text
     this.bindData();
     // this.searchRecords();
   }
