@@ -12,6 +12,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { Overlay, ToastrService } from 'ngx-toastr';
 import { LabPaymentmodechangesService } from '../lab-paymentmodechanges.service';
+import { element } from 'protractor';
+import { concat } from 'lodash';
 
 
 @Component({
@@ -67,8 +69,8 @@ export class EditPaymentModeComponent {
       'billNo',
       'receiptNo',
       'paymentDate',
-      'payAmount',
-      'payMode',
+      //'payAmount', 
+     // 'payMode',
       'payMode1',
       'updateAmt',
       'tranNo',
@@ -82,6 +84,7 @@ export class EditPaymentModeComponent {
   vpaymentId: any = 0;
   vBillNo: any;
   opiptype = 1
+  totalBalAmt:any=0;
 
   // public dsPayList = new MatTableDataSource<tPaymentChange>();
   dsPayList = new MatTableDataSource<any>([]);
@@ -100,307 +103,239 @@ export class EditPaymentModeComponent {
   ) { }
 
   ngOnInit(): void {
-    this.mainpaymentForm = this.CreaeMainPayform()
-
+    this.mainpaymentForm = this.CreaeMainPayform() 
     if (this.data) {
-      this.registerObj = this.data.registerObj;
-
+      this.registerObj = this.data.registerObj; 
       console.log(this.data.registerObj)
       this.vpaymentId = this.registerObj.paymentId;
       this.vnetPayAmt = this.registerObj.payAmount;
       this.vBillNo = this.registerObj.billNo || 0;
-
-    }
-
+      this.totalBalAmt = this.registerObj.payAmount || 0 
+    } 
     this.getPaylist();
     this.getPaymodelist();
     this.getBanklist();
 
     this.tpaymentsArray.push(this.createpayFormarray());
-  }
-
+  } 
   CreaeMainPayform() {
     return this._formBuilder.group({
-      tpaymentUpdate: this._formBuilder.array([])
+      paymentModel: this._formBuilder.array([])
     });
   }
 
-  createpayFormarray(item: any = {}): FormGroup {
-    console.log(item)
-    const now = new Date();
+  createpayFormarray(item: any = {}): FormGroup { 
     return this._formBuilder.group({
-      paymentId: [item.paymentId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitId: this._loggedService.currentUserValue.user.unitId,
-      billNo: [this.vBillNo],
-      opdipdtype: 4,
-      receiptNo: [item.receiptNo],
-      paymentDate: [now.toISOString().split('T')[0]],
-      paymentTime: [now.toISOString()],
-      payAmount: [item.payAmount],
-      tranNo: [item.tranNo ?? 0],
-      bankName: [item.bankName],
-      validationDate: [now.toISOString().split('T')[0]],
-      advanceUsedAmount: [0],
-      comments: [''],
-      payMode: [item.payMode || "CASH",
-      [
-        Validators.required, Validators.maxLength(50),
-        this._FormvalidationserviceService.allowEmptyStringValidator()
-      ]
-      ],
+      paymentId: [item?.paymentId || 0 , [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId:[this._loggedService.currentUserValue.user.unitId,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      billNo: [this.vBillNo,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [4,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      receiptNo: [item?.receiptNo ,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      paymentDate: [item?.paymentDate || '1900-01-01'],
+      paymentTime: [item?.paymentTime],
+      payAmount: [item.payAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      tranNo: [item.tranNo || '0'],
+      bankName: [item.bankName,[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      validationDate: [item?.paymentDate || '1900-01-01'],
+      advanceUsedAmount: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      comments: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],  
+      payMode: [item.payMode1 || "", [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       onlineTranNo: "0",
       onlineTranResponse: "0",
-      companyId: 0,
-      advanceId: 0,
-      refundId: 0,
-      cashCounterId: 0,
-      transactionType: 0,
+      companyId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId || 0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType:  [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       transactionLabel: 'LAB_Bill',
-      isSelfOrcompany: 0,
+      isSelfOrcompany: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       tranMode: "HOSP",
       isCancelled: false,
-      isCancelledBy: 0,
+      isCancelledBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       isCancelledDate: "1900-01-01",
-      createdBy: this._loggedService.currentUserValue.userId
+      createdBy:[this._loggedService.currentUserValue.userId,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
-  }
-
+  } 
   get tpaymentsArray(): FormArray {
-    return this.mainpaymentForm.get('tpaymentUpdate') as FormArray;
+    return this.mainpaymentForm.get('paymentModel') as FormArray;
   }
 
-  chargelist: any = [];
-  // getPaylist() {
-  //   // debugger
-  //   const vdata = {
-  //     "first": 0,
-  //     "rows": 100,
-  //     "sortField": "BillNo",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       { "fieldName": "BillNo", "fieldValue": this.vBillNo, "opType": OperatorComparer.Equals }
-  //     ],
-  //     "Columns": [],
-  //     "exportType": "JSON"
-  //   }
-  //   this._Paymentmodesevice.getpaybBillBrowseList(vdata).subscribe(response => {
-  //     this.chargelist = response.data
-  //     console.log(this.chargelist)
-  //     if (this.chargelist)
-  //       this.dsPayList.data = this.chargelist
-  //   })
-  // }
+  chargelist: any = []; 
+  temparorylist:any=[];
   getPaylist() {
     const vdata = {
       first: 0,
       rows: 100,
       sortField: "BillNo",
       sortOrder: 0,
-      filters: [
-        { fieldName: "BillNo", fieldValue: this.vBillNo, opType: OperatorComparer.Equals }
-      ],
+      filters: [ { fieldName: "BillNo", fieldValue: this.vBillNo, opType: OperatorComparer.Equals }  ],
       Columns: [],
       exportType: "JSON"
-    };
-
+    }; 
     this._Paymentmodesevice.getpaybBillBrowseList(vdata).subscribe(response => {
+debugger
+      this.temparorylist = response.data; 
+      this.vnetPayAmt = this.temparorylist.reduce((sum: number, item: any) => {
+      return sum + (Number(item.payAmount) || 0);
+       }, 0);
+       this.totalBalAmt =  this.vnetPayAmt
 
-      this.chargelist = response.data;
+      this.chargelist = response.data; 
 
-      if (this.chargelist) {
+const list :any = [];
+ list.push({
+        ...this.chargelist[0], 
+    payMode1:'', 
+    updateAmt: null,
+    filteredList: [...this.payList],
+    tranNo: '',
+    bankName: '', 
+    isSplit: false,
+   }) 
 
-        // ✅ ADD YOUR EXTRA FIELDS HERE
-        this.dsPayList.data = this.chargelist.map((row: any, index: number) => ({
-          ...row,
+if(this.chargelist.length){ 
+  this.chargelist.forEach(element=>{ 
+    const balaAmt  = this.totalBalAmt - element.payAmount
+    this.totalBalAmt = balaAmt
+   list.push({
+    ...element,
 
-          id: index + 1,                // ✅ unique id
-          payMode1: '',                // for new paymode input
-          updateAmt: null,             // for amount input
-          filteredList: [...this.payList], // dropdown list
-          isSplit: false,              // पहचान original vs split
-          parentId: null               // for split tracking
-        }));
-      }
+    paymentId: element?.paymentId || 0, 
+    payMode1:element.payMode,
+    updateAmt: element.payAmount,
+    tranNo: element.tranNo || '',
+    isSplit: true,
+    bankName: element.bankName || '',
+    billNo:element.billNo || 0,
+   }) 
+  })
+  this.dsPayList.data = list
+  this.chargelist = this.dsPayList.data
+}
     });
-  }
-
-  keyPressDigitsOnly(event) {
-    const inp = String.fromCharCode(event.keyCode);
-    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-      return true;
-    } else {
-      event.preventDefault();
-      return false;
-    }
-  }
-
+  } 
   onAmountChange(contact: any) {
-    if (!contact.updateAmt) return;
-
-    let originalAmt = contact.payAmount || 0;
+    if (!contact.updateAmt) return; 
+    let originalAmt = this.totalBalAmt  //contact.payAmount || 0;
     let enteredAmt = Number(contact.updateAmt);
 
     if (enteredAmt > originalAmt) {
       // alert('Amount cannot be greater than original amount');
-      this.toastr.warning('Amount cannot be greater than original amount');
+      this.toastr.warning('Amount cannot be greater than balance amount');
       contact.updateAmt = null;
       return;
     }
-  }
-
+  } 
   splitPayment(contact: any) {
-
+debugger
     let updateAmt = Number(contact.updateAmt);
+    if (!this.totalBalAmt){
+     this.toastr.warning('Balacne Amount is 0');
+      return;
+    } 
+    if (!updateAmt || updateAmt <= 0 || !contact.payMode1) return; 
+    if (!this.totalBalAmt){
+     this.toastr.warning('Balacne Amount is 0');
+      return;
+    } 
 
-    if (!updateAmt || updateAmt <= 0) return;
-    if (!contact.payMode1) return;
+    if(contact.payMode1 == 'UPI' || contact.payMode1 == 'CHEQUE' || contact.payMode1 == 'CARD'){
+    if(!(contact?.tranNo || 0)){ let msg = '';
+    if (contact.payMode1 == 'UPI') {msg = 'Enter UPI transaction number';} 
+    else if (contact.payMode1 == 'CARD') {msg = 'Enter Card transaction number';} 
+    else if (contact.payMode1 == 'CHEQUE') {msg = 'Enter Cheque number'; } 
+    this.toastr.warning(msg);
+    return;}
+    } 
+ 
+    if(contact.payMode1 == 'NET BANKING'){
+      if(!(contact?.tranNo || 0)){ 
+      this.toastr.warning('Enter transaction number');
+      return;}
+      if(!(contact?.bankName || '')){ 
+      this.toastr.warning('Please Select Bank Name');
+      return;}
+    }
 
-    if (contact.payMode1 === contact.payMode) {
+    //need to check duplicate records
+    const checkmode = this.dsPayList.data.some(item=> item.payMode1 === contact.payMode1 && item.isSplit == true)
+        if (checkmode) {
       this.toastr.warning('Same payment mode already selected');
       return;
-    }
-
-    if (updateAmt > contact.payAmount) return;
-
-    const originalPaymentId = contact.paymentId;
-
+    } 
+    // need to check paymentid
+    const checkpaymentid = this.temparorylist.filter(item=> item.payMode === contact.payMode1) 
+ 
     // 👉 Create new row (acts like ORIGINAL)
-    let newRow = {
-      id: new Date().getTime(),
-
+    let newRow = { 
       billNo: contact.billNo,
       paymentDate: contact.paymentDate,
-      receiptNo: contact.receiptNo,
-
+      paymentTime:contact.paymentTime,
+      receiptNo: contact.receiptNo, 
       payAmount: updateAmt,
-      payMode: contact.payMode1,
-
+      //payMode: contact.payMode1, 
       tranNo: contact.tranNo,
-      bankName: contact.bankName,
-
-      payMode1: '',
-      updateAmt: null,
-
-      parentId: contact.id,
-
-      isSplit: false,              // ✅ behaves like original
-      paymentId: contact.paymentId // ✅ take original paymentId
-    };
-
-    // 👉 Reduce original row amount
-    contact.payAmount = contact.payAmount - updateAmt;
-
-    // 👉 If original becomes ZERO → transfer paymentId
-    if (contact.payAmount === 0) {
-      contact.isSplit = true;          // show delete
-      contact.paymentId = 0;           // remove from first row
-
-      newRow.paymentId = originalPaymentId; // ✅ GIVE to new row
-      newRow.isSplit = false;          // ✅ make it original
-    } else {
-      newRow.paymentId = 0;            // normal split case
-      newRow.isSplit = true;
-    }
-
+      bankName: contact.bankName,  
+      payMode1:  contact.payMode1,
+      updateAmt: updateAmt, 
+     // parentId: contact.id, 
+      isSplit: true,            
+      paymentId: checkpaymentid[0]?.paymentId || 0 
+    }; 
     // 👉 Clear inputs
     contact.payMode1 = '';
     contact.updateAmt = null;
     contact.tranNo = '';
-    contact.bankName = '';
-
-    let data = [...this.dsPayList.data];
-
-    data.push(newRow);
-
+    contact.bankName = ''; 
+    let data = [...this.dsPayList.data]; 
+    data.push(newRow); 
     this.dsPayList.data = data;
+    this.chargelist = this.dsPayList.data
     this.dsPayList._updateChangeSubscription();
-  }
+    const addbalAmt = this.totalBalAmt - updateAmt
+    this.totalBalAmt = addbalAmt;
+  } 
+  deleteTableRow(element: any) {
 
-  // splitPayment(contact: any) {
+    // let data = [...this.dsPayList.data];
 
-  //   let updateAmt = Number(contact.updateAmt);
+    // // 👉 If it's split row → restore amount
+    // if (contact.isSplit && contact.parentId) {
 
-  //   if (!updateAmt || updateAmt <= 0) return;
-  //   if (!contact.payMode1) return;
-  //   if (contact.payMode1 === contact.payMode) {
-  //     this.toastr.warning('Same payment mode already selected');
-  //     return;
-  //   }
-  //   if (updateAmt > contact.payAmount) return;
+    //   let parent = data.find(x => x.id === contact.parentId);
 
-  //   // 👉 Create new row with SAME details
-  //   let newRow = {
-  //     id: new Date().getTime(),
+    //   if (parent) {
+    //     parent.payAmount += contact.payAmount;
+    //   }
+    // }
 
-  //     billNo: contact.billNo,
-  //     paymentDate: contact.paymentDate,
-  //     receiptNo: contact.receiptNo,
+    // // Remove row
+    // data.splice(index, 1);
 
-  //     payAmount: updateAmt,
-  //     payMode: contact.payMode1,
-
-  //     tranNo: contact.tranNo,
-  //     bankName: contact.bankName,
-
-  //     payMode1: '',
-  //     updateAmt: null,
-
-  //     parentId: contact.id,
-  //     isSplit: true,
-  //     paymentId: 0
-  //   };
-
-  //   // 👉 Reduce original amount
-  //   contact.payAmount = contact.payAmount - updateAmt;
-
-  //   // 👉 Clear input fields of original row
-  //   contact.payMode1 = '';
-  //   contact.updateAmt = null;
-  //   contact.tranNo = '';
-  //   contact.bankName = '';
-
-  //   let data = [...this.dsPayList.data];
-
-  //   data.push(newRow);
-
-  //   this.dsPayList.data = data;
-  //   this.dsPayList._updateChangeSubscription();
-  // }
-
-  deleteRow(contact: any, index: number) {
-
-    let data = [...this.dsPayList.data];
-
-    // 👉 If it's split row → restore amount
-    if (contact.isSplit && contact.parentId) {
-
-      let parent = data.find(x => x.id === contact.parentId);
-
-      if (parent) {
-        parent.payAmount += contact.payAmount;
-      }
-    }
-
-    // Remove row
-    data.splice(index, 1);
-
-    this.dsPayList.data = data;
-    this.dsPayList._updateChangeSubscription();
-  }
-
+        const payamt = +element?.payAmount || 0
+        const index = this.chargelist.indexOf(element);
+        if (index >= 0) {
+            this.chargelist.splice(index, 1);
+            this.dsPayList.data = [];
+            this.dsPayList.data = this.chargelist;
+        }
+        this.toastr.warning('Success !', 'Record Deleted Successfully'); 
+        const addbalamt = this.totalBalAmt + payamt 
+        this.totalBalAmt = addbalamt;
+        this.dsPayList._updateChangeSubscription();
+  } 
   onTranNoInput(contact: any, value?: string) {
     // debugger
-    const tranNo = contact.tranNo
-
+    const tranNo = contact.tranNo 
     if (tranNo.length === 0) {
       contact.tranNoValid = false;
-      this.toastr.warning('Please enter a Tran No', 'Warning !--for ' + contact.receiptNo + '  Amount:' + contact.payAmount, {
+      this.toastr.warning('Please enter a Tran No', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     } else if (tranNo.length < 4) {
       contact.tranNoValid = false;
-      this.toastr.warning('Please enter a Tran No', 'Warning !--for ' + contact.receiptNo + '  Amount:' + contact.payAmount, {
+      this.toastr.warning('Please enter a Tran No', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -409,112 +344,93 @@ export class EditPaymentModeComponent {
       contact.tranNoError = null;
       // Further checks if needed (e.g., API validation)
     }
-  }
-  chkbank(contact, event) {
-    console.log(contact)
-    console.log(event)
-  }
-
-  onDisplayColumnChange(event: any, element: any) {
-    if (!event.checked) {
-      element.ReportColumnWidth = 0;
-      element.ReportColumnAligment = "";
-    }
-  }
-  setflag = false
-  totalPayment = 0
-
+  }   e 
   Save() {
-    this.totalPayment = 0;
-    this.setflag = true;
-    for (let item of this.dsPayList.data) {
-
-      // if (item.payAmount == 0) continue; // ✅ skip validation
-      if (item.payMode1 === 'CASH') {
-        item.tranNo = "0";
-        item.bankName = '';
-      }
-
-      if (item.payMode1 == 'CARD' || item.payMode1 == 'CHEQUE' || item.payMode1 == 'NET BANKIN' || item.payMode1 == 'UPI') {
-
-        // sachin sirs point to remove tranNo manditory
-        // if (!item.tranNo || item.tranNo.length < 4) {
-        //     this.toastr.warning(
-        //         'Please enter a Tran No',
-        //         'Warning !--for ' + item.receiptNo + ' Amount:' + item.payAmount
-        //     );
-        //     this.setflag = false;
-        //     break;
-        // }
-
-        if (!item.bankName || item.bankName == '') {
-          this.toastr.warning(
-            'Please Select Bank Name',
-            'Warning ! for ' + item.receiptNo + ' Amount:' + item.payAmount
-          );
-          this.setflag = false;
-          break;
-        }
-      }
-
-      this.totalPayment += item.payAmount;
-    }
-
-    if (!this.setflag) {
-      return;
-    }
-
     debugger
-    // continue only if valid
-    console.log(this.dsPayList.data)
+    if(!this.dsPayList.data) {
+      this.toastr.warning('Please check list is blank');
+      return;
+    }  
+    if (this.totalBalAmt > 0){
+    this.toastr.warning(`Please check Balance Amount: ${this.totalBalAmt}`);
+    return;
+    }
+    if (!this.isValidForm()) {
+      return;
+    } 
+    let savePayList: any = [];
+    savePayList = this.dsPayList.data.filter(item => item.isSplit === true) 
     this.tpaymentsArray.clear();
-    this.dsPayList.data.forEach(item => {
-      if (item.payAmount > 0) {   // ✅ skip zero amount rows
-        this.tpaymentsArray.push(this.createpayFormarray(item as tPaymentChange));
-      }
+    savePayList.forEach(item => {
+      this.tpaymentsArray.push(this.createpayFormarray(item as tPaymentChange));
     });
-
-    const payload = {
-      paymentModel: this.mainpaymentForm.value.tpaymentUpdate 
-    };
-    console.log(payload)
-
-    this._Paymentmodesevice.TPaymentUpdate(this.vpaymentId, payload)
-      .subscribe(() => {
-        this._matDialog.closeAll();
-      });
+    console.log(this.mainpaymentForm.value)
+    this._Paymentmodesevice.TPaymentUpdate(this.vpaymentId, this.mainpaymentForm.value).subscribe(() => {
+      this.onClose();
+    });
   }
+  onClose() {
+    this.chargelist = [];
+    this.dsPayList.data = [];
+    this.temparorylist = [];
+    this._matDialog.closeAll() 
+  } 
+  isValidForm(): boolean {
+    let savePayList: any = [];
+    savePayList = this.dsPayList.data.filter(item => item.isSplit === true) 
+    const invalidItem = savePayList.find((item, index) => { 
+      if (item.payMode1 == '') {
+        this.toastr.warning(
+          `PayMode cannot be null`,
+          'Warning !',
+          { toastClass: 'tostr-tost custom-toast-warning' }
+        );
+        return true;
+      }
+      if (item.receiptNo <= 0 || item.receiptNo == '' || item.receiptNo == null) {
+        this.toastr.warning(
+          `Receiption cannot be  0`,
+          'Warning !', { toastClass: 'tostr-tost custom-toast-warning' }
+        );
+        return true;
+      }
+      if (item.billNo <= 0 || item.billNo == '' || item.billNo == null) {
+        this.toastr.warning(
+          `Bill No cannot be  0`,
+          'Warning !', { toastClass: 'tostr-tost custom-toast-warning' }
+        );
+        return true;
+      }
+      return false;
+    });
+    return !invalidItem; // valid only if no invalid row
+  }
+
 
   getselectObjPayMode(obj) {
     console.log(obj)
     this.selectedPaymnet1 = obj.text
     //  this.onChangePaymentType();
-  }
-
-  getBanklist() {
-    // this.selectedRow = contact;
+  } 
+  getBanklist() { 
     this.bankList = [];
     this.filteredbankList = [];
     const SelectQuery = {
       searchFields: [
       ],
       mode: 'BankNameList'
-    };
-
-    this._Paymentmodesevice.getBankNameList(SelectQuery).subscribe((res: any) => {
-
+    }; 
+    this._Paymentmodesevice.getBankNameList(SelectQuery).subscribe((res: any) => { 
       this.bankList = Array.isArray(res) ? res : [];
       this.filteredbankList = [...this.bankList];
       console.log(this.filteredbankList)
     });
-  }
-
+  } 
   filterbankList(value: string) {
     if (!value) {
       this.filteredbankList = [...this.bankList];
       return;
-    }
-
+    } 
     const searchValue = value.toLowerCase();
 
     this.filteredbankList = this.bankList.filter(item =>
@@ -522,8 +438,7 @@ export class EditPaymentModeComponent {
 
       String(item.BankName ?? '').toLowerCase().includes(searchValue)
     );
-  }
-
+  } 
   onOptionSelectedBank(contact, event: any) {
     debugger
     if (contact) {
@@ -535,50 +450,36 @@ export class EditPaymentModeComponent {
   public payList: Paymode[] = [];
   filteredpayList: Paymode[] = [];
   selectedRow: any;
-  getPaymodelist() {
-    // this.selectedRow = contact;
+  getPaymodelist() { 
     this.payList = [];
     this.filteredpayList = [];
     const SelectQuery = {
-      searchFields: [
-
+      searchFields: [ 
       ],
       mode: 'PaymentMode'
-    };
-
-    this._Paymentmodesevice.getpaymodeList(SelectQuery).subscribe((res: any) => {
-
+    }; 
+    this._Paymentmodesevice.getpaymodeList(SelectQuery).subscribe((res: any) => { 
       this.payList = Array.isArray(res) ? res : [];
       this.filteredpayList = [...this.payList];
       console.log(this.filteredpayList)
     });
-  }
-
+  } 
   filterList(value: string) {
     if (!value) {
       this.filteredpayList = [...this.payList];
       return;
-    }
-
-    const searchValue = value.toLowerCase();
-
+    } 
+    const searchValue = value.toLowerCase(); 
     this.filteredpayList = this.payList.filter(item =>
-      String(item.Value ?? '').toLowerCase().includes(searchValue) ||
-
+      String(item.Value ?? '').toLowerCase().includes(searchValue) || 
       String(item.Value ?? '').toLowerCase().includes(searchValue)
     );
-  }
-
-  onOptionSelected(contact, event: any) {
-    debugger
+  } 
+  onOptionSelected(contact, event: any) { 
     if (event.option.value == 'CARD' || event.option.value == 'CHEQUE' || event.option.value == 'NET BANKING') {
       contact.vCardCheckStatus = true
     }
-  }
-
-  onClose() {
-    this._matDialog.closeAll()
-  }
+  } 
 
   getValidationMessages() {
     return {
@@ -596,6 +497,15 @@ export class EditPaymentModeComponent {
       ],
     };
   }
+    keyPressDigitsOnly(event) {
+    const inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
 }
 
 export class Paymode {
@@ -603,10 +513,8 @@ export class Paymode {
   Value: any;
   constructor(Paymode) {
     this.ConstantId = Paymode.ConstantId || 0;
-    this.Value = Paymode.Value || '';
-
-  }
-
+    this.Value = Paymode.Value || ''; 
+  } 
 }
 export class BankNames {
   BankId: any;

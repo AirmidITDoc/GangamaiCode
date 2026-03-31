@@ -233,7 +233,17 @@ export class DoctorShareListComponent {
 
     }
 
-
+OnRadioChange(){
+    if(this.Doctorshare.get('docShrType').value=='A'){
+        this.vServicePerc = 0
+    }else{
+        this.vServiceAmt = 0
+    }
+    this.Doctorshare.patchValue({
+        servicePercentage: this.vServicePerc,
+        serviceAmount:this.vServiceAmt
+    })
+}
 
     OnSave() {
         debugger

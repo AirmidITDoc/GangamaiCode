@@ -53,7 +53,7 @@
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Net Amount</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj.payAmount |
+                                                    <span class="patient-col-value">{{vnetPayAmt |
                                                         currency:'INR'}}</span>
                                                 </div>
 
@@ -62,8 +62,18 @@
                                                     border: 2px solid rgb(7, 90, 126);border-radius: 8px;padding: 4px 10px;display: inline-block;">
                                                     <span class="patient-col-key">Total Paid Amount</span>
                                                     <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj.payAmount |
+                                                    <span class="patient-col-value">{{vnetPayAmt |
                                                         currency:'INR'}}</span>
+                                                </div>
+
+
+                                                 <div class="patient-col"
+                                                    style="font-weight: bold;font-size: large; border: 2px solid rgb(7, 90, 126);border-radius: 8px;padding: 4px 10px;display: inline-block;"
+                                                    [ngClass]="{  'status-not-requested': totalBalAmt > 0,
+                                                        'status-received': totalBalAmt == 0 }">
+                                                    <span class="patient-col-key">Total Balance Amount</span>
+                                                    <span>:</span>
+                                                    <span class="patient-col-value">{{totalBalAmt | currency:'INR'}}</span>
                                                 </div>
 
                                             </div>
@@ -86,57 +96,57 @@
                                 [@animateStagger]="{ value: '50' }" style="overflow: auto">
 
                                 <ng-container matColumnDef="billNo">
-                                    <mat-header-cell *matHeaderCellDef class="w-110"
+                                    <mat-header-cell *matHeaderCellDef class="w-120"
                                         mat-sort-header>BillNo</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" class="w-110">
+                                    <mat-cell *matCellDef="let contact" class="w-120">
                                         <span> {{ contact.billNo }}</span>
 
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="paymentDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-110"
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-140"
                                         fxShow.gt-sm>Payment Date</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                                         <span> {{ contact.paymentDate | date:ShortDate }}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="receiptNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120"
                                         fxShow.gt-sm>Receipt No</mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                         <span> {{ contact.receiptNo }}</span>
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="payAmount">
+                                <!-- <ng-container matColumnDef="payAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150"
-                                        fxShow.gt-sm>Payment Amt</mat-header-cell>
+                                        fxShow.gt-sm>Paid Amt</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                        <span> {{ contact.payAmount }}</span>
+                                        <span> {{ contact.payAmount}}</span>
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container>   -->
 
-                                <ng-container matColumnDef="payMode">
+                                <!-- <ng-container matColumnDef="payMode">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150" fxShow.gt-sm>Pay
                                         Mode</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                         <span> {{ contact.payMode }}</span>
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="payMode1">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
-                                        New Paymode
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-250">
+                                         Paymode
                                     </mat-header-cell>
 
-                                    <mat-cell *matCellDef="let contact" class="w-200">
+                                    <mat-cell *matCellDef="let contact" class="w-250">
 
-                                        <mat-form-field appearance="fill" style="width: 100%;">
+                                        <mat-form-field appearance="fill" style="width: 100%;" *ngIf="!contact.isSplit">
                                             <input matInput autocomplete="off" matTooltip="New PayMode"
                                                 [(ngModel)]="contact.payMode1" [matAutocomplete]="auto"
-                                                (ngModelChange)="filterList($event)" [disabled]="contact.isSplit">
+                                                (ngModelChange)="filterList($event)" [disabled]="contact.isSplit" >
 
                                             <mat-autocomplete #auto="matAutocomplete"
                                                 (optionSelected)="onOptionSelected(contact,$event)">
@@ -148,47 +158,48 @@
 
                                             </mat-autocomplete>
                                         </mat-form-field>
-
+                                        <span  *ngIf="contact.isSplit">{{contact.payMode1}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="updateAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">Update
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">Update
                                         Amt</mat-header-cell>
-                                    <mat-cell class="w-150" *matCellDef="let contact" fxShow.gt-sm>
-                                        <mat-form-field appearance="fill">
+                                    <mat-cell class="w-200" *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill" *ngIf="!contact.isSplit">
                                             <input matInput placeholder="Amt" [(ngModel)]="contact.updateAmt"
-                                                (input)="onAmountChange(contact)" [disabled]="contact.isSplit"
+                                                (input)="onAmountChange(contact)"  [disabled]="contact.isSplit"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                                         </mat-form-field>
+                                        <span  *ngIf="contact.isSplit">{{contact.updateAmt}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="tranNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">Tran
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >Tran
                                         No</mat-header-cell>
-                                    <mat-cell class="w-150" *matCellDef="let contact" fxShow.gt-sm>
-                                        <mat-form-field appearance="fill">
-
-                                            <input matInput placeholder="Tran No" required max="999999999999"
+                                    <mat-cell   *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-form-field appearance="fill" *ngIf="!contact.isSplit"> 
+                                            <input matInput placeholder="Tran No" max="999999999999"
                                                 [(ngModel)]="contact.tranNo" (input)="onTranNoInput(contact, $event)"
-                                                min="1000" autocomplete="off" maxlength="12" minlength="4"
+                                                min="1000" autocomplete="off" maxlength="12" minlength="4" [disabled]="contact.isSplit"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);">
                                         </mat-form-field>
+                                         <span  *ngIf="contact.isSplit">{{contact.tranNo}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="bankName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
                                         Bank Name
                                     </mat-header-cell>
 
-                                    <mat-cell *matCellDef="let contact" class="w-200">
+                                    <mat-cell *matCellDef="let contact" class="w-300">
 
-                                        <mat-form-field appearance="fill" style="width: 100%;">
+                                        <mat-form-field appearance="fill" style="width: 100%;"  *ngIf="!contact.isSplit">
                                             <input matInput autocomplete="off" matTooltip="New BankName"
                                                 [(ngModel)]="contact.bankName" [matAutocomplete]="auto"
-                                                (ngModelChange)="filterbankList($event)">
+                                                (ngModelChange)="filterbankList($event)" [disabled]="contact.isSplit">
 
                                             <mat-autocomplete #auto="matAutocomplete"
                                                 (optionSelected)="onOptionSelected(contact,$event)">
@@ -201,15 +212,15 @@
 
                                             </mat-autocomplete>
                                         </mat-form-field>
-
+                                            <span  *ngIf="contact.isSplit">{{contact.bankName}}</span>
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="action" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef class="w-150">
+                                    <mat-header-cell *matHeaderCellDef  >
                                         Actions
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact; let i = index" class="w-150">
+                                    <mat-cell *matCellDef="let contact; let i = index"  >
 
                                         <!-- ADD Button -->
                                         <button mat-icon-button matTooltip="Add"
@@ -221,7 +232,7 @@
                                         <!-- DELETE Button -->
                                         <button mat-icon-button color="warn"
                                             *ngIf="contact.isSplit || contact.payAmount == 0"
-                                            (click)="deleteRow(contact, i)">
+                                            (click)="deleteTableRow(contact)">
                                             <mat-icon>delete</mat-icon>
                                         </button>
 

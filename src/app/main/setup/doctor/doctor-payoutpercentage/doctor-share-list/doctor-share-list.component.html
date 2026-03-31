@@ -105,7 +105,7 @@
                                 <div class="share-type-container" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%"
                                     style="padding: 12px;">
                                     <label class="share-label" style="font-weight: bold;">Doctor Share :</label>&nbsp;
-                                    <mat-radio-group formControlName="docShrType" class="share-radio-group">
+                                    <mat-radio-group formControlName="docShrType" class="share-radio-group" (change)="OnRadioChange()">
                                         <mat-radio-button value="P" class="share-radio-button">
                                             <span class="radio-label">Percentage (%)</span>
                                         </mat-radio-button>

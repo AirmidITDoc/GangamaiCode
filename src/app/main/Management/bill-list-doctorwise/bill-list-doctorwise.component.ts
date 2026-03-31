@@ -116,7 +116,8 @@ export class BillListDoctorwiseComponent {
         columnsList: this.allColumns1,
         sortField: "DoctorId",
         sortOrder: 0,
-        filters: this.allFilters1
+        filters: this.allFilters1,
+        row: 25
     }
 
     onChangeFirst1() {
@@ -365,7 +366,7 @@ export class BillListDoctorwiseComponent {
 
         const vdata = {
             "first": 0,
-            "rows": 200,
+            "rows": 999,
             "sortField": "DoctorId",
             "sortOrder": 0,
             "filters": [

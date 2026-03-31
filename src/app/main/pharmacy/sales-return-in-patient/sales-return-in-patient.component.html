@@ -292,6 +292,57 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="cgstPer">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
+                                        CGST%</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                        {{contact.CGSTPer}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="cgstamt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                        CGST Amt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                        {{contact.CGSTAmount}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="sgstper">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
+                                        SGST%</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                        {{contact.SGSTPer}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="sgstAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                        SGST Amt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                        {{contact.SGSTAmount}}
+                                    </mat-cell>
+                                </ng-container>
+
+
+                                <ng-container matColumnDef="igstper">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
+                                        IGST%</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                        {{contact.IGSTPer}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="igstAmt">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                        IGST Amt</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                        {{contact.IGSTAmount}}
+                                    </mat-cell>
+                                </ng-container>
+
+
                                 <ng-container matColumnDef="LandedPrice">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                         Landed Price</mat-header-cell>

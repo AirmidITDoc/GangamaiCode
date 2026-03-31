@@ -37,6 +37,12 @@ export class SalesReturnInPatientComponent implements OnInit {
         'GSTAmt',
         'Disc',
         'DiscAmt',
+        'cgstPer',
+        'cgstamt',
+        'sgstper',
+        'sgstAmt',
+        'igstper',
+        'igstAmt',
         'LandedPrice',
         'NetAmount',
         'StkID',
@@ -163,15 +169,15 @@ export class SalesReturnInPatientComponent implements OnInit {
             purTot: [element?.PurTotAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             salesId: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            isCashOrCredit: [element?.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            cgstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            cgstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            sgstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            sgstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            igstper: [element?.GST, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            igstamt: [element?.GSTAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCashOrCredit: [element?.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]], 
+            cgstper: [element?.CGSTPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cgstamt: [element?.CGSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            sgstper: [element?.SGSTPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            sgstamt: [element?.SGSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            igstper: [element?.IGSTPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            igstamt: [element?.ISGSTAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             stkId: [element?.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        })
+        }) 
     }
     createcurrentStock(element: any): FormGroup {
         return this.formBuilder.group({
@@ -305,12 +311,27 @@ export class SalesReturnInPatientComponent implements OnInit {
             }
         }
 
-        const totalAmt = (parseFloat(this.selcteditemObj.UnitMRP) * parseFloat(formValues.ReturnQty)).toFixed(2);
-        const GSTAmt = ((parseFloat(this.selcteditemObj.VatPer) * parseFloat(totalAmt)) / 100).toFixed(2) || 0;
-        const DiscAmt = ((parseFloat(this.selcteditemObj.DiscPer) * parseFloat(totalAmt)) / 100).toFixed(2) || '0';
-        const netAmt = (parseFloat(totalAmt) - parseFloat(DiscAmt)).toFixed(2);
+        const CGSTPer = +this.selcteditemObj.CGSTPer || 0;
+        const SGSTPer = +this.selcteditemObj.SGSTPer || 0;
+        const IGSTPer = +this.selcteditemObj.IGSTPer || 0;
+        const unitMRP = +this.selcteditemObj.UnitMRP || 0;
+        const qty = +formValues.ReturnQty || 0;
+        const GSTPer = +this.selcteditemObj.VatPer || 0;
+        const DiscPer = +this.selcteditemObj.DiscPer || 0;
+        
+        const totalAmt = (unitMRP * qty);
+        const GSTAmt = (GSTPer * totalAmt) / 100;
+        const CGSTAmt = (totalAmt * CGSTPer) / 100;
+        const SGSTAmt = (totalAmt * SGSTPer) / 100;
+        const IGSTAmt = (totalAmt * IGSTPer) / 100;
+
+        const DiscAmt = ((DiscPer * totalAmt) / 100);
+        const netAmt = (totalAmt - DiscAmt).toFixed(2);
         const PurTotAmt = (parseFloat(this.selcteditemObj.PurRateWf) * parseFloat(formValues.ReturnQty)).toFixed(2);
         const TotalLandedAmount = (parseFloat(this.selcteditemObj.LandedPrice) * parseFloat(formValues.ReturnQty)).toFixed(2);
+        
+ 
+  
 
         this.chargeslist.push(
             {
@@ -319,14 +340,14 @@ export class SalesReturnInPatientComponent implements OnInit {
                 ItemId: this.selcteditemObj.ItemId || 0,
                 BatchNo: this.selcteditemObj.BatchNo || 0,
                 ExpDate: this.selcteditemObj.BatchExpDate || 0,
-                MRP: this.selcteditemObj.UnitMRP || 0,
-                Qty: this.selcteditemObj.Qty || 0,
+                MRP: unitMRP || 0,
+                Qty:qty || 0,
                 ReturnQty: formValues.ReturnQty || 0,
-                TotalAmt: totalAmt || 0,
-                GST: this.selcteditemObj.VatPer || 0,
-                GSTAmt: GSTAmt || 0,
-                Disc: parseFloat(this.selcteditemObj.DiscPer).toFixed(2) || 0,
-                DiscAmt: DiscAmt || 0,
+                TotalAmt: totalAmt.toFixed(2) || 0,
+                GST: GSTPer,
+                GSTAmt: GSTAmt.toFixed(2) || 0,
+                Disc: DiscPer,
+                DiscAmt: DiscAmt.toFixed(2) || 0,
                 LandedPrice: this.selcteditemObj.LandedPrice || 0,
                 TotalLandedAmount: TotalLandedAmount || 0,
                 PurRateWf: this.selcteditemObj.PurRateWf || 0,
@@ -335,6 +356,12 @@ export class SalesReturnInPatientComponent implements OnInit {
                 SalesDetId: this.selcteditemObj.SalesDetId || 0,
                 StkID: this.selcteditemObj.StkID || 0,
                 isCashOrCredit: this.selcteditemObj.isCashOrCredit || 0,
+                CGSTPer:CGSTPer,
+                CGSTAmount:CGSTAmt.toFixed(2) || 0,
+                SGSTPer:SGSTPer,
+                SGSTAmount:SGSTAmt.toFixed(2) || 0,
+                IGSTPer:IGSTPer,
+                ISGSTAmount:IGSTAmt.toFixed(2) || 0,
             });
         console.log(this.chargeslist)
         this.dsIpSaleItemList.data = this.chargeslist;
@@ -388,6 +415,9 @@ export class SalesReturnInPatientComponent implements OnInit {
             contact.ReturnQty = '';
             contact.TotalAmt = 0;
             contact.GSTAmt = 0;
+            contact.CGSTAmount = 0;
+            contact.SGSTAmount = 0;
+            contact.IGSTAmount = 0;
             contact.DiscAmt = 0;
             contact.NetAmount = 0;
             return
@@ -397,12 +427,18 @@ export class SalesReturnInPatientComponent implements OnInit {
             contact.ReturnQty = '';
             contact.TotalAmt = 0;
             contact.GSTAmt = 0;
+            contact.CGSTAmount = 0;
+            contact.SGSTAmount = 0;
+            contact.IGSTAmount = 0;
             contact.DiscAmt = 0;
             contact.NetAmount = 0;
         }
         else {
             contact.TotalAmt = (parseFloat(contact.MRP) * parseFloat(contact.ReturnQty)).toFixed(2);
             contact.GSTAmt = ((parseFloat(contact.GST) * parseFloat(contact.TotalAmt)) / 100).toFixed(2) || 0;
+            contact.CGSTAmount = ((parseFloat(contact.CGSTPer) * parseFloat(contact.TotalAmt)) / 100).toFixed(2) || 0;
+            contact.SGSTAmount = ((parseFloat(contact.SGSTPer) * parseFloat(contact.TotalAmt)) / 100).toFixed(2) || 0;
+            contact.IGSTAmount = ((parseFloat(contact.IGSTPer) * parseFloat(contact.TotalAmt)) / 100).toFixed(2) || 0;
             contact.DiscAmt = ((parseFloat(contact.Disc) * parseFloat(contact.TotalAmt)) / 100).toFixed(2) || 0;
             contact.NetAmount = (parseFloat(contact.TotalAmt) - parseFloat(contact.DiscAmt)).toFixed(2);
             contact.PurTotAmt = (parseFloat(contact.PurRateWf) * parseFloat(contact.ReturnQty)).toFixed(2);
