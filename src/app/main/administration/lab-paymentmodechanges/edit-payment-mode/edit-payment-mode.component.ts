@@ -234,7 +234,7 @@ onAmountChange(contact: any) {
 });
 
   // Step 2: Validate
-  if (totalUsed > this.registerObj.payAmount) {
+  if (totalUsed > this.vnetPayAmt) {
     this.toastr.warning('Amount cannot be greater than balance amount');
     contact.updateAmt = null;
     this.totalBalAmt = totalUsed
@@ -242,7 +242,7 @@ onAmountChange(contact: any) {
   }
 
   // Step 3: Update balance
-  this.totalBalAmt = this.registerObj.payAmount - totalUsed;
+  this.totalBalAmt = this.vnetPayAmt - totalUsed;
 }
   splitPayment(contact: any) {
 debugger
