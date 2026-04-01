@@ -53,7 +53,7 @@ export class LabrefundBillComponent {
         'qty',
         'ServiceWiseDisc',
         'netAmount',
-        'discnetAmount',
+        // 'discnetAmount',
         'chargesDocName',
         'refAmount',
         'balanceAmount',
@@ -468,8 +468,8 @@ export class LabrefundBillComponent {
         this._labPatientRegService.getRefundofBillServiceList(m_data).subscribe(response => {
             this.dataSource2.data = response.data as InsertRefundDetail[]
             this.dataSource2.data.forEach(element => {
-                element.balanceAmount = element.balAmt - element.serviceWiseDisc;
-                element.balAmt = element.balAmt - element.serviceWiseDisc;
+                // element.balanceAmount = element.balAmt - element.serviceWiseDisc;
+                // element.balAmt = element.balAmt - element.serviceWiseDisc;
             });
             this.dataSource2.data = [...this.dataSource2.data];
             this.isLoadingStr = this.dataSource2.data.length == 0 ? 'no-data' : '';

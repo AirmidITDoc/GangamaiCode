@@ -591,10 +591,11 @@ export class NewLabPatientRegComponent {
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss'),
       opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdIpdId: [this.vlabPatientId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -605,8 +606,8 @@ export class NewLabPatientRegComponent {
       doctorId: [item?.DoctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorName: [item?.DoctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       docPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      docAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       isComServ: [false],
       isPrintCompSer: [false],
@@ -628,7 +629,6 @@ export class NewLabPatientRegComponent {
       packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrCompanyService: [false],
       packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
       classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -662,7 +662,7 @@ export class NewLabPatientRegComponent {
       docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       isComServ: [false],
       isPrintCompSer: [false],
       salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -808,14 +808,14 @@ export class NewLabPatientRegComponent {
 
   regflag = false
   VlabPatRegId: any;
-  vlabPatientId:any=0;
+  vlabPatientId: any = 0;
   showPrevBtn: boolean = false
   getSelectedObj(obj) {
     console.log(obj)
     // this.PatientName = obj.patientName;
     this.PatientName = obj.firstName + ' ' + obj.lastName;
     this.VlabPatRegId = obj.visitId;
-    this.vlabPatientId=obj.labPatientId
+    this.vlabPatientId = obj.labPatientId
     if (this.VlabPatRegId) {
       setTimeout(() => {
         this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
@@ -1124,7 +1124,8 @@ export class NewLabPatientRegComponent {
       this.OPFooterForm.get("concessionReasonId").setValue(0)
     }
 
-    row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    // row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    row.DiscAmt = Math.ceil((totalAmount * discountPer) / 100);
     row.TotalAmt = totalAmount;
     row.NetAmount = totalAmount - row.DiscAmt;
 
@@ -1147,7 +1148,8 @@ export class NewLabPatientRegComponent {
       this.Consessionres = false
       this.OPFooterForm.get("concessionReasonId").setValue(0)
     }
-    row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    // row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    row.DiscPer = totalAmount  ? Math.ceil((discountAmt / totalAmount) * 100)  : 0;
     row.TotalAmt = totalAmount;
     row.NetAmount = totalAmount - discountAmt;
 
@@ -1162,12 +1164,20 @@ export class NewLabPatientRegComponent {
     const totalDiscountPer = 0 //this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
     const totalNet = totalSum - totalDiscount;
 
+    // this.myForm.patchValue({
+    //   totalAmt: totalSum,
+    //   totalDiscountPer: Math.round(totalDiscountPer),
+    //   discountAmt: Math.round(totalDiscount),
+    //   netPayableAmt: Math.round(totalNet)
+    // }, { emitEvent: false });
+
     this.myForm.patchValue({
-      totalAmt: totalSum,
+      totalAmt: totalSum.toFixed(2),
       totalDiscountPer: Math.round(totalDiscountPer),
       discountAmt: Math.round(totalDiscount),
-      netPayableAmt: Math.round(totalNet)
+      netPayableAmt: totalNet.toFixed(2)
     }, { emitEvent: false });
+
     if (!this.isDiscountApplied && totalDiscount > 0) {
       this.isDiscountApplied = true;
       this.Consessionres = true
@@ -1333,46 +1343,21 @@ export class NewLabPatientRegComponent {
 
     const netAmt = totalAmt - discountAmt;
 
+    // this.myForm.patchValue({
+    //   totalAmt: totalAmt,
+    //   discountAmt: discountAmt,
+    //   totalDiscountPer: discountPer,
+    // netPayableAmt: Math.round(netAmt)
+    // }, { emitEvent: false });
     this.myForm.patchValue({
-      totalAmt: totalAmt,
-      discountAmt: discountAmt,
-      totalDiscountPer: discountPer,
-      netPayableAmt: Math.round(netAmt)
+      totalAmt: totalAmt.toFixed(2),
+      discountAmt: Math.round(discountAmt),
+      // discountAmt: discountAmt,
+      totalDiscountPer: Math.round(discountPer),
+      // totalDiscountPer: discountPer,
+      netPayableAmt: netAmt.toFixed(2)
     }, { emitEvent: false });
   }
-
-  // updateCalculation(row: any = null) {
-  //   debugger
-  //   const totalAmt = this.chargeList.reduce(
-  //     (sum, item) => sum + (Number(item.Price) || 0),
-  //     0
-  //   );
-
-  //   const discountAmt = this.chargeList.reduce(
-  //     (sum, item) => sum + (Number(item.DiscAmt) || 0),
-  //     0
-  //   );
-
-  //   const netAmt = this.chargeList.reduce(
-  //     (sum, item) => sum + (Number(item.NetAmount) || 0),
-  //     0
-  //   );
-
-  //   // const discPer = totalAmt > 0
-  //   //   ? +(discountAmt * 100 / totalAmt).toFixed(2)
-  //   //   : 0;
-  //   // const discPer = this.chargeList.reduce(
-  //   //   (sum, item) => sum + (Number(item.DiscPer) || 0),
-  //   //   0
-  //   // );
-
-  //   this.myForm.patchValue({
-  //     totalAmt: totalAmt,
-  //     discountAmt: discountAmt,
-  //     // totalDiscountPer: discPer,
-  //     netPayableAmt: Math.round(netAmt)
-  //   }, { emitEvent: false });
-  // }
 
   updateFromDiscountAmt() {
     const total = this.chargeList.reduce(
@@ -1387,46 +1372,38 @@ export class NewLabPatientRegComponent {
     const discPer = total > 0 ? (discountAmt * 100) / total : 0;
     const netAmt = Math.round(total - discountAmt);
 
+    // this.myForm.patchValue({
+    //   totalAmt: total,
+    //   totalDiscountPer: discPer,
+    //   netPayableAmt: netAmt
+    // }, { emitEvent: false });
+
     this.myForm.patchValue({
-      totalAmt: total,
-      totalDiscountPer: discPer,
-      netPayableAmt: netAmt
+      totalAmt: total.toFixed(2),
+      totalDiscountPer: Math.round(discPer),
+      netPayableAmt: netAmt.toFixed(2)
     }, { emitEvent: false });
   }
 
   total = 0
-  // getCellCalculation(element) {
-
-  //   const total = this.dstable1.data.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
-  //   const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
-  //   // this.myForm.get('discountAmt').value
-  //   const discountAmt = (total * discPer) / 100;
-  //   const netAmt = total - discountAmt;
-  //   element.TotalAmt = total
-  //   element.DiscPer = 0,
-  //     element.DiscAmt = discountAmt | 0,
-  //     element.NetAmount = netAmt,
-
-  //     this.myForm.patchValue({
-  //       totalAmt: total,
-  //       discountAmt: discountAmt,
-  //       netPayableAmt: netAmt
-  //     });
-  // }
 
   getCellCalculation(element) {
     // debugger
-    const price = Number(element.Price) || 0;
+    const price = element.Price || 0;
+    // const price = Number(element.Price) || 0;
 
     // row-level calculation ONLY
     element.TotalAmt = price;
     element.DiscPer = element.DiscPer || 0;
     element.DiscAmt = +(price * element.DiscPer / 100).toFixed(2);
-    element.NetAmount = price - element.DiscAmt;
+    // element.NetAmount = price - element.DiscAmt;
+    element.NetAmount = (price - element.DiscAmt).toFixed(2);
+    // element.NetAmount = +(price - element.DiscAmt).toFixed(2);
 
     // update footer separately
     this.updateFooterTotals();
   }
+  
   updateFooterTotals() {
 
     const totalAmt = this.dstable1.data.reduce(
@@ -1449,11 +1426,16 @@ export class NewLabPatientRegComponent {
     //   : 0;
 
     this.myForm.patchValue({
-      totalAmt: totalAmt,
-      discountAmt: discountAmt,
-      // totalDiscountPer: discPer,
-      netPayableAmt: Math.round(netAmt)
+      totalAmt: totalAmt.toFixed(2),
+      netPayableAmt: netAmt.toFixed(2)
     }, { emitEvent: false });
+
+    // this.myForm.patchValue({
+    //   totalAmt: totalAmt,
+    //   discountAmt: discountAmt,
+    //   // totalDiscountPer: discPer,
+    //   netPayableAmt: Math.round(netAmt)
+    // }, { emitEvent: false });
   }
 
 
@@ -1965,7 +1947,7 @@ export class NewLabPatientRegComponent {
     // Bill data
     const formattedDate1 = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
     const formattedTime1 = this.datePipe.transform(new Date(), "HH:mm:ss");
-    
+
     this.OpBillForm.get('billDate').setValue(formattedDate1);
     this.OpBillForm.get('billTime').setValue(formattedDate1 + ' ' + formattedTime1);
     this.OpBillForm.get('opdipdid')?.setValue(0)
@@ -1993,7 +1975,7 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('companyAmt')?.setValue(0)
     this.OpBillForm.get('patientAmt')?.setValue(this.myForm.get('netPayableAmt')?.value)
     this.OpBillForm.get('totalAmt')?.setValue(this.myForm.get('totalAmt')?.value)
-    this.OpBillForm.get('concessionAmt')?.setValue(this.myForm.get('discountAmt')?.value)
+    this.OpBillForm.get('concessionAmt')?.setValue(this.myForm.get('discountAmt')?.value ?? 0)
     this.OpBillForm.get('netPayableAmt')?.setValue(this.myForm.get('netPayableAmt')?.value)
     this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
     this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
@@ -2012,11 +1994,11 @@ export class NewLabPatientRegComponent {
         'Please select Doctor for added service', 'Warning!');
       return;
     }
-debugger
+    debugger
     this.dstable1.data.forEach(item => {
       this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
       this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-debugger
+      debugger
       if (item.IsPackage == 1) {
         this.packcagechargesArray.clear();
         this.dsPackageList.data.forEach(item => {
@@ -2043,7 +2025,8 @@ debugger
         PatientHeaderObj['CashCounterId'] = this.OpBillForm.get('cashCounterId')?.value || 0;
         PatientHeaderObj['Age'] = this.ageYear;
         PatientHeaderObj['TransactionLabel'] = 'LAB_BILL';
-        PatientHeaderObj['NetPayAmount'] = Math.round(this.myForm.get('netPayableAmt').value);
+        PatientHeaderObj['NetPayAmount'] = this.myForm.get('netPayableAmt').value.toFixed(2);
+        // PatientHeaderObj['NetPayAmount'] = Math.round(this.myForm.get('netPayableAmt').value);
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
             maxWidth: "80vw",
@@ -2086,7 +2069,8 @@ debugger
         ModePaymentObj.push({
           paymentDate: formattedDate,
           paymentTime: formattedTime,
-          payAmount: Math.round(this.myForm.get('netPayableAmt').value),
+          payAmount: this.myForm.get('netPayableAmt').value,
+          // payAmount: Math.round(this.myForm.get('netPayableAmt').value),
           tranNo: "",
           bankName: "",
           validationDate: formattedDate,
@@ -2102,7 +2086,8 @@ debugger
 
         this.OpBillForm.get('balanceAmt').setValue(0)
         this.OpBillForm.get('paidAmt')?.setValue(this.myForm.get('netPayableAmt')?.value)
-        this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.myForm.get('netPayableAmt')?.value))
+        // this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.myForm.get('netPayableAmt')?.value))
+        this.OpBillForm.get('payments.cashPayAmount')?.setValue(this.myForm.get('netPayableAmt')?.value)
         this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
 
@@ -2159,8 +2144,8 @@ debugger
         const ModePaymentObj = [];
         ModePaymentObj.push({
           paymentDate: formattedDate,
-          paymentTime: formattedTime,
-          payAmount: Math.round(this.myForm.get('netPayableAmt').value),
+          paymentTime: formattedTime,          
+          payAmount: this.myForm.get('netPayableAmt').value,
           tranNo: "",
           bankName: "",
           validationDate: formattedDate,

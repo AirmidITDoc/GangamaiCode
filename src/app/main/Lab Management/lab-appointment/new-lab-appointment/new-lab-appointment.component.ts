@@ -352,13 +352,12 @@ export class NewLabAppointmentComponent {
       labAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       testId: [item.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      price: [item.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      // price: [item.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      price: [item.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       qty: [item.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmount: [item.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discPer: [item.DiscPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       discAmount: [item.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      netAmount: [item.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netAmount: [item.NetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       isCancel: false,
       isCancelledBy: 0,
       isCancelledDate: "1900-01-01"
@@ -610,13 +609,15 @@ export class NewLabAppointmentComponent {
 
   getCellCalculation(element) {
     // debugger
-    const price = Number(element.Price) || 0;
+    // const price = Number(element.Price) || 0;
+    const price = element.Price || 0;
 
     // row-level calculation ONLY
     element.TotalAmt = price;
     element.DiscPer = element.DiscPer || 0;
     element.DiscAmt = +(price * element.DiscPer / 100).toFixed(2);
-    element.NetAmount = price - element.DiscAmt;
+    // element.NetAmount = price - element.DiscAmt;
+    element.NetAmount = (price - element.DiscAmt).toFixed(2);
 
     // update footer separately
     this.updateFooterTotals();
@@ -639,11 +640,15 @@ export class NewLabAppointmentComponent {
       0
     );
 
+    // this.myForm.patchValue({
+    //   totalAmt: totalAmt,
+    //   discountAmt: discountAmt,
+    //   // totalDiscountPer: discPer,
+    //   netPayableAmt: Math.round(netAmt)
+    // }, { emitEvent: false });
     this.myForm.patchValue({
-      totalAmt: totalAmt,
-      discountAmt: discountAmt,
-      // totalDiscountPer: discPer,
-      netPayableAmt: Math.round(netAmt)
+      totalAmt: totalAmt.toFixed(2),
+      netPayableAmt: netAmt.toFixed(2)
     }, { emitEvent: false });
   }
 
@@ -668,11 +673,19 @@ export class NewLabAppointmentComponent {
 
     const netAmt = totalAmt - discountAmt;
 
+    // this.myForm.patchValue({
+    //   totalAmt: totalAmt,
+    //   discountAmt: discountAmt,
+    //   totalDiscountPer: discountPer,
+    //   netPayableAmt: Math.round(netAmt)
+    // }, { emitEvent: false });
     this.myForm.patchValue({
-      totalAmt: totalAmt,
-      discountAmt: discountAmt,
-      totalDiscountPer: discountPer,
-      netPayableAmt: Math.round(netAmt)
+      totalAmt: totalAmt.toFixed(2),
+      discountAmt: Math.round(discountAmt),
+      // discountAmt: discountAmt,
+      totalDiscountPer: Math.round(discountPer),
+      // totalDiscountPer: discountPer,
+      netPayableAmt: netAmt.toFixed(2)
     }, { emitEvent: false });
   }
 
@@ -689,10 +702,15 @@ export class NewLabAppointmentComponent {
     const discPer = total > 0 ? (discountAmt * 100) / total : 0;
     const netAmt = Math.round(total - discountAmt);
 
+    // this.myForm.patchValue({
+    //   totalAmt: total,
+    //   totalDiscountPer: discPer,
+    //   netPayableAmt: netAmt
+    // }, { emitEvent: false });
     this.myForm.patchValue({
-      totalAmt: total,
-      totalDiscountPer: discPer,
-      netPayableAmt: netAmt
+      totalAmt: total.toFixed(2),
+      totalDiscountPer: Math.round(discPer),
+      netPayableAmt: netAmt.toFixed(2)
     }, { emitEvent: false });
   }
 
@@ -840,12 +858,20 @@ export class NewLabAppointmentComponent {
     const totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
     const totalNet = totalSum - totalDiscount;
 
+    // this.myForm.patchValue({
+    //   totalAmt: totalSum,
+    //   totalDiscountPer: Math.round(totalDiscountPer),
+    //   discountAmt: Math.round(totalDiscount),
+    //   netPayableAmt: Math.round(totalNet)
+    // }, { emitEvent: false });
+
     this.myForm.patchValue({
-      totalAmt: totalSum,
+      totalAmt: totalSum.toFixed(2),
       totalDiscountPer: Math.round(totalDiscountPer),
       discountAmt: Math.round(totalDiscount),
-      netPayableAmt: Math.round(totalNet)
+      netPayableAmt: totalNet.toFixed(2)
     }, { emitEvent: false });
+
     if (!this.isDiscountApplied && totalDiscount > 0) {
       this.isDiscountApplied = true;
       this.Consessionres = true
@@ -875,7 +901,8 @@ export class NewLabAppointmentComponent {
       this.myForm.get("concessionReasonId").setValue(0)
     }
 
-    row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    // row.DiscAmt = parseFloat(((totalAmount * discountPer) / 100).toFixed(2));
+    row.DiscAmt = Math.ceil((totalAmount * discountPer) / 100);
     row.TotalAmt = totalAmount;
     row.NetAmount = totalAmount - row.DiscAmt;
 
@@ -898,7 +925,8 @@ export class NewLabAppointmentComponent {
       this.Consessionres = false
       this.myForm.get("concessionReasonId").setValue(0)
     }
-    row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    // row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    row.DiscPer = totalAmount  ? Math.ceil((discountAmt / totalAmount) * 100)  : 0;
     row.TotalAmt = totalAmount;
     row.NetAmount = totalAmount - discountAmt;
 

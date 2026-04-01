@@ -27,7 +27,7 @@ export class BranchCollectionDetailComponent {
   myformSearch: FormGroup;
   UnitId: any = this._loggedService.currentUserValue.user.unitId;
   autocompleteModeunit: string = "Hospital";
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -63,6 +63,7 @@ export class BranchCollectionDetailComponent {
   ];
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "Branch/DailyCollectionDetailList",
     columnsList: this.allcolumns,
     sortField: "BillDate",
