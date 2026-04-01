@@ -133,7 +133,7 @@ export class EditPaymentModeComponent {
       receiptNo: [item?.receiptNo ,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       paymentDate: [item?.paymentDate || '1900-01-01'],
       paymentTime: [item?.paymentTime],
-      payAmount: [item.payAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      payAmount: [item.updateAmt,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       tranNo: [item.tranNo || '0'],
       bankName: [item.bankName,[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       validationDate: [item?.paymentDate || '1900-01-01'],
@@ -213,31 +213,47 @@ if(this.chargelist.length){
   this.chargelist = this.dsPayList.data
 }
     });
-  } 
-  onAmountChange(contact: any) {
-    if (!contact.updateAmt) return; 
-    let originalAmt = this.totalBalAmt  //contact.payAmount || 0;
-    let enteredAmt = Number(contact.updateAmt);
+  }  
+onAmountChange(contact: any) {   
+    // Step 1: Calculate total of all rows
+    debugger
+   const updateAmt = +contact.updateAmt || 0
+   contact.updateAmt = updateAmt;
+  let totalUsed = 0; 
 
-    if (enteredAmt > originalAmt) {
-      // alert('Amount cannot be greater than original amount');
-      this.toastr.warning('Amount cannot be greater than balance amount');
-      contact.updateAmt = null;
-      return;
-    }
-  } 
+  if (updateAmt > this.totalBalAmt && contact.isSplit == false) {
+    this.toastr.warning('Amount cannot be greater than balance amount');
+    contact.updateAmt = null; 
+    return;
+  }
+ 
+  this.dsPayList.data.forEach((c: any) => {
+  if (c.isSplit === true) {
+    totalUsed += Number(c.updateAmt) || 0;
+  }
+});
+
+  // Step 2: Validate
+  if (totalUsed > this.registerObj.payAmount) {
+    this.toastr.warning('Amount cannot be greater than balance amount');
+    contact.updateAmt = null;
+    this.totalBalAmt = totalUsed
+    return;
+  }
+
+  // Step 3: Update balance
+  this.totalBalAmt = this.registerObj.payAmount - totalUsed;
+}
   splitPayment(contact: any) {
 debugger
     let updateAmt = Number(contact.updateAmt);
+    const  totalBalAmt = Number(this.totalBalAmt);
     if (!this.totalBalAmt){
      this.toastr.warning('Balacne Amount is 0');
       return;
     } 
     if (!updateAmt || updateAmt <= 0 || !contact.payMode1) return; 
-    if (!this.totalBalAmt){
-     this.toastr.warning('Balacne Amount is 0');
-      return;
-    } 
+ 
 
     if(contact.payMode1 == 'UPI' || contact.payMode1 == 'CHEQUE' || contact.payMode1 == 'CARD'){
     if(!(contact?.tranNo || 0)){ let msg = '';
@@ -264,7 +280,7 @@ debugger
       return;
     } 
     // need to check paymentid
-    const checkpaymentid = this.temparorylist.filter(item=> item.payMode === contact.payMode1) 
+   // const checkpaymentid = this.temparorylist.filter(item=> item.payMode === contact.payMode1) 
  
     // 👉 Create new row (acts like ORIGINAL)
     let newRow = { 
@@ -280,7 +296,8 @@ debugger
       updateAmt: updateAmt, 
      // parentId: contact.id, 
       isSplit: true,            
-      paymentId: checkpaymentid[0]?.paymentId || 0 
+      paymentId: 0 ,
+      cashCounterId:contact.cashCounterId
     }; 
     // 👉 Clear inputs
     contact.payMode1 = '';
@@ -292,8 +309,10 @@ debugger
     this.dsPayList.data = data;
     this.chargelist = this.dsPayList.data
     this.dsPayList._updateChangeSubscription();
-    const addbalAmt = this.totalBalAmt - updateAmt
+    const addbalAmt = totalBalAmt - updateAmt
     this.totalBalAmt = addbalAmt;
+    this.getPaymodelist();
+    this.getBanklist();
   } 
   deleteTableRow(element: any) {
 
@@ -344,7 +363,7 @@ debugger
       contact.tranNoError = null;
       // Further checks if needed (e.g., API validation)
     }
-  }   e 
+  }   
   Save() {
     debugger
     if(!this.dsPayList.data) {
@@ -444,6 +463,8 @@ debugger
     if (contact) {
       contact.bankName = event.option.value;
     }
+    this.getPaymodelist();
+    this.getBanklist();
   }
 
 
@@ -475,10 +496,29 @@ debugger
       String(item.Value ?? '').toLowerCase().includes(searchValue)
     );
   } 
-  onOptionSelected(contact, event: any) { 
-    if (event.option.value == 'CARD' || event.option.value == 'CHEQUE' || event.option.value == 'NET BANKING') {
-      contact.vCardCheckStatus = true
+  onOptionSelected(contact, event: any) {  
+    if(event.option.value == 'UPI' || event.option.value == 'CHEQUE' || event.option.value == 'CARD'){
+    if(!(contact?.tranNo || 0)){ let msg = '';
+    if (contact.payMode1 == 'UPI') {msg = 'Enter UPI transaction number';} 
+    else if (contact.payMode1 == 'CARD') {msg = 'Enter Card transaction number';} 
+    else if (contact.payMode1 == 'CHEQUE') {msg = 'Enter Cheque number'; } 
+    this.toastr.warning(msg);
+    return;}
+    }  
+    else if(event.option.value == 'NET BANKING'){
+      if(!(contact?.tranNo || 0)){ 
+      this.toastr.warning('Enter transaction number');
+      return;}
+      if(!(contact?.bankName || '')){ 
+      this.toastr.warning('Please Select Bank Name');
+      return;}
     }
+    else if(event.option.value == 'CASH' || event.option.value == 'TDS' || event.option.value == 'WF'){
+      contact.tranNo = ''
+      contact.bankName = '' 
+    }
+    this.getPaymodelist();
+    this.getBanklist();
   } 
 
   getValidationMessages() {
