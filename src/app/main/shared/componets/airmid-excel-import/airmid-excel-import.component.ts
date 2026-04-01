@@ -193,19 +193,21 @@ export class AirmidExcelImportDialogComponent implements OnInit {
                 const cleanedData = res.map(row => {
                     const newRow: any = {};
                     Object.keys(row).forEach(key => {
-                        let value = row[key];
+                        if (key.toLowerCase() == 'status' || key.toLowerCase() == 'message' || this.config.columns.find(x => x.key.toLowerCase() == key.toLowerCase())) {
+                            let value = row[key];
 
-                        if (typeof value === 'string') {
-                            value = value.replace(/\u00A0/g, ' ').trim();
+                            if (typeof value === 'string') {
+                                value = value.replace(/\u00A0/g, ' ').trim();
+                            }
+
+                            newRow[key] = value;
                         }
-
-                        newRow[key] = value;
                     });
                     return newRow;
                 });
 
                 // ✅ Dynamically set columns from first row
-                this.displayedColumns = Object.keys(cleanedData[0]).filter(x=>x!="message");
+                this.displayedColumns = Object.keys(cleanedData[0]).filter(x => x != "message");
 
                 this.dataSource.data = cleanedData;
                 this.totalRows = res.length;
@@ -239,12 +241,16 @@ export class AirmidExcelImportDialogComponent implements OnInit {
     importData(): void {
         this.isImporting = true;
         this.importError = null;
+        let result = this.mappings.map(x => ({
+            targetColumn: x.targetColumn.key,
+            sourceColumn: x.sourceColumn
+        }))
 
         const formData = new FormData();
         formData.append('file', this.uploadedFile!, this.uploadedFile!.name);
-        formData.append('mapping', JSON.stringify(this.buildMappingPayload()));
+        formData.append('mapping', JSON.stringify(result));
 
-        this.http.post(this.config.importApi, formData).subscribe({
+        this._service.import(this.config.importApi, formData).subscribe({
             next: () => {
                 this.isImporting = false;
                 this.importSuccess = true;

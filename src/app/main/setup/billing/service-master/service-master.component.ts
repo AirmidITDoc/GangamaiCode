@@ -108,18 +108,19 @@ export class ServiceMasterComponent implements OnInit {
     importConfig: ExcelImportConfig = {
         title: 'Import Services',
         subtitle: 'Upload an Excel file to bulk-import services',
-        importApi: 'BillingService/import',
+        importApi: 'BillingService/import-data',
         previewApi: 'BillingService/import-preview',   // optional
         previewLimit: 10,
         columns: [
-            { key: 'ServiceDetailId', label: 'Service Detail Id', required: true },
-            { key: 'TariffId', label: 'Tariff Id', required: true },
-            { key: 'TariffName', label: 'Tariff Name', required: true },
-            { key: 'ServiceId', label: 'Service Id', required: true },
-            { key: 'ServiceName', label: 'Service Name', required: true },
-            { key: 'ClassId', label: 'Class Id', required: true },
+            { key: 'Tariff', label: 'Tariff', required: true },
+            { key: 'Service', label: 'Service', required: true },
+            { key: 'Class', label: 'Class', required: true },
             { key: 'ClassRate', label: 'Class Rate', required: true },
-        ],
+            { key: 'PatientRate', label: 'Patient Rate', required: true },
+            { key: 'CpRate', label: 'CP Rate', required: true },
+            { key: 'DiscountAmount', label: 'Discount Amount', required: true },
+            { key: 'DiscountPercentage', label: 'Discount Percentage', required: true },
+        ]
     };
 
 

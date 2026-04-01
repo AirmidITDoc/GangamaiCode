@@ -42,4 +42,7 @@ export class ExcelImportService {
     preview(url: string, formData: FormData) {
         return this._http.PostData(url, formData);
     }
+    import(url: string, formData: FormData) {
+        return this._http.PostData(url, formData);
+    }
 }
