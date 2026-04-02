@@ -1,520 +1,455 @@
 // ========== ALL styles scoped under the component root to prevent global leakage ==========
 // This component uses ViewEncapsulation.None, so we MUST scope under a unique wrapper.
+@import "assets/scss/themes/variable";
 
 .pharmacy-dashboard-wrapper {
+    background-color: $gray-50;
+    min-height: 100%;
+    font-family: 'Calibri', 'Inter', sans-serif;
 
-    // Matching Daily Dashboard Structure
     #dashboard-project {
+        .top-header {
+            background-color: $primary-600;
+            color: $primary-25;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 101;
+            height: 54px;
 
-        .mat-display-1,
-        .mat-typography .mat-display-1 {
-            letter-spacing: normal;
-            margin: 0 0 64px;
-        }
+            .top-header-info {
+                display: flex;
+                align-items: center;
+                gap: 12px;
 
-        >.sidebar {
-            width: 280px;
-            min-width: 280px;
-            max-width: 280px;
-        }
+                .logo-icon {
+                    font-size: 28px;
+                    width: 28px;
+                    height: 28px;
+                    color: $primary-25;
+                }
 
-        >.center {
-            >.header {
-                height: 75px;
-                min-height: 75px;
-                max-height: 160px;
+                .top-header-title {
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    letter-spacing: -0.5px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
             }
 
-            >.content {
-                flex: 1;
-                display: block !important;
-            }
-        }
-    }
+            .date-filter-container {
+                .header-right {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
 
-    .date-filter-container {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        height: 100%;
-        justify-content: flex-end;
-    }
+                    .date-range-field {
+                        width: 250px;
+                        margin-top: 4px; // Account for the mat-form-field baseline offset
 
-    .top-header {
-        display: flex;
-        align-items: center;
-        max-height: 70px !important;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
+                        ::v-deep .mat-form-field-wrapper {
+                            padding-bottom: 0 !important;
+                            margin: 0 !important;
+                        }
 
-    .date-range-input {
-        color: #000000 !important;
-        font-weight: 500;
-    }
+                        ::v-deep .mat-form-field-flex {
+                            padding-top: 0 !important;
+                            align-items: center !important;
+                        }
 
-    // Dashboard Container - Matching Daily Dashboard
-    .dashboard-container {
-        padding: 10px;
-    }
+                        ::v-deep .mat-form-field-outline {
+                            color: rgba(255, 255, 255, 0.3) !important;
+                        }
 
-    // Gap utility
-    .gap-14 {
-        gap: 14px;
-    }
+                        ::v-deep .mat-form-field-label {
+                            color: rgba(255, 255, 255, 0.8) !important;
+                        }
 
-    // Cards - Base styling
-    mat-card {
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+                        .mat-date-range-input-inner {
+                            color: #fff !important;
+                            font-size: 13px;
+                        }
 
-        &:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+                        .mat-datepicker-toggle {
+                            color: #fff !important;
+                        }
+                    }
 
-        mat-card-content {
-            padding: 16px !important;
-        }
-    }
+                    .go-btn {
+                        // background: #fff !important;
+                        // color: $primary-600 !important;
+                        border: none !important;
+                        border-radius: 8px;
+                        height: 34px;
+                        font-weight: 700;
+                        font-size: 12px;
+                        transition: all 0.2s;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        padding: 0 16px !important;
+                        margin-top: 4px; // Fine-tuned vertical alignment
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        align-self: center; // Ensure flex centering
 
-    // Dashboard Stat Cards - Matching Daily Dashboard EXACTLY
-    .dashboard-stat-card {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
+                        mat-icon {
+                            font-size: 18px;
+                            width: 18px;
+                            height: 18px;
+                            margin-right: 2px;
+                            color: $primary-600 !important;
+                        }
 
-        mat-card-content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            padding: 16px !important;
-        }
-    }
-
-    // Ensure ALL top row cards have EXACT same dimensions
-    .dashboard-container:first-of-type {
-        >div {
-            display: flex;
-
-            .dashboard-stat-card {
-                height: 240px !important;
-                min-height: 240px !important;
-                max-height: 240px !important;
-                width: 100%;
-
-                mat-card-content {
-                    height: 100%;
+                        &:hover {
+                            background: rgba(255, 255, 255, 0.9) !important;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                        }
+                    }
                 }
             }
         }
-    }
 
-    // Icon Styles - Matching Daily Dashboard
-    .icon-div {
-        padding: 8px;
-        border-radius: 5px;
-        height: 45px;
-        width: 45px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        mat-icon {
-            font-size: 20px;
-            width: 20px;
-            height: 20px;
+        .center {
+            padding: 8px;
+            background-color: $gray-50;
         }
     }
 
-    .icon-1 {
-        background-color: #9661db;
+    // Modern KPI Summary Cards
+    .summary-cards-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        margin-bottom: 12px;
+        padding: 0;
     }
 
-    .icon-2 {
-        background-color: #e9ac1b;
-    }
-
-    .icon-3 {
-        background-color: #28af28;
-    }
-
-    .icon-4 {
-        background-color: #70c7bd;
-    }
-
-    // Card sections for consistent layout
-    .card-header-section {
-        min-height: 50px;
-        margin-bottom: 4px;
-    }
-
-    .card-chart-section {
-        flex: 1;
+    .summary-card {
+        background: $primary-25;
+        border-radius: 12px;
+        padding: 10px 14px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        min-height: 150px;
-        max-height: 150px;
-        padding: 4px 0;
+        gap: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border: 1px solid $gray-100;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
 
-        canvas {
-            width: 100% !important;
-            height: 150px !important;
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: $primary-500;
+            border-radius: 4px 0 0 4px;
         }
-    }
-
-    // Labels - Matching Daily Dashboard
-    .labels-div {
-        text-align: end;
-        font-weight: bold;
-        display: flex;
-        flex-flow: column;
-        gap: 10px;
-    }
-
-    .labels-sm {
-        text-align: end;
-        font-weight: 130;
-        font-size: 10px;
-        display: flex;
-        flex-flow: column;
-        gap: 10px;
-        margin-top: 0px;
-        margin-bottom: 8px;
-    }
-
-    .sub-label {
-        font-size: 10px !important;
-        font-weight: 130 !important;
-        opacity: 0.8;
-    }
-
-    // Welcome Message - Matching Daily Dashboard
-    .welcome-message {
-        color: white;
-    }
-
-    .h1 {
-        font-size: 24px;
-    }
-
-    // Chart Cards
-    .chart-card {
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-
-        &:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        mat-card-content {
-            padding: 20px !important;
-        }
-    }
-
-    .chart-header {
-        margin-bottom: 16px;
-        text-align: center;
-
-        .chart-title {
-            font-size: 1.35rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #283593;
-            margin: 8px 0;
-            padding: 0;
-        }
-
-        .chart-subtitle {
-            font-size: 12px;
-            color: #6c757d;
-            margin: 0;
-            font-weight: 400;
-        }
-    }
-
-    // Payment Details Section
-    .payment-details-header {
-        padding-bottom: 12px;
-        border-bottom: 2px solid #e9ecef;
-        text-align: center;
-
-        .section-title {
-            font-size: 1.35rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #283593;
-            margin: 8px 0;
-            padding: 0;
-        }
-    }
-
-    .payment-cards {
-        margin-top: 16px;
-    }
-
-    .payment-card {
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e9ecef;
-        transition: all 0.3s ease;
-        background: #ffffff;
 
         &:hover {
             transform: translateY(-4px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: $primary-200;
         }
 
-        mat-card-content {
-            padding: 16px !important;
-            text-align: center;
-        }
-
-        .payment-mode-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: #6c757d;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .payment-amount {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .payment-percentage {
-            font-size: 11px;
-            color: #28a745;
-            font-weight: 500;
-        }
-    }
-
-    // Color coding for payment cards
-    .payment-card-1 .payment-amount {
-        color: #FF3784;
-    }
-
-    .payment-card-2 .payment-amount {
-        color: #36A2EB;
-    }
-
-    .payment-card-3 .payment-amount {
-        color: #4BC0C0;
-    }
-
-    .payment-card-4 .payment-amount {
-        color: #F77825;
-    }
-
-    // Stat Item Cards
-    .stat-item-card {
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e9ecef;
-        transition: all 0.3s ease;
-        height: 100%;
-
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-        }
-
-        mat-card-content {
-            padding: 16px !important;
-            height: 100%;
-        }
-    }
-
-    .stat-item-inner {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-
-        .stat-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
+        .card-icon-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
 
             mat-icon {
-                font-size: 28px;
-                width: 28px;
-                height: 28px;
+                font-size: 24px;
+                width: 24px;
+                height: 24px;
+            }
+
+            &.bg-teal {
+                background-color: $primary-50;
+                color: $primary-600;
+            }
+
+            &.bg-green {
+                background-color: $green-50;
+                color: $green-600;
+            }
+
+            &.bg-blue {
+                background-color: $blue-50;
+                color: $blue-600;
+            }
+
+            &.bg-indigo {
+                background-color: $indigo-50;
+                color: $indigo-600;
             }
         }
 
-        .stat-info {
-            flex: 1;
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
 
-            .stat-value {
-                font-size: 20px;
-                font-weight: 700;
-                color: #2c3e50;
-                margin-bottom: 4px;
-            }
-
-            .stat-label {
-                font-size: 12px;
-                color: #6c757d;
-                font-weight: 500;
-            }
-        }
-    }
-
-    // Responsive Styles
-    @media (max-width: 959px) {
-        .dashboard-container:first-of-type {
-            >div {
-                .dashboard-stat-card {
-                    height: 220px !important;
-                    min-height: 220px !important;
-                    max-height: 220px !important;
-                }
-            }
-        }
-
-        .card-chart-section {
-            min-height: 130px;
-            max-height: 130px;
-
-            canvas {
-                height: 130px !important;
-            }
-        }
-
-        .chart-header {
-            .chart-title {
-                font-size: 16px;
-            }
-
-            .chart-subtitle {
+            .card-label {
                 font-size: 11px;
+                font-weight: 700;
+                color: $gray-500;
+                text-transform: uppercase;
+                letter-spacing: 1px;
             }
-        }
 
-        .labels-div {
-            font-size: 12px;
-        }
+            .card-value {
+                font-size: 20px;
+                font-weight: 800;
+                color: $gray-900;
+                line-height: 1.1;
+            }
 
-        .payment-amount {
-            font-size: 18px !important;
-        }
-    }
+            .card-sub {
+                font-size: 12px;
+                font-weight: 600;
+                color: $gray-400;
 
-    @media (max-width: 599px) {
-        .dashboard-container:first-of-type {
-            >div {
-                .dashboard-stat-card {
-                    height: 200px !important;
-                    min-height: 200px !important;
-                    max-height: 200px !important;
+                &.pending-badge {
+                    color: $red-500;
+                    background-color: $red-50;
+                    padding: 2px 8px;
+                    border-radius: 10px;
+                    display: inline-block;
+                }
+            }
+
+            .card-sub-link {
+                font-size: 11px;
+                font-weight: 700;
+                color: $primary-600;
+                margin-top: 4px;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                cursor: pointer;
+
+                &:hover {
+                    color: $primary-800;
+                    text-decoration: underline;
                 }
             }
         }
+    }
 
-        .card-chart-section {
-            min-height: 110px;
-            max-height: 110px;
+    // Charts and Tables Containers
+    .dashboard-container {
+        margin-bottom: 24px;
+        padding: 0;
+    }
 
-            canvas {
-                height: 110px !important;
-            }
-        }
+    mat-card {
+        border-radius: 12px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid $gray-100 !important;
+        overflow: hidden;
+        background: $primary-25 !important;
+        margin-bottom: 8px;
 
-        .icon-div {
-            height: 40px;
-            width: 40px;
-            padding: 8px;
-
-            mat-icon {
-                font-size: 18px;
-                width: 18px;
-                height: 18px;
-            }
-        }
-
-        .labels-div {
-            font-size: 11px;
-        }
-
-        .labels-sm {
-            font-size: 9px;
-        }
-
-        .dashboard-stat-card mat-card-content {
+        mat-card-content {
             padding: 12px !important;
-        }
-
-        .chart-card mat-card-content {
-            padding: 16px !important;
-        }
-
-        .welcome-message {
-            font-size: 18px !important;
-        }
-
-        .h1 {
-            font-size: 18px;
-        }
-
-        .stat-item-inner {
-            gap: 12px;
-
-            .stat-icon {
-                width: 48px;
-                height: 48px;
-
-                mat-icon {
-                    font-size: 24px;
-                    width: 24px;
-                    height: 24px;
-                }
-            }
-
-            .stat-info {
-                .stat-value {
-                    font-size: 16px;
-                }
-
-                .stat-label {
-                    font-size: 11px;
-                }
-            }
+            display: flex;
+            flex-direction: column;
         }
     }
 
-    // Canvas Styles
-    canvas {
-        max-width: 100%;
-        height: auto;
-    }
-
-    // Legacy - kept for compatibility with other chart sections
-    .chart-canvas-container {
-        flex: 1;
+    .chart-header,
+    .table-title {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 8px;
+        border-bottom: 1px solid $gray-100;
+        padding: 4px 8px 6px 12px; // Added top and left padding
+        text-align: left !important;
+        width: 100%;
+
+        .chart-title,
+        .table-title-text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: $gray-800;
+            margin: 0;
+            letter-spacing: -0.1px;
+        }
     }
 
-    // Material Overrides
-    .mat-card {
-        padding: 0 !important;
+    // Modern Table Styling
+    mat-table {
+        background: transparent !important;
+        box-shadow: none !important;
+        width: 100%;
+
+        mat-header-row {
+            min-height: 34px;
+            background-color: $gray-50 !important;
+            border-radius: 8px;
+            border-bottom: none;
+            margin-bottom: 4px;
+
+            mat-header-cell {
+                font-size: 11px;
+                font-weight: 700;
+                color: $gray-600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border: none;
+                padding: 0 8px;
+            }
+        }
+
+        mat-row {
+            min-height: 32px;
+            border-bottom: 1px solid $gray-50;
+            transition: background-color 0.2s;
+            border: none;
+
+            &:hover {
+                background-color: $primary-50 !important;
+            }
+
+            mat-cell {
+                font-size: 12px;
+                color: $gray-700;
+                font-weight: 500;
+                border: none;
+                padding: 0 8px;
+            }
+        }
+
+        // Custom column widths to prevent cutting
+        .mat-column-hospitalName {
+            flex: 0 0 160px;
+        }
+
+        .mat-column-department {
+            flex: 0 0 160px;
+        }
+
+        .mat-column-doctorName {
+            flex: 0 0 160px;
+        }
+
+        .mat-column-cpName {
+            flex: 0 0 160px;
+        }
+
+        .mat-column-marketingEx {
+            flex: 0 0 140px;
+        }
+
+        .mat-column-MonthlySale,
+        .mat-column-Todaysale,
+        .mat-column-testCount,
+        .mat-column-centerSale,
+        .mat-column-netSale,
+        .mat-column-totalAmt,
+        .mat-column-totalSales,
+        .mat-column-paidAmount,
+        .mat-column-totalPatient,
+        .mat-column-net {
+            flex: 1 1 auto;
+            text-align: right;
+            justify-content: flex-end;
+        }
+    }
+
+    // Wrap text utility for specific table columns
+    .wrap-text {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        line-height: 1.4;
+        padding: 8px 4px !important;
+    }
+
+    // Totals Section
+    .totals {
+        margin-top: 8px;
+        padding: 6px 12px;
+        background-color: $gray-50;
+        border-radius: 8px;
+        border: 1px solid $gray-100;
+
+        [class^="totals-row"] {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+            padding: 4px 0;
+
+            .totals-label {
+                color: $gray-600;
+                font-weight: 700;
+                text-transform: uppercase;
+                font-size: 11px;
+                letter-spacing: 0.5px;
+                margin-right: auto;
+            }
+
+            .totals-num {
+                color: $primary-700;
+                font-weight: 800;
+                font-size: 12px;
+                min-width: 60px;
+                text-align: right;
+            }
+        }
+    }
+
+    // Chart Container
+    .chart-container {
+        height: 280px;
+        position: relative;
+        padding: 0;
+        flex: 1;
+    }
+
+    // Scrollbar styling for tables
+    .h-300 {
+        max-height: 250px !important;
+        overflow-y: auto !important;
+        overflow-x: auto !important; // Allow horizontal scroll if cutting
+
+        &::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $gray-200;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
     }
 
     // Animation
     @keyframes fadeIn {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(10px);
         }
 
         to {
@@ -524,421 +459,41 @@
     }
 
     mat-card {
-        animation: fadeIn 0.5s ease-out;
+        animation: fadeIn 0.4s ease-out forwards;
     }
 
-    // Utility Classes
-    .mt-8 {
-        margin-top: 8px;
+    // Responsiveness
+    @media (max-width: 1280px) {
+        .summary-cards-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 
-    .mt-12 {
-        margin-top: 12px;
+    @media (max-width: 600px) {
+        .summary-cards-row {
+            grid-template-columns: 1fr;
+        }
+
+        .top-header {
+            flex-direction: column;
+            height: auto !important;
+            gap: 16px;
+            padding: 16px;
+
+            .date-filter-container .header-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        .totals [class^="totals-row"] {
+            flex-wrap: wrap;
+            justify-content: flex-end;
+
+            .totals-label {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+        }
     }
-
-    .mt-16 {
-        margin-top: 16px;
-    }
-
-    .mb-16 {
-        margin-bottom: 16px;
-    }
-
-    .p-12 {
-        padding: 12px;
-    }
-
-    .p-16 {
-        padding: 16px;
-    }
-
-    .mr-12 {
-        margin-right: 12px;
-    }
-
-    .m-0 {
-        margin: 0;
-    }
-
-    // Ensure no horizontal scroll
-    .center {
-        overflow-x: hidden !important;
-    }
-
-    #dashboard-project {
-        overflow-x: hidden !important;
-    }
-
-     // Table Styles
-  .table-title {
-    text-align: center;
-    font-size: 1.35rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    color: #283593;
-    margin: 16px 0 8px 0;
-    padding: 0;
-    width: 100%;
-  }
-
-  .table-designed {
-    width: 100%;
-  }
-
-  
-  .metrics-grid {
-    display: flex;
-    height: fit-content;
-    gap: 10px;
-    padding: 5px;
-    flex-wrap: wrap;
-    width: 100%;
-    align-items: stretch;
-    justify-content: flex-start;
-  }
-
-  /* (reverted) */
-
-  /* Prevent flex-items from overflowing and getting clipped */
-  .metrics-grid>.mat-card,
-  .charts-row>.mat-card,
-  .tables-row>.mat-card,
-  .finance-grid>.mat-card {
-    min-width: 0;
-  }
-
-  .metric-card {
-    flex: 1 1 140px;
-    /* fluid card width; 3-5 per row depending on space */
-    min-width: 140px;
-    max-width: 140px;
-    height: fit-content;
-    border-radius: 14px;
-    overflow: visible;
-    /* allow chart callouts/labels to be visible */
-  }
-
-    .metric-card1 {
-    flex: 1 1 150px;
-    /* fluid card width; 3-5 per row depending on space */
-    min-width: 150px;
-    max-width: 150px;
-    height: fit-content;
-    border-radius: 14px;
-    overflow: visible;
-    /* allow chart callouts/labels to be visible */
-  }
-
-  .metric-content {
-    display: flex;
-    align-items: center;
-  }
-
-  .metric-icon {
-    width: 8px;
-    height: 8px;
-    border-radius: 1px;
-    display: grid;
-    place-items: left;
-    // margin-right: 12px;
-  }
-
-  .metric-icon .mat-icon {
-    font-size: 27px;
-    width: 8px;
-    height: 8px;
-    //  margin-right: 12px;
-  }
-
-  .metric-label {
-    font-size: 16px;
-    font-weight: bold;
-    opacity: 0.75;
-    color: #05253a;
-  }
-
-  .metric-value {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.1;
-    color: purple;
-    padding-left: 10px;
-  }
-
-
-   .metric-value1 {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-left: 10px;
-      color: purple;
-  }
-
-  .chart-container {
-    height: 350px;
-    min-height: 320px;
-    width: 100%;
-     padding-right: 5px;
-    
-  }
-
-  /* Optional: make sure mat-card-content doesn't fight the height */
-  mat-card-content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .stat-item {
-      text-align: center;
-    }
-
-    .label {
-      font-size: 0.875rem;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
-
-    .value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin: 0;
-      color: #111827;
-    }
-
-    .revenue-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      padding: 24px;
-      max-width: 720px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #1f2937;
-    }
-    
-/* ========== SUMMARY CARDS ========== */
-.summary-cards-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 10px;
 }
-
-.summary-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 10px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  border-left: 5px solid transparent;
-  min-height: 90px;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-  }
-}
-//card
-
-.card-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.card-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.card-value {
-  font-size: 26px;
-  font-weight: 800;
-  color: #222;
-  line-height: 1.1;
-}
-
-.card-sub {
-  font-size: 12px;
-  color: #b0f5c1;
-  font-weight: bold;
-}
-
-.pending-badge {
-  color: #f04438;
-  font-weight: 700;
-}
-
-.card-sub-link {
-  font-size: 10px;
-  color: #2196F3;
-  font-weight: 600;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-  .panel-header {
-      font-size: 12px;
-      padding: 5px 8px;
-    }
-
-    .big-total {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
-
-    // .totals-row {
-    //   grid-template-columns: 1fr 70px 70px;
-    // }
-//     .totals-row {
-//   grid-template-columns: 100px 100px 100px 100px;
-// }
-    /* ─── Totals Section (Charges/Receipts) ─── */
-  .totals {
-    margin-top: 4px;
-    border-top: 2px solid #9fa8da;
-    padding-top: 4px;
-  }
-
-  .totals-row {
-    display: grid;
-    // grid-template-columns: 1fr 10px 20px;
-    grid-template-columns: 150px 100px 100px 100px;
-    gap: 6px;
-    padding: 2px 6px;
-    font-size: 11px;
-    align-items: center;
-       background-color: #c4e2f7;
-  }
-
-  .totals-rowEx{
-    display: grid;
-    // grid-template-columns: 1fr 10px 20px;
-    grid-template-columns: 80px 90px 90px 90px 90px;
-    gap: 2px;
-    padding: 2px 6px;
-    font-size: 11px;
-    align-items: right;
-       background-color: #c4e2f7;
-  }
-
-    .totals-rowDr{
-    display: grid;
-    // grid-template-columns: 1fr 10px 20px;
-    grid-template-columns: 240px 50px 95px 95px 95px;
-    gap: 2px;
-    padding: 2px 6px;
-    font-size: 11px;
-    align-items: right;
-       background-color: #c4e2f7;
-  }
-.totals-rowCP{
-    display: grid;
-    // grid-template-columns: 1fr 10px 20px;
-    grid-template-columns: 280px 50px 100px ;
-    gap: 2px;
-    padding: 2px 6px;
-    font-size: 11px;
-    align-items: right;
-       background-color: #c4e2f7;
-  }
-.totals-rowDept{
-    display: grid;
-    // grid-template-columns: 1fr 10px 20px;
-    grid-template-columns: 260px 60px 95px 95px 100px;
-    gap: 2px;
-    padding: 2px 6px;
-    font-size: 11px;
-    align-items: center;
-    background-color: #c4e2f7;
-  }
-
-  .totals-rowBr{
-    display: grid;
-    // grid-template-columns: 1fr 10px 20px;
-    grid-template-columns: 200px 90px 90px;
-    gap: 2px;
-    padding: 2px 6px;
-    font-size: 11px;
-    align-items: center;
-    background-color: #c4e2f7;
-  }
-
-  //wrap
-
-  .w-190.wrap-text {
-  max-width: 100px !important;
-  width: 100px !important;
-  white-space: normal !important;
-  word-wrap: break-word !important;
-  overflow-wrap: break-word !important;
-  hyphens: auto;
-  line-height: 1.4;
-  vertical-align: middle;
-  padding: 2px 2px !important;
-}
-
-/* Optional: Make header also wrap nicely */
-.w-190.wrap-text.mat-mdc-header-cell {
-  white-space: normal !important;
-  text-align: left;
-}
-  .totals-row:nth-child(odd) {
-    background: #f5f5f9;
-  }
-
-  .totals-label {
-    font-weight: bold;
-    font-size: 18px;
-    color: #1f2552;
-  }
-
-  .totals-num {
-    text-align: righ;
-    font-weight: bold;
-    color: rgb(54, 4, 54);
-    font-size: 15px;
-  }
-
-  .totals-strong {
-    background: #e8eaf6 !important;
-    border-top: 1px solid #9fa8da;
-  }
-
-  .totals-strong .totals-label,
-  .totals-strong .totals-num {
-    font-weight: 800;
-    color: #283593;
-  }
-
-
-  .mat-mdc-row {
-  background-color: #f0ecee !important;   /* Light Pink */
-}
-
-/* Optional: Hover effect */
-.mat-mdc-row:hover {
-  background-color: #f7d1dd !important;   /* Slightly darker pink on hover */
-}
-
-/* Change Total row background (optional) */
-.mat-mdc-footer-row {
-  background-color: #f5e5eb !important;   /* Stronger pink for total */
-}
-}
-
-// end .pharmacy-dashboard-wrapper

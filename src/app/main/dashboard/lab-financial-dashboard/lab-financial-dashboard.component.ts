@@ -94,7 +94,7 @@ export class LabFinancialDashboardComponent {
 
 
     // Marketing wise sales
-    marketingSalesColumns: string[] = ['marketingEx', 'gross', 'discount', 'reversal', 'net'];
+    marketingSalesColumns: string[] = ['marketingEx', 'net'];
     marketingSales = new MatTableDataSource<any>([
 
     ]);
@@ -468,6 +468,10 @@ debugger
             this.DailysalesChart.destroy();
         }
 
+        // Get theme colors from CSS variables
+        const style = getComputedStyle(document.documentElement);
+        const primaryColor = style.getPropertyValue('--app-primary').trim() || '#28bcaa';
+        const primaryLight = style.getPropertyValue('--app-primary-100').trim() || '#cff0ec';
 
         return new Chart('DailysalesChart', {
             type: 'bar',
@@ -475,40 +479,58 @@ debugger
                 labels: this.modalityData.map(d => this.datePipe.transform(d.name, 'dd-MMM')),
                 datasets: [
                     {
-                        label: 'Date',
+                        label: 'Sales',
                         data: this.modalityData.map(d => d.value),
-                        backgroundColor: [
-                            '#bbdefb',   // very pale blue
-                            '#abd4f6',   // light sky blue
-                            '#7dc1f9',   // medium light blue
-                            '#749bf6',   // your bright one
-                            '#8082fd',   // indigo transition
-                            '#6b70f8',   // deep vivid blue
-                            '#c57bf7',   // bluish purple
-                            '#a660d5'    // final vivid purple
-                        ],
-                        borderRadius: 6
+                        backgroundColor: primaryColor,
+                        hoverBackgroundColor: primaryColor,
+                        borderRadius: 8,
+                        barThickness: 24,
                     }
                 ]
             },
             options: {
                 maintainAspectRatio: false,
+                responsive: true,
                 plugins: {
-                    legend: { display: false }
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1d2939', // gray-800
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false
+                    }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
+                        grid: {
+                            display: true,
+                            color: '#f0f2f7', // gray-100
+                            drawBorder: false
+                        },
                         ticks: {
-                            font: { size: 11 }
+                            font: { size: 11, weight: '500' },
+                            color: '#667085', // gray-500
+                            callback: (value) => '₹' + value
                         }
                     },
                     x: {
+                        grid: { 
+                            display: false,
+                            drawBorder: false
+                        },
                         ticks: {
-                            font: { size: 11 }
+                            font: { size: 11, weight: '500' },
+                            color: '#667085', // gray-500
                         }
                     }
-                }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
             }
         });
     }
