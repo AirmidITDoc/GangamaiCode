@@ -27,7 +27,7 @@ export class ServiceMasterComponent implements OnInit {
 
     autocompleteModetariff: string = "Tariff";
     autocompleteModegroupName: string = "GroupName";
-    tariffId = "0";
+    tariffId = "1";
     groupId = "0";
     serviceName: any = "";
     type: any = "2"
@@ -92,7 +92,7 @@ export class ServiceMasterComponent implements OnInit {
 
     allFilters = [
         { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "TariffId", fieldValue: "1", opType: OperatorComparer.Equals },
         { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
     ]

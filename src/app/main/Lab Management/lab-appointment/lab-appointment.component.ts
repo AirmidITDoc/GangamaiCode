@@ -289,6 +289,8 @@ export class LabAppointmentComponent {
     mouseDownEvent: MouseEvent,
     segmentElement: HTMLElement
   ) {
+    // if (mouseDownEvent.type !== 'click') return;
+
     const dragToSelectEvent: CalendarEvent = {
       id: 0,
       title: 'New event',
@@ -311,33 +313,33 @@ export class LabAppointmentComponent {
       weekStartsOn: this.weekStartsOn,
     });
 
-    fromEvent(document, 'mousemove')
-      .pipe(
-        finalize(() => {
-          delete dragToSelectEvent.meta.tmpEvent;
-          this.dragToCreateActive = false;
-          this.refreshData();
-        }),
-        takeUntil(fromEvent(document, 'mouseup'))
-      )
-      .subscribe((mouseMoveEvent: MouseEvent) => {
-        const minutesDiff = this.ceilToNearest(
-          mouseMoveEvent.clientY - segmentPosition.top,
-          10
-        );
+    // fromEvent(document, 'mousemove')
+    //   .pipe(
+    //     finalize(() => {
+    //       delete dragToSelectEvent.meta.tmpEvent;
+    //       this.dragToCreateActive = false;
+    //       this.refreshData();
+    //     }),
+    //     takeUntil(fromEvent(document, 'mouseup'))
+    //   )
+    //   .subscribe((mouseMoveEvent: MouseEvent) => {
+    //     const minutesDiff = this.ceilToNearest(
+    //       mouseMoveEvent.clientY - segmentPosition.top,
+    //       10
+    //     );
 
-        const daysDiff =
-          this.floorToNearest(
-            mouseMoveEvent.clientX - segmentPosition.left,
-            segmentPosition.width
-          ) / segmentPosition.width;
+    //     const daysDiff =
+    //       this.floorToNearest(
+    //         mouseMoveEvent.clientX - segmentPosition.left,
+    //         segmentPosition.width
+    //       ) / segmentPosition.width;
 
-        const newEnd = addDays(addMinutes(segment.date, minutesDiff), daysDiff);
-        if (newEnd > segment.date && newEnd < endOfView) {
-          dragToSelectEvent.end = newEnd;
-        }
-        this.refreshData();
-      });
+    //     const newEnd = addDays(addMinutes(segment.date, minutesDiff), daysDiff);
+    //     if (newEnd > segment.date && newEnd < endOfView) {
+    //       dragToSelectEvent.end = newEnd;
+    //     }
+    //     this.refreshData();
+    //   });
   }
 
   refreshData() {
