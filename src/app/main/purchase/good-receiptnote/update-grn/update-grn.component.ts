@@ -894,7 +894,7 @@ export class UpdateGRNComponent implements OnInit {
             totalQty: [item?.TotalQty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             pono: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            batchExpDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
+            batchExpDate: [item?.ExpDate],
             purUnitRate: [item?.PurUnitRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             purUnitRateWf: [item?.PurUnitRateWF || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             cgstper: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1611,6 +1611,7 @@ export class UpdateGRNComponent implements OnInit {
             grnid: [this.registerObj?.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             uomid: [item?.UOMId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            returnQty: [0],
             receiveQty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             freeQty: [item?.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1628,7 +1629,7 @@ export class UpdateGRNComponent implements OnInit {
             totalQty: [item?.TotalQty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             pono: [item?.PurchaseId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            batchExpDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
+            batchExpDate: [item?.ExpDate],
             purUnitRate: [item?.PurUnitRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             purUnitRateWf: [item?.PurUnitRateWF || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             cgstper: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1717,9 +1718,15 @@ export class UpdateGRNComponent implements OnInit {
         };
         this.PoToGrnSaveForm.get('grn')?.patchValue(grnPatchData);
         debugger
-        this.GrnPOdetailArray.clear();
-        this.dsItemNameList.data.forEach(item => {
-            this.GrnPOdetailArray.push(this.createGrnPOdetailInsert(item));
+        this.GrnPOdetailArray.clear(); 
+                this.dsItemNameList.data.forEach(item => {
+           // this.GrnPOdetailArray.push(this.createGrnPOdetailInsert(item)); 
+                const input = item?.ExpDate;
+                const [day, month, year] = input.split("/");
+                const formattedDate = `${year}-${month}-${day}`;
+                const formObj = this.createGrnPOdetailInsert(item);
+                formObj.patchValue({ batchExpDate: formattedDate || '1999-01-01' });
+                this.GrnPOdetailArray.push(formObj);  
         });
         this.GrnPoItemArray.clear();
         this.dsItemNameList.data.forEach(item => {
