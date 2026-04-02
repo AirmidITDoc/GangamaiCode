@@ -105,9 +105,7 @@ export class IPSearchListComponent implements OnInit {
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
-    ];
-
-
+    ]; 
     gridConfig: gridModel = {
         permissionCode: permissionCodes.Admission,
         apiUrl: "Admission/AdmissionList",
