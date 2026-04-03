@@ -1,0 +1,15 @@
+.table-row {
+    display: flex;
+    gap: 10px;
+}
+
+.table-row {
+    display: flex;
+    gap: 10px;
+}
+
+.table-container {
+    width: 50%;
+    height: 300px;     /* 🔥 fixed height */
+    overflow: auto;    /* scroll inside */
+}
