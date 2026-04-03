@@ -2025,7 +2025,7 @@ export class NewLabPatientRegComponent {
         PatientHeaderObj['CashCounterId'] = this.OpBillForm.get('cashCounterId')?.value || 0;
         PatientHeaderObj['Age'] = this.ageYear;
         PatientHeaderObj['TransactionLabel'] = 'LAB_BILL';
-        PatientHeaderObj['NetPayAmount'] = this.myForm.get('netPayableAmt').value.toFixed(2);
+        PatientHeaderObj['NetPayAmount'] = this.myForm.get('netPayableAmt').value;
         // PatientHeaderObj['NetPayAmount'] = Math.round(this.myForm.get('netPayableAmt').value);
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
