@@ -22,6 +22,7 @@ import { NotificationService } from "app/core/notification.service";
 import { SignalRService } from "app/core/services/signalr.service";
 import { ConfigService } from "app/core/services/config.service";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { LabAppointmentService } from "app/main/Lab Management/lab-appointment/lab-appointment.service";
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 // import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
@@ -70,7 +71,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService, private _httpClient1: ApiCaller,
-
+        private _service: LabAppointmentService,
         private _translateService: TranslateService, private configService: ConfigService,
         private accountService: AuthenticationService, public _configue: ConfigService,
         private router: Router, private signalRService: SignalRService,
@@ -135,7 +136,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.ConfigSettingParamNew();
+        this.ConfigSettingParamNew()
 
         //         const dailyValue1 = this?.configSettingParam1?.DailyDashBoard || "";
         //         const [id1, val1] = dailyValue1.includes(":") ? dailyValue1.split(":") : [null, null];
@@ -307,45 +308,50 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
     configSettingParam1: any = [];
     ConfigSettingParamNew() {
-        const Params =
-        {
-            "searchFields": [],
-            "mode": "NewSysConfig"  //SystemConfigList
+        const SelectQuery = {
+            "searchFields": [{
+                "fieldName": "LoginId",
+                "fieldValue": String(this.accountService.currentUserValue.userId),
+                "opType": "Equals"
+            }],
+            "mode": "LoginWiseAccessConfigList"
         }
-        
-        this._httpClient1.PostData("Common", Params).subscribe(data => {
-            console.log(data)
-            this.configSettingParam1 = data[0];
-            console.log(this.configSettingParam1)
-            // this.configService.setCongiParam(this.configSettingParam1[0]);
-            if (this.configSettingParam1) {
-                const dailyValue1 = this?.configSettingParam1?.DailyDashBoard || "";
-                const [id1, val1] = dailyValue1.includes(":") ? dailyValue1.split(":") : [null, null];
-                this.dailydashflag = id1 === "1";
+        this._service.commonList(SelectQuery).subscribe(response => {
+            const dailydashData = response.find(x => x.AccessValueName === 'IsDailyDashboard');
+            const beddashData = response.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
+            const invdashData = response.find(x => x.AccessValueName === 'IsInvestigation');
+            const cashlessdashData = response.find(x => x.AccessValueName === 'IsCashlessDashboard');
+            const phardashData = response.find(x => x.AccessValueName === 'IsPharmacy');
+            const finacedashData = response.find(x => x.AccessValueName === 'IsFinancialDashboard');
+            const labdashData = response.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
 
-                const bedValue1 = this?.configSettingParam1?.BedDashBoard || "";
-                const [id2, val2] = bedValue1.includes(":") ? bedValue1.split(":") : [null, null];
-                this.beddashflag = id2 === "1";
-                
-                const InvValue1 = this?.configSettingParam1?.InvestigationDashBoard || "";
-                const [id3, val3] = InvValue1.includes(":") ? InvValue1.split(":") : [null, null];
-                this.Investigationdashflag = id3 === "1";
 
-                const CashlessValue1 = this?.configSettingParam1?.CashlessDashBoard || "";
-                const [id4, val4] = CashlessValue1.includes(":") ? CashlessValue1.split(":") : [null, null];
-                this.Cashlessdashflag = id4 === "1";
+            console.log(dailydashData)
+            debugger
+            console.log(response)
+            if (response) {
 
-                const pharValue1 = this?.configSettingParam1?.PharmacyDashBoard || "";
-                const [id5, val5] = pharValue1.includes(":") ? pharValue1.split(":") : [null, null];
-                this.Pharmacydashflag = id5 === "1";
+                if (dailydashData.AccessValue)
+                    this.dailydashflag = true;
+                else
+                    this.dailydashflag = false
 
-                const labFinanceValue1 = this?.configSettingParam1?.LabFinanceDashBoard || "";
-                const [id6, val6] = labFinanceValue1.includes(":") ? labFinanceValue1.split(":") : [null, null];
-                this.Labfinancedashflag = id6 === "1";
 
-                const FinanceValue1 = this?.configSettingParam1?.FinanceDashBoard || "";
-                const [id7, val7] = FinanceValue1.includes(":") ? FinanceValue1.split(":") : [null, null];
-                this.Financedashflag = id7 === "1";
+                if (beddashData.AccessValue)
+                    this.beddashflag = true;
+
+                if (invdashData.AccessValue)
+                    this.Investigationdashflag = true;
+
+                if (cashlessdashData.AccessValue)
+                    this.Cashlessdashflag = true;
+
+                if (phardashData.AccessValue)
+                    this.Pharmacydashflag = true;
+                if (labdashData.AccessValue)
+                    this.Labfinancedashflag = true;
+                if (finacedashData.AccessValue)
+                    this.Financedashflag = true;
 
 
             }

@@ -43,20 +43,20 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         {
             name: 'Admissions',
             series: [
-                { name: '01', value: 28 },
-                { name: '02', value: 22 },
-                { name: '03', value: 35 },
-                { name: '04', value: 40 },
-                { name: '05', value: 62 },
-                { name: '06', value: 54 },
-                { name: '07', value: 40 },
-                { name: '08', value: 30 },
-                { name: '09', value: 44 },
-                { name: '10', value: 38 },
-                { name: '11', value: 49 },
-                { name: '12', value: 45 },
-                { name: '13', value: 50 },
-                { name: '14', value: 92 }
+                { name: '01', value: 0 },
+                { name: '02', value: 0 },
+                { name: '03', value: 0 },
+                { name: '04', value: 0 },
+                { name: '05', value: 0 },
+                { name: '06', value: 0 },
+                { name: '07', value: 0 },
+                { name: '08', value: 0 },
+                { name: '09', value: 0 },
+                { name: '10', value: 0 },
+                { name: '11', value: 0 },
+                { name: '12', value: 0 },
+                { name: '13', value: 0 },
+                { name: '14', value: 0 }
             ]
         }
     ];
@@ -417,9 +417,11 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             "searchFields": [],
             "mode": "DashAdmissionDateWiseCount"
         };
+        debugger
         this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             const apiData = res && res.length ? res : {};
             console.log(res)
+            debugger
             return new Chart('BedAdmissionsLine', {
                 type: 'line',
                 data: {

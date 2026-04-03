@@ -94,7 +94,7 @@ export class LabFinancialDashboardComponent {
 
 
     // Marketing wise sales
-    marketingSalesColumns: string[] = ['marketingEx', 'net'];
+    marketingSalesColumns: string[] = ['marketingEx', 'gross', 'discount', 'reversal', 'net'];
     marketingSales = new MatTableDataSource<any>([
 
     ]);
@@ -342,8 +342,10 @@ export class LabFinancialDashboardComponent {
     Billdetaildatasource = new MatTableDataSource<BillRevenuList>();
     paydata = []
     paymentModeData1: any[] = []
-
-    modalityData = [
+ modalityData = [
+      
+    ];
+    modalityData1 = [
         { name: '', value: 0 }
     ];
     salesdata: any
@@ -387,18 +389,20 @@ export class LabFinancialDashboardComponent {
             this.monthreferral = data.departmentSummary[1].referral
             this.monthnetSale = data.departmentSummary[1].netSale
 
-debugger
+
             // if (data.dailySalesTrend.length) {
 
-                this.modalityData = [
-                    ...this.modalityData,
-                    ...this.trendData.map(item => ({
+                // this.modalityData = [
+                //     ...this.modalityData,
+                //     ...this.trendData.map(item => ({
 
-                        name: item.billDate,
-                        value: item.dailySales
-                    }))
-                ];
+                //         name: item.billDate,
+                //         value: item.dailySales
+                //     }))
+                // ];
             // }
+            
+      this.modalityData=data.dailySalesTrend
 
             console.log(this.modalityData)
 
@@ -444,19 +448,20 @@ debugger
             this.monthnetSale = data.departmentSummary[1].netSale
 
 debugger
-            if (data.dailySalesTrend.length) {
+            // if (data.dailySalesTrend.length) {
 
-                this.modalityData = [
-                    ...this.modalityData,
-                    ...this.trendData.map(item => ({
+            //     this.modalityData = [
+            //         ...this.modalityData,
+            //         ...this.trendData.map(item => ({
 
-                        name: item.billDate,
-                        value: item.dailySales
-                    }))
-                ];
-            }
-
-            console.log(this.modalityData)
+            //             name: item.billDate,
+            //             value: item.dailySales
+            //         }))
+            //     ];
+            // }
+debugger
+            // console.log(this.modalityData)
+            this.modalityData=data.dailySalesTrend
 
             if (data.dailySalesTrend.length)
                 this.DailysalesChart = this.getSalesBarChart();
@@ -468,69 +473,47 @@ debugger
             this.DailysalesChart.destroy();
         }
 
-        // Get theme colors from CSS variables
-        const style = getComputedStyle(document.documentElement);
-        const primaryColor = style.getPropertyValue('--app-primary').trim() || '#28bcaa';
-        const primaryLight = style.getPropertyValue('--app-primary-100').trim() || '#cff0ec';
 
         return new Chart('DailysalesChart', {
             type: 'bar',
             data: {
-                labels: this.modalityData.map(d => this.datePipe.transform(d.name, 'dd-MMM')),
+                labels: this.modalityData.map(d => this.datePipe.transform(d.billDate, 'dd-MMM')),
                 datasets: [
                     {
-                        label: 'Sales',
-                        data: this.modalityData.map(d => d.value),
-                        backgroundColor: primaryColor,
-                        hoverBackgroundColor: primaryColor,
-                        borderRadius: 8,
-                        barThickness: 24,
+                        label: 'Date',
+                        data: this.modalityData.map(d => d.dailySales),
+                        backgroundColor: [
+                            '#d289f4',   // very pale blue
+                            '#e680c9',   // light sky blue
+                            '#7dc1f9',   // medium light blue
+                            '#749bf6',   // your bright one
+                            '#8082fd',   // indigo transition
+                            '#6b70f8',   // deep vivid blue
+                            '#c57bf7',   // bluish purple
+                            '#a660d5'    // final vivid purple
+                        ],
+                        borderRadius: 6
                     }
                 ]
             },
             options: {
                 maintainAspectRatio: false,
-                responsive: true,
                 plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#1d2939', // gray-800
-                        titleFont: { size: 14, weight: 'bold' },
-                        bodyFont: { size: 13 },
-                        padding: 12,
-                        cornerRadius: 8,
-                        displayColors: false
-                    }
+                    legend: { display: false }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: {
-                            display: true,
-                            color: '#f0f2f7', // gray-100
-                            drawBorder: false
-                        },
                         ticks: {
-                            font: { size: 11, weight: '500' },
-                            color: '#667085', // gray-500
-                            callback: (value) => '₹' + value
+                            font: { size: 11 }
                         }
                     },
                     x: {
-                        grid: { 
-                            display: false,
-                            drawBorder: false
-                        },
                         ticks: {
-                            font: { size: 11, weight: '500' },
-                            color: '#667085', // gray-500
+                            font: { size: 11 }
                         }
                     }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
+                }
             }
         });
     }

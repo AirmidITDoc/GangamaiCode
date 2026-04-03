@@ -30,7 +30,7 @@
                                 <div class="chart-container">
                                     <div class="chart-header">
                                         <h3 class="chart-title">Bed Booking Chart</h3>
-                                        <p class="chart-title">Total Beds {{dashBedStatistics?.TotalBedCount ||
+                                        <p class="chart-title" style="color: blueviolet;">Total Beds {{dashBedStatistics?.TotalBedCount ||
                                             0}} | Booked  {{dashBedStatistics?.UsedCount || 0}} </p>
 
                                         <!-- 
@@ -64,11 +64,10 @@
                     </div>
                     <div fxFlex="75%" fxFlex.sm="66%" fxFlex.xs="100%">
                     
-                         
-                            <div class="first-section" fxLayout="row" fxLayoutGap="5px grid">
+                            <!-- <div class="first-section" fxLayout="row" fxLayoutGap="5px grid"> -->
                                 <div fxFlex="50%" fxFlex.sm="66%" fxFlex.xs="100%">
-                                    <mat-card class="combined-charts-card full-height">
-                                        <mat-card-content class="combined-content">
+                                      <mat-card class="overall-stats-card full-height">
+                                        <mat-card-content>
                                             <div class="chart-container">
                                                 <div class="chart-row">
                                                     <div class="chart-header">
@@ -85,8 +84,8 @@
                                 </div>
 
                                 <div fxFlex="50%" fxFlex.sm="66%" fxFlex.xs="100%">
-                                    <mat-card class="combined-charts-card full-height">
-                                        <mat-card-content class="combined-content">
+                                     <mat-card class="overall-stats-card full-height">
+                                        <mat-card-content>
                                             <div class="chart-container">
                                                 <div class="chart-row mt-12">
                                                     <div class="chart-header">
@@ -102,7 +101,7 @@
                                     </mat-card>
                                 </div>
 
-                            </div>
+                            <!-- </div> -->
                     </div>
                 </div>
                 <!-- Department Slider -->

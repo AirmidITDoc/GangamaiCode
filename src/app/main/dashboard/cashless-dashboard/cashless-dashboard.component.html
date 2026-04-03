@@ -119,7 +119,7 @@
     
         <!-- Recent Reports Table -->
         <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div fxFlex="calc(50% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+            <div fxFlex="calc(55% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                 <mat-card>
 
@@ -134,19 +134,19 @@
                             [@animateStagger]="{value:'50'}" style="overflow:auto;">
 
                             <ng-container matColumnDef="companyName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">
                                     Company Name
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let report" class="w-300">
+                                <mat-cell *matCellDef="let report" class="w-350">
                                     {{report.companyName}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="cashlessPatientCount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
                                      Count
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let report" class="w-80">
+                                <mat-cell *matCellDef="let report" class="w-70">
                                     {{report.cashlessPatientCount}}
                                 </mat-cell>
                             </ng-container>
@@ -154,38 +154,38 @@
 
 
                             <ng-container matColumnDef="billAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                     Bill Amt
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let report" class="w-80">
-                                    {{report.billAmount}}
+                                <mat-cell *matCellDef="let report" class="w-100">
+                                    {{report.billAmount | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="discAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                     Disc Amt
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let report" class="w-80">
-                                    {{report.discAmount}}
+                                <mat-cell *matCellDef="let report" class="w-100">
+                                    {{report.discAmount | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="compDiscAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
-                                    Comp Disc Amt
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                                    Comp Disc
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let report" class="w-80">
-                                    {{report.compDiscAmount}}
+                                <mat-cell *matCellDef="let report" class="w-100">
+                                    {{report.compDiscAmount | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="netBillAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                     Net Amt
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let report" class="w-80">
-                                    {{report.netBillAmount}}
+                                <mat-cell *matCellDef="let report" class="w-100">
+                                    {{report.netBillAmount | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -209,14 +209,14 @@
                             </mat-footer-row>
                         </mat-table>
                         <div class="totals">
-                            <div class="totals-rowDept">
+                            <div class="totals-rowComp">
                                 <div class="totals-label">Total </div>
-                                <div class="totals-num">{{CompsummaryCount}}</div>
-                                <div class="totals-num">Cnt:{{CpTotalcount}}</div>
-                                <div class="totals-num">Bill:{{CpBillamt}}</div>
-                                <div class="totals-num">Dis:{{CpDisc}}</div>
-                                <div class="totals-num">Cdisc:{{CpCompDisc}}</div>
-                                <div class="totals-num">Net:{{CpNetotals}}</div>
+                                <!-- <div class="totals-num">{{CompsummaryCount}}</div> -->
+                                <div class="totals-num">{{CpTotalcount }}</div>
+                                <div class="totals-num">{{CpBillamt | number:'1.2-2'}}</div>
+                                <div class="totals-num">{{CpDisc | number:'1.2-2'}}</div>
+                                <div class="totals-num">{{CpCompDisc | number:'1.2-2'}}</div>
+                                <div class="totals-num">{{CpNetotals | number:'1.2-2'}}</div>
                             </div>
 
                         </div>
@@ -224,11 +224,11 @@
                 </mat-card>
             </div>
 
-            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="100%">
                 <mat-card>
                     <mat-card-content>
                         <div class="chart-header">
-                            <h3 class="chart-title">Patient Company Bill Summary</h3>
+                            <h3 class="chart-title">Patient wise Company Bill Summary</h3>
 
                         </div>
                         <hr>
@@ -251,7 +251,7 @@
                                         PBillNo
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let m" class="w-80">
-                                        {{m.pBillNo}}
+                                        {{m.pbillNo}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -266,29 +266,29 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="BillAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                         BillAmt
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let m" class="w-80">
-                                        {{m.billAmount}}
+                                    <mat-cell *matCellDef="let m" class="w-100">
+                                        {{m.billAmount | number:'1.2-2'}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="PaidAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                         PaidAmt
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let m" class="w-80">
-                                        {{m.paidAmt}}
+                                    <mat-cell *matCellDef="let m" class="w-100">
+                                        {{m.paidAmt | number:'1.2-2'}}
                                     </mat-cell>
                                 </ng-container>
 
 
                                 <ng-container matColumnDef="BalAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                         BalAmt
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let m" class="w-80">
-                                        {{m.balAmount}}
+                                    <mat-cell *matCellDef="let m" class="w-100">
+                                        {{m.balAmount | number:'1.2-2'}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="FirstCompanyName">
@@ -301,10 +301,10 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="GovtApprovedAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                         Govt App.Amt
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let m" class="w-80">
+                                    <mat-cell *matCellDef="let m" class="w-100">
                                         {{m.govtApprovedAmt}}
                                     </mat-cell>
                                 </ng-container>
@@ -319,18 +319,18 @@
 
                                 <ng-container matColumnDef="SecondCompanyName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="w-180">
-                                        Second class="w-80"CompanyName
+                                       Second CompanyName
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let m" class="w-180">
                                         {{m.secondCompanyName}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="CompanyApprovedAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
                                         Comp.App.Amt
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let m" class="w-80">
-                                        {{m.companyApprovedAmt}}
+                                    <mat-cell *matCellDef="let m" class="w-100">
+                                        {{m.companyApprovedAmt | number:'1.2-2'}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -365,9 +365,9 @@
                             <div class="totals">
                                 <div class="totals-rowDept">
                                     <div class="totals-label">Total </div>
-                                    <div class="totals-num">{{ PBillAmount}}</div>
-                                    <div class="totals-num">Cen:{{ pPaidAmount}}</div>
-                                    <div class="totals-num">Net:{{ pbalanceAmount}}</div>
+                                    <div class="totals-num">BillAmt:{{ PBillAmount | number:'1.2-2'}}</div>
+                                    <div class="totals-num" style="padding-left: 20px;">Paid:{{ pPaidAmount | number:'1.2-2'}}</div>
+                                    <div class="totals-num">Bal:{{ pbalanceAmount | number:'1.2-2'}}</div>
                                 </div>
 
                             </div>
