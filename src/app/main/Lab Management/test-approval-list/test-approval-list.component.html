@@ -1,49 +1,50 @@
-<ng-template #CancelReasone> 
-  <div class="modal-page page-layout inner-scroll" #CancelReasone>
-    <div class="modal-wrapper grid-container">
-        <div class="modal-header accent">
-            <div class="modal-header-content">
-                <div class="modal-header-title">
-                    <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-                        style="color: white;">account_box
-                    </mat-icon>
-                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                       UnVerify
-                    </span>
-                </div>
-            
-                <div class="close-icon">
-                    <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-                        <mat-icon>close</mat-icon>
-                    </button>
+<ng-template #CancelReasone>
+    <div class="modal-page page-layout inner-scroll" #CancelReasone>
+        <div class="modal-wrapper grid-container">
+            <div class="modal-header accent">
+                <div class="modal-header-content">
+                    <div class="modal-header-title">
+                        <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                            style="color: white;">account_box
+                        </mat-icon>
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                            style="color: white;">
+                            UnVerify
+                        </span>
+                    </div>
+
+                    <div class="close-icon">
+                        <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div> 
-        <div class="modal-body">
-            <div fxLayout="column" class="gap-8 h-100-p">
-                <div class="modal-body-container">
-                    <div class="modal-card-container"> 
-                            <div fxLayout="column" fxLayoutGap="6px"> 
-                                <span>Please Enter UnVerify Reason</span>  
+            <div class="modal-body">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-body-container">
+                        <div class="modal-card-container">
+                            <div fxLayout="column" fxLayoutGap="6px">
+                                <span>Please Enter UnVerify Reason</span>
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Reason</mat-label>
                                     <textarea rows="7" matInput name="Body" placeholder="Write here......" id="Body"
                                         type="text" required [(ngModel)]="VReason"></textarea>
                                 </mat-form-field>
-                            </div> 
-                    </div> 
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div> 
-        <div class="modal-footer">
-            <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
-                <button class="btn btn-primary" (click)="OnUnverifyResultEntry()">Save</button> 
+            <div class="modal-footer">
+                <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
+                    <button class="btn btn-primary" (click)="OnUnverifyResultEntry()">Save</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
- 
+
 </ng-template>
 <div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" fusePerfectScrollbar>
     <!-- HEADER -->
@@ -179,7 +180,7 @@
 
                                         <ng-template #actionButtonTemplate let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
-                                                <span
+                                                <!-- <span
                                                     [matTooltip]="element.paymentCompleted == 0 ? 'Payment is pending' : '' "
                                                     matTooltipPosition="above">
                                                     <button mat-icon-button matTooltip="Verify"
@@ -189,13 +190,21 @@
                                                                             ? chkTemplateVerify(element, true) : chkresultentryVerify(element, true)) : null ">
                                                         <mat-icon>verified_user</mat-icon>
                                                     </button>
-                                                </span>
+                                                </span> -->
 
-                                                <span  *ngIf="element.isCompleted==true && element.isVerifySign==true" >
-                                                    <button mat-icon-button matTooltip="UnVerify"  
-                                                        (click)="UnVerifyresultEntry(element)">  
-                                                         <mat-icon style="color: red;">signal_cellular_no_sim</mat-icon>
-                                                    </button>               
+                                                <button mat-icon-button matTooltip="Verify"
+                                                    [style.visibility]="element.isVerifySign == false ? 'visible' : 'hidden'"
+                                                    (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
+                                                                            ? chkTemplateVerify(element, true) : chkresultentryVerify(element, true)) : null ">
+                                                    <mat-icon>verified_user</mat-icon>
+                                                </button>
+
+
+                                                <span *ngIf="element.isCompleted==true && element.isVerifySign==true">
+                                                    <button mat-icon-button matTooltip="UnVerify"
+                                                        (click)="UnVerifyresultEntry(element)">
+                                                        <mat-icon style="color: red;">signal_cellular_no_sim</mat-icon>
+                                                    </button>
                                                 </span>
 
                                                 <button mat-icon-button matTooltip="View"
@@ -203,7 +212,7 @@
                                                     <mat-icon>remove_red_eye</mat-icon>
                                                 </button>
 
-                                                <span
+                                                <!-- <span
                                                     [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
                                                             : element.paymentCompleted == 0 ? 'Payment is pending' : '' "
                                                     matTooltipPosition="above">
@@ -212,15 +221,22 @@
                                                         [disabled]="element.isVerifySign === false || element.paymentCompleted == 0">
                                                         <mat-icon>print</mat-icon>
                                                     </button>
+                                                </span> -->
+                                                <span
+                                                    [matTooltip]=" element.isVerifySign === false ? 'Verification is pending' : '' "
+                                                    matTooltipPosition="above">
+                                                    <button mat-icon-button (click)="getPrint(element)"
+                                                        *ngIf="element.isCompleted"
+                                                        [disabled]="element.isVerifySign === false">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
                                                 </span>
 
 
                                                 <span
-                                                    [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
-                                                            : element.paymentCompleted == 0 ? 'Payment is pending' : '' "
+                                                    [matTooltip]=" element.isVerifySign === false ? 'Verification is pending' : '' "
                                                     matTooltipPosition="above">
-                                                    <button mat-icon-button
-                                                        [disabled]="element.isVerifySign === false || element.paymentCompleted == 0"
+                                                    <button mat-icon-button [disabled]="element.isVerifySign === false"
                                                         [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
                                                         matTooltipPosition="right" (click)="Onemail(element)"
                                                         (mouseenter)="openEmailDetailsPopover($event, element)"
@@ -231,11 +247,9 @@
                                                 </span>
 
                                                 <span
-                                                    [matTooltip]=" element.isVerifySign === false ? 'Verification is pending'
-                                                            : element.paymentCompleted == 0 ? 'Payment is pending' : '' "
+                                                    [matTooltip]=" element.isVerifySign === false ? 'Verification is pending' : '' "
                                                     matTooltipPosition="above">
-                                                    <button mat-icon-button
-                                                        [disabled]="element.isVerifySign === false || element.paymentCompleted == 0"
+                                                    <button mat-icon-button [disabled]="element.isVerifySign === false"
                                                         [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
                                                         matTooltipPosition="right"
                                                         (click)="getWhatsappshareReport(element)"
@@ -245,7 +259,7 @@
                                                         <img width="20" height="20"
                                                             src="assets/images/logos/WhatsApp.png">
                                                     </button>
-                                                </span>  
+                                                </span>
 
                                             </div>
                                         </ng-template>
