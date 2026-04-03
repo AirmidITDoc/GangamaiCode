@@ -52,8 +52,8 @@ export class AppComponent implements OnInit, OnDestroy {
     newconfigSettingParam: any = [];
     UnitWiseSystemConfigu: any = [];
 
-    LogOutTimeValue:any = 10000;
-    LogOutTimeID:any = 0;
+    LogOutTimeValue: any = 10000;
+    LogOutTimeID: any = 0;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
      * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
      * @param {Platform} _platform
      * @param {TranslateService} _translateService
-     */ 
+     */
 
     idle = new Idle().whenNotInteractive().within(this.LogOutTimeValue).do(() => {
         this.url = this.router.url;
@@ -103,7 +103,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private router: Router,
         private bandwidthService: BandwidthService,
         private signalRService: SignalRService,
-        private HospitalConfigService : HospitalConfigService
+        private HospitalConfigService: HospitalConfigService
     ) {
 
         this.bandwidthService.monitorBandwidth();
@@ -242,8 +242,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.ConfigSettingParamNew();
                 this.ConfigSettingUnitWise();
             }
-        }); 
-  
+        });
+
     }
 
     /**
@@ -280,55 +280,62 @@ export class AppComponent implements OnInit, OnDestroy {
             this.configService.setCongiParam(this.configSettingParam1[0]);
             const [LogOutTimeID, LogOutTimeValue] = this.configService.configParams.SystemLogOutTime.split(":");
             this.LogOutTimeID = LogOutTimeID
-            if (this.LogOutTimeID == 1) { this.LogOutTimeValue = LogOutTimeValue 
-            this.idle = new Idle().whenNotInteractive().within(this.LogOutTimeValue).do(() => {
-                this.url = this.router.url;
-                // console.log('this.url==', this.url);
-                if (this.url !== '/auth/login') {
-                    alert('You are being timed out due to inactivity. Please Log-In again.');
-                    this.authService.logout().subscribe((data) => { });
-                    this.dialogRef ? this.dialogRef.closeAll() : '';
-                    this.router.navigate(['auth/login'], { replaceUrl: true });
-                    //   this.logoutService();
-                }
-            }).start();
+            if (this.LogOutTimeID == 1) {
+                this.LogOutTimeValue = LogOutTimeValue
+                this.idle = new Idle().whenNotInteractive().within(this.LogOutTimeValue).do(() => {
+                    this.url = this.router.url;
+                    // console.log('this.url==', this.url);
+                    if (this.url !== '/auth/login') {
+                        alert('You are being timed out due to inactivity. Please Log-In again.');
+                        this.authService.logout().subscribe((data) => { });
+                        this.dialogRef ? this.dialogRef.closeAll() : '';
+                        this.router.navigate(['auth/login'], { replaceUrl: true });
+                        //   this.logoutService();
+                    }
+                }).start();
             }
         });
     }
 
+    // getDBInfo() {
+    //     this._httpClient1.GetData('DbInfo').subscribe((data) => {
+    //         alert(JSON.stringify(data));
+    //         console.log("RAW DATA:", JSON.stringify(data));
+    //     });
+    // }
     ConfigSettingUnitWise() {
         const Params =
         {
-            "searchFields": [ {
-                    "fieldName": "UnitId",
-                    "fieldValue": "1",
-                    "opType": "Equals"
-                }],
+            "searchFields": [{
+                "fieldName": "UnitId",
+                "fieldValue": "1",
+                "opType": "Equals"
+            }],
             "mode": "UnitWiseSystemConfige"
         }
         this._httpClient1.PostData("Common", Params).subscribe(data => {
-           this.UnitWiseSystemConfigu = data;  
-           this.HospitalConfigService.setCongiParam(this.UnitWiseSystemConfigu[0])
+            this.UnitWiseSystemConfigu = data;
+            this.HospitalConfigService.setCongiParam(this.UnitWiseSystemConfigu[0])
         });
     }
-      @HostListener('document:keydown', ['$event'])
-onKeydownHandler(event: KeyboardEvent) {
-  if (event.keyCode === 119) {
-    event.preventDefault();
-    this.onpatientsearch();
-  }
-}
-        onpatientsearch() {
-            const dialogRef = this.dialogRef.open(PatientSearchComponent,
-              {
-                     width:"45%",
-                    height:"65%",
-                    panelClass: 'responsive-dialog'
-               });
-            dialogRef.afterClosed().subscribe((result) => {
-                console.log('The dialog was closed - Insert Action', result);
-            });
+    @HostListener('document:keydown', ['$event'])
+    onKeydownHandler(event: KeyboardEvent) {
+        if (event.keyCode === 119) {
+            event.preventDefault();
+            this.onpatientsearch();
         }
+    }
+    onpatientsearch() {
+        const dialogRef = this.dialogRef.open(PatientSearchComponent,
+            {
+                width: "45%",
+                height: "65%",
+                panelClass: 'responsive-dialog'
+            });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
 }
 
 
