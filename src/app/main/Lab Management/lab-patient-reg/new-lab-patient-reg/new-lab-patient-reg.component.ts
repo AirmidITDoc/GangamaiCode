@@ -688,7 +688,8 @@ export class NewLabPatientRegComponent {
       classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isOtherService: [item?.isOtherService ? true : false],
     });
   }
   get packcagechargesArray(): FormArray {
