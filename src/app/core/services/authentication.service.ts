@@ -34,6 +34,10 @@ export class AuthenticationService {
         return this.http.GetData('Login/GetCaptcha');
     }
 
+    getDBInfo(): Observable<any> {
+        return this.http.GetData('DbInfo/DBInformation');
+    }
+
     login(data: any): Observable<any> {
         return (this.http.PostData('Login/Authenticate', data).pipe(map((user) => {
             if (user.status == "Ok") {

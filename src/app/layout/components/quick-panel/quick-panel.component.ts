@@ -5,35 +5,40 @@ import { NotificationService } from "app/core/notification.service";
 import { ChangePasswordComponent } from 'app/main/administration/create-user/change-password/change-password.component';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 @Component({
-    selector     : 'quick-panel',
-    templateUrl  : './quick-panel.component.html',
-    styleUrls    : ['./quick-panel.component.scss'],
+    selector: 'quick-panel',
+    templateUrl: './quick-panel.component.html',
+    styleUrls: ['./quick-panel.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class QuickPanelComponent
-{
+export class QuickPanelComponent {
     date: Date;
     events: any[];
     notes: any[];
     settings: any;
-
+    dbInfo: any;   // declare variable
+    // isPanelOpen = true;
     /**
      * Constructor
      */
     constructor(
         private accountService: AuthenticationService,
         private _fuseSidebarService: FuseSidebarService,
-        public _matDialog: MatDialog, public _notificationService: NotificationService
-    )
-    {
+        public _matDialog: MatDialog,
+        public _notificationService: NotificationService
+    ) {
         // Set the defaults
         this.date = new Date();
         this.settings = {
             notify: true,
-            cloud : false,
-            retro : true
+            cloud: false,
+            retro: true
         };
-        
+    }
+
+    ngOnInit() {
+        this.accountService.getDBInfo().subscribe((data) => {
+            this.dbInfo = data;
+        });
     }
 
     getOrdinalSuffix(currentDate: Date): string {
@@ -72,5 +77,5 @@ export class QuickPanelComponent
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 
-    
+
 }
