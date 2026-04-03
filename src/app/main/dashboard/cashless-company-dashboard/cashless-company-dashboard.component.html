@@ -28,11 +28,11 @@
 
     <div class="table-row">
         <div class="table-container">
-            <airmid-table [gridConfig]="gridConfig" [ShowFilter]="false" gridId="grid1"></airmid-table>
+            <airmid-table [gridConfig]="gridConfig" [ShowFilter]="false" #grid1Ref></airmid-table>
         </div>
 
         <div class="table-container">
-            <airmid-table [gridConfig]="gridConfig_CompanyWise" [ShowFilter]="false" gridId="grid2"></airmid-table>
+            <airmid-table [gridConfig]="gridConfig_CompanyWise" [ShowFilter]="false" #grid2Ref></airmid-table>
         </div>
     </div>
 

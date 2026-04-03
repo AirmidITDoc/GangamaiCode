@@ -91,7 +91,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { PatientInformationComponent } from './componets/patient-information/patient-information.component';
 import { AirmidExcelImportButtonComponent } from './componets/airmid-excel-import-button/airmid-excel-import-button.component';
 import { AirmidExcelImportDialogComponent } from './componets/airmid-excel-import/airmid-excel-import.component';
-
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
     declarations: [
         TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, StoreUnitComponent, PaymentModeComponent, AirmidAuditComponent, AirmidAuditIconComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
@@ -135,7 +135,8 @@ import { AirmidExcelImportDialogComponent } from './componets/airmid-excel-impor
         MatDialogModule,
         MatRadioModule,
         MatCheckboxModule,
-        NgxJsonViewerModule
+        NgxJsonViewerModule,
+        MatMenuModule
     ],
     providers: [
         ExcelDownloadService,

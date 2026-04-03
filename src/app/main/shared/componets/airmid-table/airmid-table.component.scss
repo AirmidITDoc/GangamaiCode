@@ -5,3 +5,12 @@
     border-radius: 4px;
     padding: 5px;
 }
+.vertical-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px;
+}
+
+.vertical-menu mat-checkbox {
+    margin-bottom: 6px;
+}
