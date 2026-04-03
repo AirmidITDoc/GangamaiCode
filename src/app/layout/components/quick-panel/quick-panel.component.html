@@ -2,7 +2,8 @@
 
     <mat-toolbar class="qpanel-toolbar" cdkFocusRegionStart>
         <mat-icon aria-hidden="true">today</mat-icon>
-        <span class="qpanel-date">{{ date | date:'EEEE, d' }}{{ getOrdinalSuffix(date) }} {{ date | date:'MMMM' }}</span>
+        <span class="qpanel-date">{{ date | date:'EEEE, d' }}{{ getOrdinalSuffix(date) }} {{ date | date:'MMMM'
+            }}</span>
     </mat-toolbar>
 
     <mat-accordion multi cdkFocusRegionEnd>
@@ -17,7 +18,7 @@
                 <mat-list-item class="qpanel-list-item" (click)="Changepassword()">
                     <div matLine>Change Password</div>
                 </mat-list-item>
-                
+
             </mat-list>
         </mat-expansion-panel>
 
@@ -30,7 +31,8 @@
                 <mat-list-item class="qpanel-list-item">
                     <span matLine>Notifications</span>
                     <div class="spacer"></div>
-                    <mat-slide-toggle [(ngModel)]="settings.notify" aria-label="Notifications toggle"></mat-slide-toggle>
+                    <mat-slide-toggle [(ngModel)]="settings.notify"
+                        aria-label="Notifications toggle"></mat-slide-toggle>
                 </mat-list-item>
 
                 <mat-list-item>
@@ -42,7 +44,8 @@
                 <mat-list-item>
                     <div matLine>Retro Thrusters</div>
                     <div class="spacer"></div>
-                    <mat-slide-toggle color="warn" [(ngModel)]="settings.retro" aria-label="Retro Thrusters toggle"></mat-slide-toggle>
+                    <mat-slide-toggle color="warn" [(ngModel)]="settings.retro"
+                        aria-label="Retro Thrusters toggle"></mat-slide-toggle>
                 </mat-list-item>
             </mat-list>
         </mat-expansion-panel>
@@ -83,10 +86,27 @@
             </ng-template>
         </mat-expansion-panel>
 
-    </mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>Database information</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="dbInfo">
+                <p>Server: {{ dbInfo.server }}</p>
+                <p>Database: {{ dbInfo.database }}</p>
+                <p>User: {{ dbInfo.userName }}</p>
+                <p>Provider: {{ dbInfo.provider }}</p>
+            </div>
+        
+            <ng-template #noData>
+                <div class="empty">No data available</div>
+            </ng-template>
+        </mat-expansion-panel>
+        
+        </mat-accordion>
 
     <div class="qpanel-footer">
-        <button mat-flat-button color="mat-primary" class="logout-btn" (click)="logout(); toggleSidebarOpen('quickPanel')">
+        <button mat-flat-button color="mat-primary" class="logout-btn"
+            (click)="logout(); toggleSidebarOpen('quickPanel')">
             <mat-icon>exit_to_app</mat-icon>
             <span>Logout</span>
         </button>

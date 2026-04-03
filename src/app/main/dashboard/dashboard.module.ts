@@ -44,6 +44,8 @@ import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-
 import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 import { RadiologysaleComponent } from './lab-financial-dashboard/radiologysale/radiologysale.component';
+import { CashlessCompanyDashboardComponent } from './cashless-company-dashboard/cashless-company-dashboard.component';
+import { SharedModule } from '../shared/shared.module';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -71,6 +73,7 @@ import { RadiologysaleComponent } from './lab-financial-dashboard/radiologysale/
         ServiceReceiptGraphComponent,
         OperatonalDashboardComponent,
         RadiologysaleComponent,
+        CashlessCompanyDashboardComponent,
         // FinancetestComponent
     ],
     imports: [
@@ -100,6 +103,7 @@ import { RadiologysaleComponent } from './lab-financial-dashboard/radiologysale/
         MatToolbarModule,
         MatGridListModule,
         MatDialogModule,
+        SharedModule
     ],
     providers: [
         DatePipe

@@ -688,7 +688,8 @@ export class NewLabPatientRegComponent {
       classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isOtherService: [item?.isOtherService ? true : false],
     });
   }
   get packcagechargesArray(): FormArray {
@@ -2025,7 +2026,7 @@ export class NewLabPatientRegComponent {
         PatientHeaderObj['CashCounterId'] = this.OpBillForm.get('cashCounterId')?.value || 0;
         PatientHeaderObj['Age'] = this.ageYear;
         PatientHeaderObj['TransactionLabel'] = 'LAB_BILL';
-        PatientHeaderObj['NetPayAmount'] = this.myForm.get('netPayableAmt').value.toFixed(2);
+        PatientHeaderObj['NetPayAmount'] = this.myForm.get('netPayableAmt').value;
         // PatientHeaderObj['NetPayAmount'] = Math.round(this.myForm.get('netPayableAmt').value);
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {

@@ -10,6 +10,7 @@ import { NewFinacialdashboardComponent } from './new-finacialdashboard/new-finac
 import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
 import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
+import { CashlessCompanyDashboardComponent } from './cashless-company-dashboard/cashless-company-dashboard.component';
 
 const routes: Routes = [
     {
@@ -34,7 +35,7 @@ const routes: Routes = [
     },
     {
         path: 'Cashless-dashboard',
-        component: CashlessDashboardComponent
+        component: CashlessCompanyDashboardComponent
     },
     {
         path: 'Pharmacy-dashboard',

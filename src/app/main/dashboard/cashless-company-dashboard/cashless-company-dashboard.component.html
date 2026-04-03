@@ -1,0 +1,39 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" fusePerfectScrollbar>
+    <div class="top-header accent">
+        <div class="top-header-info">
+            <mat-icon class="logo-icon"
+                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">medical_services</mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>CashLess Dashboard</span>
+            </div>
+        </div>
+        <form [formGroup]="myformSearch" class="resize-form-fields">
+            <div class="date-filter-container">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="fromDate" placeholder="Start date">
+                        <input matEndDate formControlName="enddate" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+                <button mat-raised-button color="primary" class="go-btn" (click)="onGo()">Go</button>
+
+            </div>
+        </form>
+
+    </div>
+
+    <div class="table-row">
+        <div class="table-container">
+            <airmid-table [gridConfig]="gridConfig" [ShowFilter]="false" #grid1Ref></airmid-table>
+        </div>
+
+        <div class="table-container">
+            <airmid-table [gridConfig]="gridConfig_CompanyWise" [ShowFilter]="false" #grid2Ref></airmid-table>
+        </div>
+    </div>
+
+</div>
