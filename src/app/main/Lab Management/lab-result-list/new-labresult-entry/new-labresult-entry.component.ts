@@ -289,13 +289,13 @@ export class NewLabresultEntryComponent {
         // ---- FLAG LOGIC (NEW & FIXED) ----
         data.ParaBoldFlag = '';
         data.RangeStatus = ''; // 'low' | 'high' | ''
-
+debugger
         if (data.ParaIsNumeric || data.PIsNumeric) {
             const a = parseFloat(data.ResultValue);
             const b = parseFloat(data.MinValue);
             const c = parseFloat(data.MaxValue);
 
-            if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
+            if (!isNaN(a) && !isNaN(b) && !isNaN(c) && !(b === 0 && c === 0)) {
                 if (a < b) {
                     data.ParaBoldFlag = 'B';
                     data.RangeStatus = 'low';
@@ -438,6 +438,7 @@ export class NewLabresultEntryComponent {
     }
 
     applyRangeStatus(data: any) {
+        debugger
 
         data.ParaBoldFlag = '';
         data.RangeStatus = ''; // 'low' | 'high' | ''
@@ -448,7 +449,7 @@ export class NewLabresultEntryComponent {
             const b = parseFloat(data.MinValue);
             const c = parseFloat(data.MaxValue);
 
-            if (!isNaN(a) && !isNaN(b) && !isNaN(c)) {
+            if (!isNaN(a) && !isNaN(b) && !isNaN(c) && !(b === 0 && c === 0)) {
                 if (a < b) {
                     data.ParaBoldFlag = 'B';
                     data.RangeStatus = 'low';

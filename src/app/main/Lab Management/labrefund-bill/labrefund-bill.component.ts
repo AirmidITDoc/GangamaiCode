@@ -187,7 +187,7 @@ export class LabrefundBillComponent {
             paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
             billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
             payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],

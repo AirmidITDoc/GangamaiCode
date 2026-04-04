@@ -155,20 +155,24 @@
                                     <!-- 
                                         [style.visibility]="element.isVerified==false ? 'visible' : 'hidden'" -->
 
-                                    <span [matTooltip]="element.isVerified == false
-                                                    ? 'Verification is Pending'
-                                                    : ''">
+                                    <span
+                                        [matTooltip]=" element.isVerified === false ? 'Verification is pending'
+                                                            : element.paymentCompleted == false ? 'Payment is pending' : '' "
+                                        matTooltipPosition="above">
                                         <button mat-icon-button matTooltip="Print" (click)="getPrint(element)"
-                                            [disabled]="!(element.isCompleted && element.isVerified)">
+                                            *ngIf="element.isCompleted"
+                                            [disabled]="element.isVerified === false || element.paymentCompleted == false">
                                             <mat-icon title="Print">print</mat-icon>
                                         </button>
+                                        <!-- [disabled]="!(element.isCompleted && element.isVerified)" -->
                                     </span>
 
-                                    <span [matTooltip]="element.isVerified == false
-                                                    ? 'Verification is Pending'
-                                                    : ''">
+                                    <span
+                                        [matTooltip]=" element.isVerified === false ? 'Verification is pending'
+                                                            : element.paymentCompleted == false ? 'Payment is pending' : '' "
+                                        matTooltipPosition="above">
                                         <button mat-icon-button
-                                            [disabled]="!(element.isCompleted && element.isVerified)"
+                                            [disabled]="element.isVerified === false || element.paymentCompleted == false"
                                             [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
                                             matTooltipPosition="right" (click)="Onemail(element)"
                                             (mouseenter)="openEmailDetailsPopover($event, element)"
@@ -178,11 +182,12 @@
                                         </button>
                                     </span>
 
-                                    <span [matTooltip]="element.isVerified == false
-                                                    ? 'Verification is Pending'
-                                                    : ''">
+                                    <span
+                                        [matTooltip]=" element.isVerified === false ? 'Verification is pending'
+                                                            : element.paymentCompleted == false ? 'Payment is pending' : '' "
+                                        matTooltipPosition="above">
                                         <button mat-icon-button
-                                            [disabled]="!(element.isCompleted && element.isVerified)"
+                                            [disabled]="element.isVerified === false || element.paymentCompleted == false"
                                             [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
                                             matTooltipPosition="right" (click)="getWhatsappshareRadioReport(element)"
                                             (mouseenter)="openWhatsappDetailsPopover($event, element)"
