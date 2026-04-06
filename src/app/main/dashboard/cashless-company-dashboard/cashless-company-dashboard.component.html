@@ -1,4 +1,5 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight fusePerfectScrollbar>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight
+    fusePerfectScrollbar>
     <div class="top-header accent">
         <div class="top-header-info">
             <mat-icon class="logo-icon"
@@ -128,10 +129,9 @@
             <airmid-table [gridConfig]="gridConfig_CompanyWise" class="content" [ShowFilter]="false" #grid2Ref
                 style="width:100%; height:100%;"></airmid-table>
         </div>
-
     </div>
-<!-- <div>
-     <airmid-table [gridConfig]="gridConfig_MonthlyCompanyWise" class="content" [ShowFilter]="false" #grid3Ref
-                style="width:100%; height:100%;"></airmid-table>
-</div> -->
+    <div style="display:flex;">
+        <airmid-table [gridConfig]="gridConfig_MonthlyCompanyWise" class="content" [ShowFilter]="false"
+            #grid3Ref></airmid-table>
+    </div>
 </div>

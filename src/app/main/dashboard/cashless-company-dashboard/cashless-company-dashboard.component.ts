@@ -22,7 +22,7 @@ export class CashlessCompanyDashboardComponent implements OnInit {
 
     @ViewChild('grid1Ref') grid1: AirmidTableComponent;
     @ViewChild('grid2Ref') grid2: AirmidTableComponent;
-    // @ViewChild('grid3Ref') grid3: AirmidTableComponent;
+    @ViewChild('grid3Ref') grid3: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionButTemplate') actionButTemplate!: TemplateRef<any>;
 
@@ -93,24 +93,35 @@ export class CashlessCompanyDashboardComponent implements OnInit {
 
     // ========================= end table Count Wise summary  =================
 
-    // // ===== Start Table Count Wise summary  =================
+    // ===== Start Table Count Wise summary  =================
 
-    // allcolumns_MonthlyCompanyWise = [
-    //     { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 500 },
-    //     { heading: "Jan", key: "jan", sort: true, align: "center", emptySign: 'NA' },
-    // ]
-    // allfilters_MonthlyCompanyWise = [
-    //     { fieldName: "Year", fieldValue: '2026', opType: OperatorComparer.Equals },
-    // ]
-    // gridConfig_MonthlyCompanyWise: gridModel = {
-    //     apiUrl: "CashLess/CashlessMonthlyCompanyWiseSummary",
-    //     columnsList: this.allcolumns_CompanyWise,
-    //     sortField: "companyName",
-    //     sortOrder: 0,
-    //     filters: this.allfilters_MonthlyCompanyWise,
-    // }
+    allcolumns_MonthlyCompanyWise = [
+        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Jan", key: "jan", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Feb", key: "feb", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Mar", key: "mar", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Apr", key: "apr", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "May", key: "may", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "jun", key: "jun", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "jul", key: "jul", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "aug", key: "aug", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "sep", key: "sep", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "oct", key: "oct", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "nov", key: "nov", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "dec", key: "dec", sort: true, align: "center", emptySign: 'NA' },
+    ]
+    allfilters_MonthlyCompanyWise = [
+        { fieldName: "Year", fieldValue: '2026', opType: OperatorComparer.Equals },
+    ]
+    gridConfig_MonthlyCompanyWise: gridModel = {
+        apiUrl: "CashLess/CashlessMonthlyCompanyWiseSummary",
+        columnsList: this.allcolumns_MonthlyCompanyWise,
+        sortField: "companyName",
+        sortOrder: 0,
+        filters: this.allfilters_MonthlyCompanyWise,
+    }
 
-    // ========================= end table Count Wise summary  =================
+    //========================= end table Count Wise summary  =================
 
     constructor(
         public _CashlessDashboardService: CashlessDashboardService,
@@ -182,18 +193,18 @@ export class CashlessCompanyDashboardComponent implements OnInit {
         this.grid2.gridConfig = this.gridConfig_CompanyWise;
         this.grid2.bindGridData();
 
-        // // ===== Start Table Monthly Company Wise summary  =================
-        // this.gridConfig_MonthlyCompanyWise = {
-        //     apiUrl: "CashLess/CashlessMonthlyCompanyWiseSummary",
-        //     columnsList: this.allcolumns_MonthlyCompanyWise,
-        //     sortField: "companyName",
-        //     sortOrder: 0,
-        //     filters: [
-        //         { fieldName: "Year", fieldValue: '2026', opType: OperatorComparer.Equals },
-        //     ],
-        // }
-        // this.grid3.gridConfig = this.gridConfig_MonthlyCompanyWise;
-        // this.grid3.bindGridData();
+        // ===== Start Table Monthly Company Wise summary  =================
+        this.gridConfig_MonthlyCompanyWise = {
+            apiUrl: "CashLess/CashlessMonthlyCompanyWiseSummary",
+            columnsList: this.allcolumns_MonthlyCompanyWise,
+            sortField: "companyName",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "Year", fieldValue: '2026', opType: OperatorComparer.Equals },
+            ],
+        }
+        this.grid3.gridConfig = this.gridConfig_MonthlyCompanyWise;
+        this.grid3.bindGridData();
 
     }
     vCashlessData: any;
