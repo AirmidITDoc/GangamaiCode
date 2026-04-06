@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
     configSettingParam1: any = [];
     newconfigSettingParam: any = [];
     UnitWiseSystemConfigu: any = [];
-
+    UserAcessConfigSetting: any = [];
     LogOutTimeValue: any = 10000;
     LogOutTimeID: any = 0;
     // Private
@@ -241,6 +241,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.authService.getNavigationData();
                 this.ConfigSettingParamNew();
                 this.ConfigSettingUnitWise();
+                 this.UserAccConfigSettingParam()
+
             }
         });
 
@@ -297,6 +299,63 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
 
+
+     UserAccConfigSettingParam() {
+                const Params =
+        {
+              "searchFields": [{
+                "fieldName": "LoginId",
+                "fieldValue": String(this.authService.currentUserValue.userId),
+                "opType": "Equals"
+            }],
+            "mode": "LoginWiseAccessConfigList"  //SystemConfigList
+        }
+
+        this._httpClient1.PostData("Common", Params).subscribe(data => {
+         
+            this.UserAcessConfigSetting=data
+            console.log(this.UserAcessConfigSetting)
+                   this.configService.setCongiParam1(this.UserAcessConfigSetting);
+         
+            // const dailydashData = data.find(x => x.AccessValueName === 'IsDailyDashboard');
+            // const beddashData = data.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
+            // const invdashData = data.find(x => x.AccessValueName === 'IsInvestigation');
+            // const cashlessdashData = data.find(x => x.AccessValueName === 'IsCashlessDashboard');
+            // const phardashData = data.find(x => x.AccessValueName === 'IsPharmacy');
+            // const finacedashData = data.find(x => x.AccessValueName === 'IsFinancialDashboard');
+            // const labdashData = data.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
+
+            // console.log(dailydashData)
+            // debugger
+            // console.log(response)
+            // if (response) {
+
+            //     if (dailydashData.AccessValue)
+            //         this.dailydashflag = true;
+            //     else
+            //         this.dailydashflag = false
+
+
+            //     if (beddashData.AccessValue)
+            //         this.beddashflag = true;
+
+            //     if (invdashData.AccessValue)
+            //         this.Investigationdashflag = true;
+
+            //     if (cashlessdashData.AccessValue)
+            //         this.Cashlessdashflag = true;
+
+            //     if (phardashData.AccessValue)
+            //         this.Pharmacydashflag = true;
+            //     if (labdashData.AccessValue)
+            //         this.Labfinancedashflag = true;
+            //     if (finacedashData.AccessValue)
+            //         this.Financedashflag = true;
+
+
+            // }
+        });
+    }
     // getDBInfo() {
     //     this._httpClient1.GetData('DbInfo').subscribe((data) => {
     //         alert(JSON.stringify(data));

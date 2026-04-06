@@ -1,0 +1,37 @@
+<div fxFlexFill class="page-layout ip-billing-section grid-container modal-wrapper" dynamicTableHeight>
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span>Company Wise Patient Summary</span>
+            </div>
+            <div class="modal-header-icon">
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <span class="modal-icon">
+                                <mat-icon>close</mat-icon>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matTooltip="OnView" (click)="onView(element)">
+                <mat-icon>remove_red_eye</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" #grid1Ref></airmid-table>
+    </div>
+    <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center">
+        <div class="button-row-group">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+        </div>
+    </div>
+</div>

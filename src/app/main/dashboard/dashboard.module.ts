@@ -46,6 +46,7 @@ import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-das
 import { RadiologysaleComponent } from './lab-financial-dashboard/radiologysale/radiologysale.component';
 import { CashlessCompanyDashboardComponent } from './cashless-company-dashboard/cashless-company-dashboard.component';
 import { SharedModule } from '../shared/shared.module';
+import { CompanyPatientSummaryDashboardComponent } from './cashless-company-dashboard/company-patient-summary-dashboard/company-patient-summary-dashboard.component';
 // import { FinancetestComponent } from './financetest/financetest.component';
 
 @NgModule({
@@ -74,6 +75,7 @@ import { SharedModule } from '../shared/shared.module';
         OperatonalDashboardComponent,
         RadiologysaleComponent,
         CashlessCompanyDashboardComponent,
+        CompanyPatientSummaryDashboardComponent,
         // FinancetestComponent
     ],
     imports: [
