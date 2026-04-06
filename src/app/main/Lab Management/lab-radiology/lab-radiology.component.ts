@@ -40,6 +40,7 @@ export class LabRadiologyComponent {
     page: PageNames = PageNames.PATIENT;
     pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
     autocompleteModeCategoryId: string = "RadioCategory";
+    autocompleteModesubGroupName: string = "SubGroupName";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     vUnitId = 0;
     reportlogFormGroup: FormGroup

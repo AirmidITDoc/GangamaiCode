@@ -179,7 +179,9 @@ export class TestApprovalListComponent {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-            { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: "1", opType: OperatorComparer.Equals },
+            { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
         ]
     }
 
@@ -231,13 +233,24 @@ export class TestApprovalListComponent {
 
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, 'MM/dd/yyyy')
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, 'MM/dd/yyyy')
-        // this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
-        // this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
+        this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
+        this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
         this.status = this.myformSearch.get('StatusSearch').value || 0
         // this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
 
         this.GetResultdetail();
         this.getfilterdata();
+    }
+
+    Clearfilter(event) {
+
+        if (event == 'FirstNameSearch')
+            this.myformSearch.get('FirstNameSearch').setValue("")
+
+        if (event == 'LastNameSearch')
+            this.myformSearch.get('LastNameSearch').setValue("")
+
+        this.onChangeFirst();
     }
 
     getfilterdata() {
@@ -248,13 +261,13 @@ export class TestApprovalListComponent {
             sortField: "PathTestID",
             sortOrder: 0,
             filters: [
-                // { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-                // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
                 // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
                 { fieldName: "ApprovalStatus", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
                 // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
                 // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
             ]
@@ -1261,6 +1274,8 @@ export class TestApprovalListComponent {
                     "fieldValue": String(this.status),
                     "opType": "Equals"
                 },
+                { "fieldName": "F_Name ", fieldValue: '%', opType: "StartsWith" },
+                { "fieldName": "L_Name", fieldValue: '%', opType: "StartsWith" },
             ],
             "exportType": "JSON",
             "columns": []

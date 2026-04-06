@@ -307,7 +307,8 @@ export class BrowseLabBillsComponent {
     isActionEnabled(element: any): boolean {
         return (
             (element.patientType === 'Self' && element.isVerifySign === 1) ||
-            (element.patientType !== 'Self' && element.isVerifySign === 0)
+            (element.patientType !== 'Self' && element.isVerifySign === 1) || // when company + credit
+            (element.patientType === 'self' && element.paidAmt < 0 && element.isVerifySign === 1) // when self + credit
         );
     }
 
@@ -594,7 +595,7 @@ export class BrowseLabBillsComponent {
         this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterbillform.get('FirstName').value + "%"
         this.l_name = this.myFilterbillform.get('LastName').value + "%"
-        this.regNo = this.myFilterbillform.get('RegNo').value || "0"
+        this.regNo = this.myFilterbillform.get('RegNo').value || ""
         this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
         this.CompanyId = this.myFilterbillform.get('CompanyId').value || "0"
         this.UnitId = this.myFilterbillform.get('UnitId').value || "0"

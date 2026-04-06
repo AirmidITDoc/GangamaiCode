@@ -101,6 +101,32 @@
                                         </airmid-datepicker>
                                     </div>
 
+                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>FirstName</mat-label>
+                                            <input matInput placeholder="Search FirstName" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="FirstNameSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('FirstNameSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>LastName</mat-label>
+                                            <input matInput placeholder="Search LastName" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="LastNameSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('LastNameSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+
                                     <div fxFlex="15%" fxLayout="row">
                                         <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
                                             (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"

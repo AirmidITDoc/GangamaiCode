@@ -282,15 +282,19 @@ export class LabRegBillDeatilsComponent {
         });
     }
 
-    viewgetReportdispatch() {
+    viewgetReportdispatch(contact) {
+        console.log('contact:',contact)
         console.log(this.data)
         const dialogRef = this._matDialog.open(ReportDispatchComponent,
             {
                 maxWidth: "90vw",
                 maxHeight: '95%',
                 width: '100%',
-                data: this.data
-
+                data: {
+                    data:this.data,
+                    Type:'SingleDispatch',
+                    chargeId:contact.chargesId
+                }
             });
         dialogRef.afterClosed().subscribe(result => {
             // this.onChangeFirst2()

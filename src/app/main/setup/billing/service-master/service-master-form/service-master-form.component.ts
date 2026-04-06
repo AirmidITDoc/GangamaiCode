@@ -193,7 +193,8 @@ export class ServiceMasterFormComponent implements OnInit {
         return this._formBuilder.group({
             serviceDetailId: [item?.serviceDetailId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [item?.serviceId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tariffId: [this.tariffId || item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.vTariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // tariffId: [this.tariffId || item.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [item.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classRate: [item.classRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discountAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -381,11 +382,12 @@ export class ServiceMasterFormComponent implements OnInit {
             this.serviceDetailsArray.push(this.createserviceDetails(item));
         });
 
-        const controlsToRemove = ['EffectiveDate', 'tariffId', 'opipType'];
+        const controlsToRemove = ['EffectiveDate', 'opipType'];
         controlsToRemove.forEach(control => {
             this.serviceForm.removeControl(control);
         });
         this.serviceForm.get('price').setValue(0)
+        this.serviceForm.get('tariffId').setValue(this.serviceForm.get('tariffId')?.value);
         this.serviceForm.get('doctorId')?.setValue(this.serviceForm.get('doctorId')?.value || 0);
         this.serviceForm.get("isPathology")?.setValue(this.serviceForm.get("isPathology")?.value ? 1 : 0);
         this.serviceForm.get("isRadiology")?.setValue(this.serviceForm.get("isRadiology")?.value ? 1 : 0);
@@ -557,7 +559,8 @@ export class ServiceMasterFormComponent implements OnInit {
     }
     selectChangetariff(obj: any) {
         console.log(obj);
-        this.tariffId = obj.value
+        this.vTariffId = obj.value
+        // this.tariffId = obj.value
     }
 
     getValidationMessages() {
