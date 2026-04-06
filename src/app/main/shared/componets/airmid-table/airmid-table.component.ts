@@ -57,7 +57,6 @@ export class AirmidTableComponent implements OnInit {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
         // initialize columns
-        debugger
         this.gridConfig.columnsList = this.gridConfig.columnsList.map(col => ({
             ...col,
             visible: true
