@@ -2164,6 +2164,9 @@ getItemNames(): string {
             advancedetails.forEach(element => {
                 this.TotalAdvanceAmt += element?.advanceAmount || 0
                 this.TotalBalanceAmt += element?.balanceAmount || 0
+
+                //  this.TotalAdvanceAmt = element?.advanceAmount || 0
+                // this.TotalBalanceAmt = element?.balanceAmount || 0
             });
             console.log(advancedetails)
         });

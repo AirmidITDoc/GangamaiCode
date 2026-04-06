@@ -23,4 +23,8 @@ export class CashlessDashboardService {
       enddate: [(new Date()).toISOString()],
     });
   }
+
+  public getCashlessDashboard(params:any) {
+    return this._httpClient.GetData("Dashboard/Cashless-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
+  }
 }

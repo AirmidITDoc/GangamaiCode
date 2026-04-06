@@ -315,21 +315,18 @@ debugger
     this.getBanklist();
   } 
   deleteTableRow(element: any) {
-
-    // let data = [...this.dsPayList.data];
-
-    // // 👉 If it's split row → restore amount
-    // if (contact.isSplit && contact.parentId) {
-
-    //   let parent = data.find(x => x.id === contact.parentId);
-
-    //   if (parent) {
-    //     parent.payAmount += contact.payAmount;
-    //   }
+    //  const payamt = +element?.payAmount || 0
+    // let data={
+    //  "paymentId": element?.paymentId || 0,
+    //  "isCancelledBy": this._loggedService.currentUserValue.userId
     // }
-
-    // // Remove row
-    // data.splice(index, 1);
+    // this._Paymentmodesevice.Deletepaymentmode(data).subscribe(data=>{
+    //   if(data){
+    //     const addbalamt = this.totalBalAmt + payamt 
+    //     this.totalBalAmt = addbalamt;
+    //     this.getPaylist();
+    //   }
+    // }) 
 
         const payamt = +element?.payAmount || 0
         const index = this.chargelist.indexOf(element);

@@ -117,13 +117,15 @@ IsMaterialAcceptDirect:any
 IsMaterialAcceptAgainstIndent:any
 IsMaterialAccept:any;
 IsOPBillProceed:any;
-DailyDashBoard:any;
-BedDashBoard:any;
-CashlessDashBoard:any;
-PharmacyDashBoard:any;
-FinanceDashBoard:any;
-InvestigationDashBoard:any;
-LabFinanceDashBoard:any;
+IsDailyDashboard:any;
+IsBedAccupancyDashboard:any;
+IsCashlessDashboard:any;
+IsPharmacy:any;
+IsFinancialDashboard:any;
+IsInvestigation:any;
+IsLabFinancialDashboard:any;
+
+
  /**
      * Constructor
      *
@@ -249,14 +251,13 @@ this.IsMaterialAcceptAgainstIndent=ConfigSettingParams.IsMaterialAcceptAgainstIn
 this.IsMaterialAccept=ConfigSettingParams.IsMaterialAccept;
 this.IsOPBillProceed=ConfigSettingParams.IsOPBillProceed;
 
-
-this.DailyDashBoard=ConfigSettingParams.DailyDashBoard;
-this.BedDashBoard=ConfigSettingParams.BedDashBoard;
-this.CashlessDashBoard=ConfigSettingParams.CashlessDashBoard;
-this.PharmacyDashBoard=ConfigSettingParams.PharmacyDashBoard;
-this.FinanceDashBoard=ConfigSettingParams.FinanceDashBoard;
-this.InvestigationDashBoard=ConfigSettingParams.InvestigationDashBoard;
-this.LabFinanceDashBoard=ConfigSettingParams.LabFinanceDashBoard;
+this.IsDailyDashboard=ConfigSettingParams.IsDailyDashboard;
+this.IsBedAccupancyDashboard=ConfigSettingParams.IsBedAccupancyDashboard;
+this.IsInvestigation=ConfigSettingParams.IsInvestigation;
+this.IsCashlessDashboard=ConfigSettingParams.IsCashlessDashboard;
+this.IsPharmacy=ConfigSettingParams.IsPharmacy;
+this.IsFinancialDashboard=ConfigSettingParams.IsFinancialDashboard;
+this.IsLabFinancialDashboard=ConfigSettingParams.IsLabFinancialDashboard;
 
 
     }
