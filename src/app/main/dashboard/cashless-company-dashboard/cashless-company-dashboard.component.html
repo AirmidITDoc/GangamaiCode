@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" fusePerfectScrollbar>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight fusePerfectScrollbar>
     <div class="top-header accent">
         <div class="top-header-info">
             <mat-icon class="logo-icon"
@@ -26,14 +26,112 @@
 
     </div>
 
-    <div class="table-row">
-        <div class="table-container">
-            <airmid-table [gridConfig]="gridConfig" [ShowFilter]="false" #grid1Ref></airmid-table>
+
+    <div class="card-container">
+
+        <div *ngFor="let item of vcashlessList" class="dashboard-card">
+
+            <!-- Header -->
+            <div class="card-header">
+                <div class="header-left">
+                    <span class="card-icon">&#128737;</span>
+                    <span class="card-title">{{ item.section }} Section</span>
+                </div>
+
+                <!-- Badge -->
+                <span class="badge" [ngClass]="item.section === 'OP' ? 'op' : 'ip'">
+                    {{ item.section }}
+                </span>
+
+                <!-- Total -->
+                <div class="header-total">
+                    {{ item.totalCount }}
+                    <div class="total-text">Total</div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="split-section">
+
+                <!-- Self -->
+                <div class="split-box self">
+                    <div class="count">{{ item.selfCount }}</div>
+                    <div class="label">Self</div>
+                </div>
+
+                <!-- Company (Clickable) -->
+                <div class="split-box company" (click)="onViewCompanyPatientSummary(item)">
+
+                    <div class="count">{{ item.companyCount }}</div>
+                    <div class="label">Company</div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar">
+                        <div class="approved-bar" [style.width.%]="getApprovedPercent(item)">
+                        </div>
+                    </div>
+
+                    <!-- Approved / Pending -->
+                    <div class="company-sub">
+
+                        <!-- Approved -->
+                        <div class="sub approved">
+                            <span>✔ {{ item.approvedCount }}</span>
+                            <span class="view-icon" (click)="viewDetails(item, 'approved', $event)">
+                                👁
+                            </span>
+                        </div>
+
+                        <!-- Pending -->
+                        <div class="sub pending">
+                            <span>⏳ {{ item.pendingCount }}</span>
+                            <span class="view-icon" (click)="viewDetails(item, 'pending', $event)">
+                                👁
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="table-container">
-            <airmid-table [gridConfig]="gridConfig_CompanyWise" [ShowFilter]="false" #grid2Ref></airmid-table>
-        </div>
     </div>
+    <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
 
+            <button mat-icon-button matTooltip="OnView" (click)="onView(element)">
+                <mat-icon>remove_red_eye</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+
+    <ng-template #actionButTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+
+            <button mat-icon-button matTooltip="OnView" (click)="onViewCompanyPatientSummary(element)">
+                <mat-icon>remove_red_eye</mat-icon>
+            </button>
+        </div>
+    </ng-template>
+
+    <div style="display:flex;">
+
+        <div style="flex:0 0 50%; height:500px; overflow: auto;">
+            <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" #grid1Ref
+                style="width:100%; height:100%;"></airmid-table>
+        </div>
+
+        <div style="flex:0 0 50%; height:500px;">
+            <airmid-table [gridConfig]="gridConfig_CompanyWise" class="content" [ShowFilter]="false" #grid2Ref
+                style="width:100%; height:100%;"></airmid-table>
+        </div>
+
+    </div>
+<!-- <div>
+     <airmid-table [gridConfig]="gridConfig_MonthlyCompanyWise" class="content" [ShowFilter]="false" #grid3Ref
+                style="width:100%; height:100%;"></airmid-table>
+</div> -->
 </div>
