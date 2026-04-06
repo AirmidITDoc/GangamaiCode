@@ -46,13 +46,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     currentDate: Date = new Date();
 
 
-    dailydashflag: boolean = false
-    Investigationdashflag: boolean = false
-    Financedashflag: boolean = false
-    Cashlessdashflag: boolean = false
-    beddashflag: boolean = false
-    Labfinancedashflag: boolean = false
-    Pharmacydashflag: boolean = false
+    dailydashflag: boolean = true
+    Investigationdashflag: boolean = true
+    Financedashflag: boolean = true
+    Cashlessdashflag: boolean = true
+    beddashflag: boolean = true
+    Labfinancedashflag: boolean = true
+    Pharmacydashflag: boolean = true
 
     // Demo notification array
     notifications = [];
@@ -136,35 +136,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        this.ConfigSettingParamNew()
+       debugger
+        //  const rawValue = this?._configue.getConfigParam1();
 
-        //         const dailyValue1 = this?.configSettingParam1?.DailyDashBoard || "";
-        //         const [id1, val1] = dailyValue1.includes(":") ? dailyValue1.split(":") : [null, null];
-        //         this.dailydashflag = id1 === "1";
-
-        //         const bedValue1 = this?.configSettingParam1?.BedDashBoard || "";
-        //         const [id2, val2] = bedValue1.includes(":") ? bedValue1.split(":") : [null, null];
-        //         this.beddashflag = id2 === "1";
-        // 
-        //         const InvValue1 = this?.configSettingParam1?.InvestigationDashBoard || "";
-        //         const [id3, val3] = InvValue1.includes(":") ? InvValue1.split(":") : [null, null];
-        //         this.Investigationdashflag = id3 === "1";
-
-        //         const CashlessValue1 = this?.configSettingParam1?.CashlessDashBoard || "";
-        //         const [id4, val4] = CashlessValue1.includes(":") ? CashlessValue1.split(":") : [null, null];
-        //         this.Cashlessdashflag = id4 === "1";
-
-        //         const pharValue1 = this?.configSettingParam1?.PharmacyDashBoard || "";
-        //         const [id5, val5] = pharValue1.includes(":") ? pharValue1.split(":") : [null, null];
-        //         this.Pharmacydashflag = id5 === "1";
-
-        //         const labFinanceValue1 = this?.configSettingParam1?.LabFinanceDashBoard || "";
-        //         const [id6, val6] = labFinanceValue1.includes(":") ? labFinanceValue1.split(":") : [null, null];
-        //         this.Labfinancedashflag = id6 === "1";
-
-        //         const FinanceValue1 = this?.configSettingParam1?.FinanceDashBoard || "";
-        //         const [id7, val7] = FinanceValue1.includes(":") ? FinanceValue1.split(":") : [null, null];
-        //         this.Financedashflag = id7 === "1";
+        //  console.log(rawValue)
+        //  this.setDashboard(rawValue)
+        // const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        // this.IsMaterialAccept = id === "1";
 
 
 
@@ -306,30 +284,19 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         });
     }
-    configSettingParam1: any = [];
-    ConfigSettingParamNew() {
-        const SelectQuery = {
-            "searchFields": [{
-                "fieldName": "LoginId",
-                "fieldValue": String(this.accountService.currentUserValue.userId),
-                "opType": "Equals"
-            }],
-            "mode": "LoginWiseAccessConfigList"
-        }
-        this._service.commonList(SelectQuery).subscribe(response => {
-            const dailydashData = response.find(x => x.AccessValueName === 'IsDailyDashboard');
-            const beddashData = response.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
-            const invdashData = response.find(x => x.AccessValueName === 'IsInvestigation');
-            const cashlessdashData = response.find(x => x.AccessValueName === 'IsCashlessDashboard');
-            const phardashData = response.find(x => x.AccessValueName === 'IsPharmacy');
-            const finacedashData = response.find(x => x.AccessValueName === 'IsFinancialDashboard');
-            const labdashData = response.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
-
+   setDashboard(data){
+    const dailydashData = data.find(x => x.AccessValueName === 'IsDailyDashboard');
+            const beddashData = data.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
+            const invdashData = data.find(x => x.AccessValueName === 'IsInvestigation');
+            const cashlessdashData = data.find(x => x.AccessValueName === 'IsCashlessDashboard');
+            const phardashData = data.find(x => x.AccessValueName === 'IsPharmacy');
+            const finacedashData = data.find(x => x.AccessValueName === 'IsFinancialDashboard');
+            const labdashData = data.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
 
             console.log(dailydashData)
             debugger
-            console.log(response)
-            if (response) {
+            console.log(data)
+            if (data) {
 
                 if (dailydashData.AccessValue)
                     this.dailydashflag = true;
@@ -355,8 +322,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
 
             }
-        });
-    }
+   }
+   
     // navigateToImportExcel() {
     //     this.router.navigate(['/import-excel']);
     // }
