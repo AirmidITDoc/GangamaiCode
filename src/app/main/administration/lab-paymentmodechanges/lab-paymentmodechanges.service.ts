@@ -74,4 +74,7 @@ export class LabPaymentmodechangesService {
     public getBankNameList(m_data) {
         return this._httpClient.PostData("Common", m_data)
     }
+        public Deletepaymentmode(m_data) {
+        return this._httpClient.PostData("PaymentMode/Cancel", m_data)
+    }
 }
