@@ -128,6 +128,10 @@
                 <mat-icon>print</mat-icon>
             </button>
 
+            <button mat-icon-button matTooltip="No Fee Receipt" (click)="getNoFeeRecPrint(element)">
+                <mat-icon>print</mat-icon>
+            </button>
+
             <button mat-icon-button matTooltip="Package Print" (click)="getPackagePrint(element)"
                 [style.visibility]="element.isPackage == 1 ? 'visible' : 'hidden'">
                 <mat-icon>print</mat-icon>
@@ -137,18 +141,35 @@
                 <mat-icon>track_changes</mat-icon>
             </button>
 
-            <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified)
-                            ? 'Reports are not verified yet' : '' " matTooltipPosition="above">
+            <!-- <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified && !element.isAllOtherServicesVerified )
+                            ? 'All Reports are not verified yet' : '' " matTooltipPosition="above">
                 <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)"
-                    [disabled]="!element.isAllPathServicesVerified && !element.isAllRadServicesVerified">
+                    [disabled]="!element.isAllPathServicesVerified && !element.isAllRadServicesVerified && !element.isAllOtherServicesVerified">
+                    <mat-icon>local_shipping</mat-icon>
+                </button>
+            </span> -->
+
+            <span [matTooltip]="(element.isAllPathServicesVerified !== 1 
+              || element.isAllRadServicesVerified !== 1 
+              || element.isAllOtherServicesVerified !== 1)
+              ? 'All Reports are not verified yet' : ''" matTooltipPosition="above">
+
+                <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)"
+                    [disabled]="(element.isAllPathServicesVerified !== 1 
+                  || element.isAllRadServicesVerified !== 1 
+                  || element.isAllOtherServicesVerified !== 1)">
+
                     <mat-icon>local_shipping</mat-icon>
                 </button>
             </span>
 
-            <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified)
-                            ? 'Reports are not verified yet' : '' " matTooltipPosition="above">
-                <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)"
-                    [disabled]="!element.isAllPathServicesVerified && !element.isAllRadServicesVerified">
+            <span [matTooltip]="(element.isAllPathServicesVerified !== 1 
+              || element.isAllRadServicesVerified !== 1 
+              || element.isAllOtherServicesVerified !== 1)
+              ? 'All Reports are not verified yet' : ''" matTooltipPosition="above">
+                <button mat-icon-button matTooltip="SMS Send" (click)="viewgetSms(element)" [disabled]="(element.isAllPathServicesVerified !== 1 
+                  || element.isAllRadServicesVerified !== 1 
+                  || element.isAllOtherServicesVerified !== 1)">
                     <mat-icon>sms</mat-icon>
                 </button>
             </span>

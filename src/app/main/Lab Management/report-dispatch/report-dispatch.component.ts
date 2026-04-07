@@ -39,6 +39,7 @@ export class ReportDispatchComponent {
     Remark: any = ''
     dateTimeObj: any
     LabId: any = 0
+    chargeId: any = 0
     UnitId = this._accountService.currentUserValue.user.unitId
     DueAmt = 0
     ModeId = "0"
@@ -60,13 +61,21 @@ export class ReportDispatchComponent {
 
     ngOnInit(): void {
         if (this.data) {
-            this.Personaldata = this.data;
+            this.chargeId = this.data.chargeId
+            this.Personaldata = this.data.data;
             console.log(this.Personaldata)
             this.LabId = this.Personaldata.labPatientId
             this.DueAmt = this.Personaldata.balanceAmt
             this.ModeId = this.Personaldata.dispatchModeId
         }
-        this.getServiceTestList();
+
+        if (this.data.Type == "SingleDispatch") {
+            this.getSingleServiceTestList();
+        }
+        else if (this.data.Type == "AllDispatch") {
+            this.getServiceTestList();
+        }
+
         this.myReportform = this.CreateReportDiscpathform()
         if (this.LabId != 0)
             this.getfilterReporthistory()
@@ -79,7 +88,7 @@ export class ReportDispatchComponent {
             labPatientId: [this.LabId, [
                 Validators.required]],
             unitId: [this._accountService.currentUserValue.user.unitId, [Validators.required]],
-            dispatchModeId: [this.ModeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            dispatchModeId: [this.ModeId ?? 0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             refDocId: [0],
             comments: "",
             dispatchBy: this._accountService.currentUserValue.userId,
@@ -109,6 +118,7 @@ export class ReportDispatchComponent {
     allReportcolumns = [
         { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Dispatch Mode", key: "name", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA', type: 8 },
         { heading: "Created By", key: "createdUser", sort: true, align: 'left', emptySign: 'NA' },
@@ -125,7 +135,6 @@ export class ReportDispatchComponent {
     ];
     allservicefilters = [
         { fieldName: "DispatchId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
-
     ];
 
     allServicecolumns = [
@@ -249,6 +258,29 @@ export class ReportDispatchComponent {
         return this.selection.selected.length > 0 && !this.isAllSelected();
     }
 
+    getSingleServiceTestList() {
+        const data = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "LabPatientId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "ChargeId",
+                    "fieldValue": String(this.chargeId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        console.log(data)
+        this._LabmanagementService.gettestlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+        });
+    }
+
     getServiceTestList() {
 
         const data = {
@@ -264,12 +296,7 @@ export class ReportDispatchComponent {
                 }
             ],
             "exportType": "JSON",
-            "columns": [
-                {
-                    "data": "string",
-                    "name": "string"
-                }
-            ]
+            "columns": []
         }
         console.log(data)
         this._LabmanagementService.gettestlist(data).subscribe((response) => {
@@ -430,8 +457,15 @@ export class ReportDispatchComponent {
 
         } else {
 
-            this.myReportform.get('dispatchModeId')
-                .setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+            this.myReportform.get('dispatchModeId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+            this.myReportform.get('dispatchModeId').updateValueAndValidity();
+
+            if (!this.myReportform.get('dispatchModeId').value ||
+                isNaN(this.myReportform.get('dispatchModeId').value)) {
+
+                this.toastr.warning('Please select a valid dispatch mode', 'Warning');
+                return;
+            }
 
             if (this.selection.selected.length === 0) {
                 this.toastr.warning(`select Report to dispatch`, 'Warning');
@@ -466,13 +500,23 @@ export class ReportDispatchComponent {
             return;
         }
 
-        this._LabmanagementService.ReportDispatchInsert(this.myReportform.value)
-            .subscribe((response) => {
-                this.repogrid.bindGridData();
-                this.getServiceTestList();
-                this.myReportform.get('dispatchModeId').setValue(0);
-                this.myReportform.get('refDocId').setValue(0);
-            });
+        if (this.data.Type == "SingleDispatch") {
+            this._LabmanagementService.ReportDispatchInsert(this.myReportform.value)
+                .subscribe((response) => {
+                    this.repogrid.bindGridData();
+                    this.getSingleServiceTestList();
+                    this.myReportform.get('dispatchModeId').setValue(0);
+                    this.myReportform.get('refDocId').setValue(0);
+                });
+        } else if (this.data.Type == "AllDispatch") {
+            this._LabmanagementService.ReportDispatchInsert(this.myReportform.value)
+                .subscribe((response) => {
+                    this.repogrid.bindGridData();
+                    this.getServiceTestList();
+                    this.myReportform.get('dispatchModeId').setValue(0);
+                    this.myReportform.get('refDocId').setValue(0);
+                });
+        }
     }
 
     private overlayRef: OverlayRef | null = null;

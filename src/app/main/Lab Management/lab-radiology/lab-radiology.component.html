@@ -29,10 +29,15 @@
                                     </airmid-datepicker>
                                 </div>
 
-                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                <!-- <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <airmid-dropdown label="CategoryName" formControlName="CategoryId"
                                         [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
                                         [mode]="autocompleteModeCategoryId"></airmid-dropdown>
+                                </div> -->
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-dropdown label="SubGroup Name" formControlName="CategoryId"
+                                        [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
+                                        [mode]="autocompleteModesubGroupName"></airmid-dropdown>
                                 </div>
                                 <!-- <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
 

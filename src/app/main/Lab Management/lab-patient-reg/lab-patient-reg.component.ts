@@ -225,7 +225,7 @@ export class LabPatientRegComponent {
             template: this.PatientTypeColorCode
         },
         {
-            heading: "Action", key: "action", align: "right", width: 250, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 280, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ]
@@ -607,8 +607,11 @@ export class LabPatientRegComponent {
                 maxWidth: "95vw",
                 height: '95%',
                 width: '100%',
-                data: element
-
+                // data: element
+                data: {
+                    data: element,
+                    Type: 'AllDispatch'
+                }
             });
         dialogRef.afterClosed().subscribe(result => {
             // this.onChangeFirst2()
@@ -639,6 +642,59 @@ export class LabPatientRegComponent {
         this.commonService.Onprint("BillNo", element.billNo, mode);
     }
 
+    viewgetNoFeeReceiptPdf(element, mode: string) {
+        this.commonService.Onprint("BillNo", element.billNo, mode);
+    }
+
+    // getPrint(contact) {
+
+    //     Swal.fire({
+    //         title: 'Select Print Format',
+    //         html: `
+    //         <div style="display:flex; flex-direction:column; gap:10px;">
+    //             <button id="withHeader" class="swal2-confirm swal2-styled">With Header</button>
+    //             <button id="withoutHeader" class="swal2-deny swal2-styled">Without Header</button>
+    //             <button id="noFees" class="swal2-cancel swal2-styled">No Fees Receipt</button>
+    //         </div>
+    //     `,
+    //         showConfirmButton: false,
+    //         showCancelButton: true,
+    //         didOpen: () => {
+
+    //             const popup = Swal.getPopup();
+
+    //             popup.querySelector('#withHeader').addEventListener('click', () => {
+    //                 Swal.close();
+    //                 this.viewgetOPBillReportPdf(contact, "LabMoneyReceipt");
+    //             });
+
+    //             popup.querySelector('#withoutHeader').addEventListener('click', () => {
+    //                 Swal.close();
+    //                 this.viewgetOPBillReportPdf(contact, "LabMoneyReceiptWithoutHeader");
+    //             });
+
+    //             popup.querySelector('#noFees').addEventListener('click', () => {
+    //                 Swal.close();
+
+    //                 // second popup
+    //                 Swal.fire({
+    //                     title: 'No Fees Receipt Format',
+    //                     showDenyButton: true,
+    //                     showCancelButton: true,
+    //                     confirmButtonText: "With Header",
+    //                     denyButtonText: "Without Header",
+    //                 }).then((result) => {
+    //                     if (result.isConfirmed) {
+    //                         this.viewgetNoFeeReceiptPdf(contact, "LabMoneyReceiptPatientCopy");
+    //                     } else if (result.isDenied) {
+    //                         this.viewgetNoFeeReceiptPdf(contact, "LabMoneyReceiptPatientCopyWithoutHeader");
+    //                     }
+    //                 });
+    //             });
+    //         }
+    //     });
+    // }
+
     getPrint(contact) {
 
         console.log(contact)
@@ -658,23 +714,33 @@ export class LabPatientRegComponent {
 
             if (result.isConfirmed) {
                 this.viewgetOPBillReportPdf(contact, "LabMoneyReceipt");
-                // Swal.fire({
-                //   title: 'More Options',
-                //   icon: 'question',
-                //   showCancelButton: true,
-                //   confirmButtonText: 'With Header',
-                //   denyButtonText: 'With Image',
-                //   showDenyButton: true,
-                // }).then(subResult => {
-
-                //   if (subResult.isConfirmed) {
-                //     this.viewgetOPBillReportPdf(contact, 'LabMoneyReceipt');
-                //   } else if (subResult.isDenied) {
-                //     this.viewgetOPBillReportPdf1(contact, 'LabMoneyReceiptWithImage');
-                //   }
-                // });
             } else if (result.isDenied) {
                 this.viewgetOPBillReportPdf(contact, "LabMoneyReceiptWithoutHeader");
+            }
+        });
+    }
+
+    getNoFeeRecPrint(contact) {
+
+        console.log(contact)
+
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                this.viewgetNoFeeReceiptPdf(contact, "LabMoneyReceiptPatientCopy");
+            } else if (result.isDenied) {
+                this.viewgetNoFeeReceiptPdf(contact, "LabMoneyReceiptPatientCopyWithoutHeader");
             }
         });
     }
@@ -700,6 +766,7 @@ export class LabPatientRegComponent {
             }
         });
     }
+    
     viewgetPackageBillReportPdf(element, mode: string) {
         // this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
         this.commonService.Onprint("BillNo", element.billNo, mode);

@@ -70,7 +70,6 @@
                                 </div>
                             </form>
 
-
                             <div fxLayout="row wrap" fxLayoutGap="12px" class="mt-3" fxLayoutAlign="start center">
 
                                 <div fxFlex="100%" fxLayoutAlign="start center">
@@ -89,6 +88,7 @@
                                             [formGroup]="serviceForm" formControlName="serviceId"
                                             placeholderText="Enter Package Service Name" [ApiUrl]="ApiURL"
                                             (selectionChange)="selectChangeService($event)" TextField="formattedText"
+                                            (input)="onServiceInput($event)"
                                             ValueField="serviceId" (keydown.enter)="focusNext(qtyLimitInput)">
                                         </airmid-autocomplete>
                                     </div>

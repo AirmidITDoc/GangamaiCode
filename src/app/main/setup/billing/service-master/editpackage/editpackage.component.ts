@@ -83,7 +83,7 @@ export class EditpackageComponent implements OnInit {
             // extra fields
             serviceId: [0],
             ServiceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
-            TariffName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            TariffName: ["", [Validators.required]],
 
             isPackageType: "0",
             qtyLimit: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -172,6 +172,18 @@ export class EditpackageComponent implements OnInit {
         this.tariffId = data.tariffId
         const match = data.formattedText.match(/Price\s*:\s*([0-9.]+)/); //take only price part
         this.price = match ? parseFloat(match[1]) : 0;
+    }
+
+    onServiceInput(event: any) {
+        let value = event.target.value;
+
+        if (!value) return;
+        // ✅ replace only +
+        let encoded = value.replace(/\+/g, '%2B');
+
+        if (value !== encoded) {
+            this.serviceForm.get('serviceId')?.setValue(encoded, { emitEvent: false });
+        }
     }
 
     onAddPackageService() {
