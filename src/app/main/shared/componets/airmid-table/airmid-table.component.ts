@@ -57,12 +57,12 @@ export class AirmidTableComponent implements OnInit {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
         // initialize columns
-        this.gridConfig.columnsList = this.gridConfig.columnsList.map(col => ({
-            ...col,
-            visible: true
-        }));
+        // this.gridConfig.columnsList = this.gridConfig.columnsList.map(col => ({
+        //     ...col,
+        //     visible: true
+        // }));
 
-        this.displayedColumns = this.gridConfig.columnsList.filter(x => x.visible == true).map(x => x.key.replaceAll(' ', ''));
+        // this.displayedColumns = this.gridConfig.columnsList.filter(x => x.visible == true).map(x => x.key.replaceAll(' ', ''));
         this.bindGridData();
         this.ShowButtons = this.permissionService.getPermission(this.gridConfig.permissionCode, permissionType.Export);
 
@@ -79,7 +79,8 @@ export class AirmidTableComponent implements OnInit {
         return gridColumnTypes;
     }
     public get Headers() {
-         return this.gridConfig.columnsList.filter(x=>x.visible==true).map(x => x.key.replaceAll(' ', ''));
+         return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
+        //  return this.gridConfig.columnsList.filter(x=>x.visible==true).map(x => x.key.replaceAll(' ', ''));
        //return this.displayedColumns;
     }
     toggleColumn() {
