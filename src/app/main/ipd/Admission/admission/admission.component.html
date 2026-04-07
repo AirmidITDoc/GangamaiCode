@@ -306,6 +306,12 @@
                             (keyup)="ListView($event)">
                         </airmid-dropdown>
 
+                        
+                        <airmid-dropdown label="Ward Name" formControlName="WardId" [formGroup]="myFilterform"
+                           [validations]="getValidationdoctorMessages().wardId" (selectionChange)="wardselect($event)"
+                            [mode]="autocompleteModeWard">
+                        </airmid-dropdown>
+
                         <div class="addmision-list">
                             <button mat-raised-button class="btn btn-primary w-100-p"
                                 (click)="getAdmittedPatientListview()" matTooltip="search">
