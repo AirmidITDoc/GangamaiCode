@@ -121,6 +121,8 @@ export class AdmissionComponent implements OnInit {
     DoctorId = "0";
     private overlayRef: OverlayRef | null = null;
 
+     autocompleteModeWard: string = "Room";
+
     ngOnInit(): void {
 
         this.searchFormGroup = this.createSearchForm();
@@ -291,7 +293,8 @@ export class AdmissionComponent implements OnInit {
         return {
             searchDoctorId: [
                 { name: "required", Message: "Doctor Name is required" }
-            ]
+            ],
+            wardId:['']
         };
     }
 
@@ -522,32 +525,37 @@ export class AdmissionComponent implements OnInit {
 
         this.onChangeFirst();
     }
+WardId="0"
+    wardselect(event){
+        console.log(event)
+this.WardId=event.value
+    }
 
     getAdmittedPatientListview() {
         setTimeout(() => {
 
             const param = {
 
-                "searchFields": [
-                    {
-                        "fieldName": "DoctorId",
-                        "fieldValue": this.DoctorId,
-                        "opType": "13"
-                    },
-                    {
-                        "fieldName": "WardId",
-                        "fieldValue": "0",
-                        "opType": "13"
-                    },
-                    {
-                        "fieldName": "CompanyId",
-                        "fieldValue": "0",
-                        "opType": "13"
-                    }
-
-                ],
-                "mode": "AdmissionList"
-            }
+    "searchFields": [
+        {
+            "fieldName": "DoctorId",
+            "fieldValue": this.DoctorId,
+            "opType": "13"
+        },
+        {
+            "fieldName": "WardId",
+            "fieldValue": this.WardId,
+            "opType": "13"
+        },
+        {
+            "fieldName": "CompanyId",
+            "fieldValue": "0",
+            "opType": "13"
+        }
+    ],
+    "mode": "AdmissionList"
+}
+            
 
             console.log(param)
             this._AdmissionService.getReportView(param).subscribe(res => {

@@ -358,8 +358,8 @@ export class AdmissionService {
         return this._httpClient1.PostData("Admission/AdmissionList", employee)
     }
 
-    public getReportView(Param) {
-        return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
+    public getReportView(mode) {
+         return this._httpClient1.PostData("Report/ViewReport", mode);
     }
 
     public getCompanyById(Id) {
