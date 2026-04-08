@@ -11,6 +11,8 @@ import { Chart } from 'chart.js';
 import { MatDialog } from '@angular/material/dialog';
 import { RadiologysaleComponent } from './radiologysale/radiologysale.component';
 import Swal from 'sweetalert2';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { StoreUnitContextService } from 'app/main/shared/services/storeunit-context.service';
 
 @Component({
     selector: 'app-lab-financial-dashboard',
@@ -26,10 +28,16 @@ export class LabFinancialDashboardComponent {
     username = '';
     UnitId: any = this._accountServices.currentUserValue.user.unitId;
 
+
+    //Raksha
+
+    TopDDstoreId: number;
+    TopDDunitId: number;
+
     constructor(
         public _dashboardServices: DashboardService,
         public _accountServices: AuthenticationService,
-        private router: Router,
+        private router: Router, private contextSvc: StoreUnitContextService,
         public datePipe: DatePipe, public _matDialog: MatDialog,
     ) { }
 
@@ -57,12 +65,12 @@ export class LabFinancialDashboardComponent {
     monthdigital = 0;
     monthreferral = 0;
     monthnetSale = 0;
- 
+
     doctorSales = new MatTableDataSource<DoctorSalesList>();
     BranchList = new MatTableDataSource<branchList>();
     cpSales = new MatTableDataSource<CompanyList>();
     RadioSales = new MatTableDataSource<RadioList>();
-   
+
     // Department wise sales  
     //  'corporate', 'digital', 'referral',?
     departmentSalesColumns: string[] = ['department', 'testCount', 'centerSale', 'netSale'];
@@ -97,39 +105,39 @@ export class LabFinancialDashboardComponent {
 
     ]);
 
-   
+
     Financedata: any;
 
     ngOnInit(): void {
+
         this.myFilterform = this._dashboardServices.filterFormfinance();
         this.username = this._accountServices.currentUserValue.userName ? this._accountServices.currentUserValue.userName : '';
 
-        // this.getwardpatientList();
-        // this.getDoctorwisesalesList()
-        // this.getBranchList()
-        // this.GetBillRevenudetail()
-        // this.GetCompanywisesale()
-        // this.getDepartmentwisesalesList()
 
+        this.contextSvc.context$.subscribe(res => {
+            if (res) {
+                this.TopDDstoreId = res.storeId;
+                this.TopDDunitId = res.unitId;
+
+                console.log('StoreId:', this.TopDDstoreId);
+                console.log('UnitId:', this.TopDDunitId);
+            }
+        });
         this.Mainsummarylist()
     }
 
     onGo(): void {
-        this.UnitId=this._accountServices.currentUserValue.user.unitId
-        // this.getDoctorwisesalesList()
-        // this.getBranchList()
-        // this.GetBillRevenudetail()
-        // this.GetCompanywisesale()
-        // this.getDepartmentwisesalesList()
+        this.UnitId = this._accountServices.currentUserValue.user.unitId
+        
         this.Mainsummarylist()
-        //  this.getwardpatientList()
+        
     }
 
     selectBranch(branch: string): void {
         // this.selectedBranch = branch;
     }
 
-     
+
     get cpTotalPatient(): number {
         return this.cpSales.data.reduce((sum, r) => sum + (r.totalPatients || 0), 0);
     }
@@ -196,146 +204,13 @@ export class LabFinancialDashboardComponent {
         return this.RadioSales.data.reduce((sum, r) => sum + (r.dailyRadiologySale || 0), 0);
     }
 
-    // getDoctorwisesalesList() {
-
-    //     const filters: any[] = [];
-    //     // UnitId: this.UnitId,
-    //     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
-    //         this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
-
-
-    //         filters.push(
-
-    //             {
-    //                 "fieldName": "UnitId",
-    //                 "fieldValue": String(this.UnitId),
-    //                 "opType": "Contains"
-    //             },
-    //             {
-    //                 "fieldName": "FromDate",
-    //                 "fieldValue": String(this.fromDate),
-    //                 "opType": "Contains"
-    //             },
-    //             {
-    //                 "fieldName": "ToDate",
-    //                 "fieldValue": String(this.toDate),
-    //                 "opType": "Equals"
-    //             }
-    //         );
-
-    //     const data = {
-    //         "first": 0,
-    //         "rows": 999999,
-    //         "sortField": "DoctorName",
-    //         "sortOrder": 0,
-    //         "filters": filters,
-    //         "exportType": "JSON",
-    //         "columns": []
-    //     };
-    //     this._dashboardServices.getDoctorwisesales(data).subscribe((data: any) => {
-    //         this.Financedata = data;
-    //         console.log(data)
-    //         // this.doctorSales.data = data.data;
-    //     })
-    // }
-    // Brancharray = []
-
-
-    // GetCompanywisesale() {
-
-    //     const filters: any[] = [];
-    //     // UnitId: this.UnitId,
-    //     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
-    //         this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
-
-
-    //         filters.push(
-
-    //             {
-    //                 "fieldName": "UnitId",
-    //                 "fieldValue": String(this.UnitId),
-    //                 "opType": "Contains"
-    //             },
-    //             {
-    //                 "fieldName": "FromDate",
-    //                 "fieldValue": String(this.fromDate),
-    //                 "opType": "Contains"
-    //             },
-    //             {
-    //                 "fieldName": "ToDate",
-    //                 "fieldValue": String(this.toDate),
-    //                 "opType": "Equals"
-    //             }
-    //         );
-
-    //     const data = {
-    //         "first": 0,
-    //         "rows": 999999,
-    //         "sortField": "CompanyName",
-    //         "sortOrder": 0,
-    //         "filters": filters,
-    //         "exportType": "JSON",
-    //         "columns": []
-    //     };
-    //     this._dashboardServices.getCompanywiseList(data).subscribe((data: any) => {
-
-    //         // this.cpSales.data = data.data as [];
-    //         // this.branches = [...new Set(this.Brancharray.map(item => item.unitBranchName))];
-
-    //         console.log(this.cpSales.data)
-
-    //     })
-    // }
-
-    // getDepartmentwisesalesList() {
-
-    //     const filters: any[] = [];
-    //     // UnitId: this.UnitId,
-    //     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
-    //         this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020',
-
-
-    //         filters.push(
-
-    //             {
-    //                 "fieldName": "UnitId",
-    //                 "fieldValue": String(this.UnitId),
-    //                 "opType": "Contains"
-    //             },
-    //             {
-    //                 "fieldName": "FromDate",
-    //                 "fieldValue": String(this.fromDate),
-    //                 "opType": "Contains"
-    //             },
-    //             {
-    //                 "fieldName": "ToDate",
-    //                 "fieldValue": String(this.toDate),
-    //                 "opType": "Equals"
-    //             }
-    //         );
-
-    //     const data = {
-    //         "first": 0,
-    //         "rows": 999999,
-    //         "sortField": "UnitId",
-    //         "sortOrder": 0,
-    //         "filters": filters,
-    //         "exportType": "JSON",
-    //         "columns": []
-    //     };
-
-    //     this._dashboardServices.getDeptwisesales(data).subscribe((data: any) => {
-    //         console.log(data)
-    //         // this.departmentSales.data = data.data;
-    //     })
-    // }
-
+  
     //Common
     Billdetaildatasource = new MatTableDataSource<BillRevenuList>();
     paydata = []
     paymentModeData1: any[] = []
     modalityData = [
-      
+
     ];
     modalityData1 = [
         { name: '', value: 0 }
@@ -344,21 +219,21 @@ export class LabFinancialDashboardComponent {
     trendData: any
     MainBranchsummarylist() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
-        this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
 
 
         this._dashboardServices.getLabSummarydetailList({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((data) => {
             console.log(data)
             debugger
             this.salesdata = data.dailySalesTrend
-             if(data.dailySalesTrend.length==0){
-                this.modalityData=[]
-                 this.trendData=[]
-             }
+            if (data.dailySalesTrend.length == 0) {
+                this.modalityData = []
+                this.trendData = []
+            }
             else
-            this.trendData = data.dailySalesTrend
-            console.log( data.dailySalesTrend)
-         
+                this.trendData = data.dailySalesTrend
+            console.log(data.dailySalesTrend)
+
             // this.BranchList.data = data.branchList
             this.marketingSales.data = data.executiveWiseSales
             this.departmentSales.data = data.departmentWiseSales;
@@ -384,28 +259,28 @@ export class LabFinancialDashboardComponent {
 
             // if (data.dailySalesTrend.length) {
 
-                // this.modalityData = [
-                //     ...this.modalityData,
-                //     ...this.trendData.map(item => ({
+            // this.modalityData = [
+            //     ...this.modalityData,
+            //     ...this.trendData.map(item => ({
 
-                //         name: item.billDate,
-                //         value: item.dailySales
-                //     }))
-                // ];
+            //         name: item.billDate,
+            //         value: item.dailySales
+            //     }))
+            // ];
             // }
-            
-      this.modalityData=data.dailySalesTrend
+
+            this.modalityData = data.dailySalesTrend
 
             console.log(this.modalityData)
 
             // if (data.dailySalesTrend.length)
-                this.DailysalesChart = this.getSalesBarChart();
+            this.DailysalesChart = this.getSalesBarChart();
 
         })
     }
 
 
-     Mainsummarylist() {
+    Mainsummarylist() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
             this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
 
@@ -415,8 +290,8 @@ export class LabFinancialDashboardComponent {
             debugger
             this.salesdata = data.dailySalesTrend
             this.trendData = data.dailySalesTrend
-            if(data.dailySalesTrend.length==0)
-                this.modalityData=[]
+            if (data.dailySalesTrend.length == 0)
+                this.modalityData = []
             this.BranchList.data = data.branchList
             this.marketingSales.data = data.executiveWiseSales
             this.departmentSales.data = data.departmentWiseSales;
@@ -439,7 +314,7 @@ export class LabFinancialDashboardComponent {
             this.monthreferral = data.departmentSummary[1].referral
             this.monthnetSale = data.departmentSummary[1].netSale
 
-debugger
+            debugger
             // if (data.dailySalesTrend.length) {
 
             //     this.modalityData = [
@@ -451,9 +326,9 @@ debugger
             //         }))
             //     ];
             // }
-debugger
+            debugger
             // console.log(this.modalityData)
-            this.modalityData=data.dailySalesTrend
+            this.modalityData = data.dailySalesTrend
 
             if (data.dailySalesTrend.length)
                 this.DailysalesChart = this.getSalesBarChart();
@@ -511,139 +386,6 @@ debugger
     }
 
 
-    // GetBillRevenudetail() {
-    //     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
-    //         this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd ') || '01/01/2020'
-
-    //     const vdata = {
-    //         "first": 0,
-    //         "rows": 200,
-    //         "sortField": "UnitId",
-    //         "sortOrder": 0,
-    //         "filters": [
-    //             {
-    //                 "fieldName": "UnitId",
-    //                 "fieldValue": String(this.UnitId),
-    //                 "opType": "Equals"
-    //             },
-    //             {
-    //                 "fieldName": "FromDate",
-    //                 "fieldValue": this.fromDate,
-    //                 "opType": "Equals"
-    //             },
-    //             {
-    //                 "fieldName": "ToDate",
-    //                 "fieldValue": this.toDate,
-    //                 "opType": "Equals"
-    //             },
-
-    //         ],
-    //         "Columns": [],
-    //         "exportType": "JSON"
-    //     }
-
-    //     console.log(vdata)
-
-    //     this._dashboardServices.getBillrevenudetailList(vdata).subscribe(data => {
-    //         this.Billdetaildatasource.data = data.data as BillRevenuList[]
-    //         console.log(this.Billdetaildatasource.data)
-    //         this.labBusinessLabel = 'Radiology Sale';
-
-
-    //         this.metrics = [
-    //             { label: 'Todays Registration', value: this.Billdetaildatasource.data[0]['patientCount'] ?? 0, color: 'green', icon: 'user-plus' },
-    //             { label: 'Todays Sales', value: this.Billdetaildatasource.data[0]['totalRevenue'] ?? 0, color: 'rose', icon: 'hourglass' },
-    //             { label: 'Todays Test', value: 0, color: 'sky', icon: 'logout' },
-    //             { label: 'Business', value: 0, color: 'butter', icon: 'user-plus' }
-    //         ];
-    //         this.paydata = [];
-
-    //         this.Billdetaildatasource.data.forEach(element => {
-    //             console.log(element)
-    //             this.paydata.push({
-    //                 mode: element.unitBranchName?.trim() || '',
-    //                 amount: Number(element.netRevenue) || 0
-    //             });
-    //             console.log(this.paydata)
-    //             // this.paymentModeData1.push(this.paydata)
-    //         })
-
-    //         // ✅ Re-create chart AFTER data is ready
-    //         setTimeout(() => {
-    //             // this.renderPaymentChart();
-    //         }, 0);
-
-    //         // console.log(this.paymentModeData1)
-    //         if (this.Billdetaildatasource.data.length > 0)
-    //             this.getsumdetail()
-    //     })
-    // }
-
-    // TotAmt = 0
-    // TotconAmt = 0
-    // TotNetamt = 0
-
-    // count = 0
-    // TotCount = 0
-    // getsumdetail() {
-    //     // 
-    //     this.count = this.Billdetaildatasource.data.length
-
-    //     this.TotCount = this.Billdetaildatasource.data.reduce((sum, { patientCount }) => sum += +(patientCount || 0), 0);
-
-    //     this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netRevenue }) => sum += +(netRevenue || 0), 0);
-
-    // }
-
-    // getwardpatientList() {
-
-    //     const vadat = {
-    //         UnitId: this.UnitId,
-    //         FromDate: this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
-    //         ToDate: this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd') || '01/01/2020',
-    //     };
-    //     this._dashboardServices.getwardCoutList(vadat).subscribe((data: any) => {
-    //         this.Financedata = data;
-    //         this.wardHeadCount.data = this.Financedata.bedOccupancyCountSummary;
-    //         this.charges.data = this.Financedata.serviceCharges;
-    //         this.receipts.data = this.Financedata.receiptPayment;
-    //         this.opVisits.data = this.Financedata.typeOfVisit;
-    //         this.referrals.data = this.Financedata.ipRefDoctorCount;
-    //         this.Billingsummary.data = this.Financedata.billSummary;
-    //         this.receipt.data = this.Financedata.receiptOPIP;
-
-    //         if (this.Financedata.financialOPExistingPatientCount) {
-    //             this.patientTypes[0].op = this.Financedata.financialOPExistingPatientCount[0]['opNewPatientCount'];
-    //             this.patientTypes[1].op = this.Financedata.financialOPExistingPatientCount[0]['opExistingPatientCount'];
-    //             this.patientTypes[0].ip = this.Financedata.financialIPExistingPatientCount[0]['ipNewPatientCount'];
-    //             this.patientTypes[1].ip = this.Financedata.financialIPExistingPatientCount[0]['ipExistingPatientCount'];
-    //         }
-
-    //         if (this.Financedata.receiptOPIP) {
-    //             this.receiptSummary[0].amount = this.Financedata.receiptOPIP[0]['receipt'];
-    //             this.receiptSummary[1].amount = this.Financedata.advanceOPIP[0]['advance'];
-    //             this.receiptSummary[2].amount = this.Financedata.refundOPIP[0]['refund'];
-    //             this.receiptSummary[3].amount = this.Financedata.pharmacyReturn[0]['return1'];
-    //         }
-
-    //         this.modeSummary[0].amount = this.getcashtotal;
-    //         this.modeSummary[1].amount = this.getcardtotal;
-
-    //         if (this.Financedata.billSummary) {
-    //             this.collection[0].amount = this.Financedata.billSummary[0]['cash'];
-    //             this.collection[1].amount = this.Financedata.billSummary[0]['cheque'];
-    //             this.collection[2].amount = this.Financedata.billSummary[0]['cardPay'];
-    //             this.collection[3].amount = this.Financedata.billSummary[0]['upi'];
-    //         }
-
-    //         this.consultantCharges.data = this.Financedata.doctorWisePatientCount;
-    //         this.pharmacyop.data = this.Financedata.pharmacyOPDPatientSale;
-    //         this.pharmacyip.data = this.Financedata.pharmacySaleIP;
-    //         this.opippharmacyTotal = this.pharmacyiptotal + this.pharmacyoptotal;
-    //         this.finalOutstanding.data = this.Financedata.financialOutStandingOPIP;
-    //         this.packages.data = this.Financedata.pathologyWorkloads;
-    //     });
-    // }
     GetDetails(event) {
         console.log(event)
         this.UnitId = event.hospitalId
@@ -651,22 +393,22 @@ debugger
     }
 
     RadiologycollectionTrend() {
-        if(this.RadioSales.data.length){
-        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+        if (this.RadioSales.data.length) {
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
 
-        const dialogRef = this._matDialog.open(RadiologysaleComponent,
-            {
-                maxWidth: "90vw",
-                height: '70%',
-                width: '90%',
-                data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+            const dialogRef = this._matDialog.open(RadiologysaleComponent,
+                {
+                    maxWidth: "90vw",
+                    height: '70%',
+                    width: '90%',
+                    data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+
             });
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
-    }else
-     Swal.fire("No data Avilable!....")
+        } else
+            Swal.fire("No data Avilable!....")
     }
 
     getMatIcon(icon: string): string {
@@ -690,18 +432,134 @@ debugger
         }
     }
 
+    // added by raksha on 08/04/2026
+    printDailyCollectionWithSummary() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd') || '01/01/2020'
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    {
+                        "fieldName": "FromDate",
+                        "fieldValue": this.fromDate,
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "ToDate",
+                        "fieldValue": this.toDate,
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "UserId",
+                        "fieldValue": String(this._accountServices.currentUserValue.userId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "HospitalId",
+                        "fieldValue": String(this.TopDDunitId),
+                        "opType": "Equals"
+                    }
+                ],
+                "reportId": 303
+            }
+            console.log(param)
+            this._dashboardServices.print(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Report Viewer"
+                    }
+                });
+                matDialog.afterClosed().subscribe(result => { });
+            });
+        }, 100);
+    }
+
+    printLabDailyCollectionDetailsWithSummary() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd') || '01/01/2020'
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    {
+                        "fieldName": "FromDate",
+                        "fieldValue": this.fromDate,
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "ToDate",
+                        "fieldValue": this.toDate,
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "HospitalId",
+                        "fieldValue": String(this.TopDDunitId),
+                        "opType": "Equals"
+                    }
+                ],
+                "reportId": 304
+            }
+            console.log(param)
+            this._dashboardServices.print(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Report Viewer"
+                    }
+                });
+                matDialog.afterClosed().subscribe(result => { });
+            });
+        }, 100);
+    }
+
+    printPatientDaySheet() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, 'yyyy-MM-dd') || '01/01/2020',
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, 'yyyy-MM-dd') || '01/01/2020'
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    {
+                        "fieldName": "FromDate",
+                        "fieldValue": this.fromDate,
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "ToDate",
+                        "fieldValue": this.toDate,
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "HospitalId",
+                        "fieldValue": String(this.TopDDunitId),
+                        "opType": "Equals"
+                    }
+                ],
+                "reportId": 306
+            }
+            console.log(param)
+            this._dashboardServices.print(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Report Viewer"
+                    }
+                });
+                matDialog.afterClosed().subscribe(result => { });
+            });
+        }, 100);
+    }
 }
 
-// export class WardCount {
-//     wardName: any;
-//     occupancyPercent: any;
-//     occupiedBeds: any;
-//     constructor(WardCount) {
-//         this.wardName = WardCount.wardName || '';
-//         this.occupancyPercent = WardCount.occupancyPercent || 0;
-//         this.occupiedBeds = WardCount.occupiedBeds || 0;
-//     }
-// }
+
 
 
 export class DoctorSalesList {
