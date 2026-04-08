@@ -299,6 +299,8 @@ export class DashboardService {
  return this._httpClient.PostData("CashLess/CashlessPatientBillInfoList", params)       
 }
     
-
+public print(mode) {
+        return this._httpClient.PostData("Report/NewViewReport", mode);
+    }
 }
 
