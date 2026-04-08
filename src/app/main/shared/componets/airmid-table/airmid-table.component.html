@@ -168,7 +168,20 @@
                     <span>CSV</span>
                 </button>
             </div>
-
+            <!-- <button class="btn btn-primary btn-with-icon" [matMenuTriggerFor]="columnMenu">
+                <span class="btn-icon">
+                    <mat-icon>view_column</mat-icon>
+                </span>
+                <span>Columns</span>
+            </button>
+            <mat-menu #columnMenu="matMenu">
+                <div class="column-menu vertical-menu" (click)="$event.stopPropagation()">
+                    <mat-checkbox *ngFor="let col of gridConfig?.columnsList;" [(ngModel)]="col.visible"
+                        (click)="$event.stopPropagation()" (ngModelChange)="toggleColumn()">
+                        {{ col.heading }}
+                    </mat-checkbox>
+                </div>
+            </mat-menu> -->
             <ng-template #elseButtonBlock>
                 <div class="table-footer-wrapper">
 

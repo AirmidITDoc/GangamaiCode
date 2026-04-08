@@ -468,6 +468,7 @@ export class LabrefundBillComponent {
         this._labPatientRegService.getRefundofBillServiceList(m_data).subscribe(response => {
             this.dataSource2.data = response.data as InsertRefundDetail[]
             this.dataSource2.data.forEach(element => {
+                // element.balanceAmount = Math.max(0, element.balAmt - element.serviceWiseDisc);
                 // element.balanceAmount = element.balAmt - element.serviceWiseDisc;
                 // element.balAmt = element.balAmt - element.serviceWiseDisc;
             });
@@ -476,6 +477,18 @@ export class LabrefundBillComponent {
             this.calculateTotalAmount();
         });
     }
+
+    onRowClick(row: any) {
+
+        if (row.isSampleCollection == 1) {
+            this.toastr.warning('This Service Sample Collected.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        console.log('Row clicked:', row);
+    }
+
     chargelist: any = [];
     populateiprefund(employee) {
         this.RefundOfBillFormFooter.patchValue(employee);
@@ -555,6 +568,8 @@ export class InsertRefundDetail {
     RefundAmt: any;
     balAmt: any;
     serviceWiseDisc: any;
+    isSampleCollection: any;
+    disableMessage: any;
 
     constructor(InsertRefundDetailObj) {
         {
@@ -580,6 +595,8 @@ export class InsertRefundDetail {
             this.RefundAmt = InsertRefundDetailObj.RefundAmt || 0;
             this.balAmt = InsertRefundDetailObj.balAmt || 0;
             this.serviceWiseDisc = InsertRefundDetailObj.serviceWiseDisc || 0;
+            this.isSampleCollection = InsertRefundDetailObj.isSampleCollection || 0;
+            this.disableMessage = InsertRefundDetailObj.disableMessage || ''
         }
     }
 }  

@@ -161,6 +161,7 @@
                                         <!-- <mat-form-field appearance="legacy"> -->
                                         <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber
                                             (keyup)="onPriceOrQtyChange(element,element.RefundAmt)"
+                                            [disabled]="element.isSampleCollection == 1"
                                             (keypress)="keyPressCharater($event)" />
                                     </mat-form-field>
                                 </mat-cell>
@@ -196,7 +197,7 @@
                             <mat-header-row class="accent min-width-1100"
                                 *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayedColumns1" class="element min-width-1100"
-                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                                [@animate]="{ value: '*', params: { y: '100%' } }" (click)="onRowClick(row)"></mat-row>
                             <mat-footer-row *matFooterRowDef="['loading']"
                                 [ngClass]="{ hide: dataSource2 != null }"></mat-footer-row>
                             <mat-footer-row *matFooterRowDef="['noData']"

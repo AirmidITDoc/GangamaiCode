@@ -190,7 +190,7 @@
 <!-- NEW -->
 
 <div class="modal-page page-layout inner-scroll">
-  <div class="modal-wrapper grid-container">
+  <div class="modal-wrapper grid-container resize-form-fields padding-fix">
     <!-- Modal header -->
     <div class="modal-header accent">
       <div class="modal-header-content">
@@ -219,10 +219,10 @@
             <div fxLayout="column" class="gap-8 h-100-p">
               <div class="modal-card-container search-container">
                 <div class="patient-search-container input-error-hidden">
-                  <mat-card fxFlex.gt-sm="100%" fxFlex>
-                    <mat-card-content>
-                      <form [formGroup]="ItemSubform" class="pt-0">
-                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                  <mat-card fxFlex.gt-sm="100%" fxFlex class="m-0">
+                    <mat-card-content class="p-8">
+                      <form [formGroup]="ItemSubform" class="pt-0 m-0">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutAlign="space-between"
                           class="gap-8">
                           <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" fxFlex>
                             <mat-radio-group aria-label="Select an option" formControlName="opIpType"
@@ -239,21 +239,21 @@
                                 [formGroup]="ItemSubform" formControlName="regId"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
                                 ApiUrl="VisitDetail/search-patient-1?Keyword="
-                                (selectionChange)="getSelectedObjOP($event)" ValueField="regId"  
+                                (selectionChange)="getSelectedObjOP($event)" ValueField="regId"
                                 TextField="formattedText"></airmid-autocomplete>
                             </div>
 
                             <div fxFlex="30%" fxFlex.sm="100%"
                               *ngIf="ItemSubform.get('opIpType').value != '0' && ItemSubform.get('opIpType').value != '2'">
                               <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
-                                [formGroup]="ItemSubform" formControlName="regId" 
+                                [formGroup]="ItemSubform" formControlName="regId"
                                 placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
-                                ApiUrl="Admission/search-patient?Keyword="   
+                                ApiUrl="Admission/search-patient?Keyword="
                                 (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
                                 ValueField="itemId"></airmid-autocomplete>
                             </div>
 
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'"> 
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
                               <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>MobileNo</mat-label>
                                 <input matInput formControlName="extMobileNo" placeholder="Enter 10 digit Mobile No."
@@ -261,35 +261,31 @@
                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
                               </mat-form-field> -->
 
-                               <airmid-autocomplete label="Mobile No"
-                                [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10"
-                                placeholder="Enter 10 digit Mobile No." fxFlex   TextField="text" 
-                                ApiUrl="Sales/External-auto-complete?Keyword="   (keypress)="allowOnlyDigits($event)"
-                                (selectionChange)="getSelectedObjextMobile($event)"   
-                               ></airmid-autocomplete>  
-                            </div> 
-                       
+                              <airmid-autocomplete label="Mobile No" [formGroup]="ItemSubform"
+                                formControlName="extMobileNo" maxlength="10" placeholder="Enter 10 digit Mobile No."
+                                fxFlex TextField="text" ApiUrl="Sales/External-auto-complete?Keyword="
+                                (keypress)="allowOnlyDigits($event)"
+                                (selectionChange)="getSelectedObjextMobile($event)"></airmid-autocomplete>
+                            </div>
+
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-                              <airmid-autocomplete label="Patient Name"  
-                                [formGroup]="ItemSubform" formControlName="externalPatientName"
-                                placeholderText="Patient Name" fxFlex
-                               ApiUrl="Sales/External-auto-complete?Keyword="  TextField="text" 
-                                (selectionChange)="getSelectedObjextPatient($event)"  
-                                ></airmid-autocomplete> 
+                              <airmid-autocomplete label="Patient Name" [formGroup]="ItemSubform"
+                                formControlName="externalPatientName" placeholderText="Patient Name" fxFlex
+                                ApiUrl="Sales/External-auto-complete?Keyword=" TextField="text"
+                                (selectionChange)="getSelectedObjextPatient($event)"></airmid-autocomplete>
                             </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
 
-                            <airmid-autocomplete label="Doctor Name"
-                                [formGroup]="ItemSubform" formControlName="doctorName"  
-                                placeholderText="First Name / Last Name" fxFlex   TextField="doctorName" 
-                                ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword=" 
-                                (selectionChange)="getSelectedObjExtDocName($event)" ></airmid-autocomplete> 
-                            </div> 
+                              <airmid-autocomplete label="Doctor Name" [formGroup]="ItemSubform"
+                                formControlName="doctorName" placeholderText="First Name / Last Name" fxFlex
+                                TextField="doctorName" ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword="
+                                (selectionChange)="getSelectedObjExtDocName($event)"></airmid-autocomplete>
+                            </div>
 
                             <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2' ">
                               <airmid-textbox label="Address" [(ngModel)]="vextAddress" formControlName="extAddress"
-                                placeholder="extAddress" [formGroup]="ItemSubform"    
+                                placeholder="extAddress" [formGroup]="ItemSubform"
                                 [validations]="getValidationMessages().extAddress" [type]="'text'"
                                 (input)="onEnterAddress($event)"></airmid-textbox>
                             </div>
@@ -365,26 +361,24 @@
                   </mat-card>
                 </div>
               </div>
-              <div class="modal-card-container input-error-hidden">
-                <mat-card>
-                  <mat-card-content>
-                    <form [formGroup]="_salesService.ItemSearchGroup">
-                      <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fusePerfectScrollbar>
+              <div class="modal-card-container input-error-hidden mt-4">
+                <mat-card class="m-0">
+                  <mat-card-content class="p-8">
+                    <form [formGroup]="_salesService.ItemSearchGroup" class="m-0">
+                      <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px" fusePerfectScrollbar>
 
                         <div fxFlex="100%" fxFlex.gt-sm="8%">
                           <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%">
+                        <div fxFlex>
                           <airmid-autocomplete label="Item Name (enter 2 char)"
                             [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
-                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId" 
-                             [ApiUrl]="'ItemMaster/GetItemListforSalesPage?StoreId=' + StoreId + '&ItemName='"
-                            TextField="itemName"
-                            ValueField="itemId" (selectionChange)="onItemChange($event)"  
-                            (keydown.enter)="handleEnterKey($event)"
-                            #ItemId></airmid-autocomplete>
+                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
+                            [ApiUrl]="'ItemMaster/GetItemListforSalesPage?StoreId=' + StoreId + '&ItemName='"
+                            TextField="itemName" ValueField="itemId" (selectionChange)="onItemChange($event)"
+                            (keydown.enter)="handleEnterKey($event)" #ItemId></airmid-autocomplete>
                           <!-- (selectionChange)="getSelectedObj($event)"
                            ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" -->
                         </div>
@@ -396,8 +390,7 @@
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Qty" formControlName="Qty" #qtyInputRef [type]="'number'" min="0"
-                            (valueChange)="calculateTotalAmt()"
-                            (keydown.enter)="checkQtyBeforeNext($event)"
+                            (valueChange)="calculateTotalAmt()" (keydown.enter)="checkQtyBeforeNext($event)"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
@@ -452,19 +445,19 @@
                     [@animateStagger]="{ value: '50' }" style="overflow: auto">
 
                     <ng-container matColumnDef="itemMolecule">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header   class="w-70">  </mat-header-cell>
-                      <mat-cell *matCellDef="let contact"  class="w-70">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70"> </mat-header-cell>
+                      <mat-cell *matCellDef="let contact" class="w-70">
                         <mat-icon style="cursor: pointer; color: #1976d2;" matTooltip="View molecule details"
                           (click)="Oncheckitemmolecule(contact)">
                           local_offer
-                        </mat-icon>  
+                        </mat-icon>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="ItemName">
                       <mat-header-cell *matHeaderCellDef class="w-220" mat-sort-header>ItemName</mat-header-cell>
                       <mat-cell *matCellDef="let contact" class="w-220">
-                            <span> {{ contact.ItemName }}</span>
+                        <span> {{ contact.ItemName }}</span>
                         <!-- <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.ItemName" (keydown.enter)="onEnterItemName(contact)" />
                         </mat-form-field> -->
@@ -491,7 +484,7 @@
                       <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.Qty" type="text " (keyup)="getCellCalculation(contact)"
-                            min="0" max="1000" name="tableQty" OnlyNumber  (keypress)="keyPressDigitsOnly($event)"/>
+                            min="0" max="1000" name="tableQty" OnlyNumber (keypress)="keyPressDigitsOnly($event)" />
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -499,7 +492,7 @@
                     <ng-container matColumnDef="UnitMRP">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit MRP</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.UnitMRP | currency : 'INR'  }}</span>
+                        <span> {{ contact.UnitMRP | currency : 'INR' }}</span>
                       </mat-cell>
                     </ng-container>
 
@@ -530,7 +523,8 @@
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.DiscPer" type="text" [disabled]="contact.IsPurRate > 0"
-                            (keyup)="updateCellDiscount(contact)" min="0" max="100" OnlyNumber (keypress)="keyPressDigitDecimalOnly($event)"/>
+                            (keyup)="updateCellDiscount(contact)" min="0" max="100" OnlyNumber
+                            (keypress)="keyPressDigitDecimalOnly($event)" />
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -594,14 +588,14 @@
                 </div>
               </div>
 
-               <div class="modal-card-container"> 
-                      <div fxLayout="row"> 
-                        <!-- <span><b>Out of Stock Items : </b></span> -->
-                        <span style="color: red; margin-left: 5px;">
-                        {{ getItemNames() }}  </span>
-                      </div> 
+              <div class="modal-card-container">
+                <div fxLayout="row">
+                  <!-- <span><b>Out of Stock Items : </b></span> -->
+                  <span style="color: red; margin-left: 5px;">
+                    {{ getItemNames() }} </span>
                 </div>
-                
+              </div>
+
               <div class="modal-card-container">
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <mat-card-content class="py-4">
@@ -636,7 +630,7 @@
                                 </div>
                               </div> -->
 
-                              <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 input-error-hidden">
+                              <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8 input-error-hidden">
                                 <!-- <div class="draft-btn">
                                                                                           <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
                                                                                         </div> -->
@@ -644,12 +638,11 @@
                                   formControlName="totalAmount" [readonly]="true"></airmid-textbox>
 
                                 <airmid-textbox fxFlex="5%" label="Discount %" [formGroup]="ItemSubform"
-                                  formControlName="FinalDiscPer" (keyup)="getFinalDiscperAmt()"
-                                  ></airmid-textbox>
+                                  formControlName="FinalDiscPer" (keyup)="getFinalDiscperAmt()"></airmid-textbox>
 
                                 <airmid-textbox fxFlex="6%" label="Discount Amount" [formGroup]="ItemSubform"
-                                  formControlName="discAmount" (keyup)="getFinalDiscAmount()"    [readonly]="isdiscAmount" 
-                                  ></airmid-textbox>
+                                  formControlName="discAmount" (keyup)="getFinalDiscAmount()"
+                                  [readonly]="isdiscAmount"></airmid-textbox>
 
                                 <div style="width: 160px" *ngIf="ConShow">
                                   <airmid-dropdown label="Concession Reason" formControlName="concessionReasonId"
@@ -658,10 +651,11 @@
                                   </airmid-dropdown>
                                 </div>
 
-                                  <div style="width: 160px" *ngIf="CreditReasonShow">
+                                <div style="width: 160px" *ngIf="CreditReasonShow">
                                   <airmid-dropdown label="Credit Reason" formControlName="CredirReasonId"
                                     [formGroup]="ItemSubform" [validations]="getValidationMessages().CredirReasonId"
-                                    [mode]="autocompleteModeCreditReason"  (selectionChange)="OnCreditReasonchange($event)" >
+                                    [mode]="autocompleteModeCreditReason"
+                                    (selectionChange)="OnCreditReasonchange($event)">
                                   </airmid-dropdown>
                                 </div>
 
@@ -683,8 +677,8 @@
                                 <div class="net-amt-section">
                                   <div class="net-amt">
                                     <div class="net-amt-box">
-                                        <span class="net-amt-mat-label">No Of Item:</span>
-                                        <span class="net-amt-value">{{saleSelectedDatasource.data?.length}}</span>
+                                      <span class="net-amt-mat-label">No Of Item:</span>
+                                      <span class="net-amt-value">{{saleSelectedDatasource.data?.length}}</span>
                                     </div>
                                     <div class="net-amt-box">
                                       <div class="net-amt-label">Total GST Amt :</div>
@@ -702,31 +696,36 @@
                               </div>
                               <div class="sales-radio-buttons gap-8" fxLayout="row"
                                 fxLayoutAlign="space-between center">
-                                <mat-radio-group aria-label="Select an option" formControlName="CashPay" (change)="checkCreditreason()">
-                                  <mat-radio-button value="Credit" *ngIf="paymethod" >Credit</mat-radio-button>
+                                <mat-radio-group aria-label="Select an option" formControlName="CashPay"
+                                  (change)="checkCreditreason()">
+                                  <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
                                   <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                   <mat-radio-button value="Online">Online</mat-radio-button>
                                   <mat-radio-button value="PayOption">PayOption</mat-radio-button>
                                   <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
                                 </mat-radio-group>
 
-                                  <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('CashPay')?.value === 'Online'">
-                                            <airmid-textbox label="UPI NO" formControlName="UpiNo" [formGroup]="ItemSubform"
-                                                [validations]="getValidationMessages().UpiNo"  [minLength]="4" [maxLength]="12">
-                                            </airmid-textbox>
-                                        </div>
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                  *ngIf="ItemSubform.get('CashPay')?.value === 'Online'">
+                                  <airmid-textbox label="UPI NO" formControlName="UpiNo" [formGroup]="ItemSubform"
+                                    [validations]="getValidationMessages().UpiNo" [minLength]="4" [maxLength]="12">
+                                  </airmid-textbox>
+                                </div>
 
-                               
-                         
-                        <mat-slide-toggle name="IsPurchaseWsie"  (change)="getPurchaseRateWise($event)" formControlName="IsPurchaseWsie">
-                         ByRate
-                        </mat-slide-toggle> 
+
+
+                                <mat-slide-toggle name="IsPurchaseWsie" (change)="getPurchaseRateWise($event)"
+                                  formControlName="IsPurchaseWsie">
+                                  ByRate
+                                </mat-slide-toggle>
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
 
-                                  <button class="btn btn-primary" (click)="onSaveDraftBill()" *ngIf="Draftchk">DraftBill</button>
+                                  <button class="btn btn-primary" (click)="onSaveDraftBill()"
+                                    *ngIf="Draftchk">DraftBill</button>
 
-                                  <button class="btn btn-primary" (click)="onSave($event)"   [disabled]="saveflag">Save(F9)</button>
+                                  <button class="btn btn-primary" (click)="onSave($event)"
+                                    [disabled]="saveflag">Save(F9)</button>
                                   <button class="btn btn-danger-outline" (click)="onClose()"
                                     (keydown.enter)="onF6Reset($event)">Reset</button>
                                 </div>

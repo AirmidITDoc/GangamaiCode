@@ -55,6 +55,13 @@ export class AirmidTableComponent implements OnInit {
     ngOnInit(): void {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
+        // initialize columns
+        // this.gridConfig.columnsList = this.gridConfig.columnsList.map(col => ({
+        //     ...col,
+        //     visible: true
+        // }));
+
+        // this.displayedColumns = this.gridConfig.columnsList.filter(x => x.visible == true).map(x => x.key.replaceAll(' ', ''));
         this.bindGridData();
         this.ShowButtons = this.permissionService.getPermission(this.gridConfig.permissionCode, permissionType.Export);
         
@@ -72,28 +79,73 @@ export class AirmidTableComponent implements OnInit {
     }
     public get Headers() {
         return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
+        //  return this.gridConfig.columnsList.filter(x=>x.visible==true).map(x => x.key.replaceAll(' ', ''));
+        //return this.displayedColumns;
+    }
+    toggleColumn() {
+        this.displayedColumns = this.gridConfig.columnsList
+            .filter(col => col.visible)
+            .map(col => col.key.replaceAll(' ', ''));
+        return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
     }
     gridDataRequest: gridRequest = new gridRequest();
-    bindGridData() {
-        // this.updateFilters();
-        // debugger
+    // bindGridData() {
+    //     // this.updateFilters();
+    //     // debugger
+    //     this.gridDataRequest = {
+    //         sortField: this.sort?.active ?? this.gridConfig.sortField,
+    //         sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
+    //         columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+    //         first: (this.paginator?.pageIndex ?? 0),
+    //         rows: (this.paginator?.pageSize ?? this.pageSize),
+    //         exportType: gridResponseType.JSON
+    //     };
+    //     this._httpClient.PostData(this.gridConfig.apiUrl, this.gridDataRequest).subscribe((data: any) => {
+    //         this.dataSource.data = data.data as [];
+    //         this.dataSource.sort = this.sort;
+    //         this.resultsLength = data["recordsFiltered"];
+    //         if (!this.hasEmitted) {
+    //             this.afterLoadData.emit(data.data);
+    //             this.hasEmitted = true;
+    //         }
+    //     });
+    // }
+    bindGridData(event?: any) {
+
+        // ✅ update paginator values when event comes
+        if (event) {
+            this.pageSize = event.pageSize;
+            this.paginator.pageIndex = event.pageIndex;
+        }
+
         this.gridDataRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
-            sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
+
+            // ✅ FIX sortOrder
+            sortOrder: this.sort?.direction === 'asc' ? 0 : 1,
+
+            filters: this.gridConfig.filters,
             columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+
+            // ✅ KEEP SAME (as per your SQL logic)
             first: (this.paginator?.pageIndex ?? 0),
             rows: (this.paginator?.pageSize ?? this.pageSize),
+
             exportType: gridResponseType.JSON
         };
-        this._httpClient.PostData(this.gridConfig.apiUrl, this.gridDataRequest).subscribe((data: any) => {
-            this.dataSource.data = data.data as [];
-            this.dataSource.sort = this.sort;
-            this.resultsLength = data["recordsFiltered"];
-            if (!this.hasEmitted) {
-                this.afterLoadData.emit(data.data);
-                this.hasEmitted = true;
-            }
-        });
+
+        this._httpClient.PostData(this.gridConfig.apiUrl, this.gridDataRequest)
+            .subscribe((data: any) => {
+
+                this.dataSource.data = data.data || [];
+                this.dataSource.sort = this.sort;
+                this.resultsLength = data["recordsFiltered"];
+
+                if (!this.hasEmitted) {
+                    this.afterLoadData.emit(data.data);
+                    this.hasEmitted = true;
+                }
+            });
     }
     // updateFilters(): void {
     //     this.gridConfig.filters = this.gridConfig.filters.map(filter => {

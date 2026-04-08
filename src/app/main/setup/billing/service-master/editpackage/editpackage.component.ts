@@ -82,7 +82,7 @@ export class EditpackageComponent implements OnInit {
             // packageDetail: this._formBuilder.array([]),
             // extra fields
             serviceId: [0],
-            ServiceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            ServiceName: ["", [Validators.required]],
             TariffName: ["", [Validators.required]],
 
             isPackageType: "0",
