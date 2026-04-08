@@ -56,12 +56,16 @@
 
     // Dashboard Container - Matching Daily Dashboard
     .dashboard-container {
-        padding: 10px;
+        padding: 5px;
     }
 
     // Gap utility
     .gap-14 {
         gap: 14px;
+    }
+
+    .gap-1 {
+        gap: 2px;
     }
 
     // Cards - Base styling
@@ -211,12 +215,12 @@
         }
 
         mat-card-content {
-            padding: 5px !important;
+            padding: 2px !important;
         }
     }
 
     .chart-header {
-        margin-bottom: 5px;
+        margin-bottom: 2px;
         text-align: center;
 
         .chart-title {
@@ -224,7 +228,7 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             color: #283593;
-            margin: 8px 0;
+            margin: 2px 0;
             padding: 0;
         }
 
@@ -236,82 +240,7 @@
         }
     }
 
-    // Payment Details Section
-    .payment-details-header {
-        padding-bottom: 12px;
-        border-bottom: 2px solid #e9ecef;
-        text-align: center;
-
-        .section-title {
-            font-size: 1.35rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #283593;
-            margin: 8px 0;
-            padding: 0;
-        }
-    }
-
-    .payment-cards {
-        margin-top: 16px;
-    }
-
-    .payment-card {
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e9ecef;
-        transition: all 0.3s ease;
-        background: #ffffff;
-
-        &:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
-        }
-
-        mat-card-content {
-            padding: 5px !important;
-            text-align: center;
-        }
-
-        .payment-mode-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: #6c757d;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .payment-amount {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .payment-percentage {
-            font-size: 11px;
-            color: #28a745;
-            font-weight: 500;
-        }
-    }
-
-    // Color coding for payment cards
-    .payment-card-1 .payment-amount {
-        color: #FF3784;
-    }
-
-    .payment-card-2 .payment-amount {
-        color: #36A2EB;
-    }
-
-    .payment-card-3 .payment-amount {
-        color: #4BC0C0;
-    }
-
-    .payment-card-4 .payment-amount {
-        color: #F77825;
-    }
-
+   
     // Stat Item Cards
     .stat-item-card {
         border-radius: 8px;
@@ -528,39 +457,7 @@
         animation: fadeIn 0.5s ease-out;
     }
 
-    // Utility Classes
-    .mt-8 {
-        margin-top: 8px;
-    }
-
-    .mt-12 {
-        margin-top: 12px;
-    }
-
-    .mt-16 {
-        margin-top: 16px;
-    }
-
-    .mb-16 {
-        margin-bottom: 16px;
-    }
-
-    .p-12 {
-        padding: 12px;
-    }
-
-    .p-16 {
-        padding: 16px;
-    }
-
-    .mr-12 {
-        margin-right: 12px;
-    }
-
-    .m-0 {
-        margin: 0;
-    }
-
+   
     // Ensure no horizontal scroll
     .center {
         overflow-x: hidden !important;
@@ -676,10 +573,10 @@
     }
 
     .chart-container {
-        height: 350px;
-        min-height: 320px;
+        height: 300px;
+        min-height: 300px;
         width: 100%;
-        padding-right: 5px;
+        padding-right: 1px;
 
     }
 
@@ -721,24 +618,24 @@
     .summary-cards-row {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-bottom: 10px;
+        gap: 5px;
+        margin-bottom: 5px;
     }
 
     .summary-card {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 10px;
+        padding: 5px 5px;
         border-radius: 10px;
-        background: #dff1f0;
-          border: 1px solid rgba(126, 10, 91, 0.08) !important;
+        background: #e2f4f6;
+        border: 1px solid rgba(126, 10, 91, 0.08) !important;
         // border-color:rgba(126, 10, 91, 0.08) ;
         box-shadow: 0 2px 12px rgba(126, 10, 91, 0.08);
         transition: transform 0.2s, box-shadow 0.2s;
         cursor: pointer;
         border-left: 5px solid transparent;
-        min-height: 90px;
+        min-height: 70px;
 
         &:hover {
             transform: translateY(-2px);
@@ -756,7 +653,7 @@
     }
 
     .card-label {
-        font-size: 15px;
+        font-size: 13px;
         font-weight: bold;
         color: #044960;
         text-transform: uppercase;
@@ -764,7 +661,7 @@
     }
 
     .card-value {
-        font-size: 26px;
+        font-size: 22px;
         font-weight: 800;
         color: #222;
         line-height: 1.1;
@@ -805,18 +702,19 @@
         gap: 4px;
     }
 
-    // .totals-row {
-    //   grid-template-columns: 1fr 70px 70px;
-    // }
-    //     .totals-row {
-    //   grid-template-columns: 100px 100px 100px 100px;
-    // }
-    /* ─── Totals Section (Charges/Receipts) ─── */
+   
     .totals {
         margin-top: 4px;
         border-top: 2px solid #9fa8da;
         padding-top: 4px;
     }
+
+    .totals1 {
+        margin-top: 2px;
+        border-top: 2px solid #9fa8da;
+        padding-top: 2px;
+    }
+
 
     .totals-row {
         display: grid;
@@ -829,171 +727,7 @@
         background-color: #c4e2f7;
     }
 
-    .totals-rowEx {
-        display: grid;
-        // grid-template-columns: 1fr 10px 20px;
-        grid-template-columns: 80px 90px 90px 90px 90px;
-        gap: 2px;
-        padding: 2px 6px;
-        font-size: 11px;
-        align-items: right;
-        background-color: #c4e2f7;
-    }
-
-    // .totals-rowDr {
-    //     display: grid;
-    //     // grid-template-columns: 1fr 10px 20px;
-    //     grid-template-columns: 250px 50px 95px 95px 95px;
-    //     gap: 2px;
-    //     padding: 2px 2px;
-    //     font-size: 11px;
-    //     padding-left: 10px;
-    //     align-items: right !important;
-    //     justify-content: right !important;
-    //     background-color: #c4e2f7;
-    // }
-
-    .totals-rowDr {
-    display: grid;
-    grid-template-columns: 250px 50px 95px 95px 95px;
-    gap: 2px;
-    padding: 8px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    background-color: #c4e2f7;
-    align-items: center;
-    border-top: 2px solid #1e4e8c;   // optional: nice separator
-
-    > div:nth-child(1) {           // Total label
-        text-align: left;
-        padding-left: 2px;
-    }
-    
-
-    > div:nth-child(n+2) {         // All numeric columns
-        text-align: right;
-        padding-right: 12px;
-    }
-}
-
-    // .totals-rowCP {
-    //     display: grid;
-    //     grid-template-columns: 280px 50px 95px;
-    //     gap: 2px;
-    //     padding: 2px 2px;
-    //     font-size: 11px;
-    //     align-items: right !important;
-    //     justify-content: right !important;
-    //     background-color: #c4e2f7;
-    //      border-top: 2px solid #1e4e8c; 
-    // }
-.totals-rowCP {
-    display: grid;
-    grid-template-columns: 280px 50px 95px;   // Company Name | Count | Total Sales
-    gap: 2px;
-    padding: 8px 12px;                        // Better padding
-    font-size: 11px;
-    font-weight: bold;                        // Makes "Total" stand out
-    background-color: #c4e2f7;
-    border-top: 2px solid #1e4e8c;
-    align-items: center;                      // Vertical alignment
-
-    /* Proper text alignment for each column */
-    > div:first-child {                       // "Total" label
-        text-align: left;
-        padding-left: 10px;
-    }
-
-    > div:nth-child(2) {                      // Total Sales column
-        text-align: center;
-        padding-right: 12px;
-    }                     // Count column
-    > div:nth-child(3) {                      // Total Sales column
-        text-align: right;
-        padding-right: 12px;
-    }
-}
-    .totals-rowDept {
-    display: grid;
-    grid-template-columns: 230px 40px 100px 100px;   // Department | Count | Center Sale | Net Sale
-    gap: 0;
-    padding: 5px 5px;
-    font-size: 12px;
-    font-weight: bold;
-    background-color: #bae6fd;
-    border-top: 2px solid #1e4e8c;
-    align-items: center;
-    min-height: 35px;
-
-    /* Proper Alignment */
-    > div:first-child {                    // "Total" or "MonthlyTotal"
-        text-align: left;
-        padding-left: 12px;
-    }
-
-    > div:nth-child(2),                    // Count
-    > div:nth-child(3),                    // Center Sale
-    > div:nth-child(4) {                   // Net Sale
-        text-align: right;
-        padding-right: 10px;
-    }
-}
    
-    // .totals-rowBr {
-    //     display: grid;
-    //     // grid-template-columns: 1fr 10px 20px;
-    //     grid-template-columns:190px 90px 90px;
-    //     gap: 2px;
-    //     padding: 2px 6px;
-    //     font-size: 11px;
-    //     align-items: center;
-    //     background-color: #c4e2f7;
-    //      border-top: 2px solid #1e4e8c; 
-    // }
-.totals-rowBr {
-    display: grid;
-    grid-template-columns: 290px 90px 90px;     // Wider first column for "Total"
-    gap: 0;                                       // Removed small gap for cleaner look
-    padding: 12px 16px;
-    font-size: 12px;
-    font-weight: bold;
-    background-color: #bae6fd;                    // Slightly brighter for Total row
-    border-top: 2px solid #1e4e8c;
-    align-items: center;
-    min-height: 48px;
-
-    /* Proper Alignment */
-    > div:first-child {                           // "Total" text
-        text-align: left;
-        padding-left: 16px;
-    }
-
-    > div:nth-child(2),                           // MonthlySale
-    > div:nth-child(3) {                          // Todaysale
-        text-align: right;
-        padding-right: 12px;
-    }
-}
-    //wrap
-
-    .w-190.wrap-text {
-        max-width: 100px !important;
-        width: 100px !important;
-        white-space: normal !important;
-        word-wrap: break-word !important;
-        overflow-wrap: break-word !important;
-        hyphens: auto;
-        line-height: 1.4;
-        vertical-align: middle;
-        padding: 2px 2px !important;
-    }
-
-    /* Optional: Make header also wrap nicely */
-    .w-190.wrap-text.mat-mdc-header-cell {
-        white-space: normal !important;
-        text-align: left;
-    }
-
     .totals-row:nth-child(odd) {
         background: #f5f5f9;
     }
@@ -1040,33 +774,121 @@
         /* Stronger pink for total */
     }
 
+
+    .mat-column-totalPatient,
+    .mat-column-Todaysale,
     .mat-column-MonthlySale,
     .mat-column-Todaysale,
-    // .mat-column-testCount,
+    .mat-column-testCount,
     .mat-column-centerSale,
     .mat-column-netSale,
     .mat-column-totalAmt,
     .mat-column-totalSales,
     .mat-column-paidAmount,
     .mat-column-gross,
-       .mat-column-discount,
-    .mat-column-reversal,   
+    .mat-column-discount,
+    .mat-column-reversal,
     .mat-column-net {
         flex: 1 1 auto;
         text-align: right;
         justify-content: flex-end;
+          z-index: 10;
+        border-left: 2px solid #e0e0e0;
     }
 
 
-   
+
     .mat-column-testCount,
-    .mat-column-totalPatient,
-    .mat-column-net {
+    .mat-column-totalPatient {
         flex: 1 1 auto;
         text-align: center !important;
-       justify-content: center !important;
+        justify-content: center !important;
     }
 
+    .stat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        color: #3b82f6;
+        /* Blue - professional */
+        /* color: #10b981; */
+        /* Green - success feel */
+    }
+
+    //Table
+    /* ==================== MAIN TABLE FIX ==================== */
+    .chart-container .mat-table {
+        table-layout: fixed !important;
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+
+    .mat-header-row,
+    .mat-row {
+        display: flex !important;
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+
+    /* Force box-sizing */
+    .mat-header-cell,
+    .mat-cell {
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 12px 8px !important;
+    }
+
+
+    .ellipsis{
+    white-space: nowrap; 
+    overflow: hidden;    
+    text-overflow: ellipsis; 
+    display: block;    
+    max-width: 150px; 
+  }
+
+    /* ==================== COLUMN WIDTHS ==================== */
+    // .mat-column-department {
+    //     flex: 0 0 230px !important;
+    //     min-width: 230px !important;
+    // }
+
+    // .mat-column-testCount {
+    //     flex: 0 0 40px !important;
+    //     min-width: 40px !important;
+    //     text-align: center !important;
+    //      z-index: 10;
+    //     border-left: 2px solid #e0e0e0;
+    // }
+
+    .mat-column-centerSale {
+        flex: 0 0 100px !important;
+        min-width: 100px !important;
+        text-align: right !important;
+         z-index: 10;
+        border-left: 2px solid #e0e0e0;
+    }
+
+    /* Sticky Net Sale Column */
+    .mat-column-netSale {
+        position: sticky !important;
+        right: 0;
+        //   background: white;
+        z-index: 10;
+        border-left: 2px solid #e0e0e0;
+    }
+
+    /* Header Background */
+    .mat-header-row {
+        background: #1976d2;
+        color: white;
+    }
+
+    //Branch sales
+    
 }
 
 
