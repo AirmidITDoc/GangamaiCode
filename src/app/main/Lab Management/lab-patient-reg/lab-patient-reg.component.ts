@@ -40,6 +40,7 @@ import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient
 })
 export class LabPatientRegComponent {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
     myFilterform: FormGroup;
     f_name: any = ""
     l_name: any = ""
@@ -272,7 +273,19 @@ export class LabPatientRegComponent {
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.PBillNo = this.myFilterform.get('PBillNo').value || "%"
         this.vCompanyId = this.myFilterform.get('CompanyId').value || "0"
-        this.getfilterdata();
+        // this.getfilterdata();
+        let filters = [
+            { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+            { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
+            { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+            { fieldName: "CompanyId", fieldValue: String(this.vCompanyId), opType: OperatorComparer.Equals },
+        ]
+        this.tblLabPatient.gridConfig.filters = filters;
+        this.tblLabPatient.bindGridData();
     }
 
     getfilterdata() {
@@ -766,7 +779,7 @@ export class LabPatientRegComponent {
             }
         });
     }
-    
+
     viewgetPackageBillReportPdf(element, mode: string) {
         // this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
         this.commonService.Onprint("BillNo", element.billNo, mode);
