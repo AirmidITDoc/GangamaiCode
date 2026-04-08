@@ -32,6 +32,10 @@
                 <button mat-icon-button matTooltip="Print">
                     <mat-icon>print</mat-icon>
                 </button>
+                  <button mat-icon-button (click)="Prescclose(element)" matTooltip="Prescription Cancel"
+                        *ngIf="element.isClosed==false">
+                        <mat-icon title="Cancel Prescription" style="color: rgb(128, 0, 30);">cancel</mat-icon>
+                    </button>
             </div>
         </ng-template> 
          <airmid-table [gridConfig]="gridConfig" class="content h-100-p"  #grid  (onSelectRow)="getSelectedRow($event)">
@@ -88,6 +92,7 @@
 
     <div class="modal-footer">
         <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px" style="padding-right: 10px;">
+            <!-- <button class="btn btn-danger-outline" (click)="Prescclose()">Prescription CLose</button> -->
             <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
             <button class="btn btn-primary" (click)="GetPrescrpList()">Save</button>
         </div>

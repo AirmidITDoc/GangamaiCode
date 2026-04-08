@@ -22,7 +22,7 @@ export class AirmidTableComponent implements OnInit {
 
     constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService,
         public permissionService: PagePermissionService,
-        public ConfigSettingParams: ConfigService
+        public ConfigSettingParams:ConfigService
     ) {
     }
     dateType = DATE_TYPES;
@@ -52,23 +52,15 @@ export class AirmidTableComponent implements OnInit {
     public defaultColumnWidth = 120;
     private hasEmitted = false;
     currencyValue = 'INR';
-    displayedColumns: string[] = [];
     ngOnInit(): void {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
-        // initialize columns
-        // this.gridConfig.columnsList = this.gridConfig.columnsList.map(col => ({
-        //     ...col,
-        //     visible: true
-        // }));
-
-        // this.displayedColumns = this.gridConfig.columnsList.filter(x => x.visible == true).map(x => x.key.replaceAll(' ', ''));
         this.bindGridData();
         this.ShowButtons = this.permissionService.getPermission(this.gridConfig.permissionCode, permissionType.Export);
-
+        
         // Set Current from DB
         const rawValue = this.ConfigSettingParams.configParams.CurrencyValue;
-        // Get value after colon
+          // Get value after colon
         this.currencyValue = rawValue?.split(':')[1];
         console.log(this.currencyValue); // USD / INR / KES
     }
@@ -80,72 +72,28 @@ export class AirmidTableComponent implements OnInit {
     }
     public get Headers() {
         return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
-        //  return this.gridConfig.columnsList.filter(x=>x.visible==true).map(x => x.key.replaceAll(' ', ''));
-        //return this.displayedColumns;
-    }
-    toggleColumn() {
-        this.displayedColumns = this.gridConfig.columnsList
-            .filter(col => col.visible)
-            .map(col => col.key.replaceAll(' ', ''));
     }
     gridDataRequest: gridRequest = new gridRequest();
-    // bindGridData() {
-    //     // this.updateFilters();
-    //     // debugger
-    //     this.gridDataRequest = {
-    //         sortField: this.sort?.active ?? this.gridConfig.sortField,
-    //         sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
-    //         columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
-    //         first: (this.paginator?.pageIndex ?? 0),
-    //         rows: (this.paginator?.pageSize ?? this.pageSize),
-    //         exportType: gridResponseType.JSON
-    //     };
-    //     this._httpClient.PostData(this.gridConfig.apiUrl, this.gridDataRequest).subscribe((data: any) => {
-    //         this.dataSource.data = data.data as [];
-    //         this.dataSource.sort = this.sort;
-    //         this.resultsLength = data["recordsFiltered"];
-    //         if (!this.hasEmitted) {
-    //             this.afterLoadData.emit(data.data);
-    //             this.hasEmitted = true;
-    //         }
-    //     });
-    // }
-    bindGridData(event?: any) {
-
-        // ✅ update paginator values when event comes
-        if (event) {
-            this.pageSize = event.pageSize;
-            this.paginator.pageIndex = event.pageIndex;
-        }
-
+    bindGridData() {
+        // this.updateFilters();
+        // debugger
         this.gridDataRequest = {
             sortField: this.sort?.active ?? this.gridConfig.sortField,
-
-            // ✅ FIX sortOrder
-            sortOrder: this.sort?.direction === 'asc' ? 0 : 1,
-
-            filters: this.gridConfig.filters,
+            sortOrder: this.sort?.direction ?? 'asc' == 'asc' ? 0 : -1, filters: this.gridConfig.filters,
             columns: this.gridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
-
-            // ✅ KEEP SAME (as per your SQL logic)
             first: (this.paginator?.pageIndex ?? 0),
             rows: (this.paginator?.pageSize ?? this.pageSize),
-
             exportType: gridResponseType.JSON
         };
-
-        this._httpClient.PostData(this.gridConfig.apiUrl, this.gridDataRequest)
-            .subscribe((data: any) => {
-
-                this.dataSource.data = data.data || [];
-                this.dataSource.sort = this.sort;
-                this.resultsLength = data["recordsFiltered"];
-
-                if (!this.hasEmitted) {
-                    this.afterLoadData.emit(data.data);
-                    this.hasEmitted = true;
-                }
-            });
+        this._httpClient.PostData(this.gridConfig.apiUrl, this.gridDataRequest).subscribe((data: any) => {
+            this.dataSource.data = data.data as [];
+            this.dataSource.sort = this.sort;
+            this.resultsLength = data["recordsFiltered"];
+            if (!this.hasEmitted) {
+                this.afterLoadData.emit(data.data);
+                this.hasEmitted = true;
+            }
+        });
     }
     // updateFilters(): void {
     //     this.gridConfig.filters = this.gridConfig.filters.map(filter => {
@@ -205,14 +153,14 @@ export class AirmidTableComponent implements OnInit {
             'table-row-green': row?.isMark == true,
 
             // added by raksha on 20/8/25 for admission list if company present
-            'table-row-yellow': row?.companyId > 0,
+            'table-row-yellow' : row?.companyId > 0,
 
             // added by raksha on 25/10/25 for cancelled row
-            'table-row-lightRed': row?.isCancelled || row?.isCancel == true,
+            'table-row-lightRed' : row?.isCancelled || row?.isCancel == true,
 
-            'table-row-Pink': row?.isInOut == true,
-            'table-row-Violet': row?.isInOut == false,
-            'table-row-Red': row?.balanceAmount && row.balanceAmount !== '0'
+              'table-row-Pink': row?.isInOut == true,
+              'table-row-Violet': row?.isInOut == false,
+                'table-row-Red': row?.balanceAmount && row.balanceAmount !== '0'
 
         }
 
@@ -223,9 +171,10 @@ export class AirmidTableComponent implements OnInit {
     }
     onExportClick(type: gridResponseType) {
         this.gridDataRequest.exportType = type;
-        // let filename = this.gridConfig.fileName;
+        debugger
+       // let filename = this.gridConfig.fileName;
         let filename = this.gridConfig.fileName || "Document";
-        //  if ((filename ?? "") == "") filename = "Document";
+      //  if ((filename ?? "") == "") filename = "Document";
         if (type == gridResponseType.Csv)
             filename = filename + ".csv";
         else if (type == gridResponseType.Pdf)

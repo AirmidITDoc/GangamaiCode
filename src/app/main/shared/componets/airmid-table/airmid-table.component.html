@@ -37,8 +37,8 @@
         <div class="table-wrapper">
             <mat-table #table matSort [dataSource]="dataSource" (matSortChange)="bindGridData()"
                 [class]="'airmid-table ' + tableClasses">
-                <ng-container *ngFor="let row of gridConfig?.columnsList;" [matColumnDef]="row.key"
-                    [sticky]="row?.key === 'patientName'" [stickyEnd]="row?.key === 'action'">
+                <ng-container *ngFor="let row of gridConfig?.columnsList;" [matColumnDef]="row.key" [sticky]="row?.key === 'patientName'"
+                    [stickyEnd]="row?.key === 'action'" >
                     <mat-header-cell [style.min-width.px]="row.width || defaultColumnWidth" *matHeaderCellDef
                         mat-sort-header [disabled]="!row.sort"> {{
                         row?.heading }}
@@ -58,18 +58,18 @@
                                         '--'}}</span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.status" fxHide fxShow.gt-sm>
-                                    <mat-icon *ngIf="getStatus(element[row.key])" class="active-icon"
-                                        style="color: #039855;">check_circle_outline</mat-icon>
-                                    <mat-icon *ngIf="!getStatus(element[row.key])" class="active-icon"
-                                        style="color: #f44336;">highlight_off</mat-icon>
+                                    <mat-icon *ngIf="getStatus(element[row.key])" 
+                                        class="active-icon" style="color: #039855;"
+                                       >check_circle_outline</mat-icon>
+                                       <mat-icon *ngIf="!getStatus(element[row.key])"
+                                       class="active-icon" style="color: #f44336;">highlight_off</mat-icon>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.image">
                                     <div class="profile_image_wrapper">
                                         <img class="showImage" height="50px" width="50px"
                                             [src]="element[row.key] ? element[row.key] : 'assets/images/noimage.jpg'">
                                     </div>
-                                               
-                                </ng>
+                                </ng>
                                 <ng *ngSwitchCase="GridColumnType.date">
                                     <span class="text-overflow"
                                         [matTooltip]="element[row.key] ? (element[row.key] | date: dateType.MEDIUM_DATE) : '-'">{{

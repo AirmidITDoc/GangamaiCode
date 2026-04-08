@@ -528,6 +528,8 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     getSelectedObjRegIP(obj) {
         console.log(obj);
+          this.TotalAdvanceAmt=0
+this.TotalBalanceAmt=0
         let IsDischarged = 0;
         IsDischarged = obj.isDischarged;
         if (IsDischarged == 1) {
@@ -554,6 +556,8 @@ export class SalesHospitalNewComponent implements OnInit {
         this.Itemchargeslist = [];
     }
     getSelectedObjOP(obj) {
+         this.TotalAdvanceAmt=0
+this.TotalBalanceAmt=0
         console.log(obj);
         this.Patientdetails = obj;
         this.OPDNoCheck = true;
@@ -2168,6 +2172,10 @@ getItemNames(): string {
                 //  this.TotalAdvanceAmt = element?.advanceAmount || 0
                 // this.TotalBalanceAmt = element?.balanceAmount || 0
             });
+
+            this.TotalBalanceAmt =this.TotalBalanceAmt - this.TotalCreditAmt
+
+            
             console.log(advancedetails)
         });
     }
