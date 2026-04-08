@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigSettingParams } from '../models/config';
+import { ConfigSettingParams, ConfigSettingUserAccessParams } from '../models/config';
 
 @Injectable({
     providedIn: 'root'
@@ -7,23 +7,23 @@ import { ConfigSettingParams } from '../models/config';
 export class ConfigService {
 
     configParams: ConfigSettingParams;
-     configParams1: ConfigSettingParams;
+    userAccessParam: ConfigSettingUserAccessParams[];
     constructor() { }
 
     setCongiParam(configRes: ConfigSettingParams) {
         this.configParams = configRes;
     }
 
-    setCongiParam1(configRes: ConfigSettingParams) {
-        this.configParams1 = configRes;
+    setCongiParam1(configRes: ConfigSettingUserAccessParams[]) {
+        this.userAccessParam = configRes;
     }
     getConfigParam() {
         return this.configParams;
     }
 
-     getConfigParam1() {
-        return this.configParams1;
+    getConfigParam1() {
+        return this.userAccessParam;
     }
 
-     
+
 }

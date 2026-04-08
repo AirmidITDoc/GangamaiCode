@@ -98,12 +98,12 @@ export class NewHospitalComponent implements OnInit {
 
     onSubmit() {
         debugger
-        if (this.HospitalForm.get('header')?.value === "") {
-            this.toastr.warning('Please enter Template Details', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+        // if (this.HospitalForm.get('header')?.value === "") {
+        //     this.toastr.warning('Please enter Template Details', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
         this.HospitalForm.get('City')?.setValue(this.vCityName)
         if (!this.HospitalForm.invalid) {
             console.log(this.HospitalForm.value)

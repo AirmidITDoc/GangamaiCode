@@ -715,7 +715,7 @@
 
                 <div class="modal-footer-buttons labpatientbtn">
                     <div>
-                        <button class="btn btn-primary" (click)="BillSave()">Save </button>
+                        <button class="btn btn-primary" (click)="BillSave()" [disabled]="isSaving || isSaved">{{ isSaving ? 'Saving...' : 'Save' }} </button>
                     </div>
                     <div>
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>

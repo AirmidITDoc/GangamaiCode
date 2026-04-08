@@ -215,6 +215,7 @@ export class NewLabPatientRegComponent {
 
     console.log(this.hospitalconfigservice.HospitalconfigParams)
     console.log(this._ConfigService.configParams)
+    console.log('User Access Detail:',this._ConfigService.userAccessParam[0])
 
     // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
     const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
@@ -587,7 +588,7 @@ export class NewLabPatientRegComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-    debugger
+    // debugger
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -828,6 +829,10 @@ export class NewLabPatientRegComponent {
           this.regNo = response.labRequestNo
           this.onChangeDateofBirth(response.dateofBirth)
           this.regflag = true
+          this._labPatientRegService.getPrefixId(response.prefixId).subscribe((Response) => {
+              this.prefixName = Response.prefixName
+            });
+
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim().toUpperCase() || '',
             middleName: this.registerObj.middleName.trim().toUpperCase() || '',
@@ -1150,7 +1155,7 @@ export class NewLabPatientRegComponent {
       this.OPFooterForm.get("concessionReasonId").setValue(0)
     }
     // row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
-    row.DiscPer = totalAmount  ? Math.ceil((discountAmt / totalAmount) * 100)  : 0;
+    row.DiscPer = totalAmount ? Math.ceil((discountAmt / totalAmount) * 100) : 0;
     row.TotalAmt = totalAmount;
     row.NetAmount = totalAmount - discountAmt;
 
@@ -1404,7 +1409,7 @@ export class NewLabPatientRegComponent {
     // update footer separately
     this.updateFooterTotals();
   }
-  
+
   updateFooterTotals() {
 
     const totalAmt = this.dstable1.data.reduce(
@@ -1836,14 +1841,16 @@ export class NewLabPatientRegComponent {
           this.toastrService.warning('Please Enter Price For Service', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
+          this.isSaving = false;
           return;
         }
         // debugger
         this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
         this.myForm.get('stateId').setValue(this.stateId)
         this.myForm.get('countryId').setValue(String(this.counryId))
-        if (!this.myForm.invalid)
+        if (!this.myForm.invalid) {
           this.OnSave();
+        }
 
         else {
           const invalidFields = [];
@@ -1873,7 +1880,8 @@ export class NewLabPatientRegComponent {
       }
     });
   }
-
+  isSaving: boolean = false;
+  isSaved: boolean = false;
   OnSave() {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
@@ -1957,7 +1965,9 @@ export class NewLabPatientRegComponent {
     if (this.data.mode == 'home') {
       this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
     } else {
-      this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
+      debugger
+      // this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
+      this.OpBillForm.get('patientName')?.setValue(this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
     }
     this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
     this.OpBillForm.get('ageYear')?.setValue(this.myForm.get('ageYear')?.value || 0)
@@ -1993,13 +2003,14 @@ export class NewLabPatientRegComponent {
     if (invalidRow) {
       this.toastrService.warning(
         'Please select Doctor for added service', 'Warning!');
+      this.isSaving = false;
       return;
     }
-    debugger
+    
     this.dstable1.data.forEach(item => {
       this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
       this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-      debugger
+      
       if (item.IsPackage == 1) {
         this.packcagechargesArray.clear();
         this.dsPackageList.data.forEach(item => {
@@ -2012,6 +2023,11 @@ export class NewLabPatientRegComponent {
 
     // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     if (!this.OpBillForm.invalid) {
+      if (this.isSaving) {
+        return; // prevent double click
+      }
+
+      this.isSaving = true;
 
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         const PatientHeaderObj = {};
@@ -2145,7 +2161,7 @@ export class NewLabPatientRegComponent {
         const ModePaymentObj = [];
         ModePaymentObj.push({
           paymentDate: formattedDate,
-          paymentTime: formattedTime,          
+          paymentTime: formattedTime,
           payAmount: this.myForm.get('netPayableAmt').value,
           tranNo: "",
           bankName: "",
@@ -2199,6 +2215,7 @@ export class NewLabPatientRegComponent {
         });
         return;
       }
+      this.isSaving = false;
     }
   }
 

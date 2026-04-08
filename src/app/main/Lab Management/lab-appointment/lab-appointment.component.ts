@@ -20,6 +20,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { MatTableDataSource } from '@angular/material/table';
 import { NewLabPatientRegComponent } from '../lab-patient-reg/new-lab-patient-reg/new-lab-patient-reg.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -76,6 +77,7 @@ export class LabAppointmentComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private _service: LabAppointmentService,
     private accountService: AuthenticationService,
+    public _ConfigService: ConfigService,
     public _matDialog: MatDialog, private cdr: ChangeDetectorRef, public toastr: ToastrService,
     public datePipe: DatePipe
   ) {
@@ -92,21 +94,26 @@ export class LabAppointmentComponent {
   ngOnInit(): void {
     this.unitId = this.accountService.currentUserValue.user.unitId
 
-    // debugger
-    const SelectQuery = {
-      "searchFields": [{
-        "fieldName": "LoginId",
-        "fieldValue": String(this.accountService.currentUserValue.userId),
-        "opType": "Equals"
-      }],
-      "mode": "LoginWiseAccessConfigList"
-    }
-    this._service.commonList(SelectQuery).subscribe(response => {
-      const CategoryData = response.find(x => x.AccessValueName === 'IsSetCategoryId');
-      console.log(CategoryData)
-      this.categoryId = Number(CategoryData.AccessInputValue)
-      this.myFilterform.get('categoryId').setValue(this.categoryId)
+    this.myFilterform.get('refDocId')?.valueChanges.subscribe(val => {
+      if (val == 0) {
+        this.vRefDocId = 0;
+      } else {
+        this.vRefDocId = val;
+      }
     });
+
+    this.myFilterform.get('categoryId')?.valueChanges.subscribe(val => {
+      if (val == 0) {
+        this.categoryId = 0;
+      } else {
+        this.categoryId = val;
+      }
+    });
+
+    const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsSetCategoryId');
+    this.categoryId = Number(access?.AccessInputValue ?? 0);
+    this.myFilterform.get('categoryId').setValue(this.categoryId)
+    console.log(access);
   }
   getWeekRange(date = new Date()) {
     // Clone the date to avoid modifying the original
@@ -142,7 +149,7 @@ export class LabAppointmentComponent {
   };
 
   onChangeRefdoc(value) {
-   this.vRefDocId = value.doctorId
+    this.vRefDocId = value.doctorId
     this.vRefDocName = value.doctorName
     // this.vRefDocId = value.value
     // this.vRefDocName = value.text

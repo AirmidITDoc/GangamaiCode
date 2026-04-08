@@ -52,6 +52,9 @@ export class LabPatientRegService {
     public getstateId(Id) {
         return this._httpClient.GetData("StateMaster/" + Id);
     }
+    public getPrefixId(Id) {
+        return this._httpClient.GetData("Prefix/" + Id);
+    }
     public getcityId(Id) {
         return this._httpClient.GetData("CityMaster/" + Id);
     }

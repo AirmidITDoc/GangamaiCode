@@ -15,7 +15,8 @@ import { CashlessCompanyDashboardComponent } from './cashless-company-dashboard/
 const routes: Routes = [
     {
         path: '',
-        component: NewDashboardComponent
+        component: HomePageComponent // added by raksha on 08/04/2026(sachin sir require)
+        // component: NewDashboardComponent
     },
     {
         path: 'dashboard',
