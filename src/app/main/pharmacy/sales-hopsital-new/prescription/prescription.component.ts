@@ -9,6 +9,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { SalesHospitalService } from '../sales-hospital-new.service';
+import Swal from 'sweetalert2';
 @Component({
     selector: 'app-prescription',
     templateUrl: './prescription.component.html',
@@ -220,6 +221,32 @@ export class PrescriptionComponent implements OnInit {
             this._dialogRef.close(this.Patientlist);
         });
     }
+
+
+     Prescclose(element) {
+            debugger
+            console.log(element)
+            
+            Swal.fire({
+                title: 'Do you want to cancel the Prescription?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Cancel it!"
+            }).then((flag) => {
+                if (flag.isConfirmed) {
+                    const sub = {
+                        "ippreId": element.ipPreId
+
+                    }
+                    this._SalesService.PrescriptionClose(sub).subscribe((response: any) => {
+                        
+                        });
+                }
+            });
+        }
     onClose() {
         this.PrescriptionFrom.reset();
         this._matDialog.closeAll();

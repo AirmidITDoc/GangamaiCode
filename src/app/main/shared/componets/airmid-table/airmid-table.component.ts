@@ -22,7 +22,7 @@ export class AirmidTableComponent implements OnInit {
 
     constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService,
         public permissionService: PagePermissionService,
-        public ConfigSettingParams: ConfigService
+        public ConfigSettingParams:ConfigService
     ) {
     }
     dateType = DATE_TYPES;
@@ -52,23 +52,15 @@ export class AirmidTableComponent implements OnInit {
     public defaultColumnWidth = 120;
     private hasEmitted = false;
     currencyValue = 'INR';
-    displayedColumns: string[] = [];
     ngOnInit(): void {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
-        // initialize columns
-        this.gridConfig.columnsList = this.gridConfig.columnsList.map(col => ({
-            ...col,
-            visible: true
-        }));
-
-        this.displayedColumns = this.gridConfig.columnsList.filter(x => x.visible == true).map(x => x.key.replaceAll(' ', ''));
         this.bindGridData();
         this.ShowButtons = this.permissionService.getPermission(this.gridConfig.permissionCode, permissionType.Export);
-
+        
         // Set Current from DB
         const rawValue = this.ConfigSettingParams.configParams.CurrencyValue;
-        // Get value after colon
+          // Get value after colon
         this.currencyValue = rawValue?.split(':')[1];
         console.log(this.currencyValue); // USD / INR / KES
     }
@@ -79,13 +71,7 @@ export class AirmidTableComponent implements OnInit {
         return gridColumnTypes;
     }
     public get Headers() {
-         return this.gridConfig.columnsList.filter(x=>x.visible==true).map(x => x.key.replaceAll(' ', ''));
-       //return this.displayedColumns;
-    }
-    toggleColumn() {
-        this.displayedColumns = this.gridConfig.columnsList
-            .filter(col => col.visible)
-            .map(col => col.key.replaceAll(' ', ''));
+        return this.gridConfig.columnsList.map(x => x.key.replaceAll(' ', ''));
     }
     gridDataRequest: gridRequest = new gridRequest();
     bindGridData() {
@@ -167,14 +153,14 @@ export class AirmidTableComponent implements OnInit {
             'table-row-green': row?.isMark == true,
 
             // added by raksha on 20/8/25 for admission list if company present
-            'table-row-yellow': row?.companyId > 0,
+            'table-row-yellow' : row?.companyId > 0,
 
             // added by raksha on 25/10/25 for cancelled row
-            'table-row-lightRed': row?.isCancelled || row?.isCancel == true,
+            'table-row-lightRed' : row?.isCancelled || row?.isCancel == true,
 
-            'table-row-Pink': row?.isInOut == true,
-            'table-row-Violet': row?.isInOut == false,
-            'table-row-Red': row?.balanceAmount && row.balanceAmount !== '0'
+              'table-row-Pink': row?.isInOut == true,
+              'table-row-Violet': row?.isInOut == false,
+                'table-row-Red': row?.balanceAmount && row.balanceAmount !== '0'
 
         }
 
@@ -185,9 +171,10 @@ export class AirmidTableComponent implements OnInit {
     }
     onExportClick(type: gridResponseType) {
         this.gridDataRequest.exportType = type;
-        // let filename = this.gridConfig.fileName;
+        debugger
+       // let filename = this.gridConfig.fileName;
         let filename = this.gridConfig.fileName || "Document";
-        //  if ((filename ?? "") == "") filename = "Document";
+      //  if ((filename ?? "") == "") filename = "Document";
         if (type == gridResponseType.Csv)
             filename = filename + ".csv";
         else if (type == gridResponseType.Pdf)
