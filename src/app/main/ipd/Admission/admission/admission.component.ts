@@ -553,7 +553,8 @@ this.WardId=event.value
             "opType": "13"
         }
     ],
-    "mode": "AdmissionList"
+    // "mode": "AdmissionList"
+        "mode":"WardWiseAdmissionList"
 }
             
 

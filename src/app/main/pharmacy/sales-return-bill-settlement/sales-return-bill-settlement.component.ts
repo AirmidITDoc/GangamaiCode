@@ -346,6 +346,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.getdata();
     }
     getSelectedObjRegIP(obj) {
+        debugger
         this.registerObj = obj
         this.DoctorNamecheck = true;
         this.IPDNocheck = true;
@@ -451,7 +452,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     }
 
 
-    openPaymentpopup(contact) {
+    openPaymentpopup1(contact) {
         debugger
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
@@ -541,7 +542,102 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         });
     }
 
+  openPaymentpopup(contact) {
+        debugger
 
+        if(contact.balanceAmount > 0){
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+        const PatientHeaderObj = {};
+        PatientHeaderObj['Date'] = formattedDate;
+        PatientHeaderObj['PatientName'] = contact?.patientName || '';
+        PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
+        PatientHeaderObj['NetPayAmount'] = Math.round(contact?.balanceAmount);
+        PatientHeaderObj['BillNo'] = contact?.salesId || 0;
+        PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id || 0;
+        PatientHeaderObj['RegNo'] = contact?.regNo || 0;
+        PatientHeaderObj['DoctorName'] = this.DoctorName || '';
+        PatientHeaderObj['DepartmentName'] = contact?.departmentName || '';
+        PatientHeaderObj['Age'] = contact?.age || 0;
+        PatientHeaderObj['CompanyName'] = contact?.companyName || '';
+        PatientHeaderObj['CompanyId'] = contact?.companyId || 0;
+        PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT';
+        if (this.userFormGroup.get('PatientType').value == '1')
+            PatientHeaderObj['IPDNo'] = this.IPDNo;
+        else
+            PatientHeaderObj['OPDNo'] = this.OPDNo;
+
+        const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+            {
+                maxWidth: "80vw",
+                height: '800px',
+                width: '75%',
+                data: {
+                    vPatientHeaderObj: PatientHeaderObj,
+                    FromName: "IP-Pharma-SETTLEMENT",
+                    advanceObj: PatientHeaderObj,
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(result)
+            debugger
+            if (result && result.IsSubmitFlag) {
+                let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+                UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
+
+                const SalesDataArray = [];
+                SalesDataArray.push({ salesID: contact?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
+
+                this.AdvanceDetailsArray.clear();
+                UpdateAdvanceDetailarr1.forEach(item => {
+                    this.AdvanceDetailsArray.push(this.createAdvanceDetails(item));
+                });
+
+                this.salessArray.clear();
+                SalesDataArray.forEach(item => {
+                    this.salessArray.push(this.createsaless(item));
+                });
+
+                let AdvanceBalAmt = 0;
+                let AdvanceUsedAmt = 0;
+                if (UpdateAdvanceDetailarr1.length > 0) {
+                    UpdateAdvanceDetailarr1.forEach(element => {
+                        AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+                        AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+                        this.PharmaSettlementfrom.get('advanceHeader.advanceId')?.setValue(element.AdvanceId)
+                        this.PharmaSettlementfrom.get('advanceHeader.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+                        this.PharmaSettlementfrom.get('advanceHeader.balanceAmount')?.setValue(AdvanceBalAmt)
+                    })
+                }
+                console.log(this.PharmaSettlementfrom.value);
+
+                let PaymentArray: IpPaymentInsert[] = [];
+                PaymentArray = result.submitDataPay.ipPaymentInsert;
+                this.PaymentArray.clear();
+                this.PaymentArray.push(this.createSettlmentPyament(PaymentArray));
+                this.ModeOfPaymentsArray.clear();
+                result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                });
+
+                console.log(this.PharmaSettlementfrom.value);
+                this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => {
+                    this.onclearmultipledata();
+                    // this.viewgetIPPayemntPdf(response) 
+                    // this.OnSalessettlemtnprint(this.OP_IP_Id,this._loggedService.currentUserValue.user.storeId) 
+                    this.grid.bindGridData();
+                });
+            }
+        });
+    }else{
+        Swal.fire("No Balance Amount ........")
+    
+    }
+
+    }
     viewgetIPPayemntPdf(paymentId) {
         this.commonService.Onprint("PaymentId", paymentId, "IpPaymentReceipt");
     }
@@ -833,6 +929,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
                 console.log(this.PharmaSettlementfrom.value);
                 this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => {
                     this.onclearNormaldata();
+                    // this.OP_IP_Id = '';
                     this.getdataMultiple()
                 });
             }
@@ -865,7 +962,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.DoctorName = '';
         this.TariffName = '';
         this.OPDNo = '';
-        this.OP_IP_Id = '';
+        // this.OP_IP_Id = '';
         this.RegId = '';
         this.WardName = '';
         this.BedName = '';

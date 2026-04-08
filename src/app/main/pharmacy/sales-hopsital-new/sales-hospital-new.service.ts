@@ -188,5 +188,12 @@ export class SalesHospitalService {
     public getAccessDetailList(param) {
         return this._httpClient1.PostData("LoginManager/loginAccessDetailsList", param)
     }
+
+     public PrescriptionClose(param) {
+          return this._httpClient1.PostData("Prescription/PrescriptionCancel", param);
+    }
+
+
+    
 }
 

@@ -1500,6 +1500,16 @@ export class NewAppointmentwithBillComponent {
                     });
                 } else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
 
+                debugger
+                    if (this.OPFooterForm.get('UPINO').value == 0) {
+                        this.toastr.warning('Please select UPINO ', 'Warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                        });
+                        return;
+                    }
+
+
+
                     this.OpBillForm.get('balanceAmt').setValue(0)
                     this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                     this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
@@ -1650,6 +1660,15 @@ export class NewAppointmentwithBillComponent {
                         this.savebtn = true
                     });
                 } else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
+
+                     debugger
+                    if (this.OPFooterForm.get('UPINO').value == 0) {
+                        this.toastr.warning('Please select UPINO ', 'Warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                        });
+                        return;
+                    }
+                    
                     const ModePaymentObj = [];
                     ModePaymentObj.push({
                         paymentDate: formattedDate,

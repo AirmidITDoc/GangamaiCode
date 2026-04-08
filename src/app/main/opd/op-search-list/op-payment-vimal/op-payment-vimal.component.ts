@@ -318,6 +318,8 @@ export class OpPaymentVimalComponent implements OnInit {
     ngOnInit(): void {
         // this.patientDetailsFormGrp = this.createForm();
         //Advance Calculation need balAmt
+
+        debugger
         const vdata = {
             "first": 0,
             "rows": 9999,
@@ -631,6 +633,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     selectedAdvanceData: any = [];
     getAdvcanceDetails(isReset?: any) {
+        debugger
         this.dataSource.data = [];
         const vdata = {
             "first": 0,
