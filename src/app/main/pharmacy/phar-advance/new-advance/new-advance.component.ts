@@ -189,16 +189,10 @@ export class NewAdvanceComponent implements OnInit {
         }
     }
     getListdata(obj) {
-        this.gridConfig = {
-            apiUrl: "Sales/PharAdvanceList",
-            columnsList: this.AllColumns,
-            sortField: "AdmissionID",
-            sortOrder: 0,
-            filters: [
+         let  filters = [
                 { fieldName: "AdmissionID", fieldValue: String(obj?.admissionID), opType: OperatorComparer.Equals },
             ]
-        }
-        this.grid.gridConfig = { ...this.gridConfig };
+        this.grid.gridConfig.filters= filters;
         this.grid.bindGridData();
     }
     vAdvanceId: any = 0;

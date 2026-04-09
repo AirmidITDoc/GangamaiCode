@@ -131,7 +131,6 @@ export class OpPaymentVimalComponent implements OnInit {
         return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
     }
     GetBalanceAmt() {
-        debugger
         this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
         this.balanceAmt = Number(this.netPayAmt || 0) - ((Number(this.paidAmt || 0) + Number(this.amount1 || 0)));
         if (this.balanceAmt < 0) {
@@ -140,7 +139,7 @@ export class OpPaymentVimalComponent implements OnInit {
             })
             this.amount1 = 0
             this.setPaidAmount();
-            this.GetBalanceAmt()
+            // this.GetBalanceAmt()
             return;
         }
     }
@@ -199,27 +198,40 @@ export class OpPaymentVimalComponent implements OnInit {
 
     }
     setPaidAmount() {
-        debugger
         this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
+        
     }
     onKeyAdv(a, b) {
         a.usedAmount = Number(b.target.value);
         this.SetAdvanceRow();
+        this.getAdvanceAmt(a, b);
         this.setPaidAmount();
         this.GetBalanceAmt();
-        this.getAdvanceAmt(a, b);
     }
     AdvanceId: any = 0;
     selectedRow: any = [];
     filteredadvlist: any = [];
     getAdvanceAmt(element, index) {
+        debugger
         this.filteredadvlist = this.selectedRow.filter(item => item.advanceDetailID == element.advanceDetailID)
         const balAmt = this.filteredadvlist[0]?.balanceAmount
-        if (element.usedAmount > balAmt) {
-            Swal.fire('Enter Amount less than Balance Amount:' + element.balanceAmount);
+        if (element.usedAmount > this.netPayAmt)
+        {
+            Swal.fire('Enter Amount less than Bill Amount:' + this.netPayAmt);
             element.usedAmount = '';
             element.balanceAmount = balAmt;
             element.usedAmount = '';
+            this.setPaidAmount();
+            this.SetAdvanceRow();
+            return;
+        }
+        if (element.usedAmount > balAmt) {
+            Swal.fire('Enter Amount less than Balance Amount:' + element.balanceAmount);
+
+            element.usedAmount = '';
+            element.balanceAmount = balAmt;
+            element.usedAmount = '';
+            return;
         }
         else if (element.usedAmount > 0) {
             element.balanceAmount = balAmt - element.usedAmount
@@ -316,10 +328,6 @@ export class OpPaymentVimalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.patientDetailsFormGrp = this.createForm();
-        //Advance Calculation need balAmt
-
-        debugger
         const vdata = {
             "first": 0,
             "rows": 9999,
@@ -391,7 +399,6 @@ export class OpPaymentVimalComponent implements OnInit {
     RemainingAmt: any = [];
     ModePaymentObj: any = [];
     onSubmit() {
-        debugger
         let transactionType = 0;
         let opdipdtype = 1;
         const result = this.OnCheckFormValidity();
@@ -633,7 +640,6 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     selectedAdvanceData: any = [];
     getAdvcanceDetails(isReset?: any) {
-        debugger
         this.dataSource.data = [];
         const vdata = {
             "first": 0,
@@ -712,7 +718,6 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     advanceUsedAmt: any = 0;
     calculateBalance() {
-        debugger
         if (this.dataSource.data && this.dataSource.data.length > 0) {
             let totalAdvanceAmt = 0;
             let netAmtLocal = this.netPayAmt;

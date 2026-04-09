@@ -377,20 +377,13 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.getdata();
     }
     getdata() {
-        debugger
         const opiptype = this.userFormGroup.get('PatientType').value
-        this.gridConfig = {
-            apiUrl: "Sales/PharSalesSettlemet",
-            columnsList: this.AllColumns,
-            sortField: "SalesId",
-            sortOrder: 0,
-            filters: [
+        let filters = [
                 { fieldName: "RegId", fieldValue: String(this.RegId), opType: OperatorComparer.Contains },
                 { fieldName: "OP_IP_ID", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Contains },
                 { fieldName: "OP_IP_Type", fieldValue: opiptype, opType: OperatorComparer.Contains },
             ]
-        }
-        this.grid.gridConfig = this.gridConfig;
+        this.grid.gridConfig.filters = filters;
         this.grid.bindGridData();
     }
 
