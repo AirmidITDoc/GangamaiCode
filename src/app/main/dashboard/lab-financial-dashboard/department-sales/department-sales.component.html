@@ -1,0 +1,128 @@
+<div class="modal-wrapper grid-container">
+  <!-- Modal header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Service Wise Summary</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <!-- <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div> -->
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal body -->
+  <div class="modal-body">
+    <div class="modal-body-container">
+
+      <div class="modal-card-container">
+
+        <div fxLayout="column" class="pharmacy-dashboard-wrapper">
+          <mat-card style="background-color: rgb(243, 250, 250);">
+            <mat-card-content>
+             
+                <mat-table matSort [dataSource]="departmentSales" [@animateStagger]="{value:'50'}"
+                  style="overflow:auto;">
+
+                  <ng-container matColumnDef="serviceName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-350">
+                      Service Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-350 ellipsis">
+                      {{report.serviceName}}
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="testCount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100">
+                      Count
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let report" class="w-100">
+                      {{report.testCount}}
+                    </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="centerSale">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
+                      Center Sale
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-150">
+                      {{report.centerSale}}
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="netSale">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
+                      Net Sale
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let report" class="w-150">
+                      {{report.netSale}}
+                    </mat-cell>
+                  </ng-container>
+
+
+                  <ng-container matColumnDef="loading">
+                    <mat-header-cell *matFooterCellDef colspan="4" style="display: none;">
+                    </mat-header-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="4">
+                      No data found...
+                    </mat-footer-cell>
+                  </ng-container>
+
+                  <mat-header-row class="accent" *matHeaderRowDef="serviceSalesColumns;">
+                  </mat-header-row>
+                  <mat-row *matRowDef="let report; columns: serviceSalesColumns;" 
+                    [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                  <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hide':!(departmentSales!=null && departmentSales.data.length==0)}">
+                  </mat-footer-row>
+                </mat-table>
+
+                <div class="totals"
+                  style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                  <div style="display: flex; width: 100%; min-width: 100%;">
+
+                    <div class="totals-label"
+                      style="flex: 0 0 350px; min-width: 350px; font-weight: bold;padding-left: 10px;">
+                      Total
+                    </div>
+
+                    <div class="totals-num" style="flex: 0 0 100px; min-width: 100px; text-align: center;">
+                      {{ TotalPatient }}
+                    </div>
+
+                    <div class="totals-num" style="flex: 0 0 100px; min-width: 100px; text-align: right;">
+                      {{ CentralTotal | number:'1.2-2' }}
+                    </div>
+
+                    <div class="totals-num" style="flex: 0 0 120px; min-width: 120px; text-align: right;">
+                      {{ netSale | number:'1.2-2' }}
+                    </div>
+                  </div>
+                </div>
+             
+            </mat-card-content>
+
+          </mat-card>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
