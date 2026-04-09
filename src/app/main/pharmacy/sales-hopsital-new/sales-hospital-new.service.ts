@@ -190,7 +190,7 @@ export class SalesHospitalService {
     }
 
      public PrescriptionClose(param) {
-          return this._httpClient1.PostData("Prescription/PrescriptionCancel", param);
+          return this._httpClient1.PostData("Prescription/PrescriptionIsClosed", param);
     }
 
 

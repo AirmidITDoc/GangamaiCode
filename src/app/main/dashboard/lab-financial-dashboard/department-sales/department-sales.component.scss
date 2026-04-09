@@ -1,0 +1,42 @@
+.mat-column-totalPatient,
+
+.mat-column-testCount,
+.mat-column-centerSale,
+.mat-column-netSale,
+
+.mat-column-net {
+    flex: 1 1 auto;
+    text-align: right;
+    justify-content: flex-end;
+    z-index: 10;
+    border-left: 2px solid #e0e0e0;
+}
+
+
+.totals-label {
+    font-weight: bold;
+    font-size: 18px;
+    color: #1f2552;
+}
+
+.totals {
+    margin-top: 4px;
+    border-top: 2px solid #9fa8da;
+    padding-top: 4px;
+    font-weight: bold;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 150px;
+}
+
+.mat-column-testCount,
+.mat-column-totalPatient {
+    flex: 1 1 auto;
+    text-align: center !important;
+    justify-content: center !important;
+}
