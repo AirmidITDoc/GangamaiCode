@@ -441,8 +441,9 @@
               </div>
               <div class="modal-card-container dynamic-table-wrapper" fxFlex>
                 <div class="airmid-table-container">
-                  <mat-table class="airmid-table sales-table" #table matSort [dataSource]="saleSelectedDatasource"
-                    [@animateStagger]="{ value: '50' }" style="overflow: auto">
+                    <div class="content-card">
+                  <mat-table class="airmid-table table" #table matSort [dataSource]="saleSelectedDatasource"
+                    [@animateStagger]="{ value: '50' }">
 
                     <ng-container matColumnDef="itemMolecule">
                       <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70"> </mat-header-cell>
@@ -585,6 +586,7 @@
                     <mat-footer-row *matFooterRowDef="['noData']"
                       [ngClass]="{ hide: !(saleSelectedDatasource != null && saleSelectedDatasource.data.length == 0) }"></mat-footer-row>
                   </mat-table>
+                  </div>
                 </div>
               </div>
 
