@@ -151,6 +151,7 @@ export class SalesHospitalNewComponent implements OnInit {
     DoctorNamecheck: boolean = false;
     IPDNocheck: boolean = false;
     OPDNoCheck: boolean = false;
+    showRightSideSection: boolean = true;
     PharmaSalesForm: FormGroup;
     PharmaSalesDraftForm: FormGroup
     selectedItem: SalesBatchItemModel;
