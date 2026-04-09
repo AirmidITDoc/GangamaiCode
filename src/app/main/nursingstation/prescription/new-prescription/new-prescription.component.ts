@@ -212,7 +212,7 @@ export class NewPrescriptionComponent implements OnInit {
         this.vdoseId = Number(obj.doseName) ?? 0;
         this.day = obj.doseDay;
         this.vInstruction = obj.instruction ?? '';
-        this.vQty = obj.balanceQty;
+        this.vQty = ''; //obj.balanceQty;
         this.ItemForm.get('ItemId').setValue(obj);
         debugger
         if (this.vdoseId > 0) {
@@ -380,12 +380,20 @@ export class NewPrescriptionComponent implements OnInit {
                 this.ItemForm.get('ItemId').reset('');
                 this.ItemForm.get('Qty').reset('');
                 this.ItemForm.get('Instruction').reset('');
+                // Focus back to Item Name
+                const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+                if (itemNameElement) {
+                    itemNameElement.focus();
+                }
+
             } else {
                 this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
             }
+
+
         } else {
             const invalidFields = [];
             if (this.ItemForm.invalid) {

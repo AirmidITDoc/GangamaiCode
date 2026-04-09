@@ -100,6 +100,7 @@
                                 (onClearSelection)="ItemFromReset()"
                                 [ApiUrl]="'ItemMaster/GetItemListForPrescriptionSearch?StoreId=' + vstoreId + '&ItemName='"
                                 (selectionChange)="selectChangeItem($event)" TextField="formattedText"
+                                name="ItemName"
                                 ValueField="ItemId" [validations]="getValidationMessages().ItemId">
                             </airmid-autocomplete>
 

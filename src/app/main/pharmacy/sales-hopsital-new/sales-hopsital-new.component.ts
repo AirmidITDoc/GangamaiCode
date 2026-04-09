@@ -528,8 +528,8 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     getSelectedObjRegIP(obj) {
         console.log(obj);
-          this.TotalAdvanceAmt=0
-this.TotalBalanceAmt=0
+        this.TotalAdvanceAmt = 0
+        this.TotalBalanceAmt = 0
         let IsDischarged = 0;
         IsDischarged = obj.isDischarged;
         if (IsDischarged == 1) {
@@ -556,8 +556,8 @@ this.TotalBalanceAmt=0
         this.Itemchargeslist = [];
     }
     getSelectedObjOP(obj) {
-         this.TotalAdvanceAmt=0
-this.TotalBalanceAmt=0
+        this.TotalAdvanceAmt = 0
+        this.TotalBalanceAmt = 0
         console.log(obj);
         this.Patientdetails = obj;
         this.OPDNoCheck = true;
@@ -1098,11 +1098,9 @@ this.TotalBalanceAmt=0
     }
     StoreId: any = 0;
     getStoredet() {
-        debugger
         this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
             const storename = data;
             const filterStore = storename.filter(item => item.value == this._loggedService.currentUserValue.user.storeId)
-
             this.StoreName = filterStore[0]?.text;
             this.StoreId = filterStore[0]?.value;
         });
@@ -1193,6 +1191,7 @@ this.TotalBalanceAmt=0
 
     }
     onSave(event) {
+        debugger
         const formValue = this.ItemSubform.value
         if (this.ItemSubform.get('opIpType').value == '2') {
             if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
@@ -1895,12 +1894,13 @@ this.TotalBalanceAmt=0
             "columns": [{ "data": "string", "name": "string" }]
         };
         this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
-            console.log(response)
+            console.log(" Temp Charges list" + response)
             const tempChargesList = response?.data || [];
             let qtyBalChk = 0;
             if (tempChargesList.length == 0) {
                 Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
             } else if (tempChargesList.length > 0) {
+                this.Itemchargeslist=[];
                 tempChargesList.forEach((element) => {
                     if (contact.itemId != element.itemId) {
                         qtyBalChk = 0;
@@ -1924,7 +1924,7 @@ this.TotalBalanceAmt=0
     }
     vExpDate: any;
     getFinalCalculation(contact, DraftQty) {
-
+       
         if (DraftQty && contact.unitMrp) {
             this.saleSelectedDatasource.data = [];
             let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
@@ -2022,19 +2022,19 @@ this.TotalBalanceAmt=0
         return true;
     }
 
-//     NoStockItemlist:any=[
-//     {ItemId:2,ItemName:'Dolo'},
-//       {ItemId:1,ItemName:'Doloe 25'},
-//         {ItemId:5,ItemName:'Paracetmole'}
-// ];
-NoStockItemlist:any=[];
-getItemNames(): string {
-  if (!this.NoStockItemlist || this.NoStockItemlist.length === 0) {
-    return '';
-  }
-  const unique = [...new Set(this.NoStockItemlist.map(item => item.ItemName))];
-  return unique.join(', ');
-}
+    //     NoStockItemlist:any=[
+    //     {ItemId:2,ItemName:'Dolo'},
+    //       {ItemId:1,ItemName:'Doloe 25'},
+    //         {ItemId:5,ItemName:'Paracetmole'}
+    // ];
+    NoStockItemlist: any = [];
+    getItemNames(): string {
+        if (!this.NoStockItemlist || this.NoStockItemlist.length === 0) {
+            return '';
+        }
+        const unique = [...new Set(this.NoStockItemlist.map(item => item.ItemName))];
+        return unique.join(', ');
+    }
 
     getPRESCRIPTION() {
         if (this.ItemSubform.get('opIpType').value != '2') {
@@ -2045,6 +2045,7 @@ getItemNames(): string {
             });
             dialogRef.afterClosed().subscribe((result) => {
                 console.log('The dialog was closed - Insert Action', result);
+                this.Itemchargeslist=[];
                 this.DoctorNamecheck = true;
                 this.PatientName = result[0]?.PatientName;
                 this.RegId = result[0]?.RegId;
@@ -2052,7 +2053,7 @@ getItemNames(): string {
                 this.OP_IP_Id = result[0]?.AdmissionID;
                 this.DoctorName = result[0]?.DoctorName;
                 this.ItemSubform.get('regId').setValue(result[0]?.RegId);
-
+                debugger
                 this.saveflag = false;
                 if (result[0]?.IPMedID > 0) {
                     this.IPDNocheck = true;
@@ -2096,14 +2097,14 @@ getItemNames(): string {
                                 showConfirmButton: true,
                                 confirmButtonText: 'OK'
                             }).then((result) => {
-                              if (result.isConfirmed) {
-                             this.NoStockItemlist.push({
-                                ItemId:contact?.ItemId || 0,
-                                ItemName:contact?.ItemName || ''
-                             })
-                             console.log(this.NoStockItemlist)
-                                 }
-                               })
+                                if (result.isConfirmed) {
+                                    this.NoStockItemlist.push({
+                                        ItemId: contact?.ItemId || 0,
+                                        ItemName: contact?.ItemName || ''
+                                    })
+                                    console.log(this.NoStockItemlist)
+                                }
+                            })
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
                             let bal_qnt = 0;
@@ -2173,9 +2174,9 @@ getItemNames(): string {
                 // this.TotalBalanceAmt = element?.balanceAmount || 0
             });
 
-            this.TotalBalanceAmt =this.TotalBalanceAmt - this.TotalCreditAmt
+            this.TotalBalanceAmt = this.TotalBalanceAmt - this.TotalCreditAmt
 
-            
+
             console.log(advancedetails)
         });
     }
