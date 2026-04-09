@@ -1080,7 +1080,7 @@ export class LabPatientRegComponent {
   branch_name: [ 'Airmid',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
   appointment_date_time: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
   //package:''
-  comments:[]
+  comments:this.formBuilder.array([])
  })
 } 
 CreateRISPushComment(contact:any): FormGroup {
@@ -1095,10 +1095,19 @@ get RISCommentArray(): FormArray {
           return this.RISSaveForm.get('comments') as FormArray;
 }
 
-    getpushtoRIS(contact:any){ 
-    debugger  
-     const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);  
-  this.RISSaveForm.patchValue({
+    getpushtoRIS(contact:any){  
+    debugger   
+const prefixes = ['mr','mrs','miss','ms','dr','prof','sir','madam','lord','lady','master','mx','rev','fr','hon'];
+
+let name = (contact?.patientName || '').trim();
+name = name.replace(/^[^a-zA-Z0-9]+/, '').trim();
+const prefixRegex = new RegExp(`^(${prefixes.join('|')})\\.?\s+`, 'i');
+while (prefixRegex.test(name)) {  name = name.replace(prefixRegex, ''); }
+
+const Patientparts = name.split(/\s+/);   
+ 
+  
+        this.RISSaveForm.patchValue({
     first_name: Patientparts[0] || '',
     middle_name: Patientparts.length > 2 ? Patientparts.slice(1, -1).join(' ') : '',
     last_name: Patientparts.length > 1 ? Patientparts[Patientparts.length - 1] : '', 
@@ -1110,10 +1119,9 @@ get RISCommentArray(): FormArray {
     accession_number: contact?.labRequestNo || '',
     ref_physician: contact?.asas || '',
     ref_physician_phone_number: contact?.mobileNo || '',
-    appointment_date_time: contact?.regDate || '',
-    comments: contact.comments ?? [] 
+    appointment_date_time: contact?.regDate || '' 
   }); 
-        // this.RISCommentArray.clear(); 
+         this.RISCommentArray.clear(); 
         // this.RISCommentArray.push(this.CreateRISPushComment(contact))
         console.log(this.RISSaveForm.value)
         this._labPatientRegService.getPushToRIS(this.RISSaveForm.value).subscribe(res=>{ 
