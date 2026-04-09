@@ -226,18 +226,15 @@ export class LabSettlementComponent {
         this.getAccessDetail();
     }
 
-    GetDetails(data) {
-        this.gridConfig = {
-            apiUrl: "OPBill/OPBillListSettlementList",
-            columnsList: this.AllColumns,
-            sortField: "BillNo",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "RegId", fieldValue: String(this.RegId), opType: OperatorComparer.Contains }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+    @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
+    GetDetails(data: any) {
+        let filters = [
+            { fieldName: "RegId", fieldValue: String(this.RegId), opType: OperatorComparer.Contains }
+        ]
+        setTimeout(() => {
+            this.tblLabPatient.gridConfig.filters = filters;
+            this.tblLabPatient.bindGridData();
+        }, 100);
     }
 
     isSettlement: boolean = false;

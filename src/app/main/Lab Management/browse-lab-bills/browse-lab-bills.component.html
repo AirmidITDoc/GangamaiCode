@@ -85,19 +85,17 @@
                 </button>
             </span>
 
-            <!-- <span [matTooltip]="getVerificationTooltip(element)" matTooltipPosition="above">
-                <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
-                    (click)="$event.stopPropagation();" [disabled]="!isActionEnabled(element)">
-                    <mat-icon class="secondary-text">more_vert</mat-icon>
+            <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
+                (click)="$event.stopPropagation();">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+                <button mat-menu-item (click)="OnOpenRefund(element)"
+                    style="height: 32px; min-height: 32px;">
+                    <span style="font-size: 13px;">Refund</span>
                 </button>
-            </span>
-            <mat-menu #moreMenu="matMenu">
-                <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                        <span>{{m}}</span>
-                    </button>
-                </ng-container>
-            </mat-menu> -->
+            </mat-menu>
         </div>
     </ng-template>
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
@@ -326,8 +324,7 @@
                                 <mat-icon>print</mat-icon>
                             </button>
 
-                            <button mat-icon-button matTooltip="Send message On WhatsApp"
-                            style="margin-bottom: 6px;"
+                            <button mat-icon-button matTooltip="Send message On WhatsApp" style="margin-bottom: 6px;"
                                 (click)="getWhatsappshareRefundBill(element)">
                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                             </button>

@@ -231,24 +231,20 @@ export class LabRadApprovallistComponent {
         this.getfilterdata();
     }
 
+    @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
     getfilterdata() {
-
-        this.gridConfig = {
-            apiUrl: "Radiology/LabRadiologyApproveList",
-            columnsList: this.allcolumns,
-            sortField: "RadReportId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-                { fieldName: "ApprovalStatus", fieldValue: this.status, opType: OperatorComparer.Equals },
-                { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+        let filters = [
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: this.status, opType: OperatorComparer.Equals },
+            { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+        ]
+        setTimeout(() => {
+            this.tblLabPatient.gridConfig.filters = filters;
+            this.tblLabPatient.bindGridData();
+        }, 100);
     }
 
     Clearfilter(event) {

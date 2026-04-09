@@ -158,32 +158,25 @@ export class LabRadiologyComponent {
         this.getfilterdata();
     }
 
+    @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
     getfilterdata() {
         // debugger
-        this.gridConfig = {
-            apiUrl: "Radiology/LabRadiologyList",
-            columnsList: this.allColumns,
-            sortField: "RadReportId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
-                // { fieldName: "Reg_No", fieldValue: String(this.regNo), opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "IsCompleted", fieldValue: String(this.status), opType: OperatorComparer.Equals },
-                { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-                { fieldName: "CategoryId", fieldValue: String(this.CategoryId), opType: OperatorComparer.Equals },
-                { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
-            ]
-
-        }
-        console.log(this.gridConfig)
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-        //  this.CategoryId ="0"
-        //  this.regNo ="0"
+        let filters = [
+            { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
+            // { fieldName: "Reg_No", fieldValue: String(this.regNo), opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: String(this.status), opType: OperatorComparer.Equals },
+            { fieldName: "TestType", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
+            { fieldName: "CategoryId", fieldValue: String(this.CategoryId), opType: OperatorComparer.Equals },
+            { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
+        ]
+        setTimeout(() => {
+            this.tblLabPatient.gridConfig.filters = filters;
+            this.tblLabPatient.bindGridData();
+        }, 100);
     }
 
     Clearfilter(event) {
