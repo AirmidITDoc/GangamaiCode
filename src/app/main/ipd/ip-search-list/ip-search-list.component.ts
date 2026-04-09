@@ -54,7 +54,7 @@ export class IPSearchListComponent implements OnInit {
 
     dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
     autocompleteModedeptdoc: string = "ConDoctor";
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
     @ViewChild('iconPatientCategory') iconPatientCategory!: TemplateRef<any>;
     @ViewChild('iconBillCancle') iconBillCancle!: TemplateRef<any>;
     @ViewChild('iconMlc') iconMlc!: TemplateRef<any>;
@@ -105,7 +105,7 @@ export class IPSearchListComponent implements OnInit {
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
-    ]; 
+    ];
     gridConfig: gridModel = {
         permissionCode: permissionCodes.Admission,
         apiUrl: "Admission/AdmissionList",
@@ -553,30 +553,20 @@ export class IPSearchListComponent implements OnInit {
         this.getfilterdata();
     }
     getfilterdata() {
-        // debugger
-        this.gridConfig = {
-            apiUrl: this.apiUrl,
-            columnsList: this.allcolumns,
-            sortField: "AdmissionId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-                { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
-                { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
-                { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+        this.grid.gridConfig.filters = [
+            { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+            { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+            { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
+            { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
 
-            ],
-            row: 25
-        }
-        this.grid.gridConfig = this.gridConfig;
+        ];
+        this.grid.gridConfig.apiUrl = this.apiUrl;
         this.grid.bindGridData();
-
-
     }
     Clearfilter(event) {
         console.log(event)
