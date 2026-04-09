@@ -42,6 +42,7 @@ export class LabPatientRegComponent {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
     myFilterform: FormGroup;
+     RISSaveForm:FormGroup;
     f_name: any = ""
     l_name: any = ""
     Status: any = "0";
@@ -96,6 +97,7 @@ export class LabPatientRegComponent {
 
         this.getAccessDetail();
         // this.isLabSettlement = this._loggedService.currentUserValue.user.isGrnverify
+         this.RISSaveForm = this.CreateRISPushForm()
     }
 
     CreateOPSettlementForm() {
@@ -226,7 +228,7 @@ export class LabPatientRegComponent {
             template: this.PatientTypeColorCode
         },
         {
-            heading: "Action", key: "action", align: "right", width: 280, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 290, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ]
@@ -1052,6 +1054,73 @@ export class LabPatientRegComponent {
             clearTimeout(this.doctorCloseTimeout);
         }
     }
+
+    CreateRISPushForm(){
+   return this.formBuilder.group({
+  first_name: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  middle_name: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  last_name: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  patient_id: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  patient_dob: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  patient_age: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  patient_gender: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  patient_phone_number:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  patient_country_code:['+91',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  patient_email:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  modality: ['MR',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  accession_number: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  scan_desc: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  scan_id:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  ref_physician: [ '',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  ref_physician_phone_number: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  ref_country_code: ['+91',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  ref_physician_email: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  external_id:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  branch_code:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  branch_name: [ 'Airmid',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  appointment_date_time: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  //package:''
+  comments:[]
+ })
+} 
+CreateRISPushComment(contact:any): FormGroup {
+    return this.formBuilder.group({
+  comment: [contact?.comments || '',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  comments_by: [this._loggedService.currentUserValue.userId || '0',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+  comment_timestamp: [contact?.createdDate || '1900-01-01',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+    })
+}
+ 
+get RISCommentArray(): FormArray {
+          return this.RISSaveForm.get('comments') as FormArray;
+}
+
+    getpushtoRIS(contact:any){ 
+    debugger  
+     const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);  
+  this.RISSaveForm.patchValue({
+    first_name: Patientparts[0] || '',
+    middle_name: Patientparts.length > 2 ? Patientparts.slice(1, -1).join(' ') : '',
+    last_name: Patientparts.length > 1 ? Patientparts[Patientparts.length - 1] : '', 
+    patient_id: String(contact?.labPatientId) || '',
+    patient_dob:this.datePipe.transform(contact?.dateofBirth,'dd-MM-YYYY') || '01-01-1900',
+    patient_age: contact?.ageYear + "Y" || '',
+    patient_gender: contact?.genderName || '',
+    patient_phone_number: contact?.mobileNo || '', 
+    accession_number: contact?.labRequestNo || '',
+    ref_physician: contact?.asas || '',
+    ref_physician_phone_number: contact?.mobileNo || '',
+    appointment_date_time: contact?.regDate || '',
+    comments: contact.comments ?? [] 
+  }); 
+        // this.RISCommentArray.clear(); 
+        // this.RISCommentArray.push(this.CreateRISPushComment(contact))
+        console.log(this.RISSaveForm.value)
+        this._labPatientRegService.getPushToRIS(this.RISSaveForm.value).subscribe(res=>{ 
+        }) 
+    }
+
+
 }
 
 export class LabPatientList {

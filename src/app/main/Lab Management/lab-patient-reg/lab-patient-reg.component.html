@@ -141,6 +141,10 @@
                 <mat-icon>track_changes</mat-icon>
             </button>
 
+              <button mat-icon-button matTooltip="Push To RIS" (click)="getpushtoRIS(element)">
+                <mat-icon>shutter_speed</mat-icon>
+            </button> 
+
             <!-- <span [matTooltip]="(!element.isAllPathServicesVerified && !element.isAllRadServicesVerified && !element.isAllOtherServicesVerified )
                             ? 'All Reports are not verified yet' : '' " matTooltipPosition="above">
                 <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)"

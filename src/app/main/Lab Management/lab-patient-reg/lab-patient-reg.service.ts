@@ -158,4 +158,8 @@ export class LabPatientRegService {
     public getAppDetById(param) {
         return this._httpClient.PostData("LabAppointment/LabAppointmentDetailList", param);
     }
+    
+    public getPushToRIS(param) {
+        return this._httpClient.PostData("Ris/radiology-order", param);
+    }
 }
