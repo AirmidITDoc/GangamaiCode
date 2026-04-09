@@ -386,12 +386,14 @@ export class LabrefundBillComponent {
                     console.log("OP Refund Value --> ", this.vRefundOfBillFormGroup.value)
                     this._labPatientRegService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
                         this.viewgetOPRefundBillReportPdf(response);
-                        setTimeout(() => {
-                            this.grid.bindGridData();
-                            this.cleardata();
-                        }, 100);
+                        debugger
                         if (this.data?.FormName == 'Lab-Refund') {
                             this.dialogRef.close(response)
+                        } else {
+                            setTimeout(() => {
+                                this.grid.bindGridData();
+                            }, 100);
+                            this.cleardata();
                         }
                     });
                 }
