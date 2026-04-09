@@ -94,22 +94,33 @@ export class BranchCollectionDetailComponent {
     this.getfilterdata();
   }
 
+  @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
   getfilterdata() {
-    this.gridConfig = {
-      apiUrl: "Branch/DailyCollectionDetailList",
-      columnsList: this.allcolumns,
-      sortField: "BillDate",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
-      ]
-    }
-    // setTimeout(() => {
-      this.grid.gridConfig = this.gridConfig;
-      this.grid.bindGridData();
-    // }, 100);
+    let filters = [
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+    ]
+    setTimeout(() => {
+      this.tblLabPatient.gridConfig.filters = filters;
+      this.tblLabPatient.bindGridData();
+    }, 100);
+
+    // this.gridConfig = {
+    //   apiUrl: "Branch/DailyCollectionDetailList",
+    //   columnsList: this.allcolumns,
+    //   sortField: "BillDate",
+    //   sortOrder: 0,
+    //   filters: [
+    //     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    //     { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    //     { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+    //   ]
+    // }
+    // // setTimeout(() => {
+    //   this.grid.gridConfig = this.gridConfig;
+    //   this.grid.bindGridData();
+    // // }, 100);
   }
 
 }

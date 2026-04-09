@@ -13,6 +13,7 @@ import { RadiologysaleComponent } from './radiologysale/radiologysale.component'
 import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { StoreUnitContextService } from 'app/main/shared/services/storeunit-context.service';
+import { DepartmentSalesComponent } from './department-sales/department-sales.component';
 
 @Component({
     selector: 'app-lab-financial-dashboard',
@@ -224,7 +225,7 @@ export class LabFinancialDashboardComponent {
 
         this._dashboardServices.getLabSummarydetailList({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((data) => {
             console.log(data)
-            debugger
+            
             this.salesdata = data.dailySalesTrend
             if (data.dailySalesTrend.length == 0) {
                 this.modalityData = []
@@ -399,7 +400,7 @@ export class LabFinancialDashboardComponent {
 
             const dialogRef = this._matDialog.open(RadiologysaleComponent,
                 {
-                    maxWidth: "90vw",
+                    maxWidth: "70vw",
                     height: '70%',
                     width: '90%',
                     data: { unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
@@ -408,9 +409,31 @@ export class LabFinancialDashboardComponent {
 
             });
         } else
-            Swal.fire("No data Avilable!....")
+            Swal.fire("Data Not Avilable!....")
     }
 
+     DeptGetDetails(element) {
+        // if (this.RadioSales.data.length) {
+        debugger
+        console.log(element)
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd")
+
+            const dialogRef = this._matDialog.open(DepartmentSalesComponent,
+                {
+                    maxWidth: "50vw",
+                    height: '60%',
+                    width: '50%',
+                    data: { unit: this.UnitId,groupId: element.groupId, fdate: this.fromDate, tdate: this.toDate }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+
+            });
+        // } else
+        //     Swal.fire("No data Avilable!....")
+    }
+
+    
     getMatIcon(icon: string): string {
         switch (icon) {
             case 'assignment':
@@ -615,6 +638,7 @@ export class departmentList {
     digital: number;
     referral: number;
     netSale: number;
+    serviceName:any;
     constructor(departmentList) {
 
         this.department = departmentList.department;
@@ -624,6 +648,7 @@ export class departmentList {
         this.digital = departmentList.digital || '0';
         this.referral = departmentList.referral || '0';
         this.netSale = departmentList.netSale || '0';
+        this.serviceName = departmentList.serviceName || '';
 
     }
 }

@@ -127,7 +127,7 @@
                                     [events]="events" [refresh]="refresh"
                                     (eventClicked)="handleEvent('Clicked', $event.event)"
                                     (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="30"
-                                    [dayStartHour]="8"
+                                    [dayStartHour]="0" [dayEndHour]="24"
                                     [hourSegmentTemplate]="weekViewHourSegmentTemplate"></mwl-calendar-week-view>
                                 <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate"
                                     [events]="events" [refresh]="refresh"
@@ -144,7 +144,8 @@
                                     [ngClass]="{ 'cal-disabled-segment': !isTimeLabel && segment.date < now }">
                                     <!-- (mousedown)="startDragToCreate(segment, $event, segmentElement)" -->
                                     <div class="cal-time" *ngIf="isTimeLabel">
-                                        {{ segment.date | date : 'hh:mm a' }}
+                                        <!-- {{ segment.date | date : 'hh:mm a' }} -->
+                                          {{ segment.date | date : 'hh:mm' }}
                                     </div>
                                 </div>
                             </ng-template>

@@ -1105,6 +1105,13 @@ export class IPSearchListService {
     public getAccessDetailList(param) {
         return this._httpClient1.PostData("LoginManager/loginAccessDetailsList", param)
     }
+     public commonList(Param) {
+        return this._httpClient1.PostData("Common", Param);
+    }
+
+      public SalesBillList(employee) {//m_Rtrv_PatientVisitedListSearch
+        return this._httpClient1.PostData("Sales/PharSalesSettlemet", employee)
+    }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

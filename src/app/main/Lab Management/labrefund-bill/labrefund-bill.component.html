@@ -10,6 +10,13 @@
                     <div class="comman-date-container">
                         <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+
+                        <div class="close-icon" *ngIf="isModal">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,10 +67,12 @@
                                             <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
                                         </div>
                                         <div class="Ipd-patient-info w-100-p">
-                                            <app-patient-information [uhidNo]="registerObj?.labRequestNo"
-                                                [patientName]="PatientName"
-                                                [ageString]="(registerObj?.ageYear !== undefined ? registerObj?.ageYear + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
-                                                [mobileNo]="registerObj?.mobileNo">
+                                            <app-patient-information [uhidNo]="RegNo" [patientName]="PatientName"
+                                                [ageString]="registerObj?.ageYear != null ? (registerObj.ageYear + 'Y|' 
+                                                + registerObj.ageMonth + 'M|' + registerObj.ageDay + 'D' 
+                                                + (registerObj.genderName ? ' | ' + registerObj.genderName : '')
+                                                ) 
+                                                : patientage" [mobileNo]="registerObj?.mobileNo">
                                             </app-patient-information>
                                         </div>
                                     </div>
@@ -87,7 +96,7 @@
                             </div>
                         </ng-template>
 
-                        <airmid-table [gridConfig]="gridConfig" #grid class="content" :ShowButtons="false"
+                        <airmid-table [gridConfig]="gridConfig" #tblLabPatient class="content" :ShowButtons="false"
                             [ShowFilter]="false" (onSelectRow)="onEdit($event)">
                         </airmid-table>
                     </div>
@@ -243,8 +252,10 @@
                                 <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                                 <div class="footer-navigation-container">
                                     <div class="modal-footer-buttons">
-                                        <button type="button" class="btn btn-danger-outline"
-                                            (click)="cleardata()">Close</button>
+                                        <!-- <button type="button" class="btn btn-danger-outline"
+                                            (click)="cleardata()">Close</button> -->
+                                        <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
+                                            aria-label="Close dialog" matTooltip="Close">Close</button>
                                         <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
                                     </div>
                                 </div>

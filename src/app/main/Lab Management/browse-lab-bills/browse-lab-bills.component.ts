@@ -22,6 +22,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
 import { BrowseLabBillsService } from './browse-lab-bills.service';
+import { InsertRefundDetail, LabrefundBillComponent } from '../labrefund-bill/labrefund-bill.component';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 
 @Component({
@@ -264,6 +266,7 @@ export class BrowseLabBillsComponent {
         private overlay: Overlay,
         public formBuilder: UntypedFormBuilder,
         public accountService: AuthenticationService,
+        private advanceDataStored: AdvanceDataStored,
     ) { }
 
 
@@ -488,6 +491,25 @@ export class BrowseLabBillsComponent {
             this.commonService.Onprint("BillNo", element.billNo, "LabBillReceipt");
     }
 
+    OnOpenRefund(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+        this.advanceDataStored.storage = new InsertRefundDetail(row);
+        const that = this;
+        console.log("Row Selected Refund Page : ", this.advanceDataStored.storage)
+        const dialogRef = this._matDialog.open(LabrefundBillComponent, {
+            maxWidth: "99vw",
+            height: "98vh",
+            width: "100%",
+            data: {
+                row: row,
+                FormName: 'Lab-Refund'
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
 
     openPaymentpopup(contact) {
         console.log(contact)

@@ -241,7 +241,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.authService.getNavigationData();
                 this.ConfigSettingParamNew();
                 this.ConfigSettingUnitWise();
-                 this.UserAccConfigSettingParam()
+                this.UserAccConfigSettingParam()
 
             }
         });
@@ -300,10 +300,10 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
 
-     UserAccConfigSettingParam() {
-                const Params =
+    UserAccConfigSettingParam() {
+        const Params =
         {
-              "searchFields": [{
+            "searchFields": [{
                 "fieldName": "LoginId",
                 "fieldValue": String(this.authService.currentUserValue.userId),
                 "opType": "Equals"
@@ -312,14 +312,16 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         this._httpClient1.PostData("Common", Params).subscribe(data => {
-         
-            this.UserAcessConfigSetting=data
+debugger
+            this.UserAcessConfigSetting = data
             console.log(this.UserAcessConfigSetting)
-                   this.configService.setCongiParam1(this.UserAcessConfigSetting);
-         
-       
+            this.configService.setCongiParam1(this.UserAcessConfigSetting);
+
+
         });
     }
+
+
     // getDBInfo() {
     //     this._httpClient1.GetData('DbInfo').subscribe((data) => {
     //         alert(JSON.stringify(data));

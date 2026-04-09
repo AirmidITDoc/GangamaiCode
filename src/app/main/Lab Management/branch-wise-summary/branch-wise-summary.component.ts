@@ -44,12 +44,12 @@ export class BranchWiseSummaryComponent {
     public paymentModeChart: any;
 
     autocompleteModeunit: string = "Hospital";
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild(AirmidTableComponent) grid!: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('ServiceGrid', { static: false }) grid1: AirmidTableComponent;
-    @ViewChild('CategoryGrid', { static: false }) grid2: AirmidTableComponent;
-    @ViewChild('DoctorGrid', { static: false }) grid3: AirmidTableComponent;
-    @ViewChild('b2bGrid', { static: false }) grid4: AirmidTableComponent;
+    @ViewChild('ServiceGrid', { static: false }) ServiceGrid!: AirmidTableComponent;
+    @ViewChild('CategoryGrid', { static: false }) CategoryGrid!: AirmidTableComponent;
+    @ViewChild('DoctorGrid', { static: false }) DoctorGrid!: AirmidTableComponent;
+    @ViewChild('b2bGrid', { static: false }) b2bGrid!: AirmidTableComponent;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate3') actionButtonTemplate3!: TemplateRef<any>;
@@ -137,19 +137,15 @@ export class BranchWiseSummaryComponent {
     }
 
     getfilterdata() {
-        this.gridConfig = {
-            apiUrl: "Branch/UnitBranchWiseRevenueSummary",
-            columnsList: this.allcolumns,
-            sortField: "UnitId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+        let filters = [
+            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+        ]
+        setTimeout(() => {
+            this.grid.gridConfig.filters = filters;
+            this.grid.bindGridData();
+        }, 100);
     }
 
 
@@ -210,7 +206,6 @@ export class BranchWiseSummaryComponent {
 
 
     gridConfig1: gridModel = {
-
         apiUrl: "Branch/UnitBranchWiseTestSummary",
         columnsList: this.allServicecolumns,
         sortField: "UnitId",
@@ -219,19 +214,14 @@ export class BranchWiseSummaryComponent {
     }
 
     getfilterdataservice() {
-
-        this.gridConfig1 = {
-            apiUrl: "Branch/UnitBranchWiseTestSummary",
-            columnsList: this.allServicecolumns,
-            sortField: "UnitId",
-            sortOrder: 0,
-            filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-            { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-            ]
-        }
-        this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
+        let filters = [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+        ]
+        setTimeout(() => {
+            this.ServiceGrid.gridConfig.filters = filters;
+            this.ServiceGrid.bindGridData();
+        }, 100);
     }
 
     serviceTrend(row: any = null) {
@@ -274,18 +264,14 @@ export class BranchWiseSummaryComponent {
     }
 
     getfilterdataCategoryWise() {
-        this.gridConfig2 = {
-            apiUrl: "Branch/UnitBranchWiseCategorySummary",
-            columnsList: this.allCategorycolumns,
-            sortField: "CategoryName",
-            sortOrder: 0,
-            filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-            { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-            ]
-        }
-        this.grid2.gridConfig = this.gridConfig2;
-        this.grid2.bindGridData();
+        let filters = [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+        ]
+        setTimeout(() => {
+            this.CategoryGrid.gridConfig.filters = filters;
+            this.CategoryGrid.bindGridData();
+        }, 100);
     }
 
     categoryTrend(row: any = null) {
@@ -297,7 +283,7 @@ export class BranchWiseSummaryComponent {
                 data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
             });
         dialogRef.afterClosed().subscribe(result => {
-            this.grid2.bindGridData();
+            this.CategoryGrid.bindGridData();
         });
     }
     // doctor wise
@@ -328,18 +314,14 @@ export class BranchWiseSummaryComponent {
     }
 
     getfilterdataDoctorWise() {
-        this.gridConfig3 = {
-            apiUrl: "Branch/UnitBranchWiseDoctorSummary",
-            columnsList: this.alldoctorcolumns,
-            sortField: "DoctorName",
-            sortOrder: 0,
-            filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-            { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-            ]
-        }
-        this.grid3.gridConfig = this.gridConfig3;
-        this.grid3.bindGridData();
+        let filters = [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+        ]
+        setTimeout(() => {
+            this.DoctorGrid.gridConfig.filters = filters;
+            this.DoctorGrid.bindGridData();
+        }, 100);
     }
 
     doctorTrend(row: any = null) {
@@ -351,7 +333,7 @@ export class BranchWiseSummaryComponent {
                 data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
             });
         dialogRef.afterClosed().subscribe(result => {
-            this.grid2.bindGridData();
+            this.DoctorGrid.bindGridData();
         });
     }
     // b2b wise
@@ -384,18 +366,14 @@ export class BranchWiseSummaryComponent {
     }
 
     getfilterdataB2bWise() {
-        this.gridConfig4 = {
-            apiUrl: "Branch/UnitBranchWiseCompanySummary",
-            columnsList: this.all2b2columns,
-            sortField: "CompanyName",
-            sortOrder: 0,
-            filters: [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-            { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
-            ]
-        }
-        this.grid4.gridConfig = this.gridConfig4;
-        this.grid4.bindGridData();
+        let filters = [{ fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "Todate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith }
+        ]
+        setTimeout(() => {
+            this.b2bGrid.gridConfig.filters = filters;
+            this.b2bGrid.bindGridData();
+        }, 100);
     }
 
     companyTrend(row: any = null) {
@@ -407,7 +385,7 @@ export class BranchWiseSummaryComponent {
                 data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
             });
         dialogRef.afterClosed().subscribe(result => {
-            this.grid2.bindGridData();
+            this.b2bGrid.bindGridData();
         });
     }
 

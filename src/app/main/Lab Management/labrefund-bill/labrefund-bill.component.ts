@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Optional, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -40,6 +40,8 @@ export class LabrefundBillComponent {
     isLoadingStr: string = '';
     registerObj = new LabPatientList({});
     PatientName: any = "";
+    patientage: any;
+    mobileNo: any;
     RegId: any;
     RegNo: any;
     billNo: any;
@@ -64,6 +66,7 @@ export class LabrefundBillComponent {
         this.gridConfig.columnsList.find(col => col.key === 'paidAmt')!.template = this.Paidstatus;
     }
     @ViewChild('Paidstatus') Paidstatus!: TemplateRef<any>;
+    public isModal = false;
 
     allColumns1 = [
         { heading: "Status", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template },
@@ -74,15 +77,11 @@ export class LabrefundBillComponent {
         { heading: "Bill Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: 22 },
         { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 22 }
     ]
-    gridConfig: gridModel = {
-        permissionCode: permissionCodes.ExternalInvestigation,
-        apiUrl: "RefundOfBill/OPBilllistforrefundList",
-        columnsList: this.allColumns1,
-        sortField: "BillNo",
-        sortOrder: 0,
-        filters: [{ fieldName: "RegId", fieldValue: '0', opType: OperatorComparer.Equals },
-        { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }]
-    }
+
+    allfilters = [
+        { fieldName: "RegId", fieldValue: '0', opType: OperatorComparer.Equals },
+        { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }
+    ]
 
     constructor(
         public _labPatientRegService: LabPatientRegService,
@@ -95,9 +94,12 @@ export class LabrefundBillComponent {
         private accountService: AuthenticationService,
         private hospitalconfigservice: HospitalConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
+        @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+        @Optional() public dialogRef: MatDialogRef<LabrefundBillComponent>
     ) { }
 
     ngOnInit(): void {
+        this.isModal = !!this.dialogRef;
         this.searchFormGroup = this.createSearchForm();
 
         this.vRefundOfBillFormGroup = this.vRefundBillFormInsert();
@@ -109,6 +111,18 @@ export class LabrefundBillComponent {
         // loop array defined
         this.refundDetailsArray.push(this.createRefundDetail());
         this.addChargesArray.push(this.createAddCharge());
+
+        if (this.data.FormName = 'Lab-Refund') {
+            this.registerObj = this.data.row
+            console.log("Data", this.registerObj)
+            this.PatientName = this.data.row.patientName
+            this.patientage = this.data.row.patientAge
+            this.RegId = this.data.row.labPatRegId
+            this.VlabPatId = this.data.row.opdIpdId
+            this.RegNo = this.data.row.opdNo
+            this.mobileNo = this.data.row.mobileNo
+            this.getfilterdata(this.RegId)
+        }
 
         this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
         this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
@@ -262,20 +276,26 @@ export class LabrefundBillComponent {
         }
     }
 
-    getfilterdata(RegId) {
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.ExternalInvestigation,
+        apiUrl: "RefundOfBill/OPBilllistforrefundList",
+        columnsList: this.allColumns1,
+        sortField: "BillNo",
+        sortOrder: 0,
+        filters: this.allfilters
+    }
+
+    @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
+    getfilterdata(RegId: any) {
         // debugger
-        this.gridConfig = {
-            apiUrl: "RefundOfBill/OPBilllistforrefundList",
-            columnsList: this.allColumns1,
-            sortField: "RegNo",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "RegId", fieldValue: String(RegId), opType: OperatorComparer.Equals },
-                { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+        let filters = [
+            { fieldName: "RegId", fieldValue: String(RegId), opType: OperatorComparer.Equals },
+            { fieldName: "OPDIPDType", fieldValue: "2", opType: OperatorComparer.Equals }
+        ]
+        setTimeout(() => {
+            this.tblLabPatient.gridConfig.filters = filters;
+            this.tblLabPatient.bindGridData();
+        }, 100);
     }
 
     onPriceOrQtyChange(row: InsertRefundDetail = null, RefundAmt): void {
@@ -366,10 +386,15 @@ export class LabrefundBillComponent {
                     console.log("OP Refund Value --> ", this.vRefundOfBillFormGroup.value)
                     this._labPatientRegService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
                         this.viewgetOPRefundBillReportPdf(response);
-                        setTimeout(() => {
-                            this.grid.bindGridData();
+                        debugger
+                        if (this.data?.FormName == 'Lab-Refund') {
+                            this.dialogRef.close(response)
+                        } else {
+                            setTimeout(() => {
+                                this.grid.bindGridData();
+                            }, 100);
                             this.cleardata();
-                        }, 100);
+                        }
                     });
                 }
             });
@@ -436,7 +461,7 @@ export class LabrefundBillComponent {
         const datePipe = new DatePipe("en-US");
         this.billNo = row.billNo;
         this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)
-        this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId)
+        this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId || this.VlabPatId)
         //Testing
         // debugger
         if (row.refundAmount < row.netPayableAmt) {

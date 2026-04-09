@@ -78,13 +78,9 @@
                                 </div>
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <!-- <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                                    <airmid-dropdown label="SubGroup Name" formControlName="CategoryId"
                                         [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
-                                        [mode]="autocompleteModeCategoryId"></airmid-dropdown> -->
-                                    <airmid-dropdown label="Group Name" formControlName="GroupId"
-                                        [formGroup]="myformSearch" [mode]="autocompleteModegroupName"
-                                        (selectionChange)="groupView($event)">
-                                    </airmid-dropdown>
+                                        [mode]="autocompleteModesubGroupName"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
@@ -297,7 +293,8 @@
 
                             </ng-template>
 
-                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                            <airmid-table [gridConfig]="gridConfig" #tblLabPatient :ShowFilter="false"
+                                :ShowButtons="false">
                             </airmid-table>
 
                         </div>
