@@ -201,12 +201,17 @@
           </span>
         </div>
 
-        <div class="modal-header-right" fxLayout="row" fxLayoutGap="10px">
+        <div class="modal-header-right" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center">
+
           <button mat-raised-button (click)="getPRESCRIPTION()">GET PRESCRIPTION</button>
           <div class="comman-date-container">
             <app-common-date [screenFrom]="screenFromString"
               (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
           </div>
+          <button mat-icon-button type="button" (click)="showRightSideSection = !showRightSideSection"
+            matTooltip="Toggle Right Section">
+            <mat-icon>{{ showRightSideSection ? 'last_page' : 'first_page' }}</mat-icon>
+          </button>
         </div>
       </div>
     </div>
@@ -214,7 +219,8 @@
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
       <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12 h-100-p">
-        <div fxFlex="80%" fxFlex.sm="70%" fxFlex.xs="100%" class="table-left">
+        <div [fxFlex]="showRightSideSection ? '80%' : '100%'" [fxFlex.sm]="showRightSideSection ? '70%' : '100%'"
+          fxFlex.xs="100%" class="table-left">
           <div class="modal-body-container">
             <div fxLayout="column" class="gap-8 h-100-p">
               <div class="modal-card-container search-container">
@@ -289,6 +295,24 @@
                                 [validations]="getValidationMessages().extAddress" [type]="'text'"
                                 (input)="onEnterAddress($event)"></airmid-textbox>
                             </div>
+
+                            <span fxFlex></span>
+                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="12px"
+                              style="margin-left: auto; padding-right: 8px;">
+                              <div
+                                style="border: 1px solid #2196f3; background-color: #f0f8ff; border-radius: 6px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500;">
+                                <span style="color: #455a64;">Total GST Amt :</span>
+                                <span style="color: #1976d2; font-weight: 700;">{{ ItemSubform.get('vatAmount')?.value |
+                                  currency:'INR':'symbol':'1.2-2' }}</span>
+                              </div>
+                              <div
+                                style="border: 1px solid #66bb6a; background-color: #e8f5e9; border-radius: 6px; padding: 4px 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600;">
+                                <span style="color: #2e7d32;">Net Amt :</span>
+                                <span
+                                  style="border: 1px solid #ffa726; background-color: #fff3e0; color: #e65100; padding: 2px 10px; border-radius: 4px;">{{
+                                  ItemSubform.get('netAmount')?.value | currency:'INR' }}</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div *ngIf="ItemSubform.get('opIpType').value != '2' && RegId != ''">
@@ -298,58 +322,13 @@
                                 <div fxlayout="row" style="background-color: white">
                                   <!-- ================================ LABEL HEADER  -->
                                   <div class="patient-info-sales my-8">
-                                    <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
-                                    <div class="sales-patient-info-title">
-                                      <span style="font-weight: 700" class="patient-info-title border-bottom">Patient
-                                        Information</span>
-                                    </div>
-                                    <div class="sales-patient-info" fxFlexFill fxLayout="row"
-                                      fxLayoutAlign="space-between center" class="patient-info">
-                                      <div class="patient-sub">
-                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                          fxLayoutAlign="space-between center">
-                                          <div class="patient-col">
-                                            <span class="patient-col-key">Patient Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{RegNo }}-{{ PatientName
-                                              }}</span>
-                                          </div>
-                                          <div class="patient-col" *ngIf="IPDNocheck">
-                                            <span class="patient-col-key">IPDNo</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ IPDNo }}</span>
-                                          </div>
-                                          <div class="patient-col" *ngIf="OPDNoCheck">
-                                            <span class="patient-col-key">OPDNo</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ OPDNo }}</span>
-                                          </div>
-                                          <div class="patient-col" *ngIf="DoctorNamecheck">
-                                            <span class="patient-col-key">Doctor Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{DoctorName}}</span>
-                                          </div>
-
-                                          <div class="patient-col">
-                                            <span class="patient-col-key">Ward | Bed Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ Patientdetails?.roomName }} |
-                                              {{Patientdetails?.bedName}}</span>
-                                          </div>
-
-                                          <div class="patient-col">
-                                            <span class="patient-col-key">Tariff Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ Patientdetails?.tariffName }}</span>
-                                          </div>
-                                          <!-- <div class="patient-col">
-                                            <span class="patient-col-key">Company Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value" style="color: #e26d14">{{ Patientdetails?.CompanyName }}</span>
-                                          </div> -->
-                                        </div>
-                                      </div>
-                                    </div>
+                                    <app-patient-information [uhidNo]="RegNo" [patientName]="PatientName"
+                                      [ipdNo]="IPDNocheck ? IPDNo : (OPDNoCheck ? OPDNo : '')"
+                                      [doctorName]="DoctorNamecheck ? DoctorName : ''"
+                                      [wardBedName]="Patientdetails?.roomName ? (Patientdetails?.roomName + ' | ' + Patientdetails?.bedName) : ''"
+                                      [tariffName]="Patientdetails?.tariffName"
+                                      [companyName]="Patientdetails?.CompanyName">
+                                    </app-patient-information>
                                   </div>
                                 </div>
                               </div>
@@ -361,7 +340,7 @@
                   </mat-card>
                 </div>
               </div>
-              <div class="modal-card-container input-error-hidden mt-4">
+              <div class="modal-card-container input-error-hidden">
                 <mat-card class="m-0">
                   <mat-card-content class="p-8">
                     <form [formGroup]="_salesService.ItemSearchGroup" class="m-0">
@@ -676,25 +655,7 @@
                                 <airmid-textbox fxFlex="5%" label="Paid Back To Patient" [formGroup]="ItemSubform"
                                   formControlName="PaidbacktoPatient" [readonly]="true"></airmid-textbox>
 
-                                <div class="net-amt-section">
-                                  <div class="net-amt">
-                                    <div class="net-amt-box">
-                                      <span class="net-amt-mat-label">No Of Item:</span>
-                                      <span class="net-amt-value">{{saleSelectedDatasource.data?.length}}</span>
-                                    </div>
-                                    <div class="net-amt-box">
-                                      <div class="net-amt-label">Total GST Amt :</div>
-                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency :
-                                        'INR':'symbol':'1.2-2' }}</div>
-                                    </div>
-                                    <div class="final-amt-box">
-                                      <span class="final-amt-label">Net Amt :</span>
-                                      <span class="final-amt-value">{{ItemSubform.get('netAmount')?.value | currency :
-                                        'INR'
-                                        }}</span>
-                                    </div>
-                                  </div>
-                                </div>
+
                               </div>
                               <div class="sales-radio-buttons gap-8" fxLayout="row"
                                 fxLayoutAlign="space-between center">
@@ -744,7 +705,7 @@
             </div>
           </div>
         </div>
-        <div fxFlex="20%" fxFlex.sm="30%" fxFlex.xs="100%" class="table-right">
+        <div *ngIf="showRightSideSection" fxFlex="20%" fxFlex.sm="30%" fxFlex.xs="100%" class="table-right">
           <mat-card fxFlexFill class="overflow-auto">
             <mat-card-content>
               <div class="sales-table-right-box" fxLayout="column" fxLayoutGap="6px">
