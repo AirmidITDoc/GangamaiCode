@@ -46,13 +46,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     currentDate: Date = new Date();
 
 
-    dailydashflag: boolean = false
-    Investigationdashflag: boolean = false
-    Financedashflag: boolean = false
-    Cashlessdashflag: boolean = false
-    beddashflag: boolean = false
-    Labfinancedashflag: boolean = false
-    Pharmacydashflag: boolean = false
+    dailydashflag: boolean = true
+    Investigationdashflag: boolean = true
+    Financedashflag: boolean = true
+    Cashlessdashflag: boolean = true
+    beddashflag: boolean = true
+    Labfinancedashflag: boolean = true
+    Pharmacydashflag: boolean = true
 
     // Demo notification array
     notifications = [];
@@ -137,7 +137,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         debugger
-        this.UserAccConfigSettingParam()
+        // this.UserAccConfigSettingParam()
 
         this.signalRService.addReceiveMessageListener((data, user) => {
             if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
@@ -331,25 +331,50 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       
         if (dailydashData)
             this.dailydashflag = true;
-        else
+        else{
             this.dailydashflag = false
-
+        this.router.navigate(['/dashboard']);
+        }
 
         if (beddashData)
             this.beddashflag = true;
+         else{
+            this.beddashflag = false
+        this.router.navigate(['/dashboard']);
+        }
 
         if (invdashData)
             this.Investigationdashflag = true;
+         else{
+            this.Investigationdashflag = false
+        this.router.navigate(['/dashboard']);
+        }
 
         if (cashlessdashData)
             this.Cashlessdashflag = true;
+        else{
+            this.Cashlessdashflag = false
+        this.router.navigate(['/dashboard']);
+        }
 
         if (phardashData)
             this.Pharmacydashflag = true;
+        else{
+            this.Pharmacydashflag = false
+        this.router.navigate(['/dashboard']);
+        }
         if (labdashData)
             this.Labfinancedashflag = true;
+         else{
+            this.Labfinancedashflag = false
+        this.router.navigate(['/dashboard']);
+        }
         if (finacedashData)
             this.Financedashflag = true;
+         else{
+            this.Financedashflag = false
+        this.router.navigate(['/dashboard']);
+        }
 
 
 
