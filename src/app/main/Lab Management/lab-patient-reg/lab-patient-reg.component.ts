@@ -1095,7 +1095,6 @@ export class LabPatientRegComponent {
     }
 
     getpushtoRIS(contact:any){ 
-    debugger  
      const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);  
   this.RISSaveForm.patchValue({
     first_name: Patientparts[0] || '',
