@@ -138,6 +138,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         debugger
         // this.UserAccConfigSettingParam()
+        console.log(this._configue.)
 
         this.signalRService.addReceiveMessageListener((data, user) => {
             if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
