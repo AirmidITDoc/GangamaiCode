@@ -136,7 +136,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-       debugger
         //  const rawValue = this?._configue.getConfigParam1();
 
         //  console.log(rawValue)

@@ -594,10 +594,9 @@ export class SalesHospitalNewComponent implements OnInit {
     // NOTE: If `isEditable` true then it means this popup will open for table row data 
     getBatch(itemId: number, storeId: number, isEditable = false) {
         const dialogRef = this._matDialog.open(SalePopupComponent, {
-            maxWidth: '950px',
-            minWidth: '900px',
-            width: '900px',
-            height: '380px',
+            maxWidth: '65vw',
+            width: '65vw',
+            height: '50vh',
             disableClose: true,
             data: {
                 ItemId: itemId,
@@ -1901,7 +1900,7 @@ export class SalesHospitalNewComponent implements OnInit {
             if (tempChargesList.length == 0) {
                 Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
             } else if (tempChargesList.length > 0) {
-                this.Itemchargeslist=[];
+                this.Itemchargeslist = [];
                 tempChargesList.forEach((element) => {
                     if (contact.itemId != element.itemId) {
                         qtyBalChk = 0;
@@ -1925,7 +1924,7 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     vExpDate: any;
     getFinalCalculation(contact, DraftQty) {
-       
+
         if (DraftQty && contact.unitMrp) {
             this.saleSelectedDatasource.data = [];
             let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
@@ -2046,7 +2045,7 @@ export class SalesHospitalNewComponent implements OnInit {
             });
             dialogRef.afterClosed().subscribe((result) => {
                 console.log('The dialog was closed - Insert Action', result);
-                this.Itemchargeslist=[];
+                this.Itemchargeslist = [];
                 this.DoctorNamecheck = true;
                 this.PatientName = result[0]?.PatientName;
                 this.RegId = result[0]?.RegId;
