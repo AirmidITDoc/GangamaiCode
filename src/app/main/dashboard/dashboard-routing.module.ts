@@ -11,6 +11,7 @@ import { PathologyDashboardComponent } from './pathology-dashboard/pathology-das
 import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 import { CashlessCompanyDashboardComponent } from './cashless-company-dashboard/cashless-company-dashboard.component';
+import { TestingDailyDashBoardComponent } from './testing-daily-dash-board/testing-daily-dash-board.component';
 
 const routes: Routes = [
     {
@@ -20,11 +21,11 @@ const routes: Routes = [
     },
     {
         path: 'dashboard',
-        component: NewDashboardComponent
+        component: TestingDailyDashBoardComponent
     },
     {
         path: 'old-dashboard',
-        component: DailyDashboardComponent
+        component: TestingDailyDashBoardComponent
     },
     {
         path: 'Pathology-dashboard',

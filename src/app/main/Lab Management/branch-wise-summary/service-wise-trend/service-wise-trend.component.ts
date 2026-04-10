@@ -76,6 +76,8 @@ export class ServiceWiseTrendComponent {
                 { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Contains },
                 { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Contains },
                 { fieldName: "Month", fieldValue: this.monthValue, opType: OperatorComparer.Contains },
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
             ]
         };
         setTimeout(() => {
@@ -118,7 +120,9 @@ export class ServiceWiseTrendComponent {
                     "fieldName": "Month",
                     "fieldValue": this.monthValue,
                     "opType": "Contains"
-                }
+                },
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: 'StartsWith' },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: 'StartsWith' },
             ],
             "Columns": [],
             "exportType": "JSON"
