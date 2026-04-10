@@ -46,13 +46,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     currentDate: Date = new Date();
 
 
-    dailydashflag: boolean = true
-    Investigationdashflag: boolean = true
-    Financedashflag: boolean = true
-    Cashlessdashflag: boolean = true
-    beddashflag: boolean = true
-    Labfinancedashflag: boolean = true
-    Pharmacydashflag: boolean = true
+    dailydashflag: boolean = false
+    Investigationdashflag: boolean = false
+    Financedashflag: boolean = false
+    Cashlessdashflag: boolean = false
+    beddashflag: boolean = false
+    Labfinancedashflag: boolean = false
+    Pharmacydashflag: boolean = false
 
     // Demo notification array
     notifications = [];
@@ -72,7 +72,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService, private _httpClient1: ApiCaller,
         private _service: LabAppointmentService,
-        private _translateService: TranslateService, private configService: ConfigService,
+        private _translateService: TranslateService,
         private accountService: AuthenticationService, public _configue: ConfigService,
         private router: Router, private signalRService: SignalRService,
         public _matDialog: MatDialog, public _notificationService: NotificationService
@@ -136,14 +136,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        //  const rawValue = this?._configue.getConfigParam1();
-
-        //  console.log(rawValue)
-        //  this.setDashboard(rawValue)
-        // const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
-        // this.IsMaterialAccept = id === "1";
-
-
+         this.UserAccConfigSettingParam()
 
         this.signalRService.addReceiveMessageListener((data, user) => {
             if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
@@ -283,46 +276,84 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         });
     }
-   setDashboard(data){
-    const dailydashData = data.find(x => x.AccessValueName === 'IsDailyDashboard');
-            const beddashData = data.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
-            const invdashData = data.find(x => x.AccessValueName === 'IsInvestigation');
-            const cashlessdashData = data.find(x => x.AccessValueName === 'IsCashlessDashboard');
-            const phardashData = data.find(x => x.AccessValueName === 'IsPharmacy');
-            const finacedashData = data.find(x => x.AccessValueName === 'IsFinancialDashboard');
-            const labdashData = data.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
 
-            console.log(dailydashData)
-            debugger
-            console.log(data)
-            if (data) {
+    UserAcessConfigSetting: any = [];
+    UserAccConfigSettingParam() {
+        const Params =
+        {
+            "searchFields": [{
+                "fieldName": "LoginId",
+                "fieldValue": String(this.accountService.currentUserValue.userId),
+                "opType": "Equals"
+            }],
+            "mode": "LoginWiseAccessConfigList"  //SystemConfigList
+        }
 
-                if (dailydashData.AccessValue)
-                    this.dailydashflag = true;
-                else
-                    this.dailydashflag = false
+        this._httpClient1.PostData("Common", Params).subscribe(data => {
 
+            this.UserAcessConfigSetting = data
+            this._configue.setCongiParam1(this.UserAcessConfigSetting);
+            console.log(this._configue.userAccessParam)
+            if (data)
+                this.setDashboard()
 
-                if (beddashData.AccessValue)
-                    this.beddashflag = true;
-
-                if (invdashData.AccessValue)
-                    this.Investigationdashflag = true;
-
-                if (cashlessdashData.AccessValue)
-                    this.Cashlessdashflag = true;
-
-                if (phardashData.AccessValue)
-                    this.Pharmacydashflag = true;
-                if (labdashData.AccessValue)
-                    this.Labfinancedashflag = true;
-                if (finacedashData.AccessValue)
-                    this.Financedashflag = true;
+        });
+    }
 
 
-            }
-   }
-   
+    setDashboard() {
+        console.log(this._configue.userAccessParam)
+        debugger
+        const access = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsDailyDashboard');
+        const dailydashData = Number(access?.AccessValue ?? false);
+
+        const access1 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
+        const beddashData = Number(access1?.AccessValue ?? 0);
+
+
+        const access2 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsInvestigation');
+        const invdashData = Number(access2?.AccessValue ?? 0);
+
+
+        const access3 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsCashlessDashboard');
+        const cashlessdashData = Number(access3?.AccessValue ?? 0);
+
+        const access4 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsPharmacy');
+        const phardashData = Number(access4?.AccessValue ?? 0);
+
+        const access5 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsFinancialDashboard');
+        const finacedashData = Number(access5?.AccessValue ?? 0);
+
+        const access6 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
+        const labdashData = Number(access6?.AccessValue ?? 0);
+
+      
+        if (dailydashData)
+            this.dailydashflag = true;
+        else
+            this.dailydashflag = false
+
+
+        if (beddashData)
+            this.beddashflag = true;
+
+        if (invdashData)
+            this.Investigationdashflag = true;
+
+        if (cashlessdashData)
+            this.Cashlessdashflag = true;
+
+        if (phardashData)
+            this.Pharmacydashflag = true;
+        if (labdashData)
+            this.Labfinancedashflag = true;
+        if (finacedashData)
+            this.Financedashflag = true;
+
+
+
+    }
+
     // navigateToImportExcel() {
     //     this.router.navigate(['/import-excel']);
     // }

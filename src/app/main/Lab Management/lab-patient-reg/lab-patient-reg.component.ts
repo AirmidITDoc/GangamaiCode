@@ -1094,26 +1094,24 @@ export class LabPatientRegComponent {
         return this.RISSaveForm.get('comments') as FormArray;
     }
 
-    getpushtoRIS(contact: any) {
-        debugger
-        const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);
-        this.RISSaveForm.patchValue({
-            first_name: Patientparts[0] || '',
-            middle_name: '',
-            last_name: '',
-            patient_id: String(contact?.labPatientId) || '',
-            patient_dob: this.datePipe.transform(contact?.dateofBirth, 'dd-MM-YYYY') || '01-01-1900',
-            patient_age: contact?.ageYear + "Y" || '',
-            patient_gender: contact?.genderName || '',
-            patient_phone_number: contact?.mobileNo || '',
-            accession_number: contact?.labRequestNo || '',
-            ref_physician: contact?.asas || '',
-            ref_physician_phone_number: contact?.mobileNo || '',
-            comments:[],
-            scan_desc: "Brain",
-            scan_id: "0000003",
-            external_id:String(contact?.labPatientId) || '',
-        });
+    getpushtoRIS(contact:any){ 
+    debugger  
+     const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);  
+  this.RISSaveForm.patchValue({
+    first_name: Patientparts[0] || '',
+    middle_name: Patientparts.length > 2 ? Patientparts.slice(1, -1).join(' ') : '',
+    last_name: Patientparts.length > 1 ? Patientparts[Patientparts.length - 1] : '', 
+    patient_id: String(contact?.labPatientId) || '',
+    patient_dob:this.datePipe.transform(contact?.dateofBirth,'dd-MM-YYYY') || '01-01-1900',
+    patient_age: contact?.ageYear + "Y" || '',
+    patient_gender: contact?.genderName || '',
+    patient_phone_number: contact?.mobileNo || '', 
+    accession_number: contact?.labRequestNo || '',
+    ref_physician: contact?.asas || '',
+    ref_physician_phone_number: contact?.mobileNo || '',
+    appointment_date_time: contact?.regDate || '',
+    comments: contact.comments ?? [] 
+  }); 
         // this.RISCommentArray.clear(); 
         // this.RISCommentArray.push(this.CreateRISPushComment(contact))
         console.log(this.RISSaveForm.value)
