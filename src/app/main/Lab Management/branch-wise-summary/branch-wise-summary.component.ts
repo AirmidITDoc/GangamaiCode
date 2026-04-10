@@ -230,7 +230,11 @@ export class BranchWiseSummaryComponent {
                 maxWidth: "90vw",
                 height: '90%',
                 width: '90%',
-                data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+                data: {
+                    row, unit: this.UnitId,
+                    fdate: this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd"),
+                    tdate: this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+                }
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();

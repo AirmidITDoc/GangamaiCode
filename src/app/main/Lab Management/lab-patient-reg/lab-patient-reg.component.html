@@ -154,14 +154,14 @@
             </span> -->
 
             <span [matTooltip]="(element.isAllPathServicesVerified !== 1 
-              || element.isAllRadServicesVerified !== 1 
-              || element.isAllOtherServicesVerified !== 1)
+              && element.isAllRadServicesVerified !== 1 
+              && element.isAllOtherServicesVerified !== 1)
               ? 'All Reports are not verified yet' : ''" matTooltipPosition="above">
 
                 <button mat-icon-button matTooltip="Report Dispatch" (click)="viewgetReportdispatch(element)"
                     [disabled]="(element.isAllPathServicesVerified !== 1 
-                  || element.isAllRadServicesVerified !== 1 
-                  || element.isAllOtherServicesVerified !== 1)">
+                  && element.isAllRadServicesVerified !== 1 
+                  && element.isAllOtherServicesVerified !== 1)">
 
                     <mat-icon>local_shipping</mat-icon>
                 </button>
