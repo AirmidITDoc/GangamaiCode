@@ -1069,8 +1069,8 @@ export class LabPatientRegComponent {
             patient_email: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             modality: ['MR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             accession_number: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            scan_desc: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            scan_id: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            scan_desc: ['Brain', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            scan_id: ['0000003', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             ref_physician: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             ref_physician_phone_number: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             // ref_country_code: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -1078,7 +1078,7 @@ export class LabPatientRegComponent {
             external_id: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             branch_code: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             branch_name: ['Airmid', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            // appointment_date_time: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            appointment_date_time: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             comments: []
         })
     }
@@ -1094,25 +1094,28 @@ export class LabPatientRegComponent {
         return this.RISSaveForm.get('comments') as FormArray;
     }
 
-    getpushtoRIS(contact:any){ 
-     const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);  
-  this.RISSaveForm.patchValue({
-    first_name: Patientparts[0] || '',
-    middle_name: Patientparts.length > 2 ? Patientparts.slice(1, -1).join(' ') : '',
-    last_name: Patientparts.length > 1 ? Patientparts[Patientparts.length - 1] : '', 
-    patient_id: String(contact?.labPatientId) || '',
-    patient_dob:this.datePipe.transform(contact?.dateofBirth,'dd-MM-YYYY') || '01-01-1900',
-    patient_age: contact?.ageYear + "Y" || '',
-    patient_gender: contact?.genderName || '',
-    patient_phone_number: contact?.mobileNo || '', 
-    accession_number: contact?.labRequestNo || '',
-    ref_physician: contact?.asas || '',
-    ref_physician_phone_number: contact?.mobileNo || '',
-    appointment_date_time: contact?.regDate || '',
-    comments: contact.comments ?? [] 
-  }); 
-        // this.RISCommentArray.clear(); 
-        // this.RISCommentArray.push(this.CreateRISPushComment(contact))
+    getpushtoRIS(contact: any) {
+        console.log(contact);
+        const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);
+        this.RISSaveForm.patchValue({
+            first_name: contact?.patientName || '',
+            middle_name: '',
+            last_name: '',
+            patient_id: String(contact?.labPatientId) || '',
+            patient_dob: this.datePipe.transform(contact?.dateofBirth, 'dd-MM-YYYY') || '01-01-1900',
+            patient_age: contact?.ageYear + "Y" || '',
+            patient_gender: contact?.genderName?.charAt(0)?.toUpperCase() || '',
+            patient_phone_number: contact?.mobileNo || '',
+            accession_number: contact?.labRequestNo || '',
+            ref_physician: contact?.asas || 'Dr. X',
+            ref_physician_phone_number: contact?.mobileNo || '',
+            external_id: contact?.labRequestNo || '',
+            comments: [],
+            branch_code: '',
+            branch_name: contact?.hospitalName || 'Airmid',
+            scan_desc: 'Brain',
+            scan_id: '0000003',
+        });
         console.log(this.RISSaveForm.value)
         this._labPatientRegService.getPushToRIS(this.RISSaveForm.value).subscribe(res => {
         })
