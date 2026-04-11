@@ -52,6 +52,30 @@
                                         }}</h3>
                                 </div>
                             </div>
+
+
+                            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+
+                                <!-- Start Time -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Start Time</mat-label>
+                                    <input matInput type="time" [(ngModel)]="startTime" (change)="updateCalendar()">
+                                </mat-form-field>
+
+                                <!-- End Time -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>End Time</mat-label>
+                                    <input matInput type="time" [(ngModel)]="endTime" (change)="updateCalendar()">
+                                </mat-form-field>
+
+                                <!-- Interval -->
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Interval (minutes)</mat-label>
+                                    <input matInput type="number" min="1" max="60" [(ngModel)]="interval"
+                                        (change)="updateCalendar()">
+                                </mat-form-field>
+
+                            </div>
                         </div>
 
                         <!--  *ngIf="vRefDocId > 0" -->
@@ -114,6 +138,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div fxLayout="row" class="overflow-auto" *ngIf="vRefDocId > 0 || categoryId > 0">
                         <div class="modal-card-container overflow-auto" style="width: 70%;">
                             <!--  *ngIf="vRefDocId > 0" -->
@@ -126,11 +151,12 @@
                                 <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate"
                                     [events]="events" [refresh]="refresh"
                                     (eventClicked)="handleEvent('Clicked', $event.event)"
-                                    (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="30"
-                                    [dayStartHour]="0" [dayEndHour]="24"
+                                    (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="hourSegments"
+                                    [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour"
                                     [hourSegmentTemplate]="weekViewHourSegmentTemplate"></mwl-calendar-week-view>
                                 <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate"
-                                    [events]="events" [refresh]="refresh"
+                                    [events]="events" [refresh]="refresh" [hourSegments]="hourSegments"
+                                    [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour"
                                     (eventClicked)="handleEvent('Clicked', $event.event)"
                                     (eventTimesChanged)="eventTimesChanged($event)"
                                     [hourSegments]="30"></mwl-calendar-day-view>
@@ -140,12 +166,12 @@
                                 <div #segmentElement class="cal-hour-segment" [style.height.px]="segmentHeight"
                                     [class.cal-hour-start]="segment.isStart"
                                     [class.cal-after-hour-start]="!segment.isStart" [ngClass]="segment.cssClass"
-                                    (click)="startDragToCreate(segment, $event, segmentElement)"                                    
+                                    (click)="startDragToCreate(segment, $event, segmentElement)"
                                     [ngClass]="{ 'cal-disabled-segment': !isTimeLabel && segment.date < now }">
                                     <!-- (mousedown)="startDragToCreate(segment, $event, segmentElement)" -->
                                     <div class="cal-time" *ngIf="isTimeLabel">
                                         <!-- {{ segment.date | date : 'hh:mm a' }} -->
-                                          {{ segment.date | date : 'hh:mm' }}
+                                        {{ segment.date | date : 'hh:mm' }}
                                     </div>
                                 </div>
                             </ng-template>

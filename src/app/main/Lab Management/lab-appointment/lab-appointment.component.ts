@@ -114,6 +114,8 @@ export class LabAppointmentComponent {
     this.categoryId = Number(access?.AccessInputValue ?? 0);
     this.myFilterform.get('categoryId').setValue(this.categoryId)
     console.log(access);
+
+    this.updateCalendar();
   }
   getWeekRange(date = new Date()) {
     // Clone the date to avoid modifying the original
@@ -390,7 +392,8 @@ export class LabAppointmentComponent {
         toDate = new Date(event.end);
       } else {
         toDate = new Date(fromDate);
-        toDate.setMinutes(toDate.getMinutes() + 2);
+        toDate.setMinutes(toDate.getMinutes() + this.interval);
+        // toDate.setMinutes(toDate.getMinutes() + 2);
       }
 
       const dialogRef = this._matDialog.open(NewLabAppointmentComponent, {
@@ -494,6 +497,30 @@ export class LabAppointmentComponent {
     'name',
     'buttons'
   ]
+
+  startTime: string = '00:00';   // 12:00 AM
+  endTime: string = '23:58';     // 11:58 PM
+  interval: number = 2;
+
+  dayStartHour: number = 0;      // Start at 12 AM
+  dayEndHour: number = 24;       // End at 12 AM (next day)
+  hourSegments: number = 2;
+
+  updateCalendar() {
+    if (!this.startTime || !this.endTime || !this.interval) return;
+
+    const [startHour] = this.startTime.split(':').map(Number);
+    const [endHour] = this.endTime.split(':').map(Number);
+
+    // ✅ Full day fix
+    this.dayStartHour = startHour;   // 0
+    this.dayEndHour = endHour === 23 ? 24 : endHour; // FIX
+
+    // ✅ 2-min interval
+    this.hourSegments = 60 / this.interval; // 30
+
+    this.refresh.next();
+  }
 
   searchRecords() {
     let fromDate, toDate;
