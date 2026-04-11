@@ -123,7 +123,7 @@ export class EditpackageComponent implements OnInit {
         const vdata =
         {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "ServiceId",
             "sortOrder": 0,
             "filters": [
