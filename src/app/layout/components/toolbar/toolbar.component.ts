@@ -136,7 +136,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        debugger
         // this.UserAccConfigSettingParam()
         // console.log(this._configue.)
 
