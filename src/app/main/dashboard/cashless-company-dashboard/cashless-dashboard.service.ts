@@ -27,4 +27,11 @@ export class CashlessDashboardService {
   public getCashlessDashboard(params:any) {
     return this._httpClient.GetData("Dashboard/Cashless-Dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate);
   }
+
+      public getcompanypatientbillinfo(employee) {
+        return this._httpClient.PostData("CashLess/CashlessPatientWiseSummaryList", employee)
+    }
+          public getBillDetInfo(employee) {
+        return this._httpClient.PostData("CashLess/CashlessPatientBillInfoList", employee)
+    }
 }
