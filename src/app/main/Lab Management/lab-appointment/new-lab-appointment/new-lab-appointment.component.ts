@@ -429,7 +429,7 @@ export class NewLabAppointmentComponent {
   getAppointmentSerList() {
     const param = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "LabAppId",
       "sortOrder": 0,
       "filters": [

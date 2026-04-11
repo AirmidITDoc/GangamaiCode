@@ -886,7 +886,7 @@ export class NewLabPatientRegComponent {
   getCollectionList() {
     const param = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "HomeCollectionId",
       "sortOrder": 0,
       "filters": [
@@ -934,7 +934,7 @@ export class NewLabPatientRegComponent {
   getAppointmentSerList() {
     const param = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "LabAppId",
       "sortOrder": 0,
       "filters": [
@@ -1201,7 +1201,7 @@ export class NewLabPatientRegComponent {
     // this.myForm.get("IsPathRad").value || "1"
     const param = {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
@@ -1580,7 +1580,7 @@ export class NewLabPatientRegComponent {
     const vdata =
     {
       "first": 0,
-      "rows": 10,
+      "rows": 9999,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [{ "fieldName": "ServiceId", "fieldValue": String(obj.serviceId), "opType": "Equals" }],

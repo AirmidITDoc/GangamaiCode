@@ -261,7 +261,7 @@ export class ReportDispatchComponent {
     getSingleServiceTestList() {
         const data = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "LabPatientId",
             "sortOrder": 0,
             "filters": [
