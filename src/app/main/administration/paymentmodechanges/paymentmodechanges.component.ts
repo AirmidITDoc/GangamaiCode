@@ -411,7 +411,7 @@ export class PaymentmodechangesComponent implements OnInit {
         console.log(row)
         const dialogRef = this._matDialog.open(EditPaymentComponent,
             {
-                height: "75%",
+                height: "65%",
                 width: '60%',
                 data: {
                     registerObj: row,
