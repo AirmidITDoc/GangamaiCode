@@ -226,9 +226,9 @@ export class IPSearchListComponent implements OnInit {
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             const dialogRef = this._matDialog.open(DischargeComponent,
                 {
-                    maxWidth: "85vw",
-                    height: '450px',
                     width: '100%',
+                    maxWidth: '85vw',
+                    maxHeight: '90vh',
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {

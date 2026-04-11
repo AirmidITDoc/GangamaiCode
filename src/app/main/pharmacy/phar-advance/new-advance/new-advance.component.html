@@ -21,7 +21,7 @@
         </div>
     </div>
 
-<div class="modal-body content">
+    <div class="modal-body content">
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-8 h-100-p">
                 <div class="modal-card-container">
@@ -49,29 +49,28 @@
 
                     </form>
                 </div>
-                  <!-- Patient Info Section -->
-                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
-                        <div fxFlex.gt-sm="100%" fxFlex>
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
-                                <div class="patient-info-sales">
-                                    <div class="patient-info-title border-bottom pb-1 mb-1">
-                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
-                                    </div>
-                                    <div class="Ipd-patient-info w-100-p">
-                                        <app-patient-information [uhidNo]="regObj?.regNo"
-                                            [patientName]="vPatienName" [doctorName]="regObj?.doctorName"
-                                            [departmentName]="regObj?.departmentName" [doa]="regObj?.admissionDate"
-                                            [ipdNo]="regObj?.ipdNo || regObj?.ipdno"
-                                            [ageString]="(regObj?.age !== undefined ? regObj?.age + 'Y|' + regObj?.ageMonth + 'M|' + regObj?.ageDay + 'D | ' + regObj?.genderName : '')"
-                                            [refDocName]="regObj?.refDocName"
-                                            [wardBedName]="(regObj?.roomName && regObj?.bedName) ? (regObj?.roomName + ' | ' + regObj?.bedName) : ''"
-                                            [patientType]="regObj?.patientType" [tariffName]="regObj?.tariffName"
-                                            [companyName]="regObj?.companyName"></app-patient-information>
-                                    </div>
+                <!-- Patient Info Section -->
+                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
                                 </div>
-                            </mat-card>
-                        </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                    <app-patient-information [uhidNo]="regObj?.regNo" [patientName]="vPatienName"
+                                        [doctorName]="regObj?.doctorName" [departmentName]="regObj?.departmentName"
+                                        [doa]="regObj?.admissionDate" [ipdNo]="regObj?.ipdNo || regObj?.ipdno"
+                                        [ageString]="(regObj?.age !== undefined ? regObj?.age + 'Y|' + regObj?.ageMonth + 'M|' + regObj?.ageDay + 'D | ' + regObj?.genderName : '')"
+                                        [refDocName]="regObj?.refDocName"
+                                        [wardBedName]="(regObj?.roomName && regObj?.bedName) ? (regObj?.roomName + ' | ' + regObj?.bedName) : ''"
+                                        [patientType]="regObj?.patientType" [tariffName]="regObj?.tariffName"
+                                        [companyName]="regObj?.companyName"></app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
                     </div>
+                </div>
                 <div class="modal-card-container h-100-p">
                     <div fxFlex.gt-sm="100%" fxFlex class="dynamic-table-wrapper">
 
@@ -85,27 +84,27 @@
     </div>
 
 
- <div class="modal-footer" fxLayout="column" >
-        <div class="modal-card-container"> 
+    <div class="modal-footer" fxLayout="column">
+        <div class="modal-card-container">
             <form [formGroup]="MainForm">
                 <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
                     <!-- Advance Amount -->
                     <div fxFlex="25%">
-                        <airmid-textbox label="Advance Amount" formControlName="advanceAmt" type="number"
-                          min="1" [formGroup]="MainForm">
+                        <airmid-textbox label="Advance Amount" formControlName="advanceAmt" type="number" min="1"
+                            [formGroup]="MainForm">
                         </airmid-textbox>
                     </div>
                     <!-- Reason of Advance -->
                     <div fxFlex="100%">
                         <airmid-textbox label="Reason of Advance" formControlName="comment" type="text"
                             [formGroup]="MainForm"></airmid-textbox>
-                    </div> 
+                    </div>
                 </div>
             </form>
             <div>
                 <div class="modal-footer-buttons" fxLayoutGap="6px">
                     <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                    <button class="btn btn-primary"   (click)="onSave()">Save</button>
+                    <button class="btn btn-primary" (click)="onSave()">Save</button>
                 </div>
             </div>
 
