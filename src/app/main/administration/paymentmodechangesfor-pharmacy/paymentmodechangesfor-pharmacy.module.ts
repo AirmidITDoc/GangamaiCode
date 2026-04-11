@@ -38,6 +38,7 @@ import { EditPaymentmodeComponent } from './edit-paymentmode/edit-paymentmode.co
 import { NewTPaymenModeUpdateComponent } from './new-tpaymen-mode-update/new-tpaymen-mode-update.component';
 import { PaymentmodechangesforPharmacyComponent } from './paymentmodechangesfor-pharmacy.component';
 import { PaymentmodechangesforpharmacyService } from './paymentmodechangesfor-pharmacy.service';
+import { NewPharmacyPaymodeComponent } from './new-pharmacy-paymode/new-pharmacy-paymode.component';
 
 
 const routes: Routes = [
@@ -48,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PaymentmodechangesforPharmacyComponent, EditPaymentmodeComponent, NewTPaymenModeUpdateComponent],
+    declarations: [PaymentmodechangesforPharmacyComponent, EditPaymentmodeComponent, NewTPaymenModeUpdateComponent, NewPharmacyPaymodeComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

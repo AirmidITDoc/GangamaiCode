@@ -1,234 +1,265 @@
-<div class="dialog-content-wrapper modal-wrapper grid-container">
+<div class="modal-page page-layout inner-scroll labpatientMain resize-form-fields">
+    <div class="modal-wrapper grid-container">
+        <div class="modal-header accent labpatientHeader">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Payment Mode Changes</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
 
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Payment Mode Changes </span>
-            </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-                    <!-- <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div> -->
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                        <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
+        <div class="modal-body">
+            <div class="modal-body-container">
 
-            <div fxLayout="column" class="gap-12">
+                <div fxLayout="column">
 
-                <div class="modal-card-container" style="padding: 1px 2px 5px 0px ;">
-                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                        <mat-card>
-                            <div class="patient-info-container">
-                                <div class="patient-info-box">
-                                    <div class="patient-info-title border-bottom pb-2">
-                                        <span class="h2">Patient Information</span>
-                                    </div>
-                                    <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                        fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub" style="font-size: large;">
-                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                fxLayoutAlign="space-between">
+                    <div class="modal-card-container" style="padding: 1px 2px 5px 0px ;">
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                          
 
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj.patientName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Transaction Id</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj.paymentId}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Net Amount</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj.paidAmount |
-                                                        currency:'INR'}}</span>
-                                                </div>
+                             <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                                <div fxFlex.gt-sm="100%" fxFlex>
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                        <div class="patient-info-sales">
+                                            <div class="patient-info-title border-bottom pb-1 mb-1">
+                                                <span class="h1 m-0" style="line-height: normal;">Patient
+                                                    Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info w-100-p">
+                                                <app-patient-information [uhidNo]="" [patientName]="registerObj.patientName" [doctorName]=""
+                                                    [departmentName]=""
+                                                    [doa]="registerObj.date"
+                                                    [ipdNo]=""
+                                                    [ageString]=""
+                                                    [refDocName]=""
+                                                    [wardBedName]=""
+                                                    [patientType]=""
+                                                    [tariffName]=""
+                                                    [companyName]=""></app-patient-information>
 
-                                                <div class="patient-col" style="font-weight: bold;
-             color: rgb(7, 90, 126);
-             font-size: large;
-             border: 2px solid rgb(7, 90, 126);
-             border-radius: 8px;
-             padding: 4px 10px;
-             display: inline-block;">
-                                                    <span class="patient-col-key">Total Paid Amount</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{registerObj.paidAmount |
-                                                        currency:'INR'}}</span>
-                                                </div>
-
+                                                    
                                             </div>
                                         </div>
-                                    </div>
+                                    </mat-card>
                                 </div>
-                            </div>
-                        </mat-card>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="modal-card-container" style="padding: 20px;">
-                <form [formGroup]="_Paymentmodesevice.paymentInsertform">
-
-                    <mat-card fxFlex="100%">
-
-                        <div fxLayout="column" fxLayoutGap="20px">
-
-                            <!-- 💵 Cash Pay -->
-                            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-                                <mat-checkbox fxFlex="15" [(ngModel)]="vCashCheckStatus" formControlName="IsCashpay"
-                                    (change)="getPaidAmount($event)">Cash Pay
-                                </mat-checkbox>
-
-                                <mat-form-field appearance="outline" fxFlex="30">
-                                    <mat-label>Cash Amount</mat-label>
-                                    <input matInput name="CashPayAmount" formControlName="CashPayAmount"
-                                        [(ngModel)]="vcashpay" (keyup)="getbalAmt()" placeholder="Enter amount" [maxLength]="10">
-                                    <mat-error
-                                        *ngIf="_Paymentmodesevice.paymentInsertform.get('CashPayAmount')?.invalid">
-                                        Cash amount is required
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <!-- 💳 Card Pay -->
-                            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-                                <mat-checkbox fxFlex="15" [(ngModel)]="vCardCheckStatus" formControlName="IsCardpay"
-                                    (change)="getCardPayAmount($event)">Card Pay
-                                </mat-checkbox>
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>Card Amount</mat-label>
-                                    <input matInput name="CardPayAmount" formControlName="CardPayAmount"
-                                        [(ngModel)]="vcardpay" (keyup)="getbalAmt()" placeholder="Enter amount" [maxLength]="10">
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>Card Number</mat-label>
-                                    <input matInput name="CardNo" formControlName="CardNo" [(ngModel)]="vCardNo"
-                                        maxlength="12"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)"
-                                        placeholder="XXXX-XXXX-XXXX">
-                                </mat-form-field>
-
-                                <airmid-dropdown label="Card Bank Name" formControlName="CardBankName"
-                                    [formGroup]="_Paymentmodesevice.paymentInsertform" [mode]="autocompleteModeBankName"
-                                    (selectionChange)="selectChangeBankName($event)">
-                                </airmid-dropdown>
-                            </div>
-
-                            <!-- 🧾 Cheque Pay -->
-                            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-                                <mat-checkbox fxFlex="15" [(ngModel)]="vCheckCheckStatus" formControlName="IsChequepay"
-                                    (change)="getCheckPayAmount($event)">Cheque Pay
-                                </mat-checkbox>
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>Cheque Amount</mat-label>
-                                    <input matInput name="ChequePayAmount" formControlName="ChequePayAmount"
-                                        [(ngModel)]="vchequepay" (keyup)="getbalAmt()" placeholder="Enter amount" [maxLength]="10">
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>Cheque Number</mat-label>
-                                    <input matInput name="ChequeNo" formControlName="ChequeNo" [(ngModel)]="vchequeNo"
-                                        maxlength="12"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)"
-                                        placeholder="Enter cheque no.">
-                                </mat-form-field>
-
-                                <airmid-dropdown label="Cheque Bank Name" formControlName="ChequeBankName"
-                                    [formGroup]="_Paymentmodesevice.paymentInsertform" [mode]="autocompleteModeBankName"
-                                    (selectionChange)="selectChangeBankName($event)">
-                                </airmid-dropdown>
-                            </div>
-
-                            <!-- 🏦 NEFT Pay -->
-                            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-                                <mat-checkbox fxFlex="15" [(ngModel)]="vNFTPayCheckStatus" formControlName="IsNEFTpay"
-                                    (change)="getNFTPayAmount($event)">NEFT Pay
-                                </mat-checkbox>
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>NEFT Amount</mat-label>
-                                    <input matInput name="NeftpayAmount" formControlName="NeftpayAmount"
-                                        [(ngModel)]="vneftpay" (keyup)="getbalAmt()" placeholder="Enter amount" [maxLength]="10">
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>NEFT Number</mat-label>
-                                    <input matInput name="Neftno" formControlName="Neftno" [(ngModel)]="vNeftno"
-                                        maxlength="12"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)"
-                                        placeholder="Enter NEFT no.">
-                                </mat-form-field>
-
-                                <airmid-dropdown label="NEFT Bank Name" formControlName="NEFTBankName"
-                                    [formGroup]="_Paymentmodesevice.paymentInsertform" [mode]="autocompleteModeBankName"
-                                    (selectionChange)="selectChangeBankName($event)">
-                                </airmid-dropdown>
-                            </div>
-
-                            <!-- 📱 PayTM Pay -->
-                            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-                                <mat-checkbox fxFlex="15" [(ngModel)]="vPayTMCheckStatus" formControlName="IsPayTMpay"
-                                    (change)="getPayTMPayAmount($event)">PayTM Pay
-                                </mat-checkbox>
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>PayTM Amount</mat-label>
-                                    <input matInput name="PayTmamount" formControlName="PayTmamount"
-                                        [(ngModel)]="vpaytmpay" (keyup)="getbalAmt()" placeholder="Enter amount" [maxLength]="10">
-                                </mat-form-field>
-
-                                <!-- <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>Transaction No</mat-label>
-                                    <input matInput name="PayTmtranNo" formControlName="PayTmtranNo"
-                                        [(ngModel)]="vPayTmtranNo" maxlength="12"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)"
-                                        placeholder="Enter transaction no.">
-                                </mat-form-field> -->
-
-                                <mat-form-field appearance="outline" fxFlex="25">
-                                    <mat-label>Transaction No</mat-label>
-                                    <input matInput name="PayTmtranNo" formControlName="PayTmtranNo"
-                                        [(ngModel)]="vPayTmtranNo"  
-                                        placeholder="Enter transaction no.">
-                                </mat-form-field>
                             </div>
 
                         </div>
+                    </div>
 
-                    </mat-card>
+                </div>
 
-                    <mat-card style="padding: 10px">
+                <div class="modal-card-container" style="padding: 10px;">
+                   
+                    <div style="display: flex; 
+            gap: 10px; 
+            margin: 4px 0; 
+            justify-content: flex-end;  
+            flex-wrap: wrap;">
+
+                        <!-- Total Paid Amount -->
+                        <mat-card style="flex: 1; 
+                     border: 2px solid rgb(7, 90, 126); 
+                     min-width: 90px;
+                     max-width: 120px;">
+                            <mat-card-content style="text-align: center; padding: 2px 2px;">
+                                <div style="color: rgb(7, 90, 126); 
+                        font-weight: bold; 
+                        font-size: 0.9rem;">
+                                    Total Paid
+                                </div>
+                                <div style="font-size:large; 
+                        font-weight: bold; 
+                        color: #2e7d32; 
+                        margin-top: 4px;">
+                                    {{ registerObj.paidAmount | currency:'INR':'symbol':'1.2-2' }}
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <!-- Balance Amount -->
+                        <mat-card style="flex: 1; 
+                     border: 2px solid rgb(7, 90, 126); 
+                     min-width: 90px;
+                     max-width: 120px;">
+                            <mat-card-content style="text-align: center; padding: 2px 2px;">
+                                <div style="color: rgb(7, 90, 126); 
+                        font-weight: bold; 
+                        font-size: 0.9rem;">
+                                    Balance
+                                </div>
+                                <div style="font-size: large; 
+                        font-weight: bold; 
+                        margin-top: 4px;"
+                                    [style.color]="vbalanceAmt < 0 ? '#d32f2f' : (vbalanceAmt === 0.00 ? '#2e7d32' : '#f57c00')">
+                                    {{ vbalanceAmt | currency:'INR':'symbol':'1.2-2' }}
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </div>
+                    <form [formGroup]="_Paymentmodesevice.paymentInsertform">
+
+                        <mat-card fxFlex="100%">
+
+                            <div fxLayout="column" fxLayoutGap="2px">
+
+                                <!-- 💵 Cash Pay -->
+                                <div fxLayout="row" fxLayoutGap="2px" fxLayoutAlign="start center">
+                                    <mat-checkbox fxFlex="15" [(ngModel)]="vCashCheckStatus" formControlName="IsCashpay"
+                                        (change)="getPaidAmount($event)">Cash Pay
+                                    </mat-checkbox>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Cash Amount</mat-label>
+                                        <input matInput name="CashPayAmount" #cashInput formControlName="CashPayAmount"
+                                            [(ngModel)]="vcashpay" (input)="getbalAmt(cashInput)" placeholder="Enter amount"
+                                            [maxLength]="10" [readonly]="!vCashCheckStatus">
+                                        <mat-error
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('CashPayAmount')?.invalid">
+                                            Cash amount is required
+                                        </mat-error>
+                                    </mat-form-field>
+
+
+                                </div>
+
+                                <!-- 💳 Card Pay -->
+                                <div fxLayout="row" fxLayoutGap="2px" fxLayoutAlign="start center">
+                                    <mat-checkbox fxFlex="15" [(ngModel)]="vCardCheckStatus" formControlName="IsCardpay"
+                                        (change)="getCardPayAmount($event)">Card Pay
+                                    </mat-checkbox>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Card Amount</mat-label>
+                                        <input matInput name="CardPayAmount" #cardInput formControlName="CardPayAmount"
+                                            [(ngModel)]="vcardpay" (input)="getbalAmt(cardInput)" placeholder="Enter amount"
+                                            [maxLength]="10" [readonly]="!vCardCheckStatus">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Card Number</mat-label>
+                                        <input matInput name="CardNo" formControlName="CardNo" [(ngModel)]="vCardNo"
+                                            maxlength="12"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)"
+                                            placeholder="XXXX-XXXX-XXXX" [readonly]="!vCardCheckStatus">
+                                    </mat-form-field>
+
+                                    <airmid-dropdown label="Card Bank Name" formControlName="CardBankName"
+                                        [formGroup]="_Paymentmodesevice.paymentInsertform"
+                                        [mode]="autocompleteModeBankName"
+                                        (selectionChange)="selectChangeBankName($event)" [readonly]="!vCardCheckStatus">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <!-- 🧾 Cheque Pay -->
+                                <div fxLayout="row" fxLayoutGap="2px" fxLayoutAlign="start center">
+                                    <mat-checkbox fxFlex="15" [(ngModel)]="vCheckCheckStatus"
+                                        formControlName="IsChequepay" (change)="getCheckPayAmount($event)">Cheque Pay
+                                    </mat-checkbox>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Cheque Amount</mat-label>
+                                        <input matInput name="ChequePayAmount" #chqInput
+                                            formControlName="ChequePayAmount" [(ngModel)]="vchequepay"
+                                           (input)="getbalAmt(chqInput)" placeholder="Enter amount" [maxLength]="10" [readonly]="!vCheckCheckStatus">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Cheque Number</mat-label>
+                                        <input matInput name="ChequeNo" formControlName="ChequeNo"
+                                            [(ngModel)]="vchequeNo" maxlength="12"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)" [readonly]="!vCheckCheckStatus"
+                                            placeholder="Enter cheque no.">
+                                    </mat-form-field>
+
+                                    <airmid-dropdown label="Cheque Bank Name" formControlName="ChequeBankName"
+                                        [formGroup]="_Paymentmodesevice.paymentInsertform"
+                                        [mode]="autocompleteModeBankName"
+                                        (selectionChange)="selectChangeBankName($event)" [readonly]="!vCheckCheckStatus">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <!-- 🏦 NEFT Pay -->
+                                <div fxLayout="row" fxLayoutGap="2px" fxLayoutAlign="start center">
+                                    <mat-checkbox fxFlex="15" [(ngModel)]="vNFTPayCheckStatus"
+                                        formControlName="IsNEFTpay" (change)="getNFTPayAmount($event)">NEFT Pay
+                                    </mat-checkbox>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>NEFT Amount</mat-label>
+                                        <input matInput name="NeftpayAmount" #NeftInput formControlName="NeftpayAmount"
+                                            [(ngModel)]="vneftpay" (input)="getbalAmt(NeftInput)" placeholder="Enter amount"
+                                            [maxLength]="10" [readonly]="!vNFTPayCheckStatus">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>NEFT Number</mat-label>
+                                        <input matInput name="Neftno" formControlName="Neftno" [(ngModel)]="vNeftno"
+                                            maxlength="12"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)"
+                                            placeholder="Enter NEFT no." [readonly]="!vNFTPayCheckStatus">
+                                    </mat-form-field>
+
+                                    <airmid-dropdown label="NEFT Bank Name" formControlName="NEFTBankName"
+                                        [formGroup]="_Paymentmodesevice.paymentInsertform"
+                                        [mode]="autocompleteModeBankName"
+                                        (selectionChange)="selectChangeBankName($event)" [readonly]="!vNFTPayCheckStatus">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <!-- 📱 PayTM Pay -->
+                                <div fxLayout="row" fxLayoutGap="2px" fxLayoutAlign="start center">
+                                    <mat-checkbox fxFlex="15" [(ngModel)]="vPayTMCheckStatus"
+                                        formControlName="IsPayTMpay" (change)="getPayTMPayAmount($event)">PayTM Pay
+                                    </mat-checkbox>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>PayTM Amount</mat-label>
+                                        <input matInput name="PayTmamount" #PayInput formControlName="PayTmamount"
+                                            [(ngModel)]="vpaytmpay" (input)="getbalAmt(PayInput)" placeholder="Enter amount"
+                                            [maxLength]="10" [readonly]="!vPayTMCheckStatus">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="25">
+                                        <mat-label>Transaction No</mat-label>
+                                        <input matInput name="PayTmtranNo" formControlName="PayTmtranNo"
+                                            [(ngModel)]="vPayTmtranNo" placeholder="Enter transaction no." [readonly]="!vPayTMCheckStatus">
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- <div fxLayout="row" fxLayoutGap="2px" fxLayoutAlign="flex-end">
+
+                                <mat-form-field appearance="outline" fxFlex="20%" 
+                                    style=" justify-content: flex-end;color: rgb(247, 158, 141);padding-right: 20px;font-weight: bold;font-size: large;">
+                                    <mat-label>BalAmount </mat-label>
+                                    <input name="BalAmount" formControlName="BalAmount" matInput required
+                                        [(ngModel)]="vbalanceAmt" #BalAmount readonly>
+                                    <mat-error class="error"
+                                        *ngIf="_Paymentmodesevice.paymentInsertform.get('BalAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('BalAmount')?.touched">
+                                        BalAmount is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div> -->
+                            </div>
+
+                        </mat-card>
+
+                        <!-- <mat-card style="padding: 10px">
                         <div fxLayout="row" fxLayoutGap="6px">
-                            <!-- <mat-form-field appearance="outline" fxFlex="35%">
-                            <mat-label>PaidAmount </mat-label>
-                            <input name="PaidAmount" formControlName="PaidAmount" matInput required
-                                [(ngModel)]="vnetPayAmt" #PaidAmount readonly>
-                            <mat-error class="error"
-                                *ngIf="_Paymentmodesevice.paymentInsertform.get('PaidAmount')?.invalid && _Paymentmodesevice.paymentInsertform.get('PaidAmount')?.touched">
-                                PaidAmount is required
-                            </mat-error>
-                        </mat-form-field> -->
-
+                          
                             <mat-form-field appearance="outline" fxFlex="60%">
                                 <mat-label>BalAmount </mat-label>
                                 <input name="BalAmount" formControlName="BalAmount" matInput required
@@ -241,19 +272,19 @@
 
 
                         </div>
-                    </mat-card>
-                </form>
+                    </mat-card> -->
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="Save()" [disabled]="vbalanceAmt>0">Payment</button>
+        <!-- Footer -->
+        <div class="modal-footer">
+            <div class="footer-navigation-container">
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <button class="btn btn-primary" (click)="Save()" [disabled]="vbalanceAmt>0">Payment</button>
+                </div>
             </div>
         </div>
     </div>
-</div>

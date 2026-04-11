@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
 import { IPSearchListService } from '../ip-search-list.service';
+import { PaidItemList } from 'app/main/pharmacy/sales-return-bill-settlement/sales-return-bill-settlement.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-discharge-summary',
@@ -94,10 +96,10 @@ export class DischargeSummaryComponent implements OnInit {
         private accountService: AuthenticationService,
         public dialogRef: MatDialogRef<DischargeSummaryComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private commonService: PrintserviceService,
+        private commonService: PrintserviceService, private configService: ConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         public datePipe: DatePipe) { }
-
+regId=0
     ngOnInit(): void {
         this.DischargesumInsertForm = this.showDischargeSummaryInsertForm();
         this.DischargesumInsertForm.markAllAsTouched();
@@ -121,6 +123,9 @@ export class DischargeSummaryComponent implements OnInit {
                 this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
+                    this.regId=this.registerObj.regId
+                   
+                         
                 });
                 this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
                     this.registerObj1 = response;
@@ -131,8 +136,11 @@ export class DischargeSummaryComponent implements OnInit {
                 });
             }, 500);
         }
+       
+   
 
     }
+
 
     MedicineItemform(): FormGroup {
         return this._formBuilder.group({
@@ -216,7 +224,12 @@ export class DischargeSummaryComponent implements OnInit {
         return this.DischargesumInsertForm.get('prescriptionDischarge') as FormArray;
     }
 
+   
+
     OnSave() {
+       
+
+        console.log(this.DischargesumInsertForm.value.prescriptionDischarge)
         Swal.fire({
             title: 'Do you want to Save the Discharge Summary ',
             text: "You won't be able to revert this!",
@@ -770,7 +783,7 @@ export class DischargeSummary {
     DocNameID: any;
     TemplateDescriptionHtml: any;
     IsDischarged: any;
-
+    regId: any;
 
     constructor(DischargeSummary) {
         this.DischargesummaryId = DischargeSummary.DischargesummaryId || 0,
@@ -797,6 +810,8 @@ export class DischargeSummary {
         this.Pathology = DischargeSummary.Pathology || '';
         this.TemplateDescriptionHtml = DischargeSummary.TemplateDescriptionHtml || '';
         this.IsDischarged = DischargeSummary.IsDischarged || 0;
+         this.regId = DischargeSummary.regId || "0";
+        
     }
 }
 export class MedicineItemList {

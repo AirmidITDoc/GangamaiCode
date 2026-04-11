@@ -13,6 +13,7 @@ export class PaymentmodechangesforpharmacyService {
     paymentform: FormGroup;
     paymentInsertform: FormGroup;
     phartpayFormGroup: FormGroup;
+    newPharpayFormGroup: FormGroup;
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,
@@ -22,6 +23,8 @@ export class PaymentmodechangesforpharmacyService {
         this.paymentform = this.createpaymentForm();
         this.phartpayFormGroup = this.createUseForm()
         this.paymentInsertform = this.createpaymentInsertForm();
+        this.newPharpayFormGroup = this.createpaymentInsertFormNew()
+
     }
 
     createUseForm() {
@@ -130,6 +133,31 @@ export class PaymentmodechangesforpharmacyService {
         })
     }
 
+
+
+    createpaymentInsertFormNew() {
+        return this._formBuilder.group({
+            PaymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            type: 1,
+            cashPayAmount: ["0"],
+            cardPayAmount: '',
+            cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            cardBankName: '',
+            chequePayAmount: ["0"],
+            chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            bankName: '',
+            neftpayAmount: '',
+            neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            neftbankMaster: '',
+            payTmamount: '',
+            payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+
+
+
+        })
+    }
+
+
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
     }
@@ -151,6 +179,12 @@ export class PaymentmodechangesforpharmacyService {
     }
 
 
+    
+     public NewPaymentUpdate(employee) {
+
+        if (employee.PaymentId)
+            return this._httpClient.PutData("paymentpharmacy/NewPaymentPharmacy/" + employee.PaymentId,employee);
+    }
 
     public TPaymentUpdate(paymentId, m_data) {
         return this._httpClient.PutData("PaymentMode/PaymentMode" + paymentId, m_data);

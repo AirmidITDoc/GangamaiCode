@@ -13,6 +13,8 @@ import { AdvanceDataStored } from '../../advance';
 import { AdvanceDetailObj } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { PaidItemList } from 'app/main/pharmacy/sales-return-bill-settlement/sales-return-bill-settlement.component';
 
 @Component({
     selector: 'app-discharge',
@@ -50,7 +52,7 @@ export class DischargeComponent implements OnInit {
         public _ConfigService: ConfigService,
         private commonService: PrintserviceService,
         private _FormvalidationserviceService: FormvalidationserviceService,
-        private accountService: AuthenticationService,
+        private accountService: AuthenticationService, private configService: ConfigService,
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) {
         if (this.advanceDataStored.storage) {
@@ -66,7 +68,8 @@ export class DischargeComponent implements OnInit {
             }
         }, 1);
     }
-
+    PharDueData: any
+    regId = "0"
     ngOnInit(): void {
         this.DischargeInsertForm = this.DischargeinsertForm();
         this.DischargeInsertForm.markAllAsTouched();
@@ -75,6 +78,9 @@ export class DischargeComponent implements OnInit {
             console.log(this.data)
             this.vAdmissionId = this.data.admissionId;
             this.vBedId = this.data.bedId
+            this.regId = this.data.regId
+             if (this.data.regId)
+            this.getdata1()
             this.DischargeInsertForm.get("dischargedDocId")?.setValue(this.data.docNameId)
             this.DischargeInsertForm.get("discharge.admissionId")?.setValue(this.data.admissionId)
             this.DischargeInsertForm.get("admission.admissionId")?.setValue(this.data.admissionId)
@@ -99,6 +105,8 @@ export class DischargeComponent implements OnInit {
                 this.DischargeInsertForm.get("admission.isDischarged")?.setValue(0)
             }
 
+
+
         }
         // console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
         // if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)
@@ -106,6 +114,11 @@ export class DischargeComponent implements OnInit {
         // else
         //   this.ChkConfigInitiate = true
         // this.getchkConfigInitiate();
+       
+        debugger
+        const access = this.configService.userAccessParam.find(x => x.AccessValueName === 'IsPharmacyDue');
+        this.PharDueData = Number(access?.AccessValue ?? 0);
+
     }
 
     docName(event) {
@@ -165,7 +178,41 @@ export class DischargeComponent implements OnInit {
         });
     }
 
+    dssalesbillListMultiple = new MatTableDataSource<PaidItemList>();
+    getdata1() {
+        debugger
+
+        const vdata = {
+            "first": 0,
+            "rows": 9999,
+            "sortField": "SalesId",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "RegId", "fieldValue": String(this.regId), "opType": "Contains" },
+            { "fieldName": "OP_IP_ID", "fieldValue": String(this.vAdmissionId), "opType": "Contains" },
+            { "fieldName": "OP_IP_Type", "fieldValue": "1", "opType": "Contains" },
+            ],
+            "exportType": "JSON",
+            "columns": [{ "data": "string", "name": "string" }]
+        }
+        this._IpSearchListService.SalesBillList(vdata).subscribe((response) => {
+            this.dssalesbillListMultiple.data = response.data
+            console.log(response.data)
+        })
+    }
+
+
     onDischarge() {
+
+        debugger
+        if (this.dssalesbillListMultiple.data.length > 0 && this.PharDueData === 1) {
+            this.toastr.warning('Patient Pharmacy Dues are Pending..', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+
+
         const formattedDate = this.datePipe.transform(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
         this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))
         this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)

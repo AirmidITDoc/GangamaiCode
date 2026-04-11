@@ -342,8 +342,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(EditPaymentComponent,
             {
-                height: "97%",
-                width: '85%',
+                height: "75%",
+                width: '60%',
                 data: {
                     registerObj: m,
                     FromName: "Pharma-PaymentModeChange"

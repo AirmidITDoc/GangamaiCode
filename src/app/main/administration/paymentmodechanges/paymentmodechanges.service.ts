@@ -103,4 +103,9 @@ export class PaymentmodechangesService {
 
 
 
+     public NewPaymentUpdate(employee) {
+
+        if (employee.PaymentId)
+            return this._httpClient.PutData("paymentpharmacy/NewPaymentPharmacy/Edit/" + employee.PaymentId, employee);
+    }
 }

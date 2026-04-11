@@ -411,8 +411,8 @@ export class PaymentmodechangesComponent implements OnInit {
         console.log(row)
         const dialogRef = this._matDialog.open(EditPaymentComponent,
             {
-                height: "99%",
-                width: '80%',
+                height: "75%",
+                width: '60%',
                 data: {
                     registerObj: row,
                     FromName: "IP-PaymentModeChange"
@@ -690,7 +690,10 @@ export class PaymentChange {
     payMode1: any
     currentDate = new Date().toISOString()
     salesId: any
-
+    payDate:any
+    payTime:any
+    date:any
+    
     constructor(PaymentChange) {
         {
             this.PayDate = PaymentChange.PayDate || 0;
@@ -760,7 +763,10 @@ export class PaymentChange {
             this.onlineTranNo = PaymentChange.onlineTranNo || '';
             this.payMode1 = PaymentChange.payMode1 || '';
             this.salesId = PaymentChange.salesId || 0;
-
+             this.payDate = PaymentChange.payDate || '';
+            this.payTime = PaymentChange.payTime || '';
+             this.date = PaymentChange.date || '';
+    
 
 
         }
