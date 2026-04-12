@@ -62,7 +62,8 @@ export class IPSettlementComponent implements OnInit {
     regNo2: any = 0;
     currency: any = '';
     vbalanceamt: any = 0;
-    registerObj = new RegInsert({});
+    // registerObj = new RegInsert({});
+    registerObj: any;
     vNetAmount: any = 0;
     vPaidAmount: any = 0;
     vTDSAmount: any = 0;
@@ -180,6 +181,8 @@ export class IPSettlementComponent implements OnInit {
     }
     getSelectedObjIP(obj) {
         if ((obj.regID ?? 0) > 0) {
+            this.registerObj = obj;
+            console.log("this.registerObj patient:", this.registerObj)
             console.log("Admitted patient:", obj)
         }
     }
@@ -311,13 +314,7 @@ export class IPSettlementComponent implements OnInit {
         this.registerObj = obj;
         this.vIPDNo = obj.ipdNo
         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
-        // setTimeout(() => {
-        //     this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
-        //         this.registerObj = response;
-        //         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
-
-        //     });  
-        // }, 500);                   "
+        console.log("this Regissyerobj : " + this.registerObj);
         this.GetDetails(this.RegId1)
     }
     openPaymentpopup(contact) {

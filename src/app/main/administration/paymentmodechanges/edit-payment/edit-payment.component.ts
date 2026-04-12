@@ -99,8 +99,6 @@ export class EditPaymentComponent implements OnInit {
             this.vPaidAmount = this.registerObj.paidAmount;
             this.payDate = this.registerObj.payDate;
             this.payTime = this.registerObj.payTime;
-
-            debugger
             if (this.data.FromName == 'IP-PaymentModeChange')
                 this.vBillNo = this.registerObj.billNo || 0;
             else
@@ -158,7 +156,7 @@ export class EditPaymentComponent implements OnInit {
     getbalAmt(inputElement?: any) {
 
         // if (!inputElement) return;
-        debugger
+        // debugger
         const totalAmountAdded: any = ((this.vcashpay ? parseFloat(this.vcashpay) : 0)
             + (this.vcardpay ? parseFloat(this.vcardpay) : 0)
             + (this.vchequepay ? parseFloat(this.vchequepay) : 0)
@@ -195,7 +193,6 @@ export class EditPaymentComponent implements OnInit {
                     this.vbalanceAmt = this.registerObj.paidAmount - this.vcashpay - this.vcardpay - this.vchequepay - this.vneftpay - this.vpaytmpay
 
                 } else if (controlName === 'NeftpayAmount') {
-                    debugger
                     this.vNFTPayCheckStatus = false;
                     form.get(controlName)?.setValue(0);
                     this.vbalanceAmt = this.registerObj.paidAmount - this.vcashpay - this.vcardpay - this.vchequepay - this.vneftpay - this.vpaytmpay
@@ -231,10 +228,7 @@ export class EditPaymentComponent implements OnInit {
     NFTBankdd: any
     type = 1
     Save() {
-        debugger
         const datePipe = new DatePipe('en-US');
-
-
         // if (this._Paymentmodesevice.paymentInsertform.get('BalAmount').value == 0 ) {
         if (this.vbalanceAmt == 0) {
 
@@ -465,7 +459,6 @@ export class EditPaymentComponent implements OnInit {
 
     }
     getCheckPayAmount(event) {
-        debugger
         const amount = this.vbalanceAmt//this.registerObj.paidAmount
         // this.registerObj.CashPayAmount || this.registerObj.CardPayAmount
         //   || this.registerObj.ChequePayAmount || this.registerObj.NeftpayAmount || this.registerObj.PayTmamount;

@@ -101,7 +101,6 @@ export class PharAdvanceService {
     }
     public UpdateIpPharmaAdvance(Param: any) {
         if (Param.pharmacyHeader.advanceId) {
-            // return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate/" + Param.pharmacyAdvance.advanceId, Param);
             return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate", Param);
         }
     }

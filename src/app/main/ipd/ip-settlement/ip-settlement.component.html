@@ -18,18 +18,7 @@
                     <mat-card style="padding: 8px;">
                         <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                             <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
-
-
                                 <div fxLayout="row" fxLayoutGap="8px">
-                                    <!-- <div fxFlex="50%" fxFlex.sm="100%" *ngIf="!vCheckBox">
-                                     <airmid-autocomplete  label="Search Reg No / Patient Name / Mobile No"
-                                      [formGroup]="searchFormGroup"   formControlName="RegId"
-                                       placeholderText="Search Reg No / Patient Name / Mobile No" 
-                                      ApiUrl="Admission/search-patient?Keyword=" TextField="formattedText"  ValueField="regId"
-                                      (selectionChange)="getSelectedObj($event)">
-                                       </airmid-autocomplete> 
-                                </div> -->
-
                                     <div fxFlex="50%" fxFlex.sm="100%">
                                         <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
                                             label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegId"
@@ -41,76 +30,30 @@
                                     </div>
                                 </div>
 
-
-
-                                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                                    <div class="patient-info-container" *ngIf="PatientName">
-                                        <div class="patient-info-box">
-                                            <div class="patient-info-title border-bottom pb-2">
-                                                <span class="h1">Patient Information</span>
-                                            </div>
-                                            <div class="patient-info-box my-8">
-                                                <div class="patient-info-row ">
-
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key ">Patient Name</span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{registerObj.regNo}}-{{PatientName}}</span>
-                                                    </div>
-                                                    <div class="patient-col gap-1">
-                                                        <span class="patient-col-key ">Age | Gender</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.age}} |
-                                                            {{registerObj?.genderName}}</span>
-                                                    </div>
-
-                                                    <div class="patient-col gap-1">
-                                                        <span class="patient-col-key">IPDNo</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.ipdNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Ward | Bed Name </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.roomName}} |
-                                                            {{registerObj?.bedName}}</span>
-                                                    </div>
-
+                                <!-- Patient Info Section -->
+                                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                                    <div fxFlex.gt-sm="100%" fxFlex>
+                                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                            <div class="patient-info-sales">
+                                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                                    <span class="h1 m-0" style="line-height: normal;">Patient
+                                                        Information</span>
+                                                </div>
+                                                <div class="Ipd-patient-info w-100-p">
+                                                    <app-patient-information [uhidNo]="registerObj?.regNo" [patientName]="PatientName"
+                                                    [doctorName]="registerObj?.doctorName" [departmentName]="registerObj?.departmentName"
+                                                    [doa]="registerObj?.admissionDate" [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                                    [ageString]="(registerObj?.age !== undefined ? + registerObj?.genderName : '')"
+                                                    [refDocName]="registerObj?.refDocName"
+                                                    [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
+                                                    [patientType]="registerObj?.patientType" [tariffName]="registerObj?.tariffName"
+                                                    [companyName]="registerObj?.companyName"></app-patient-information>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </mat-card>
                                     </div>
                                 </div>
-                           
-                           <!-- Patient Info Section -->
-                <!-- <div class="modal-card-container mt-0" style="margin-top: -4px;">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
-                            <div class="patient-info-sales">
-                                <div class="patient-info-title border-bottom pb-1 mb-1">
-                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
-                                </div>
-                                <div class="Ipd-patient-info w-100-p">
-                                    <app-patient-information [uhidNo]="registerObj?.regNo" [patientName]=" (registerObj?.firstName || '') +
-                                        (registerObj?.middleName ? ' ' + registerObj.middleName : '') +
-                                        (registerObj?.lastName ? ' ' + registerObj.lastName : '')
-                                        || registerObj?.patientName
-                                        " [doctorName]="registerObj?.doctorName"
-                                        [departmentName]="registerObj?.departmentName"
-                                        [doa]=""
-                                        [ipdNo]="vIPDNo"
-                                        [ageString]="registerObj?.age"
-                                        [refDocName]=""
-                                        [wardBedName]=""
-                                        [patientType]=""
-                                        [tariffName]=""
-                                        [companyName]=""></app-patient-information>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </div>
-                </div> -->
+
                             </div>
                         </form>
                     </mat-card>
@@ -201,7 +144,7 @@
                                                         placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
                                                         ApiUrl="Admission/Dischargesearch-patient?Keyword="
                                                         (selectionChange)="getSelectedObj1($event)"
-                                                         (onClearSelection)="IpMulSettFormReset()"
+                                                        (onClearSelection)="IpMulSettFormReset()"
                                                         TextField="formattedText" ValueField="regId">
                                                     </airmid-autocomplete>
 
@@ -216,7 +159,8 @@
                                                             <mat-icon class="cleariconbutton">close</mat-icon>
                                                         </button>&nbsp; -->
                                                         <button mat-raised-button class="search-button"
-                                                            (click)="getmultiplePaymentListNew(true)" matTooltip="search">
+                                                            (click)="getmultiplePaymentListNew(true)"
+                                                            matTooltip="search">
                                                             <mat-icon class="searchiconbutton">search</mat-icon>
                                                         </button>
                                                     </div>
@@ -298,7 +242,7 @@
                                                 </mat-cell>
                                             </ng-container>
 
-                                             <ng-container matColumnDef="CompanyDiscAmt">
+                                            <ng-container matColumnDef="CompanyDiscAmt">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Company DiscAmt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>

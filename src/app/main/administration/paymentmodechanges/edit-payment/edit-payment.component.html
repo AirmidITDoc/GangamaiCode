@@ -101,11 +101,11 @@
 
                             <!-- 💵 Cash Pay -->
                             <div fxLayout="row" fxLayoutGap="2px" fxLayoutAlign="start center">
-                                <mat-checkbox fxFlex="15" [(ngModel)]="vCashCheckStatus" formControlName="IsCashpay"
+                                <mat-checkbox fxFlex="15%" [(ngModel)]="vCashCheckStatus" formControlName="IsCashpay"
                                     (change)="getPaidAmount($event)">Cash Pay
                                 </mat-checkbox>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>Cash Amount</mat-label>
                                     <input matInput name="CashPayAmount" #cashInput formControlName="CashPayAmount"
                                         [(ngModel)]="vcashpay" (input)="getbalAmt(cashInput)" placeholder="Enter amount"
@@ -125,14 +125,14 @@
                                     (change)="getCardPayAmount($event)">Card Pay
                                 </mat-checkbox>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>Card Amount</mat-label>
                                     <input matInput name="CardPayAmount" #cardInput formControlName="CardPayAmount"
                                         [(ngModel)]="vcardpay" (input)="getbalAmt(cardInput)" placeholder="Enter amount"
                                         [maxLength]="10" [readonly]="!vCardCheckStatus">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>Card Number</mat-label>
                                     <input matInput name="CardNo" formControlName="CardNo" [(ngModel)]="vCardNo"
                                         maxlength="12"
@@ -152,14 +152,14 @@
                                     (change)="getCheckPayAmount($event)">Cheque Pay
                                 </mat-checkbox>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>Cheque Amount</mat-label>
                                     <input matInput name="ChequePayAmount" #chqInput formControlName="ChequePayAmount"
                                         [(ngModel)]="vchequepay" (input)="getbalAmt(chqInput)"
                                         placeholder="Enter amount" [maxLength]="10" [readonly]="!vCheckCheckStatus">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>Cheque Number</mat-label>
                                     <input matInput name="ChequeNo" formControlName="ChequeNo" [(ngModel)]="vchequeNo"
                                         maxlength="12"
@@ -179,14 +179,14 @@
                                     (change)="getNFTPayAmount($event)">NEFT Pay
                                 </mat-checkbox>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>NEFT Amount</mat-label>
                                     <input matInput name="NeftpayAmount" #NeftInput formControlName="NeftpayAmount"
                                         [(ngModel)]="vneftpay" (input)="getbalAmt(NeftInput)" placeholder="Enter amount"
                                         [maxLength]="10" [readonly]="!vNFTPayCheckStatus">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>NEFT Number</mat-label>
                                     <input matInput name="Neftno" formControlName="Neftno" [(ngModel)]="vNeftno"
                                         maxlength="12"
@@ -206,14 +206,14 @@
                                     (change)="getPayTMPayAmount($event)">PayTM Pay
                                 </mat-checkbox>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>PayTM Amount</mat-label>
                                     <input matInput name="PayTmamount" #PayInput formControlName="PayTmamount"
                                         [(ngModel)]="vpaytmpay" (input)="getbalAmt(PayInput)" placeholder="Enter amount"
                                         [maxLength]="10" [readonly]="!vPayTMCheckStatus">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <mat-form-field appearance="outline" fxFlex="25%">
                                     <mat-label>Transaction No</mat-label>
                                     <input matInput name="PayTmtranNo" formControlName="PayTmtranNo"
                                         [(ngModel)]="vPayTmtranNo" placeholder="Enter transaction no."
@@ -234,7 +234,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="Save()" [disabled]="vbalanceAmt>0">Payment</button>
+                <button class="btn btn-primary" (click)="Save()" [disabled]="vbalanceAmt>0">Save</button>
             </div>
         </div>
     </div>

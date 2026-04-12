@@ -308,7 +308,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
     }
 
     onEdit(m) {
-        console.log(m)
+        console.log(" Payment Page to -- Edit Page : " + m)
         const xx = {
             UserId: m.UserId,
             FirstName: m.FirstName,
@@ -342,8 +342,9 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(EditPaymentComponent,
             {
-                height: "75%",
-                width: '60%',
+                width: '100%',
+                maxWidth: '65vw',
+                maxHeight: '90vh',
                 data: {
                     registerObj: m,
                     FromName: "Pharma-PaymentModeChange"
