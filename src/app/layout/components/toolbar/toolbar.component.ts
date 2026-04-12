@@ -23,6 +23,8 @@ import { SignalRService } from "app/core/services/signalr.service";
 import { ConfigService } from "app/core/services/config.service";
 import { ApiCaller } from "app/core/services/apiCaller";
 import { LabAppointmentService } from "app/main/Lab Management/lab-appointment/lab-appointment.service";
+import { DashboardserviceService } from "app/core/services/dashboardservice.service";
+import { ConsentMasterModule } from "app/main/setup/OTManagement/consent-master/consent-master.module";
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 // import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
@@ -46,13 +48,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     currentDate: Date = new Date();
 
 
-    dailydashflag: boolean = true
-    Investigationdashflag: boolean = true
-    Financedashflag: boolean = true
-    Cashlessdashflag: boolean = true
-    beddashflag: boolean = true
-    Labfinancedashflag: boolean = true
-    Pharmacydashflag: boolean = true
+    dailydashflag: boolean = false
+    Investigationdashflag: boolean = false
+    Financedashflag: boolean = false
+    Cashlessdashflag: boolean = false
+    beddashflag: boolean = false
+    Labfinancedashflag: boolean = false
+    Pharmacydashflag: boolean = false
 
     // Demo notification array
     notifications = [];
@@ -73,6 +75,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private _fuseSidebarService: FuseSidebarService, private _httpClient1: ApiCaller,
         private _service: LabAppointmentService,
         private _translateService: TranslateService,
+
+        private _DashboardserviceService: DashboardserviceService,
         private accountService: AuthenticationService, public _configue: ConfigService,
         private router: Router, private signalRService: SignalRService,
         public _matDialog: MatDialog, public _notificationService: NotificationService
@@ -126,6 +130,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         setInterval(() => {
             this.currentDate = new Date();
         }, 1);
+
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -135,9 +141,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     /**
      * On init
      */
-    ngOnInit(): void {
-        // this.UserAccConfigSettingParam()
-        // console.log(this._configue.)
+    DashboardconfigParams: any
+    DashAcessConfigSetting: any = [];
+    async ngOnInit() {
+
 
         this.signalRService.addReceiveMessageListener((data, user) => {
             if (JSON.parse(localStorage.getItem("currentUser")).userId == user) {
@@ -168,7 +175,31 @@ export class ToolbarComponent implements OnInit, OnDestroy {
                 this.unreadCount = data.count;
             });
         }
+
+
+        // Comment this if no work?
+        const result = await this._DashboardserviceService.UserAccConfigSettingParam1();
+
+        this.DashboardconfigParams = result; 
+
+        console.log(this.DashboardconfigParams);
+
+        // this.loadData()
+
+        if (this.DashboardconfigParams)
+            this.setDashboard()
+        // uptp
     }
+
+
+    async loadData() {
+        const data = await this._DashboardserviceService.UserAccConfigSettingParam1();
+
+        this.DashboardconfigParams = data;
+        console.log(this.DashboardconfigParams)
+    }
+
+
     readNotification(id) {
         this._notificationService.readNotifications(id).subscribe((data) => {
             this.unreadCount--;
@@ -278,103 +309,93 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         });
     }
 
-    UserAcessConfigSetting: any = [];
-    UserAccConfigSettingParam() {
-        const Params =
-        {
-            "searchFields": [{
-                "fieldName": "LoginId",
-                "fieldValue": String(this.accountService.currentUserValue.userId),
-                "opType": "Equals"
-            }],
-            "mode": "LoginWiseAccessConfigList"  //SystemConfigList
-        }
-
-        this._httpClient1.PostData("Common", Params).subscribe(data => {
-
-            this.UserAcessConfigSetting = data
-            this._configue.setCongiParam1(this.UserAcessConfigSetting);
-            console.log(this._configue.userAccessParam)
-            if (data)
-                this.setDashboard()
-
-        });
-    }
-
 
     setDashboard() {
-        console.log(this._configue.userAccessParam)
+        console.log(this.DashboardconfigParams)
         debugger
-        const access = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsDailyDashboard');
-        const dailydashData = Number(access?.AccessValue ?? false);
 
-        const access1 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
+        const access = this.DashboardconfigParams
+            ?.find(x => x.AccessValueName === 'IsDailyDashboard');
+
+        const dailydashData = Number(access?.AccessValue ?? 0);
+
+        const access1 = this.DashboardconfigParams
+            ?.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
+
         const beddashData = Number(access1?.AccessValue ?? 0);
 
+        const access3 = this.DashboardconfigParams
+            ?.find(x => x.AccessValueName === 'IsInvestigation');
 
-        const access2 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsInvestigation');
-        const invdashData = Number(access2?.AccessValue ?? 0);
+        const invdashData = Number(access3?.AccessValue ?? 0);
 
+        const access4 = this.DashboardconfigParams
+            ?.find(x => x.AccessValueName === 'IsCashlessDashboard');
 
-        const access3 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsCashlessDashboard');
-        const cashlessdashData = Number(access3?.AccessValue ?? 0);
+        const cashlessdashData = Number(access4?.AccessValue ?? 0);
 
-        const access4 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsPharmacy');
-        const phardashData = Number(access4?.AccessValue ?? 0);
+        const access5 = this.DashboardconfigParams
+            ?.find(x => x.AccessValueName === 'IsPharmacy');
 
-        const access5 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsFinancialDashboard');
-        const finacedashData = Number(access5?.AccessValue ?? 0);
+        const phardashData = Number(access5?.AccessValue ?? 0);
 
-        const access6 = this._configue.userAccessParam.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
-        const labdashData = Number(access6?.AccessValue ?? 0);
+        const access6 = this.DashboardconfigParams
+            ?.find(x => x.AccessValueName === 'IsFinancialDashboard');
 
-      
+        const finacedashData = Number(access6?.AccessValue ?? 0);
+
+        const access7 = this.DashboardconfigParams
+            ?.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
+
+        const labdashData = Number(access7?.AccessValue ?? 0);
+
+     
         if (dailydashData)
             this.dailydashflag = true;
-        else{
-            this.dailydashflag = false
-        this.router.navigate(['/dashboard']);
-        }
+        // else {
+        //     this.dailydashflag = false
+        //     this.router.navigate(['/dashboard']);
+        // }
 
         if (beddashData)
             this.beddashflag = true;
-         else{
-            this.beddashflag = false
-        this.router.navigate(['/dashboard']);
-        }
+        // else {
+        //     this.beddashflag = false
+        //     this.router.navigate(['/dashboard']);
+        // }
 
         if (invdashData)
             this.Investigationdashflag = true;
-         else{
-            this.Investigationdashflag = false
-        this.router.navigate(['/dashboard']);
-        }
+        // else {
+        //     this.Investigationdashflag = false
+        //     this.router.navigate(['/dashboard']);
+        // }
 
         if (cashlessdashData)
             this.Cashlessdashflag = true;
-        else{
-            this.Cashlessdashflag = false
-        this.router.navigate(['/dashboard']);
-        }
+        // else {
+        //     this.Cashlessdashflag = false
+        //     this.router.navigate(['/dashboard']);
+        // }
 
         if (phardashData)
             this.Pharmacydashflag = true;
-        else{
-            this.Pharmacydashflag = false
-        this.router.navigate(['/dashboard']);
-        }
+        // else {
+        //     this.Pharmacydashflag = false
+        //     this.router.navigate(['/dashboard']);
+        // }
         if (labdashData)
             this.Labfinancedashflag = true;
-         else{
-            this.Labfinancedashflag = false
-        this.router.navigate(['/dashboard']);
-        }
+        // else {
+        //     this.Labfinancedashflag = false
+        //     this.router.navigate(['/dashboard']);
+        // }
         if (finacedashData)
             this.Financedashflag = true;
-         else{
-            this.Financedashflag = false
-        this.router.navigate(['/dashboard']);
-        }
+        // else {
+        //     this.Financedashflag = false
+        //     this.router.navigate(['/dashboard']);
+        // }
 
 
 

@@ -117,14 +117,7 @@ export class ConfigSettingParams {
     IsMaterialAcceptAgainstIndent: any
     IsMaterialAccept: any;
     IsOPBillProceed: any;
-    IsDailyDashboard: any;
-    IsBedAccupancyDashboard: any;
-    IsCashlessDashboard: any;
-    IsPharmacy: any;
-    IsFinancialDashboard: any;
-    IsInvestigation: any;
-    IsLabFinancialDashboard: any;
-
+  
 
     /**
         * Constructor
@@ -251,18 +244,40 @@ export class ConfigSettingParams {
         this.IsMaterialAccept = ConfigSettingParams.IsMaterialAccept;
         this.IsOPBillProceed = ConfigSettingParams.IsOPBillProceed;
 
-        this.IsDailyDashboard = ConfigSettingParams.IsDailyDashboard;
-        this.IsBedAccupancyDashboard = ConfigSettingParams.IsBedAccupancyDashboard;
-        this.IsInvestigation = ConfigSettingParams.IsInvestigation;
-        this.IsCashlessDashboard = ConfigSettingParams.IsCashlessDashboard;
-        this.IsPharmacy = ConfigSettingParams.IsPharmacy;
-        this.IsFinancialDashboard = ConfigSettingParams.IsFinancialDashboard;
-        this.IsLabFinancialDashboard = ConfigSettingParams.IsLabFinancialDashboard;
+           }
+
+}
+
+export class DashConfigSettingParams {
+      IsDailyDashboard: any;
+    IsBedAccupancyDashboard: any;
+    IsCashlessDashboard: any;
+    IsPharmacy: any;
+    IsFinancialDashboard: any;
+    IsInvestigation: any;
+    IsLabFinancialDashboard: any;
+
+      /**
+        * Constructor
+        *
+        * @param DashConfigSettingParams
+        */
+
+    constructor(DashConfigSettingParams) {
+
+        this.IsDailyDashboard = DashConfigSettingParams.IsDailyDashboard;
+        this.IsBedAccupancyDashboard = DashConfigSettingParams.IsBedAccupancyDashboard;
+        this.IsInvestigation = DashConfigSettingParams.IsInvestigation;
+        this.IsCashlessDashboard = DashConfigSettingParams.IsCashlessDashboard;
+        this.IsPharmacy = DashConfigSettingParams.IsPharmacy;
+        this.IsFinancialDashboard = DashConfigSettingParams.IsFinancialDashboard;
+        this.IsLabFinancialDashboard = DashConfigSettingParams.IsLabFinancialDashboard;
 
 
     }
 
 }
+
 
 export class HospitalConfigSettingParams {
     HospitalId: number;
