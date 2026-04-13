@@ -179,16 +179,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
         // Comment this if no work?
         const result = await this._DashboardserviceService.UserAccConfigSettingParam1();
-
-        this.DashboardconfigParams = result; 
-
+        this.DashboardconfigParams = result;
         console.log(this.DashboardconfigParams);
 
         // this.loadData()
 
         if (this.DashboardconfigParams)
             this.setDashboard()
-        // uptp
+        // upt0
+
+        debugger
     }
 
 
@@ -209,9 +209,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this.router.navigate(['/dashboard']);
     }
 
-    // navigateToDailyDashboard() {
-    //     this.router.navigate(['/dashboard/daily-dashboard']);
-    // }
+    navigateToDailyDashboard1() {
+        this.router.navigate(['/dashboard/old-dashboard']);
+    }
 
     navigateToBedOccupancyDashboard() {
 
@@ -312,82 +312,63 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     setDashboard() {
         console.log(this.DashboardconfigParams)
+
         const access = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsDailyDashboard');
+
         const dailydashData = Number(access?.AccessValue ?? 0);
+        if (dailydashData)
+            this.dailydashflag = true;
 
         const access1 = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
+
         const beddashData = Number(access1?.AccessValue ?? 0);
+
+        if (beddashData)
+            this.beddashflag = true;
+
 
         const access3 = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsInvestigation');
 
         const invdashData = Number(access3?.AccessValue ?? 0);
+        if (invdashData)
+            this.Investigationdashflag = true;
+
 
         const access4 = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsCashlessDashboard');
 
         const cashlessdashData = Number(access4?.AccessValue ?? 0);
+        if (cashlessdashData)
+            this.Cashlessdashflag = true;
 
         const access5 = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsPharmacy');
 
         const phardashData = Number(access5?.AccessValue ?? 0);
+        if (phardashData)
+            this.Pharmacydashflag = true;
 
         const access6 = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsFinancialDashboard');
 
         const finacedashData = Number(access6?.AccessValue ?? 0);
+        if (finacedashData)
+            this.Financedashflag = true;
 
         const access7 = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsLabFinancialDashboard');
 
         const labdashData = Number(access7?.AccessValue ?? 0);
 
-     
-        if (dailydashData)
-            this.dailydashflag = true;
-        // else {
-        //     this.dailydashflag = false
-        //     this.router.navigate(['/dashboard']);
-        // }
-
-        if (beddashData)
-            this.beddashflag = true;
-        // else {
-        //     this.beddashflag = false
-        //     this.router.navigate(['/dashboard']);
-        // }
-
-        if (invdashData)
-            this.Investigationdashflag = true;
-        // else {
-        //     this.Investigationdashflag = false
-        //     this.router.navigate(['/dashboard']);
-        // }
-
-        if (cashlessdashData)
-            this.Cashlessdashflag = true;
-        // else {
-        //     this.Cashlessdashflag = false
-        //     this.router.navigate(['/dashboard']);
-        // }
-
-        if (phardashData)
-            this.Pharmacydashflag = true;
-        // else {
-        //     this.Pharmacydashflag = false
-        //     this.router.navigate(['/dashboard']);
-        // }
         if (labdashData)
             this.Labfinancedashflag = true;
-        // else {
-        //     this.Labfinancedashflag = false
-        //     this.router.navigate(['/dashboard']);
-        // }
-        if (finacedashData)
-            this.Financedashflag = true;
+
+
+
+
         // else {
         //     this.Financedashflag = false
         //     this.router.navigate(['/dashboard']);

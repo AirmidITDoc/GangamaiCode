@@ -12,7 +12,7 @@ import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashbo
 import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
 import { CashlessCompanyDashboardComponent } from './cashless-company-dashboard/cashless-company-dashboard.component';
 import { TestingDailyDashBoardComponent } from './testing-daily-dash-board/testing-daily-dash-board.component';
-
+debugger
 const routes: Routes = [
     {
         path: '',

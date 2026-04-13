@@ -1,0 +1,162 @@
+<div class="modal-page page-layout inner-scroll labpatientMain resize-form-fields">
+  <!-- Modal Header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="modal-header-title">
+        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Complaint Register</span>
+      </div>
+      <div class="comman-date-container" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+
+        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Body -->
+  <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container">
+      <div fxLayout="column" class="gap-12">
+        <form [formGroup]="patientform">
+          <div class="modal-card-container" *ngIf="!Updateflag">
+            <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center"
+              style="padding-left: 20px;" fxFlex="80%">
+
+              <div class="radio-container">
+                <mat-radio-group aria-label="Select an option" [formGroup]="patientform" formControlName="opiptype"
+                  name="opiptype" (change)="onChangeReg($event)" (blur)="onChangeReg($event)"
+                  [(ngModel)]="vSelectedOption">
+                  <mat-radio-button value="OP" [disabled]="vCheckBox == true">OP</mat-radio-button>
+                  <mat-radio-button value="IP">IP</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div style="justify-content: left;">
+                <mat-checkbox formControlName="IsDischargedit" (change)="getDischargedList($event)">IsDischarged
+                </mat-checkbox>
+              </div>
+              <div class="input-container gap-8" fxFlex *ngIf="!vCheckBox" style="padding: 10px;">
+
+                <airmid-autocomplete lbl="RgId" *ngIf="patientform.get('opiptype').value == 'OP'" fxFlex="60%"
+                  [formGroup]="patientform" formControlName="opipid" placeholderText="OP-RegNo/Patient Name/Mobile No"
+                  label="Search OP-Reg No / Patient Name / Mobile No" ApiUrl="VisitDetail/search-patient?Keyword="
+                  (selectionChange)="getSelectedObjOP($event)" TextField="formattedText" ValueField="opIpId">
+                </airmid-autocomplete>
+
+                <airmid-autocomplete lbl="RgId" *ngIf="patientform.get('opiptype').value == 'IP'" fxFlex="60%"
+                  [formGroup]="patientform" formControlName="opipid" placeholderText="IP-RegNo/Patient Name/Mobile No"
+                  label="Search IP-Reg No / Patient Name / Mobile No" ApiUrl="Admission/search-patient?Keyword="
+                  (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID" TextField="formattedText">
+                </airmid-autocomplete>
+
+              </div>
+
+              <div class="input-container gap-8" fxFlex *ngIf="vCheckBox" style="padding: 10px;">
+
+                <airmid-autocomplete lbl="RegID" [formGroup]="patientform" formControlName="opipid" fxFlex="60%"
+                  placeholderText="Search DC-RegNo/Patient Name/Mobile No"
+                  label="Search DC-Reg No / Patient Name / Mobile No(AD)"
+                  ApiUrl="Admission/Dischargesearch-patient?Keyword=" (selectionChange)="getSelectedObjDC($event)"
+                  ValueField="admissionID" TextField="formattedText">
+                </airmid-autocomplete>
+
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="modal-card-container mt-0" style="margin-top: -4px;" *ngIf="!Updateflag">
+            <div fxFlex.gt-sm="100%" fxFlex>
+              <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                <div class="patient-info-sales">
+                  <div class="patient-info-title border-bottom pb-1 mb-1">
+                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                  </div>
+                  <div class="Ipd-patient-info w-100-p">
+                    <app-patient-information [uhidNo]="registerObj1?.regNo" [patientName]=" (registerObj1?.firstName || '') +
+                                        (registerObj1?.middleName ? ' ' + registerObj1.middleName : '') +
+                                        (registerObj1?.lastName ? ' ' + registerObj1.lastName : '')
+                                        || registerObj1?.patientName
+                                        " [doctorName]="registerObj1?.doctorName"
+                      [departmentName]="registerObj1?.departmentName" [doa]="registerObj1?.admissionDate"
+                      [ipdNo]="registerObj1?.ipdNo || registerObj1?.ipdNo"
+                      [ageString]="(registerObj1?.age !== undefined ? registerObj1?.age + 'Y|' + registerObj1?.ageMonth + 'M|' + registerObj1?.ageDay + 'D | ' + registerObj1?.genderName : '')"
+                      [refDocName]="registerObj1?.refDocName"
+                      [wardBedName]="(registerObj1?.roomName && registerObj1?.bedName) ? (registerObj1?.roomName + ' | ' + registerObj1?.bedName) : ''"
+                      [patientType]="registerObj1?.patientType" [tariffName]="registerObj1?.tariffName"
+                      [companyName]="registerObj1?.companyName"></app-patient-information>
+                  </div>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+
+        </form>
+
+
+        <div class="modal-card-container">
+
+          <mat-card>
+            <div fxLayout="column" class="gap-2">
+              <div class="form-title mb-2 border-bottom pb-2">
+                <span class="h3 font-weight-600" style="padding-left: 20px;">Complaint Details</span>
+              </div>
+              <form [formGroup]="ComplaintForm" noValidate fxLayout="column" style="padding: 0 10px;">
+                <input type="hidden" name="complaintId" formControlName="complaintId"
+                  [(ngModel)]="registerObj.complaintId">
+
+                <mat-card style="padding: 8px;">
+                  <div fxLayout="column" fxLayoutGap="4px">
+
+                    <hr>
+                    <div fxLayout="row wrap" fxLayoutGap="8px">
+                      <airmid-textbox label="MobileNo" formControlName="mobileNo" [formGroup]="ComplaintForm"
+                        [(ngModel)]="registerObj.mobileNo" [validations]="getValidationMessages().mobileNo"
+                        [maxLength]="10" fxFlex="24%">
+                      </airmid-textbox>
+
+                      <airmid-textbox label="EmailId" formControlName="emailId" [formGroup]="ComplaintForm"
+                        [(ngModel)]="registerObj.emailId" [validations]="getValidationMessages().emailId"
+                        [maxLength]="50" fxFlex="24%">
+                      </airmid-textbox>
+
+                      <airmid-textbox label="address" formControlName="address" [formGroup]="ComplaintForm"
+                        [(ngModel)]="registerObj.address" [validations]="getValidationMessages().address"
+                        [maxLength]="150" fxFlex="24%">
+                      </airmid-textbox>
+
+                      <airmid-dropdown label="Department Name" formControlName="departmentId" fxFlex="24%"
+                        [formGroup]="ComplaintForm" [(ngModel)]="registerObj.departmentId"
+                        [validations]="getValidationMessages().departmentId"
+                        [mode]="autocompletedepartment"></airmid-dropdown>
+                    </div>
+                    <!-- <div fxLayout="row wrap" fxLayoutGap="8px">
+                 
+                    
+                       </div> -->
+                    <div fxLayout="row wrap" fxLayoutGap="8px">
+                      <textarea formControlName="complaint" placeholder="Complaint" matInput
+                        [(ngModel)]="registerObj.complaint" cols="300" rows="6"></textarea>
+
+                    </div>
+                  </div>
+                </mat-card>
+
+                <!-- Footer Buttons -->
+                <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center" style="margin-top: 10px">
+                  <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="10px">
+
+                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </mat-card>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
