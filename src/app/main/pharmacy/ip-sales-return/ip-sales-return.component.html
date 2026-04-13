@@ -1,6 +1,6 @@
-<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+<div class="page-layout modal-wrapper grid-container resize-form-fields" fusePerfectScrollbar>
     <div class="modal-header accent">
-        <div class="modal-header-content p-12">
+        <div class="modal-header-content p-8">
             <div class="top-header-title">
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                     style="color: white;">account_box
@@ -14,14 +14,14 @@
     </div>
 
 
-    <div class="modal-body p-12" fusePerfectScrollbar>
-        <div fxLayout="column" class="gap-8 h-100-p">
+    <div class="modal-body p-4" fusePerfectScrollbar>
+        <div fxLayout="column" class="gap-4 h-100-p">
             <div class="modal-card-container">
                 <form [formGroup]="ItemFormGroup">
-                    <div fxLayout="column" fxLayoutGap="10px">
+                    <div fxLayout="column" fxLayoutGap="4px">
                         <div fxLayout="column">
                             <div fxLayout="row" fxLayoutGap="8px">
-                                <div class="p-12">
+                                <div class="pt-8">
                                     <mat-radio-group formControlName="Op_ip_id" aria-label="Select an option">
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                     </mat-radio-group>
@@ -51,29 +51,32 @@
                                 </mat-checkbox>
                             </div>
 
-                             <!-- Patient Info Section -->
-                    <div class="modal-card-container mt-0" style="margin-top: -4px;">
-                        <div fxFlex.gt-sm="100%" fxFlex>
-                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
-                                <div class="patient-info-sales">
-                                    <div class="patient-info-title border-bottom pb-1 mb-1">
-                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
-                                    </div>
-                                    <div class="Ipd-patient-info w-100-p">
-                                        <app-patient-information [uhidNo]="registerObj?.regNo"
-                                            [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
-                                            [departmentName]="registerObj?.departmentName" [doa]="registerObj?.admissionDate"
-                                            [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
-                                            [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
-                                            [refDocName]="registerObj?.refDocName"
-                                            [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
-                                            [patientType]="registerObj?.patientType" [tariffName]="registerObj?.tariffName"
-                                            [companyName]="registerObj?.companyName"></app-patient-information>
-                                    </div>
+                            <!-- Patient Info Section -->
+                            <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                                <div fxFlex.gt-sm="100%" fxFlex>
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                                        <div class="patient-info-sales">
+                                            <div class="patient-info-title border-bottom pb-1 mb-1">
+                                                <span class="h1 m-0" style="line-height: normal;">Patient
+                                                    Information</span>
+                                            </div>
+                                            <div class="Ipd-patient-info w-100-p">
+                                                <app-patient-information [uhidNo]="registerObj?.regNo"
+                                                    [patientName]="vPatientName" [doctorName]="registerObj?.doctorName"
+                                                    [departmentName]="registerObj?.departmentName"
+                                                    [doa]="registerObj?.admissionDate"
+                                                    [ipdNo]="registerObj?.ipdNo || registerObj?.ipdno"
+                                                    [ageString]="(registerObj?.age !== undefined ? registerObj?.age + 'Y|' + registerObj?.ageMonth + 'M|' + registerObj?.ageDay + 'D | ' + registerObj?.genderName : '')"
+                                                    [refDocName]="registerObj?.refDocName"
+                                                    [wardBedName]="(registerObj?.roomName && registerObj?.bedName) ? (registerObj?.roomName + ' | ' + registerObj?.bedName) : ''"
+                                                    [patientType]="registerObj?.patientType"
+                                                    [tariffName]="registerObj?.tariffName"
+                                                    [companyName]="registerObj?.companyName"></app-patient-information>
+                                            </div>
+                                        </div>
+                                    </mat-card>
                                 </div>
-                            </mat-card>
-                        </div>
-                    </div>
+                            </div>
 
                             <!-- <mat-card fxFlex style="padding: 6px;">
                                 <div class="patient-info-container">
@@ -151,9 +154,9 @@
                             </mat-card> -->
                         </div>
 
-                        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="4px">
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="4px" class="pt-4">
                             <mat-radio-group aria-label="Select an option" formControlName="PaymentType"
-                                style="padding: 15px 15px 0px 15px;" (change)="OnRadioChange()" fxLayout="row"
+                                class="pt-4 px-8" (change)="OnRadioChange()" fxLayout="row"
                                 fxLayoutGap="8px">
                                 <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                 <mat-radio-button value="Credit">Credit</mat-radio-button>
@@ -208,7 +211,7 @@
 
             <div class="modal-card-container h-100-p">
                 <div style="width: 100%;" class="h-100-p" fxLayoutGap="10px">
-                    <div class="airmid-table-container py-12 h-100-p" fxLayout="column">
+                    <div class="airmid-table-container py-4 h-100-p" fxLayout="column">
                         <mat-table #table class="airmid-table table3 h-100-p" matSort [dataSource]="dsIpSaleItemList"
                             [@animateStagger]="{ value: '50' }" style="overflow: auto;height: 300px;">
 
@@ -381,10 +384,10 @@
         </div>
     </div>
 
-    <div class="modal-footer  p-12">
+    <div class="modal-footer p-8">
 
         <div class="modal-footer-container" fxLayout="row" fxLayoutAlign="space-between">
-            <form [formGroup]="IPSalesRetFooterform">
+            <form [formGroup]="IPSalesRetFooterform" class="w-100-p">
                 <div fxLayout="row" fxLayoutGap="6px">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

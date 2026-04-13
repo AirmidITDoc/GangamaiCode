@@ -1225,10 +1225,7 @@ export class InvestigationListComponent {
     getSampledetailList1(row) {
         this.dataSource1.data = [];
         const rawDate = row.pathDate;
-
-        const formattedDate = formatDate(row.pathDate);
-        // let formattedDate = `${day}`
-
+        const formattedDate = rawDate.split(' ')[0];
         console.log(formattedDate);
 
         const m_data = {
@@ -2366,6 +2363,8 @@ export class InvestigationListComponent {
     ApprovalmyformSearch: FormGroup;
     // PathReportID: any;
     // PathTestId: any
+    Approvalf_name: any = "%"
+    Approvall_name: any = "%"
     ApprovalreportPrintObj: AdmissionPersonlModel;
 
     ApprovalfromDate = this.datePipe.transform(new Date().toISOString(), 'MM/dd/yyyy')
@@ -2403,6 +2402,8 @@ export class InvestigationListComponent {
             { fieldName: "To_Dt", fieldValue: this.ApprovaltoDate, opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
             { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "F_Name ", fieldValue: this.Approvalf_name, opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: this.Approvall_name, opType: OperatorComparer.StartsWith },
         ]
     }
 
@@ -2412,8 +2413,8 @@ export class InvestigationListComponent {
 
         this.ApprovalfromDate = this.datePipe.transform(this.ApprovalmyformSearch.get('start').value, 'MM/dd/yyyy')
         this.ApprovaltoDate = this.datePipe.transform(this.ApprovalmyformSearch.get('end').value, 'MM/dd/yyyy')
-        // this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
-        // this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
+        this.Approvalf_name = this.ApprovalmyformSearch.get('FirstNameSearch').value + "%"
+        this.Approvall_name = this.ApprovalmyformSearch.get('LastNameSearch').value + "%"
         this.Approvalstatus = this.ApprovalmyformSearch.get('ApprovalStatusSearch').value || 0
         // this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
 
@@ -2429,19 +2430,30 @@ export class InvestigationListComponent {
             sortField: "PathTestID",
             sortOrder: 0,
             filters: [
-                // { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-                // { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
                 // { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.ApprovalfromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.ApprovaltoDate, opType: OperatorComparer.Equals },
                 { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
                 { fieldName: "ApprovalStatus", fieldValue: this.Approvalstatus, opType: OperatorComparer.Equals },
+                { fieldName: "F_Name ", fieldValue: this.Approvalf_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.Approvall_name, opType: OperatorComparer.StartsWith },
                 // { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
                 // { fieldName: "Category", fieldValue: this.Category, opType: OperatorComparer.StartsWith }
             ]
         }
         this.grid3.gridConfig = this.ApprovalgridConfig;
         this.grid3.bindGridData();
+    }
+
+    ApprovalClearfilter(event) {
+
+        if (event == 'FirstNameSearch')
+            this.ApprovalmyformSearch.get('FirstNameSearch').setValue("")
+
+        if (event == 'LastNameSearch')
+            this.ApprovalmyformSearch.get('LastNameSearch').setValue("")
+
+        this.ApprovalonChangeFirst();
     }
 
     ApprovalonClear() {
@@ -2486,6 +2498,8 @@ export class InvestigationListComponent {
                     "fieldValue": String(this.Approvalstatus),
                     "opType": "Equals"
                 },
+                { fieldName: "F_Name ", fieldValue: this.Approvalf_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.Approvall_name, opType: OperatorComparer.StartsWith },
             ],
             "exportType": "JSON",
             "columns": []
@@ -2666,6 +2680,8 @@ export class InvestigationListComponent {
             { fieldName: "To_Dt", fieldValue: this.PrinttoDate, opType: OperatorComparer.Equals },
             { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
             { fieldName: "ApprovalStatus", fieldValue: "2", opType: OperatorComparer.Equals },
+            { fieldName: "F_Name ", fieldValue: this.Approvalf_name, opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: this.Approvall_name, opType: OperatorComparer.StartsWith },
         ]
     }
 
@@ -2687,7 +2703,9 @@ export class InvestigationListComponent {
                 { fieldName: "From_Dt", fieldValue: this.PrintfromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.PrinttoDate, opType: OperatorComparer.Equals },
                 { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals },
-                { fieldName: "ApprovalStatus", fieldValue: "2", opType: OperatorComparer.Equals }
+                { fieldName: "ApprovalStatus", fieldValue: "2", opType: OperatorComparer.Equals },
+                { fieldName: "F_Name ", fieldValue: this.Approvalf_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.Approvall_name, opType: OperatorComparer.StartsWith },
             ]
         }
         this.grid4.gridConfig = this.PrintgridConfig;

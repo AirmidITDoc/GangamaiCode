@@ -14,9 +14,9 @@
 //         min-width: 490px;
 //         text-align: left;
 //       }
-      
+
 //     }
-  
+
 //     .mat-header-row {
 //       width:200;
 //       //max-width: 1600px;
@@ -24,21 +24,21 @@
 //       min-height: 30px;
 //       background-color: blue;
 //     }
-  
+
 //     .mat-row {
 //       width: 100%;
 //       //max-width: 1600px;
 //       min-width: 1400px;
 //       min-height: 30px;
-     
+
 //     }
-   
+
 //     .mat-column-FromStoreId {
 //       width: 110px;
 //       max-width: 110px;
 //       min-width: 110px;
 //       text-align: left;
-  
+
 //     }
 
 //     .mat-column-IndentNo {
@@ -46,16 +46,16 @@
 //       max-width: 110px;
 //       min-width: 110px;
 //       text-align: left;
-  
+
 //     }
-  
+
 //     .mat-column-IndentDate {
 //       width: 220px;
 //       max-width: 220px;
 //       min-width: 220px;
 //       text-align: left;
 //     }
-  
+
 //     .mat-column-FromStoreName {
 //       width: 200px;
 //       max-width: 200px;
@@ -91,7 +91,7 @@
 //       min-width: 290px;
 //       text-align: left;
 //     }
-    
+
 //     .mat-column-Qty {
 //       width: 100px;
 //       max-width: 100px;
@@ -105,8 +105,8 @@
 //       min-width: 100px;
 //       text-align: left;
 //     }
-  
-  
+
+
 //     .mat-column-IssueQty {
 //       width: 80px;
 //       max-width: 80px;
@@ -120,7 +120,7 @@
 //       text-align: left;
 //     }
 
-    
+
 
 //     .mat-column-TotalAmount {
 //       width: 110px;
@@ -134,16 +134,16 @@
 //       min-width: 100px;
 //       text-align: center;
 //       justify-content: center;
-  
+
 //     }
 //     .mat-tab-group {
 //   margin-bottom: 48px;
-    
+
 // }
 
 // .table4{
 
-  
+
 //   .mat-header-row {
 //     width:1000;
 //     //max-width: 1600px;
@@ -157,7 +157,7 @@
 //     //max-width: 1600px;
 //     min-width: 700px;
 //     min-height: 20px;
-   
+
 //   }
 
 //   .mat-column-ItemName {
@@ -166,7 +166,7 @@
 //     min-width: 400px;
 //     text-align: left;
 //   }
-  
+
 //   .mat-column-Qty {
 //     width: 70px;
 //     max-width: 70px;
@@ -174,7 +174,7 @@
 //     text-align: left;
 //   }
 
-  
+
 //   .mat-column-IssueQty {
 //     width: 80px;
 //     max-width: 80px;
@@ -188,7 +188,7 @@
 //     min-width: 100px;
 //     text-align: left;
 //   }
-  
+
 //   .mat-column-ReturnQty {
 //     width: 100px;
 //     max-width: 100px;
@@ -213,7 +213,7 @@
 
 
 // }
-    
+
 // #spinner {
 // 	-webkit-animation: frames 1s infinite linear;
 // 	animation: frames 1s infinite linear;
@@ -248,12 +248,43 @@
 // 		no-repeat
 // 		0 0;
 // 	width: 100%;
-// 	height: 100%;
+
+
+
+/* Ultra‑compact table rows and inputs */
+.resize-form-fields {
+  .airmid-table-container {
+    mat-header-row,
+    mat-row,
+    thead tr,
+    tbody tr {
+      min-height: 0 !important;
+      height: 24px !important;
+      padding: 0 !important;
+    }
+    mat-header-cell,
+    mat-cell,
+    .mat-header-cell,
+    .mat-cell {
+      padding: 0 !important;
+      margin: 0 !important;
+      line-height: 1 !important;
+    }
+    .mat-form-field .mdc-text-field__input {
+      padding: 0 !important;
+      height: 24px !important;
+      line-height: 24px !important;
+    }
+    .mat-form-field[formControlName="Qty"] {
+      max-width: 60px !important;
+    }
+  }
+}
+
+
+
 // 	position: fixed;
 // 	bottom: 0;
 // 	left: 0;
 // 	z-index: 1000;
 // }
-
-
-  
