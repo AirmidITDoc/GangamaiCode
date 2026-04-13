@@ -310,24 +310,13 @@ export class AppComponent implements OnInit, OnDestroy {
             }],
             "mode": "LoginWiseAccessConfigList"  //SystemConfigList
         }
-
         this._httpClient1.PostData("Common", Params).subscribe(data => {
-debugger
             this.UserAcessConfigSetting = data
             console.log(this.UserAcessConfigSetting)
             this.configService.setCongiParam1(this.UserAcessConfigSetting);
-
-
         });
     }
 
-
-    // getDBInfo() {
-    //     this._httpClient1.GetData('DbInfo').subscribe((data) => {
-    //         alert(JSON.stringify(data));
-    //         console.log("RAW DATA:", JSON.stringify(data));
-    //     });
-    // }
     ConfigSettingUnitWise() {
         const Params =
         {

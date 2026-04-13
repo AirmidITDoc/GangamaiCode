@@ -52,7 +52,8 @@ export class DischargeComponent implements OnInit {
         public _ConfigService: ConfigService,
         private commonService: PrintserviceService,
         private _FormvalidationserviceService: FormvalidationserviceService,
-        private accountService: AuthenticationService, private configService: ConfigService,
+        private accountService: AuthenticationService,
+        private configService: ConfigService,
         @Inject(MAT_DIALOG_DATA) public data: any,
     ) {
         if (this.advanceDataStored.storage) {
@@ -79,8 +80,8 @@ export class DischargeComponent implements OnInit {
             this.vAdmissionId = this.data.admissionId;
             this.vBedId = this.data.bedId
             this.regId = this.data.regId
-             if (this.data.regId)
-            this.getdata1()
+            if (this.data.regId)
+                this.getdata1()
             this.DischargeInsertForm.get("dischargedDocId")?.setValue(this.data.docNameId)
             this.DischargeInsertForm.get("discharge.admissionId")?.setValue(this.data.admissionId)
             this.DischargeInsertForm.get("admission.admissionId")?.setValue(this.data.admissionId)
@@ -104,21 +105,23 @@ export class DischargeComponent implements OnInit {
                 this.DischargeId = 0;
                 this.DischargeInsertForm.get("admission.isDischarged")?.setValue(0)
             }
-
-
-
         }
+
         // console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
         // if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)
         //   this.ChkConfigInitiate = false
         // else
         //   this.ChkConfigInitiate = true
         // this.getchkConfigInitiate();
-       
-        debugger
+
+        const accessList = this.configService.userAccessParam?.filter(x => x.AccessValueName === 'IsPharmacyDue');
         const access = this.configService.userAccessParam.find(x => x.AccessValueName === 'IsPharmacyDue');
         this.PharDueData = Number(access?.AccessValue ?? 0);
 
+        if (!accessList || accessList.length === 0) {
+            this.toastr.warning('Pharmacy Due access is not configured at the user level. Please contact the administrator.', 'Warning');
+            return;
+        }
     }
 
     docName(event) {
@@ -127,8 +130,8 @@ export class DischargeComponent implements OnInit {
 
     selctdischargeType(event) {
         console.log(event)
-
     }
+
     modeOfDischarge(event) {
         console.log(event)
     }
@@ -179,31 +182,37 @@ export class DischargeComponent implements OnInit {
     }
 
     dssalesbillListMultiple = new MatTableDataSource<PaidItemList>();
+    totalBalanceAmount: number = 0;
     getdata1() {
-        debugger
-
         const vdata = {
             "first": 0,
             "rows": 9999,
             "sortField": "SalesId",
             "sortOrder": 0,
-            "filters": [{ "fieldName": "RegId", "fieldValue": String(this.regId), "opType": "Contains" },
-            { "fieldName": "OP_IP_ID", "fieldValue": String(this.vAdmissionId), "opType": "Contains" },
-            { "fieldName": "OP_IP_Type", "fieldValue": "1", "opType": "Contains" },
+            "filters": [{ "fieldName": "RegId", "fieldValue": String(this.regId), "opType": "Equals" },
+            { "fieldName": "OP_IP_ID", "fieldValue": String(this.vAdmissionId), "opType": "Equals" },
+            { "fieldName": "OP_IP_Type", "fieldValue": "1", "opType": "Equals" },
             ],
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
         }
         this._IpSearchListService.SalesBillList(vdata).subscribe((response) => {
             this.dssalesbillListMultiple.data = response.data
-            console.log(response.data)
+
+            // ✅ Sum of balanceAmount
+            this.totalBalanceAmount = response.data.reduce((sum, item) => {
+                return sum + (Number(item.balanceAmount) || 0);
+            }, 0);
+
+            // console.log("Total Balance:", this.totalBalanceAmount);
+            // console.log("IsPharDue Flag : ", this.PharDueData)
+            // console.log("Full Response:", response);
+            // console.log("Pharmacy Data : ", response.data)
         })
     }
 
 
     onDischarge() {
-
-        debugger
         if (this.dssalesbillListMultiple.data.length > 0 && this.PharDueData === 1) {
             this.toastr.warning('Patient Pharmacy Dues are Pending..', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -211,19 +220,16 @@ export class DischargeComponent implements OnInit {
             return;
         }
 
-
-
         const formattedDate = this.datePipe.transform(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
         this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))
         this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
         this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
         this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-            this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+        this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
         this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-            this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+        this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
 
         if (!this.DischargeInsertForm.invalid) {
-
             if (this.DischargeInsertForm.get("admission.isDischarged")?.value == 0) {
                 this.DischargeInsertForm.get('discharge.addedBy')?.setValue(this.accountService.currentUserValue.userId);
                 this.DischargeInsertForm.get("admission.isDischarged")?.setValue(1)
@@ -232,7 +238,6 @@ export class DischargeComponent implements OnInit {
                     "admission": this.DischargeInsertForm.value.admission,
                     "bed": this.DischargeInsertForm.value.bed
                 };
-                console.log(insertData)
                 this._IpSearchListService.DichargeInsert(insertData).subscribe((response) => {
                     this.viewgetDischargeSlipPdf(response)
                     this._matDialog.closeAll();
@@ -245,8 +250,6 @@ export class DischargeComponent implements OnInit {
                     "discharge": this.DischargeInsertForm.value.discharge,
                     "admission": this.DischargeInsertForm.value.admission
                 };
-                console.log(updateData)
-
                 this._IpSearchListService.DichargeUpdate(updateData).subscribe((response) => {
                     this.viewgetDischargeSlipPdf(response)
                     this._matDialog.closeAll();
@@ -276,13 +279,13 @@ export class DischargeComponent implements OnInit {
                     );
                 });
             }
-
         }
     }
 
     viewgetDischargeSlipPdf(data) {
         this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
     }
+
     getValidationMessages() {
         return {
             dischargeTypeId: [
@@ -315,8 +318,6 @@ export class DischargeComponent implements OnInit {
             }
         })
     }
-
-
     DischargeInitiate() {
         if (this.selectedAdvanceObj.IsInitinatedDischarge == '1') {
             this.toastr.warning('selected patient already Initiated ', 'Warning !', {
@@ -324,7 +325,6 @@ export class DischargeComponent implements OnInit {
             });
             return;
         }
-
         const dialogRef = this._matDialog.open(InitiateDischargeComponent,
             {
                 maxWidth: "50vw",

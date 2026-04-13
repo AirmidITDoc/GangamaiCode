@@ -395,8 +395,6 @@ export class IPSearchListComponent implements OnInit {
         }
         else
             if (m === "Advance") {
-                debugger
-
                 this.advanceDataStored.storage = new AdvanceDetailObj(element);
 
                 if (element.isBillGenerated && element.isDischarged) {
@@ -499,7 +497,6 @@ export class IPSearchListComponent implements OnInit {
     apiUrl: any;
     IsDischarge: boolean = false
     onChangeFirst(event) {
-        debugger
         console.log(event)
         if (this.myFilterform.get('IsDischarge').value == false) {
             this.fromDate = "1900-01-01"
