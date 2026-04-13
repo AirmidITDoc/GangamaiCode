@@ -114,4 +114,9 @@
             </div>
         </div>
     </div>
+
+    <div *ngIf="PharDueData">
+        Total Balance: {{ totalBalanceAmount | currency:'INR' }}
+        Note : Pharmacy Due access is not configured at the user level. Please contact the administrator.
+    </div>
 </div>

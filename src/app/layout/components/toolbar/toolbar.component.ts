@@ -312,16 +312,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     setDashboard() {
         console.log(this.DashboardconfigParams)
-        debugger
-
         const access = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsDailyDashboard');
-
         const dailydashData = Number(access?.AccessValue ?? 0);
 
         const access1 = this.DashboardconfigParams
             ?.find(x => x.AccessValueName === 'IsBedAccupancyDashboard');
-
         const beddashData = Number(access1?.AccessValue ?? 0);
 
         const access3 = this.DashboardconfigParams
