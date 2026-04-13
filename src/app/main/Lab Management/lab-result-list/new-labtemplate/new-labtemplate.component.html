@@ -1,4 +1,4 @@
-<div class="dialog-content-wrapper modal-wrapper grid-container preOperMain">
+<div class="dialog-content-wrapper modal-wrapper grid-container preOperMain resize-form-fields">
 
     <div class="modal-header accent preOperHeader">
         <div class="modal-header-content">
@@ -21,7 +21,7 @@
     <div class="content-card preOperMiddle" style="padding: 10px 10px 8px 10px;">
         <div fxFlexFill fxLayout="column" fxLayoutGap="5px">
 
-            <div fxFlex.gt-sm="100%" fxFlex>
+            <!-- <div fxFlex.gt-sm="100%" fxFlex>
                 <div fxlayout="row" style="padding: 5px 5px 5px 5px;">
 
                     <mat-card fxFlex style="padding: 6px;">
@@ -42,7 +42,7 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{selectedAdvanceObj1.regNo}}</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj1.labRequestNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
@@ -115,6 +115,30 @@
                             </div>
                         </div>
                     </mat-card>
+                </div>
+            </div> -->
+            <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
+                <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                    <div class="patient-info-container">
+                        <div class="patient-info-box gap-4" fxFlexFill fxLayout="column">
+                            <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                <div class="patient-info-sales">
+
+                                    <div class="patient-info-title border-bottom pb-1 mb-1">
+                                        <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                    </div>
+                                    <div class="Ipd-patient-info w-100-p">
+                                        <app-patient-information [uhidNo]="selectedAdvanceObj1?.labRequestNo"
+                                            [patientName]="selectedAdvanceObj1.patientName"
+                                            [ageString]="getAgeString(selectedAdvanceObj1)"
+                                            [refDocName]="selectedAdvanceObj1.doctorName" [patientType]="selectedAdvanceObj1.patientType"
+                                            [companyName]="selectedAdvanceObj1.CompanyName">
+                                        </app-patient-information>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
                 </div>
             </div>
 

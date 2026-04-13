@@ -107,12 +107,10 @@ export class InvestigationListService {
         return this._formBuilder.group({
             RegNoSearch: [],
             FirstNameSearch: ['', [
-                Validators.maxLength(50),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                Validators.maxLength(50)
             ]],
             LastNameSearch: ['', [
-                Validators.maxLength(50),
-                Validators.pattern('^[a-zA-Z () ]*$')
+                Validators.maxLength(50)
             ]],
 
             PatientTypeSearch: ['3'],

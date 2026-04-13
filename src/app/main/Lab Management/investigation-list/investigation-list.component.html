@@ -1610,6 +1610,32 @@
                                             </airmid-datepicker>
                                         </div>
 
+                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>FirstName</mat-label>
+                                                <input matInput placeholder="Search FirstName" autocomplete="off"
+                                                    [formGroup]="ApprovalmyformSearch" formControlName="FirstNameSearch"
+                                                    (input)="ApprovalonChangeFirst()" />
+                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="ApprovalClearfilter('FirstNameSearch')">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>LastName</mat-label>
+                                                <input matInput placeholder="Search LastName" autocomplete="off"
+                                                    [formGroup]="ApprovalmyformSearch" formControlName="LastNameSearch"
+                                                    (input)="ApprovalonChangeFirst()" />
+                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="ApprovalClearfilter('LastNameSearch')">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
+
                                         <div fxFlex="15%" fxLayout="row">
                                             <mat-radio-group formControlName="ApprovalStatusSearch" fxLayout="column"
                                                 (change)="ApprovalonChangeFirst()" class="gap-4">
