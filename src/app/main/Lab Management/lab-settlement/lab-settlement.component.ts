@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DiscountAfterFinalLabbillComponent } from '../lab-patient-reg/discount-after-final-labbill/discount-after-final-labbill.component';
 import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg/lab-patient-reg.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-lab-settlement',
@@ -46,6 +47,7 @@ export class LabSettlementComponent {
     registerObj = new LabPatientList({});
     RegId = 0;
     OpSettlementForm: FormGroup
+    isSettlement: boolean = false;
 
     autocompleteModeunit: string = "Hospital";
     UnitId: any = this.accountService.currentUserValue.user.unitId;
@@ -62,6 +64,7 @@ export class LabSettlementComponent {
         private commonService: PrintserviceService,
         public _matDialog: MatDialog,
         public datePipe: DatePipe,
+        public _ConfigService: ConfigService,
         public accountService: AuthenticationService,
         public _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public formBuilder: UntypedFormBuilder
@@ -70,6 +73,10 @@ export class LabSettlementComponent {
     ngOnInit(): void {
         this.searchFormGroup = this.createSearchForm();
         this.OpSettlementForm = this.CreateOPSettlementForm();
+
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsSettlement');
+        this.isSettlement = access?.AccessValue;
+        console.log("Login Access:", access);
     }
 
     createSearchForm() {
@@ -223,7 +230,6 @@ export class LabSettlementComponent {
             }, 100);
         }
         this.GetDetails(obj.value)
-        this.getAccessDetail();
     }
 
     @ViewChild('tblLabPatient', { static: false }) tblLabPatient: AirmidTableComponent;
@@ -235,33 +241,6 @@ export class LabSettlementComponent {
             this.tblLabPatient.gridConfig.filters = filters;
             this.tblLabPatient.bindGridData();
         }, 100);
-    }
-
-    isSettlement: boolean = false;
-    getAccessDetail() {
-        // debugger
-        const SelectQuery = {
-            "searchFields": [{
-                "fieldName": "LoginId",
-                "fieldValue": String(this.accountService.currentUserValue.userId),
-                "opType": "Equals"
-            }],
-            "mode": "LoginWiseAccessConfigList"
-        }
-        this._labPatientRegService.commonList(SelectQuery).subscribe(response => {
-            // const getUserAccesDetList = response as any[];
-            // console.log("get Access data:", getUserAccesDetList)
-
-            const settlementData = response.find(x => x.AccessValueName === 'IsSettlement');
-            console.log(settlementData)
-            if (settlementData?.AccessValue == true) {
-                this.isSettlement = settlementData?.AccessValue
-                console.log("Show", this.isSettlement)
-            } else {
-                this.isSettlement = false
-                console.log("Hide", this.isSettlement)
-            }
-        });
     }
 
     openPaymentpopup(contact) {

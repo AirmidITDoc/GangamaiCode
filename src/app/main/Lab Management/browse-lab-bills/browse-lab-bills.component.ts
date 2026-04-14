@@ -272,7 +272,10 @@ export class BrowseLabBillsComponent {
 
     ngOnInit(): void {
         this.myFilterbillform = this._OPListService.myFilterbillbrowseform();
-        this.getAccessDetail();
+
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsSettlement');
+        this.isSettlement = access?.AccessValue;
+        console.log("Login Access:", access);
 
         this.myFilterbillform.get('UnitId').setValue(this.accountService.currentUserValue.user.unitId)
         this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
@@ -282,29 +285,6 @@ export class BrowseLabBillsComponent {
 
         this.menuActions.push("Bill Print-Package Info");
         this.menuActions.push("Bill Print");
-    }
-
-    getAccessDetail() {
-        // debugger
-        const SelectQuery = {
-            "searchFields": [{
-                "fieldName": "LoginId",
-                "fieldValue": String(this.accountService.currentUserValue.userId),
-                "opType": "Equals"
-            }],
-            "mode": "LoginWiseAccessConfigList"
-        }
-        this._OPListService.commonList(SelectQuery).subscribe(response => {
-            const settlementData = response.find(x => x.AccessValueName === 'IsSettlement');
-            console.log(settlementData)
-            if (settlementData?.AccessValue == true) {
-                this.isSettlement = settlementData?.AccessValue
-                console.log("Show", this.isSettlement)
-            } else {
-                this.isSettlement = false
-                console.log("Hide", this.isSettlement)
-            }
-        });
     }
 
     isActionEnabled(element: any): boolean {
