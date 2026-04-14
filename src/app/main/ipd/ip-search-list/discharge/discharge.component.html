@@ -115,8 +115,26 @@
         </div>
     </div>
 
-    <div *ngIf="PharDueData">
-        Total Balance: {{ totalBalanceAmount | currency:'INR' }}
-        Note : Pharmacy Due access is not configured at the user level. Please contact the administrator.
+    <!-- When balance exists -->
+    <div *ngIf="PharDueData && totalBalanceAmount > 0; else clearedBlock" class="due-card">
+
+        <div class="amount-row">
+            <span class="label">TOTAL BALANCE</span>
+            <span class="amount">
+                {{ totalBalanceAmount | currency:'INR' }}
+            </span>
+        </div>
+
+        <div class="note-row">
+            ⚠ The Pharmacy Due option is enabled at the user level. The patient cannot be discharged without pharmacy clearance. Please contact the pharmacy department to proceed with discharge.
+        </div>
+
     </div>
+
+    <!-- When cleared -->
+    <ng-template #clearedBlock>
+        <div *ngIf="PharDueData" class="success-card">
+            ✅ Pharmacy clearance completed. Patient can be discharged.
+        </div>
+    </ng-template>
 </div>

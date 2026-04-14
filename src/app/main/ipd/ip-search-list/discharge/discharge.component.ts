@@ -76,7 +76,7 @@ export class DischargeComponent implements OnInit {
         this.DischargeInsertForm.markAllAsTouched();
 
         if (this.data) {
-            console.log(this.data)
+            console.log("Page Date : ",this.data)
             this.vAdmissionId = this.data.admissionId;
             this.vBedId = this.data.bedId
             this.regId = this.data.regId
