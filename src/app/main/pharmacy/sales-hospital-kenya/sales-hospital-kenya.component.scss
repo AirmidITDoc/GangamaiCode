@@ -26,6 +26,18 @@
   }
 }
 
+// Amount summary row: left-aligned, compact
+.amt-container {
+  .net-amt-section .net-amt {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 8px;
+    margin: 0;
+  }
+}
+
 .net-amt-box {
   display: inline-flex;
   flex: 0 0 auto;

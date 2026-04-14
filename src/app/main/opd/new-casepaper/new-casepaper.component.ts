@@ -30,6 +30,8 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
+import { SelectionModel } from '@angular/cdk/collections';
+import { SampleList } from 'app/main/pathology/result-entry/result-entry.component';
 // import { gridModel } from './grid.mod';
 // interface Patient {
 //   PHeight: string;
@@ -426,6 +428,7 @@ export class NewCasepaperComponent implements OnInit {
             mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+            //HistoryIllness:['']
         });
     }
 
@@ -2271,6 +2274,7 @@ export class NewCasepaperComponent implements OnInit {
     labDataLoaded = false;
     labDataLoadedMap: { [visitId: string]: boolean } = {};
     labColumns: string[] = [
+        'Buttons',
         'labDate',
         'ServiceName',
         'BillNo',
@@ -2549,7 +2553,86 @@ export class NewCasepaperComponent implements OnInit {
             return false;
         }
     }
+    CompletdFlag:any=0;
+    Printresultentrymulti(row: any) {
+        debugger
+        const pathologyDelete = [];
+        this.selectedItem = this.selection.selected[0];
+        this.selection.selected.forEach((element) => {
+            if (element?.isCompleted) {
+                this.CompletdFlag = 1
+                pathologyDelete.push({ pathReportId: element.pathReportID });
+            }
+            else {
+                this.CompletdFlag = 0
+            }
+        });
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+        console.log(submitData);
+        if (this.CompletdFlag) {
+            if (row == true) {
+                this._CasepaperService.PathPrintResultentryInsert(submitData).subscribe(res => {
+                    if (res) {
+                        this.viewgetPathologyTestReportPdf("0")
+                    }
+                });
+            } else {
+                this._CasepaperService.PathPrintResultentryInsert(submitData).subscribe(res => {
+                    if (res) {
+                        this.viewgetPathologyTestReportwithheaderPdf("0")
+                    }
+                });
+            }
+        } else {
+            Swal.fire("Selcted test Not Completd for Print.....")
+        }
+    } 
+        selectedItem: any = [];
+        selection = new SelectionModel<SampleList>(true, []);  
+   masterToggle() {
+        const  dsLabData :any = this.dsLab.data;  
 
+        if (this.isAllSelected()) {
+            this.selection.clear();
+            this.selectedItem = [];   // ✅ Clear list
+        } else {
+            this.selection.clear();
+            this.selectedItem = [];   // ✅ Reset first
+
+            dsLabData.forEach(row => {
+                this.selection.select(row);
+                this.selectedItem.push(row);   // ✅ Add all
+            });
+        } 
+     } 
+    isAllSelected() { 
+        let dsLabData :any = this.dsLab.data;   
+        const numSelected = this.selection.selected.length;
+        const numRows = dsLabData.length;
+        return numRows > 0 && numSelected === numRows;
+    } 
+    isSomeSelected() {
+        const selectableRows = this.dsLab.data
+        return this.selection.selected.length > 0 &&
+            this.selection.selected.length < selectableRows.length;
+    }
+        tableElementChecked(event, element) {
+        if (event.checked) {
+            this.selection.select(element); 
+            if (!this.selectedItem.includes(element)) {
+                this.selectedItem.push(element);
+            }
+        } else {
+            this.selection.deselect(element);
+            // ✅ Remove from SelectedList
+            const index = this.selectedItem.indexOf(element);
+            if (index > -1) {
+                this.selectedItem.splice(index, 1);
+            }
+        }
+     }
 }
 
 
@@ -2990,6 +3073,8 @@ export class labRadList {
     BillNo: any;
     patientType: any;
     PathologyTestList: any[];
+    Buttons:any;
+    
 
     constructor(labRadList) {
 

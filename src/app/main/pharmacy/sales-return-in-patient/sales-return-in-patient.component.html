@@ -1,6 +1,6 @@
 <div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
     <div class="modal-header accent">
-        <div class="modal-header-content p-12">
+        <div class="modal-header-content p-12" fxLayoutAlign="space-between">
             <div class="top-header-title">
                 <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                     style="color: white;">account_box
@@ -10,9 +10,13 @@
                     IP Sales Return In Patient
                 </span>
             </div>
+            <div  fxLayout="row" fxLayoutGap="10px">
+             <button mat-raised-button (click)="getPRESCRIPTIONRETURN()">GET PRESCRIPTION RETURN</button> 
+             </div>
         </div>
     </div>
 
+ 
 
     <div class="modal-body p-12" fusePerfectScrollbar>
         <div fxLayout="column" class="gap-8 h-100-p">

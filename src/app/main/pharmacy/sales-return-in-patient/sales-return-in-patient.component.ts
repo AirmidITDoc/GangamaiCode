@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { map, Observable, startWith } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SalesReturnInPatientService } from './sales-return-in-patient.service';
+import { GetPrescriptionReturnlistComponent } from './get-prescription-returnlist/get-prescription-returnlist.component';
 
 @Component({
     selector: 'app-sales-return-in-patient',
@@ -631,6 +632,17 @@ export class SalesReturnInPatientComponent implements OnInit {
             this.vCheckBox = false;
         this.ItemFormGroup.get('PatientName').setValue('');
     }
+    getPRESCRIPTIONRETURN() {
+        const dialogRef = this._matDialog.open(GetPrescriptionReturnlistComponent, {
+            maxWidth: '100%',
+            height: '100%',
+            width: '95%',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log('The dialog was closed - Insert Action', result);
+        }); 
+    }
+ 
 
 }
 export class IPSalesItemList {

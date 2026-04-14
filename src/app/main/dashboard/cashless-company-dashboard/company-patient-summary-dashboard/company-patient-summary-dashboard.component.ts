@@ -168,7 +168,7 @@ export class CompanyPatientSummaryDashboardComponent implements OnInit {
              "rows": 999,
              "sortField": "PBillNo",
              "sortOrder": 0,
-             "filters": [{"fieldName": "OPIPId",  "fieldValue":String(485640), "opType": "Contains"}],
+             "filters": [{"fieldName": "OPIPId",  "fieldValue":String(row?.opipid || 0), "opType": "Contains"}],
              "Columns": [],
              "exportType": "JSON"
          }  
@@ -228,7 +228,7 @@ export class CompanyPatientSummaryDashboardComponent implements OnInit {
             setTimeout(() => {
                 const param = {
                     "searchFields": [
-                        { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" },
+                        { "fieldName": "OPIPId", "fieldValue": String(element.opipid), "opType": "13" },
                         { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
                     ],
                     "mode": "PatientBillStatement"

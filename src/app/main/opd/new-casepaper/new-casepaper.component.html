@@ -262,6 +262,13 @@
                                                         </app-airmid-chipautocomplete>
                                                     </div>
 
+                                                     <!-- <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>History of Presenting Illness</mat-label>
+                                                        <textarea matInput rows="2" formControlName="HistoryIllness" id="HistoryIllness"
+                                                            placeholder="History of Presenting Illness"> </textarea>
+                                                    </mat-form-field> -->
+                                                    
+
                                                     <div style="margin-bottom: 16px;" fxLayout="column">
                                                         <span style="font-weight: 700;">
                                                             Diagnosis
@@ -977,9 +984,55 @@
 
                                                     <!-- Lab Tab -->
                                                     <mat-tab label="Lab">
+                                                        <div fxLayout="column" class="gap-8">
+
+                                                        
+                                        <div style="height: 30px;">  
+                                            <button mat-raised-button (click)="Printresultentrymulti(true)"
+                                                style="margin-left: 5px;" *ngIf="selection.selected.length>0">
+                                                Print Result
+                                            </button>
+
+                                            <button mat-raised-button (click)="Printresultentrymulti(false)"
+                                                *ngIf="selection.selected.length>0" style="margin-left: 5px;">
+                                                Print With Header
+                                            </button>
+
+                                        </div>
+
                                                         <mat-table class="table2" matSort [dataSource]="LabMap[visitId]"
                                                             [@animateStagger]="{value:'50'}"
-                                                            style="overflow: auto;height:250px;">
+                                                            style="overflow: auto;height:250px;"> 
+
+                                                            <!-- <ng-container matColumnDef="Buttons">
+                                                                <mat-header-cell *matHeaderCellDef>
+                                                                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue()"
+                                                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                                    </mat-checkbox>
+                                                               </mat-header-cell>
+                                                            
+                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> 
+                                                                        <mat-checkbox (click)="$event.stopPropagation()" 
+                                                                            (change)="$event ? selection.toggle(element) : null"  
+                                                                            [checked]="selection.isSelected(element)" [disabled]="!element.isCompleted">
+                                                                        </mat-checkbox>  
+                                                                </mat-cell>
+                                                            </ng-container>  -->
+
+                                                             <ng-container matColumnDef="Buttons">
+                                                <mat-header-cell *matHeaderCellDef >
+                                                    <mat-checkbox (change)="masterToggle()" [checked]="isAllSelected()"
+                                                        [indeterminate]="isSomeSelected()">
+                                                    </mat-checkbox>
+                                                </mat-header-cell>
+
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm  > 
+                                                    <mat-checkbox (click)="$event.stopPropagation()" 
+                                                      (change)="tableElementChecked($event, contact)"
+                                                        [checked]="selection.isSelected(contact)">
+                                                    </mat-checkbox> 
+                                                </mat-cell>
+                                            </ng-container>
 
                                                             <ng-container matColumnDef="labDate">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -1007,16 +1060,22 @@
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="PatientType">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    PatientType </mat-header-cell>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                                    Status </mat-header-cell>
                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <mat-icon *ngIf="element.isCompleted"
+                                                                    <!-- <mat-icon *ngIf="element.isCompleted"
                                                                         matTooltip="Completed"
-                                                                        class="pill green-600 s-16">circle</mat-icon>
+                                                                         class="pill green-600 s-16">circle</mat-icon>
                                                                     <mat-icon *ngIf="!element.isCompleted"
-                                                                        matTooltip="Pending"
-                                                                        class="pill red-500 s-16">circle</mat-icon>
+                                                                          matTooltip="Pending"
+                                                                  class="pill red-500 s-16">circle</mat-icon> -->
+                                                            
+                                                                    <span [ngClass]="{
+                                                                          'status-not-requested': !element.isCompleted,
+                                                                          'status-received': element.isCompleted
+                                                                        }">
+                                                                        {{ element.isCompleted ? 'Completed' : 'Pending' }}
+                                                                    </span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -1055,9 +1114,11 @@
                                                         <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]"
                                                             [pageSize]="10" showFirstLastButtons>
                                                         </mat-paginator>
+                                                        
 
                                                         <!-- <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
                                                     </airmid-table> -->
+                                                </div>
 
                                                     </mat-tab>
 
@@ -1066,6 +1127,21 @@
                                                         <mat-table class="table2" matSort [dataSource]="RadMap[visitId]"
                                                             [@animateStagger]="{value:'50'}"
                                                             style="overflow: auto;height:250px;">
+
+                                                              <ng-container matColumnDef="Buttons">
+                                                                <mat-header-cell *matHeaderCellDef>
+                                                                    <!-- <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue()"
+                                                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                                    </mat-checkbox> -->
+                                                               </mat-header-cell>
+                                                            
+                                                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> 
+                                                                        <!-- <mat-checkbox (click)="$event.stopPropagation()" 
+                                                                            (change)="$event ? selection.toggle(element) : null"  
+                                                                            [checked]="selection.isSelected(element)" [disabled]="element.isCompleted">
+                                                                        </mat-checkbox>   -->
+                                                                </mat-cell>
+                                                            </ng-container> 
 
                                                             <ng-container matColumnDef="labDate">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header

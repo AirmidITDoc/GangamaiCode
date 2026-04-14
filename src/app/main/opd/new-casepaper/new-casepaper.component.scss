@@ -538,4 +538,20 @@
         align-items: center !important;
     }
 }
+
+.status-not-requested {
+  background-color: #ffebee;   /* light red */
+  color: #c62828;              /* dark red text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.status-received {
+  background-color: #e8f5e9;   /* light green */
+  color: #2e7d32;              /* dark green text */
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
      

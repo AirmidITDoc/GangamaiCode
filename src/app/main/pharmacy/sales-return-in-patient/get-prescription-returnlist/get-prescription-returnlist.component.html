@@ -1,0 +1,100 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent" fxLayoutAlign="space-between">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                  Prescription Return List
+            </span>
+        </div>
+        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+              </button>  
+    </mat-toolbar>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+       <ng-template #actionButtonTemplateType let-element>
+            <div fxLayout="row" fxLayoutAlign="space-between center">  
+                <mat-icon *ngIf="element.patientType == 'IP'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.patientType == 'OP'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
+                &nbsp;
+        
+                <mat-icon *ngIf="element.isClosed" matTooltip="isClosed" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="!element.isClosed" matTooltip="Pending"
+                 style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+            </div>
+        </ng-template>
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="Print">
+                    <mat-icon>print</mat-icon>
+                </button>
+                  <button mat-icon-button (click)="Prescclose(element)" matTooltip="Prescription Cancel"
+                        *ngIf="element.isClosed==false">
+                        <mat-icon title="Cancel Prescription" style="color: rgb(128, 0, 30);">cancel</mat-icon>
+                    </button>
+            </div>
+        </ng-template> 
+         <!-- <airmid-table [gridConfig]="gridConfig" class="content h-100-p"  #grid  (onSelectRow)="getSelectedRow($event)">
+            <ng-container filters>
+                <form [formGroup]="PrescriptionReturnFrom" fxLayout="column">
+            
+                    <mat-form-field appearance="outline" style="margin-left: 2%;">
+                        <mat-label>Enter a date range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate formControlName="start" placeholder="Start date">
+                            <input matEndDate formControlName="end" placeholder="End date" (dateChange)="ChangeeFilter()">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+            
+                    <airmid-textbox fxFlex label="RegNo" [formGroup]="PrescriptionReturnFrom" formControlName="RegNo"
+                        (keyup)="ChangeeFilter()"></airmid-textbox>
+
+                     <airmid-textbox fxFlex label="First Name" [formGroup]="PrescriptionReturnFrom" formControlName="F_Name"
+                        (keyup)="ChangeeFilter()"></airmid-textbox>
+
+                     <airmid-textbox fxFlex label="Last Name" [formGroup]="PrescriptionReturnFrom" formControlName="L_Name"
+                        (keyup)="ChangeeFilter()"></airmid-textbox>
+            
+                    <mat-radio-group name="StatusType" formControlName="StatusType" value="0" style="padding-top: 8px;"
+                        (change)="ChangeeFilter()">
+                        <mat-label>Status:</mat-label>
+                        <mat-radio-button value="0" class="mr-sm-12">Pending
+                        </mat-radio-button>
+                        <mat-radio-button value="1" class="mr-sm-12">Close
+                        </mat-radio-button>
+                    </mat-radio-group> 
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <span><b>Help</b>:</span> &nbsp;
+                        <div style="color: green" fxLayout="row"  class="gap-8">
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <span class="green-600-fg ">IP</span> &nbsp;
+                        </div>
+                        <div style="color: orange" fxLayout="row" class="gap-8">
+                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                            <span class="orange-600-fg">OP</span>
+                        </div> 
+                    </div>
+                </form>
+            </ng-container>
+        </airmid-table> -->
+    </div>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+        </airmid-table>
+    </div>
+
+    <div class="modal-footer">
+        <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px" style="padding-right: 10px;">
+            <!-- <button class="btn btn-danger-outline" (click)="Prescclose()">Prescription CLose</button> -->
+            <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
+            <button class="btn btn-primary" (click)="GetPrescrpList()">Save</button>
+        </div>
+    </div>
+</div>

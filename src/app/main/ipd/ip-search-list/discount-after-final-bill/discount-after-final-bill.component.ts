@@ -124,7 +124,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
                 return this.vDiscountPer2 = '';
             }
             else {
-                this.vDiscAmount2 = ((parseFloat(this.vFinalNetAmt) * parseFloat(DiscPer2)) / 100).toFixed(2) || 0;
+                this.vDiscAmount2 = ((parseFloat(this.vTotalAmount) * parseFloat(DiscPer2)) / 100).toFixed(2) || 0;
                 DiscAmt2 = this.vDiscAmount2;
             }
         } else {
@@ -156,7 +156,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
                 return this.vCompanyDiscper = '';
             }
             else {
-                this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(CompanyDiscPer)) / 100).toFixed(2) || 0;
+                this.vCompanyDiscAmt = ((parseFloat(this.vTotalAmount) * parseFloat(CompanyDiscPer)) / 100).toFixed(2) || 0;
                 CompanyDiscAmt = this.vCompanyDiscAmt;
             }
         }
@@ -179,14 +179,14 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         let CompanyDiscPer;
 
         if (DiscAmt2) {
-            if (DiscAmt2 > this.vFinalNetAmt) {
+            if (DiscAmt2 > this.vTotalAmount) {
                 this.toastr.warning('Please enter discount amount less than net Amount and greater than 0', 'warning !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
                 return this.vDiscAmount2 = '';
             }
             else {
-                this.vDiscountPer2 = ((parseFloat(DiscAmt2) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
+                this.vDiscountPer2 = ((parseFloat(DiscAmt2) / parseFloat(this.vTotalAmount)) * 100).toFixed(2) || 0;
                 DiscPer2 = this.vDiscountPer2;
             }
         } else {
@@ -197,14 +197,14 @@ export class DiscountAfterFinalBillComponent implements OnInit {
         }
 
         if (CompanyDiscAmt) {
-            if (CompanyDiscAmt > this.vFinalNetAmt) {
+            if (CompanyDiscAmt > this.vTotalAmount) {
                 this.toastr.warning('Please enter company discount amt less than netamount and greater than 0', 'warning !', {
                     toastClass: 'tostr-tost custom-toast-error',
                 });
                 return this.vCompanyDiscAmt = '';
             }
             else {
-                this.vCompanyDiscper = ((parseFloat(CompanyDiscAmt) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
+                this.vCompanyDiscper = ((parseFloat(CompanyDiscAmt) / parseFloat(this.vTotalAmount)) * 100).toFixed(2) || 0;
                 CompanyDiscPer = this.vCompanyDiscper;
             }
         }

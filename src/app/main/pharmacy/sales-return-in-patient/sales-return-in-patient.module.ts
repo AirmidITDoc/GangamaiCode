@@ -35,6 +35,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SalesReturnInPatientComponent } from './sales-return-in-patient.component';
+import { GetPrescriptionReturnlistComponent } from './get-prescription-returnlist/get-prescription-returnlist.component';
 
 
 const routes: Routes = [
@@ -47,6 +48,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         SalesReturnInPatientComponent,
+        GetPrescriptionReturnlistComponent,
         // SalePopupComponent,
         // SubstitutesComponent,
         // PrescriptionComponent,
