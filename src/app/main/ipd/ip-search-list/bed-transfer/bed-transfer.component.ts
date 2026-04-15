@@ -129,11 +129,6 @@ export class BedTransferComponent implements OnInit {
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }
-
-
-    // onChangeWard(e) {
-    //   this.ddlClassName.SetSelection(e.classId);
-    // }
     @ViewChild('ddlBedName') ddlBedName: AirmidDropDownComponent;
     RoomId = 0
     onChangeWard(e) {
@@ -189,13 +184,11 @@ export class BedTransferComponent implements OnInit {
     }
 
     createadmissionForm(): FormGroup {
-        debugger
         return this._formBuilder.group({
             admissionId: [this.AdmissionId], //[this._FormvalidationserviceService.onlyNumberValidator()]],
             bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
         });
     }
 
@@ -208,68 +201,9 @@ export class BedTransferComponent implements OnInit {
     }
 
 
-    // onBedtransfer() {
-    //   console.log(this.Bedtransfer.value)
-    //   if (!this.Bedtransfer.invalid) {
-    //     var m_data = {
-    //       "bedTransfer": this.Bedtransfer.value,
-    //       "bedTofreed": { bedId: this.data.bedId },
-    //       "bedUpdate": { bedId: parseInt(this.Bedtransfer.get("toBedId").value) },
-    //       "admssion": {
-    //         "admissionId": this.AdmissionId,
-    //         "bedId": this.Bedtransfer.get("toBedId").value,//this.vBedId,
-    //         "wardId": this.Bedtransfer.get("toWardId").value,// this.vWardId,
-    //         "classId": this.Bedtransfer.get("toClassId").value//this.vClassId,
-    //       }
-    //     }
-
-    //     console.log(m_data);
-
-    //     this._IpSearchListService.BedtransferUpdate(m_data).subscribe((response) => {
-    //       this.toastr.success(response.message);
-    //       this._matDialog.closeAll()
-    //       // this.onClear(true);
-    //     }, (error) => {
-    //       this.toastr.error(error.message);
-    //     });
-    //   }
-    //   else {
-    //     let invalidFields = [];
-
-    //     if (this.Bedtransfer.invalid) {
-    //       for (const controlName in this.Bedtransfer.controls) {
-    //         if (this.Bedtransfer.controls[controlName].invalid) {
-    //           invalidFields.push(`Bed Transfer Form: ${controlName}`);
-    //         }
-    //       }
-    //     }
-    //     if (invalidFields.length > 0) {
-    //       invalidFields.forEach(field => {
-    //         this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-    //         );
-    //       });
-    //     }
-
-    //   }
-    // }
-
     onBedtransfer() {
         console.log(this.Bedtransfer.value)
         if (!this.Bedtransfer.invalid) {
-            // var m_data = {
-            //   "bedTransfer": this.Bedtransfer.value,
-            //   "bedTofreed": { bedId: this.data.bedId },
-            //   "bedUpdate": { bedId: parseInt(this.Bedtransfer.get("toBedId").value) },
-            //   "admssion": {
-            //     "admissionId": this.AdmissionId,
-            //     "bedId": this.Bedtransfer.get("toBedId").value,//this.vBedId,
-            //     "wardId": this.Bedtransfer.get("toWardId").value,// this.vWardId,
-            //     "classId": this.Bedtransfer.get("toClassId").value//this.vClassId,
-            //   }
-            // }
-
-
-
             this.BedtofreeForm.get("bedId").setValue(this.data.bedId)
             this.BedtoupdateForm.get("bedId").setValue(parseInt(this.Bedtransfer.get("toBedId").value))
             this.admissionForm.get("admissionId").setValue(this.AdmissionId)
@@ -311,7 +245,6 @@ export class BedTransferComponent implements OnInit {
     }
 
     PrintPdf(response) {
-        // debugger
         setTimeout(() => {
             const param = {
                 "searchFields": [
