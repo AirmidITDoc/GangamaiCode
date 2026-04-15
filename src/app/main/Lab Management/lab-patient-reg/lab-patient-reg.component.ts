@@ -30,6 +30,7 @@ import { LabPatientRegService } from './lab-patient-reg.service';
 import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
 import { LabTrackingDetailsComponent } from './lab-tracking-details/lab-tracking-details.component';
 import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-lab-patient-reg',
@@ -60,6 +61,7 @@ export class LabPatientRegComponent {
     page: PageNames = PageNames.LABPATIENT;
     OpSettlementForm: FormGroup
 
+    isSettlement: boolean = false;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -84,6 +86,7 @@ export class LabPatientRegComponent {
         public _matDialog: MatDialog,
         public toastr: ToastrService,
         private commonService: PrintserviceService,
+        public _ConfigService: ConfigService,
         private overlay: Overlay,
         public formBuilder: UntypedFormBuilder,
         public _FormvalidationserviceService: FormvalidationserviceService,
@@ -95,7 +98,10 @@ export class LabPatientRegComponent {
         this.myFilterform = this._labPatientRegService.CreateSearchGroup();
         this.OpSettlementForm = this.CreateOPSettlementForm();
 
-        this.getAccessDetail();
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsSettlement');
+        this.isSettlement = access?.AccessValue;
+        console.log("Login Access:", access);
+
         // this.isLabSettlement = this._loggedService.currentUserValue.user.isGrnverify
         this.RISSaveForm = this.CreateRISPushForm()
     }
@@ -814,33 +820,6 @@ export class LabPatientRegComponent {
                 //call 
             }
         })
-    }
-
-    isSettlement: boolean = false;
-    getAccessDetail() {
-        // debugger
-        const SelectQuery = {
-            "searchFields": [{
-                "fieldName": "LoginId",
-                "fieldValue": String(this._loggedService.currentUserValue.userId),
-                "opType": "Equals"
-            }],
-            "mode": "LoginWiseAccessConfigList"
-        }
-        this._labPatientRegService.commonList(SelectQuery).subscribe(response => {
-            // const getUserAccesDetList = response as any[];
-            // console.log("get Access data:", getUserAccesDetList)
-
-            const settlementData = response.find(x => x.AccessValueName === 'IsSettlement');
-            console.log(settlementData)
-            if (settlementData?.AccessValue == true) {
-                this.isSettlement = settlementData?.AccessValue
-                console.log("Show", this.isSettlement)
-            } else {
-                this.isSettlement = false
-                console.log("Hide", this.isSettlement)
-            }
-        });
     }
 
     // Patient & doctor popup
