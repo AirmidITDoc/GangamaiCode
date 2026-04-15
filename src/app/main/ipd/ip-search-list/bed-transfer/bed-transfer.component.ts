@@ -12,6 +12,8 @@ import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admi
 import { AdvanceDataStored } from '../../advance';
 import { IPSearchListComponent } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 
 @Component({
     selector: 'app-bed-transfer',
@@ -43,7 +45,35 @@ export class BedTransferComponent implements OnInit {
     @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
     @ViewChild('ddlClassName') ddlClassName: AirmidDropDownComponent;
 
+    @ViewChild('grid1Ref') grid1: AirmidTableComponent;
 
+    // ===== Start Table Count Wise summary  =================
+
+    myformSearch: FormGroup;
+
+    allcolumns = [
+        { heading: "FromDate", key: "fromDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 200 },
+        { heading: "Time", key: "fromTime", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "From WardName", key: "fromWardName", sort: true, align: "center", emptySign: 'NA' , width: 250},
+        { heading: "To Date", key: "toDate", sort: true, align: "center", type: 6, emptySign: 'NA' },
+        { heading: "Time", key: "toTime", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "To WardName", key: "toWardName", sort: true, align: "center", emptySign: 'NA' , width: 250},
+        { heading: "Remark", key: "remark", sort: true, align: "center", emptySign: 'NA', width: 250 },
+        { heading: "Added By", key: "userName", sort: true, align: "center", emptySign: 'NA' },
+    ]
+
+    allfilters = [
+        { fieldName: "AdmissionId", fieldValue: this.AdmissionId.toString(), opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        apiUrl: "BedTransfer/BedTransferInformationList",
+        columnsList: this.allcolumns,
+        sortField: "FromWardName",
+        sortOrder: 0,
+        filters: this.allfilters,
+    }
+
+    // ========================= end table Count Wise summary  =================
     constructor(public _IpSearchListService: IPSearchListService,
         private accountService: AuthenticationService,
         public _matDialog: MatDialog,
