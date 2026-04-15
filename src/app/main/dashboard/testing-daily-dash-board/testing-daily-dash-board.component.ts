@@ -44,27 +44,30 @@ export class TestingDailyDashBoardComponent {
     'ReferPatient',
     'Company'
   ]
-   displayeddepColumns: string[] = [
-        'DepartmentName',
-        'Count',
-    ]
-    displayedDepBillColumns: string[] = [
-        'DepartmentName',
-        'Amount',
-    ]
-    displayedDocBillColumns: string[] = [
-        'DoctorName',
-        'Count',
-    ]
+  displayeddepColumns: string[] = [
+    'DepartmentName',
+    'Count',
+  ]
+  displayedDepBillColumns: string[] = [
+    'DepartmentName',
+    'Gross',
+    'Discount',
+    'Net'
+  ]
+  displayedDocBillColumns: string[] = [
+    'DoctorName',
+    'Count',
+  ]
   dsDailyCountList = new MatTableDataSource<OPDCount>();
   dsDailyBillList = new MatTableDataSource<OPDBillDateWise>();
 
   dsDailyDepartmentCountList = new MatTableDataSource<OPDBillDateWise>();
-  dsDailyDepBillList = new MatTableDataSource
+  dsDailyDepBillList = new MatTableDataSource<OPDBillDateWise>();
   dsDailyDocBillList = new MatTableDataSource<OPDBillDateWise>();
 
   // AgeWise
-  public AgestatusPieChart: any
+  public AgestatusPieChartOP: any
+   public AgestatusPieChartIP: any
   modalityData = [
     { name: '', value: 0 }
   ];
@@ -75,40 +78,53 @@ export class TestingDailyDashBoardComponent {
   // Dr?
   trendChart: any;
   drcountdata: any
-  public DrcountChart: any;
+  public DrcountChartOP: any;
+  public DrcountChartIP: any;
   public chargeList: drcountdata[] = [];
   trendData: drcountdata[] = [];
 
   trendSeries = [
     {
-      name: 'OPD (PCount)',
+      name: 'New',
       series: [
-        { name: 'Mon', value: 0 },
-        { name: 'Tue', value: 0 },
-        { name: 'Wed', value: 0 },
-        { name: 'Thu', value: 0 },
-        { name: 'Fri', value: 0 },
-        { name: 'Sat', value: 0 },
+        { name: 'Mon', value: 20 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 10 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 30 },
+        { name: 'Sat', value: 40 },
         { name: 'Sun', value: 90 }
       ]
     },
     {
-      name: 'IPD (PCount)',
+      name: 'Old',
       series: [
-        { name: 'Mon', value: 0 },
-        { name: 'Tue', value: 0 },
-        { name: 'Wed', value: 0 },
-        { name: 'Thu', value: 0 },
-        { name: 'Fri', value: 0 },
-        { name: 'Sat', value: 0 },
-        { name: 'Sun', value: 0 }
+        { name: 'Mon', value: 40 },
+        { name: 'Tue', value: 30 },
+        { name: 'Wed', value: 20 },
+        { name: 'Thu', value: 10 },
+        { name: 'Fri', value: 60 },
+        { name: 'Sat', value: 70 },
+        { name: 'Sun', value: 10 }
+      ]
+    },
+    {
+      name: 'Total',
+      series: [
+        { name: 'Mon', value: 10 },
+        { name: 'Tue', value: 110 },
+        { name: 'Wed', value: 30 },
+        { name: 'Thu', value: 20 },
+        { name: 'Fri', value: 50 },
+        { name: 'Sat', value: 40 },
+        { name: 'Sun', value: 30 }
       ]
     }
   ];
 
   trendSeriesOP = [
     {
-      name: 'OPD (PCount)',
+      name: 'New',
       series: [
         { name: 'Mon', value: 0 },
         { name: 'Tue', value: 0 },
@@ -120,7 +136,7 @@ export class TestingDailyDashBoardComponent {
       ]
     },
     {
-      name: 'IPD (PCount)',
+      name: 'Old',
       series: [
         { name: 'Mon', value: 0 },
         { name: 'Tue', value: 0 },
@@ -217,68 +233,76 @@ export class TestingDailyDashBoardComponent {
     { name: 'Cheque', value: 0 }
   ];
 
-  colorScheme = { domain: ['#a9aae5', '#87a8f4', '#8587d0', '#7498e1', '#ce95f5', '#a1f6d9', '#f7bcd9', '#3b82f6'] };
+  colorScheme = { domain: ['#7375f3', '#eba9f8', '#9ef1a1', '#7498e1', '#ce95f5', '#a1f6d9', '#f7bcd9', '#3b82f6'] };
   colorScheme1 = { domain: ['#bff1f8', '#cbaae1', '#c98dae', '#c4e8e2', '#bb65f5', '#beeede', '#eea6ca', '#3b82f6'] };
 
   opCards = [
-    { label: 'REGISTRATIONS', value: '148', trend: '+16', trendDiff: 'vs yesterday', history: [80, 100, 95, 120, 110, 130, 148], icon: 'person_add', isApproval: false, iconColor: '#4caeef' },
-    { label: 'APPOINTMENTS', value: '215', trend: '-5', trendDiff: 'vs yesterday', history: [220, 230, 210, 240, 225, 230, 215], icon: 'calendar_today', isApproval: false, iconColor: '#2bb179' },
-    { label: 'APPOINTMENTS Cancle', value: '2', trend: '-5', trendDiff: 'vs yesterday', history: [220, 230, 210, 240, 225, 230, 215], icon: 'calendar_today', isApproval: false, iconColor: '#2bb179' },
-    { label: 'FollowUp Visists', value: '3', trend: '-5', trendDiff: 'vs yesterday', history: [220, 230, 210, 240, 225, 230, 215], icon: 'calendar_today', isApproval: false, iconColor: '#2bb179' },
+    { label: 'Registraion', value: '148', icon: 'person_add', isApproval: false, iconColor: '#4caeef' },
+    { label: 'Appointments', value: '215', icon: 'calendar_today', isApproval: false, iconColor: '#2bb179' },
+    { label: 'Appointment Cancelled', value: '2', icon: 'calendar_today', isApproval: false, iconColor: '#2bb179' },
+    { label: 'Fllow Up Visits', value: '3', icon: 'calendar_today', isApproval: false, iconColor: '#2bb179' },
 
-    { label: 'CHECKED IN', value: '89', trend: '+7', trendDiff: 'vs yesterday', history: [60, 75, 70, 85, 80, 82, 89], icon: 'input', isApproval: false, iconColor: '#4caeef' },
-    { label: 'CHECKED OUT', value: '64', trend: '-6', trendDiff: 'vs yesterday', history: [80, 70, 75, 90, 85, 78, 64], icon: 'exit_to_app', isApproval: false, iconColor: '#2486f5' },
-    { label: 'PENDING & WAITING', value: '25', trend: '-5', trendDiff: 'vs yesterday', history: [35, 30, 40, 28, 32, 30, 25], icon: 'schedule', isApproval: false, iconColor: '#f1b44c' },
-    { label: 'ER TO OP', value: '12', trend: '+3', trendDiff: 'vs yesterday', history: [5, 8, 6, 12, 10, 9, 12], icon: 'warning', isApproval: false, iconColor: '#f46a6a' },
-    { label: 'CASH AMOUNT', value: '92', trend: '+7', trendDiff: 'vs yesterday', history: [70, 85, 80, 95, 88, 85, 92], icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
-    { label: 'CREDIT AMOUNT', value: '56', trend: '-4', trendDiff: 'vs yesterday', history: [65, 50, 60, 55, 62, 60, 56], icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
+    { label: 'Checked In', value: '89', icon: 'input', isApproval: false, iconColor: '#4caeef' },
+    { label: 'Checked Out', value: '64', icon: 'exit_to_app', isApproval: false, iconColor: '#2486f5' },
+    { label: 'Waiting', value: '25', icon: 'schedule', isApproval: false, iconColor: '#f1b44c' },
+    { label: 'ER TO OP', value: '12',  icon: 'warning', isApproval: false, iconColor: '#f46a6a' },
+    { label: 'OP Bill (Cash)', value: '92', icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
+    { label: 'OP Bill (Credit)', value: '56',  icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
     // { label: 'REFUND COUNT', value: '4', trend: '-2', trendDiff: 'vs yesterday', history: [8, 5, 7, 4, 6, 6, 4], icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
-    { label: 'Due AMOUNT', value: '3224', trend: '-2', trendDiff: 'vs yesterday', history: [8, 5, 7, 4, 6, 6, 4], icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
-    { label: 'HCP COUNT', value: '38', trend: '+2', trendDiff: 'vs yesterday', history: [20, 30, 35, 32, 40, 36, 38], icon: 'local_hospital', isApproval: false, iconColor: '#9566d3' },
+    { label: 'OP Bill (Due)', value: '0', icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
+    { label: 'HCP Count', value: '38', icon: 'local_hospital', isApproval: false, iconColor: '#9566d3' },
+    // { label: 'No Show Q', value: '1', icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
+    // { label: 'Waiting Time', value: '10',  icon: 'local_hospital', isApproval: false, iconColor: '#9566d3' },
+
+
+
     // { label: 'DISCOUNT APPROVAL', approved: '18', pending: '7', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' },
     // { label: 'REFUND APPROVAL', approved: '3', pending: '1', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' }
   ];
-  opCollection = { total: '₹4,85,600', cash: '₹1,85,000', card: '₹1,42,600', upi: '₹98,000', bank: '₹60,000' };
+
+
+  opCollection = { total: '4,85,600', cash: '1,85,000', card: '1,42,600', upi: '98,000', bank: '60,000', total1: '1,12,600', Gross: '1,11,000', Discount: '1,22,600', Net: '211,000' ,Outstanding:'23,2213' };
+  opRevenu = { total: '1,12,600', Gross: '1,11,000', Discount: '1,22,600', Net: '211,000',Outstanding:'23,2213' };
 
   ipCards = [
-    { label: 'TODAY\'S ADMISSIONS', value: '34', trend: '+6', trendDiff: 'vs yesterday', history: [20, 25, 22, 30, 28, 30, 34], icon: 'hotel', isApproval: false, iconColor: '#4caeef' },
-    { label: 'CURRENT OCCUPANCY', value: '78%', trend: '+4', trendDiff: 'vs yesterday', subtitle: '312 / 400 beds', history: [65, 70, 68, 75, 72, 74, 78], icon: 'domain', isApproval: false, iconColor: '#2bb179' },
-    { label: 'ER TO IP', value: '8', trend: '+2', trendDiff: 'vs yesterday', history: [4, 6, 5, 8, 7, 6, 8], icon: 'warning', isApproval: false, iconColor: '#f46a6a' },
-    { label: 'TODAY\'S DISCHARGE', value: '22', trend: '-3', trendDiff: 'vs yesterday', history: [30, 25, 28, 20, 26, 25, 22], icon: 'exit_to_app', isApproval: false, iconColor: '#2bb179' },
-    { label: 'DISCHARGE CLEARANCE', value: '18', trend: '-2', trendDiff: 'vs yesterday', subtitle: 'Cleared', history: [22, 18, 20, 16, 21, 20, 18], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
-    { label: 'DISCHARGE PENDING', value: '4', trend: '-1', trendDiff: 'vs yesterday', history: [8, 6, 7, 5, 6, 5, 4], icon: 'schedule', isApproval: false, iconColor: '#f1b44c' },
-    { label: 'CASH AMOUNT', value: '45', trend: '+5', trendDiff: 'vs yesterday', history: [30, 35, 38, 42, 40, 42, 45], icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
-    { label: 'CREDIT AMOUNT', value: '67', trend: '-5', trendDiff: 'vs yesterday', history: [75, 70, 72, 80, 68, 70, 67], icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
-    { label: 'REFUND COUNT', value: '2', trend: '-1', trendDiff: 'vs yesterday', history: [5, 4, 3, 4, 2, 3, 2], icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
+    { label: 'TODAY\'S ADMISSIONS', value: '34', icon: 'hotel', isApproval: false, iconColor: '#4caeef' },
+    { label: 'CURRENT OCCUPANCY', value: '78%',history: [65, 70, 68, 75, 72, 74, 78], icon: 'domain', isApproval: false, iconColor: '#2bb179' },
+    { label: 'ER TO IP', value: '8', trend: '+2', icon: 'warning', isApproval: false, iconColor: '#f46a6a' },
+    { label: 'TODAY\'S DISCHARGE', value: '22',  icon: 'exit_to_app', isApproval: false, iconColor: '#2bb179' },
+    { label: 'DISCHARGE CLEARANCE', value: '18', icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+    { label: 'DISCHARGE PENDING', value: '4', icon: 'schedule', isApproval: false, iconColor: '#f1b44c' },
+    { label: 'IP Bill (Cash)', value: '45',  icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
+    { label: 'IP Bill (Credit)', value: '67',  icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
+    { label: 'REFUND COUNT', value: '2',  icon: 'replay', isApproval: false, iconColor: '#f46a6a' },
     // { label: 'DISCOUNT APPROVAL', approved: '12', pending: '5', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' },
     // { label: 'REFUND APPROVAL', approved: '2', pending: '0', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' }
   ];
-  ipCollection = { total: '₹12,56,000', cash: '₹3,20,000', card: '₹4,56,000', upi: '₹2,80,000', bank: '₹2,00,000' };
+  ipCollection = { total: '12,56,000', cash: '3,20,000', card: '4,56,000', upi: '2,80,000', bank: '2,00,000', total1: '1,12,600', Gross: '1,11,000', Discount: '1,22,600', Net: '211,000' ,Outstanding:'23,2213'  };
 
   pharmacyCards = [
-    { label: 'RX CLOSED', value: '124', trend: '+14', trendDiff: 'vs yesterday', history: [80, 95, 100, 110, 105, 120, 124], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
-    { label: 'RX OPEN', value: '31', trend: '-7', trendDiff: 'vs yesterday', history: [50, 45, 40, 35, 42, 38, 31], icon: 'assignment', isApproval: false, iconColor: '#f1b44c' },
-    { label: 'WALKING SALES', value: '87', trend: '+7', trendDiff: 'vs yesterday', history: [60, 70, 75, 80, 78, 85, 87], icon: 'shopping_cart', isApproval: false, iconColor: '#4caeef' },
-    { label: 'DISCHARGE CLEARANCE', value: '16', trend: '+2', trendDiff: 'vs yesterday', history: [10, 12, 11, 15, 14, 15, 16], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
-    { label: 'DISCHARGE PENDING', value: '6', trend: '-2', trendDiff: 'vs yesterday', history: [12, 8, 10, 7, 9, 8, 6], icon: 'schedule', isApproval: false, iconColor: '#f46a6a' },
-    { label: 'IP ISSUED', value: '52', trend: '+4', trendDiff: 'vs yesterday', history: [40, 45, 48, 50, 46, 50, 52], icon: 'store', isApproval: false, iconColor: '#2486f5' },
-    { label: 'IP PENDING', value: '9', trend: '-3', trendDiff: 'vs yesterday', history: [15, 18, 14, 12, 11, 12, 9], icon: 'schedule', isApproval: false, iconColor: '#f46a6a' },
-    { label: 'CASH AMOUNT', value: '98', trend: '+8', trendDiff: 'vs yesterday', history: [70, 80, 85, 90, 88, 92, 98], icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
-    { label: 'CREDIT AMOUNT', value: '43', trend: '-5', trendDiff: 'vs yesterday', history: [50, 45, 48, 52, 46, 48, 43], icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
+    { label: 'RX CLOSED', value: '124', icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+    { label: 'RX OPEN', value: '31', icon: 'assignment', isApproval: false, iconColor: '#f1b44c' },
+    { label: 'WALKING SALES', value: '87', icon: 'shopping_cart', isApproval: false, iconColor: '#4caeef' },
+    { label: 'DISCHARGE CLEARANCE', value: '16', icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+    { label: 'DISCHARGE PENDING', value: '6', trend: '-2', icon: 'schedule', isApproval: false, iconColor: '#f46a6a' },
+    { label: 'IP ISSUED', value: '52', icon: 'store', isApproval: false, iconColor: '#2486f5' },
+    { label: 'IP PENDING', value: '9', icon: 'schedule', isApproval: false, iconColor: '#f46a6a' },
+    { label: 'Pharmacy (Cash)', value: '98',  icon: 'local_atm', isApproval: false, iconColor: '#2bb179' },
+    { label: 'Pharmacy (Credit)', value: '43',  icon: 'receipt', isApproval: false, iconColor: '#2486f5' },
     // { label: 'DISCOUNT APPROVAL', approved: '8', pending: '3', isApproval: true, approvedIcon: 'check_circle', pendingIcon: 'schedule', iconColor: '#2486f5' }
   ];
-  pharmacyCollection = { total: '₹3,42,500', cash: '₹1,45,000', card: '₹98,500', upi: '₹72,000', bank: '₹27,000' };
+  pharmacyCollection = { total: '3,42,500', cash: '1,45,000', card: '98,500', upi: '72,000', bank: '27,000',  total1: '1,12,600', Gross: '1,11,000', Discount: '1,22,600', Net: '211,000' ,Outstanding:'23,2213' };
 
   procurementCards = [
-    { label: 'PO CLOSED', value: '42', trend: '+4', trendDiff: 'vs yesterday', history: [25, 30, 32, 38, 35, 40, 42], icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
-    { label: 'PO OPEN', value: '15', trend: '-3', trendDiff: 'vs yesterday', history: [22, 20, 18, 20, 19, 17, 15], icon: 'assignment', isApproval: false, iconColor: '#f46a6a' },
-    { label: 'INDENT ISSUED', value: '28', trend: '+4', trendDiff: 'vs yesterday', history: [15, 20, 22, 25, 24, 26, 28], icon: 'description', isApproval: false, iconColor: '#4caeef' },
-    { label: 'INDENT CLOSED', value: '22', trend: '+2', trendDiff: 'vs yesterday', history: [12, 15, 18, 20, 19, 21, 22], icon: 'done_all', isApproval: false, iconColor: '#2bb179' },
-    { label: 'INDENT PENDING', value: '6', trend: '+2', trendDiff: 'vs yesterday', history: [3, 4, 3, 5, 4, 5, 6], icon: 'schedule', isApproval: false, iconColor: '#2bb179' },
-    { label: 'GRN COUNT', value: '35', trend: '+5', trendDiff: 'vs yesterday', history: [20, 25, 28, 32, 30, 34, 35], icon: 'local_mall', isApproval: false, iconColor: '#9566d3' },
-    { label: 'GRN APPROVAL PENDING', value: '8', trend: '-2', trendDiff: 'vs yesterday', history: [12, 10, 11, 9, 10, 9, 8], icon: 'schedule', isApproval: false, iconColor: '#f46a6a' }
+    { label: 'PO CLOSED', value: '42', icon: 'assignment_turned_in', isApproval: false, iconColor: '#2bb179' },
+    { label: 'PO OPEN', value: '15',  icon: 'assignment', isApproval: false, iconColor: '#f46a6a' },
+    { label: 'INDENT ISSUED', value: '28',  icon: 'description', isApproval: false, iconColor: '#4caeef' },
+    { label: 'INDENT CLOSED', value: '22',  icon: 'done_all', isApproval: false, iconColor: '#2bb179' },
+    { label: 'INDENT PENDING', value: '6',  icon: 'schedule', isApproval: false, iconColor: '#2bb179' },
+    { label: 'GRN COUNT', value: '35', trend: '+5', icon: 'local_mall', isApproval: false, iconColor: '#9566d3' },
+    { label: 'GRN APPROVAL PENDING', value: '8',  icon: 'schedule', isApproval: false, iconColor: '#f46a6a' }
   ];
-  procurementCollection = { label: 'GRN VALUE', total: '₹12.4L', trend: '- 0', trendDiff: 'vs yesterday', trendUp: false, subtitle: '₹12,40,000' };
+  procurementCollection = { label: 'GRN VALUE', total: '12.4L', trend: '- 0', trendDiff: 'vs yesterday', trendUp: false, subtitle: '12,40,000' };
 
   constructor(private dashboardService: DashboardService, public _accountServices: AuthenticationService,
     private accountService: AuthenticationService, public datePipe: DatePipe, public _matDialog: MatDialog,
@@ -336,9 +360,8 @@ export class TestingDailyDashBoardComponent {
     // this.getDashOPDepatmentWiseCount();
     this.alldashdata()
     this.getDashRegistrationAgeWiseCount();
-     this.getDashOPDepatmentWiseCount()
-    // this.getdrwiseList()
-    // Re-initialize charts with new date range
+    this.getDashOPDepatmentWiseCount()
+    
     setTimeout(() => {
 
     });
@@ -389,7 +412,7 @@ export class TestingDailyDashBoardComponent {
           { label: 'Refunds', value: apiData && apiData.RefundAmount > 0 ? apiData?.RefundAmount : 0, color: 'rose', icon: 'logout' },
 
         ];
-        
+
         this.paymentDataOP = [
           { name: 'Cash', value: apiData?.CashPay || 0 },
           { name: 'Online', value: apiData?.OnlinePay || 0 },
@@ -445,9 +468,7 @@ export class TestingDailyDashBoardComponent {
 
 
   alldashdata() {
-    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || '01/01/2020',
-    //   this.toDate = this.datePipe.transform(this.myFilterform.get('toDate').value, "yyyy-MM-dd ") || '01/01/2020',
-
+    
     this.dashboardService.allDashboarddata({ "UnitId": this.UnitId, "FromDate": this.fromDate, "ToDate": this.toDate }).subscribe((res) => {
       this.DailydashData = res;
 
@@ -462,7 +483,7 @@ export class TestingDailyDashBoardComponent {
 
         this.trendSeries = [
           {
-            name: 'OPD (PCount)',
+            name: 'New',
             series: [
               { name: 'Mon', value: this.DailydashData.trend[0]?.opd || 0 },
               { name: 'Tue', value: this.DailydashData.trend[1]?.opd || 0 },
@@ -474,17 +495,29 @@ export class TestingDailyDashBoardComponent {
             ]
           },
           {
-            name: 'IPD (PCount)',
+            name: 'old',
             series: [
               { name: 'Mon', value: this.DailydashData.trend[0]?.ipd || 0 },
               { name: 'Tue', value: this.DailydashData.trend[0]?.ipd || 0 },
               { name: 'Wed', value: this.DailydashData.trend[0]?.ipd || 0 },
               { name: 'Thu', value: this.DailydashData.trend[0]?.ipd || 0 },
               { name: 'Fri', value: this.DailydashData.trend[0]?.ipd || 0 },
-              { name: 'Sat', value: this.DailydashData.trend[0]?.oipdpd || 0 },
+              { name: 'Sat', value: this.DailydashData.trend[0]?.ipd || 0 },
               { name: 'Sun', value: this.DailydashData.trend[0]?.ipd || 0 }
             ]
-          }
+          },
+           {
+      name: 'Total',
+    series: [
+              { name: 'Mon', value: this.DailydashData.trend[0]?.ipd || 0 },
+              { name: 'Tue', value: this.DailydashData.trend[0]?.ipd || 0 },
+              { name: 'Wed', value: this.DailydashData.trend[0]?.ipd || 0 },
+              { name: 'Thu', value: this.DailydashData.trend[0]?.ipd || 0 },
+              { name: 'Fri', value: this.DailydashData.trend[0]?.ipd || 0 },
+              { name: 'Sat', value: this.DailydashData.trend[0]?.ipd || 0 },
+              { name: 'Sun', value: this.DailydashData.trend[0]?.ipd || 0 }
+            ]
+    }
         ];
       }
       console.log('Dailydash Data Reports:', res);
@@ -521,7 +554,7 @@ export class TestingDailyDashBoardComponent {
 
         this.modalityData1 = apiData
         if (this.modalityData1.length)
-          this.AgestatusPieChart = this.getAgeStatusPieChart()
+          this.AgestatusPieChartOP = this.getAgeStatusPieChart()
 
       }
     }, err => {
@@ -533,18 +566,116 @@ export class TestingDailyDashBoardComponent {
 
   getAgeStatusPieChart() {
 
-    if (this.AgestatusPieChart) {
-      this.AgestatusPieChart.destroy();
+ let totalOccupiedCount = 0;
+      const dataLabelsPlugin = {
+            id: 'dataLabels',
+            afterDatasetDraw: (chart: any) => {
+                const { ctx, chartArea } = chart;
+                const labels = chart.data.labels;
+
+                chart.data.datasets.forEach((dataset: any, datasetIndex: number) => {
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    if (!meta.hidden) {
+                        meta.data.forEach((element: any, index: number) => {
+                            const value = dataset.data[index];
+                            if (value > 0) {
+                                ctx.save();
+
+                                // Get arc properties
+                                const model = element;
+                                const centerX = chart.width / 2;
+                                const centerY = chart.height / 2;
+
+                                // Calculate middle angle of the arc
+                                const startAngle = model.startAngle;
+                                const endAngle = model.endAngle;
+                                const midAngle = startAngle + (endAngle - startAngle) / 2;
+
+                                // Position in the middle of the arc segment
+                                const radius = (model.outerRadius + model.innerRadius) / 2;
+                                const labelX = centerX + Math.cos(midAngle) * radius;
+                                const labelY = centerY + Math.sin(midAngle) * radius;
+
+                                // Calculate percentage
+                                // const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+                                // const percentage = Math.round((value / total) * 100);
+
+                                // Get label name
+                                const labelName = labels[index];
+
+                                // Custom label text - Option 3: Label name with count and percentage
+                                const line1Text = labelName;
+                                // const line2Text = `${value} (${percentage}%)`;
+                                // console.log("================>>>>>>>..", line1Text, percentage)
+                                // if (line1Text === 'Age') {
+                                //     totalOccupiedCount = percentage;
+                                // }
+
+                                // Draw labels with white text and shadow for contrast
+                                ctx.fillStyle = 'blue';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+
+                                // Draw label name (e.g., "In use")
+                                ctx.font = 'bold 13px Inter, sans-serif';
+                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                                ctx.lineWidth = 3;
+                                // ctx.strokeText(line1Text, labelX, labelY - 10);
+                                ctx.fillText(line1Text, labelX+10, labelY - 12);
+
+                                // Draw count and percentage (e.g., "5 (25%)")
+                                // ctx.font = 'bold 15px Inter, sans-serif';
+                                // ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+                                // ctx.lineWidth = 2.5;
+                                // ctx.strokeText(line2Text, labelX, labelY + 8);
+                                // ctx.fillText(line2Text, labelX, labelY + 8);
+
+                                ctx.restore();
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+            const centerTextPlugin = {
+            id: 'centerText',
+            beforeDraw: (chart: any) => {
+                const { width, height, ctx } = chart;
+                ctx.restore();
+
+                // Main percentage text
+                // const percentText = `${totalOccupiedCount}%`;
+                ctx.font = 'bold 42px Inter, sans-serif';
+                ctx.fillStyle = '#2c3e50';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const percentX = width / 2;
+                const percentY = height / 2 - 10;
+                // ctx.fillText(percentText, percentX, percentY);
+
+                // Subtitle text
+                ctx.font = '14px Inter, sans-serif';
+                ctx.fillStyle = '#6c757d';
+                const subtitleY = height / 2 + 25;
+                // ctx.fillText('Occupancy', percentX, subtitleY);
+
+                ctx.save();
+            }
+        };
+
+    if (this.AgestatusPieChartOP) {
+      this.AgestatusPieChartOP.destroy();
     }
 
-    return new Chart('AgestatusPieChart', {
+    return new Chart('AgestatusPieChartOP', {
 
       type: 'doughnut',
       data: {
         labels: this.modalityData1.map(d => d.name),
         datasets: [
           {
-            backgroundColor: ['#e7bdf0', '#c9eeef', '#e1bfe6', '#c3e6e0', '#b6baf5'],
+            backgroundColor: ['#e7bdf0', '#92f4f8', '#f685e7', '#6d60f5', '#cdf9a4'],
             data: this.modalityData1.map(d => d.value),
             borderWidth: 2
           }
@@ -574,7 +705,8 @@ export class TestingDailyDashBoardComponent {
             }
           }
         }
-      }
+      },
+        plugins: [centerTextPlugin, dataLabelsPlugin]
     });
   }
 
@@ -621,17 +753,17 @@ export class TestingDailyDashBoardComponent {
       console.log(this.modalityData)
 
       if (this.modalityData)
-        this.DrcountChart = this.getDrBarChart();
+        this.DrcountChartOP = this.getDrBarChart();
 
     });
   }
   getDrBarChart() {
-    if (this.DrcountChart) {
-      this.DrcountChart.destroy();
+    if (this.DrcountChartOP) {
+      this.DrcountChartOP.destroy();
     }
 
 
-    return new Chart('DrcountChart', {
+    return new Chart('DrcountChartOP', {
       type: 'bar',
       data: {
         labels: this.modalityData.map(d => d.name),
@@ -675,17 +807,15 @@ export class TestingDailyDashBoardComponent {
     });
   }
 
-Ipflag:any="flase"
-  selectedTabIndex: number = 0;   // Default to first tab (Summary)
+  Ipflag: any = "flase"
+  selectedTabIndex: number = 0;
 
   onTabChange(event: MatTabChangeEvent) {
     debugger
     this.selectedTabIndex = event.index;
-    if(this.selectedTabIndex ==2)
-    this.Ipflag=true
+    if (this.selectedTabIndex == 2)
+      this.Ipflag = true
   }
-
-
 
   VisitTrend() {
 
@@ -735,7 +865,7 @@ Ipflag:any="flase"
 
   }
 
-    getDashOPDepatmentWiseCount() {
+  getDashOPDepatmentWiseCount() {
     debugger
     const payload = {
       "searchFields": [
@@ -761,12 +891,49 @@ Ipflag:any="flase"
       let apiData = res && res.length ? res : {};
       console.log(res)
 
-      
+
       if (apiData)
         this.dsDailyDepartmentCountList.data = apiData
-     
-        })
-    }
+
+    })
+  }
+
+
+  //dept wise
+
+  get DeptTotalPatient(): number {
+    return this.dsDailyDepartmentCountList.data.reduce((sum, r) => sum + (r.DeptCount || 0), 0);
+  }
+  get oldTotalPatient(): number {
+    return this.dsDailyCountList.data.reduce((sum, r) => sum + (r.OldPatient || 0), 0);
+  }
+  get NewTotalPatient(): number {
+    return this.dsDailyCountList.data.reduce((sum, r) => sum + (r.NewPatient || 0), 0);
+  }
+
+  get CrossTotalPatient(): number {
+    return this.dsDailyCountList.data.reduce((sum, r) => sum + (r.ReferPatient || 0), 0);
+  }
+  get CompanyTotalPatient(): number {
+    return this.dsDailyCountList.data.reduce((sum, r) => sum + (r.Company || 0), 0);
+  }
+  get Deptgross(): number {
+    return this.dsDailyBillList.data.reduce((sum, r) => sum + (r.GrossAmt || 0), 0);
+  }
+
+  get Deptdiscount(): number {
+    return this.dsDailyBillList.data.reduce((sum, r) => sum + (r.DiscountAmt || 0), 0);
+  }
+  get Deptnet(): number {
+    return this.dsDailyBillList.data.reduce((sum, r) => sum + (r.NetAmt || 0), 0);
+  }
+
+   get DocTotalPatient(): number {
+    return this.dsDailyDocBillList.data.reduce((sum, r) => sum + (r.DocPatientCount || 0), 0);
+  }
+
+
+
   getMatIcon(icon: string): string {
     switch (icon) {
       case 'assignment':
@@ -793,47 +960,66 @@ export class OPDCount {
   OldPatient: any;
   NewPatient: any;
   ReferPatient: any;
+  CrossConsult: any;
   Company: any;
   TotalVisitCount: any;
+
   constructor(OPDCount) {
     {
       this.OldPatient = OPDCount.OldPatient || 0;
       this.NewPatient = OPDCount.NewPatient || 0;
       this.ReferPatient = OPDCount.ReferPatient || 0;
+      this.CrossConsult = OPDCount.CrossConsult || 0;
       this.Company = OPDCount.Company || 0;
     }
   }
 }
 
 export class OPDBillDateWise {
-    Cash: any;
-    Cheque: any;
-    Online: any;
-    Company: any;
-    DoctorName: string;
-    Count: any;
-    DepartmentName: any;
-    NetAmount: any;
-    DiscAmount: any;
-    PaidAmount: any;
-    BalAmount: any;
-    TotalAmount: any;
-    NetBillAmount: any;
+  Cash: any;
+  Cheque: any;
+  Online: any;
+  Company: any;
+  DoctorName: string;
+  Count: any;
+  DepartmentName: any;
+  NetAmount: any;
+  DiscAmount: any;
+  PaidAmount: any;
+  BalAmount: any;
+  TotalAmount: any;
+  NetBillAmount: any;
+  vCount: any
+  BillAmount: any
+  GrossAmt: any
+  DiscountAmt: any
+  NetAmt: any
+  DocPatientCount:any
+  DeptCount:any
 
-    constructor(OPDBillDateWise) {
-        {
-            this.Cash = OPDBillDateWise.Cash || 0;
-            this.Cheque = OPDBillDateWise.Cheque || 0;
-            this.Online = OPDBillDateWise.Online || 0;
-            this.Company = OPDBillDateWise.Company || 0;
-            this.DoctorName = OPDBillDateWise.DoctorName || '';
-            this.Count = OPDBillDateWise.Count || 0;
-            this.DepartmentName = OPDBillDateWise.DepartmentName || '';
-            this.NetAmount = OPDBillDateWise.NetAmount || 0;
-            this.DiscAmount = OPDBillDateWise.DiscAmount || 0;
-            this.BalAmount = OPDBillDateWise.BalAmount || 0;
-            this.PaidAmount = OPDBillDateWise.PaidAmount || 0;
-            this.TotalAmount = OPDBillDateWise.TotalAmount || 0;
-        }
+  constructor(OPDBillDateWise) {
+    {
+      this.Cash = OPDBillDateWise.Cash || 0;
+      this.Cheque = OPDBillDateWise.Cheque || 0;
+      this.Online = OPDBillDateWise.Online || 0;
+      this.Company = OPDBillDateWise.Company || 0;
+      this.DoctorName = OPDBillDateWise.DoctorName || '';
+      this.Count = OPDBillDateWise.Count || 0;
+      this.DepartmentName = OPDBillDateWise.DepartmentName || '';
+      this.NetAmount = OPDBillDateWise.NetAmount || 0;
+      this.DiscAmount = OPDBillDateWise.DiscAmount || 0;
+      this.BalAmount = OPDBillDateWise.BalAmount || 0;
+      this.PaidAmount = OPDBillDateWise.PaidAmount || 0;
+      this.TotalAmount = OPDBillDateWise.TotalAmount || 0;
+      this.vCount = OPDBillDateWise.vCount || 0;
+      this.BillAmount = OPDBillDateWise.BillAmount || 0;
+      this.GrossAmt = OPDBillDateWise.GrossAmt || 0;
+      this.DiscountAmt = OPDBillDateWise.DiscountAmt || 0;
+      this.NetAmt = OPDBillDateWise.NetAmt || 0;
+       this.DocPatientCount = OPDBillDateWise.DocPatientCount || 0;
+ this.DeptCount = OPDBillDateWise.DeptCount || 0;
+
+
     }
+  }
 }

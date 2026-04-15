@@ -58,7 +58,7 @@
                                 <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
                                         [validations]="getValidationMessages().refDocId" [formGroup]="myForm"
-                                        TextField="doctorName" ValueField="doctorId"
+                                        TextField="doctorName" ValueField="doctorId" [disableAutoNext]="true"
                                         ApiUrl="Doctor/RefdoctorComboList?keywoard="
                                         (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
                                 </div>

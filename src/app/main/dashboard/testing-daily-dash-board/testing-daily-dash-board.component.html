@@ -11,7 +11,7 @@
             <div class="date-filter-container d-flex align-items-center">
 
                 <mat-form-field appearance="outline">
-                    <mat-label>Enter a date range</mat-label>
+                    <mat-label style="color: aliceblue;">Enter a date range</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
                         <input matStartDate formControlName="fromDate" placeholder="Start date">
                         <input matEndDate formControlName="toDate" placeholder="End date">
@@ -26,74 +26,10 @@
     </div>
 
     <div class="center" fusePerfectScrollbar>
-        <!-- <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
-            <div class="charts-row">
 
-                <mat-card fxFlex="60%">
-                    <mat-card-content>
-                        <div class="payment-details-header">
-                            <p class="section-title">Payment Summary (Selected Period)</p>
-                        </div>
-                        <div class="payment-cards" fxLayout="row wrap" fxLayoutGap="5px" style="margin-top: 5px;">
-                            <div fxFlex="120px" *ngFor="let f of financeSummary; let i = index">
-                                <mat-card class="payment-card" [ngClass]="'payment-card-' + (i + 1)">
-                                    <mat-card-content>
-                                        <div class="payment-mode-name">{{ f.label }}</div>
-                                        <div class="payment-amount"><mat-icon>{{ getMatIcon(f.icon) }}</mat-icon> {{
-                                            f.value }}
-                                        </div>
-                                    </mat-card-content>
-                                </mat-card>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-
-                <mat-card>
-                    <mat-card-content>
-                        <div class="payment-details-header">
-                            <h3 class="section-title">Current Patient Claim Status</h3>
-
-                        </div>
-
-                        <div class="mini-grid">
-                            <div class="mini-card theme-mint">
-                                <div class="mini-icon"><mat-icon>verified_user</mat-icon></div>
-                                <div>
-                                    <div class="mini-label">With Mediclaim</div>
-                                    <div class="mini-value">{{ patientStats.withMediclaim | number }}</div>
-                                </div>
-                            </div>
-                            <div class="mini-card theme-butter">
-                                <div class="mini-icon"><mat-icon>person</mat-icon></div>
-                                <div>
-                                    <div class="mini-label">Without Mediclaim</div>
-                                    <div class="mini-value">{{ patientStats.withoutMediclaim | number }}</div>
-                                </div>
-                            </div>
-                            <div class="mini-card theme-sky">
-                                <div class="mini-icon"><mat-icon>group_add</mat-icon></div>
-                                <div>
-                                    <div class="mini-label">Reference Patients</div>
-                                    <div class="mini-value">{{ patientStats.reference | number }}</div>
-                                </div>
-                            </div>
-                            <div class="mini-card theme-lavender">
-                                <div class="mini-icon"><mat-icon>groups</mat-icon></div>
-                                <div>
-                                    <div class="mini-label">Total Patients</div>
-                                    <div class="mini-value">{{ patientStats.total | number }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div> -->
-
-        <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
-            <mat-tab label="Summary">
-                <div class="dashboard-container gap-10" fxLayout="row wrap" fxLayoutGap="0px grid">
+        <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)" class="custom-modern-tabs">
+            <mat-tab   label="Summary">
+                <div class="dashboard-container gap-2" fxLayout="row wrap" fxLayoutGap="0px grid">
                     <div class="charts-row">
 
                         <mat-card fxFlex="60%">
@@ -191,7 +127,7 @@
                                     <mat-icon>account_balance</mat-icon>
                                     <div class="col-item-text">
                                         <div class="ci-val">{{collection.bank}}</div>
-                                        <div class="ci-lbl">BANK TRANSFER</div>
+                                        <div class="ci-lbl">BANK</div>
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +146,7 @@
                 </div>
 
             </mat-tab>
-            <mat-tab label="OPD">
+            <mat-tab label="OP Overview">
                 <div class="dashboard-container">
 
                     <!-- New Dashboard Sections -->
@@ -218,15 +154,14 @@
                         let-cards="cards" let-collection="collection" let-headerColor="headerColor"
                         let-colTitle="colTitle">
                         <div class="dashboard-section">
-                            <div class="section-header">
+                            <!-- <div class="section-header">
                                 <div class="sh-icon" [ngStyle]="{'background-color': headerColor}">
                                     <mat-icon>{{icon}}</mat-icon>
                                 </div>
                                 <div class="sh-text">
                                     <div class="sh-title">{{title}}</div>
-                                    <!-- <div class="sh-subtitle">{{subtitle}}</div> -->
-                                </div>
-                            </div>
+                                   </div>
+                            </div> -->
 
                             <!-- small cards -->
                             <div fxLayout="row">
@@ -298,7 +233,8 @@
                                 <div fxFlex="40%">
                                     <div class="cards-grid-new" style="padding-left:5px;">
                                         <!-- Large Collection Card -->
-                                        <mat-card class="dashboard-card1 collection-card" *ngIf="collection">
+                                        <mat-card class="dashboard-card1 collection-card" *ngIf="collection"
+                                            fxFlex="50%">
                                             <div class="col-header">
                                                 <div class="col-title">{{colTitle}}</div>
                                                 <div class="col-total">{{collection.total}}</div>
@@ -329,7 +265,7 @@
                                                     <mat-icon>account_balance</mat-icon>
                                                     <div class="col-item-text">
                                                         <div class="ci-val">{{collection.bank}}</div>
-                                                        <div class="ci-lbl">BANK TRANSFER</div>
+                                                        <div class="ci-lbl">BANK</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -344,6 +280,46 @@
                                                 <div class="col-sub-total">{{collection.subtitle}}</div>
                                             </div>
                                         </mat-card>
+
+                                        <mat-card class="dashboard-card1 collection-card" *ngIf="collection"
+                                            fxFlex="50%">
+                                            <div class="col-header">
+                                                <div class="col-title">Revenu Collection</div>
+                                                <div class="col-total">{{collection.total1}}</div>
+                                            </div>
+                                            <div class="col-breakdown" *ngIf="collection.Gross">
+                                                <div class="col-item">
+                                                    <mat-icon>account_balance_wallet</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Gross}}</div>
+                                                        <div class="ci-lbl">Gross</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>credit_card</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Discount}}</div>
+                                                        <div class="ci-lbl">Discount</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>phone_iphone</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Net}}</div>
+                                                        <div class="ci-lbl">Net</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>account_balance</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Outstanding}}</div>
+                                                        <div class="ci-lbl">Outstanding</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </mat-card>
+
                                         <!-- //progress? -->
 
                                         <!-- <div class="discharge-card">
@@ -371,8 +347,8 @@
                                             </div>
                                         </div> -->
 
-                                        <!-- 
-                                        <div class="discharge-card" style="padding-left: 10px;">
+
+                                        <!-- <div class="discharge-card" style="padding-left: 10px;">
                                             <div class="card-header">
                                                 <p>REFUND APPROVAL</p>
                                                 <span class="total-badge">Total: 26</span>
@@ -401,16 +377,24 @@
                             </div>
 
 
-                            <div class="charts-row" *ngIf="selectedTabIndex === 1">
+                          
+                        </div>
+                    </ng-template>
 
-                                <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <ng-container
+                        *ngTemplateOutlet="sectionTemplate; context: {title: 'Out-Patient (Today\'s OP overview and collections)', subtitle: 'Today\'s OP overview and collections', icon: 'local_hospital', headerColor: '#176ab4', cards: opCards, collection: opCollection,colTitle1: 'OPRevenue', colTitle: 'OP COLLECTION'}"></ng-container>
+
+                </div>
+                  <div class="charts-row" *ngIf="selectedTabIndex === 1">
+
+                                <div fxFlex="calc(21% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                                     <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
 
                                         <mat-card-content>
                                             <div class="chart-container">
                                                 <div class="chart-header">
-                                                    <h3 class="chart-title">OP Payments Overview</h3>
+                                                    <span class="chart-title">OP Payments Overview</span>
 
                                                 </div>
 
@@ -426,16 +410,17 @@
                                     </mat-card>
                                 </div>
 
-                                <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <div fxFlex="calc(29% -3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                                     <mat-card class="chart-card" style="padding-bottom: 30px;">
 
                                         <mat-card-content>
                                             <div class="chart-container">
                                                 <div class="chart-header">
-                                                    <h3 class="chart-title">7-Day Trends (Current Week)</h3>
+                                                    <span class="chart-title">Trends of Registration(Current
+                                                        Week)</span>
                                                 </div>
-                                                <ngx-charts-line-chart [results]="trendSeriesOP" [scheme]="colorScheme"
+                                                <ngx-charts-line-chart [results]="trendSeries" [scheme]="colorScheme"
                                                     [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
                                                     [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
                                                     [yAxisLabel]="'Count'">
@@ -446,74 +431,63 @@
                                 </div>
 
 
-                                <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                                     <mat-card class="chart-card" style="padding-bottom: 30px;">
                                         <mat-card-content>
                                             <div class="chart-container">
                                                 <div class="chart-header">
-                                                    <h3 class="chart-title">Patient Age Wise Overview</h3>
+                                                    <span class="chart-title">Registration Age Wise Overview</span>
                                                 </div>
-                                                <div
-                                                    style="display: flex; align-items: center; justify-content: center;">
-                                                    <canvas id="AgestatusPieChart"></canvas>
+                                                <div class="chart-container">
+                                                    <canvas id="AgestatusPieChartOP"></canvas>
                                                 </div>
                                             </div>
                                         </mat-card-content>
                                     </mat-card>
                                 </div>
 
-                                <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
                                     <mat-card class="chart-card" style="padding-bottom: 30px;">
 
                                         <mat-card-content>
                                             <div class="chart-container">
                                                 <div class="chart-header">
-                                                    <h3 class="chart-title">Doctor Wise Count Summary</h3>
+                                                    <span class="chart-title">Doctor Wise Count Summary</span>
 
                                                 </div>
                                                 <div class="chart-container">
 
-                                                    <canvas id="DrcountChart"></canvas>
+                                                    <canvas id="DrcountChartOP"></canvas>
                                                 </div>
                                             </div>
                                         </mat-card-content>
                                     </mat-card>
                                 </div>
                             </div>
-                        </div>
-                    </ng-template>
-
-                    <ng-container
-                        *ngTemplateOutlet="sectionTemplate; context: {title: 'Out-Patient (Today\'s OP overview and collections)', subtitle: 'Today\'s OP overview and collections', icon: 'local_hospital', headerColor: '#176ab4', cards: opCards, collection: opCollection, colTitle: 'OP COLLECTION'}"></ng-container>
-
-                </div>
-
-                <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
-
+                <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
 
                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
 
                             <mat-card>
-                                <h5 class="table-title">OPD Department Wise Count</h5>
-                                <mat-table matSort class="h-200 table-designed"
-                                    [dataSource]="dsDailyDepartmentCountList" [@animateStagger]="{value:'50'}"
-                                    style="overflow:auto; ">
+                                <span class="table-title">Department Wise Registartion Count</span>
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDepartmentCountList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                                     <ng-container matColumnDef="DepartmentName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="350">
                                             Department </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="350 ellipsis">
                                             {{contact.DepartmentName}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Count">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
                                             Count </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.vCount}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DeptCount}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -523,7 +497,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                        <mat-footer-cell *matFooterCellDef colspan="2">
                                             no data found...
                                         </mat-footer-cell>
                                     </ng-container>
@@ -539,6 +513,23 @@
                                         [ngClass]="{'hide':!(dsDailyDepartmentCountList!=null && dsDailyDepartmentCountList.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 250px; min-width: 250px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DeptTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
                             </mat-card>
                         </div>
                     </div>
@@ -546,24 +537,24 @@
                         <div class="chart-card-container">
                             <mat-card>
 
-                                <h5 class="table-title">OPD Doctor Wise Count</h5>
+                                <span class="table-title">Doctor Wise Count</span>
 
-                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyDocBillList"
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDocBillList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                                     <ng-container matColumnDef="DoctorName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="200">
                                             Doctor </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="200 ellipsis">
                                             {{contact.DoctorName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="Count">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
                                             Count </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.vCount}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DocPatientCount}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -590,6 +581,23 @@
                                         [ngClass]="{'hide':!(dsDailyDocBillList!=null && dsDailyDocBillList.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 200px; min-width: 200px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DocTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
                             </mat-card>
                         </div>
                     </div>
@@ -597,37 +605,37 @@
                         <div class="chart-card-container">
                             <mat-card>
 
-                                <h5 class="table-title">OPD Count</h5>
+                                <span class="table-title">Appointment Count</span>
 
-                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyCountList"
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyCountList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                                     <ng-container matColumnDef="OldPatient">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Old Patient </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.OldPatientCount}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Old </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.OldPatient}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="NewPatient">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            New Patient </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.NewPatientCount}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            New </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.NewPatient}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="ReferPatient">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Cross Consultant </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.CrossConsultantPatCount}}
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Referal </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.ReferPatient}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Company">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
                                             Company </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.CompanyPatientCount}}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.Company}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -653,30 +661,77 @@
                                         [ngClass]="{'hide':!(dsDailyCountList!=null && dsDailyCountList.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <!-- <div class="totals-label"
+                                            style="flex: 0 0 100px; min-width: 100px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div> -->
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ oldTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ NewTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CrossTotalPatient }}
+                                        </div>
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CompanyTotalPatient }}
+                                        </div>
+
+                                    </div>
+                                </div>
                             </mat-card>
                         </div>
                     </div>
-                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <h5 class="table-title">OPD Department Wise Bill</h5>
+                                <span class="table-title"> Department Wise Revenue</span>
 
-                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyDepBillList"
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDepBillList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
 
                                     <ng-container matColumnDef="DepartmentName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="200">
                                             Department </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="200 ellipsis">
                                             {{contact.DepartmentName}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Amount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Amount </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            {{contact.BillAmount | currency:'INR' :'symbol' :'2.2-2'}}
+                                    <ng-container matColumnDef="Gross">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Gross </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.GrossAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Discount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Discount </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DiscountAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="Net">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Net Amt </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.NetAmt | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -703,442 +758,681 @@
                                         [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
                                     </mat-footer-row>
                                 </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 200px; min-width: 200px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptgross }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptdiscount }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptnet }}
+                                        </div>
+                                    </div>
+                                </div>
                             </mat-card>
                         </div>
                     </div>
                 </div>
 
             </mat-tab>
-            <mat-tab label="IPD">
+            <mat-tab label="IP Overview">
                 <div class="dashboard-container">
+
+                    <!-- New Dashboard Sections -->
                     <ng-template #sectionTemplate let-title="title" let-subtitle="subtitle" let-icon="icon"
                         let-cards="cards" let-collection="collection" let-headerColor="headerColor"
                         let-colTitle="colTitle">
                         <div class="dashboard-section">
-                            <div class="section-header">
+                            <!-- <div class="section-header">
                                 <div class="sh-icon" [ngStyle]="{'background-color': headerColor}">
                                     <mat-icon>{{icon}}</mat-icon>
                                 </div>
                                 <div class="sh-text">
                                     <div class="sh-title">{{title}}</div>
-                                    <div class="sh-subtitle">{{subtitle}}</div>
-                                </div>
-                            </div>
-                            <div class="cards-grid-new">
-                                <!-- small cards -->
-                                <mat-card *ngFor="let card of cards" class="dashboard-card"
-                                    [ngClass]="{'approval-card': card.isApproval}">
-                                    <ng-container *ngIf="!card.isApproval">
-                                        <div class="card-header">
-                                            <div class="card-title">{{card.label}}</div>
-                                            <div class="card-icon" [style.color]="card.iconColor">
-                                                <mat-icon>{{card.icon}}</mat-icon>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="card-info">
-                                                <div class="card-value">{{card.value}}</div>
-                                                <div class="card-footer">
-                                                    <div class="card-trend"
+                                   </div>
+                            </div> -->
+
+                            <!-- small cards -->
+                            <div fxLayout="row">
+                                <div fxFlex="60%">
+                                    <div class="cards-grid-new">
+                                        <mat-card *ngFor="let card of cards" class="dashboard-card"
+                                            [ngClass]="{'approval-card': card.isApproval}">
+                                            <ng-container *ngIf="!card.isApproval">
+                                                <div class="card-header">
+                                                    <div class="card-title">{{card.label}}</div>
+                                                    <div class="card-icon" [style.color]="card.iconColor">
+                                                        <mat-icon>{{card.icon}}</mat-icon>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="card-info">
+                                                        <div class="card-value">{{card.value}}</div>
+                                                        <div class="card-trend"
+                                                            [ngClass]="{'trend-up': isTrendUp(card.history), 'trend-down': !isTrendUp(card.history)}">
+                                                            <!-- <mat-icon *ngIf="isTrendUp(card.history)">trending_up</mat-icon> -->
+
+                                                        </div>
+                                                        <div class="card-footer">
+                                                            <!-- <div class="card-trend"
                                                         [ngClass]="{'trend-up': isTrendUp(card.history), 'trend-down': !isTrendUp(card.history)}">
                                                         <mat-icon *ngIf="isTrendUp(card.history)">trending_up</mat-icon>
                                                         <mat-icon
                                                             *ngIf="!isTrendUp(card.history)">trending_down</mat-icon>
                                                         <span>{{card.trend}}</span>
-                                                    </div>
-                                                    <div class="card-trend-diff" *ngIf="card.trendDiff">
-                                                        {{card.trendDiff}}
-                                                    </div>
+                                                    </div> -->
+                                                            <!-- <div class="card-trend-diff" *ngIf="card.trendDiff">
+                                                        {{card.trendDiff}}</div>
                                                     <div class="card-subtitle" *ngIf="card.subtitle">{{card.subtitle}}
+                                                    </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="card-sparkline" *ngIf="card.history">
+                                                <svg viewBox="0 0 100 30" class="sparkline"
+                                                    [ngClass]="{'up': isTrendUp(card.history), 'down': !isTrendUp(card.history)}">
+                                                    <path [attr.d]="getSparklinePath(card.history)" fill="none"
+                                                        stroke-width="2"></path>
+                                                </svg>
+                                            </div> -->
+                                                </div>
+                                            </ng-container>
+                                            <ng-container *ngIf="card.isApproval">
+                                                <div class="card-header approval-header">
+                                                    <div class="card-title"><mat-icon color="primary"
+                                                            class="tiny-icon">verified_user</mat-icon> {{card.label}}
+                                                    </div>
+                                                </div>
+                                                <div class="approval-body">
+                                                    <div class="approval-stat">
+                                                        <div class="av-val">{{card.approved}}</div>
+                                                        <div class="av-lbl"><mat-icon class="tiny-icon"
+                                                                style="color: green">check_circle</mat-icon> APPROVED
+                                                        </div>
+                                                    </div>
+                                                    <div class="approval-stat">
+                                                        <div class="av-val">{{card.pending}}</div>
+                                                        <div class="av-lbl"><mat-icon class="tiny-icon"
+                                                                style="color: orange">schedule</mat-icon> PENDING</div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                                <div fxFlex="40%">
+                                    <div class="cards-grid-new" style="padding-left:5px;">
+                                        <!-- Large Collection Card -->
+                                        <mat-card class="dashboard-card1 collection-card" *ngIf="collection"
+                                            fxFlex="50%">
+                                            <div class="col-header">
+                                                <div class="col-title">{{colTitle}}</div>
+                                                <div class="col-total">{{collection.total}}</div>
+                                            </div>
+                                            <div class="col-breakdown" *ngIf="collection.cash">
+                                                <div class="col-item">
+                                                    <mat-icon>account_balance_wallet</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.cash}}</div>
+                                                        <div class="ci-lbl">CASH</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>credit_card</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.card}}</div>
+                                                        <div class="ci-lbl">CARD</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>phone_iphone</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.upi}}</div>
+                                                        <div class="ci-lbl">UPI</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>account_balance</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.bank}}</div>
+                                                        <div class="ci-lbl">BANK</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-breakdown" *ngIf="!collection.cash">
+                                                <div class="col-trend-wrap">
+                                                    <div class="card-trend trend-down">
+                                                        <mat-icon>trending_down</mat-icon>
+                                                        <span>{{collection.trend}}</span>
+                                                    </div>
+                                                    <div class="card-trend-diff">{{collection.trendDiff}}</div>
+                                                </div>
+                                                <div class="col-sub-total">{{collection.subtitle}}</div>
+                                            </div>
+                                        </mat-card>
+
+                                        <mat-card class="dashboard-card1 collection-card" *ngIf="collection"
+                                            fxFlex="50%">
+                                            <div class="col-header">
+                                                <div class="col-title">Revenu Collection</div>
+                                                <div class="col-total">{{collection.total1}}</div>
+                                            </div>
+                                            <div class="col-breakdown" *ngIf="collection.Gross">
+                                                <div class="col-item">
+                                                    <mat-icon>account_balance_wallet</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Gross}}</div>
+                                                        <div class="ci-lbl">Gross</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>credit_card</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Discount}}</div>
+                                                        <div class="ci-lbl">Discount</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>phone_iphone</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Net}}</div>
+                                                        <div class="ci-lbl">Net</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-item">
+                                                    <mat-icon>account_balance</mat-icon>
+                                                    <div class="col-item-text">
+                                                        <div class="ci-val">{{collection.Outstanding}}</div>
+                                                        <div class="ci-lbl">Outstanding</div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                        </div>
-                                    </ng-container>
-                                    <ng-container *ngIf="card.isApproval">
-                                        <div class="card-header approval-header">
-                                            <div class="card-title"><mat-icon color="primary"
-                                                    class="tiny-icon">verified_user</mat-icon> {{card.label}}</div>
-                                        </div>
-                                        <div class="approval-body">
-                                            <div class="approval-stat">
-                                                <div class="av-val">{{card.approved}}</div>
-                                                <div class="av-lbl"><mat-icon class="tiny-icon"
-                                                        style="color: green">check_circle</mat-icon> APPROVED</div>
-                                            </div>
-                                            <div class="approval-stat">
-                                                <div class="av-val">{{card.pending}}</div>
-                                                <div class="av-lbl"><mat-icon class="tiny-icon"
-                                                        style="color: orange">schedule</mat-icon> PENDING</div>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                </mat-card>
+                                        </mat-card>
 
-                                <!-- Large Collection Card -->
-                                <mat-card class="dashboard-card collection-card" *ngIf="collection">
-                                    <div class="col-header">
-                                        <div class="col-title">{{colTitle}}</div>
-                                        <div class="col-total">{{collection.total}}</div>
+                                        <!-- //progress? -->
+
+                                        <!-- <div class="discharge-card">
+                                            <div class="card-header">
+                                                <p>DISCOUNT APPROVAL</p>
+                                                <span class="total-badge">Total: 26</span>
+                                            </div>
+
+                                            <div class="progress-bar">
+                                                <div class="progress-fill"></div>
+                                            </div>
+
+                                            <div class="status-row">
+                                                <div class="status-item approved">
+                                                    <span class="icon">✅</span>
+                                                    <span class="number">20</span>
+                                                    <span class="label">Approved</span>
+                                                </div>
+
+                                                <div class="status-item pending">
+                                                    <span class="icon">⏳</span>
+                                                    <span class="number">6</span>
+                                                    <span class="label">Pending</span>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+
+                                        <!-- <div class="discharge-card" style="padding-left: 10px;">
+                                            <div class="card-header">
+                                                <p>REFUND APPROVAL</p>
+                                                <span class="total-badge">Total: 26</span>
+                                            </div>
+
+                                            <div class="progress-bar">
+                                                <div class="progress-fill"></div>
+                                            </div>
+
+                                            <div class="status-row">
+                                                <div class="status-item approved">
+                                                    <span class="icon">✅</span>
+                                                    <span class="number">20</span>
+                                                    <span class="label">Approved</span>
+                                                </div>
+
+                                                <div class="status-item pending">
+                                                    <span class="icon">⏳</span>
+                                                    <span class="number">6</span>
+                                                    <span class="label">Pending</span>
+                                                </div>
+                                            </div>
+                                        </div> -->
                                     </div>
-                                    <div class="col-breakdown" *ngIf="collection.cash">
-                                        <div class="col-item">
-                                            <mat-icon>account_balance_wallet</mat-icon>
-                                            <div class="col-item-text">
-                                                <div class="ci-val">{{collection.cash}}</div>
-                                                <div class="ci-lbl">CASH</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-item">
-                                            <mat-icon>credit_card</mat-icon>
-                                            <div class="col-item-text">
-                                                <div class="ci-val">{{collection.card}}</div>
-                                                <div class="ci-lbl">CARD</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-item">
-                                            <mat-icon>phone_iphone</mat-icon>
-                                            <div class="col-item-text">
-                                                <div class="ci-val">{{collection.upi}}</div>
-                                                <div class="ci-lbl">UPI</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-item">
-                                            <mat-icon>account_balance</mat-icon>
-                                            <div class="col-item-text">
-                                                <div class="ci-val">{{collection.bank}}</div>
-                                                <div class="ci-lbl">BANK TRANSFER</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-breakdown" *ngIf="!collection.cash">
-                                        <div class="col-trend-wrap">
-                                            <div class="card-trend trend-down"><mat-icon>trending_down</mat-icon>
-                                                <span>{{collection.trend}}</span>
-                                            </div>
-                                            <div class="card-trend-diff">{{collection.trendDiff}}</div>
-                                        </div>
-                                        <div class="col-sub-total">{{collection.subtitle}}</div>
-                                    </div>
-                                </mat-card>
-                            </div>
-
-                        </div>
-
-                        <div class="charts-row1" *ngIf="Ipflag">
-
-                            <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
-
-                                <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
-
-                                    <mat-card-content>
-                                        <div class="chart-container">
-                                            <div class="chart-header">
-                                                <h3 class="chart-title">IP Payments Overview</h3>
-
-                                            </div>
-
-                                            <ngx-charts-bar-vertical [results]="paymentDataIP" [scheme]="colorScheme1"
-                                                [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
-                                                [showXAxisLabel]="true" [showYAxisLabel]="true"
-                                                [xAxisLabel]="'Payment Type'" [yAxisLabel]="'Amount Received'"
-                                                [showGridLines]="true" [roundDomains]="false">
-                                            </ngx-charts-bar-vertical>
-                                        </div>
-                                    </mat-card-content>
-                                </mat-card>
-                            </div>
-
-                            <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
-
-                                <mat-card class="chart-card" style="padding-bottom: 30px;">
-
-                                    <mat-card-content>
-                                        <div class="chart-container">
-                                            <div class="chart-header">
-                                                <h3 class="chart-title">7-Day Trends (Current Week)</h3>
-                                            </div>
-
-
-                                            <ngx-charts-line-chart [results]="trendSeriesOP" [scheme]="colorScheme"
-                                                [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
-                                                [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
-                                                [yAxisLabel]="'Count'">
-                                            </ngx-charts-line-chart>
-                                        </div>
-                                    </mat-card-content>
-                                </mat-card>
+                                </div>
                             </div>
 
 
-                            <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                <mat-card class="chart-card" style="padding-bottom: 30px;">
-                                    <mat-card-content>
-                                        <div class="chart-container">
-                                            <div class="chart-header">
-                                                <h3 class="chart-title">Patient Age Wise Overview</h3>
-                                            </div>
-                                            <div style="display: flex; align-items: center; justify-content: center;">
-                                                <canvas id="AgestatusPieChart"></canvas>
-                                            </div>
-                                        </div>
-                                    </mat-card-content>
-                                </mat-card>
-                            </div>
-
-                            <div fxFlex="calc(25% - 10px)" fxFlex.xs="100%" fxFlex.sm="100%">
-
-                                <mat-card class="chart-card" style="padding-bottom: 30px;">
-
-                                    <mat-card-content>
-                                        <div class="chart-container">
-                                            <div class="chart-header">
-                                                <h3 class="chart-title">Doctor Wise Count Summary</h3>
-
-                                            </div>
-                                            <div class="chart-container">
-
-                                                <canvas id="DrcountChart"></canvas>
-                                            </div>
-                                        </div>
-                                    </mat-card-content>
-                                </mat-card>
-                            </div>
                         </div>
                     </ng-template>
+
                     <ng-container
                         *ngTemplateOutlet="sectionTemplate; context: {title: 'In-Patient (IP)', subtitle: 'Today\'s IP admissions, discharges & billing', icon: 'hotel', headerColor: '#176ab4', cards: ipCards, collection: ipCollection, colTitle: 'IP COLLECTION'}"></ng-container>
 
+                    <div class="charts-row" *ngIf="selectedTabIndex === 2">
 
+                        <div fxFlex="calc(21% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                    <div class="dashboard-container gap-5" fxLayout="row wrap" fxLayoutGap="0px grid">
+                            <mat-card class="chart-card mat-elevation-z2" style="padding-bottom: 30px;">
 
+                                <mat-card-content>
+                                    <div class="chart-container">
+                                        <div class="chart-header">
+                                            <span class="chart-title">IP Payments Overview</span>
 
-                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%">
-                            <div class="chart-card-container">
+                                        </div>
 
-                                <mat-card>
-                                    <h5 class="table-title">IPD Department Wise Count</h5>
-                                    <mat-table matSort class="h-200 table-designed"
-                                        [dataSource]="dsDailyDepartmentCountList" [@animateStagger]="{value:'50'}"
-                                        style="overflow:auto; ">
-
-                                        <ng-container matColumnDef="DepartmentName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Department </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DepartmentName}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="Count">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Count </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.vCount}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayeddepColumns; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayeddepColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dsDailyDepartmentCountList!=null && dsDailyDepartmentCountList.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                </mat-card>
-                            </div>
+                                        <ngx-charts-bar-vertical [results]="paymentDataOP" [scheme]="colorScheme1"
+                                            [xAxis]="true" [yAxis]="true" [legend]="false" [showDataLabel]="true"
+                                            [showXAxisLabel]="true" [showYAxisLabel]="true"
+                                            [xAxisLabel]="'Payment Type'" [yAxisLabel]="'Amount Received'"
+                                            [showGridLines]="true" [roundDomains]="false">
+                                        </ngx-charts-bar-vertical>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
-                        <div fxFlex="20" fxFlex.xs="100%" fxFlex.sm="25%">
-                            <div class="chart-card-container">
-                                <mat-card>
 
-                                    <h5 class="table-title">IPD Doctor Wise Count</h5>
+                        <div fxFlex="calc(29% -3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                    <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyDocBillList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+                            <mat-card class="chart-card" style="padding-bottom: 30px;">
 
-                                        <ng-container matColumnDef="DoctorName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Doctor </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DoctorName}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="Count">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Count </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.vCount}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedDocBillColumns; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedDocBillColumns;"
-                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                            appHighlight></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dsDailyDocBillList!=null && dsDailyDocBillList.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                </mat-card>
-                            </div>
+                                <mat-card-content>
+                                    <div class="chart-container">
+                                        <div class="chart-header">
+                                            <span class="chart-title">Trends of Admission(Current Week)</span>
+                                        </div>
+                                        <ngx-charts-line-chart [results]="trendSeries" [scheme]="colorScheme"
+                                            [autoScale]="true" [xAxis]="true" [yAxis]="true" [legend]="true"
+                                            [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="'Day'"
+                                            [yAxisLabel]="'Count'">
+                                        </ngx-charts-line-chart>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
-                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                            <div class="chart-card-container">
-                                <mat-card>
 
-                                    <h5 class="table-title">IPD Count</h5>
 
-                                    <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyCountList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+                        <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                        <ng-container matColumnDef="OldPatient">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Old Patient </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.OldPatientCount}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="NewPatient">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                New Patient </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.NewPatientCount}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="ReferPatient">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Cross Consultant </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.CrossConsultantPatCount}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="Company">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Company </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.CompanyPatientCount}}
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedColumns; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                            [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dsDailyCountList!=null && dsDailyCountList.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                </mat-card>
-                            </div>
+                            <mat-card class="chart-card" style="padding-bottom: 30px;">
+                                <mat-card-content>
+                                    <div class="chart-container">
+                                        <div class="chart-header">
+                                            <span class="chart-title">Admission Age Wise Overview</span>
+                                        </div>
+                                        <div class="chart-container">
+                                            <canvas id="AgestatusPieChartOP"></canvas>
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
-                            <div class="chart-card-container">
-                                <mat-card>
-                                    <h5 class="table-title">IPD Department Wise Bill</h5>
 
-                                    <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyDepBillList"
-                                        [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+                        <div fxFlex="calc(25% - 3px)" fxFlex.xs="100%" fxFlex.sm="100%">
 
-                                        <ng-container matColumnDef="DepartmentName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Department </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.DepartmentName}}
-                                            </mat-cell>
-                                        </ng-container>
+                            <mat-card class="chart-card" style="padding-bottom: 30px;">
 
-                                        <ng-container matColumnDef="Amount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Amount </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                {{contact.BillAmount | currency:'INR' :'symbol' :'2.2-2'}}
-                                            </mat-cell>
-                                        </ng-container>
+                                <mat-card-content>
+                                    <div class="chart-container">
+                                        <div class="chart-header">
+                                            <span class="chart-title">Doctor Wise Count Summary</span>
 
-                                        <ng-container matColumnDef="loading">
-                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                            </mat-header-cell>
-                                        </ng-container>
+                                        </div>
+                                        <div class="chart-container">
 
-                                        <ng-container matColumnDef="noData">
-                                            <mat-footer-cell *matFooterCellDef colspan="6">
-                                                no data found...
-                                            </mat-footer-cell>
-                                        </ng-container>
-
-                                        <mat-header-row class="accent"
-                                            *matHeaderRowDef="displayedDepBillColumns; sticky: true">
-                                        </mat-header-row>
-                                        <mat-row *matRowDef="let contact; columns: displayedDepBillColumns;"
-                                            class="contact" [@animate]="{value:'*',params:{y:'100%'}}"
-                                            appHighlight></mat-row>
-                                        <mat-footer-row *matFooterRowDef="['loading']"
-                                            [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                        </mat-footer-row>
-                                        <mat-footer-row *matFooterRowDef="['noData']"
-                                            [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
-                                        </mat-footer-row>
-                                    </mat-table>
-                                </mat-card>
-                            </div>
+                                            <canvas id="DrcountChartOP"></canvas>
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
                         </div>
                     </div>
                 </div>
 
+                <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
+
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+
+                            <mat-card>
+                                <span class="table-title">Department Wise Registartion Count</span>
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDepartmentCountList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="DepartmentName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="350">
+                                            Department </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="350 ellipsis">
+                                            {{contact.DepartmentName}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Count">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Count </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DeptCount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="2">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayeddepColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayeddepColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyDepartmentCountList!=null && dsDailyDepartmentCountList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 250px; min-width: 250px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DeptTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="20" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+
+                                <span class="table-title">Doctor Wise Count</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDocBillList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="200">
+                                            Doctor </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="200 ellipsis">
+                                            {{contact.DoctorName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Count">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Count </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DocPatientCount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedDocBillColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedDocBillColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyDocBillList!=null && dsDailyDocBillList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 200px; min-width: 200px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DocTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+
+                                <span class="table-title">Admission Count</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyCountList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="OldPatient">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Old </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.OldPatient}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="NewPatient">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            New </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.NewPatient}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ReferPatient">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Referal </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.ReferPatient}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Company">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Company </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.Company}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyCountList!=null && dsDailyCountList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <!-- <div class="totals-label"
+                                            style="flex: 0 0 100px; min-width: 100px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div> -->
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ oldTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ NewTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CrossTotalPatient }}
+                                        </div>
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CompanyTotalPatient }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+                                <span class="table-title"> Department Wise Revenue</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDepBillList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="DepartmentName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="200">
+                                            Department </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="200 ellipsis">
+                                            {{contact.DepartmentName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Gross">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Gross </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.GrossAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Discount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Discount </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DiscountAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="Net">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Net Amt </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.NetAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedDepBillColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedDepBillColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 200px; min-width: 200px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptgross }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptdiscount }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptnet }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
 
             </mat-tab>
-            <mat-tab label="Pharmacy">
+
+            <mat-tab label="Pharmacy Overview">
                 <div class="dashboard-container">
                     <ng-template #sectionTemplate let-title="title" let-subtitle="subtitle" let-icon="icon"
                         let-cards="cards" let-collection="collection" let-headerColor="headerColor"
@@ -1243,7 +1537,7 @@
                                             <mat-icon>account_balance</mat-icon>
                                             <div class="col-item-text">
                                                 <div class="ci-val">{{collection.bank}}</div>
-                                                <div class="ci-lbl">BANK TRANSFER</div>
+                                                <div class="ci-lbl">BANK</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1256,6 +1550,44 @@
                                         </div>
                                         <div class="col-sub-total">{{collection.subtitle}}</div>
                                     </div>
+                                </mat-card>
+
+                                <mat-card class="dashboard-card1 collection-card" *ngIf="collection">
+                                    <div class="col-header">
+                                        <div class="col-title">Revenu Collection</div>
+                                        <div class="col-total">{{collection.total1}}</div>
+                                    </div>
+                                    <div class="col-breakdown" *ngIf="collection.Gross">
+                                        <div class="col-item">
+                                            <mat-icon>account_balance_wallet</mat-icon>
+                                            <div class="col-item-text">
+                                                <div class="ci-val">{{collection.Gross}}</div>
+                                                <div class="ci-lbl">Gross</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-item">
+                                            <mat-icon>credit_card</mat-icon>
+                                            <div class="col-item-text">
+                                                <div class="ci-val">{{collection.Discount}}</div>
+                                                <div class="ci-lbl">Discount</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-item">
+                                            <mat-icon>phone_iphone</mat-icon>
+                                            <div class="col-item-text">
+                                                <div class="ci-val">{{collection.Net}}</div>
+                                                <div class="ci-lbl">Net</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-item">
+                                            <mat-icon>account_balance</mat-icon>
+                                            <div class="col-item-text">
+                                                <div class="ci-val">{{collection.Outstanding}}</div>
+                                                <div class="ci-lbl">Outstanding</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </mat-card>
                             </div>
 
@@ -1339,7 +1671,7 @@
                                         </div>
                                         <div class="chart-container">
 
-                                            <canvas id="DrcountChart"></canvas>
+                                            <canvas id="DrcountChartPhar"></canvas>
                                         </div>
                                     </div>
                                 </mat-card-content>
@@ -1348,10 +1680,331 @@
                     </div>
                 </div>
 
+                  <div class="dashboard-container" fxLayout="row wrap" fxLayoutGap="0px grid">
+
+                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+
+                            <mat-card>
+                                <span class="table-title">Department Wise Registartion Count</span>
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDepartmentCountList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="DepartmentName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="350">
+                                            Department </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="350 ellipsis">
+                                            {{contact.DepartmentName}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Count">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Count </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DeptCount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="2">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayeddepColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayeddepColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyDepartmentCountList!=null && dsDailyDepartmentCountList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 250px; min-width: 250px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DeptTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="20" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+
+                                <span class="table-title">Doctor Wise Count</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDocBillList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="DoctorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="200">
+                                            Doctor </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="200 ellipsis">
+                                            {{contact.DoctorName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Count">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Count </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DocPatientCount}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedDocBillColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedDocBillColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyDocBillList!=null && dsDailyDocBillList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 200px; min-width: 200px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ DocTotalPatient }}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+
+                                <span class="table-title">Appointment Count</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyCountList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="OldPatient">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Old </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.OldPatient}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="NewPatient">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            New </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.NewPatient}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ReferPatient">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Referal </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.ReferPatient}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Company">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Company </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.Company}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyCountList!=null && dsDailyCountList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <!-- <div class="totals-label"
+                                            style="flex: 0 0 100px; min-width: 100px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div> -->
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ oldTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ NewTotalPatient }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CrossTotalPatient }}
+                                        </div>
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: center;">
+                                            {{ CompanyTotalPatient }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                    <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div class="chart-card-container">
+                            <mat-card>
+                                <span class="table-title"> Department Wise Revenue</span>
+
+                                <mat-table matSort class="h-200 data-table" [dataSource]="dsDailyDepBillList"
+                                    [@animateStagger]="{value:'50'}" style="overflow:auto; ">
+
+                                    <ng-container matColumnDef="DepartmentName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="200">
+                                            Department </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="200 ellipsis">
+                                            {{contact.DepartmentName}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Gross">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Gross </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.GrossAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Discount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Discount </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.DiscountAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="Net">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="80">
+                                            Net Amt </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="80">
+                                            {{contact.NetAmt | currency:'INR' :'symbol' :'2.2-2'}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                        </mat-header-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            no data found...
+                                        </mat-footer-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent"
+                                        *matHeaderRowDef="displayedDepBillColumns; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedDepBillColumns;" class="contact"
+                                        [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                                    </mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{'hide':!(dsDailyBillList!=null && dsDailyBillList.data.length==0)}">
+                                    </mat-footer-row>
+                                </mat-table>
+                                <div class="totals"
+                                    style="display: flex; width: 100%; min-width: 100%;background-color: rgb(188, 232, 247);">
+                                    <div style="display: flex; width: 100%; min-width: 100%;">
+
+                                        <div class="totals-label"
+                                            style="flex: 0 0 200px; min-width: 200px; font-weight: bold;padding-left: 10px;">
+                                            Total
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptgross }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptdiscount }}
+                                        </div>
+
+                                        <div class="totals-num"
+                                            style="flex: 0 0 80px; min-width: 80px; text-align: right;">
+                                            {{ Deptnet }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
 
             </mat-tab>
 
-            <mat-tab label="Procurement">
+            <mat-tab label="Procurement Overview">
                 <div class="dashboard-container">
 
                     <!-- New Dashboard Sections -->
@@ -1457,7 +2110,7 @@
                                             <mat-icon>account_balance</mat-icon>
                                             <div class="col-item-text">
                                                 <div class="ci-val">{{collection.bank}}</div>
-                                                <div class="ci-lbl">BANK TRANSFER</div>
+                                                <div class="ci-lbl">BANK</div>
                                             </div>
                                         </div>
                                     </div>

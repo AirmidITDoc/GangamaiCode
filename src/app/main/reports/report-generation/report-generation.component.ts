@@ -97,6 +97,7 @@ export class ReportGenerationComponent implements OnInit {
 
     autocompletestore: string = "Store";
     vstoreId = this._loggedUser.currentUserValue.user.storeId;
+    vunitId = this._loggedUser.currentUserValue.user.unitId;
 
     private transformer = (node: FoodNode, level: number) => {
         return {
@@ -175,6 +176,7 @@ export class ReportGenerationComponent implements OnInit {
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     ngOnInit(): void {
         console.log("IIIIDDDD:", this.vstoreId)
+        console.log("Hospital Id:", this.vunitId)
         this._activeRoute.paramMap.subscribe(params => {
             this.rid = ~~(params.get('rid') || 0);
         });
@@ -333,6 +335,7 @@ export class ReportGenerationComponent implements OnInit {
             this.FlaExpCategorySelected = true;
         if (controllerPermission.filter(x => x == "Hospital")?.length > 0)
             this.flagUnitSelected = true;
+        this._ReportService.userForm.get('HospitalId')?.setValue(this.vunitId);//default value set
         if (controllerPermission.filter(x => x == "Executive")?.length > 0)
             this.flagExecSelected = true;
         if (controllerPermission.filter(x => x == "LoginUser")?.length > 0)
