@@ -61,32 +61,37 @@
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
                     <mat-card fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" fxFlex>
-                            <div fxLayoutGap="4px">
-                                <airmid-dropdown label="DischargedDoc" formControlName="dischargedDocId"
-                                    [formGroup]="DischargeInsertForm" fxFlex
-                                    [validations]="getValidationMessages().dischargedDocId" [mode]="autocompletcondoc"
-                                    (SelectionChange)="docName($event)">
-                                </airmid-dropdown>
+                        <form [formGroup]="DischargeInsertForm">
+                            <div fxlayout="row" fxFlex>
+                                <div fxLayoutGap="4px">
+                                    <airmid-dropdown label="DischargedDoc" formControlName="dischargedDocId"
+                                        [formGroup]="DischargeInsertForm" fxFlex
+                                        [validations]="getValidationMessages().dischargedDocId"
+                                        [mode]="autocompletcondoc" (SelectionChange)="docName($event)">
+                                    </airmid-dropdown>
 
-                                <airmid-dropdown label="DischargeType" formControlName="dischargeTypeId"
-                                    [formGroup]="DischargeInsertForm" fxFlex
-                                    [validations]="getValidationMessages().dischargeTypeId"
-                                    [mode]="autocompletedichargetype" (selectopnChange)="selctdischargeType($event)">
-                                </airmid-dropdown>
+                                    <airmid-dropdown label="DischargeType" formControlName="dischargeTypeId"
+                                        [formGroup]="DischargeInsertForm" fxFlex
+                                        [validations]="getValidationMessages().dischargeTypeId"
+                                        [mode]="autocompletedichargetype"
+                                        (selectopnChange)="selctdischargeType($event)">
+                                    </airmid-dropdown>
 
-                                <airmid-dropdown label="Mode" formControlName="modeOfDischargeId"
-                                    [formGroup]="DischargeInsertForm" fxFlex (SelectionChange)="modeOfDischarge($event)"
-                                    [validations]="getValidationMessages().modeOfDischargeId" [mode]="autocompletemode">
-                                </airmid-dropdown>
+                                    <airmid-dropdown label="Mode" formControlName="modeOfDischargeId"
+                                        [formGroup]="DischargeInsertForm" fxFlex
+                                        (SelectionChange)="modeOfDischarge($event)"
+                                        [validations]="getValidationMessages().modeOfDischargeId"
+                                        [mode]="autocompletemode">
+                                    </airmid-dropdown>
 
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Comments</mat-label>
-                                    <input name="Comments" placeholder="Comments" matInput [(ngModel)]="vComments">
-                                </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Comments</mat-label>
+                                        <input name="Comments" placeholder="Comments" matInput [(ngModel)]="vComments">
+                                    </mat-form-field>
 
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </mat-card>
                 </div>
             </div>
@@ -126,7 +131,8 @@
         </div>
 
         <div class="note-row">
-            ⚠ The Pharmacy Due option is enabled at the user level. The patient cannot be discharged without pharmacy clearance. Please contact the pharmacy department to proceed with discharge.
+            ⚠ The Pharmacy Due option is enabled at the user level. The patient cannot be discharged without pharmacy
+            clearance. Please contact the pharmacy department to proceed with discharge.
         </div>
 
     </div>
