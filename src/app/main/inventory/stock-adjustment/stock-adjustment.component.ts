@@ -57,12 +57,14 @@ export class StockAdjustmentComponent implements OnInit {
     filteredoptionsItemName: Observable<string[]>;
 
     isLoading = true;
+    ApiUrl = ""
     isItemIdSelected: boolean = false;
     Addeditable: boolean = false;
     Dedueditable: boolean = false;
     Expeditable: boolean = false;
     Batcheditable: boolean = false;
     Rateeditable: boolean = false;
+    vStoreId: any = 0;
     // Landededitable: boolean = false;
 
 
@@ -97,6 +99,8 @@ export class StockAdjustmentComponent implements OnInit {
         this.StockUpdateForm = this.CreateStockUpdateFrom();
         this.StoreFrom.markAllAsTouched();
         this.getStockList();
+        this.vStoreId = this.accountService.currentUserValue.user.storeId;
+        this.ApiUrl = `ItemMaster/NewGetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
     }
 
     CreateBatchFrom() {
@@ -493,6 +497,7 @@ export class StockAdjustmentComponent implements OnInit {
     storeId = 0
     selectChangeStore(obj: any) {
         this.storeId = obj.value
+        this.ApiUrl = `ItemMaster/NewGetItemListForGRNOrPO?StoreId=${this.vStoreId}&ItemName=`
     }
 
     itemId = 0
