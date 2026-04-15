@@ -91,7 +91,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     serviceSelct = false
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     currency: any = '';
-    SetCashbydefault: boolean = false
+    SetCashbydefault: any = 0
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
@@ -195,7 +195,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         //this is for set bydefault cash 
         debugger
         const [setCashBydefaultId, setCashBydefault] = this._ConfigService.configParams.OpBillSetCash.split(":");
-        this.SetCashbydefault = setCashBydefaultId === "1";
+        this.SetCashbydefault = setCashBydefaultId ;
 
         this.OPFooterForm = this.CreateOPFooter();
         this.setupFormListener();
@@ -469,7 +469,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     //Footer Form
     CreateOPFooter() {
         debugger
-        const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay";
+      //  const paymentType = this.SetCashbydefault ? "CashPay" : "CreditPay";
+        const paymentType =  this.SetCashbydefault == 1 ? "CashPay" :  this.SetCashbydefault == 2 ? "PayOption" :   "CreditPay";
         return this.formBuilder.group({
             totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
