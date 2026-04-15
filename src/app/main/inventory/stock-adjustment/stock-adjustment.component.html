@@ -16,7 +16,7 @@
         <div class="layout-body-container center">
             <div fxLayout="column">
                 <div class="layout-card-container" style="height: 80px;">
-                    <form [formGroup]="StoreFrom" class="mat-error-fix">
+                    <form [formGroup]="StoreFrom" class="mat-error-fix resize-form-fields">
 
                         <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-8">
                             <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
@@ -30,12 +30,12 @@
 
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
 
-
                                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="StoreFrom"
                                         formControlName="ItemID" placeholderText="Item Name (enter 2 char)" fxFlex="60%"
-                                        ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                        ApiUrl={{ApiUrl}}
                                         (selectionChange)="selectChangeItem($event)" TextField="formattedText"
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
+                                        <!--  ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName=" -->
 
                                     <div class="action-button-container" style="margin-left: 20px;">
                                         <div class="button-row-group">
