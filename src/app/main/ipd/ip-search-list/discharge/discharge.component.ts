@@ -75,8 +75,11 @@ export class DischargeComponent implements OnInit {
         this.DischargeInsertForm = this.DischargeinsertForm();
         this.DischargeInsertForm.markAllAsTouched();
 
+        console.log("Value:", this.data.docNameId);
+        console.log("Form Value:", this.DischargeInsertForm.value);
+
         if (this.data) {
-            console.log("Page Date : ",this.data)
+            console.log("Page Date : ", this.data)
             this.vAdmissionId = this.data.admissionId;
             this.vBedId = this.data.bedId
             this.regId = this.data.regId
@@ -106,6 +109,8 @@ export class DischargeComponent implements OnInit {
                 this.DischargeInsertForm.get("admission.isDischarged")?.setValue(0)
             }
         }
+
+
 
         // console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
         // if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)
@@ -225,9 +230,9 @@ export class DischargeComponent implements OnInit {
         this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
         this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
         this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-        this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+            this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
         this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-        this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+            this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
 
         if (!this.DischargeInsertForm.invalid) {
             if (this.DischargeInsertForm.get("admission.isDischarged")?.value == 0) {
