@@ -20,10 +20,10 @@
             <form [formGroup]="myFilterform" class="header-right  resize-form-fields">
 
               <div class="date-filter-container">
-
+<!-- disabled -->
                 <mat-form-field appearance="outline">
                   <mat-label style="color: aliceblue;">Enter a date range</mat-label>
-                  <mat-date-range-input [rangePicker]="picker" disabled>
+                  <mat-date-range-input [rangePicker]="picker" >
                     <input matStartDate formControlName="fromDate" placeholder="Start date">
                     <input matEndDate formControlName="toDate" placeholder="End date">
                   </mat-date-range-input>
