@@ -432,15 +432,17 @@
 
                                     <ng-container *ngIf="flagstatusSelected">
                                         <div style="max-width: 265px;">
-                                            <!-- <airmid-autocomplete label="status" [formGroup]="_ReportService.userForm"
-                                                formControlName="status" placeholderText="Select status"
-                                                ApiUrl="Report/LabReportStatus/auto-complete?Keyword="
-                                                (selectionChange)="SelectedstatusObj($event)"
-                                                (onClearSelection)="clearstatus()">
-                                            </airmid-autocomplete> -->
                                             <airmid-dropdown label="Status" formControlName="status"
                                                 [formGroup]="_ReportService.userForm"
                                                 ApiUrl="Report/LabReportStatus/auto-complete?Keyword=%"></airmid-dropdown>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagItemCategorySelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-dropdown label="Item Category" formControlName="ItemCategory"
+                                                [formGroup]="_ReportService.userForm"
+                                                ApiUrl="Report/MItemCategorymaster/auto-complete?Keyword=%"></airmid-dropdown>
                                         </div>
                                     </ng-container>
                                     <!-- sales dd remaining -->

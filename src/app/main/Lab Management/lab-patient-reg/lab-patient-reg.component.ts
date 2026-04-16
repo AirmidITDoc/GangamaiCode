@@ -242,7 +242,7 @@ export class LabPatientRegComponent {
     allcolumns = [
         { heading: "-", key: "labAppointmentId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 165, type: 8 },
-        { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Reg No", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 240, type: gridColumnTypes.template },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 80 },
