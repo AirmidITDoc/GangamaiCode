@@ -1,0 +1,313 @@
+<!-- <div class="dashboard">
+    <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+        (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
+        [hourSegments]="6"></mwl-calendar-day-view>
+</div> -->
+
+<div class="mar-root">
+
+    <!-- ── ALERT STRIP ──────────────────────────────────────────── -->
+    <!-- <div class="alert-strip" *ngIf="alertQueue.length">
+        <div class="alert-item" *ngFor="let a of alertQueue">
+            <span class="alert-bell">🔔</span>
+            <div class="alert-body">
+                <strong>{{ a.medicine }}</strong>
+                <span>{{ a.text }}</span>
+            </div>
+            <button class="alert-x" (click)="dismissAlert(a.id)">✕</button>
+        </div>
+    </div> -->
+
+    <!-- ── TOPBAR ────────────────────────────────────────────────── -->
+    <header class="topbar">
+        <div class="topbar-brand">
+            <span class="brand-pill">MAR</span>
+            <div>
+                <div class="brand-title">Medicine Administration Record</div>
+                <div class="brand-sub">{{ patient.ward }} · {{ patient.bed }} · {{ viewDate | date:'EEEE, d MMM yyyy' }}
+                </div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="clock-chip">
+                <span class="clock-pulse"></span>
+                <span class="clock-val">{{ currentTime | date:'HH:mm' }}</span>
+            </div>
+            <button class="sidebar-toggle" (click)="sidebarCollapsed = !sidebarCollapsed"
+                [title]="sidebarCollapsed ? 'Expand panel' : 'Collapse panel'">
+                {{ sidebarCollapsed ? '▶' : '◀' }}
+            </button>
+        </div>
+    </header>
+
+    <!-- ── BODY ──────────────────────────────────────────────────── -->
+    <div class="mar-body" [class.sidebar-collapsed]="sidebarCollapsed">
+
+        <!-- ── LEFT SIDEBAR ─────────────────────────────────────────── -->
+        <aside class="sidebar" [class.collapsed]="sidebarCollapsed">
+            <div class="sidebar-inner" *ngIf="!sidebarCollapsed">
+
+                <!-- Patient Card -->
+                <!-- <div class="patient-card">
+                    <div class="patient-top">
+                        <div class="patient-avatar">{{ patient.name[0] }}</div>
+                        <div>
+                            <div class="patient-name">{{ patient.name }}</div>
+                            <div class="patient-mrn">{{ patient.mrn }}</div>
+                        </div>
+                    </div>
+                    <div class="patient-grid">
+                        <div class="pinfo"><span class="plabel">DOB</span><span>{{ patient.dob }}</span></div>
+                        <div class="pinfo"><span class="plabel">Age</span><span>{{ patient.age }}y</span></div>
+                        <div class="pinfo"><span class="plabel">Blood</span><span>{{ patient.bloodGroup }}</span></div>
+                        <div class="pinfo"><span class="plabel">Weight</span><span>{{ patient.weight }}</span></div>
+                        <div class="pinfo"><span class="plabel">Ward</span><span>{{ patient.ward }}</span></div>
+                        <div class="pinfo"><span class="plabel">Bed</span><span>{{ patient.bed }}</span></div>
+                    </div>
+                    <div class="pinfo full"><span class="plabel">Diagnosis</span><span>{{ patient.diagnosis }}</span>
+                    </div>
+                    <div class="pinfo full"><span class="plabel">Consultant</span><span>{{ patient.consultant }}</span>
+                    </div>
+                    <div class="allergy-row">
+                        <span class="allergy-label">⚠ Allergies</span>
+                        <span class="allergy-chip" *ngFor="let a of patient.allergies">{{ a }}</span>
+                    </div>
+                </div> -->
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-tile">
+                        <div class="st-num">{{ totalDoses }}</div>
+                        <div class="st-lab">Total</div>
+                    </div>
+                    <div class="stat-tile given">
+                        <div class="st-num">{{ givenCount }}</div>
+                        <div class="st-lab">Given</div>
+                    </div>
+                    <div class="stat-tile overdue">
+                        <div class="st-num">{{ overdueCount }}</div>
+                        <div class="st-lab">Overdue</div>
+                    </div>
+                    <div class="stat-tile due">
+                        <div class="st-num">{{ dueNowCount }}</div>
+                        <div class="st-lab">Due Now</div>
+                    </div>
+                    <div class="stat-tile upcoming">
+                        <div class="st-num">{{ upcomingCount }}</div>
+                        <div class="st-lab">Upcoming</div>
+                    </div>
+                    <div class="stat-tile ontime">
+                        <div class="st-num">{{ onTimeRate }}%</div>
+                        <div class="st-lab">On-Time</div>
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="section-heading">Filter by Category</div>
+                <div class="cat-filters">
+                    <button class="cat-btn" *ngFor="let cat of categories" [class.active]="selectedCategory === cat"
+                        (click)="filterCategory(cat)">
+                        {{ catIcon(cat) }} {{ cat }}
+                    </button>
+                </div>
+
+                <!-- Medicine List -->
+                <!-- <div class="section-heading">Medicines <span class="count-chip">{{ filteredMedicines.length }}</span>
+                </div>
+                <div class="med-list">
+                    <div class="med-card" *ngFor="let med of filteredMedicines; trackBy: trackById">
+                        <div class="med-card-header" [style.borderLeftColor]="med.color">
+                            <div class="med-card-name">
+                                {{ med.name }}
+                                <span class="route-pip" [class.iv]="med.route==='IV'">{{ med.route }}</span>
+                            </div>
+                            <div class="med-card-sub">{{ med.dose }} · {{ med.interval }}</div>
+                            <div class="med-card-inst" *ngIf="med.instructions">{{ med.instructions }}</div>
+                        </div>
+                        <div class="dose-chips">
+                            <button class="dose-chip" *ngFor="let dose of med.doses; trackBy: trackByDose"
+                                [class]="'dose-chip ' + dose.status" (click)="openFromSidebar(dose)"
+                                [title]="statusLabel(dose.status) + ' · ' + fmtTime(dose.scheduledTime)">
+                                <span class="dc-icon">{{ getStatusIcon(dose.status) }}</span>
+                                <span class="dc-time">{{ fmtTime(dose.scheduledTime) }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Legend -->
+                <div class="section-heading">Legend</div>
+                <div class="legend">
+                    <div class="leg-item"
+                        *ngFor="let s of ['given','overdue','due-now','upcoming','hold','cancelled','postponed']">
+                        <span class="leg-dot" [style.background]="getStatusColor(s)"></span>
+                        <span>{{ statusLabel(s) }}</span>
+                    </div>
+                </div>
+
+            </div><!-- /sidebar-inner -->
+        </aside>
+
+        <!-- ── CALENDAR MAIN ──────────────────────────────────────── -->
+        <main class="cal-main">
+
+            <!-- Calendar Toolbar -->
+            <div class="cal-toolbar">
+                <div class="cal-toolbar-left">
+                    <button class="nav-btn" (click)="viewDate = viewDate ">‹ Prev</button>
+                    <button class="today-btn" (click)="viewDate = currentTime">Today</button>
+                    <button class="nav-btn" (click)="viewDate = viewDate ">Next ›</button>
+                </div>
+                <div class="cal-toolbar-title">
+                    {{ viewDate | date:'EEEE, d MMMM yyyy' }}
+                    <span class="cal-count-tag">{{ calendarEvents.length }} doses</span>
+                </div>
+                <div class="cal-toolbar-right">
+                    <div class="cal-legend-mini">
+                        <span class="mini-dot" style="background:var(--given)"></span>Given
+                        <span class="mini-dot" style="background:var(--overdue)"></span>Overdue
+                        <span class="mini-dot" style="background:var(--due-now)"></span>Due Now
+                    </div>
+                </div>
+            </div>
+
+            <!-- mwl-calendar-day-view -->
+            <div class="cal-wrap">
+                <!-- AFTER — template ref passed via [eventTemplate] input binding -->
+                <mwl-calendar-day-view [viewDate]="viewDate" [events]="calendarEvents" [dayStartHour]="0"
+                    [dayEndHour]="23" [hourSegments]="2" [hourSegmentHeight]="90" 
+                    [eventTemplate]="myEventTpl" (eventClicked)="eventClicked($event)"
+                    (hourSegmentClicked)="checkAlerts()">
+                </mwl-calendar-day-view>
+
+                <!-- Template defined OUTSIDE the component tag -->
+                <ng-template #myEventTpl let-weekEvent="weekEvent" let-eventClicked="eventClicked">
+                    <div class="custom-cal-event" [class]="'cal-ev-' + weekEvent.event.meta?.status"
+                        (click)="eventClicked.emit({ sourceEvent: $event })">
+
+                        <div class="ce-bar" [style.background]="weekEvent.event.color?.primary"></div>
+
+                        <div class="ce-body">
+                            <div class="ce-top-row">
+                                <span class="ce-icon">{{ getStatusIcon(weekEvent.event.meta?.status) }}</span>
+                                <span class="ce-name">{{ weekEvent.event.meta?.medicineName }}</span>
+                                <span class="ce-route" [class.iv]="weekEvent.event.meta?.route === 'IV'">
+                                    {{ weekEvent.event.meta?.route }}
+                                </span>
+                                <span class="ce-dose-no">#{{ weekEvent.event.meta?.doseNumber }}</span>
+                            </div>
+
+                            <div class="ce-generic">
+                                {{ weekEvent.event.meta?.genericName }} · {{ weekEvent.event.meta?.dose }}
+                            </div>
+
+                            <div class="ce-time-row">
+                                <span class="ce-time">🕐 {{ fmtTime(weekEvent.event.meta?.scheduledTime) }}</span>
+                                <span class="ce-freq">{{ weekEvent.event.meta?.frequency }}</span>
+                            </div>
+
+                            <div class="ce-instructions" *ngIf="weekEvent.event.meta?.instructions">
+                                📋 {{ weekEvent.event.meta?.instructions }}
+                            </div>
+
+                            <div class="ce-status-row">
+                                <span class="ce-status-tag"
+                                    [style.background]="getStatusBg(weekEvent.event.meta?.status)"
+                                    [style.color]="getStatusColor(weekEvent.event.meta?.status)">
+                                    {{ statusLabel(weekEvent.event.meta?.status) }}
+                                </span>
+                                <span class="ce-given-info"
+                                    *ngIf="weekEvent.event.meta?.status === 'given' && weekEvent.event.meta?.givenTime">
+                                    ✓ {{ fmtTime(weekEvent.event.meta.givenTime) }} · {{ weekEvent.event.meta.givenBy }}
+                                </span>
+                                <span class="ce-remark" *ngIf="weekEvent.event.meta?.remark">
+                                    "{{ weekEvent.event.meta?.remark }}"
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+
+        </main>
+    </div><!-- /mar-body -->
+
+    <!-- ── DOSE POPUP ────────────────────────────────────────────── -->
+    <div class="overlay" *ngIf="popup.visible" (click)="closePopup()">
+        <div class="popup" (click)="$event.stopPropagation()">
+
+            <div class="popup-header" [style.background]="getStatusColor(popup.event?.meta?.status)">
+                <div class="popup-header-content">
+                    <div class="ph-icon">{{ getStatusIcon(popup.event?.meta?.status) }}</div>
+                    <div>
+                        <div class="ph-name">
+                            {{ popup.event?.meta?.medicineName }}
+                            <span class="ph-route" [class.iv]="popup.event?.meta?.route === 'IV'">{{
+                                popup.event?.meta?.route }}</span>
+                        </div>
+                        <div class="ph-detail">
+                            {{ popup.event?.meta?.dose }} · {{ popup.event?.meta?.frequency }} · Dose #{{
+                            popup.event?.meta?.doseNumber }}
+                        </div>
+                        <div class="ph-meta">
+                            📅 Scheduled: <strong>{{ popup.event?.meta?.scheduledTime | date:'HH:mm' }}</strong>
+                            &nbsp;|&nbsp; 👤 {{ popup.event?.meta?.prescribedBy || 'Dr. S. Patel' }}
+                        </div>
+                        <div class="ph-category">{{ popup.event?.meta?.category }}</div>
+                    </div>
+                </div>
+                <button class="popup-close" (click)="closePopup()">✕</button>
+            </div>
+
+            <!-- Current status -->
+            <div class="popup-status-row">
+                <span class="popup-status-label">Current Status:</span>
+                <span class="popup-status-badge" [style.background]="getStatusBg(popup.event?.meta?.status)"
+                    [style.color]="getStatusColor(popup.event?.meta?.status)">
+                    {{ getStatusIcon(popup.event?.meta?.status) }} {{ statusLabel(popup.event?.meta?.status) }}
+                </span>
+            </div>
+
+            <!-- Given info -->
+            <div class="popup-given-info" *ngIf="popup.event?.meta?.status === 'given'">
+                <span>✅ Given at {{ fmtTime(popup.event!.meta!.givenTime!) }}</span>
+                <span>👩‍⚕️ By {{ popup.event!.meta!.givenBy }}</span>
+            </div>
+
+            <!-- Instructions -->
+            <div class="popup-instructions" *ngIf="popup.event?.meta?.instructions">
+                📋 {{ popup.event!.meta!.instructions }}
+            </div>
+
+            <!-- Remark -->
+            <div class="popup-remark-wrap">
+                <label class="popup-label">Administration Remark</label>
+                <textarea class="popup-remark" [(ngModel)]="popup.remark"
+                    placeholder="Enter note: patient response, reason for delay, vitals check..."></textarea>
+            </div>
+
+            <!-- Actions -->
+            <div class="popup-label" style="padding: 0 20px 8px">Select Action:</div>
+            <div class="popup-actions">
+                <button class="pa-btn pa-given" (click)="applyAction('given')">
+                    <span>✅</span><span>Mark Given</span></button>
+                <button class="pa-btn pa-hold" (click)="applyAction('hold')">
+                    <span>⏸</span><span>Hold</span></button>
+                <button class="pa-btn pa-postponed" (click)="applyAction('postponed')">
+                    <span>⏩</span><span>Postpone 2h</span></button>
+                <button class="pa-btn pa-cancelled" (click)="applyAction('cancelled')">
+                    <span>🚫</span><span>Cancel</span></button>
+                <button class="pa-btn pa-remind" (click)="applyAction('upcoming')">
+                    <span>🔔</span><span>Remind Later</span></button>
+                <button class="pa-btn pa-overdue" (click)="applyAction('overdue')">
+                    <span>⚠️</span><span>Flag Overdue</span></button>
+            </div>
+
+            <div class="popup-footer">
+                <span class="popup-footer-note">🔐 Actions logged with nurse ID + timestamp</span>
+                <button class="popup-close-btn" (click)="closePopup()">Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>

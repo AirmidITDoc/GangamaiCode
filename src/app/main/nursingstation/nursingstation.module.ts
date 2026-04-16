@@ -60,6 +60,9 @@ const approtes: Routes = [
     {
         path: "inpatientreturn",
         loadChildren: () => import("./in-patient-return/in-patient-return.module").then((m) => m.InPatientReturnModule),
+    },{
+        path: "inpatientreturn1",
+        loadChildren: () => import("./nursingnote/medication-dashboard/medication-dashboard.module").then((m) => m.MedicationDashboardModule),
     },
     {
         path: "inpatientissue",
