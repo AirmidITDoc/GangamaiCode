@@ -54,10 +54,10 @@ export class BedTransferComponent implements OnInit {
     allcolumns = [
         { heading: "FromDate", key: "fromDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 200 },
         { heading: "Time", key: "fromTime", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "From WardName", key: "fromWardName", sort: true, align: "center", emptySign: 'NA' , width: 250},
+        { heading: "From WardName", key: "fromWardName", sort: true, align: "center", emptySign: 'NA', width: 250 },
         { heading: "To Date", key: "toDate", sort: true, align: "center", type: 6, emptySign: 'NA' },
         { heading: "Time", key: "toTime", sort: true, align: "center", emptySign: 'NA' },
-        { heading: "To WardName", key: "toWardName", sort: true, align: "center", emptySign: 'NA' , width: 250},
+        { heading: "To WardName", key: "toWardName", sort: true, align: "center", emptySign: 'NA', width: 250 },
         { heading: "Remark", key: "remark", sort: true, align: "center", emptySign: 'NA', width: 250 },
         { heading: "Added By", key: "userName", sort: true, align: "center", emptySign: 'NA' },
     ]
@@ -126,6 +126,14 @@ export class BedTransferComponent implements OnInit {
             }, 500);
         }
 
+    }
+    ngAfterViewInit() {
+        let filters = [
+            { fieldName: "AdmissionId", fieldValue: this.AdmissionId?.toString(), opType: OperatorComparer.Equals }
+        ];
+
+        this.grid1.gridConfig.filters = filters;
+        this.grid1.bindGridData();
     }
 
     createBedtransferInsert(): FormGroup {
