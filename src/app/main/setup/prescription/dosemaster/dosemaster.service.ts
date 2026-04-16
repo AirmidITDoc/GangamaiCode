@@ -31,14 +31,14 @@ export class DosemasterService {
             ],
             doseNameInEnglish: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
+                    Validators.required, Validators.maxLength(100),
                     Validators.pattern('^[a-zA-Z0-9 .&-]*$')
                 ]
             ],
             doseNameInMarathi: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9 .&-]*$')
+                    Validators.required, Validators.maxLength(100),
+                   // Validators.pattern('^[a-zA-Z0-9 .&-]*$')
                 ]
             ],
             doseQtyPerDay: ["",
