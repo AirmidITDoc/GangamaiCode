@@ -79,6 +79,7 @@ export class ExpensesComponent {
         { fieldName: "ExpHeadId", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "ExpType", fieldValue: this.type, opType: OperatorComparer.Equals },
         { fieldName: "ExpCategoryId", fieldValue: this.expCategoryId, opType: OperatorComparer.Equals },
+        { fieldName: "IsApproval", fieldValue: '2', opType: OperatorComparer.Equals },
     ]
 
     gridConfig: gridModel = {
@@ -127,6 +128,7 @@ export class ExpensesComponent {
                 { fieldName: "ExpHeadId", fieldValue: this.expId, opType: OperatorComparer.Equals },
                 { fieldName: "ExpType", fieldValue: this.type, opType: OperatorComparer.Equals },
                 { fieldName: "ExpCategoryId", fieldValue: String(this.expCategoryId), opType: OperatorComparer.Equals },
+                { fieldName: "IsApproval", fieldValue: '2', opType: OperatorComparer.Equals },
             ]
         }
         this.grid.gridConfig = this.gridConfig;

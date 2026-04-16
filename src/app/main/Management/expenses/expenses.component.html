@@ -1,5 +1,5 @@
 <div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto resize-form-fields"
     dynamicTableHeight>
     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center ">
@@ -29,22 +29,22 @@
         </ng-template> -->
 
         <ng-template #ColorCode let-element>
-  <div fxLayout="row" fxLayoutAlign="center center" class="symbol-wrapper">
-    <span *ngIf="element.expType == '0'" matTooltip="Cash" class="symbol large-symbol">💵</span>
-    <span *ngIf="element.expType == '1'" matTooltip="Cheque" class="symbol large-symbol">🧾</span>
-    <span *ngIf="element.expType == '2'" matTooltip="Online" class="symbol large-symbol">💳</span>
-  </div>
-</ng-template>
+            <div fxLayout="row" fxLayoutAlign="center center" class="symbol-wrapper">
+                <span *ngIf="element.expType == '0'" matTooltip="Cash" class="symbol large-symbol">💵</span>
+                <span *ngIf="element.expType == '1'" matTooltip="Cheque" class="symbol large-symbol">🧾</span>
+                <span *ngIf="element.expType == '2'" matTooltip="Online" class="symbol large-symbol">💳</span>
+            </div>
+        </ng-template>
 
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <button mat-icon-button matTooltip="Edit" (click)="addNewExpenses(element)"
-                    *ngIf="element.isCancelled==false">
+                    [disabled]="element.isCancelled==true && element.isApproval==true">
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-                    *ngIf="element.isCancelled==false">
+                    [disabled]="!element.isCancelled && !element.isApproval">
                     <mat-icon>cancel</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">

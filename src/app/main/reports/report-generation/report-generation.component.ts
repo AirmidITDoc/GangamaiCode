@@ -93,6 +93,7 @@ export class ReportGenerationComponent implements OnInit {
     reportsData: any = [];
     reportDetail: any;
     sIsLoading = '';
+    ItemCategory:any;
     selectedNode: ExampleFlatNode | null = null;
 
     autocompletestore: string = "Store";
@@ -146,6 +147,7 @@ export class ReportGenerationComponent implements OnInit {
     flagRegSelected: boolean = false;
     flagPatientTypeSelected: boolean = false;
     flagstatusSelected: boolean = false;
+    flagItemCategorySelected: boolean = false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -223,6 +225,10 @@ export class ReportGenerationComponent implements OnInit {
 
         this._ReportService.userForm.get('CompanyId')?.valueChanges.subscribe(val => {
             this.CompanyId = (val == 0) ? 0 : val
+        });
+
+        this._ReportService.userForm.get('ItemCategory')?.valueChanges.subscribe(val => {
+            this.ItemCategory = (val == 0) ? 0 : val
         });
 
     }
@@ -348,6 +354,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagPatientTypeSelected = true;
         if (controllerPermission.filter(x => x == "Status")?.length > 0)
             this.flagstatusSelected = true;
+         if (controllerPermission.filter(x => x == "ItemCategory")?.length > 0)
+            this.flagItemCategorySelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -564,6 +572,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('RegNo').setValue('');
         this._ReportService.userForm.get('PatientType').setValue('');
         this._ReportService.userForm.get('status').setValue('');
+        this._ReportService.userForm.get('ItemCategory').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -591,6 +600,7 @@ export class ReportGenerationComponent implements OnInit {
         this.PatientType = 0;
         this.status = 0;
         this.RegNo = 0;
+        this.ItemCategory=0;
         this.flagDoctorSelected = false;
         this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
@@ -622,6 +632,7 @@ export class ReportGenerationComponent implements OnInit {
         this.FlaExpHeadSelected = false;
         this.flagPatientTypeSelected = false;
         this.flagstatusSelected = false;
+        this.flagItemCategorySelected=false;
     }
 
     CallReportData(type) {
@@ -824,6 +835,12 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "status",
                     "fieldValue": this.status.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagItemCategorySelected)
+                paramFilterList.push({
+                    "fieldName": "ItemCategoryId",
+                    "fieldValue": this.ItemCategory.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   
