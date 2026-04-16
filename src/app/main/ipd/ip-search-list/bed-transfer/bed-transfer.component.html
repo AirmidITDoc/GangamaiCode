@@ -48,21 +48,14 @@
         </div>
     </div>
 
-    <div class="modal-card-container">
-        <mat-card>
-            <div class="patient-info-container" style="margin-top: 20px;">
-                <div class="patient-sub">
-                    <div class="patient-info-title border-bottom pb-2">
-                        <span class="h1">Current Bed Information:-{{ data.roomName}} | {{ data.className }}
-                        </span>
-                    </div>
-
-                </div>
-            </div>
-        </mat-card>
+    <div class="section-container">
+        <div class="section-title">
+            Current Bed Information:
+            <span class="highlight">
+                {{ data.roomName }} | {{ data.className }}
+            </span>
+        </div>
     </div>
-
-
 
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
