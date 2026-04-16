@@ -57,7 +57,8 @@ export class ReportService {
             LabPatientId:[""],
             RegNo:[""],
             PatientType:[""],
-            status:[""]
+            status:[""],
+            ItemCategory:[""]
             // 
         });
     }

@@ -157,6 +157,10 @@
                                     <button mat-icon-button matTooltip="Edit" (click)="onSave(element)">
                                         <mat-icon title="Edit">edit</mat-icon>
                                     </button>
+
+                                    <!-- <button mat-icon-button matTooltip="Push To RIS" (click)="getpushtoRIS(element)">
+                                        <mat-icon>shutter_speed</mat-icon>
+                                    </button> -->
                                     <!-- 
                                         [style.visibility]="element.isVerified==false ? 'visible' : 'hidden'" -->
 
@@ -261,7 +265,8 @@
 
                             </ng-template>
 
-                            <airmid-table [gridConfig]="gridConfig" #tblLabPatient :ShowFilter="false" :ShowButtons="false">
+                            <airmid-table [gridConfig]="gridConfig" #tblLabPatient :ShowFilter="false"
+                                :ShowButtons="false">
                             </airmid-table>
 
                         </div>

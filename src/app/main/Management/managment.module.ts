@@ -8,6 +8,10 @@ const appRoutes: Routes = [
         loadChildren: () => import("./expenses/expenses.module").then((m) => m.ExpensesModule),
     },
     {
+        path: "expenses-approval",
+        loadChildren: () => import("./expenses-approval/expenses-approval.module").then((m) => m.ExpensesApprovalModule),
+    },
+    {
         path: "doctorshare",
         loadChildren: () => import("./bill-list-doctorwise/billlist-doctorwise.module").then((m) => m.BilllistDoctorwiseModule),
     },

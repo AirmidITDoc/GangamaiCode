@@ -1,0 +1,309 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <button mat-icon-button class="sidebar-toggle" style="color: white;">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <button mat-icon-button class="user-icon">
+                        <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                            style="color: white;">account_box
+                        </mat-icon>
+                    </button>
+
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Expenses Approval
+                        List</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body modal-body-light" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <form [formGroup]="myFilterform">
+                            <div class="patient-search resize-form-fields">
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                        <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="grnPicker">
+                                                    <input matStartDate formControlName="start"
+                                                        placeholder="Start date">
+                                                    <input matEndDate formControlName="end" placeholder="End date"
+                                                        (dateChange)="GetExpeList()">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="grnPicker"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #grnPicker></mat-date-range-picker>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <airmid-dropdown label="Expenses Name" formControlName="ExpensenId"
+                                            [formGroup]="myFilterform" [mode]="autocompleteExpensen"
+                                            (selectionChange)="ListView1($event)">
+                                        </airmid-dropdown>
+
+                                        <airmid-dropdown label="Expenses Category" formControlName="expCategoryId"
+                                            [formGroup]="myFilterform" [mode]="autocompleteExpensenCategory"
+                                            (selectionChange)="ListView2($event)">
+                                        </airmid-dropdown>
+
+                                        <div fxLayout="column" fxLayoutAlign="start start">
+
+                                            <div fxFlex fxLayout="column">
+                                                <mat-radio-group name="expType" fxLayout="column"
+                                                    [formGroup]="myFilterform" formControlName="expType"
+                                                    (change)="onChangeFirst()" style="padding: 6px;" class="gap-4">
+                                                    <div fxLayout="row">
+                                                        <mat-radio-button value="3">ALL</mat-radio-button>
+                                                        <mat-radio-button value="0">Cash</mat-radio-button>
+                                                        <mat-radio-button value="1">Cheque</mat-radio-button>
+                                                        <mat-radio-button value="2">Online</mat-radio-button>
+                                                    </div>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutAlign="start start">
+
+                                            <div fxFlex fxLayout="column">
+                                                <mat-radio-group name="approvalStatus" fxLayout="column"
+                                                    [formGroup]="myFilterform" formControlName="approvalStatus"
+                                                    (change)="onChangeFirst()" style="padding: 6px;" class="gap-4">
+                                                    <div fxLayout="row">
+                                                        <mat-radio-button value="2">ALL</mat-radio-button>
+                                                        <mat-radio-button value="1">Approval</mat-radio-button>
+                                                        <mat-radio-button value="0">Not Approval</mat-radio-button>
+                                                    </div>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+
+                                        <div class="action-buttons" style="padding: 10px;">
+
+                                            <button mat-raised-button class="search-button" (click)="onChangeFirst()"
+                                                matTooltip="search">
+                                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+                        <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
+                            class="airmid-table">
+
+                            <ng-container matColumnDef="CheckBox">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <mat-checkbox (change)="masterToggle()" [checked]="isAllSelected()"
+                                        [indeterminate]="isSomeSelected()" [disabled]="areAllRowsDisabled()">
+                                    </mat-checkbox>
+                                </th>
+
+                                <td mat-cell *matCellDef="let contact">
+                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                        (change)="$event ? selection.toggle(contact) : null"
+                                        *ngIf="!contact.isApproval  else noMLC"
+                                        [checked]="selection.isSelected(contact)"
+                                        [disabled]="isCheckboxDisabled(contact)">
+                                    </mat-checkbox>
+                                    <ng-template #noMLC>
+                                        <div
+                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                            <span>----</span>
+                                        </div>
+                                    </ng-template>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="datetime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-190">
+                                    Expense Date</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-190">
+                                    {{ contact.expDate + ' ' + contact.expTime }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="expCategoryName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Category Name</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{ contact.expCategoryName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="headName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-280">
+                                    Head Name</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-280 ellipsis"
+                                    [matTooltip]="contact.headName" matTooltipPosition="above">
+                                    {{ contact.headName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="personName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-280">
+                                    Person Name</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-280 ellipsis"
+                                    [matTooltip]="contact.personName" matTooltipPosition="above">
+                                    {{ contact.personName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="expAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    Expense Amt</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.expAmount}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="utrno">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    UTR No</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.utrno}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="narration">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-280">
+                                    Reason</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-280 ellipsis"
+                                    [matTooltip]="contact.narration" matTooltipPosition="above">
+                                    {{contact.narration}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="userName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    AddedBy</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.userName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Approvedby">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    ApprovedBy</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.approvalUserName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Approveddate">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                    ApprovedDate</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.approvalDate | date:'dd/MM/yyyy'}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
+                                    Actions
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    <button mat-icon-button (click)="OnCancel(contact)" matTooltip="Cancel"
+                                        [disabled]="contact.isCompleted == true">
+                                        <mat-icon color="warn">cancel</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container> -->
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                    <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent min-width-1000"
+                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element min-width-1000"
+                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                        </mat-table>
+
+                    </div>
+
+                    <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                        showFirstLastButtons>
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <div fxLayout="row" class="gap-8" fxLayoutAlign="end center">
+                <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
+                <div class="footer-navigation-container">
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                        <button class="btn btn-primary" (click)="openStatus()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Approval Form -->
+<ng-template #statusForm>
+    <mat-toolbar class="accent" style="width: 100%; height: 45px; justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" style="color: white;">account_box</mat-icon>
+            <span style="font-size: 16px;">Approval Reason</span>
+        </div>
+
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="service-table1 p-12" fxLayout="column" fxLayoutGap="16px">
+
+        <form [formGroup]="vExpApprovalFormGroup">
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Reason</mat-label>
+                <textarea rows="3" matInput formControlName="reason"></textarea>
+            </mat-form-field>
+        </form>
+
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px" class="p-12 border-top">
+        <!-- <form [formGroup]="vExpApprovalFormGroup">
+            <mat-checkbox formControlName="isApproval">
+                IsApproved
+            </mat-checkbox>
+        </form> -->
+        <div>
+
+        </div>
+        <div>
+            <button class="btn btn-danger-outline" [mat-dialog-close]="true" style="margin-right: 5px;">
+                Close
+            </button>
+            <button class="btn btn-primary" color="accent" (click)="OnSave()">
+                Save
+            </button>
+        </div>
+    </div>
+</ng-template>
