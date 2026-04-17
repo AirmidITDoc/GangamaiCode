@@ -10,6 +10,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr'; 
 import Swal from 'sweetalert2';
 import { SalesHospitalService } from '../../sales-hopsital-new/sales-hospital-new.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
  
 @Component({
   selector: 'app-get-prescription-returnlist',
@@ -48,43 +49,74 @@ export class GetPrescriptionReturnlistComponent {
             heading: "-", key: "Status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
             template: this.actionButtonTemplateType, width: 80
         },
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Time", key: "pTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Pre. NO", key: "ipPreId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Date", key: "presDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "Time", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "Pre. NO", key: "presNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 110, },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "Bed Name", key: "bedId", sort: true, align: 'left', emptySign: 'NA', width: 140, },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 140, }, 
         {
             heading: "Action", key: "action", align: "right", width: 70, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
+// {
+//     "presReId": 60122,
+//     "presNo": "13167",
+//     "presDate": "08/02/2026",
+//     "presTime": "  6:16PM",
+//     "toStoreId": 2,
+//     "addedby": 60192,
+//     "isActive": true,
+//     "isclosed": false,
+//     "regNo": "278",
+//     "patientName": "Mrs. Abbaprasad dddd Chougule",
+//     "bedName": "03",
+//     "roomName": "DELUXE SPECIAL ROOM",
+//     "ipdNo": "ER/225/2025",
+//     "admissionDate": "29/04/2025",
+//     "companyName": "",
+//     "tariffName": "ss",
+//     "age": "0",
+//     "genderName": "Female",
+//     "doctorId": 5,
+//     "doctorName": "Dr. Shrishal  Teli"
+// }
     AllColumnsDetails = [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Qty", key: "qtyPerDay", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 120 }
+        { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 120 }
+       // { heading: "Total Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 120 }
     ]
+//     {
+//     "presDetailsId": 60141,
+//     "presReId": 60117,
+//     "itemId": 3810,
+//     "batchNo": "GTF3180A",
+//     "batchExpDate": "2027-09-30T00:00:00",
+//     "qty": 4,
+//     "isClosed": false,
+//     "itemName": "AXCER 90MG TAB"
+// }
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
 
     gridConfig: gridModel = {
-        apiUrl: "Sales/Prescriptionheaderlist",
+        apiUrl: "SalesReturn/IPPrescriptionReturnHList",
         columnsList: this.AllColumns,
-        sortField: "IPPreId",
+        sortField: "PresReId",
         sortOrder: 0,
         filters: [
+            { fieldName: "PresReId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "ToStoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
             { fieldName: "FromDate", fieldValue: String(this.FormDate), opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: String(this.f_name), opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: String(this.ToDate), opType: OperatorComparer.Equals },
             { fieldName: "F_Name", fieldValue: String(this.f_name), opType: OperatorComparer.Equals },
             { fieldName: "L_Name", fieldValue: String(this.l_name), opType: OperatorComparer.Equals },
-            { fieldName: "IsStatus", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "StoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "IPPreId", fieldValue: "0", opType: OperatorComparer.Equals }
-        ]
+            { fieldName: "IsStatus", fieldValue: "0", opType: OperatorComparer.Equals } 
+        ] 
     }
     constructor(
         public _SalesService: SalesHospitalService,
@@ -93,6 +125,7 @@ export class GetPrescriptionReturnlistComponent {
         private _loggedService: AuthenticationService,
         public toastr: ToastrService,
         private _formBuilder: FormBuilder,
+           private commonService: PrintserviceService,
         public _dialogRef: MatDialogRef<GetPrescriptionReturnlistComponent>,
     ) { }
 
@@ -115,29 +148,24 @@ export class GetPrescriptionReturnlistComponent {
     }
     getSelectedRow(Obj) {
         this.SelectedObj = Obj
-        this.isShowDetailTable = true;
-        let patientType = 0;
-        let Op_ip_Id = Obj?.oP_IP_ID;
-        if (Obj.patientType == 'IP') {
-            Op_ip_Id = Obj?.ipMedID
-            patientType = 1
-        }
+        this.isShowDetailTable = true; 
         this.gridConfig1 = {
-            apiUrl: "Sales/PrescriptionDetaillist",
+            apiUrl: "SalesReturn/IPPrescriptionReturnDetailsList",
             columnsList: this.AllColumnsDetails,
-            sortField: "ItemID",
+            sortField: "PresReId",
             sortOrder: 0,
             filters: [
-                { fieldName: "OP_IP_Id", fieldValue: String(Op_ip_Id), opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: String(patientType), opType: OperatorComparer.Equals }
+                { fieldName: "PresReId", fieldValue: String(Obj.presReId), opType: OperatorComparer.Equals },
+                { fieldName: "ItemName", fieldValue:'%', opType: OperatorComparer.Equals }
             ]
         }
         this.grid1.gridConfig = this.gridConfig1;
         this.grid1.bindGridData();
     }
     ChangeeFilter() {
-        this.FormDate = this.datePipe.transform(this.PrescriptionReturnFrom.get('start').value, 'yyyy-MM-dd')
-        this.ToDate = this.datePipe.transform(this.PrescriptionReturnFrom.get('end').value, 'yyyy-MM-dd')
+        debugger
+        this.FormDate = this.datePipe.transform(this.PrescriptionReturnFrom.get('start').value, 'yyyy-MM-dd') || '1900-01-01'
+        this.ToDate = this.datePipe.transform(this.PrescriptionReturnFrom.get('end').value, 'yyyy-MM-dd') || '1900-01-01'
         this.IsStatus = this.PrescriptionReturnFrom.get('StatusType').value || 0
         this.StoreId = this._loggedService.currentUserValue.user.storeId || 0
         this.Reg_No = this.PrescriptionReturnFrom.get('RegNo').value || 0
@@ -146,24 +174,25 @@ export class GetPrescriptionReturnlistComponent {
 
         this.getHeaderDate();
     }
-    getHeaderDate() {
+    getHeaderDate() { 
         this.gridConfig = {
-            apiUrl: "Sales/Prescriptionheaderlist",
+            apiUrl: "SalesReturn/IPPrescriptionReturnHList",
             columnsList: this.AllColumns,
-            sortField: "IPPreId",
+            sortField: "PresReId",
             sortOrder: 0,
             filters: [
-                { fieldName: "FromDate", fieldValue: String(this.FormDate), opType: OperatorComparer.Equals },
-                { fieldName: "ToDate", fieldValue: String(this.ToDate), opType: OperatorComparer.Equals },
-                { fieldName: "F_Name", fieldValue: String(this.f_name), opType: OperatorComparer.Equals },
-                { fieldName: "L_Name", fieldValue: String(this.l_name), opType: OperatorComparer.Equals },
-                { fieldName: "IsStatus", fieldValue: String(this.IsStatus), opType: OperatorComparer.Equals },
-                { fieldName: "StoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
-                { fieldName: "Reg_No", fieldValue: String(this.Reg_No), opType: OperatorComparer.Equals },
-                { fieldName: "IPPreId", fieldValue: "0", opType: OperatorComparer.Equals }
-            ]
+            { fieldName: "PresReId", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "Reg_No", fieldValue: String(this.Reg_No), opType: OperatorComparer.Equals },
+            { fieldName: "ToStoreId", fieldValue: String(this.StoreId), opType: OperatorComparer.Equals },
+            { fieldName: "FromDate", fieldValue: String(this.FormDate), opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: String(this.ToDate), opType: OperatorComparer.Equals },
+            { fieldName: "F_Name", fieldValue: String(this.f_name), opType: OperatorComparer.Equals },
+            { fieldName: "L_Name", fieldValue: String(this.l_name), opType: OperatorComparer.Equals },
+            { fieldName: "IsStatus", fieldValue: String(this.IsStatus), opType: OperatorComparer.Equals } 
+            ] 
         }
-        //this.grid.bindGridData();
+            //  this.grid.gridConfig = this.gridConfig;
+            // this.grid.bindGridData();
     }
     dsItemDetList: any;
     GetPrescrpList() {
@@ -222,8 +251,7 @@ export class GetPrescriptionReturnlistComponent {
             console.log(this.Patientlist);
             this._dialogRef.close(this.Patientlist);
         });
-    }
-
+    } 
 
      Prescclose(element) {
             debugger
@@ -252,6 +280,11 @@ export class GetPrescriptionReturnlistComponent {
     onClose() {
         this.PrescriptionReturnFrom.reset();
         this._matDialog.closeAll();
+    }
+
+        viewgetIpprescriptionreturnReportPdf(response) {
+        console.log(response)
+        this.commonService.Onprint("PresReId", response.presReId, "NurIPprescriptionReturnReport");
     }
 }
 export class PriscriptionList {

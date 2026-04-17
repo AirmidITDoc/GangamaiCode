@@ -34,23 +34,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { MatTimepickerModule } from 'mat-timepicker';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
-import { NewTemplateComponent } from './new-template/new-template.component';
-import { NursingnoteComponent } from './nursingnote.component';
-import { NursingnoteService } from './nursingnote.service';
-import { MedicationDashboardComponent } from './medication-dashboard/medication-dashboard.component';
+import { MedicationDashboardComponent } from './medication-dashboard.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 const routes: Routes = [
     {
-        path: "",
-        component: NursingnoteComponent
-    }
+        path: "**",
+        component: MedicationDashboardComponent,
+    },
 ];
 
 @NgModule({
-    declarations: [NursingnoteComponent, NewTemplateComponent, MedicineSchedulerComponent],
+    declarations: [MedicationDashboardComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -90,18 +87,15 @@ const routes: Routes = [
         MatStepperModule,
         NgxMatSelectSearchModule,
         MatDatepickerModule,
+        //  NgMultiSelectDropDownModule.forRoot(),
         MatTooltipModule,
-        MatProgressSpinnerModule,
-        MatCardModule,
-        MatToolbarModule,
-        MatSlideToggleModule,
-        FuseSharedModule,
-        MatTimepickerModule,
-
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        })
     ],
     providers: [
         DatePipe,
-        NursingnoteService
     ]
 })
-export class NursingnoteModule { }
+export class MedicationDashboardModule { }

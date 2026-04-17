@@ -1893,6 +1893,7 @@
 
 
 
+  .mat-column-OldPatient,
   .mat-column-DeptCount,
   .mat-column-Count,
   .mat-column-DocPatientCount,
@@ -1902,6 +1903,8 @@
     flex: 1 1 auto;
     text-align: center !important;
     justify-content: center !important;
+     z-index: 10;
+    border-left: 2px solid #e0e0e0;
   }
 
 
@@ -1930,63 +1933,72 @@
   }
 
   //tab
- .custom-modern-tabs {
-  
-  .mat-mdc-tab-header {
-    background: #ffffff;
-    border-bottom: none;
-    padding: 8px 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-radius: 50px;   
-    background-color: #ebd6ff;        // Rounded container
-  }
+  .custom-modern-tabs {
 
-  .mat-mdc-tab {
-    margin: 0 6px;
-    border-radius: 50px;           // Pill Shape
-    padding: 12px 28px;
-    font-weight: 500;
-    color: #d5bbf9;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
+    .mat-mdc-tab-header {
+      background: #362c7f;
+      border-bottom: none;
+      padding: 8px 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-radius: 50px;
+      background-color: #afeef5; // Rounded container
 
-    &:hover {
-      background: #bc98f3;
-      color: #181527;
-      transform: translateY(-2px);
+
     }
-  }
 
-  // Active Tab - Different Shape & Color
-  .mat-mdc-tab.mat-mdc-tab-active {
-    background: linear-gradient(135deg, #7c4dff, #b388ff);  // Gradient Purple
-    color: white !important;
-    box-shadow: 0 6px 16px rgba(124, 77, 255, 0.3);
-    font-weight: bold;
+    .mat-mdc-tab {
+      margin: 0 6px;
+      border-radius: 50px; // Pill Shape
 
-    .mat-mdc-tab-label {
-      color: rgb(41, 3, 22);
+      color: #245969;
+      padding: 14px 28px;
+      cursor: pointer;
+    //  border-bottom: none;
+      margin-right: 4px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 1px solid #362c7f;
+      
+      border-radius: 50px;
+      box-shadow: 0 6px 16px rgba(54, 44, 127, 0.15);
+
+      &:hover {
+        background: #148f9f;
+        color: #181527;
+        transform: translateY(-2px);
+      }
+    }
+
+    // Active Tab - Different Shape & Color
+    .mat-mdc-tab.mat-mdc-tab-active {
+      background: linear-gradient(135deg, #101112, #b388ff); // Gradient Purple
+      color: white !important;
+      box-shadow: 0 6px 16px rgba(124, 77, 255, 0.3);
       font-weight: bold;
-      font-size: larger;
+
+
+      .mat-mdc-tab-label {
+        color: rgb(28, 10, 19);
+        font-weight: bold;
+        font-size: larger;
+      }
+    }
+
+    // Remove default underline
+    .mdc-tab-indicator__content--underline {
+      display: none !important;
+    }
+
+    // Optional: Add subtle inner glow
+    .mat-mdc-tab-active::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(251, 127, 218, 0.2);
+      border-radius: 50px;
+      opacity: 0.9;
     }
   }
-
-  // Remove default underline
-  .mdc-tab-indicator__content--underline {
-    display: none !important;
-  }
-
-  // Optional: Add subtle inner glow
-  .mat-mdc-tab-active::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50px;
-    opacity: 0.3;
-  }
-}
 }
 
 

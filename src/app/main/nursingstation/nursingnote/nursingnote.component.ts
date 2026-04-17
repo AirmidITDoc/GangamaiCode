@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 import { MedicineSchedulerComponent } from './medicine-scheduler/medicine-scheduler.component';
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { NursingnoteService } from './nursingnote.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-nursingnote',
@@ -149,6 +150,10 @@ export class NursingnoteComponent implements OnInit {
         filters: this.allFiltersOfDocNote
     }
 
+    onredirect(){
+         this._ActRoute.navigate(['/nursingstation/inpatientreturn1']);
+    }
+
     initializeGridConfig() {
         this.gridConfig = {
             apiUrl: "Nursing/NursingNoteList",
@@ -265,6 +270,7 @@ export class NursingnoteComponent implements OnInit {
         public toastr: ToastrService,
         public _matDialog: MatDialog,
         private commonService: PrintserviceService,
+        private _ActRoute: Router, private route: ActivatedRoute,
     ) { }
 
     ngOnInit(): void {

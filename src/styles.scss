@@ -27,6 +27,41 @@
     --app-primary-200: #{$primary-200};
     --app-primary-100: #{$primary-100};
     --app-primary-50: #{$primary-50};
+    --given: #10b981;
+    --given-bg: #ecfdf5;
+    --given-dark: #065f46;
+    --overdue: #ef4444;
+    --overdue-bg: #fef2f2;
+    --overdue-dark: #991b1b;
+    --due-now: #3b82f6;
+    --due-now-bg: #eff6ff;
+    --due-now-dark: #1e3a8a;
+    --upcoming: #94a3b8;
+    --upcoming-bg: #f8fafc;
+    --hold: #f59e0b;
+    --hold-bg: #fffbeb;
+    --cancelled: #6b7280;
+    --cancelled-bg: #f9fafb;
+    --postponed: #8b5cf6;
+    --postponed-bg: #f5f3ff;
+    --remind: #06b6d4;
+    --remind-bg: #ecfeff;
+
+    --primary: #0f172a;
+    --surface: #1e293b;
+    --accent: #3b82f6;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --muted: #64748b;
+    --shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 1px 2px rgba(0, 0, 0, .05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, .07), 0 2px 4px rgba(0, 0, 0, .06);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, .12), 0 4px 10px rgba(0, 0, 0, .08);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --font: 'DM Sans', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
 }
 
 .mat-card {
@@ -41,25 +76,26 @@
 .mat-form-field-wrapper {
     padding-bottom: 0.34375em;
 }
+
 // Balance Amount color code
 .positive-balance {
     background-color: lightcoral;
-  }
+}
 
-  // Formula Result color code
+// Formula Result color code
 .Result-Formula {
     background-color: rgb(243, 126, 126);
-  }
+}
 
-  // Balance Amount color code
+// Balance Amount color code
 .Help-Value {
     background-color: rgb(81, 240, 184);
-  }
+}
 
-  // Refund Amount color code
+// Refund Amount color code
 .positive-Refund {
-    background-color:  aquamarine;
-  }
+    background-color: aquamarine;
+}
 
 //notification stlyes
 
@@ -73,6 +109,7 @@
     // padding: 5px !important;
     padding: 0px !important;
 }
+
 //Radio button Size and Css
 .mat-radio-label-content {
     padding-left: 1px;
@@ -94,7 +131,7 @@
     background-color: rgb(209, 248, 209) !important;
 }
 
-.PathResult-Statuslow{
+.PathResult-Statuslow {
     background-color: rgb(231, 113, 188) !important;
 }
 
@@ -109,6 +146,7 @@
 html {
     height: 90% !important;
 }
+
 // body { margin: 0; zoom: 0.9; zoom: 90%; }
 // font-family: Roboto, sans-serif !important;
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif !important; } //zoom: 0.8; zoom: 85%;
@@ -147,6 +185,7 @@ html {
     color: white;
     cursor: pointer;
 }
+
 .close-button {
     width: 90px;
     font-size: 14px;
@@ -164,12 +203,14 @@ html {
     font-weight: 600;
     font-size: 17px;
 }
+
 .data_input {
     padding: 15px 2px 5px 2px;
     font-variant-caps: all-petite-caps;
     font-weight: bolder;
     font-size: 17px;
 }
+
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -208,6 +249,7 @@ html {
     border: 1px solid rgb(247, 97, 97);
     cursor: pointer;
 }
+
 .footer-btn:hover {
     background-color: rgb(247, 97, 97);
     color: white;
@@ -228,6 +270,7 @@ html {
 
     cursor: pointer;
 }
+
 .next-btn:hover {
     background-color: var(--app-primary);
     // border: 1px solid rgb(247, 97, 97);
@@ -248,13 +291,16 @@ body .accent {
     @include themed() {
         background-color: t($ngt-primary) !important;
         color: t($ngt-primary-text) !important;
+
         .mat-form-field {
             color: t($ngt-primary-text);
+
             .mat-form-field-wrapper {
                 .mat-form-field-flex {
-                    .mat-form-field-outline {
-                    }
+                    .mat-form-field-outline {}
+
                     .mat-form-field-infix {
+
                         // padding: 0.9em 0 0.9em 0;
                         .mat-select {
                             .mat-select-value {
@@ -262,18 +308,21 @@ body .accent {
                                     color: t($ngt-primary-light);
                                 }
                             }
+
                             .mat-select-arrow-wrapper {
                                 .mat-select-arrow {
                                     color: inherit;
                                 }
                             }
                         }
+
                         .mat-form-field-label-wrapper {
                             .mat-form-field-label {
                                 color: t($ngt-primary-light);
                             }
                         }
                     }
+
                     .mat-form-field-suffix {
                         .mat-datepicker-toggle {
                             svg {
@@ -283,17 +332,23 @@ body .accent {
                     }
                 }
             }
+
             &.mat-form-field-appearance-outline {
+
                 .mat-form-field-outline-thick,
                 .mat-form-field-outline {
+
                     .mat-form-field-outline-start,
                     .mat-form-field-outline-end,
                     .mat-form-field-outline-gap {
                         border-width: 1px;
                     }
+
                     color: t($ngt-primary-light);
                 }
+
                 &.mat-focused {
+
                     .mat-form-field-outline,
                     .mat-form-field-outline-thick {
                         color: t($ngt-primary-light);
@@ -302,9 +357,11 @@ body .accent {
             }
         }
     }
+
     // background-color: #0479b4 !important;
     // color: black !important;
 }
+
 // Button
 
 .footer-btn {
@@ -318,6 +375,7 @@ body .accent {
     border-color: rgb(247, 97, 97);
     cursor: pointer;
 }
+
 .footer-btn:hover {
     background-color: rgb(247, 97, 97);
     color: white;
@@ -328,14 +386,17 @@ body .accent {
 .patient-bill-info {
     display: flex;
 }
+
 .labels-h3 {
     font-size: 18px;
     font-weight: bold;
 }
+
 .labels-h6 {
     font-size: 16px;
     font-weight: bold;
 }
+
 .form-field-labels {
     font-size: 16px;
 }
@@ -344,10 +405,12 @@ fieldset {
     // border-color: #039be5;// #fff9f9;
     border-color: $primary-400; // #fff9f9;
 }
+
 .fieldset-div {
     // background-color: #191a1c21;
     background-color: inherit;
 }
+
 legend {
     padding: 10px;
     font-size: 15px;
@@ -363,16 +426,20 @@ legend {
 .patient-sub {
     flex-basis: 100%;
 }
+
 .flex-item-middle {
     width: 5px;
     margin-right: 8px;
 }
+
 .item-header {
     width: 200px;
 }
+
 .field-row {
     align-items: center;
 }
+
 .add-icon {
     width: 30px;
     height: 30px;
@@ -381,15 +448,18 @@ legend {
     display: flex;
     justify-content: center;
 }
+
 .enable-1-add {
     cursor: pointer;
     pointer-events: visible;
 }
+
 .disable-1-add,
 .disabled {
     pointer-events: none;
     // cursor: ar;
 }
+
 .remove-icon {
     width: 30px;
     height: 30px;
@@ -438,6 +508,7 @@ legend {
     letter-spacing: 1.3px;
     color: white;
 }
+
 // :root {
 //     --ae-gap: 5px;
 //     --ae-text-area-border: 1px solid #ddd;
@@ -459,3 +530,76 @@ legend {
 //     --ae-picker-option-active-bg-color: rgba(237, 237, 62, 0.9);
 //     --ae-picker-option-focused-bg-color: rgb(255, 255, 0);  
 //   }
+
+/* ── ANGULAR CALENDAR OVERRIDES ──────────────────────────────── */
+.cal-day-view {
+  background: transparent !important;
+  border: none !important;
+}
+.cal-day-view .cal-hour-rows {
+  border: 1px solid var(--border) !important;
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+}
+.cal-day-view .cal-hour {
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+.cal-day-view .cal-hour:nth-child(odd) {
+  background: #fafbfd !important;
+}
+.cal-day-view .cal-hour-segment {
+  border-top: 1px solid #f1f5f9 !important;
+}
+.cal-day-view .cal-hour-segment:hover {
+  background: #eff6ff !important;
+  cursor: pointer;
+}
+.cal-day-view .cal-time {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #64748b !important;
+  width: 52px !important;
+  padding: 4px 8px !important;
+}
+
+/* ── Event wrapper — remove all default styling ──────────────── */
+.cal-day-view .cal-event {
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08) !important;
+  /* CRITICAL: let height grow to fit content */
+  height: auto !important;
+  min-height: 130px !important;
+}
+
+/* ── Status background colours on the wrapper ────────────────── */
+.cal-day-view .cal-event.cal-event-given     { background: #f0fdf4 !important; }
+.cal-day-view .cal-event.cal-event-overdue   { background: #fef2f2 !important; }
+.cal-day-view .cal-event.cal-event-due-now   { background: #eff6ff !important; }
+.cal-day-view .cal-event.cal-event-hold      { background: #fffbeb !important; }
+.cal-day-view .cal-event.cal-event-cancelled { background: #f9fafb !important; opacity: 0.65; }
+.cal-day-view .cal-event.cal-event-postponed { background: #f5f3ff !important; }
+.cal-day-view .cal-event.cal-event-upcoming  { background: #f8fafc !important; }
+
+/* ── Custom event fills wrapper fully ────────────────────────── */
+.cal-day-view .cal-event .custom-cal-event {
+  height: 100%;
+  min-height: 130px;
+  display: flex;
+}
+
+/* ── Current time marker ─────────────────────────────────────── */
+.cal-day-view .cal-current-time-marker {
+  background: #ef4444 !important;
+  height: 2px !important;
+  opacity: .8;
+}
+.cal-day-view .cal-current-time-marker::before {
+  background: #ef4444 !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+}

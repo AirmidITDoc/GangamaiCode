@@ -32,7 +32,13 @@
                                                 (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                                 TextField="formattedText">
                                             </airmid-autocomplete>
-
+                                            <button #addbutton class="btn btn-primary btn-with-icon"
+                                                (click)="onredirect()">
+                                                <span class="btn-icon">
+                                                    <mat-icon> add </mat-icon>
+                                                </span>
+                                                <span>Go TO Drug Schedule Dashboard</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +50,8 @@
                                 <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
                                     <div class="patient-info-sales">
                                         <div class="patient-info-title border-bottom pb-1 mb-1">
-                                            <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                            <span class="h1 m-0" style="line-height: normal;">Patient
+                                                Information</span>
                                         </div>
                                         <div class="Ipd-patient-info w-100-p">
                                             <app-patient-information [uhidNo]="registerObj?.regNo"
@@ -518,7 +525,7 @@
                                                                 ValueField="presId" TextField="presTemplateName"
                                                                 ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=DischargeSummeryTemplate">
                                                             </airmid-dropdown>
-                                                         
+
                                                             <button mat-raised-button (click)="getDosemaster()">
                                                                 <mat-icon>add</mat-icon>
                                                                 Dose</button>

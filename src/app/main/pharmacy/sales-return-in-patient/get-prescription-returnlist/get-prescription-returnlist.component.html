@@ -18,27 +18,28 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
        <ng-template #actionButtonTemplateType let-element>
             <div fxLayout="row" fxLayoutAlign="space-between center">  
-                <mat-icon *ngIf="element.patientType == 'IP'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+                <!-- <mat-icon *ngIf="element.patientType == 'IP'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
                 <mat-icon *ngIf="element.patientType == 'OP'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
-                &nbsp;
+                &nbsp; -->
         
-                <mat-icon *ngIf="element.isClosed" matTooltip="isClosed" style="color: green;">check_circle</mat-icon>
-                <mat-icon *ngIf="!element.isClosed" matTooltip="Pending"
+                <mat-icon *ngIf="element.isclosed" matTooltip="isclosed" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="!element.isclosed" matTooltip="Pending"
                  style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
             </div>
         </ng-template>
         <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button matTooltip="Print">
-                    <mat-icon>print</mat-icon>
-                </button>
-                  <button mat-icon-button (click)="Prescclose(element)" matTooltip="Prescription Cancel"
+            <div fxLayout="row" fxLayoutAlign="center center"> 
+                   <button mat-icon-button (click)="viewgetIpprescriptionreturnReportPdf(element)" matTooltip="Prescription Retrun Print">
+                        <mat-icon title="Request Print">print</mat-icon>
+                    </button>
+
+                  <!-- <button mat-icon-button (click)="Prescclose(element)" matTooltip="Prescription Cancel"
                         *ngIf="element.isClosed==false">
                         <mat-icon title="Cancel Prescription" style="color: rgb(128, 0, 30);">cancel</mat-icon>
-                    </button>
+                    </button> -->
             </div>
         </ng-template> 
-         <!-- <airmid-table [gridConfig]="gridConfig" class="content h-100-p"  #grid  (onSelectRow)="getSelectedRow($event)">
+          <airmid-table [gridConfig]="gridConfig" class="content h-100-p"  #grid  (onSelectRow)="getSelectedRow($event)">
             <ng-container filters>
                 <form [formGroup]="PrescriptionReturnFrom" fxLayout="column">
             
@@ -46,7 +47,7 @@
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
                             <input matStartDate formControlName="start" placeholder="Start date">
-                            <input matEndDate formControlName="end" placeholder="End date" (dateChange)="ChangeeFilter()">
+                            <input matEndDate formControlName="end" placeholder="End date"   (dateChange)="ChangeeFilter()" >
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -82,7 +83,7 @@
                     </div>
                 </form>
             </ng-container>
-        </airmid-table> -->
+        </airmid-table>  
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">

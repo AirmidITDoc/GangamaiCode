@@ -70,9 +70,12 @@ export class CashlessCompanyDashboardComponent implements OnInit {
     // ===== Start Table Count Wise summary  =================
 
     allcolumns_CompanyWise = [
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 500 },
+        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Count", key: "patientCount", sort: true, align: "center", emptySign: 'NA' },
-        { heading: "Total Amount", key: "finalAmount", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Draft Bill", key: "draftBill", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Pharmacy Amt", key: "pharmacyAmount", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Final Amt", key: "finalAmount", sort: true, align: "center", emptySign: 'NA' },
+        { heading: "Remaining Amt", key: "remainingAmount", sort: true, align: "center", emptySign: 'NA' },
           {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButTemplate  // Assign ng-template to the column
