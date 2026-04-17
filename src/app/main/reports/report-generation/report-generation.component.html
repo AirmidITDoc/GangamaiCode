@@ -366,7 +366,7 @@
                                             </airmid-autocomplete> -->
 
                                             <airmid-dropdown label="Executive Name" formControlName="ExecutiveId"
-                                                [formGroup]="_ReportService.userForm"
+                                                [formGroup]="_ReportService.userForm" [readonly]="!isSuperAdmin"
                                                 ApiUrl="Report/MCompanyEmployeInfo/auto-complete?Keyword=%"></airmid-dropdown>
                                         </div>
                                     </ng-container>

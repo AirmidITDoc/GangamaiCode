@@ -1,5 +1,5 @@
 <!-- New -->
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container resize-form-fields">
     <!-- Modal header -->
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -153,7 +153,7 @@
                                                 [validations]="getValidationMessages().doctorId"
                                                 [mode]="autocompleteModedoctor" *ngIf="docflag">
                                             </airmid-dropdown>
-                                            
+
                                             <airmid-textbox label="BrowseDays" formControlName="isDateIntervalDays"
                                                 [formGroup]="myuserApprovalform" fxFlex="50%"
                                                 (keypress)="keyPressAlphanumeric($event)"
@@ -412,6 +412,18 @@
                                                             [value]="getInputFieldValue(element)"
                                                             (input)="setInputFieldValue(element, $event.target.value)" />
                                                     </mat-form-field>
+                                                </ng-container>
+
+                                               <ng-container *ngIf="
+                                                        element.accessValueName === 'IsExecutiveUserId' &&
+                                                        (element.IsInputField === true || element.accessValue === true)
+                                                    ">
+                                                    <airmid-dropdown label="Executive Name" formControlName="employeId"
+                                                        [formGroup]="myuserApprovalform" fxFlex="50%"
+                                                        ApiUrl="CompanyEmployeInfo/get-employe" ValueField="executiveId"
+                                                        TextField="fullName"
+                                                        (selectionChange)="getSelectedObjExecutive(element, $event)">
+                                                    </airmid-dropdown>
                                                 </ng-container>
                                             </mat-cell>
                                         </ng-container>
