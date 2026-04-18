@@ -68,6 +68,82 @@
     </div>
 
 </ng-template>
+
+<!-- //Admission Cancle -->
+<ng-template #admissionCancle>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Admission Cancel</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div class="center p-12 pb-56" style="border-radius: 4px;">
+                <!-- CONTENT -->
+                <div class="content-card">
+                    <form [formGroup]="AdmissionTaskForm">
+
+                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+
+
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+
+                                <mat-form-field appearance="outline" class="dateField">
+                                    <mat-label>{{dateLabel}}</mat-label>
+                                    <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter"
+                                        formControlName="AdmissionDate" readonly
+                                        (dateChange)="onChangeDate($event.value)">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"
+                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" class="timeField">
+                                    <mat-label>{{timeLabel}}</mat-label>
+                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="AdmissionTime"
+                                        [readonly]="true" (timeChange)="onChangeTime($event)"
+                                        [disableDialogOpenOnClick]="isDatePckrDisabled">
+
+                                    <mat-icon matSuffix
+                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                </mat-form-field>
+
+                                <!-- <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
+                                    [formGroup]="AdmissionTaskForm" [value]="vIPDNo">
+                                </airmid-textbox> -->
+
+                                  <airmid-textbox label="Reason" formControlName="Reason" fxFlex="47%"
+                                    [formGroup]="AdmissionTaskForm" [value]="Reason">
+                                </airmid-textbox>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="end">
+        <div class="next-div button-row-group" style="padding-right: 20px;">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" color="accent" (click)="AdmissionCancle()">
+                <span>Save</span>
+            </button>
+        </div>
+    </div>
+
+</ng-template>
 <!-- //Visitdate -->
 <ng-template #visitTable>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
@@ -491,10 +567,10 @@
                                             <mat-icon>meeting_room</mat-icon>
                                         </button>
 
+                                            <!-- *ngIf="IsChargesAmount==0 && IsBillGenerated==0" -->
                                         <button mat-icon-button color="warn" 
-                                            (click)="openAdmissiontask(contact)"
-                                            matTooltip="Admission Cancel"
-                                            *ngIf="IsChargesAmount==0 && IsBillGenerated==0">
+                                            (click)="openAdmissioncancletask(contact)"
+                                            matTooltip="Admission Cancel">
                                             <mat-icon>cancel</mat-icon>
                                         </button>
 

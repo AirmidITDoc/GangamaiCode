@@ -384,12 +384,14 @@ export class IPSearchListComponent implements OnInit {
             const dialogRef = this._matDialog.open(BedTransferComponent,
                 {
                     maxHeight: '95vh',
-                    width: '90%',
+                    width: '95%',
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
                 if (result) {
-                    that.grid.bindGridData();
+                    debugger
+                //     that.grid.bindGridData();
+                this.getfilterdata()
                 }
             });
         }
@@ -550,6 +552,7 @@ export class IPSearchListComponent implements OnInit {
         this.getfilterdata();
     }
     getfilterdata() {
+        debugger
         this.grid.gridConfig.filters = [
             { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
             { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },

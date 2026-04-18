@@ -109,7 +109,7 @@ export class AdministrationService {
     }
 
     public AdmissionCancel(data) {
-        return this._httpClient.PostData("", data)
+        return this._httpClient.PostData("Admission/Cancel", data)
     }
 
     public getDateTimeChange(employee) {

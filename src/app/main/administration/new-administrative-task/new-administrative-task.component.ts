@@ -31,6 +31,9 @@ export class NewAdministrativeTaskComponent {
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('Billdate') Billdate!: TemplateRef<any>;
     @ViewChild('visitTable') visitTable!: TemplateRef<any>;
+ @ViewChild('admissionCancle') admissionCancle!: TemplateRef<any>;
+
+    
 
 
     myForm: FormGroup;
@@ -213,7 +216,8 @@ export class NewAdministrativeTaskComponent {
             AdmissionTime: [''],
             start: [(new Date()).toISOString()],
             end: [(new Date()).toISOString()],
-            NewIpdNo: ['', Validators.required]
+            NewIpdNo: ['', Validators.required],
+            Reason:['']
         });
     }
 
@@ -445,7 +449,7 @@ export class NewAdministrativeTaskComponent {
         })
     }
 
-    AdmissionCancle(contact) {
+    AdmissionCancle() {
 
         Swal.fire({
             title: 'Do you want to cancel the Admission ',
@@ -459,7 +463,11 @@ export class NewAdministrativeTaskComponent {
             if (result.isConfirmed) {
 
                 const SubmitDate = {
-                    "admissionID": contact.VisAdmId
+                    "admissionId": this.AdmissionId,
+                    "isCancelledBy":this._loggedService.currentUserValue.userId,
+                    "isCancelledDateTime":this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd"),
+                   "isCancelled": 1,
+
                 }
                 console.log(SubmitDate)
                 this._AdministrativetaskService.AdmissionCancel(SubmitDate).subscribe(response => {
@@ -727,7 +735,26 @@ export class NewAdministrativeTaskComponent {
         return this.isDisableFuture ? d <= new Date() : true;
     };
 
+    
     openAdmissiontask(contact): void {
+
+        this.vIPDNo = contact.IPDNo
+        this.AdmissionId = contact.VisAdmId
+
+        this.AdmissionTaskForm.get('NewIpdNo').setValue(contact.IPDNo);
+        this.AdmissionTaskForm.get('AdmissionDate').setValue(contact.VisAdmTime);
+        // this.AdmissionTaskForm.get('AdmissionTime').setValue(contact.AdmissionDate,"HH:mm:ss")
+
+        this._matDialog.open(this.serviceTable, {
+            maxHeight: "55vh",
+            maxWidth: '90vh',
+
+        })
+        this.getOpPatientdata()
+    }
+
+
+       openAdmissioncancletask(contact): void {
 
         this.vIPDNo = contact.IPDNo
         this.AdmissionId = contact.VisAdmId
@@ -737,13 +764,14 @@ export class NewAdministrativeTaskComponent {
         // this.AdmissionTaskForm.get('AdmissionTime').setValue(contact.AdmissionDate,"HH:mm:ss");
 
 
-        this._matDialog.open(this.serviceTable, {
+        this._matDialog.open(this.admissionCancle, {
             maxHeight: "55vh",
             maxWidth: '90vh',
 
         })
         this.getOpPatientdata()
     }
+
 
     onChangeDate1(value) {
         if (value) {
