@@ -79,7 +79,7 @@
                                                     <div fxLayout="row">
                                                         <mat-radio-button value="2">ALL</mat-radio-button>
                                                         <mat-radio-button value="1">Approval</mat-radio-button>
-                                                        <mat-radio-button value="0">Not Approval</mat-radio-button>
+                                                        <mat-radio-button value="0">Pending</mat-radio-button>
                                                     </div>
                                                 </mat-radio-group>
                                             </div>
@@ -165,7 +165,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     Expense Amt</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.expAmount}}
+                                    {{ contact.expAmount | currency:'INR' }}
                                 </mat-cell>
                             </ng-container>
 
@@ -203,24 +203,23 @@
                             </ng-container>
 
                             <ng-container matColumnDef="Approveddate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-190">
                                     ApprovedDate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.approvalDate | date:'dd/MM/yyyy'}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-190">
+                                    {{ contact.approvalDate | date:'dd/MM/yyyy h:mm a' }}
                                 </mat-cell>
                             </ng-container>
 
-                            <!-- <ng-container matColumnDef="action" stickyEnd>
+                            <ng-container matColumnDef="action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                     Actions
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact">
-                                    <button mat-icon-button (click)="OnCancel(contact)" matTooltip="Cancel"
-                                        [disabled]="contact.isCompleted == true">
-                                        <mat-icon color="warn">cancel</mat-icon>
+                                    <button mat-icon-button matTooltip="Print" (click)="OnPrint(contact)">
+                                        <mat-icon>print</mat-icon>
                                     </button>
                                 </mat-cell>
-                            </ng-container> -->
+                            </ng-container>
 
                             <ng-container matColumnDef="loading">
                                 <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>

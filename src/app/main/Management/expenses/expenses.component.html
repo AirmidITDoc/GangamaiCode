@@ -44,7 +44,7 @@
                     <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-                    [disabled]="!element.isCancelled && !element.isApproval">
+                    [disabled]="element.isCancelled==true || element.isApproval==true">
                     <mat-icon>cancel</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
