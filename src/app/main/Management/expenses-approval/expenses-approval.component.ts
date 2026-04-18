@@ -271,8 +271,8 @@ export class ExpensesApprovalComponent {
     this.myFilterform.reset({
       expType: "3",
       approvalStatus: "0",
-      // start: [new Date().toISOString()],
-      // end: [new Date().toISOString()],
+      start: new Date(),
+      end: new Date(),
     });
   }
 
