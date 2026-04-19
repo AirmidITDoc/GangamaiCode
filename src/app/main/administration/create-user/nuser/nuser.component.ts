@@ -185,6 +185,21 @@ export class NUserComponent implements OnInit {
             // console.log("get Access data:", this.dsApprovalList.data)
             this.dsApprovalList.sort = this.sort;
             this.dsApprovalList.paginator = this.paginator;
+
+            // Set dropdown value after data load
+            this.dsApprovalList.data.forEach((element: any) => {
+                if (
+                    element.accessValueName === 'IsExecutiveUserId' &&
+                    element.accessValue === true
+                ) {
+                    // set value from API
+                    setTimeout(() => {
+                        this.myuserApprovalform.get('employeId')?.setValue(
+                            Number(element.accessInputValue)
+                        );
+                    }, 300);
+                }
+            });
         });
     }
 
@@ -216,7 +231,7 @@ export class NUserComponent implements OnInit {
                     value: String(item.unitId),
                     text: item.hospitalName
                 }))
-                debugger
+                // debugger
 
                 console.log("unit data:", this.RtrvUnitList)
                 const assignedunit = this.RtrvUnitList.filter(unit => {
@@ -353,7 +368,8 @@ export class NUserComponent implements OnInit {
             // extra fields
             // multipleUnitId: [[], [Validators.required]],
             // multipleStoreId: [[], [Validators.required]],
-            IsPharmacyBalClearnace: false
+            IsPharmacyBalClearnace: false,
+            employeId: [0]
 
         });
     }
@@ -435,6 +451,18 @@ export class NUserComponent implements OnInit {
         } else {
             element.accessValue = value;
         }
+        //When unchecked → reset dropdown + value
+        if (!value) {
+            // reset form control
+            this.myuserApprovalform.get('employeId')?.reset();
+
+            // clear stored value
+            if ('InputValue' in element) {
+                element.InputValue = false;
+            } else {
+                element.accessInputValue = 0;
+            }
+        }
     }
 
     getInputFieldValue(element: any): string {
@@ -446,6 +474,16 @@ export class NUserComponent implements OnInit {
             element.InputValue = value;
         } else {
             element.accessInputValue = value;
+        }
+    }
+
+    getSelectedObjExecutive(element: any, event: any): void {
+        debugger
+        const value = event?.executiveId;
+        if ('InputValue' in element) {
+            element.InputValue = String(value);
+        } else {
+            element.accessInputValue = String(value);
         }
     }
 
@@ -490,7 +528,7 @@ export class NUserComponent implements OnInit {
                 })
             }
             // this.myuserApprovalform1.removeControl('multipleUnitId')
-            // this.myuserApprovalform1.removeControl('multipleStoreId')
+            this.myuserApprovalform.removeControl('employeId')
             this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
             debugger
             const formData = { ...this.myuserApprovalform.value };

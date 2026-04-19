@@ -11,6 +11,7 @@ import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { ToastrService } from "ngx-toastr";
 import { Observable } from "rxjs";
 import { ReportService } from "./service/report-generation.service";
+import { ConfigService } from "app/core/services/config.service";
 
 
 interface FoodNode {
@@ -93,12 +94,15 @@ export class ReportGenerationComponent implements OnInit {
     reportsData: any = [];
     reportDetail: any;
     sIsLoading = '';
-    ItemCategory:any;
+    ItemCategory: any;
     selectedNode: ExampleFlatNode | null = null;
+
+    isSuperAdmin: any;
 
     autocompletestore: string = "Store";
     vstoreId = this._loggedUser.currentUserValue.user.storeId;
     vunitId = this._loggedUser.currentUserValue.user.unitId;
+    vExecutiveId: any;
 
     private transformer = (node: FoodNode, level: number) => {
         return {
@@ -159,10 +163,12 @@ export class ReportGenerationComponent implements OnInit {
         private _loggedUser: AuthenticationService,
         public toastr: ToastrService,
         private _activeRoute: ActivatedRoute,
+        public _ConfigService: ConfigService,
         private router: Router
     ) {
         this.UId = this._loggedUser.currentUserValue.userId;
         this.UserName = this._loggedUser.currentUserValue.userName;
+        this.isSuperAdmin = this._loggedUser.currentUserValue.user.isAdminMultiview;
         console.log(this.UId);
         this.router.routeReuseStrategy.shouldReuseRoute = () => {
             return false;
@@ -179,6 +185,10 @@ export class ReportGenerationComponent implements OnInit {
     ngOnInit(): void {
         console.log("IIIIDDDD:", this.vstoreId)
         console.log("Hospital Id:", this.vunitId)
+
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsExecutiveUserId');
+        this.vExecutiveId = access?.AccessInputValue;
+
         this._activeRoute.paramMap.subscribe(params => {
             this.rid = ~~(params.get('rid') || 0);
         });
@@ -339,11 +349,15 @@ export class ReportGenerationComponent implements OnInit {
             this.FlaExpHeadSelected = true;
         if (controllerPermission.filter(x => x == "ExpensesCategory")?.length > 0)
             this.FlaExpCategorySelected = true;
+
         if (controllerPermission.filter(x => x == "Hospital")?.length > 0)
             this.flagUnitSelected = true;
         this._ReportService.userForm.get('HospitalId')?.setValue(this.vunitId);//default value set
+
         if (controllerPermission.filter(x => x == "Executive")?.length > 0)
             this.flagExecSelected = true;
+        this._ReportService.userForm.get('ExecutiveId')?.setValue(this.vExecutiveId);
+
         if (controllerPermission.filter(x => x == "LoginUser")?.length > 0)
             this.flagLoginUserSelected = true;
         if (controllerPermission.filter(x => x == "PatientSearch")?.length > 0)
@@ -354,7 +368,7 @@ export class ReportGenerationComponent implements OnInit {
             this.flagPatientTypeSelected = true;
         if (controllerPermission.filter(x => x == "Status")?.length > 0)
             this.flagstatusSelected = true;
-         if (controllerPermission.filter(x => x == "ItemCategory")?.length > 0)
+        if (controllerPermission.filter(x => x == "ItemCategory")?.length > 0)
             this.flagItemCategorySelected = true;
         // 
     }
@@ -600,7 +614,7 @@ export class ReportGenerationComponent implements OnInit {
         this.PatientType = 0;
         this.status = 0;
         this.RegNo = 0;
-        this.ItemCategory=0;
+        this.ItemCategory = 0;
         this.flagDoctorSelected = false;
         this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
@@ -632,7 +646,7 @@ export class ReportGenerationComponent implements OnInit {
         this.FlaExpHeadSelected = false;
         this.flagPatientTypeSelected = false;
         this.flagstatusSelected = false;
-        this.flagItemCategorySelected=false;
+        this.flagItemCategorySelected = false;
     }
 
     CallReportData(type) {

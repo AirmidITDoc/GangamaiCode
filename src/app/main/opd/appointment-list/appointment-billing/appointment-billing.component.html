@@ -225,14 +225,14 @@
         <!-- Modal body -->
         <div class="modal-body" fusePerfectScrollbar>
             <div class="modal-body-container">
-                <div fxLayout="column" class="gap-8 h-100-p">
+                <div fxLayout="column" class="gap-4 h-100-p">
                     <div class="modal-card-container search-container">
                         <div class="patient-search-container input-error-hidden">
-                            <form [formGroup]="searchForm">
-                                <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
+                            <form [formGroup]="searchForm" class="resize-form-fields">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
                                     <!-- ApiUrl="OutPatient/auto-complete?Keyword=" 
                                         -->
-                                    <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No" #regIdfocus
+                                    <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No---" #regIdfocus
                                         [formGroup]="searchForm" formControlName="regId"
                                         placeholderText="Enter UHID / Patient Name / MobileNo " fxFlex="50%"
                                         ApiUrl="VisitDetail/search-patient-1?Keyword=" TextField="formattedText"
@@ -253,100 +253,20 @@
                             </form>
                         </div>
                     </div>
-                    <div class="modal-card-container">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex>
-                            <mat-card-content class="py-4">
-                                <div class="patient-info-sales my-8">
-                                    <div class="sales-patient-info-title">
-                                        <span style="font-weight: 700;">
-                                            Patient Information
-                                        </span>
-                                    </div>
-                                    <hr>
-                                    <div class="opd-patient-info" fxFlexFill fxLayout="row"
-                                        fxLayoutAlign="space-between center" class="patient-info">
-                                        <div class="patient-sub">
-                                            <div class="patient-info-row pt-8" fxLayout="row"
-                                                fxLayoutAlign="space-between">
-                                                <div fxLayout="column" fxLayoutGap="6px">
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">UHID No </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{patientDetail?.regNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Patient Name
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{PatientName}}
-                                                        </span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Doctor Name</span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{patientDetail?.doctorName}}</span>
-                                                    </div>
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="6px">
-
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">OPD No</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{patientDetail?.opdNo}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Age | Gender
-                                                        </span>
-                                                        <span>:</span>
-                                                        <!-- changed by raksha -->
-                                                        <!-- <span
-                                                            class="patient-col-value">{{patientDetail?.ageYear}}</span> -->
-                                                        <span
-                                                            class="patient-col-value">{{patientDetail?.ageYear}}Y|{{patientDetail?.ageMonth}}M|{{patientDetail?.ageDay}}D
-                                                            |</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Department</span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{patientDetail?.departmentName}}</span>
-                                                    </div>
-                                                </div>
-                                                <div fxLayout="column" fxLayoutGap="6px">
-
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Patient Type | Tarrif
-                                                        </span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value">{{patientDetail?.patientType}} |
-                                                            {{patientDetail?.tariffName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Company Name</span>
-                                                        <span>:</span>
-                                                        <span class="patient-col-value"
-                                                            style="background-color: orange;">{{patientDetail?.companyName}}</span>
-                                                    </div>
-                                                    <div class="patient-col">
-                                                        <span class="patient-col-key">Ref-Doctor Name</span>
-                                                        <span>:</span>
-                                                        <span
-                                                            class="patient-col-value">{{patientDetail?.refDoctorName}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
+                    <div class="patient-info-sales my-8">
+                        <app-patient-information [uhidNo]="RegNo" [patientName]="PatientName"
+                            [ipdNo]="patientDetail?.opdNo" [doctorName]="patientDetail?.doctorName"
+                            [departmentName]="DepartmentName"
+                            [ageString]="(AgeYear || 0) + 'Y|' + (patientDetail?.ageMonth || 0) + 'M|' + (patientDetail?.ageDay || 0) + 'D'"
+                            [patientType]="patientDetail?.patientType" [tariffName]="patientDetail?.tariffName"
+                            [companyName]="patientDetail?.companyName" [refDocName]="patientDetail?.refDoctorName">
+                        </app-patient-information>
                     </div>
                     <div class="modal-card-container">
                         <mat-card fxFlex.gt-sm="100%" fxFlex>
                             <mat-card-content>
-                                <form [formGroup]="chargeForm">
-                                    <div fxLayout="row" fxLayoutGap="5px">
+                                <form [formGroup]="chargeForm" class="resize-form-fields">
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
                                         <div fxFlex="13%" fxFlex.xs="13%" fxFlex.sm="13%">
                                             <airmid-dropdown label="Group Name" formControlName="GroupId"
                                                 [formGroup]="chargeForm"
@@ -437,376 +357,425 @@
                     <div class="modal-card-container" fxFlex>
                         <!-- <mat-card fxFlex.gt-sm="100%" fxFlex>
                             <mat-card-content class="py-4 h-100-p"> -->
-                                <div fxLayout="row" fxLayoutGap="6px" class="h-100-p">
-                                    <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                        <mat-card fxFlex.gt-sm="100%" fxFlex>
-                                            <mat-card-content class="py-4 h-100-p"> 
-                                                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class=" mat-tab-header-small dynamic-table-wrapper"
-                                                 style="width: 100%">
-                                                    <mat-tab label="Charges List">
-                                                        <div fxLayout="column" class="h-100-p">
-                                                            <div class="airmid-table-container">
-                                                                <mat-table #table matSort [dataSource]="dsChargeList" [@animateStagger]="{value:'50'}"
-                                                                   class="airmid-table table">
-                                
-                                                                    <ng-container matColumnDef="Status" sticky>
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                            class="w-90">Status</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" class="w-90">
-                                                                            <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="IsRadiology">
-                                                                                <img width="15px" height="8px" src="/assets/images/logos/radiology.png">
-                                                                            </mat-icon>
-                                                                            <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="IsPatholgy">
-                                                                                <img width="15px" height="9px" src="/assets/images/logos/pathology.png">
-                                                                            </mat-icon>
-                                                                            <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="Package Edit"
-                                                                                (click)="getPacakgeDetail(contact)">
-                                                                                <img width="15px" height="9px" src="/assets/images/logos/package.png">
-                                                                            </mat-icon>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <!-- <ng-container matColumnDef="Status">
+                        <div fxLayout="row" fxLayoutGap="6px" class="h-100-p">
+                            <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                    <mat-card-content class="py-4 h-100-p">
+                                        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
+                                            class=" mat-tab-header-small dynamic-table-wrapper" style="width: 100%">
+                                            <mat-tab label="Charges List">
+                                                <div fxLayout="column" class="h-100-p">
+                                                    <div class="airmid-table-container">
+                                                        <mat-table #table matSort [dataSource]="dsChargeList"
+                                                            [@animateStagger]="{value:'50'}" class="airmid-table table">
+
+                                                            <ng-container matColumnDef="Status" sticky>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-90">Status</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-90">
+                                                                    <mat-icon *ngIf="contact.IsRadiology == 1"
+                                                                        matTooltip="IsRadiology">
+                                                                        <img width="15px" height="8px"
+                                                                            src="/assets/images/logos/radiology.png">
+                                                                    </mat-icon>
+                                                                    <mat-icon *ngIf="contact.IsPathology == 1"
+                                                                        matTooltip="IsPatholgy">
+                                                                        <img width="15px" height="9px"
+                                                                            src="/assets/images/logos/pathology.png">
+                                                                    </mat-icon>
+                                                                    <mat-icon *ngIf="contact.IsPackage == '1'"
+                                                                        matTooltip="Package Edit"
+                                                                        (click)="getPacakgeDetail(contact)">
+                                                                        <img width="15px" height="9px"
+                                                                            src="/assets/images/logos/package.png">
+                                                                    </mat-icon>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <!-- <ng-container matColumnDef="Status">
                                                                         <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
                                                                         <mat-cell *matCellDef="let contact"><span class="text-overflow">--</span></mat-cell>
                                                                     </ng-container> -->
-                                
-                                                                    <ng-container matColumnDef="ServiceCode">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">Service
-                                                                            Code</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" class="w-150">
-                                                                            <span>{{ contact.serviceCode || '-' }}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="ServiceName">
-                                                                        <mat-header-cell *matHeaderCellDef class="w-300">Service
-                                                                            Name</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" class="w-300"><span
-                                                                                class="text-overflow"
-                                                                                matTooltip="{{contact.ServiceName}}"
-                                                                                >{{contact.ServiceName}}
-                                                                            </span></mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="Price">
-                                                                        <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
-                                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
-                                                                        <mat-cell *matCellDef="let contact">
-                                                                            <!-- {{contact.Price}} -->
-                                                                            <mat-form-field floatLabel="never">
-                                                                                <input matInput placeholder="Price" type="text"
-                                                                                    [(ngModel)]="contact.Price" required
-                                                                                    (ngModelChange)="onPriceOrQtyChange(contact)">
-                                                                            </mat-form-field>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="Qty">
-                                                                        <mat-header-cell *matHeaderCellDef>Qty</mat-header-cell>
-                                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Qty || 0}} </span></mat-cell> -->
-                                                                        <mat-cell *matCellDef="let contact">
-                                                                            {{contact.Qty}}
-                                                                            <!-- <mat-form-field floatLabel="never" appearance="fill">
+
+                                                            <ng-container matColumnDef="ServiceCode">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-150">Service
+                                                                    Code</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-150">
+                                                                    <span>{{ contact.serviceCode || '-' }}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="ServiceName">
+                                                                <mat-header-cell *matHeaderCellDef class="w-300">Service
+                                                                    Name</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-300"><span
+                                                                        class="text-overflow"
+                                                                        matTooltip="{{contact.ServiceName}}">{{contact.ServiceName}}
+                                                                    </span></mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Price">
+                                                                <mat-header-cell
+                                                                    *matHeaderCellDef>Price</mat-header-cell>
+                                                                <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <!-- {{contact.Price}} -->
+                                                                    <mat-form-field floatLabel="never">
+                                                                        <input matInput placeholder="Price" type="text"
+                                                                            [(ngModel)]="contact.Price" required
+                                                                            (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                                    </mat-form-field>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Qty">
+                                                                <mat-header-cell *matHeaderCellDef>Qty</mat-header-cell>
+                                                                <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Qty || 0}} </span></mat-cell> -->
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    {{contact.Qty}}
+                                                                    <!-- <mat-form-field floatLabel="never" appearance="fill">
                                                                                 <input matInput placeholder="Qty" type="number" min="1" [(ngModel)]="contact.Qty" required
                                                                                     (ngModelChange)="onPriceOrQtyChange(contact)">
                                                                             </mat-form-field> -->
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="TotalAmount">
-                                                                        <mat-header-cell *matHeaderCellDef class="w-130">Total
-                                                                            Amt</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" class="w-130"><span class="text-overflow">
-                                                                                {{(contact.TotalAmt || 0 ) | currency: currency:'symbol'}}
-                                                                            </span></mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="DiscountPer">
-                                                                        <mat-header-cell *matHeaderCellDef>Disc
-                                                                            %</mat-header-cell>
-                                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscPer || 0}} </span></mat-cell> -->
-                                                                        <mat-cell *matCellDef="let contact">
-                                                                            <mat-form-field floatLabel="never" appearance="fill">
-                                                                                <input matInput placeholder="Disc %" [(ngModel)]="contact.DiscPer"
-                                                                                    type="text" [min]="0" [max]="100"
-                                                                                    (ngModelChange)="onDiscountPerChange(contact)">
-                                                                            </mat-form-field>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="DiscountAmount">
-                                                                        <mat-header-cell *matHeaderCellDef>Disc
-                                                                            Amt</mat-header-cell>
-                                                                        <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscAmt || 0}} </span></mat-cell> -->
-                                                                        <mat-cell *matCellDef="let contact">
-                                                                            <mat-form-field floatLabel="never" appearance="fill">
-                                                                                <input matInput placeholder="Disc Amt" [(ngModel)]="contact.DiscAmt"
-                                                                                    type="text" [min]="0" [max]="contact.TotalAmt"
-                                                                                    (ngModelChange)="onDiscountAmtChange(contact)">
-                                                                            </mat-form-field>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="NetAmount">
-                                                                        <mat-header-cell *matHeaderCellDef class="w-140">Net
-                                                                            Amt</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" class="w-140"><span class="text-overflow">
-                                                                                {{(contact.NetAmount || 0) | currency: currency:'symbol'}}
-                                                                            </span></mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="DoctorName">
-                                                                        <mat-header-cell *matHeaderCellDef>Doctor
-                                                                            Name</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow"
-                                                                             matTooltip="{{contact.DoctorName}}">
-                                                                                {{contact.DoctorName}} </span></mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="ClassName">
-                                                                        <mat-header-cell *matHeaderCellDef>Class
-                                                                            Name</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"><span class="text-overflow"
-                                                                                matTooltip="{{contact.ClassName}}">
-                                                                                {{contact.ClassName}} </span></mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="ChargesAddedName">
-                                                                        <mat-header-cell *matHeaderCellDef>Added
-                                                                            By</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"  class="text-overflow"
-                                                                             matTooltip="{{contact.ChargesAddedName}}">
-                                                                            {{contact.ChargesAddedName}}</mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="Exclucion" stickyEnd>
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                            class="w-80">Exclusion</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" class="w-80">
-                                                                            <mat-checkbox aria-label="Checked"
-                                                                                [(ngModel)]="contact.isInclusionExclusion"></mat-checkbox>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="Action" stickyEnd>
-                                                                        <mat-header-cell *matHeaderCellDef class="w-70"> Action
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact; let i=index" class="w-70">
-                                                                            <button mat-icon-button color="warn" (click)="deleteCharge(i,contact)">
-                                                                                <mat-icon>delete_outline</mat-icon>
-                                                                            </button>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="NoData">
-                                                                        <mat-footer-cell *matFooterCellDef>
-                                                                            <span>No Data Found</span>
-                                                                        </mat-footer-cell>
-                                                                    </ng-container>
-                                
-                                                                    <mat-header-row class="accent min-width-1850"
-                                                                        *matHeaderRowDef="displayedChargeColumns; sticky: true">
-                                                                    </mat-header-row>
-                                                                    <mat-row *matRowDef="let contact; columns: displayedChargeColumns;"
-                                                                        class="min-width-1850" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                                    <mat-footer-row *matFooterRowDef="['NoData']"
-                                                                        [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
-                                                                </mat-table>
-                                                            </div>
-                                                            <div class="amt-container py-3">
-                                                                <div class="net-amt-section">
-                                                                    <div class="net-amt">
-                                                                        <div class="net-amt-box">
-                                                                            <span class="net-amt-label">Company Amt :</span>
-                                                                            <span class="net-amt-value">{{ ExclusionAmt | currency: currency:'symbol'}}</span>
-                                                                        </div>
-                                                                        <div class="net-amt-box">
-                                                                            <span class="net-amt-label">Patient Amt :</span>
-                                                                            <span class="net-amt-value">{{ InclusionAmt | currency: currency:'symbol' }}</span>
-                                                                        </div>
-                                                                        <div class="net-amt-box">
-                                                                            <span class="net-amt-label">No Of Item:</span>
-                                                                            <span class="net-amt-value">{{ chargeList.length }}</span>
-                                                                        </div>
-                                                                        <div class="net-amt-box">
-                                                                            <span class="net-amt-label">Discount Amount :</span>
-                                                                            <span class="net-amt-value">{{ OPFooterForm?.get("concessionAmt")?.value | currency: currency:'symbol' }}</span>
-                                                                        </div>
-                                                                        <div class="final-amt-box">
-                                                                            <span class="final-amt-label">Net Amt :</span>
-                                                                            <span class="final-amt-value">{{ OPFooterForm?.get("netPayableAmt")?.value | currency: currency:'symbol' }}</span>
-                                                                        </div>
-                                                                    </div>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="TotalAmount">
+                                                                <mat-header-cell *matHeaderCellDef class="w-130">Total
+                                                                    Amt</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-130"><span
+                                                                        class="text-overflow">
+                                                                        {{(contact.TotalAmt || 0 ) | currency:
+                                                                        currency:'symbol'}}
+                                                                    </span></mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="DiscountPer">
+                                                                <mat-header-cell *matHeaderCellDef>Disc
+                                                                    %</mat-header-cell>
+                                                                <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscPer || 0}} </span></mat-cell> -->
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <mat-form-field floatLabel="never"
+                                                                        appearance="fill">
+                                                                        <input matInput placeholder="Disc %"
+                                                                            [(ngModel)]="contact.DiscPer" type="text"
+                                                                            [min]="0" [max]="100"
+                                                                            (ngModelChange)="onDiscountPerChange(contact)">
+                                                                    </mat-form-field>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="DiscountAmount">
+                                                                <mat-header-cell *matHeaderCellDef>Disc
+                                                                    Amt</mat-header-cell>
+                                                                <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.DiscAmt || 0}} </span></mat-cell> -->
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <mat-form-field floatLabel="never"
+                                                                        appearance="fill">
+                                                                        <input matInput placeholder="Disc Amt"
+                                                                            [(ngModel)]="contact.DiscAmt" type="text"
+                                                                            [min]="0" [max]="contact.TotalAmt"
+                                                                            (ngModelChange)="onDiscountAmtChange(contact)">
+                                                                    </mat-form-field>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="NetAmount">
+                                                                <mat-header-cell *matHeaderCellDef class="w-140">Net
+                                                                    Amt</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-140"><span
+                                                                        class="text-overflow">
+                                                                        {{(contact.NetAmount || 0) | currency:
+                                                                        currency:'symbol'}}
+                                                                    </span></mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="DoctorName">
+                                                                <mat-header-cell *matHeaderCellDef>Doctor
+                                                                    Name</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact"><span
+                                                                        class="text-overflow"
+                                                                        matTooltip="{{contact.DoctorName}}">
+                                                                        {{contact.DoctorName}} </span></mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="ClassName">
+                                                                <mat-header-cell *matHeaderCellDef>Class
+                                                                    Name</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact"><span
+                                                                        class="text-overflow"
+                                                                        matTooltip="{{contact.ClassName}}">
+                                                                        {{contact.ClassName}} </span></mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="ChargesAddedName">
+                                                                <mat-header-cell *matHeaderCellDef>Added
+                                                                    By</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact"
+                                                                    class="text-overflow"
+                                                                    matTooltip="{{contact.ChargesAddedName}}">
+                                                                    {{contact.ChargesAddedName}}</mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Exclucion" stickyEnd>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-80">Exclusion</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-80">
+                                                                    <mat-checkbox aria-label="Checked"
+                                                                        [(ngModel)]="contact.isInclusionExclusion"></mat-checkbox>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Action" stickyEnd>
+                                                                <mat-header-cell *matHeaderCellDef class="w-70"> Action
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact; let i=index"
+                                                                    class="w-70">
+                                                                    <button mat-icon-button color="warn"
+                                                                        (click)="deleteCharge(i,contact)">
+                                                                        <mat-icon>delete_outline</mat-icon>
+                                                                    </button>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="NoData">
+                                                                <mat-footer-cell *matFooterCellDef>
+                                                                    <span>No Data Found</span>
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+                                                            <mat-header-row class="accent min-width-1850"
+                                                                *matHeaderRowDef="displayedChargeColumns; sticky: true">
+                                                            </mat-header-row>
+                                                            <mat-row
+                                                                *matRowDef="let contact; columns: displayedChargeColumns;"
+                                                                class="min-width-1850"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            <mat-footer-row *matFooterRowDef="['NoData']"
+                                                                [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
+                                                        </mat-table>
+                                                    </div>
+                                                    <div class="amt-container py-3">
+                                                        <div class="net-amt-section">
+                                                            <div class="net-amt">
+                                                                <div class="net-amt-box">
+                                                                    <span class="net-amt-label">Company Amt :</span>
+                                                                    <span class="net-amt-value">{{ ExclusionAmt |
+                                                                        currency: currency:'symbol'}}</span>
+                                                                </div>
+                                                                <div class="net-amt-box">
+                                                                    <span class="net-amt-label">Patient Amt :</span>
+                                                                    <span class="net-amt-value">{{ InclusionAmt |
+                                                                        currency: currency:'symbol' }}</span>
+                                                                </div>
+                                                                <div class="net-amt-box">
+                                                                    <span class="net-amt-label">No Of Item:</span>
+                                                                    <span class="net-amt-value">{{ chargeList.length
+                                                                        }}</span>
+                                                                </div>
+                                                                <div class="net-amt-box">
+                                                                    <span class="net-amt-label">Discount Amount :</span>
+                                                                    <span class="net-amt-value">{{
+                                                                        OPFooterForm?.get("concessionAmt")?.value |
+                                                                        currency: currency:'symbol' }}</span>
+                                                                </div>
+                                                                <div class="final-amt-box">
+                                                                    <span class="final-amt-label">Net Amt :</span>
+                                                                    <span class="final-amt-value">{{
+                                                                        OPFooterForm?.get("netPayableAmt")?.value |
+                                                                        currency: currency:'symbol' }}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </mat-tab>
-                                                    <mat-tab label="Package List">
-                                                        <div fxLayout="column" class="h-100-p">
-                                                            <div class="airmid-table-container ">
-                                                                <mat-table #table1 matSort [dataSource]="dsPackageList" [@animateStagger]="{value:'50'}"
-                                                                   class="airmid-table table">
-                                
-                                                                    <ng-container matColumnDef="IsCheck" sticky>
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                            class="w-90">Status</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" class="w-90">
-                                                                            <mat-icon *ngIf="contact.isRadiology == 1" matTooltip="IsRadiology">
-                                                                                <img width="15px" height="8px" src="assets/images/logos/radiology.png">
-                                                                            </mat-icon>
-                                                                            <mat-icon *ngIf="contact.isPathology == 1" matTooltip="IsPatholgy">
-                                                                                <img width="15px" height="9px" src="assets/images/logos/pathology.png">
-                                                                            </mat-icon>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="ServiceNamePackage">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">
-                                                                            Package Name
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"
-                                                                            mat-Tooltip="{{contact.pacakgeServiceName}}">
-                                                                            <span> {{contact.pacakgeServiceName}}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="ServiceName">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
-                                                                            Service Name
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200"
-                                                                            mat-Tooltip="{{contact.serviceName}}">
-                                                                            <span> {{contact.serviceName}}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="Price">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                                            lass="w-110">Price
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm lass="w-110">
-                                                                            <span> {{contact.price}}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="Qty">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Qty
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
-                                                                            <span> {{contact.Qty}}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="TotalAmt">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                                            Total Amt
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                            <span> {{contact.TotalAmt || '-'}}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="DoctorName">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DoctorName
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                            mat-Tooltip="{{contact.doctorName}}">
-                                                                            <span> {{contact.doctorName || '-'}}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="DiscAmt">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
-                                                                            Amt
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                
-                                                                            <span> {{contact.DiscAmt || '-' }}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="NetAmount">
-                                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                                            NetAmt
-                                                                        </mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                            <span> {{contact.NetAmount || '-'}}</span>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="loading">
-                                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                            loading data...
-                                                                        </mat-footer-cell>
-                                                                    </ng-container>
-                                
-                                                                    <ng-container matColumnDef="noData">
-                                                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                            <span>No Data Found</span>
-                                                                        </mat-footer-cell>
-                                                                    </ng-container>
-                                
-                                                                    <mat-header-row class="accent"
-                                                                        *matHeaderRowDef="displayedColumnspackage; sticky: true">
-                                                                    </mat-header-row>
-                                                                    <mat-row *matRowDef="let contact; columns: displayedColumnspackage;"
-                                                                        [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
-                                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                                                        [ngClass]="{'hide':dsPackageList!=null}">
-                                                                    </mat-footer-row>
-                                                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                                                        [ngClass]="{'hide':!(dsPackageList!=null && dsPackageList.data.length==0)}">
-                                                                    </mat-footer-row>
-                                                                    phar-label
-                                                                </mat-table>
-                                                            </div>
-                                                        </div>
-                                                    </mat-tab>
-                                                </mat-tab-group>
-                                            </mat-card-content>
-                                        </mat-card>
-                                    </div>
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                        <mat-card fxFlex.gt-sm="100%" fxFlex>
-                                            <mat-card-content class="py-4 h-100-p">
-                                                <div fxLayout="column" class="h-100-p">
-                                                    <div class="draft-list-info-title border-bottom" style="padding: 12px;">
-                                                        <span style="font-weight: bold;font-size: large;">
-                                                            Draft List
-                                                        </span>
                                                     </div>
+                                                </div>
+                                            </mat-tab>
+                                            <mat-tab label="Package List">
+                                                <div fxLayout="column" class="h-100-p">
                                                     <div class="airmid-table-container ">
-                                                        <mat-table #table matSort [dataSource]="dsOpDraftlist" [@animateStagger]="{value:'50'}"
-                                                          class="airmid-table table"> 
+                                                        <mat-table #table1 matSort [dataSource]="dsPackageList"
+                                                            [@animateStagger]="{value:'50'}" class="airmid-table table">
 
-                                                           <ng-container matColumnDef="Status" StickEnd>
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-60">
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60"> 
-                                                                    <button mat-icon-button (click)="getdraftchargelist(contact)">
-                                                                        <span class="material-icons" >
-                                                                            <mat-icon matTooltip="Add">add_shopping_cart</mat-icon>
-                                                                        </span>
-                                                                        <!--  (click)="getdraftchargelist(contact)" -->
-                                                                    </button>  
-                                                                </mat-cell>
-                                                            </ng-container>
-                                
-                                                            <ng-container matColumnDef="DraftDate">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                                                    Date
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                                                    <span matTooltip="{{contact.billDate | date:'dd/MM/YYYY'}}-{{contact.billTime | date:'hh:mm a'}}"> 
-                                                                        {{contact.billDate | date:'dd/MM/YYYY'}}
-                                                                        <!-- -{{contact.billTime | date:'hh:mm a'}} -->
-                                                                    </span>
+                                                            <ng-container matColumnDef="IsCheck" sticky>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-90">Status</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-90">
+                                                                    <mat-icon *ngIf="contact.isRadiology == 1"
+                                                                        matTooltip="IsRadiology">
+                                                                        <img width="15px" height="8px"
+                                                                            src="assets/images/logos/radiology.png">
+                                                                    </mat-icon>
+                                                                    <mat-icon *ngIf="contact.isPathology == 1"
+                                                                        matTooltip="IsPatholgy">
+                                                                        <img width="15px" height="9px"
+                                                                            src="assets/images/logos/pathology.png">
+                                                                    </mat-icon>
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <!-- <ng-container matColumnDef="draftNo">
+                                                            <ng-container matColumnDef="ServiceNamePackage">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm class="w-250">
+                                                                    Package Name
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-250"
+                                                                    mat-Tooltip="{{contact.pacakgeServiceName}}">
+                                                                    <span> {{contact.pacakgeServiceName}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="ServiceName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm class="w-200">
+                                                                    Service Name
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-200" mat-Tooltip="{{contact.serviceName}}">
+                                                                    <span> {{contact.serviceName}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Price">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm lass="w-110">Price
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    lass="w-110">
+                                                                    <span> {{contact.price}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="Qty">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm class="w-90">Qty
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-90">
+                                                                    <span> {{contact.Qty}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="TotalAmt">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    Total Amt
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    <span> {{contact.TotalAmt || '-'}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="DoctorName">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>DoctorName
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    mat-Tooltip="{{contact.doctorName}}">
+                                                                    <span> {{contact.doctorName || '-'}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="DiscAmt">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>Disc
+                                                                    Amt
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+
+                                                                    <span> {{contact.DiscAmt || '-' }}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="NetAmount">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm>
+                                                                    NetAmt
+                                                                </mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                                    <span> {{contact.NetAmount || '-'}}</span>
+                                                                </mat-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="loading">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                    loading data...
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+                                                            <ng-container matColumnDef="noData">
+                                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                                    <span>No Data Found</span>
+                                                                </mat-footer-cell>
+                                                            </ng-container>
+
+                                                            <mat-header-row class="accent"
+                                                                *matHeaderRowDef="displayedColumnspackage; sticky: true">
+                                                            </mat-header-row>
+                                                            <mat-row
+                                                                *matRowDef="let contact; columns: displayedColumnspackage;"
+                                                                [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                                [ngClass]="{'hide':dsPackageList!=null}">
+                                                            </mat-footer-row>
+                                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                                [ngClass]="{'hide':!(dsPackageList!=null && dsPackageList.data.length==0)}">
+                                                            </mat-footer-row>
+                                                            phar-label
+                                                        </mat-table>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
+                                        </mat-tab-group>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                    <mat-card-content class="py-4 h-100-p">
+                                        <div fxLayout="column" class="h-100-p">
+                                            <div class="draft-list-info-title border-bottom" style="padding: 12px;">
+                                                <span style="font-weight: bold;font-size: large;">
+                                                    Draft List
+                                                </span>
+                                            </div>
+                                            <div class="airmid-table-container ">
+                                                <mat-table #table matSort [dataSource]="dsOpDraftlist"
+                                                    [@animateStagger]="{value:'50'}" class="airmid-table table">
+
+                                                    <ng-container matColumnDef="Status" StickEnd>
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-60">
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-60">
+                                                            <button mat-icon-button
+                                                                (click)="getdraftchargelist(contact)">
+                                                                <span class="material-icons">
+                                                                    <mat-icon
+                                                                        matTooltip="Add">add_shopping_cart</mat-icon>
+                                                                </span>
+                                                                <!--  (click)="getdraftchargelist(contact)" -->
+                                                            </button>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="DraftDate">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-120">
+                                                            Date
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                                            <span
+                                                                matTooltip="{{contact.billDate | date:'dd/MM/YYYY'}}-{{contact.billTime | date:'hh:mm a'}}">
+                                                                {{contact.billDate | date:'dd/MM/YYYY'}}
+                                                                <!-- -{{contact.billTime | date:'hh:mm a'}} -->
+                                                            </span>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <!-- <ng-container matColumnDef="draftNo">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                                                     Draft No
                                                                 </mat-header-cell>
@@ -814,69 +783,75 @@
                                                                     <span  matTooltip="{{contact.drbno}}"> {{contact.drbno}}</span>
                                                                 </mat-cell>
                                                             </ng-container> -->
-                                
-                                                            <ng-container matColumnDef="NetAmount">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                                    NetAmt
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                                    <span> {{contact.netPayableAmt |  currency: currency:'symbol'}}</span>
-                                                                </mat-cell>
-                                                            </ng-container>
-                                
-                                                            <ng-container matColumnDef="Action" StickEnd>
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80"> 
 
-                                                                    <button mat-icon-button matTooltip="Print Draft Bill" (click)="viewgetOPBillDraftReportPdf(contact.drbno)"
-                                                                        style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" >
-                                                                        <mat-icon > print</mat-icon>
-                                                                    </button>
+                                                    <ng-container matColumnDef="NetAmount">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                            NetAmt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                            <span> {{contact.netPayableAmt | currency:
+                                                                currency:'symbol'}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
 
-                                                                     <button mat-icon-button matTooltip="Cancel Draft Bill" (click)="DraftbillCancel(contact.drbno)">
-                                                                         <mat-icon matTooltip="Cancel" >cancel</mat-icon> 
-                                                                    </button>
-                                                                </mat-cell>
-                                                            </ng-container>
-                                
-                                                            <ng-container matColumnDef="loading">
-                                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                    loading data...
-                                                                </mat-footer-cell>
-                                                            </ng-container>
-                                
-                                                            <ng-container matColumnDef="noData">
-                                                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                                                    <span>No Data Found</span>
-                                                                </mat-footer-cell>
-                                                            </ng-container>
-                                
-                                                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumnsDraft; sticky: true">
-                                                            </mat-header-row>
-                                                            <mat-row *matRowDef="let contact; columns: displayedColumnsDraft;"
-                                                               [ngClass]="{'red-row': contact.isCancelled == '1'}"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dsOpDraftlist!=null}">
-                                                            </mat-footer-row>
-                                                            <mat-footer-row *matFooterRowDef="['noData']"
-                                                                [ngClass]="{'hide':!(dsOpDraftlist!=null && dsOpDraftlist.data.length==0)}">
-                                                            </mat-footer-row>
-                                                            phar-label
-                                                        </mat-table>
-                                                    </div>
-                                                </div>
-                                            </mat-card-content>
-                                        </mat-card>
-                                    </div>
-                                </div>
-                            <!-- </mat-card-content>
+                                                    <ng-container matColumnDef="Action" StickEnd>
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                            class="w-80">
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
+
+                                                            <button mat-icon-button matTooltip="Print Draft Bill"
+                                                                (click)="viewgetOPBillDraftReportPdf(contact.drbno)"
+                                                                style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">
+                                                                <mat-icon> print</mat-icon>
+                                                            </button>
+
+                                                            <button mat-icon-button matTooltip="Cancel Draft Bill"
+                                                                (click)="DraftbillCancel(contact.drbno)">
+                                                                <mat-icon matTooltip="Cancel">cancel</mat-icon>
+                                                            </button>
+                                                        </mat-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="loading">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            loading data...
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+
+                                                    <ng-container matColumnDef="noData">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            <span>No Data Found</span>
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+
+                                                    <mat-header-row class="accent"
+                                                        *matHeaderRowDef="displayedColumnsDraft; sticky: true">
+                                                    </mat-header-row>
+                                                    <mat-row *matRowDef="let contact; columns: displayedColumnsDraft;"
+                                                        [ngClass]="{'red-row': contact.isCancelled == '1'}"
+                                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                                        [ngClass]="{'hide':dsOpDraftlist!=null}">
+                                                    </mat-footer-row>
+                                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                                        [ngClass]="{'hide':!(dsOpDraftlist!=null && dsOpDraftlist.data.length==0)}">
+                                                    </mat-footer-row>
+                                                    phar-label
+                                                </mat-table>
+                                            </div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                        <!-- </mat-card-content>
                         </mat-card> -->
                     </div>
                     <div class="modal-card-container">
                         <mat-card fxFlex.gt-sm="100%" fxFlex>
                             <mat-card-content class="py-4">
-                                <form [formGroup]="OPFooterForm">
+                                <form [formGroup]="OPFooterForm" class="resize-form-fields">
                                     <div fxLayout="row" fxLayoutGap="6px">
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                             <airmid-textbox label="Total Amount" formControlName="totalAmt"
@@ -915,13 +890,15 @@
                                             </airmid-textbox>
                                         </div>
                                         <div fxFlex="10%">
-                                            <airmid-textbox label="Government Approval Amt" formControlName="GovrnApprovAmt" [formGroup]="OPFooterForm"
-                                                [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)"></airmid-textbox>
+                                            <airmid-textbox label="Government Approval Amt"
+                                                formControlName="GovrnApprovAmt" [formGroup]="OPFooterForm"
+                                                [type]="'text'" [min]="0"
+                                                (keypress)="keyPressCharater($event)"></airmid-textbox>
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
                                             *ngIf="OPFooterForm.get('paymentType')?.value === 'Mpesa'">
                                             <airmid-textbox label="PMesa Mobile" formControlName="mpesaMobile"
-                                                [formGroup]="OPFooterForm" 
+                                                [formGroup]="OPFooterForm"
                                                 [validations]="getValidationMessages().mpesaMobile">
                                             </airmid-textbox>
                                         </div>
@@ -941,27 +918,34 @@
                                                 [formGroup]="OPFooterForm" [validations]="getValidationMessages().UpiNo"
                                                 [minLength]="4" [maxLength]="12">
                                             </airmid-textbox> -->
-                                              <airmid-textbox label="UPI NO" formControlName="UpiNo"
-                                                [formGroup]="OPFooterForm" [validations]="getValidationMessages().UpiNo"
-                                                >
+                                            <airmid-textbox label="UPI NO" formControlName="UpiNo"
+                                                [formGroup]="OPFooterForm"
+                                                [validations]="getValidationMessages().UpiNo">
                                             </airmid-textbox>
                                         </div>
                                     </div>
                                     <div class="radio-container">
-                                         <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4" *ngIf="!Is9_Digit_National_Id">
+                                        <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4"
+                                            *ngIf="!Is9_Digit_National_Id">
                                             <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
                                             <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
                                             <mat-radio-button value="OnlinePay">Online Payment</mat-radio-button>
                                             <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
                                             <mat-radio-button value="Mpesa">MPesa</mat-radio-button>
-                                             
+
                                         </mat-radio-group>
-                                        <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4" *ngIf="Is9_Digit_National_Id">
-                                            <mat-radio-button value="CashPay" *ngIf="!Is9_Digit_National_Id">Cash Payment</mat-radio-button>
-                                            <mat-radio-button value="CreditPay" *ngIf="Is9_Digit_National_Id">Credit Payment</mat-radio-button>
-                                            <mat-radio-button value="OnlinePay" *ngIf="!Is9_Digit_National_Id">Online Payment</mat-radio-button>
-                                            <mat-radio-button value="PayOption" *ngIf="!Is9_Digit_National_Id">Pay Option</mat-radio-button>
-                                            <mat-radio-button value="Mpesa" *ngIf="Is9_Digit_National_Id">MPesa</mat-radio-button>
+                                        <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4"
+                                            *ngIf="Is9_Digit_National_Id">
+                                            <mat-radio-button value="CashPay" *ngIf="!Is9_Digit_National_Id">Cash
+                                                Payment</mat-radio-button>
+                                            <mat-radio-button value="CreditPay" *ngIf="Is9_Digit_National_Id">Credit
+                                                Payment</mat-radio-button>
+                                            <mat-radio-button value="OnlinePay" *ngIf="!Is9_Digit_National_Id">Online
+                                                Payment</mat-radio-button>
+                                            <mat-radio-button value="PayOption" *ngIf="!Is9_Digit_National_Id">Pay
+                                                Option</mat-radio-button>
+                                            <mat-radio-button value="Mpesa"
+                                                *ngIf="Is9_Digit_National_Id">MPesa</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                 </form>
@@ -974,7 +958,7 @@
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
-                     <button type="button" class="btn btn-primary" [disabled]="!chargeList.length"
+                    <button type="button" class="btn btn-primary" [disabled]="!chargeList.length"
                         (click)="DraftbillSave()">Draft</button>
                     <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
                         aria-label="Close dialog" matTooltip="Close">Close</button>
@@ -1133,10 +1117,10 @@
 
                     <tr style="font-size:14px; font-weight:bold;">
                         <td style="font-size:14px; font-weight:bold;">Paid Amt :</td>
-                        <td style="font-size:14px; font-weight:bold;"> 
+                        <td style="font-size:14px; font-weight:bold;">
                             {{reportPrintObjList[0]?.PaymentMode || 'Credit'}}
                         </td>
-                        <td style="text-align:right; font-size:14px; font-weight:bold;">  
+                        <td style="text-align:right; font-size:14px; font-weight:bold;">
                             {{reportPrintObjList[0]?.PaidAmount | currency:'INR'}}
                         </td>
                     </tr>

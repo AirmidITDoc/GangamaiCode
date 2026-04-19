@@ -47,7 +47,7 @@ export class ExpensesApprovalComponent {
     'userName',
     'Approvedby',
     'Approveddate',
-    // 'action'
+    'action'
   ];
   vExpApprovalFormGroup: FormGroup
   @ViewChild('statusForm') statusForm!: TemplateRef<any>;
@@ -97,12 +97,12 @@ export class ExpensesApprovalComponent {
 
   openStatus(row: any = null): void {
     console.log(row)
-    
+
     if (this.selection.selected.length === 0) {
       this.toastr.warning('Please select Expense data');
       return;
     }
-    
+
     const dialogRef = this._matDialog.open(this.statusForm, {
       width: '35%',
       height: '35%'
@@ -271,11 +271,14 @@ export class ExpensesApprovalComponent {
     this.myFilterform.reset({
       expType: "3",
       approvalStatus: "0",
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
+      start: new Date(),
+      end: new Date(),
     });
   }
 
+  OnPrint(element) {
+    this.commonService.Onprint("ExpId", element.expID, "ExpenseVoucharPrint");
+  }
 }
 
 export class expenseList {

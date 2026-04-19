@@ -90,7 +90,7 @@ export class LabRadiologyComponent {
         { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "SubGroup Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "OutSourceName", key: "outSourceLabName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -690,28 +690,48 @@ export class LabRadiologyComponent {
 
     getpushtoRIS(contact: any) {
         console.log("RIS DATA:", contact);
-        return;
+
+        let modality = '';
+
+        const category = (contact?.categoryName || '').toLowerCase();
+
+        if (category.includes('mri')) {
+            modality = 'MR';
+        } else if (category.includes('xray') || category.includes('x-ray')) {
+            modality = 'XA';
+        } else if (category.includes('ct')) {
+            modality = 'CT';
+        } else if (category.includes('us')) {
+            modality = 'US';
+        }
+
         const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);
         this.RISSaveForm.patchValue({
             first_name: contact?.patientName || '',
             middle_name: '',
             last_name: '',
-            patient_id: String(contact?.opdipdid) || '',
+            patient_id: String(contact?.labRequestNo) || '', //String(contact?.opdipdid) || '',
             patient_dob: this.datePipe.transform(contact?.dateofBirth, 'dd-MM-YYYY') || '01-01-1900',
             patient_age: contact?.ageYear + "Y" || '',
             patient_gender: contact?.genderName?.charAt(0)?.toUpperCase() || '',
-            patient_phone_number: contact?.mobileNo || '',
-            accession_number: contact?.billNo || '',
+            patient_phone_number: String(contact?.patientNumber) || '',
+            modality: modality || 'MR',
+            accession_number: String(contact?.billNo) || '',
             ref_physician: contact?.asas || 'Dr. X',
             ref_physician_phone_number: contact?.mobileNo || '',
-            external_id: contact?.opdipdid || '',
+            external_id: String(contact?.opdipdid) || '',
             comments: [],
-            branch_code: '',
+            // branch_code:'',
+            // branch_name: 'Airmid',
+            // scan_desc: 'Brain',
+            // scan_id: '0000003',
+            branch_code: String(contact?.unitId),
             branch_name: contact?.hospitalName || 'Airmid',
             scan_desc: contact?.serviceName, //'Brain',
-            scan_id: '0000003',
+            scan_id: String(contact?.radTestID) //'0000003',
         });
         console.log(this.RISSaveForm.value)
+        // return;
         this._RadioloyOrderlistService.getPushToRIS(this.RISSaveForm.value).subscribe(res => {
         })
     }
