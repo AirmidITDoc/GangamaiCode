@@ -360,9 +360,10 @@ export class SupplierPaymentStatusComponent implements OnInit {
                 this._SupplierPaymentStatusService.InsertSupplierPay(this.GrnSupplierPayForm.value).subscribe((response) => {
                     if (response) {
                         console.log(response)
-                        // this.getSupplierPayStatusList();
+                      
                         this.viewgetPayReportPdf(response)
                         this.OnReset();
+                          this.getSupplierPayStatusList();
                     }
                 }
                 );
@@ -399,7 +400,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
                 });
             }
         }
-
+         this.getSupplierPayStatusList();
     }
     viewgetPayReportPdf(element) {
         this.commonService.Onprint("SupPayId", element, "SupplierPaymentRecieptByPayment");

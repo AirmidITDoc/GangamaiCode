@@ -1348,6 +1348,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                         console.log(this.OpBillForm.value)
                         console.log(result.submitDataPay.ipPaymentInsert)
                         console.log(result.BillBalanceAmount)
+
+                        debugger
                         this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
                         this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
@@ -1555,6 +1557,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     resetform() {
+        
         this.chargeList = [];
         this.dsChargeList.data = []
         this.patientDetail = [];
