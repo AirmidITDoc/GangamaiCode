@@ -387,7 +387,7 @@ export class NUserComponent implements OnInit {
             loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             accessValueId: [item.LoginConfigId ?? item.accessValueId],
             accessValue: [item.IsInputField ?? item.accessValue ?? false, [Validators.maxLength(100)]],
-            accessInputValue: [item.InputValue ?? item.accessInputValue ?? ''],
+            accessInputValue: [String(item.InputValue) ?? String(item.accessInputValue) ?? ''],
         });
     }
 

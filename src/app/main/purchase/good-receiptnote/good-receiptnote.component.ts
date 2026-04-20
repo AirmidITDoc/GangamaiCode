@@ -57,7 +57,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     StoreId: any = "0";
     SupplierId: any = "0";
     IsVerify: any;
-    IsGRNverify: any;
+    IsGRNverify: boolean = false;
 
     autocompletestore: string = "Store";
     autocompleteSupplier: string = "SupplierMaster";
@@ -171,7 +171,10 @@ export class GoodReceiptnoteComponent implements OnInit {
     ngOnInit(): void {
         this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.accountService.currentUserValue.user.storeId)
 
-        this.IsGRNverify = this.accountService.currentUserValue.user.isGrnverify
+        // this.IsGRNverify = this.accountService.currentUserValue.user.isGrnverify
+        debugger
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsGRNVerify');
+        this.IsGRNverify = access?.AccessValue ?? false;
     }
     getSelectedRow(event) {
         console.log(event)

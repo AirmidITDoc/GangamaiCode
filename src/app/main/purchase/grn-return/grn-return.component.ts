@@ -27,6 +27,7 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -59,7 +60,7 @@ export class GRNReturnComponent implements OnInit {
     vRoundingAmt: any;
     autocompletestore: string = "Store";
     autocompleteSupplier: string = "SupplierMaster"
-    IsGRNverify: any;
+    IsGRNverify: boolean = false;
     dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
     dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
 
@@ -77,6 +78,7 @@ export class GRNReturnComponent implements OnInit {
         public _matDialog: MatDialog,
         private _fuseSidebarService: FuseSidebarService,
         public datePipe: DatePipe,
+        public _ConfigService: ConfigService,
         private accountService: AuthenticationService, private overlay: Overlay,
         public toastr: ToastrService, public _whatsppService: WhatsAppEmailService,
         private commonService: PrintserviceService, public permissionService: PagePermissionService,
@@ -93,7 +95,10 @@ export class GRNReturnComponent implements OnInit {
         // this.getStoreList();
         // this.getGRNReturnList();
         console.log("main list:", this.gridConfig);
-        this.IsGRNverify = this.accountService.currentUserValue.user.isGrnverify
+        // this.IsGRNverify = this.accountService.currentUserValue.user.isGrnverify
+        debugger
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsGRNReturnVerify');
+        this.IsGRNverify = access?.AccessValue;
     }
     // fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     // toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
