@@ -414,9 +414,11 @@
                                                     </mat-form-field>
                                                 </ng-container>
 
-                                               <ng-container *ngIf="
-                                                        element.accessValueName === 'IsExecutiveUserId' &&
-                                                        (element.IsInputField === true || element.accessValue === true)
+                                                <!-- (element.IsInputField && element.AccessValueId === 'IsExecutiveUserId') ||
+  (element.accessValue && element.accessValueName === 'IsExecutiveUserId') -->
+                                                <ng-container *ngIf="
+                                                        (element.IsInputField && element.AccessValueId === 'IsExecutiveUserId') ||
+                                                    (element.accessValue && element.accessValueName === 'IsExecutiveUserId')
                                                     ">
                                                     <airmid-dropdown label="Executive Name" formControlName="employeId"
                                                         [formGroup]="myuserApprovalform" fxFlex="50%"
