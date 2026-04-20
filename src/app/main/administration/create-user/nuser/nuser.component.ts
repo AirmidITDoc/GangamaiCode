@@ -385,9 +385,9 @@ export class NUserComponent implements OnInit {
         return this._formBuilder.group({
             loginAccessId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            accessValueId: [item.LoginConfigId ?? item.accessValueId],
-            accessValue: [item.IsInputField ?? item.accessValue ?? false, [Validators.maxLength(100)]],
-            accessInputValue: [String(item.InputValue) ?? String(item.accessInputValue) ?? ''],
+            accessValueId: [item.LoginConfigId || item.accessValueId],
+            accessValue: [item.IsInputField || item.accessValue || false, [Validators.maxLength(100)]],
+            accessInputValue: [String(item.InputValue ?? item.accessInputValue ?? '')],
         });
     }
 
