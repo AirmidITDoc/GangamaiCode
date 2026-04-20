@@ -41,26 +41,52 @@ export class CompanyPatientSummaryDashboardComponent implements OnInit {
           'action'
       ];
            parentColumns: string[] = [ 
+            'type',
           'PBillNo',
-          'VisitDate',
-          'CompanyName',
+          'VisitDate', 
+           'UHID',
           'PatientName',
-          'UHID',
+         'CompanyName',
           'BillDate',
-          'DiscAmount',
-          'NetBillAmount',
-          'pharSalesAmt', 
-          'billPharNetAmount',
           'billAmount',
-          'PaidAmount',
-          'BalAmount',
+          'DiscAmount',  
+           'NetBillAmount',
+            'pharSalesAmt', 
+           'billPharNetAmount', 
           'GovtCompanyName',
           'GovtApprovedAmt',
           'GovtRefNo',
           'SecondCompanyName',
           'CompanyApprovedAmt',
           'CompanyRefNo',
-          'Action'
+          'PaidAmount',
+          'BalAmount',
+          'Action' 
+//           {
+//     "billDate": "2026-04-20T00:00:00",
+//     "patientName": "Mr. opd  flow test",
+//     "regNo": "5290",
+//     "visitCompanyName": "LIASON INSURANCE",
+//     "visitDate": "2026-04-20T00:00:00",
+//     "billAmount": 5700,
+//     "discAmount": 2000,
+//     "netBillAmount": 3700,
+//     "pharSalesAmt": 251,
+//     "billPharNetAmount": 3951,
+//     "paidAmtPaidByPaidGov": 3951,
+//     "balAmount_ful": 0,
+//     "sys_BalanceAmt": 3951,
+//     "paidByPatient": 0,
+//     "firstCompanyName": "LIASON INSURANCE",
+//     "govtApprovedAmt": 3951,
+//     "govtRefNo": "AAAAAAAAA",
+//     "companyApprovedAmt": 0,
+//     "compRefNo": "",
+//     "billCount": "2",
+//     "pBillNo": "12667, 12668",
+//     "opipid": 28543
+// }
+ 
       ]; 
     columnsToDisplayWithExpand = [...this.parentColumns];
     expandedElement: any | null = null;

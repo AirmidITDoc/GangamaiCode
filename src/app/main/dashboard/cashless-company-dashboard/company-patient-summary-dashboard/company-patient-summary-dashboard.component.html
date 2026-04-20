@@ -482,10 +482,40 @@
                 <div fxLayout="column" class="gap-8 h-100-p">
                     <mat-card fxLayout="column" class="gap-8 h-100-p">
 
+                       
+                       <!-- <div fxLayout="row" fxLayoutAlign="end" class="gap-8" style="margin-right: 20px;"> 
+                        <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <span class="green-600-fg">IPD Patient</span>
+                        </div>
+
+                         <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                            <span class="orange-600-fg">OPD Patient</span>
+                        </div>
+
+                        <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                            <span class="blue-600-fg">External</span>
+                        </div>
+
+                    </div>  -->
+
                         <div class="modal-card-container dynamic-table-wrapper" fxFlex>
                             <div class="airmid-table-container">
                                 <table mat-table [dataSource]="dataSourceParent" multiTemplateDataRows
                                     class="airmid-table patient-table accordion-parent-table" style="width: 100%;">
+
+                                      <ng-container matColumnDef="type">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70"> 
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70"> 
+                                            <mat-icon *ngIf="contact.opipType==1" matTooltip="IPD Patient" class="pill green-600 s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="contact.opipType==0" matTooltip="OPD Patient" class="pill orange s-16">circle</mat-icon>
+                                            <mat-icon *ngIf="contact.opipType==2" matTooltip="External" class="pill blue s-16">circle</mat-icon>
+                                        </mat-cell>
+                                    </ng-container>
+
 
                                     <ng-container matColumnDef="PBillNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
@@ -547,11 +577,11 @@
 
                                     <ng-container matColumnDef="billAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                            Bill Amt
+                                            Total Amt
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120"
                                             mat-Tooltip="{{contact.billAmount}}">
-                                            <span> {{contact.billAmount || '-'}}</span>
+                                            <span> {{contact.billAmount || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -562,7 +592,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100"
                                             mat-Tooltip="{{contact.discAmount}}">
-                                            <span> {{contact.discAmount || '-'}}</span>
+                                            <span> {{contact.discAmount || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -578,17 +608,17 @@
 
                                       <ng-container matColumnDef="pharSalesAmt">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                            Net Bill Amt
+                                           PharSales Amt
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
                                             mat-Tooltip="{{contact.pharSalesAmt}}">
-                                            <span> {{contact.pharSalesAmt}}</span>
+                                            <span> {{contact.pharSalesAmt || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                       <ng-container matColumnDef="billPharNetAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                            Net Bill Amt
+                                          Grand Net Amt
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
                                             mat-Tooltip="{{contact.billPharNetAmount}}">
@@ -602,17 +632,17 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
                                             mat-Tooltip="{{contact.paidAmount}}">
-                                            <span> {{contact.paidAmount}}</span>
+                                            <span> {{contact.paidByPatient || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BalAmount">
+                                    <ng-container matColumnDef="BalAmount" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                             Bal Amt
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
                                             mat-Tooltip="{{contact.balAmount}}">
-                                            <span> {{contact.balAmount || '-'}}</span>
+                                            <span> {{contact.balAmount_ful || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -622,7 +652,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 ellipsis-text"
                                             mat-Tooltip="{{contact.firstCompanyName}}">
-                                            <span> {{contact.firstCompanyName || '-'}}</span>
+                                            <span> {{contact.firstCompanyName || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -632,7 +662,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
                                             mat-Tooltip="{{contact.govtApprovedAmt}}">
-                                            <span> {{contact.govtApprovedAmt || '-'}}</span>
+                                            <span> {{contact.govtApprovedAmt || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -662,7 +692,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130"
                                             mat-Tooltip="{{contact.companyApprovedAmt}}">
-                                            <span> {{contact.companyApprovedAmt || '-'}}</span>
+                                            <span> {{contact.companyApprovedAmt || '0'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -854,8 +884,8 @@
 
                                     <mat-header-row class="accent min-width-2400"
                                         *matHeaderRowDef="parentColumns; sticky: true"> </mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: parentColumns;"
-                                        [ngClass]="{'row-completed': +contact.govtApprovedAmt > 0 || +contact.companyApprovedAmt > 0 }"
+                                    <mat-row *matRowDef="let contact; columns: parentColumns;" 
+                                         [ngClass]="{'red-row': +contact.balAmount_ful == 0 }"
                                         class="example-element-row contact  min-width-2400"
                                         [@animate]="{value:'*',params:{y:'100%'}}"
                                         [class.example-expanded-row]="expandedElement === contact"
