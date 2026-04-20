@@ -47,10 +47,38 @@
                                 </div>
                             </div> -->
 
-                            <div class="nav-item seperator-right">
+                            <!-- <div class="nav-item seperator-right">
                                 <div class="nav-button">
                                     <fuse-search-bar (input)="search($event)"></fuse-search-bar>
                                 </div>
+                            </div> -->
+                            <div class="nav-item seperator-right" style="position: relative;">
+
+                                <!-- <input type="text" placeholder="Search menu..." class="menu-search-input"
+                                    (input)="searchmenu($event.target.value)" />
+                                <button class="clear-btn" (click)="clearSearch()">
+                                    ✕
+                                </button> -->
+
+                                <div class="search-wrapper">
+
+                                    <input #searchInput type="text" placeholder="Search menu..."
+                                        class="menu-search-input" (input)="searchmenu($event.target.value)" />
+
+                                    <span class="clear-icon" (click)="clearSearch(searchInput)">
+                                        ✕
+                                    </span>
+
+                                </div>
+
+                                <!-- Dropdown Results -->
+                                <div *ngIf="filteredMenus.length > 0" class="menu-search-results">
+                                    <div *ngFor="let menu of filteredMenus" class="menu-item" (click)="goToMenu(menu)">
+
+                                        {{ menu.fullName }}
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="toolbar-separator"></div>
                             <div class="nav-item">
@@ -65,25 +93,30 @@
                                     <button mat-menu-item (click)="navigateToDailyDashboard1()" *ngIf="dailydashflag">
                                         <span>Daily Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()" *ngIf="beddashflag">
+                                    <button mat-menu-item class="" (click)="navigateToBedOccupancyDashboard()"
+                                        *ngIf="beddashflag">
                                         <span>Bed Occupancy Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()" *ngIf="Investigationdashflag">
+                                    <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()"
+                                        *ngIf="Investigationdashflag">
                                         <span>Investigation Dashboard</span>
                                     </button>
                                     <button mat-menu-item class="" (click)="navigateToCashlessDashboard()">
                                         <span>CashLess Dashboard</span>
                                     </button>
-                                    <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()" *ngIf="Pharmacydashflag">
+                                    <button mat-menu-item class="" (click)="navigateToPharmacyDashboard()"
+                                        *ngIf="Pharmacydashflag">
                                         <span>Pharmacy Dashboard</span>
                                     </button>
-                                       <button mat-menu-item class="" (click)="navigateToFinancialDashboard()" *ngIf="Financedashflag">
+                                    <button mat-menu-item class="" (click)="navigateToFinancialDashboard()"
+                                        *ngIf="Financedashflag">
                                         <span>Revenue Dashboard</span>
                                     </button>
-                                      <button mat-menu-item class="" (click)="navigateToLabFinancialDashboard()" *ngIf="Labfinancedashflag">
+                                    <button mat-menu-item class="" (click)="navigateToLabFinancialDashboard()"
+                                        *ngIf="Labfinancedashflag">
                                         <span>Financial Dashboard</span>
                                     </button>
-                                      <!-- <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()">
+                                    <!-- <button mat-menu-item class="" (click)="navigateToRadiologyDashboard()">
                                         <span>Radiology Dashboard</span>
                                     </button> -->
                                 </mat-menu>
@@ -137,11 +170,13 @@
                                         <h3>Notifications</h3>
                                     </div>
                                     <div class="notification-list">
-                                        <div *ngFor="let notification of notifications" class="notification-item" [ngClass]="notification.isRead ? 'notification-read' : ''">
+                                        <div *ngFor="let notification of notifications" class="notification-item"
+                                            [ngClass]="notification.isRead ? 'notification-read' : ''">
 
                                             <!-- With link -->
                                             <ng-container *ngIf="notification.redirectUrl; else noLink">
-                                                <a [href]="notification.redirectUrl" (click)="readNotification(notification.id)">
+                                                <a [href]="notification.redirectUrl"
+                                                    (click)="readNotification(notification.id)">
                                                     <div class="notification-icon">
                                                         <mat-icon>assignment</mat-icon>
                                                     </div>
@@ -185,13 +220,14 @@
 
                             <div class="toolbar-separator"></div>
                             <div class="nav-item seperator-right">
-                                <button mat-button (click)="toggleSidebarOpen('quickPanel')" aria-label="Toggle quick panel" class="user-button">
+                                <button mat-button (click)="toggleSidebarOpen('quickPanel')"
+                                    aria-label="Toggle quick panel" class="user-button">
                                     <div fxLayout="row" fxLayoutAlign="center center">
                                         <mat-icon class="mr-12">account_circle</mat-icon>
                                         <span class="username mr-12" fxHide fxShow.gt-sm>{{ user && user.user &&
                                             user.user.firstName}}
                                             {{ user && user.user && user.user.lastName }}</span>
-                                        <mat-icon class="s-16" >keyboard_arrow_down</mat-icon>
+                                        <mat-icon class="s-16">keyboard_arrow_down</mat-icon>
                                         <!-- <mat-icon class="secondary-text" fxHide.xs>format_list_bulleted</mat-icon> -->
                                     </div>
 

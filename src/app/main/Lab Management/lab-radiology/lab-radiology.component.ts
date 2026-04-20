@@ -699,7 +699,7 @@ export class LabRadiologyComponent {
             modality = 'MR';
         } else if (category.includes('xray') || category.includes('x-ray')) {
             modality = 'XA';
-        } else if (category.includes('ct')) {
+        } else if (category.includes('ct') || category.includes('3D')) {
             modality = 'CT';
         } else if (category.includes('us')) {
             modality = 'US';
@@ -726,7 +726,7 @@ export class LabRadiologyComponent {
             // scan_desc: 'Brain',
             // scan_id: '0000003',
             branch_code: String(contact?.unitId),
-            branch_name: contact?.hospitalName || 'Airmid',
+            branch_name: contact?.hospitalName.trim() || 'Airmid',
             scan_desc: contact?.serviceName, //'Brain',
             scan_id: String(contact?.radTestID) //'0000003',
         });

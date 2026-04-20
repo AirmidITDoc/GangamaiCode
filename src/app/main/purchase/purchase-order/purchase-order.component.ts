@@ -21,6 +21,7 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { PurchaseRequisitionComponent } from './purchase-requisition/purchase-requisition.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class PurchaseOrderComponent implements OnInit {
     StoreId: any = String(this.accountService.currentUserValue.user.storeId);
     SupplierId: any = "0";
     status = "0";
-    IsPoverify = 0;
+    IsPoverify: boolean = false;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
@@ -144,12 +145,14 @@ export class PurchaseOrderComponent implements OnInit {
     constructor(public _PurchaseOrderService: PurchaseOrderService, public _matDialog: MatDialog,
         public toastr: ToastrService, private commonService: PrintserviceService, private accountService: AuthenticationService,
         public datePipe: DatePipe, public _whatsppService: WhatsAppEmailService, public permissionService: PagePermissionService,
-        private overlay: Overlay) { }
+        private overlay: Overlay, public _ConfigService: ConfigService,) { }
 
     ngOnInit(): void {
         this.mysearchform = this._PurchaseOrderService.PurchaseSearchFrom();
         console.log(this.accountService.currentUserValue.user)
-        this.IsPoverify = 1//this.accountService.currentUserValue.user.isPoverify
+        // this.IsPoverify = 1//this.accountService.currentUserValue.user.isPoverify
+        const access = this._ConfigService.userAccessParam.find(x => x.AccessValueName === 'IsPOVerify');
+        this.IsPoverify = access?.AccessValue;
     }
 
 

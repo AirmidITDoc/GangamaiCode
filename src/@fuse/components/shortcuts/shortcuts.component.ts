@@ -35,14 +35,31 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
     getFavList() {
         return this.shortcutItems.filter(x => x.isFavourite);
     }
+    // ngOnInit(): void {
+    //     if ((JSON.parse(localStorage.getItem("currentUser"))?.user?.webRoleId ?? 0) > 0) {
+    //         this._authService.getFavMenus().subscribe((Menu) => {
+    //             this.shortcutItems = Menu as any[];
+    //             this.filteredShortcutItems = this.shortcutItems;
+    //         });
+    //     }
+    // }
     ngOnInit(): void {
-        if ((JSON.parse(localStorage.getItem("currentUser"))?.user?.webRoleId ?? 0) > 0) {
-            this._authService.getFavMenus().subscribe((Menu) => {
-                this.shortcutItems = Menu as any[];
-                this.filteredShortcutItems = this.shortcutItems;
-            });
-        }
+        this._authService.getFavMenus().subscribe((Menu) => {
+
+            const allMenus = Menu as any[];
+
+            // ✅ flatten all 322 menus
+            const flatMenus = this.flattenMenus(allMenus);
+
+            // ✅ only keep valid routes
+            this.shortcutItems = flatMenus;
+
+            this.filteredShortcutItems = this.shortcutItems;
+
+            console.log("ngoninit:",this.shortcutItems);
+        });
     }
+
     ngAfterViewInit(): void {
         // Subscribe to media changes
         this._fuseMatchMediaService.onMediaChange
@@ -52,6 +69,25 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
                     this.hideMobileShortcutsPanel();
                 }
             });
+    }
+
+    flattenMenus(menus: any[]): any[] {
+        let result = [];
+
+        menus.forEach(menu => {
+
+            // If valid route (not '#'), add it
+            if (menu.linkAction && menu.linkAction !== '#') {
+                result.push(menu);
+            }
+
+            // If children exist → go deeper
+            if (menu.children && menu.children.length > 0) {
+                result = result.concat(this.flattenMenus(menu.children));
+            }
+        });
+
+        return result;
     }
 
     /**

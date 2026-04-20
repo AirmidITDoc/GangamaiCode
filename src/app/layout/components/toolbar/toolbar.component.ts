@@ -25,6 +25,7 @@ import { ApiCaller } from "app/core/services/apiCaller";
 import { LabAppointmentService } from "app/main/Lab Management/lab-appointment/lab-appointment.service";
 import { DashboardserviceService } from "app/core/services/dashboardservice.service";
 import { ConsentMasterModule } from "app/main/setup/OTManagement/consent-master/consent-master.module";
+import { RoleTemplateService } from "app/main/administration/role-template-master/role-template.service";
 // import { CreateUserComponent } from "app/main/administration/create-user/create-user.component";
 // import { UserDetailsComponent } from "app/main/administration/user-details/user-details.component";
 // import { MyprofileComponent } from "app/main/administration/myprofile/myprofile.component";
@@ -75,6 +76,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private _fuseSidebarService: FuseSidebarService, private _httpClient1: ApiCaller,
         private _service: LabAppointmentService,
         private _translateService: TranslateService,
+        private _authService: RoleTemplateService,
 
         private _DashboardserviceService: DashboardserviceService,
         private accountService: AuthenticationService, public _configue: ConfigService,
@@ -189,8 +191,76 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         // upt0
 
         debugger
+
+        // search menu
+        this._authService.getFavMenus().subscribe((Menu) => {
+
+            this.allMenus = this.flattenMenus(Menu);
+
+            this.filteredMenus = [];  // 👈 EMPTY initially
+        });
     }
 
+    searchmenu(value: string): void {
+
+        if (!value || value.trim() === '') {
+            this.filteredMenus = [];
+            return;
+        }
+
+        const lowerValue = value.toLowerCase();
+
+        this.filteredMenus = this.allMenus.filter(menu =>
+            menu.fullName.toLowerCase().includes(lowerValue)
+        );
+    }
+
+    clearSearch(input: HTMLInputElement): void {
+    input.value = '';        // clear input
+    this.filteredMenus = []; // hide dropdown
+}
+
+    // clearSearch(): void {
+    //     this.filteredMenus = [];
+
+    //     // clear input manually
+    //     const input = document.querySelector('.menu-search-input') as HTMLInputElement;
+    //     if (input) {
+    //         input.value = '';
+    //     }
+    // }
+
+    allMenus: any[] = [];
+    filteredMenus: any[] = [];
+
+    flattenMenus(menus: any[], parentName: string = ''): any[] {
+        let result = [];
+
+        menus.forEach(menu => {
+
+            const fullName = parentName
+                ? parentName + ' > ' + menu.linkName
+                : menu.linkName;
+
+            if (menu.linkAction && menu.linkAction !== '#') {
+                result.push({
+                    ...menu,
+                    fullName: fullName   // 👈 useful for UI
+                });
+            }
+
+            if (menu.children && menu.children.length > 0) {
+                result = result.concat(this.flattenMenus(menu.children, fullName));
+            }
+        });
+
+        return result;
+    }
+
+    goToMenu(menu: any) {
+        this.filteredMenus = []; // 👈 hide dropdown after click
+        this.router.navigate([menu.linkAction]);
+    }
 
     async loadData() {
         const data = await this._DashboardserviceService.UserAccConfigSettingParam1();
