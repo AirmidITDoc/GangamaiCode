@@ -41,7 +41,7 @@ export class CompanyPatientSummaryDashboardComponent implements OnInit {
           'action'
       ];
            parentColumns: string[] = [ 
-            'type',
+          //  'type',
           'PBillNo',
           'VisitDate', 
            'UHID',

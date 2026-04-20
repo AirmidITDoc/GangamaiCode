@@ -148,6 +148,7 @@ export class PurchaseOrderComponent implements OnInit {
         private overlay: Overlay, public _ConfigService: ConfigService,) { }
 
     ngOnInit(): void {
+        debugger
         this.mysearchform = this._PurchaseOrderService.PurchaseSearchFrom();
         console.log(this.accountService.currentUserValue.user)
         // this.IsPoverify = 1//this.accountService.currentUserValue.user.isPoverify
