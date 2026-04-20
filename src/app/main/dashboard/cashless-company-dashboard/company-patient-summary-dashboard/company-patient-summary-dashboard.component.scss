@@ -109,10 +109,11 @@ mat-row.example-element-row:not(.example-expanded-row):active {
   }
 }
  
-.mat-row.row-completed {
-  background-color: #acf3af !important; /* green */
-} 
-
+ 
+  .red-row {
+    background-color: rgb(199, 244, 205) !important; /* Use !important to override default styles */
+    //color: white; /* Optional: Change text color for better visibility */
+    }
  
 
 .patient-name {
