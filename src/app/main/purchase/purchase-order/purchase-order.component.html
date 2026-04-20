@@ -53,10 +53,11 @@
                         <mat-icon>signal_cellular_no_sim</mat-icon>
                     </button>
 
-                    <button *ngIf="!element.isVerified && IsPoverify && isProceedToApproval != 0" mat-icon-button (click)="onVerify(element)">
+                    <button *ngIf="!element.isVerified && IsPoverify" mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" matTooltip="verify Menu"
                             title="verify Menu">verified_user</mat-icon>
                     </button>
+                    <!--&& element.isProceedToApproval != 0-->
 
                     <button *ngIf="element.isVerified" mat-icon-button>
                         <mat-icon class="disabled-icon" matTooltip="verified" style="color: green;"
