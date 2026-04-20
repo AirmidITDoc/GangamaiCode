@@ -388,11 +388,12 @@ export class IPSearchListComponent implements OnInit {
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    debugger
-                //     that.grid.bindGridData();
-                this.getfilterdata()
-                }
+                debugger
+                // if (result) {
+                    
+                    that.grid.bindGridData();
+                // this.getfilterdata()
+                // }
             });
         }
         else
