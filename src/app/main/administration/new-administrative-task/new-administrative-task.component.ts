@@ -466,7 +466,8 @@ export class NewAdministrativeTaskComponent {
                     "admissionId": this.AdmissionId,
                     "isCancelledBy":this._loggedService.currentUserValue.userId,
                     "isCancelledDateTime":this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd"),
-                   "isCancelled": 1,
+                    "isCancelled": 1,
+                    "isCancelComment":this.AdmissionTaskForm.get('Reason').value || ''
 
                 }
                 console.log(SubmitDate)
@@ -765,7 +766,7 @@ export class NewAdministrativeTaskComponent {
 
 
         this._matDialog.open(this.admissionCancle, {
-            maxHeight: "55vh",
+            maxHeight: "65vh",
             maxWidth: '90vh',
 
         })

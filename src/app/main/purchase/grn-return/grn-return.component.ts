@@ -693,7 +693,7 @@ export class ItemNameList {
     UOMId: number;
     HSNCode: number;
     BatchNo: number;
-    ExpDate: number;
+    ExpDate: any;
     Qty: number;
     FreeQty: number;
     MRP: number;
@@ -830,7 +830,7 @@ export class ItemNameList {
             this.UOMId = ItemNameList.UOMId || 0;
             this.HSNCode = ItemNameList.HSNCode || 0;
             this.BatchNo = ItemNameList.BatchNo || 0;
-            this.ExpDate = ItemNameList.ExpDate || 0;
+            this.ExpDate = ItemNameList.ExpDate || '';
             this.Qty = ItemNameList.Qty || 0;
             this.FreeQty = ItemNameList.FreeQty || 0;
             this.MRP = ItemNameList.MRP || 0;

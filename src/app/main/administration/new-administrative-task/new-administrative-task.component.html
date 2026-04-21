@@ -119,15 +119,17 @@
                                         (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
                                 </mat-form-field>
 
-                                <!-- <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
+                                <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
                                     [formGroup]="AdmissionTaskForm" [value]="vIPDNo">
-                                </airmid-textbox> -->
+                                </airmid-textbox>
 
-                                  <airmid-textbox label="Reason" formControlName="Reason" fxFlex="47%"
+
+                            </div>
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+                                <airmid-textbox label="Reason" formControlName="Reason" fxFlex="95%"
                                     [formGroup]="AdmissionTaskForm" [value]="Reason">
                                 </airmid-textbox>
                             </div>
-
                         </div>
                     </form>
                 </div>
@@ -437,8 +439,7 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button mat-icon-button color="accent" 
-                                            (click)="OnopenVisitDateUpdate(contact)"
+                                        <button mat-icon-button color="accent" (click)="OnopenVisitDateUpdate(contact)"
                                             matTooltip="Edit Visit Date">
                                             <mat-icon>edit_calendar</mat-icon>
                                         </button>
@@ -561,21 +562,18 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button mat-icon-button color="primary" 
-                                            (click)="openAdmissiontask(contact)"
+                                        <button mat-icon-button color="primary" (click)="openAdmissiontask(contact)"
                                             matTooltip="Admission Date-Time / IPD NO Update">
                                             <mat-icon>meeting_room</mat-icon>
                                         </button>
 
-                                            <!-- *ngIf="IsChargesAmount==0 && IsBillGenerated==0" -->
+                                        <!-- *ngIf="IsChargesAmount==0 && IsBillGenerated==0" -->
                                         <button mat-icon-button color="warn" 
-                                            (click)="openAdmissioncancletask(contact)"
-                                            matTooltip="Admission Cancel">
+                                            (click)="openAdmissioncancletask(contact)" matTooltip="Admission Cancel">
                                             <mat-icon>cancel</mat-icon>
                                         </button>
 
-                                        <button mat-icon-button color="warn" 
-                                            (click)="DischargeCancel(contact)"
+                                        <button mat-icon-button color="warn" (click)="DischargeCancel(contact)"
                                             matTooltip="Discharge Cancel">
                                             <mat-icon>exit_to_app</mat-icon>
                                         </button>
@@ -684,16 +682,13 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button mat-icon-button color="primary" 
-                                            (click)="openBilldateupdatetask(contact)"
-                                            matTooltip="Bill Date Update">
+                                        <button mat-icon-button color="primary"
+                                            (click)="openBilldateupdatetask(contact)" matTooltip="Bill Date Update">
                                             <mat-icon>event_note</mat-icon>
                                         </button>
 
-                                        <button mat-icon-button color="warn" 
-                                            (click)="BillCancle(contact)"
-                                            *ngIf="!IsCancelled" 
-                                            matTooltip="Cancel Bill">
+                                        <button mat-icon-button color="warn" (click)="BillCancle(contact)"
+                                            *ngIf="!IsCancelled" matTooltip="Cancel Bill">
                                             <mat-icon>cancel_presentation</mat-icon>
                                         </button>
                                     </mat-cell>
@@ -823,9 +818,8 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button mat-icon-button color="primary" 
-                                            (click)="openBilldateupdatetask(contact)"
-                                            matTooltip="Payment Date Update">
+                                        <button mat-icon-button color="primary"
+                                            (click)="openBilldateupdatetask(contact)" matTooltip="Payment Date Update">
                                             <mat-icon>payment</mat-icon>
                                         </button>
 
@@ -940,9 +934,8 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button mat-icon-button color="primary" 
-                                            (click)="openBilldateupdatetask(contact)"
-                                            matTooltip="Advance Date Update">
+                                        <button mat-icon-button color="primary"
+                                            (click)="openBilldateupdatetask(contact)" matTooltip="Advance Date Update">
                                             <mat-icon>account_balance_wallet</mat-icon>
                                         </button>
                                         <!-- <button class="btn btn-danger" (click)="CancelAdvance(contact)"
@@ -1048,9 +1041,8 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button mat-icon-button color="primary" 
-                                            (click)="openBilldateupdatetask(contact)"
-                                            matTooltip="Refund Date Update">
+                                        <button mat-icon-button color="primary"
+                                            (click)="openBilldateupdatetask(contact)" matTooltip="Refund Date Update">
                                             <mat-icon>money_off</mat-icon>
                                         </button>
                                     </mat-cell>
