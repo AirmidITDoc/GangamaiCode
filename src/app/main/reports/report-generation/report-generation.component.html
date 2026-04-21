@@ -445,6 +445,16 @@
                                                 ApiUrl="Report/MItemCategorymaster/auto-complete?Keyword=%"></airmid-dropdown>
                                         </div>
                                     </ng-container>
+
+                                    <mat-form-field appearance="outline" *ngIf="flagdaysSelected">
+                                        <mat-label>Days</mat-label>
+                                        <input matInput placeholder="Days" autocomplete="off"
+                                            [formGroup]="_ReportService.userForm" formControlName="days" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('days')">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </mat-form-field>
                                     <!-- sales dd remaining -->
                                 </div>
 

@@ -58,7 +58,8 @@ export class ReportService {
             RegNo:[""],
             PatientType:[""],
             status:[""],
-            ItemCategory:[""]
+            ItemCategory:[""],
+            days:[""]
             // 
         });
     }

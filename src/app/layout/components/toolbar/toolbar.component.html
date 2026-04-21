@@ -54,16 +54,11 @@
                             </div> -->
                             <div class="nav-item seperator-right" style="position: relative;">
 
-                                <!-- <input type="text" placeholder="Search menu..." class="menu-search-input"
-                                    (input)="searchmenu($event.target.value)" />
-                                <button class="clear-btn" (click)="clearSearch()">
-                                    ✕
-                                </button> -->
-
                                 <div class="search-wrapper">
 
                                     <input #searchInput type="text" placeholder="Search menu..."
-                                        class="menu-search-input" (input)="searchmenu($event.target.value)" />
+                                        class="menu-search-input" (input)="searchmenu($event.target.value)"
+                                        (keydown)="handleKeyDown($event)" />
 
                                     <span class="clear-icon" (click)="clearSearch(searchInput)">
                                         ✕
@@ -73,7 +68,9 @@
 
                                 <!-- Dropdown Results -->
                                 <div *ngIf="filteredMenus.length > 0" class="menu-search-results">
-                                    <div *ngFor="let menu of filteredMenus" class="menu-item" (click)="goToMenu(menu)">
+                                    <div *ngFor="let menu of filteredMenus; let i = index" class="menu-item" 
+                                    [ngStyle]="{ 'background-color': i === selectedIndex ? '#d3d3d3' : 'transparent' }"
+                                    (click)="goToMenu(menu)">
 
                                         {{ menu.fullName }}
                                     </div>

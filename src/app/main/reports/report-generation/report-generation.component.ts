@@ -152,6 +152,7 @@ export class ReportGenerationComponent implements OnInit {
     flagPatientTypeSelected: boolean = false;
     flagstatusSelected: boolean = false;
     flagItemCategorySelected: boolean = false;
+    flagdaysSelected: boolean = false;
 
     // by default set value who
     flagStoreRequired: boolean = false;
@@ -370,6 +371,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagstatusSelected = true;
         if (controllerPermission.filter(x => x == "ItemCategory")?.length > 0)
             this.flagItemCategorySelected = true;
+        if (controllerPermission.filter(x => x == "Days")?.length > 0)
+            this.flagdaysSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -647,6 +650,13 @@ export class ReportGenerationComponent implements OnInit {
         this.flagPatientTypeSelected = false;
         this.flagstatusSelected = false;
         this.flagItemCategorySelected = false;
+        this.flagdaysSelected=false;
+    }
+
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'days')
+            this._ReportService.userForm.get('days').setValue("0")
     }
 
     CallReportData(type) {
@@ -855,6 +865,13 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "ItemCategoryId",
                     "fieldValue": this.ItemCategory.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+                
+            if (this.flagdaysSelected)
+                paramFilterList.push({
+                    "fieldName": "Days",
+                    "fieldValue": this._ReportService.userForm.get('days').toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   

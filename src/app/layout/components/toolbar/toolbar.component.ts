@@ -201,8 +201,32 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         });
     }
 
-    searchmenu(value: string): void {
+    selectedIndex: number = -1;
 
+    handleKeyDown(event: KeyboardEvent) {
+        if (!this.filteredMenus || this.filteredMenus.length === 0) return;
+
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            this.selectedIndex =
+                (this.selectedIndex + 1) % this.filteredMenus.length;
+        }
+
+        else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            this.selectedIndex =
+                (this.selectedIndex - 1 + this.filteredMenus.length) % this.filteredMenus.length;
+        }
+
+        else if (event.key === 'Enter') {
+            if (this.selectedIndex >= 0) {
+                this.goToMenu(this.filteredMenus[this.selectedIndex]);
+            }
+        }
+    }
+
+    searchmenu(value: string): void {
+         this.selectedIndex = -1;
         if (!value || value.trim() === '') {
             this.filteredMenus = [];
             return;
@@ -216,9 +240,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
 
     clearSearch(input: HTMLInputElement): void {
-    input.value = '';        // clear input
-    this.filteredMenus = []; // hide dropdown
-}
+        input.value = '';        // clear input
+        this.filteredMenus = []; // hide dropdown
+    }
 
     // clearSearch(): void {
     //     this.filteredMenus = [];
