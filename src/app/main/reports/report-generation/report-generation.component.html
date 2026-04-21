@@ -446,7 +446,7 @@
                                         </div>
                                     </ng-container>
 
-                                    <mat-form-field appearance="outline" *ngIf="flagdaysSelected">
+                                    <mat-form-field appearance="outline" *ngIf="flagdaysSelected" style="max-width: 265px;">
                                         <mat-label>Days</mat-label>
                                         <input matInput placeholder="Days" autocomplete="off"
                                             [formGroup]="_ReportService.userForm" formControlName="days" />

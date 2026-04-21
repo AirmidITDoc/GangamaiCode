@@ -871,7 +871,7 @@ export class ReportGenerationComponent implements OnInit {
             if (this.flagdaysSelected)
                 paramFilterList.push({
                     "fieldName": "Days",
-                    "fieldValue": this._ReportService.userForm.get('days').toString() || "0",
+                    "fieldValue": this._ReportService.userForm.get('days').value.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   
