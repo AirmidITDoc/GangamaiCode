@@ -80,24 +80,27 @@ export class NursingnoteService {
         } else return this._httpClient.PostData("Nursing/NursingPatientHandoverInsert", employee)
     }
 
-  
 
-   public NursingMedicineInsert(employee) {
-    return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
-  }
-  public insertMedicationChart(employee) {
-    return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
-  }
-  public getSchedulerdatalist(employee) {
-    return this._httpClient.PostData("Nursing/NursingMedicationList", employee)
-  }
-  public getPrescriptionList(employee) {
-    return this._httpClient.PostData("DischargeSummary/IPPrescriptionDischargeData", employee)
-  }
+
+    public NursingMedicineInsert(employee) {
+        return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
+    }
+    public insertMedicationChart(employee) {
+        return this._httpClient.PostData("Nursing/NursingMedicationChartInsert", employee)
+    }
+    public getSchedulerdatalist(employee) {
+        return this._httpClient.PostData("Nursing/NursingMedicationList", employee)
+    }
+    public getPrescriptionList(employee) {
+        return this._httpClient.PostData("DischargeSummary/IPPrescriptionDischargeData", employee)
+    }
     public getTempPrescriptionList(param) {
         return this._httpClient.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList", param)
     }
     public getDoseMasterById(Id) {
         return this._httpClient.GetData("DoseMaster/" + Id);
+    }
+    public getShcedules(date) {
+        return this._httpClient.GetData("Nursing/nursing-schedules?date=" + date);
     }
 }

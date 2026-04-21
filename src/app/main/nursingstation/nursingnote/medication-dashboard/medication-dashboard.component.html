@@ -24,7 +24,7 @@
             <span class="brand-pill">MAR</span>
             <div>
                 <div class="brand-title">Medicine Administration Record</div>
-                <div class="brand-sub">{{ patient.ward }} · {{ patient.bed }} · {{ viewDate | date:'EEEE, d MMM yyyy' }}
+                <div class="brand-sub"> {{ viewDate | date:'EEEE, d MMM yyyy' }}
                 </div>
             </div>
         </div>
@@ -111,30 +111,6 @@
                     </button>
                 </div>
 
-                <!-- Medicine List -->
-                <!-- <div class="section-heading">Medicines <span class="count-chip">{{ filteredMedicines.length }}</span>
-                </div>
-                <div class="med-list">
-                    <div class="med-card" *ngFor="let med of filteredMedicines; trackBy: trackById">
-                        <div class="med-card-header" [style.borderLeftColor]="med.color">
-                            <div class="med-card-name">
-                                {{ med.name }}
-                                <span class="route-pip" [class.iv]="med.route==='IV'">{{ med.route }}</span>
-                            </div>
-                            <div class="med-card-sub">{{ med.dose }} · {{ med.interval }}</div>
-                            <div class="med-card-inst" *ngIf="med.instructions">{{ med.instructions }}</div>
-                        </div>
-                        <div class="dose-chips">
-                            <button class="dose-chip" *ngFor="let dose of med.doses; trackBy: trackByDose"
-                                [class]="'dose-chip ' + dose.status" (click)="openFromSidebar(dose)"
-                                [title]="statusLabel(dose.status) + ' · ' + fmtTime(dose.scheduledTime)">
-                                <span class="dc-icon">{{ getStatusIcon(dose.status) }}</span>
-                                <span class="dc-time">{{ fmtTime(dose.scheduledTime) }}</span>
-                            </button>
-                        </div>
-                    </div>
-                </div> -->
-
                 <!-- Legend -->
                 <div class="section-heading">Legend</div>
                 <div class="legend">
@@ -175,53 +151,52 @@
             <div class="cal-wrap">
                 <!-- AFTER — template ref passed via [eventTemplate] input binding -->
                 <mwl-calendar-day-view [viewDate]="viewDate" [events]="calendarEvents" [dayStartHour]="0"
-                    [dayEndHour]="23" [hourSegments]="2" [hourSegmentHeight]="90" 
-                    [eventTemplate]="myEventTpl" (eventClicked)="eventClicked($event)"
-                    (hourSegmentClicked)="checkAlerts()">
+                    [dayEndHour]="23" [hourSegments]="2" [hourSegmentHeight]="90" [eventTemplate]="myEventTpl"
+                    (eventClicked)="eventClicked($event)" (hourSegmentClicked)="checkAlerts()">
                 </mwl-calendar-day-view>
 
                 <!-- Template defined OUTSIDE the component tag -->
                 <ng-template #myEventTpl let-weekEvent="weekEvent" let-eventClicked="eventClicked">
-                    <div class="custom-cal-event" [class]="'cal-ev-' + weekEvent.event.meta?.status"
+                    <div class="custom-cal-event" [class]="'cal-ev-' + weekEvent.event.meta?.color"
                         (click)="eventClicked.emit({ sourceEvent: $event })">
 
                         <div class="ce-bar" [style.background]="weekEvent.event.color?.primary"></div>
 
                         <div class="ce-body">
                             <div class="ce-top-row">
-                                <span class="ce-icon">{{ getStatusIcon(weekEvent.event.meta?.status) }}</span>
-                                <span class="ce-name">{{ weekEvent.event.meta?.medicineName }}</span>
+                                <span class="ce-icon">{{ getStatusIcon(weekEvent.event.meta?.color) }}</span>
+                                <span class="ce-name">{{ weekEvent.event.meta?.itemName }}</span>
                                 <span class="ce-route" [class.iv]="weekEvent.event.meta?.route === 'IV'">
                                     {{ weekEvent.event.meta?.route }}
                                 </span>
-                                <span class="ce-dose-no">#{{ weekEvent.event.meta?.doseNumber }}</span>
+                                <span class="ce-dose-no">#{{ weekEvent.event.meta?.doseNo }}</span>
+                            </div>
+                            <div class="ce-instructions" *ngIf="weekEvent.event.meta?.genericName">
+                                📋 {{ weekEvent.event.meta?.genericName }} | {{weekEvent.event.meta?.category}}
+                            </div>
+
+
+                            <div class="ce-time-row">
+                                <span class="ce-time">🕐 {{ fmtTime(weekEvent.event.meta?.start) }}</span>
+                                <span class="ce-freq">{{ weekEvent.event.meta?.freq }}</span>
                             </div>
 
                             <div class="ce-generic">
-                                {{ weekEvent.event.meta?.genericName }} · {{ weekEvent.event.meta?.dose }}
-                            </div>
-
-                            <div class="ce-time-row">
-                                <span class="ce-time">🕐 {{ fmtTime(weekEvent.event.meta?.scheduledTime) }}</span>
-                                <span class="ce-freq">{{ weekEvent.event.meta?.frequency }}</span>
-                            </div>
-
-                            <div class="ce-instructions" *ngIf="weekEvent.event.meta?.instructions">
-                                📋 {{ weekEvent.event.meta?.instructions }}
+                                {{ weekEvent.event.meta?.firstName }} {{ weekEvent.event.meta?.lastName }}
                             </div>
 
                             <div class="ce-status-row">
                                 <span class="ce-status-tag"
-                                    [style.background]="getStatusBg(weekEvent.event.meta?.status)"
-                                    [style.color]="getStatusColor(weekEvent.event.meta?.status)">
-                                    {{ statusLabel(weekEvent.event.meta?.status) }}
+                                    [style.background]="getStatusBg(weekEvent.event.meta?.color)"
+                                    [style.color]="getStatusColor(weekEvent.event.meta?.color)">
+                                    {{ statusLabel(weekEvent.event.meta?.color) }}
                                 </span>
                                 <span class="ce-given-info"
                                     *ngIf="weekEvent.event.meta?.status === 'given' && weekEvent.event.meta?.givenTime">
                                     ✓ {{ fmtTime(weekEvent.event.meta.givenTime) }} · {{ weekEvent.event.meta.givenBy }}
                                 </span>
-                                <span class="ce-remark" *ngIf="weekEvent.event.meta?.remark">
-                                    "{{ weekEvent.event.meta?.remark }}"
+                                <span class="ce-remark" *ngIf="weekEvent.event.meta?.comment">
+                                    "{{ weekEvent.event.meta?.comment }}"
                                 </span>
                             </div>
                         </div>
@@ -236,21 +211,24 @@
     <div class="overlay" *ngIf="popup.visible" (click)="closePopup()">
         <div class="popup" (click)="$event.stopPropagation()">
 
-            <div class="popup-header" [style.background]="getStatusColor(popup.event?.meta?.status)">
+            <div class="popup-header" [style.background]="getStatusColor(popup.event?.meta?.color)">
                 <div class="popup-header-content">
-                    <div class="ph-icon">{{ getStatusIcon(popup.event?.meta?.status) }}</div>
+                    <div class="ph-icon">{{ getStatusIcon(popup.event?.meta?.color) }}</div>
                     <div>
                         <div class="ph-name">
-                            {{ popup.event?.meta?.medicineName }}
+                            {{ popup.event?.meta?.itemName }}
                             <span class="ph-route" [class.iv]="popup.event?.meta?.route === 'IV'">{{
                                 popup.event?.meta?.route }}</span>
                         </div>
                         <div class="ph-detail">
-                            {{ popup.event?.meta?.dose }} · {{ popup.event?.meta?.frequency }} · Dose #{{
-                            popup.event?.meta?.doseNumber }}
+                            {{ popup.event?.meta?.genericName }} · {{ popup.event?.meta?.freq }} · Dose #{{
+                            popup.event?.meta?.doseNo }}
+                        </div>
+                        <div class="ph-detail">
+                            {{ popup.event?.meta?.firstName }} {{ popup.event?.meta?.lastName }}
                         </div>
                         <div class="ph-meta">
-                            📅 Scheduled: <strong>{{ popup.event?.meta?.scheduledTime | date:'HH:mm' }}</strong>
+                            📅 Scheduled: <strong>{{ popup.event?.meta?.start | date:'HH:mm' }}</strong>
                             &nbsp;|&nbsp; 👤 {{ popup.event?.meta?.prescribedBy || 'Dr. S. Patel' }}
                         </div>
                         <div class="ph-category">{{ popup.event?.meta?.category }}</div>
@@ -262,27 +240,27 @@
             <!-- Current status -->
             <div class="popup-status-row">
                 <span class="popup-status-label">Current Status:</span>
-                <span class="popup-status-badge" [style.background]="getStatusBg(popup.event?.meta?.status)"
-                    [style.color]="getStatusColor(popup.event?.meta?.status)">
-                    {{ getStatusIcon(popup.event?.meta?.status) }} {{ statusLabel(popup.event?.meta?.status) }}
+                <span class="popup-status-badge" [style.background]="getStatusBg(popup.event?.meta?.color)"
+                    [style.color]="getStatusColor(popup.event?.meta?.color)">
+                    {{ getStatusIcon(popup.event?.meta?.color) }} {{ statusLabel(popup.event?.meta?.color) }}
                 </span>
             </div>
 
             <!-- Given info -->
-            <div class="popup-given-info" *ngIf="popup.event?.meta?.status === 'given'">
+            <div class="popup-given-info" *ngIf="popup.event?.meta?.color === 'given'">
                 <span>✅ Given at {{ fmtTime(popup.event!.meta!.givenTime!) }}</span>
                 <span>👩‍⚕️ By {{ popup.event!.meta!.givenBy }}</span>
             </div>
 
             <!-- Instructions -->
-            <div class="popup-instructions" *ngIf="popup.event?.meta?.instructions">
-                📋 {{ popup.event!.meta!.instructions }}
+            <div class="popup-instructions" *ngIf="popup.event?.meta?.comment">
+                📋 {{ popup.event!.meta!.comment }}
             </div>
 
             <!-- Remark -->
             <div class="popup-remark-wrap">
                 <label class="popup-label">Administration Remark</label>
-                <textarea class="popup-remark" [(ngModel)]="popup.remark"
+                <textarea class="popup-remark" [(ngModel)]="popup.comment"
                     placeholder="Enter note: patient response, reason for delay, vitals check..."></textarea>
             </div>
 
