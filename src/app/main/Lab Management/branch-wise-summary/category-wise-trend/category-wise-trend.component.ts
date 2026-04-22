@@ -78,6 +78,8 @@ export class CategoryWiseTrendComponent {
                 { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Contains },
                 { fieldName: "CategoryId", fieldValue: String(this.category), opType: OperatorComparer.Contains },
                 { fieldName: "Month", fieldValue: this.monthValue, opType: OperatorComparer.Contains },
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
             ]
         }
         setTimeout(() => {
@@ -121,7 +123,9 @@ export class CategoryWiseTrendComponent {
                     "fieldName": "Month",
                     "fieldValue": this.monthValue,
                     "opType": "Contains"
-                }
+                },
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
             ],
             "Columns": [],
             "exportType": "JSON"

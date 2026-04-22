@@ -228,7 +228,7 @@ export class BranchWiseSummaryComponent {
         const dialogRef = this._matDialog.open(ServiceWiseTrendComponent,
             {
                 maxWidth: "90vw",
-                height: '90%',
+                height: '95%',
                 width: '90%',
                 data: {
                     row, unit: this.UnitId,
@@ -282,9 +282,13 @@ export class BranchWiseSummaryComponent {
         const dialogRef = this._matDialog.open(CategoryWiseTrendComponent,
             {
                 maxWidth: "90vw",
-                height: '90%',
+                height: '95%',
                 width: '90%',
-                data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+                data: {
+                    row, unit: this.UnitId,
+                    fdate: this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd"),
+                    tdate: this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+                }
             });
         dialogRef.afterClosed().subscribe(result => {
             this.CategoryGrid.bindGridData();
@@ -332,9 +336,13 @@ export class BranchWiseSummaryComponent {
         const dialogRef = this._matDialog.open(DoctorWiseTrendComponent,
             {
                 maxWidth: "90vw",
-                height: '90%',
+                height: '95%',
                 width: '90%',
-                data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+                data: {
+                    row, unit: this.UnitId,
+                    fdate: this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd"),
+                    tdate: this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+                }
             });
         dialogRef.afterClosed().subscribe(result => {
             this.DoctorGrid.bindGridData();
@@ -384,9 +392,13 @@ export class BranchWiseSummaryComponent {
         const dialogRef = this._matDialog.open(CompanyWiseTrendComponent,
             {
                 maxWidth: "90vw",
-                height: '90%',
+                height: '95%',
                 width: '90%',
-                data: { row, unit: this.UnitId, fdate: this.fromDate, tdate: this.toDate }
+                data: {
+                    row, unit: this.UnitId,
+                    fdate: this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd"),
+                    tdate: this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+                }
             });
         dialogRef.afterClosed().subscribe(result => {
             this.b2bGrid.bindGridData();

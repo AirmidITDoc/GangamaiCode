@@ -17,8 +17,8 @@ export class IndentService {
 
     IndentSearchFrom() {
         return this._formBuilder.group({
-            ToStoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            FromStoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ToStoreId: [0],
+            FromStoreId: [this.accountService.currentUserValue.user.storeId],
             startdate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             Verify: [0],

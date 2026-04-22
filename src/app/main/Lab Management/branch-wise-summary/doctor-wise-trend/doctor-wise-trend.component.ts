@@ -76,6 +76,8 @@ export class DoctorWiseTrendComponent {
                 { fieldName: "UnitId", fieldValue: String(this.unitId), opType: OperatorComparer.Contains },
                 { fieldName: "DoctorId", fieldValue: String(this.doctorId), opType: OperatorComparer.Contains },
                 { fieldName: "Month", fieldValue: monthValue, opType: OperatorComparer.Contains },
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
             ]
         }
         setTimeout(() => {
@@ -118,7 +120,9 @@ export class DoctorWiseTrendComponent {
                     "fieldName": "Month",
                     "fieldValue": this.monthValue,
                     "opType": "Contains"
-                }
+                },
+                { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
             ],
             "Columns": [],
             "exportType": "JSON"

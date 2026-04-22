@@ -99,11 +99,13 @@
 
                         <airmid-dropdown label="From Store Name" formControlName="FromStoreId"
                             (selectionChange)="ListView($event)" [formGroup]="IndentSearchGroup"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue"
                             [mode]="autocompletestore">
                         </airmid-dropdown>
 
                         <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
                             (selectionChange)="ListView1($event)" [formGroup]="IndentSearchGroup"
+                            [(ngModel)]="gridConfig.filters[1].fieldValue"
                             [mode]="autocompletestore">
                         </airmid-dropdown>
 
