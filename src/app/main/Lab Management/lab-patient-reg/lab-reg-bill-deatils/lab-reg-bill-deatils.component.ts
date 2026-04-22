@@ -251,8 +251,72 @@ export class LabRegBillDeatilsComponent {
         this._matDialog.closeAll()
     }
 
-    onPrint() {
-        this.commonService.Onprint("OPD_IPD_ID", this.labId, "LabSlipReport");
+    onPathReqPrint() {
+        const param = {
+            "searchFields": [
+                {
+                    "fieldName": "OPD_IPD_ID",
+                    "fieldValue": String(this.labId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsRadiology",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "LabSlipReport"
+        }
+
+        this._labPatientRegService.getReportView(param).subscribe(res => {
+
+            const matDialog = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Radiology Template Report" + " " + "Viewer"
+                    }
+                });
+            matDialog.afterClosed().subscribe(result => {
+            });
+        });
+    }
+
+    onNonPathReqPrint() {
+        const param = {
+            "searchFields": [
+                {
+                    "fieldName": "OPD_IPD_ID",
+                    "fieldValue": String(this.labId),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsRadiology",
+                    "fieldValue": "1",
+                    "opType": "Equals"
+                }
+            ],
+            "mode": "LabSlipReport"
+        }
+
+        this._labPatientRegService.getReportView(param).subscribe(res => {
+
+            const matDialog = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Radiology Template Report" + " " + "Viewer"
+                    }
+                });
+            matDialog.afterClosed().subscribe(result => {
+            });
+        });
     }
 
     getWhatsappshareReport(el) {
@@ -283,7 +347,7 @@ export class LabRegBillDeatilsComponent {
     }
 
     viewgetReportdispatch(contact) {
-        console.log('contact:',contact)
+        console.log('contact:', contact)
         console.log(this.data)
         const dialogRef = this._matDialog.open(ReportDispatchComponent,
             {
@@ -291,9 +355,9 @@ export class LabRegBillDeatilsComponent {
                 maxHeight: '95%',
                 width: '100%',
                 data: {
-                    data:this.data,
-                    Type:'SingleDispatch',
-                    chargeId:contact.chargesId
+                    data: this.data,
+                    Type: 'SingleDispatch',
+                    chargeId: contact.chargesId
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

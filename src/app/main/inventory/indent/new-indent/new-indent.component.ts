@@ -92,6 +92,7 @@ export class NewIndentComponent implements OnInit {
             this.registerObj = this.data.Obj;
             this.IndentId = this.data.Obj.indentId
             this.vRemark = this.data.Obj.comments
+            this.vstoreId=this.registerObj.toStoreId
             console.log(this.registerObj);
             this.IndentSaveFrom.get("ToStoreId").setValue(this.registerObj.toStoreId)
             this.IndentSaveFrom.get("comments").setValue(this.registerObj.remarks)
