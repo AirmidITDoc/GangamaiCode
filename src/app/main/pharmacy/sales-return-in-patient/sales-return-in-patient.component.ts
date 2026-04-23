@@ -679,7 +679,7 @@ export class SalesReturnInPatientComponent implements OnInit {
             this.vPatientName = ResultData[0]?.PatientName || ''
             this.registerObj = ResultData[0]
             this.vRegno = ResultData[0]?.RegNo || 0
-            this.vPrescObj = ResultData[0] || []
+            this.vPrescObj = ResultData || []
 
             ResultData.forEach(element => {
                 const storeID = this.accountService.currentUserValue.user.storeId

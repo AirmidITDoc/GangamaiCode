@@ -21,24 +21,26 @@ import { PrescriptionReturnService } from './prescription-return.service';
 })
 export class PrescriptionReturnComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingPrescription, permissionType.Add);
-
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild('grid') grid: AirmidTableComponent;
+    @ViewChild('grid1') grid1: AirmidTableComponent;
     hasSelectedContacts: boolean;
     regNo: any = ""
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
-    @ViewChild('grid1') grid1: AirmidTableComponent;
+   
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     fname = "%"
     lname = "%"
 
 
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+      @ViewChild('actionButtonTemplateDet') actionButtonTemplateDet!: TemplateRef<any>;
+          @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
+
 
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        // this.gridConfig.columnsList.find(col => col.key === 'isOnFileTest')!.template = this.isOnFileTestIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;   
     }
 
     allColumns2 = [
@@ -178,12 +180,14 @@ export class PrescriptionReturnComponent implements OnInit {
     }
 
     // isShowDetailTable: boolean = false;
+      //  @ViewChild('iconisClosed') iconisClosed!: TemplateRef<any>;
+            @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
     GetDetails2(data) {
         // debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/IPPrescReturnItemDetList",
-            columnsList: [ 
-                { heading: "Status", key: "isClosed", type: gridColumnTypes.status, align: "center" },
+            columnsList: [  
+              //  { heading: "Status", key: "isClosed", type: gridColumnTypes.template, align: "center" , template: this.iconisCompeleted, },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
@@ -194,9 +198,11 @@ export class PrescriptionReturnComponent implements OnInit {
                 { fieldName: "PresReId", fieldValue: String(data.presReId), opType: OperatorComparer.Equals }
             ]
         }
-        this.isShowDetailTable = true;
-        this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
+        this.isShowDetailTable = true; 
+           setTimeout(() => {
+            this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.bindGridData();
+        }, 500);
     }
 
 
