@@ -69,7 +69,7 @@ export class ReportGenerationComponent implements OnInit {
     FromStoreId: any;
     ToStoreId: any;
     HospitalId: any;
-    ExecutiveId: any;
+    ExecutiveId: any=0;
     LoginUserId: any;
     LabPatientId: any;
     RegNo: any;
