@@ -94,7 +94,8 @@ export class BatchpopupComponent implements OnInit {
             "sortField": "BatchNo",
             "sortOrder": 0,
             "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.registerObj?.itemId), "opType": "Equals" },
-            { "fieldName": "StoreId", "fieldValue": String(this.vStoreId), "opType": "Equals" }
+            { "fieldName": "StoreId", "fieldValue": String(this.vStoreId), "opType": "Equals" },
+             {"fieldName": "OP_IP_Id", "fieldValue": String(this.data?.AdmissionId || 0), "opType": "Equals" }
             ],
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }

@@ -16,6 +16,7 @@ import { map, Observable, startWith } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SalesReturnInPatientService } from './sales-return-in-patient.service';
 import { GetPrescriptionReturnlistComponent } from './get-prescription-returnlist/get-prescription-returnlist.component';
+import { element } from 'protractor';
 
 @Component({
     selector: 'app-sales-return-in-patient',
@@ -138,7 +139,8 @@ export class SalesReturnInPatientComponent implements OnInit {
                 addedBy: [this.accountService.currentUserValue.userId],
                 storeId: [this.accountService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
-                isPurBill: [false]
+                isPurBill: [false],
+                isPrescriptionReturn:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
             // sales return details in array
             salesReturnDetails: this.formBuilder.array([]),
@@ -148,6 +150,7 @@ export class SalesReturnInPatientComponent implements OnInit {
             salesDetail: this.formBuilder.array([]),
             // payment:'',
             // tPayments:this.formBuilder.array([])
+             prescriptionReturn: this.formBuilder.array([])
         });
     }
     createSalesretDetails(element: any): FormGroup {
@@ -194,6 +197,13 @@ export class SalesReturnInPatientComponent implements OnInit {
             returnQty: [element?.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
+        createprescriptionReturn(element: any): FormGroup {
+        return this.formBuilder.group({
+            presReId: [element?.presReId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            presDetailsId: [element?.presDetailsId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+         });
+    } 
     // Getters 
     get SaleRetDetailsArray(): FormArray {
         return this.IpSalesReturnForm.get('salesReturnDetails') as FormArray;
@@ -203,6 +213,9 @@ export class SalesReturnInPatientComponent implements OnInit {
     }
     get SalesDetArray(): FormArray {
         return this.IpSalesReturnForm.get('salesDetail') as FormArray;
+    }
+    get PrescReturnArray(): FormArray {
+        return this.IpSalesReturnForm.get('prescriptionReturn') as FormArray;
     }
 
     getSelectedObjRegIP(obj) {
@@ -376,7 +389,7 @@ export class SalesReturnInPatientComponent implements OnInit {
         this.ItemFormGroup.get('ItemName').setValue('');
         this.ItemFormGroup.get('ReturnQty').setValue('');
         this.ItemFormGroup.get('TotalQty').setValue('');
-        this.ItemFormGroup.markAllAsTouched();
+        this.ItemFormGroup.markAllAsTouched(); 
     }
     deleteTableRow(event, element) {
         const index = this.chargeslist.indexOf(element);
@@ -464,12 +477,12 @@ export class SalesReturnInPatientComponent implements OnInit {
     //Save code 
     onSave() {
         const formValues = this.ItemFormGroup.value
-        if (!(formValues?.PatientName?.admissionID > 0)) {
-            this.toastr.warning('Please select Patient Name', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return
-        }
+        // if (!(formValues?.PatientName?.admissionID > 0)) {
+        //     this.toastr.warning('Please select Patient Name', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return
+        // }
         if ((this.vRegno == '' || this.vRegno == null || this.vRegno == undefined || this.vRegno == 0)) {
             this.toastr.warning('Please select patient', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -521,11 +534,17 @@ export class SalesReturnInPatientComponent implements OnInit {
             this.SaleRetDetailsArray.clear()
             this.currentStockArray.clear()
             this.SalesDetArray.clear()
+            this.PrescReturnArray.clear()
             this.dsIpSaleItemList.data.forEach((element) => {
                 this.SaleRetDetailsArray.push(this.createSalesretDetails(element));
                 this.currentStockArray.push(this.createcurrentStock(element));
                 this.SalesDetArray.push(this.createSalesDetails(element));
+                if(this.vPrescObj?.presReId > 0){
+                this.PrescReturnArray.push(this.createprescriptionReturn((this.vPrescObj))); 
+                 this.IpSalesReturnForm.get('salesReturn.isPrescriptionReturn').setValue(this.vPrescObj?.presReId || 0)
+                }
             });
+            
             if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
                 this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
                 this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(((this.IPSalesRetFooterform.get('FinalNetAmount').value)))
@@ -574,6 +593,7 @@ export class SalesReturnInPatientComponent implements OnInit {
         this.ItemFormGroup.get('Op_ip_id').setValue('1');
         this.ItemFormGroup.markAllAsTouched();
         this.IPSalesRetFooterform.markAllAsTouched();
+         this.vPrescObj = [];
     }
     ngOnDestroy() {
         this.OnReset();
@@ -632,18 +652,171 @@ export class SalesReturnInPatientComponent implements OnInit {
             this.vCheckBox = false;
         this.ItemFormGroup.get('PatientName').setValue('');
     }
+    vPrescObj:any=[];
     getPRESCRIPTIONRETURN() {
+          this.dsIpSaleItemList.data = []
+           this.chargeslist = []
+           this.selcteditemObj = ''
         const dialogRef = this._matDialog.open(GetPrescriptionReturnlistComponent, {
             maxWidth: '100%',
             height: '100%',
             width: '95%',
         });
         dialogRef.afterClosed().subscribe((result) => {
+            debugger
             console.log('The dialog was closed - Insert Action', result);
-        }); 
-    }
- 
+            let ResultData: any = [];
+            let prescriptionlist = [];
+             this.vPrescObj = []
+            ResultData = result
+            if (ResultData[0]?.RegNo == '' || ResultData[0]?.RegNo == null || ResultData[0]?.RegNo == undefined || ResultData[0]?.RegNo == 0) {
+                this.toastr.warning('Please select patient', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return
+            } 
 
+            this.vPatientName = ResultData[0]?.PatientName || ''
+            this.registerObj = ResultData[0]
+            this.vRegno = ResultData[0]?.RegNo || 0
+            this.vPrescObj = ResultData[0] || []
+
+            ResultData.forEach(element => {
+                const storeID = this.accountService.currentUserValue.user.storeId
+                const ItemName = element.ItemName + '%' || '%'
+                const Filters = [
+                    { "fieldName": "AdmissionId", "fieldValue": String(element?.AdmissionID || 0), "opType": "Equals" },
+                    { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
+                    { "fieldName": "ItemName", "fieldValue": String(ItemName), "opType": "Equals" },
+                    { "fieldName": "BatchNo", "fieldValue": String(0), "opType": "Equals" }
+                ]
+                if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
+                    var param = {
+                        "searchFields": Filters,
+                        "mode": "IPSalesInPatientReturnCredit"
+                    }
+                }
+                this._IpSalesRetInpatService.getSalesReturnitemlist(param).subscribe(response => {
+                    console.log('response', response)
+                    if (response) {
+                        this.Itemlist = response
+                        //prescriptionlist.push(response)
+                        this.selcteditemObj = response[0];
+                        this.IpSalesReturnForm = this.CreateSalesReturnForm();
+                    }
+         
+                const CGSTPer = +this.selcteditemObj?.CGSTPer || 0;
+                const SGSTPer = +this.selcteditemObj?.SGSTPer || 0;
+                const IGSTPer = +this.selcteditemObj?.IGSTPer || 0;
+                const unitMRP = +this.selcteditemObj?.UnitMRP || 0;
+                const qty = +element?.QtyPerDay || 0;
+                const GSTPer = +this.selcteditemObj?.VatPer || 0;
+                const DiscPer = +this.selcteditemObj?.DiscPer || 0;
+                const totalAmt = (unitMRP * qty);
+                const GSTAmt = (GSTPer * totalAmt) / 100;
+                const CGSTAmt = (totalAmt * CGSTPer) / 100;
+                const SGSTAmt = (totalAmt * SGSTPer) / 100;
+                const IGSTAmt = (totalAmt * IGSTPer) / 100;
+                const DiscAmt = ((DiscPer * totalAmt) / 100);
+                const netAmt = (totalAmt - DiscAmt).toFixed(2);
+                const PurTotAmt = (+this.selcteditemObj?.PurRateWf * qty).toFixed(2);
+                const TotalLandedAmount = (+this.selcteditemObj?.LandedPrice * qty).toFixed(2);
+
+
+                if (this.dsIpSaleItemList.data.length > 0) {
+                    const isItemAlreadyAdded = this.chargeslist.some((element) => element.ItemId === this.selcteditemObj?.ItemId
+                        && element.BatchNo === this.selcteditemObj?.BatchNo
+                        && Number(element?.MRP).toFixed(2) === Number(this.selcteditemObj?.UnitMRP).toFixed(2));
+                    if (isItemAlreadyAdded) {
+                        this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                        });
+                        this.ItemReset(); 
+                        return
+                    }
+                }
+
+                this.chargeslist.push(
+                    {
+                        SalesNo: this.selcteditemObj?.SalesNo || 0,
+                        ItemName: element.ItemName || '',
+                        ItemId: this.selcteditemObj?.ItemId || 0,
+                        BatchNo: this.selcteditemObj?.BatchNo || 0,
+                        ExpDate: this.selcteditemObj?.BatchExpDate || 0,
+                        MRP: unitMRP || 0,
+                        Qty: qty || 0,
+                        ReturnQty: qty || 0,
+                        TotalAmt: totalAmt.toFixed(2) || 0,
+                        GST: GSTPer,
+                        GSTAmt: GSTAmt.toFixed(2) || 0,
+                        Disc: DiscPer,
+                        DiscAmt: DiscAmt.toFixed(2) || 0,
+                        LandedPrice: this.selcteditemObj?.LandedPrice || 0,
+                        TotalLandedAmount: TotalLandedAmount || 0,
+                        PurRateWf: this.selcteditemObj?.PurRateWf || 0,
+                        PurTotAmt: PurTotAmt || 0,
+                        NetAmount: netAmt || 0,
+                        SalesDetId: this.selcteditemObj?.SalesDetId || 0,
+                        StkID: this.selcteditemObj?.StkID || 0,
+                        isCashOrCredit: this.selcteditemObj?.isCashOrCredit || 0,
+                        CGSTPer: CGSTPer,
+                        CGSTAmount: CGSTAmt.toFixed(2) || 0,
+                        SGSTPer: SGSTPer,
+                        SGSTAmount: SGSTAmt.toFixed(2) || 0,
+                        IGSTPer: IGSTPer,
+                        ISGSTAmount: IGSTAmt.toFixed(2) || 0,
+                    });
+                console.log(this.chargeslist)
+                this.dsIpSaleItemList.data = this.chargeslist;
+                this.dsIpSaleItemList.sort = this.sort;
+                this.dsIpSaleItemList.paginator = this.paginator;
+                this.getUpdateTotalAmt();
+                this.ItemReset();
+                //this.ItemName.nativeElement.focus();
+            })
+                 })  
+        });
+    } 
+
+    // {
+    // "SalesId": 73,
+    // "SalesNo": "14362",
+    // "OP_IP_ID": 91024,
+    // "OP_IP_Type": 1,
+    // "SalesDetId": 73,
+    // "ItemName": "A TO Z IMMUNE TAB UPDATE",
+    // "ItemId": 7,
+    // "BatchNo": "123",
+    // "BatchExpDate": "2026-09-08T00:00:00",
+    // "UnitMRP": 500,
+    // "Qty": -1,
+    // "TotalAmount": 500,
+    // "VatPer": 24,
+    // "VatAmount": 120,
+    // "DiscPer": 0,
+    // "DiscAmount": 0,
+    // "GrossAmount": 500,
+    // "LandedPrice": 200,
+    // "TotalLandedAmount": 200,
+    // "ExternalPatientName": "Mrs. Abbaprasad dddd Chougule",
+    // "DoctorName": "Shrishal Teli",
+    // "IsBatchRequired": true,
+    // "ReturnQty": 2,
+    // "PatientName": "Mrs. Abbaprasad dddd Chougule",
+    // "RegNo": "278",
+    // "IsPrescription": 30176,
+    // "TotalBillAmount": 831.32,
+    // "TotalDiscAmount": 0,
+    // "PurRateWf": 200,
+    // "PurTotAmt": 200,
+    // "RegID": 223437,
+    // "CGSTPer": 12,
+    // "SGSTPer": 12,
+    // "IGSTPer": 0,
+    // "IsPurRate": false,
+    // "isCashOrCredit": 1,
+    // "StkID": 133947
+//}
 }
 export class IPSalesItemList {
     SalesNo: number;

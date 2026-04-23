@@ -26,6 +26,9 @@ export class SalesReturnInPatientService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
+        public getPrescriptionReturnBalQtyList(param) {
+        return this._httpClient1.PostData("SalesReturn/IPPrescriptionReturnDetailsList", param)
+    }
 }
 
 

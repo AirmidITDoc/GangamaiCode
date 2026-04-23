@@ -182,7 +182,8 @@ export class PrescriptionReturnComponent implements OnInit {
         // debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/IPPrescReturnItemDetList",
-            columnsList: [
+            columnsList: [ 
+                { heading: "Status", key: "isClosed", type: gridColumnTypes.status, align: "center" },
                 { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA' },
