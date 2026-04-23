@@ -200,45 +200,7 @@ export class LabPatientRegComponent {
         this.gridConfig.columnsList.find(col => col.key === 'labAppointmentId')!.template = this.appointmentIcon;
     }
 
-    // allcolumns = [
-    //     { heading: "-", key: "labAppointmentId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    //     { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    //     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-    //     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    //     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    //     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 240, type: gridColumnTypes.template },
-    //     { heading: "Gender-Age", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
-    //     { heading: "Type", key: "patientType1", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    //     { heading: "B2B/Crop Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    //     { heading: "Ref Doctor", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    //     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 170, type: gridColumnTypes.template },
-    //     { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     { heading: "Paid Amt", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     { heading: "Bal Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-    //     { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     // { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     // { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     // { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     // { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    //     { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-    //     { heading: "Tran-DateTime", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-    //     {
-    //         heading: "Payment Status", key: "colorPad", align: 'right', type: gridColumnTypes.template, width: 120,
-    //         template: this.ColorCode
-    //     },
-    //     { heading: "", key: "balanceAmt1", align: 'right', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-    //     {
-    //         heading: "Type", key: "patientType", align: 'right', type: gridColumnTypes.template, width: 120,
-    //         template: this.PatientTypeColorCode
-    //     },
-    //     {
-    //         heading: "Action", key: "action", align: "right", width: 290, type: gridColumnTypes.template,
-    //         template: this.actionButtonTemplate
-    //     }
-    // ]
-
+  
     allcolumns = [
         { heading: "-", key: "labAppointmentId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 165, type: 8 },

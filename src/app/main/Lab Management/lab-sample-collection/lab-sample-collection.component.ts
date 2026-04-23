@@ -298,6 +298,17 @@ export class LabSampleCollectionComponent {
         this.onChangeFirst();
     }
 
+    // to split service name by completed flag
+    getServiceName(service: string): string {
+        return service.split('~')[0]?.trim();
+    }
+
+    // to put color to completed test
+    getServiceClass(service: string): string {
+        const status = service.split('~')[1];
+        return status === '1' ? 'completed-chip' : 'pending-chip';
+    }
+
     onSave(row: any = null) {
         const that = this;
         const dialogRef = this._matDialog.open(SampleCollOldMethodComponent,
@@ -333,6 +344,29 @@ export class LabSampleCollectionComponent {
     // }
 
     OnPrintPatientIcard(data, serviceName) {
+        console.log(data)
+        let testName = '';
+
+        if (!serviceName || serviceName.trim() === '') {
+            testName = ''; // send empty
+        }
+        else {
+            if (serviceName.includes('~')) {
+                const serviceParts = serviceName.split('~');
+                testName = serviceParts[0]?.trim();
+                const status = serviceParts[1];
+
+                // ❌ Block if not completed
+                if (status !== '1') {
+                    this.toastr.warning('Test not collected yet');
+                    return;
+                }
+            } else {
+                // fallback if no ~
+                testName = serviceName.trim();
+            }
+        }
+
         const param = {
             searchFields: [
                 {
@@ -342,7 +376,7 @@ export class LabSampleCollectionComponent {
                 },
                 {
                     fieldName: "ServiceName",
-                    fieldValue: String(serviceName ?? "").trim(),
+                    fieldValue: String(testName ?? "").trim(),
                     opType: "13"
                 },
                 {

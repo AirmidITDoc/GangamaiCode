@@ -133,3 +133,13 @@ app-appointment-list {
 .patient-name {
   text-align: center;
 }
+
+.completed-chip {
+  background-color: #4caf50 !important; /* green */
+  color: white;
+}
+
+.pending-chip {
+  background-color: #bdbdbd !important; /* gray */
+  color: black;
+}

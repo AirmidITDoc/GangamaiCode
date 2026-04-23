@@ -134,11 +134,17 @@
 
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="100">
-                                                            <airmid-dropdown label="Phlebotomist"
+                                                            <!-- <airmid-dropdown label="Phlebotomist"
                                                                 formControlName="phlebotomist" [formGroup]="myForm"
                                                                 [value]="registerObj?.phlebotomist"
                                                                 [mode]="autocompleteModecity">
-                                                            </airmid-dropdown>
+                                                            </airmid-dropdown> -->
+                                                            <airmid-dropdown label="Phlebotomist"
+                                                                formControlName="phlebotomist" [formGroup]="myForm"
+                                                                ApiUrl="CompanyEmployeInfo/get-employe" [value]="registerObj?.phlebotomist"
+                                                                ValueField="executiveId" TextField="fullName"
+                                                                (selectionChange)="getSelectedObjPhlebotomist($event)"></airmid-dropdown>
+
                                                         </div>
 
                                                     </div>

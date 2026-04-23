@@ -67,4 +67,10 @@ export class HomeCollectionService {
     public OnCancel(param) {
         return this._httpClient.PostData('HomeCollection/Cancel', param)
     }
+
+    public statusUpdate(Param: any) {
+        if (Param.homeCollectionId) {
+            return this._httpClient.PutData("HomeCollection/updatePhlebotomist" + Param.homeCollectionId, Param);
+        }
+    }
 }
