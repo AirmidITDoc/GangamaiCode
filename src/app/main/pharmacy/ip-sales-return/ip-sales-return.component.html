@@ -197,13 +197,12 @@
                                     (keyup)="checkQty()" min="1" />
                             </mat-form-field>
 
-                            <div fxLayout="row" fxLayout.xs="column" fxFlex="16%">
-                                <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
-                                    <button class="btn btn-primary" (click)="OnAdd()">
+                            
+                                <div matTooltip="Select All Value to enable this button!!"   fxFlex="16%">
+                                    <button class="btn btn-primary" (click)="OnAdd()" style="height: 35px;">
                                         <mat-icon>add</mat-icon>
                                     </button>
-                                </div>
-                            </div>
+                                </div>  
                         </div>
                     </div>
                 </form>
@@ -387,7 +386,7 @@
     <div class="modal-footer p-8">
 
         <div class="modal-footer-container" fxLayout="row" fxLayoutAlign="space-between">
-            <form [formGroup]="IPSalesRetFooterform" class="w-100-p">
+            <form [formGroup]="IPSalesRetFooterform"  >
                 <div fxLayout="row" fxLayoutGap="6px">
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -395,7 +394,7 @@
                             [readonly]="true" [formGroup]="IPSalesRetFooterform"></airmid-textbox>
                     </div>
 
-                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Total GST Amt" formControlName="FinalGSTAmt" type="number"
                             [readonly]="true" [formGroup]="IPSalesRetFooterform"></airmid-textbox>
                     </div>

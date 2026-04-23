@@ -367,4 +367,34 @@ app-sales {
         z-index: 1000;
     }
     // ------------------------------
+
+    /* Ultra‑compact table rows and inputs */
+.resize-form-fields {
+  .airmid-table-container {
+    mat-header-row,
+    mat-row,
+    thead tr,
+    tbody tr {
+      min-height: 0 !important;
+      height: 24px !important;
+      padding: 0 !important;
+    }
+    mat-header-cell,
+    mat-cell,
+    .mat-header-cell,
+    .mat-cell {
+      padding: 0 !important;
+      margin: 0 !important;
+      line-height: 1 !important;
+    }
+    .mat-form-field .mdc-text-field__input {
+      padding: 0 !important;
+      height: 24px !important;
+      line-height: 24px !important;
+    }
+    .mat-form-field[formControlName="Qty"] {
+      max-width: 60px !important;
+    }
+  }
+}
     

@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { SalesHospitalService } from '../../sales-hopsital-new/sales-hospital-new.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { SalesReturnInPatientService } from '../sales-return-in-patient.service';
  
 @Component({
   selector: 'app-get-prescription-returnlist',
@@ -85,6 +86,7 @@ export class GetPrescriptionReturnlistComponent {
 //     "doctorName": "Dr. Shrishal  Teli"
 // }
     AllColumnsDetails = [
+        { heading: "Status", key: "isClosed", type: gridColumnTypes.status, align: "center" },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 120 }
        // { heading: "Total Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', width: 120 }
@@ -120,6 +122,7 @@ export class GetPrescriptionReturnlistComponent {
     }
     constructor(
         public _SalesService: SalesHospitalService,
+        public  _SalesReturnInPatientService:SalesReturnInPatientService,
         public _matDialog: MatDialog,
         public datePipe: DatePipe,
         private _loggedService: AuthenticationService,
@@ -204,23 +207,19 @@ export class GetPrescriptionReturnlistComponent {
             return
         }
         let patientType = 0;
-        let Op_ip_Id = this.SelectedObj?.oP_IP_ID;
-        if (this.SelectedObj?.patientType == 'IP') {
-            Op_ip_Id = this.SelectedObj?.ipMedID
-            patientType = 1
-        }
+        let presReId = this.SelectedObj?.presReId; 
         const vdata = {
             "first": 0,
             "rows": 999,
-            "sortField": "ItemId",
+            "sortField": "PresReId",
             "sortOrder": 0,
             "filters": [
-                { "fieldName": "IPMedID", "fieldValue": String(Op_ip_Id), "opType": "Contains" },
-                { "fieldName": "OP_IP_Type", "fieldValue": String(patientType), "opType": "Contains" }],//"40039"
+                { "fieldName": "PresReId", "fieldValue": String(presReId), "opType": "Contains" },
+                { "fieldName": "ItemName", "fieldValue": '%', "opType": "Contains" }],//"40039"
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
         }
-        this._SalesService.getPrescriptionBalQtyList(vdata).subscribe(reponse => {
+        this._SalesReturnInPatientService.getPrescriptionReturnBalQtyList(vdata).subscribe(reponse => {
             this.chargelist = reponse.data as any;
             if (this.chargelist.length) {
                 this.OnSave();
@@ -228,25 +227,35 @@ export class GetPrescriptionReturnlistComponent {
         });
     }
     OnSave() {
+        debugger 
         this.chargelist.forEach((element) => {
             this.Patientlist.push(
                 {
                     ItemId: element.itemId,
                     ItemName: element.itemName,
-                    QtyPerDay: element.qtyPerDay,
-                    BalQty: element.balQty,
-                    IsBatchRequired: element.isBatchRequired,
-                    PatientName: this.SelectedObj.patientName,
-                    RegNo: this.SelectedObj.regNo,
+                    QtyPerDay: element.qty,
+                    BalQty: element.qty,
+                    BatcchNo:element.batchNo || '',
+                    BatchExpDate:element.batchExpDate || '1900-01-01',
+                    presReId:element?.presReId || 0,
+                    presDetailsId:element?.presDetailsId || 0, 
+                    PatientName: this.SelectedObj?.patientName || '',
+                    RegNo: this.SelectedObj.regNo || 0,
                     WardId: this.SelectedObj.wardId,
-                    BedId: this.SelectedObj.bedId,
-                    AdmissionID: this.SelectedObj.oP_IP_ID,
+                    bedName: this.SelectedObj.bedName,
+                    AdmissionID: this.SelectedObj.opIpId,
                     RegId: this.SelectedObj.regId,
                     IPMedID: this.SelectedObj.ipMedID,
-                    DoctorName: this.SelectedObj.doctorName,
-                    IPDNo: this.SelectedObj.ipdNo,
+                    doctorName: this.SelectedObj?.doctorName || '',
+                    doctorId:this.SelectedObj?.doctorId || 0,
+                    ipdNo: this.SelectedObj?.ipdNo || '',
                     companyId: this.SelectedObj?.companyId || 0,
-                    companyName: this.SelectedObj?.companyName || '',
+                    companyName: this.SelectedObj?.companyName || '', 
+                    tariffName:this.SelectedObj?.tariffName || '',
+                    age:this.SelectedObj?.age || '0',
+                    genderName:this.SelectedObj?.genderName || '',
+                    roomName:this.SelectedObj?.roomName || '',
+                   // admissionDate:this.SelectedObj?.admissionDate || '1900-01-01' 
                 });
             console.log(this.Patientlist);
             this._dialogRef.close(this.Patientlist);
@@ -255,8 +264,7 @@ export class GetPrescriptionReturnlistComponent {
 
      Prescclose(element) {
             debugger
-            console.log(element)
-            
+            console.log(element) 
             Swal.fire({
                 title: 'Do you want to cancel the Prescription?',
                 text: "You won't be able to revert this!",

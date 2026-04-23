@@ -285,16 +285,17 @@ export class NewPrescriptionreturnComponent implements OnInit {
                 disableClose: true,
                 data: {
                     obj: obj,
-                    storeId: this.vstoreId
+                    storeId: this.vstoreId,
+                    AdmissionId:this.OP_IP_Id
                 }
             });
         console.log(this.data)
         dialogRef.afterClosed().subscribe(result => {
             console.log(result);
-            this.BatchNo = result.batchNo;
-            this.Qty = result.qty;
-            this.BalanceQty = result.qty;
-            this.BatchExpDate = result.batchExpDate;
+            this.BatchNo = result?.batchNo || '';
+            this.Qty = result?.qty || 0;
+            this.BalanceQty = result?.qty || 0;
+            this.BatchExpDate = result?.batchExpDate || '1900-01-01';
         });
     }
 
