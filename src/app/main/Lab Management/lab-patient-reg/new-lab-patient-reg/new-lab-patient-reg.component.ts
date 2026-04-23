@@ -157,6 +157,7 @@ export class NewLabPatientRegComponent {
   counryId = 0
   patientTypeList: any = [];
   vLabAppId: any = 0;
+  vHomeCollId: any = 0;
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -215,7 +216,7 @@ export class NewLabPatientRegComponent {
 
     console.log(this.hospitalconfigservice.HospitalconfigParams)
     console.log(this._ConfigService.configParams)
-    console.log('User Access Detail:',this._ConfigService.userAccessParam[0])
+    console.log('User Access Detail:', this._ConfigService.userAccessParam[0])
 
     // var rawValue=this?._configue?.configParams?.Is9_Digit_NationalId || "";
     const firstValue = this?._configue?.configParams?.FirstNameMandatory || "";
@@ -280,11 +281,15 @@ export class NewLabPatientRegComponent {
     } else if (this.data.mode == 'home') {
       if (this.data?.row?.homeCollectionId) {
         this.regNo = this.data?.row?.homeSeqNo
+        this.vHomeCollId = this.data?.row?.homeCollectionId
         this._labPatientRegService.gethomeCollById(this.data?.row?.homeCollectionId).subscribe((response) => {
           console.log(response)
           this.registerObj = response;
           this.value = response.dateofBirth
           this.VlabPatRegId = this.registerObj.patRegId
+          this._labPatientRegService.getPrefixId(response.prefixId).subscribe((Response) => {
+            this.prefixName = Response.prefixName
+          });
           this.onChangeDateofBirth(response.dateofBirth)
           this.regflag = true
           this.myForm.patchValue({
@@ -320,6 +325,9 @@ export class NewLabPatientRegComponent {
           this.onChangeDateofBirth(response.dateofBirth)
           this.regflag = true
           this.myForm.get('refDocId').setValue(this.registerObj.doctorId);
+          this._labPatientRegService.getPrefixId(response.prefixId).subscribe((Response) => {
+            this.prefixName = Response.prefixName
+          });
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim(),
             middleName: this.registerObj.middleName.trim(),
@@ -427,6 +435,7 @@ export class NewLabPatientRegComponent {
       ReferByName: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       companyExecutiveId: [0],
       labAppointmentId: [0],
+      homeCollectionId: [0],
 
       // extra fields
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -830,8 +839,8 @@ export class NewLabPatientRegComponent {
           this.onChangeDateofBirth(response.dateofBirth)
           this.regflag = true
           this._labPatientRegService.getPrefixId(response.prefixId).subscribe((Response) => {
-              this.prefixName = Response.prefixName
-            });
+            this.prefixName = Response.prefixName
+          });
 
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim().toUpperCase() || '',
@@ -1890,6 +1899,7 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regTime').setValue(formattedTime);
     this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId ?? 0);
     this.myForm.get('labAppointmentId').setValue(this.vLabAppId ?? 0);
+    this.myForm.get('homeCollectionId').setValue(this.vHomeCollId ?? 0);
     this.myForm.get('adharCardNo').setValue(Number(this.myForm.get('adharCardNo').value) ?? 0);
 
     const overallDiscAmt = +this.myForm.get('discountAmt')?.value || 0; //bottom discount
@@ -1962,10 +1972,12 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('opdipdid')?.setValue(0)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
     this.OpBillForm.get('regNo')?.setValue(this.regNo)
+    debugger
     if (this.data.mode == 'home') {
-      this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
+      this.OpBillForm.get('patientName')?.setValue(this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
+    } else if (this.data.mode == 'appointment') {
+      this.OpBillForm.get('patientName')?.setValue(this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
     } else {
-      debugger
       // this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
       this.OpBillForm.get('patientName')?.setValue(this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
     }
@@ -2006,11 +2018,11 @@ export class NewLabPatientRegComponent {
       this.isSaving = false;
       return;
     }
-    
+
     this.dstable1.data.forEach(item => {
       this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
       this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-      
+
       if (item.IsPackage == 1) {
         this.packcagechargesArray.clear();
         this.dsPackageList.data.forEach(item => {

@@ -497,6 +497,9 @@ export class NewCollectionComponent {
         this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
     }
 
+    getSelectedObjPhlebotomist(obj) {
+        this.myForm.get('phlebotomist').setValue(obj.executiveId)
+    }
 
     OnSave() {
         const CollDate = this.datePipe.transform(this.myForm.get('collectionDate')?.value, 'yyyy-MM-dd');

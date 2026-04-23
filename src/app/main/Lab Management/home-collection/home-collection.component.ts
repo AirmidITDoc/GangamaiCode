@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
@@ -26,11 +26,13 @@ import { NewCollectionComponent } from './new-collection/new-collection.componen
 })
 export class HomeCollectionComponent {
     myFilterform: FormGroup;
+    statusFormFinal: FormGroup;
     f_name: any = ""
     l_name: any = ""
     Status: any = "0";
     PBillNo: any = "%";
     DoctorId: any = "0";
+    vHomeCollId: any;
     UnitId: any = this._loggedService.currentUserValue.user.unitId;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -57,6 +59,14 @@ export class HomeCollectionComponent {
 
     ngOnInit(): void {
         this.myFilterform = this._homeCollectionService.CreateSearchGroup();
+        this.statusFormFinal = this.CreateForm();
+    }
+
+    CreateForm() {
+        return this.formBuilder.group({
+            homeCollectionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            phlebotomist: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        })
     }
 
     allcolumns = [
@@ -71,7 +81,7 @@ export class HomeCollectionComponent {
         { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Date-Time", key: "collectionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
         { heading: "HomeSeqNo", key: "homeSeqNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
@@ -79,11 +89,11 @@ export class HomeCollectionComponent {
         },
         { heading: "Reason", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Area", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Phlebotomist", key: "phlebotomist", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Phlebotomist", key: "phlebotomist", sort: true, align: 'left', emptySign: 'NA', width: 190 },
         { heading: "PT", key: "priority", type: gridColumnTypes.status, align: "center" },
         { heading: "Tran-DateTime", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
         {
-            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 180,
             template: this.actionButtonTemplate
         }
     ]
@@ -153,6 +163,61 @@ export class HomeCollectionComponent {
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
         // this.GetAppointdetail();
+    }
+
+    @ViewChild('statusForm') statusForm!: TemplateRef<any>;
+    openStatus(row: any = null): void {
+        console.log(row)
+        this.vHomeCollId = row.homeCollectionId
+        if (row?.homeCollectionId) {
+            this._homeCollectionService.gethomeCollById(row?.homeCollectionId).subscribe((response) => {
+                this.statusFormFinal.get('phlebotomist').setValue(response.phlebotomist)
+            });
+        }
+
+        const dialogRef = this._matDialog.open(this.statusForm, {
+            width: '35%',
+            height: '28%'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    getSelectedObjPhlebotomist(obj) {
+        this.statusFormFinal.get('phlebotomist').setValue(obj.executiveId)
+    }
+
+    saveStatus() {
+        this.statusFormFinal.get('homeCollectionId').setValue(this.vHomeCollId)
+        console.log(this.statusFormFinal.value)
+        if (!this.statusFormFinal.invalid) {
+            console.log(this.statusFormFinal.value)
+            this._homeCollectionService.statusUpdate(this.statusFormFinal.value).subscribe((response) => {
+                this.onClear();
+            });
+        } {
+            const invalidFields = [];
+            if (this.statusFormFinal.invalid) {
+                for (const controlName in this.statusFormFinal.controls) {
+                    if (this.statusFormFinal.controls[controlName].invalid) {
+                        invalidFields.push(`Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
+    }
+
+    onClear() {
+        this.statusFormFinal.reset();
+        this._matDialog.closeAll();
     }
 
     onnew(row: any = null) {

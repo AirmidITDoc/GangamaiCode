@@ -125,13 +125,23 @@
                 </div>
             </ng-template>
 
-            <ng-template #serviceNames let-element>
+            <!-- <ng-template #serviceNames let-element>
                 <mat-chip-set class="example-chip" cdkDropList cdkDropListOrientation="horizontal"
                     (cdkDropListDropped)="drop($event)">
                     <mat-chip class="example-box" cdkDrag *ngFor="let service of element?.serviceNames?.split('|')??[]"
                         (click)="OnPrintPatientIcard(element,service)">
                         {{service}}
                     </mat-chip>
+                </mat-chip-set>
+            </ng-template> -->
+            <ng-template #serviceNames let-element>
+                <mat-chip-set class="example-chip">
+
+                    <mat-chip *ngFor="let service of element?.serviceNames?.split('|') ?? []"
+                        [ngClass]="getServiceClass(service)" (click)="OnPrintPatientIcard(element,service)">
+                        {{ getServiceName(service) }}
+                    </mat-chip>
+
                 </mat-chip-set>
             </ng-template>
 
@@ -182,16 +192,16 @@
                         <span class="teststatus total" matTooltip="Total Test">
                             {{ element.testCountStatus.split('/')[0] }}
                         </span>
-            
+
                         <span class="teststatus completed" matTooltip="Completed">
                             {{ element.testCountStatus.split('/')[1] }}
                         </span>
-            
+
                         <span class="teststatus pending" matTooltip="Pending">
                             {{ element.testCountStatus.split('/')[2] }}
                         </span>
                     </div>
-            
+
                     <div class="patient-name" matTooltip="{{ element.patientName }}">
                         {{ element.patientName }}
                     </div>

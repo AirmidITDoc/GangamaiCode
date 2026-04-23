@@ -29,13 +29,27 @@
             </button>
 
             <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-            [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
+                [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
                 <mat-icon> cancel </mat-icon>
             </button>
 
             <button mat-icon-button matTooltip="Print" [style.visibility]="!element.isCancel ? 'visible' : 'hidden'">
                 <mat-icon>print</mat-icon>
             </button>
+
+            <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltipPosition="above"
+                (click)="$event.stopPropagation();">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+
+                <button mat-menu-item (click)="openStatus(element)" style="height: 32px; min-height: 32px;">
+                    <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">update</mat-icon>
+                    <span style="font-size: 13px;">Update Phlebotomist</span>
+                </button>
+
+            </mat-menu>
         </div>
     </ng-template>
 
@@ -99,3 +113,42 @@
         </airmid-table>
     </div>
 </div>
+
+<ng-template #statusForm>
+    <mat-toolbar class="accent" style="width: 100%; height: 45px; justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" style="color: white;">account_box</mat-icon>
+            <span style="font-size: 16px;">Update Phlebotomist</span>
+        </div>
+
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="service-table1 p-12" fxLayout="column" fxLayoutGap="16px">
+
+        <form [formGroup]="statusFormFinal">
+
+            <!-- <mat-card style="margin-top: 10px;"> -->
+                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="Phlebotomist" formControlName="phlebotomist" [formGroup]="statusFormFinal"
+                        ApiUrl="CompanyEmployeInfo/get-employe" ValueField="executiveId" TextField="fullName"
+                        (selectionChange)="getSelectedObjPhlebotomist($event)"></airmid-dropdown>
+                </div>
+            <!-- </mat-card> -->
+        </form>
+
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="12px" class="p-12 border-top">
+        <button class="btn btn-danger-outline" [mat-dialog-close]="true">
+            Close
+        </button>
+        <button class="btn btn-primary" color="accent" (click)="saveStatus()">
+            Save
+        </button>
+    </div>
+</ng-template>
