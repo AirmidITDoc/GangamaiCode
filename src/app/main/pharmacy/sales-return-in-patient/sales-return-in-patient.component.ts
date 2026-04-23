@@ -538,12 +538,14 @@ export class SalesReturnInPatientComponent implements OnInit {
             this.dsIpSaleItemList.data.forEach((element) => {
                 this.SaleRetDetailsArray.push(this.createSalesretDetails(element));
                 this.currentStockArray.push(this.createcurrentStock(element));
-                this.SalesDetArray.push(this.createSalesDetails(element));
-                if(this.vPrescObj?.presReId > 0){
-                this.PrescReturnArray.push(this.createprescriptionReturn((this.vPrescObj))); 
-                 this.IpSalesReturnForm.get('salesReturn.isPrescriptionReturn').setValue(this.vPrescObj?.presReId || 0)
-                }
+                this.SalesDetArray.push(this.createSalesDetails(element)); 
             });
+             if(this.vPrescObj[0]?.presReId > 0){
+                    this.vPrescObj.forEach(element=>{
+                    this.PrescReturnArray.push(this.createprescriptionReturn((element))); 
+                    this.IpSalesReturnForm.get('salesReturn.isPrescriptionReturn').setValue(this.vPrescObj[0]?.presReId || 0)
+                    }) 
+                }
             
             if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
                 this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
