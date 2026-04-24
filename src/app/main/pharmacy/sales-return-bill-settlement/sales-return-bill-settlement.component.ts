@@ -973,8 +973,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
             {
                 maxWidth: "100%",
-                height: '55%',
-                width: '45%',
+                height: '70%',
+                width: '65%',
                 data: {
                     Obj: contact,
                     PatientObj: this.registerObj

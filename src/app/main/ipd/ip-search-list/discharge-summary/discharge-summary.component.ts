@@ -44,6 +44,7 @@ export class DischargeSummaryComponent implements OnInit {
         'itemName',
         'doseName',
         'day',
+        'instruction',
         'Action'
     ]
     registerObj = new DischargeSummary({});
@@ -212,7 +213,7 @@ regId=0
             instructionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             qtyPerDay: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             totalQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            instruction: [''],
+            instruction: [item.instruction || ''],
             remark: [''],
             isEnglishOrIsMarathi: true,
             storeId: this.accountService.currentUserValue.user.storeId,
@@ -250,6 +251,7 @@ regId=0
                         this.vIsNormalDeath = "1"
 
                     this.prescriptionDischargeArray.clear();
+                    debugger
                     this.dsItemList.data.forEach(item => {
                         this.prescriptionDischargeArray.push(this.createprescriptionDischarge(item));
                     });
@@ -355,7 +357,7 @@ regId=0
                     doseName: this.doseName1,
                     doseId: this.doseId,
                     days: this.MedicineItemForm.get('Day').value || 0,
-                    instruction: this.vInstruction || ''
+                    instruction: this.MedicineItemForm.get('Instruction').value || this.vInstruction || ''
                 });
             this.dsItemList.data = this.Chargeslist
         } else {
