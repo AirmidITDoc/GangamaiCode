@@ -109,34 +109,31 @@
         </mat-card> -->
 
 
-           <!-- Patient Info Section -->
-                <div class="modal-card-container mt-0" style="margin-top: -4px;">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
-                            <div class="patient-info-sales">
-                                <div class="patient-info-title border-bottom pb-1 mb-1">
-                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
-                                </div>
-                                <div class="Ipd-patient-info w-100-p">
-                                    <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
+        <!-- Patient Info Section -->
+        <div class="modal-card-container mt-0" style="margin-top: -4px;">
+          <div fxFlex.gt-sm="100%" fxFlex>
+            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+              <div class="patient-info-sales">
+                <div class="patient-info-title border-bottom pb-1 mb-1">
+                  <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                </div>
+                <div class="Ipd-patient-info w-100-p">
+                  <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
                                         (data?.middleName ? ' ' + data.middleName : '') +
                                         (data?.lastName ? ' ' + data.lastName : '')
                                         || data?.patientName
-                                        " [doctorName]="data?.doctorName"
-                                        [departmentName]="data?.departmentName"
-                                        [doa]="data?.admissionDate"
-                                        [ipdNo]="data?.ipdno || data?.ipdno"
-                                        [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
-                                        [refDocName]="data?.refDocName"
-                                        [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
-                                        [patientType]="data?.patientType"
-                                        [tariffName]="data?.tariffName"
-                                        [companyName]="data?.companyName"></app-patient-information>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </div>
+                                        " [doctorName]="data?.doctorName" [departmentName]="data?.departmentName"
+                    [doa]="data?.admissionDate" [ipdNo]="data?.ipdno || data?.ipdno"
+                    [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
+                    [refDocName]="data?.refDocName"
+                    [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
+                    [patientType]="data?.patientType" [tariffName]="data?.tariffName"
+                    [companyName]="data?.companyName"></app-patient-information>
                 </div>
+              </div>
+            </mat-card>
+          </div>
+        </div>
         <form [formGroup]="DischargesumInsertForm" fusePerfectScrollbar>
           <mat-tab-group class="dynamic-table-wrapper">
             <!-- 1st tab -->
@@ -160,8 +157,8 @@
 
                           <mat-form-field appearance="outline" style="width: 100%;">
                             <mat-label>Diagnosis</mat-label>
-                            <textarea rows="1" formControlName="diagnosis" placeholder="Diagnosis" matInput [(ngModel)]="vDiagnosis"
-                            cols="300" rows="6"></textarea>
+                            <textarea rows="1" formControlName="diagnosis" placeholder="Diagnosis" matInput
+                              [(ngModel)]="vDiagnosis" cols="300" rows="6"></textarea>
 
                             <!-- 🎤 Mic button -->
                             <button mat-icon-button matSuffix (click)="onMicTogglefields('diagnosis')"
@@ -182,9 +179,10 @@
                             <mat-label>HISTORY</mat-label>
                             <textarea matInput name="history" formControlName="history" [(ngModel)]="vhistory"
                               cols="300" rows="6"></textarea>
-                                 <button mat-icon-button matSuffix (click)="onMicTogglefields('history')"
+                            <button mat-icon-button matSuffix (click)="onMicTogglefields('history')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                              <i
+                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
                             </button>
                           </mat-form-field>
                         </div>
@@ -202,7 +200,8 @@
                             <textarea matInput name="ClinicalConditionOnAdmisssion"
                               formControlName="clinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition"
                               cols="300" rows="6"></textarea>
-                                 <button mat-icon-button matSuffix (click)="onMicTogglefields('clinicalConditionOnAdmisssion')"
+                            <button mat-icon-button matSuffix
+                              (click)="onMicTogglefields('clinicalConditionOnAdmisssion')"
                               [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
                               <i
                                 [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
@@ -219,7 +218,7 @@
                             <mat-label>CLINICAL FINDING</mat-label>
                             <textarea matInput name="ClinicalFinding" formControlName="clinicalFinding"
                               [(ngModel)]="vClinicalFinding" cols="300" rows="6"></textarea>
-                               
+
                           </mat-form-field>
                         </div>
                       </div>
@@ -243,11 +242,10 @@
                         <mat-label>SURGERY /PROCEDURE DONE</mat-label>
                         <textarea matInput name="SurgeryProcDone" formControlName="surgeryProcDone"
                           [(ngModel)]="vSURGERYprocedure" cols="300" rows="6"></textarea>
-                             <button mat-icon-button matSuffix (click)="onMicTogglefields('surgeryProcDone')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i
-                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                        <button mat-icon-button matSuffix (click)="onMicTogglefields('surgeryProcDone')"
+                          [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                          <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                        </button>
                       </mat-form-field>
                     </div>
                   </div>
@@ -260,11 +258,10 @@
                         <mat-label>OPRATIVE NOTES</mat-label>
                         <textarea matInput name="OperativeNotes" formControlName="opertiveNotes"
                           [(ngModel)]="vOperativeNotes" cols="300" rows="6"></textarea>
-                             <button mat-icon-button matSuffix (click)="onMicTogglefields('opertiveNotes')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i
-                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                        <button mat-icon-button matSuffix (click)="onMicTogglefields('opertiveNotes')"
+                          [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                          <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                        </button>
                       </mat-form-field>
                     </div>
                   </div>
@@ -285,10 +282,10 @@
                       <mat-label>PATHOLOGY</mat-label>
                       <textarea matInput name="investigation" formControlName="investigation" [(ngModel)]="vPathology"
                         cols="300" rows="6"></textarea>
-                         <button mat-icon-button matSuffix (click)="onMicTogglefields('investigation')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                      <button mat-icon-button matSuffix (click)="onMicTogglefields('investigation')"
+                        [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                        <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                      </button>
                     </mat-form-field>
                   </div>
 
@@ -300,10 +297,10 @@
                       <mat-label>Radiology</mat-label>
                       <textarea matInput name="Radiology" formControlName="radiology" [(ngModel)]="vRadiology"
                         cols="300" rows="6"></textarea>
-                         <button mat-icon-button matSuffix (click)="onMicTogglefields('radiology')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                      <button mat-icon-button matSuffix (click)="onMicTogglefields('radiology')"
+                        [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                        <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                 </div>
@@ -326,10 +323,11 @@
                           <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap"
                             formControlName="treatmentGiven" [(ngModel)]="vTreatmentGiven" cols="200"
                             rows="6"></textarea>
-                             <button mat-icon-button matSuffix (click)="onMicTogglefields('treatmentGiven')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                          <button mat-icon-button matSuffix (click)="onMicTogglefields('treatmentGiven')"
+                            [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                            <i
+                              [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                          </button>
                         </mat-form-field>
                       </div>
                     </div>
@@ -344,10 +342,12 @@
                           <textarea matInput name="TreatmentAdvisedAfterDischarge"
                             formControlName="treatmentAdvisedAfterDischarge"
                             [(ngModel)]="vTreatmentAdvisedAfterDischarge" cols="200" rows="6"></textarea>
-                              <button mat-icon-button matSuffix (click)="onMicTogglefields('treatmentAdvisedAfterDischarge')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                          <button mat-icon-button matSuffix
+                            (click)="onMicTogglefields('treatmentAdvisedAfterDischarge')"
+                            [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                            <i
+                              [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                          </button>
                         </mat-form-field>
                       </div>
                     </div>
@@ -369,10 +369,10 @@
                       <mat-label>OTHER CON DR.OPINION</mat-label>
                       <textarea matInput name="OtherConDrOpinions" formControlName="otherConDrOpinions"
                         [(ngModel)]="vOtherConDrOpinions" cols="300" rows="6"></textarea>
-                           <button mat-icon-button matSuffix (click)="onMicTogglefields('otherConDrOpinions')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                      <button mat-icon-button matSuffix (click)="onMicTogglefields('otherConDrOpinions')"
+                        [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                        <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                   <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
@@ -385,10 +385,10 @@
                       <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
                       <textarea matInput name="PainManagementTechnique" formControlName="painManagementTechnique"
                         [(ngModel)]="vPainManagementTechnique" cols="300" rows="6"></textarea>
-                         <button mat-icon-button matSuffix (click)="onMicTogglefields('painManagementTechnique')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                      <button mat-icon-button matSuffix (click)="onMicTogglefields('painManagementTechnique')"
+                        [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                        <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                      </button>
                     </mat-form-field>
                   </div>
                 </div>
@@ -412,10 +412,11 @@
                               <mat-label>FOLLOW UP</mat-label>
                               <textarea matInput name="LifeStyle" formControlName="lifeStyle" [(ngModel)]="vLifeStyle"
                                 cols="300" rows="6"></textarea>
-                                 <button mat-icon-button matSuffix (click)="onMicTogglefields('lifeStyle')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                              <button mat-icon-button matSuffix (click)="onMicTogglefields('lifeStyle')"
+                                [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                                <i
+                                  [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                              </button>
                             </mat-form-field>
                           </div>
 
@@ -425,10 +426,12 @@
                               <textarea matInput name="ConditionAtTheTimeOfDischarge"
                                 formControlName="conditionAtTheTimeOfDischarge" [(ngModel)]="vConditionofTimeDischarge"
                                 cols="300" rows="6"></textarea>
-                                  <button mat-icon-button matSuffix (click)="onMicTogglefields('conditionAtTheTimeOfDischarge')"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button>
+                              <button mat-icon-button matSuffix
+                                (click)="onMicTogglefields('conditionAtTheTimeOfDischarge')"
+                                [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                                <i
+                                  [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                              </button>
                             </mat-form-field>
                           </div>
 
@@ -499,18 +502,24 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                       <form [formGroup]="MedicineItemForm">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                          
                           <airmid-autocomplete label="Enter Item Name" [formGroup]="MedicineItemForm"
-                            formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
+                            formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="50%"
                             ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
                             (selectionChange)="getSelectedserviceObj($event)" TextField="itemName"
                             ValueField="itemId"></airmid-autocomplete>
 
                           <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
-                            [validations]="getValidationMessages().DoseId" (selectionChange)="getdose($event)"
-                            [mode]="autocompleteModeDose"></airmid-dropdown>
+                            fxFlex="25%" [validations]="getValidationMessages().DoseId"
+                            (selectionChange)="getdose($event)" [mode]="autocompleteModeDose"></airmid-dropdown>
 
-                          <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [type]="'text'"
-                            (keypress)="keyPressCharater($event)" [formGroup]="MedicineItemForm"></airmid-textbox>
+                          <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [type]="'text'" fxFlex="25%"
+                            (keypress)="keyPressCharater($event)" [formGroup]="MedicineItemForm" ></airmid-textbox>
+
+                          <airmid-textbox label="Instruction" formControlName="Instruction" [value]="vInstruction"
+                            [type]="'text'" [formGroup]="MedicineItemForm" fxFlex="50%"></airmid-textbox>
+
+
 
                           <div class="input-add-button">
                             <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'"
@@ -554,6 +563,14 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Day</mat-header-cell>
                           <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                             <span>{{ element.days }}</span>
+                          </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="instruction">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                            fxShow.gt-sm>Instruction</mat-header-cell>
+                          <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                            <span>{{ element.instruction }}</span>
                           </mat-cell>
                         </ng-container>
 

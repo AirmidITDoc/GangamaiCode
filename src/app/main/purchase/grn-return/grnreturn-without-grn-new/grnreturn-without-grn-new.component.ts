@@ -231,7 +231,7 @@ debugger
             discAmount: [element.DiscAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             landedTotalAmount: [element.landedTotalAmount || 0],
             mrpTotalAmount: [mrpTotal || this.mrpTotalAmount || 0],
-            purchaseTotalAmount: [PurchaseTotalAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            purchaseTotalAmount: [PurchaseTotalAmt],
             conversion: [element.conversion || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             remarks: '',
             stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
