@@ -1019,9 +1019,9 @@ export class NewResultEntryComponent {
     Saveflag = 2;
     printf: boolean = true;
 
-    onSave() {
-        this.getValidatetabledata()
-
+    onSave() { 
+      
+          this.getValidatetabledata();
         if ((this.vPathResultDoctorId == 0 || this.vPathResultDoctorId == undefined)) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
