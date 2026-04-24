@@ -402,7 +402,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
         // debugger
         if (!this.ItemSubform.invalid) {
             const iscekDuplicate = this.saleSelectedDatasource.data.some(item => item.ItemID == this.ItemId 
-                  && item.batchNo === this.BatchNo
+                  && item.BatchNo === this.BatchNo
             )     
             if (!iscekDuplicate) {
                 this.saleSelectedDatasource.data = [];
@@ -514,7 +514,7 @@ export class IndentList {
     StoreId: any;
     StoreName: any;
     BatchExpDate: any;
-    batchNo:any;
+    BatchNo:any;
     /**
      * Constructor
      *
@@ -531,7 +531,7 @@ export class IndentList {
             this.StoreId = IndentList.StoreId || 0;
             this.StoreName = IndentList.StoreName || '';
             this.BatchExpDate = IndentList.BatchExpDate || '';
-               this.batchNo = IndentList.batchNo || '';
+               this.BatchNo = IndentList.BatchNo || '';
         }
     }
 }
