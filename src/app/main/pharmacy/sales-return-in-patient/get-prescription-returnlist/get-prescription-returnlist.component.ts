@@ -229,6 +229,7 @@ export class GetPrescriptionReturnlistComponent {
     OnSave() {
         debugger 
         this.chargelist.forEach((element) => {
+            if(element.isClosed == false){
             this.Patientlist.push(
                 {
                     ItemId: element.itemId,
@@ -257,6 +258,7 @@ export class GetPrescriptionReturnlistComponent {
                     roomName:this.SelectedObj?.roomName || '',
                    // admissionDate:this.SelectedObj?.admissionDate || '1900-01-01' 
                 });
+            }
             console.log(this.Patientlist);
             this._dialogRef.close(this.Patientlist);
         });
