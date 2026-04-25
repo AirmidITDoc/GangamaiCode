@@ -1020,7 +1020,7 @@ export class NewResultEntryComponent {
     printf: boolean = true;
 
     onSave() {
-        // this.getValidatetabledata()
+        this.getValidatetabledata()
 
         if ((this.vPathResultDoctorId == 0 || this.vPathResultDoctorId == undefined)) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {

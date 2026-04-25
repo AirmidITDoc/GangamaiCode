@@ -150,7 +150,10 @@ export class SalesReturnInPatientComponent implements OnInit {
             salesDetail: this.formBuilder.array([]),
             // payment:'',
             // tPayments:this.formBuilder.array([])
-             prescriptionReturn: this.formBuilder.array([])
+             prescriptionReturn:this.formBuilder.group({
+                 presReId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+             }),
+              prescriptionReturnD: this.formBuilder.array([]),
         });
     }
     createSalesretDetails(element: any): FormGroup {
@@ -199,9 +202,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     }
         createprescriptionReturn(element: any): FormGroup {
         return this.formBuilder.group({
-            presReId: [element?.presReId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            presDetailsId: [element?.presDetailsId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
+             presDetailsId: [element?.presDetailsId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
          });
     } 
     // Getters 
@@ -215,7 +216,7 @@ export class SalesReturnInPatientComponent implements OnInit {
         return this.IpSalesReturnForm.get('salesDetail') as FormArray;
     }
     get PrescReturnArray(): FormArray {
-        return this.IpSalesReturnForm.get('prescriptionReturn') as FormArray;
+        return this.IpSalesReturnForm.get('prescriptionReturnD') as FormArray;
     }
 
     getSelectedObjRegIP(obj) {
@@ -541,10 +542,11 @@ export class SalesReturnInPatientComponent implements OnInit {
                 this.SalesDetArray.push(this.createSalesDetails(element)); 
             });
              if(this.vPrescObj[0]?.presReId > 0){
-                    this.vPrescObj.forEach(element=>{
+                    this.dsIpSaleItemList.data.forEach(element=>{
                     this.PrescReturnArray.push(this.createprescriptionReturn((element))); 
-                    this.IpSalesReturnForm.get('salesReturn.isPrescriptionReturn').setValue(this.vPrescObj[0]?.presReId || 0)
                     }) 
+                    this.IpSalesReturnForm.get('prescriptionReturn.presReId').setValue(this.vPrescObj[0]?.presReId || 0)
+                    this.IpSalesReturnForm.get('salesReturn.isPrescriptionReturn').setValue(this.vPrescObj[0]?.presReId || 0)
                 }
             
             if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
@@ -767,6 +769,7 @@ export class SalesReturnInPatientComponent implements OnInit {
                         SGSTAmount: SGSTAmt.toFixed(2) || 0,
                         IGSTPer: IGSTPer,
                         ISGSTAmount: IGSTAmt.toFixed(2) || 0,
+                        presDetailsId: element?.presDetailsId || 0
                     });
                 console.log(this.chargeslist)
                 this.dsIpSaleItemList.data = this.chargeslist;
