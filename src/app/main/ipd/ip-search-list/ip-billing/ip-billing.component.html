@@ -781,6 +781,13 @@
                 </mat-tab>
 
                 <mat-tab label="Advance">
+                 
+
+                     <div class="modal-footer-buttons" fxLayoutAlign="end center">
+                      <button class="btn btn-primary" (click)="getStatementPrint()">
+                        <mat-icon>print</mat-icon>Advance Statement</button> 
+                      </div>
+
                   <ng-template #actionButtonTemplate let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
                       <button mat-icon-button matTooltip="Advance Print"
@@ -790,6 +797,7 @@
                     </div>
                   </ng-template>
                   <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"></airmid-table>
+                 
                 </mat-tab>
 
                 <mat-tab label="Package Det.">

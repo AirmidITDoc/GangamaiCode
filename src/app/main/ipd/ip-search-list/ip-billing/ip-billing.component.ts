@@ -2654,6 +2654,9 @@ export class IPBillingComponent implements OnInit {
             }
         });
     }
+        getStatementPrint() {
+        this.commonService.Onprint("AdmissionID", this.selectedAdvanceObj.admissionId, "IpAdvanceStatement");
+    }
 }
 
 export class Bill {

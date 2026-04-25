@@ -32,6 +32,7 @@ export class ReportConfigurationComponent implements OnInit {
         public toastr: ToastrService, private _formBuilder: UntypedFormBuilder,) { }
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     allcolumns = [
+          { heading: "IsActive", key: "isActive", type: gridColumnTypes.status,align: "right", width: 100 },
         { heading: "Code", key: "reportId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "ReportSection", key: "reportSection", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "ReportName", key: "reportName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -51,7 +52,7 @@ export class ReportConfigurationComponent implements OnInit {
         { heading: "ReportFileName", key: "reportFileName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "ReportSPName", key: "reportSpname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "ReportPageOrientation", key: "reportPageOrientation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "ReportPageSize", key: "reportPageSize", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "ReportPageSize", key: "reportPageSize", sort: true, align: 'left', emptySign: 'NA', width: 120 }, 
         {
             heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
