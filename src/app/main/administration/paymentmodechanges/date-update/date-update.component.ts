@@ -90,7 +90,7 @@ export class DateUpdateComponent implements OnInit {
                         var data1 = {
                             'paymentId': this.PaymentId,
                             'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-                            'paymentTime': this.dateTimeObj.time
+                            'paymentTime': formattedDate + this.dateTimeObj.time
                         }
                         console.log(data1);
                         this._PaymentmodechangesService.getDateTimeChange1(data1).subscribe(response => {
@@ -101,13 +101,13 @@ export class DateUpdateComponent implements OnInit {
                         });
 
                     } else if (this.FormId == 4) {
-                        var data1 = {
+                        var data2 = {
                             'paymentId': this.PaymentId,
                             'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
                             'paymentTime': this.dateTimeObj.time
                         }
-                        console.log(data1);
-                        this._PaymentmodechangesService.PharDateTimeChange(data1).subscribe(response => {
+                        console.log(data2);
+                        this._PaymentmodechangesService.PharDateTimeChange(data2).subscribe(response => {
                             this.toastr.success(response);
                             this._matDialog.closeAll();
                         }, (error) => {

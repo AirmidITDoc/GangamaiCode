@@ -79,7 +79,8 @@ export class ServiceMasterFormNewComponent implements OnInit {
     }
 
     onSubmit() {
-        const data = { TariffId: 1, Data: this.ServiceList, Columns: [] };
+        const data = { TariffId: this.myformSearch.get('searchTariffName')?.value, Data: this.ServiceList, Columns: [] };
+        // const data = { TariffId: 1, Data: this.ServiceList, Columns: [] };
         this._serviceMasterService.saveServicesNew(data).subscribe(() => {
 
         });
