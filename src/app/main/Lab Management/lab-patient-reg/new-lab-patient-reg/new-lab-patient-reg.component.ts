@@ -724,32 +724,196 @@ export class NewLabPatientRegComponent {
     this.selectedTabIndex = event.index;
   }
 
+  // onChangePatient(value) {
+  //   const mode = "Company"
+  //   if (value.text != "Self") {
+  //     this._labPatientRegService.getMaster(mode, 1);
+  //     this.myForm.get('companyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+  //     // this.isCompanySelected = true;
+  //     this.myForm.get('companyId').enable()
+  //     this.patienttype = 2;
+  //     this.OPFooterForm.get('paymentType').setValue('CreditPay')
+  //     this.myForm.get('refDocId').disable()
+  //     this.myForm.get('refDocId').clearValidators();
+  //     this.myForm.get('refDocId').updateValueAndValidity();
+
+  //   } else if (value.text == "Self") {
+  //     // this.isCompanySelected = false;      
+  //     this.patienttype = 1;
+  //     this.myForm.get('refDocId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+  //     this.myForm.get('refDocId').enable()
+  //     this.OPFooterForm.get('paymentType').setValue('CashPay')
+  //     this.myForm.get('companyId').setValue(0);
+  //     this.myForm.get('tariffId').setValue(1);
+  //     this.isTariffSelect = false //tariff not readonly
+  //     this.myForm.get('companyId').disable()
+  //     this.myForm.get('companyId').clearValidators();
+  //     this.myForm.get('companyId').updateValueAndValidity();
+  //   }
+  // }
+
   onChangePatient(value) {
-    const mode = "Company"
+
+    const hasCharges = this.chargeList.length > 0;
+
+    // 👉 Switching TO SELF
+    if (value.text === "Self" && hasCharges) {
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Switching to Self will reset added services.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, continue',
+        cancelButtonText: 'No'
+      }).then((result) => {
+
+        if (!result.isConfirmed) {
+          // Stay on Company
+          this.myForm.get('patientTypeId').setValue(2);
+          return;
+        }
+
+        this.resetCharges();
+
+        // ===== SELF LOGIC =====
+        this.patienttype = 1;
+
+        this.myForm.get('refDocId').setValidators([
+          Validators.required,
+          this._FormvalidationserviceService.notEmptyOrZeroValidator()
+        ]);
+
+        this.myForm.get('refDocId').enable();
+
+        this.OPFooterForm.get('paymentType').setValue('CashPay');
+
+        this.myForm.get('companyId').setValue(0);
+        this.myForm.get('companyId').disable();
+        this.myForm.get('companyId').clearValidators();
+        this.myForm.get('companyId').updateValueAndValidity();
+
+        this.myForm.get('tariffId').setValue(1);
+        this.vTariffId = 1;
+        this.isTariffSelect = false;
+
+        this.ApiURL =
+          "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=1&ClassId=1&GroupId=" +
+          this.groupId +
+          "&SubGroupId=" +
+          this.subGroupId +
+          "&SrvcName=";
+      });
+
+      return; 
+    }
+
+    // Switching TO COMPANY
+    if (value.text !== "Self" && hasCharges) {
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Changing patient type will reset added services.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, continue',
+        cancelButtonText: 'No'
+      }).then((result) => {
+
+        if (!result.isConfirmed) {
+          // Stay on Self
+          this.myForm.get('patientTypeId').setValue(1);
+          return;
+        }
+
+        this.resetCharges();
+
+        // ===== COMPANY LOGIC =====
+        const mode = "Company";
+
+        this._labPatientRegService.getMaster(mode, 1);
+
+        this.myForm.get('companyId').setValidators([
+          Validators.required,
+          this._FormvalidationserviceService.notEmptyOrZeroValidator()
+        ]);
+
+        this.myForm.get('companyId').enable();
+        this.patienttype = 2;
+
+        this.OPFooterForm.get('paymentType').setValue('CreditPay');
+
+        this.myForm.get('refDocId').disable();
+        this.myForm.get('refDocId').clearValidators();
+        this.myForm.get('refDocId').updateValueAndValidity();
+      });
+
+      return;
+    }
+
+    //If NO charges → run normal logic
+
+    const mode = "Company";
+
     if (value.text != "Self") {
+
       this._labPatientRegService.getMaster(mode, 1);
-      this.myForm.get('companyId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
-      // this.isCompanySelected = true;
-      this.myForm.get('companyId').enable()
+
+      this.myForm.get('companyId').setValidators([
+        Validators.required,
+        this._FormvalidationserviceService.notEmptyOrZeroValidator()
+      ]);
+
+      this.myForm.get('companyId').enable();
       this.patienttype = 2;
-      this.OPFooterForm.get('paymentType').setValue('CreditPay')
-      this.myForm.get('refDocId').disable()
+
+      this.OPFooterForm.get('paymentType').setValue('CreditPay');
+
+      this.myForm.get('refDocId').disable();
       this.myForm.get('refDocId').clearValidators();
       this.myForm.get('refDocId').updateValueAndValidity();
 
-    } else if (value.text == "Self") {
-      // this.isCompanySelected = false;      
+    } else {
+
       this.patienttype = 1;
-      this.myForm.get('refDocId').setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
-      this.myForm.get('refDocId').enable()
-      this.OPFooterForm.get('paymentType').setValue('CashPay')
+
+      this.myForm.get('refDocId').setValidators([
+        Validators.required,
+        this._FormvalidationserviceService.notEmptyOrZeroValidator()
+      ]);
+
+      this.myForm.get('refDocId').enable();
+
+      this.OPFooterForm.get('paymentType').setValue('CashPay');
+
       this.myForm.get('companyId').setValue(0);
-      this.myForm.get('tariffId').setValue(1);
-      this.isTariffSelect = false //tariff not readonly
-      this.myForm.get('companyId').disable()
+      this.myForm.get('companyId').disable();
       this.myForm.get('companyId').clearValidators();
       this.myForm.get('companyId').updateValueAndValidity();
+
+      this.myForm.get('tariffId').setValue(1);
+      this.vTariffId = 1;
+      this.isTariffSelect = false;
+
+      this.ApiURL =
+        "LabPatientRegistration/search-LabServiceListwithTraiff?TariffId=1&ClassId=1&GroupId=" +
+        this.groupId +
+        "&SubGroupId=" +
+        this.subGroupId +
+        "&SrvcName=";
     }
+  }
+
+  resetCharges() {
+    this.chargeList = [];
+    this.dstable1.data = [];
+
+    this.myForm.patchValue({
+      totalAmt: 0,
+      discountAmt: 0,
+      totalDiscountPer: 0,
+      netPayableAmt: 0
+    }, { emitEvent: false });
   }
 
   private destroy$ = new Subject<void>();
