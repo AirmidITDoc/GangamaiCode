@@ -1,6 +1,6 @@
 <!-- NEW -->
 <div class="modal-page page-layout inner-scroll">
-  <div class="modal-wrapper grid-container">
+  <div class="modal-wrapper grid-container resize-form-fields padding-fix">
     <!-- Modal header -->
     <div class="modal-header accent">
       <div class="modal-header-content">
@@ -36,14 +36,14 @@
                   </div>
 
                   <div fxFlex.gt-sm="100%" fxFlex class="border-bottom" *ngIf="userFormGroup.get('SupplierId')?.value">
-                    <div fxFlex fxLayout="row"
-                      fxLayoutAlign="space-between start"> 
-                        <span class="h3 font-weight-600" style="margin-left: 5px;">
-                          GRN Details</span> 
+                    <div fxFlex fxLayout="row" fxLayoutAlign="space-between start">
+                      <span class="h3 font-weight-600" style="margin-left: 5px;">
+                        GRN Details</span>
                       <div class="patient-col">
                         <span class="patient-col-key font-weight-600">Supplier Name</span>
                         <span>: </span>
-                        <span class="patient-col-value font-weight-200">{{userFormGroup.get('SupplierName')?.value}} - {{
+                        <span class="patient-col-value font-weight-200">{{userFormGroup.get('SupplierName')?.value}} -
+                          {{
                           userFormGroup.get('Contact')?.value}} | {{userFormGroup.get('Mobile')?.value}} |
                           {{userFormGroup.get('SupplierAddress')?.value}}</span>
                       </div>
@@ -60,13 +60,12 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
-                <form [formGroup]="userFormGroup" class="pt-4" style="overflow: auto">
-                  <div fxLayout="row" class="gap-4">
+                <form [formGroup]="userFormGroup" class="pt-4 input-error-hidden" style="overflow: auto">
+                  <div fxLayout="row" class="gap-4 mt-4">
 
                     <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="userFormGroup"
                       [validations]="getValidationMessages().StoreId" [value]="data?.StoreId" fxFlex="11%"
-                       [readonly]="true"
-                      [mode]="autocompletestore"  (selectionChange)="selectChangeStore($event)">
+                      [readonly]="true" [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
                     </airmid-dropdown>
 
                     <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
@@ -90,43 +89,41 @@
 
                     <airmid-textbox fxFlex="7%" label="GateEntryNo" formControlName="GateEntryNo"
                       [(ngModel)]="registerObj.gateEntryNo" [formGroup]="userFormGroup" placeholder="GateEntryNo"
-                      [validations]="getValidationMessages().gateEntryNo" (keydown)="onEnterHSNCode($event)"></airmid-textbox>
+                      [validations]="getValidationMessages().gateEntryNo"
+                      (keydown)="onEnterHSNCode($event)"></airmid-textbox>
 
                     <airmid-datepicker fxFlex="10%" [formGroup]="userFormGroup" formControlName="PaymentDate"
                       [label]="'Payment due date'"></airmid-datepicker>
 
-                    <airmid-dropdown label="Select GSTType" formControlName="GSTType" fxFlex="10%"
+                    <airmid-dropdown label="Select GSTType" formControlName="GSTType" fxFlex="12%"
                       [formGroup]="userFormGroup" [validations]="getValidationMessages().GSTType"
-                      [mode]="autocompleteModeGSTType" (selectionChange)="onGSTTypeChange($event)"
-                     >
+                      [mode]="autocompleteModeGSTType" (selectionChange)="onGSTTypeChange($event)">
                     </airmid-dropdown>
 
-                    <div fxLayout="row" fxFlex="10%" class="ml-8">
+                  </div>
 
-                      <mat-radio-group formControlName="GRNType" fxLayout="column" class="gap-2">
-                        <mat-radio-button [value]="true">Direct</mat-radio-button>
-                        <mat-radio-button [value]="false" (change)="getPurchaseList()">Purchase
-                          Orders</mat-radio-button>
-                      </mat-radio-group>
-
-                      <mat-radio-group formControlName="PaymentType" fxLayout="column" class="gap-2">
-                        <mat-radio-button [value]="true">Cash</mat-radio-button>
-                        <mat-radio-button [value]="false">Credit</mat-radio-button>
-                      </mat-radio-group>
-
-                    </div>
+                  <!-- Radio row -->
+                  <div fxLayout="row" fxLayoutAlign="start center" class="gap-16" style="padding: 2px 0">
+                    <mat-radio-group formControlName="GRNType" fxLayout="row" class="gap-8">
+                      <mat-radio-button [value]="true">Direct</mat-radio-button>
+                      <mat-radio-button [value]="false" (change)="getPurchaseList()">Purchase Orders</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-radio-group formControlName="PaymentType" fxLayout="row" class="gap-8">
+                      <mat-radio-button [value]="true">Cash</mat-radio-button>
+                      <mat-radio-button [value]="false">Credit</mat-radio-button>
+                    </mat-radio-group>
                   </div>
 
                   <div fxLayout="row" class="gap-4">
                     <input type="hidden" name="PurchaseId" [(ngModel)]="vPurchaseId" formControlName="PurchaseId" />
                     <input type="hidden" name="poBalQty" [(ngModel)]="vpoBalQty" formControlName="poBalQty" />
 
-                    <airmid-textbox fxFlex="4%" label="HSNCode" formControlName="HSNCode"  type="text"
-                     name="HSNCode" #HSNCodeInput></airmid-textbox> 
- 
+                    <airmid-textbox fxFlex="4%" label="HSNCode" formControlName="HSNCode" type="text" name="HSNCode"
+                      #HSNCodeInput></airmid-textbox>
+
                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="userFormGroup"
                       formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="18%"
-                      TextField="formattedText" 
+                      TextField="formattedText"
                       [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + StoreId_1 + '&ItemName='"
                       (selectionChange)="getSelectedItem($event)" ValueField="itemId"
                       (onClearSelection)="resetFormItem()"></airmid-autocomplete>
@@ -138,51 +135,50 @@
                       [formGroup]="userFormGroup" (keyup)="calculateTotalamt()" [min]="1"></airmid-textbox>
 
                     <!-- <airmid-textbox fxFlex="5%" label="Batch No" formControlName="BatchNo" [formGroup]="userFormGroup"
-                      placeholder="BatchNo" [validations]="getValidationMessages().batchNo"></airmid-textbox> --> 
-                     
+                      placeholder="BatchNo" [validations]="getValidationMessages().batchNo"></airmid-textbox> -->
 
-                      <airmid-autocomplete label="BatchNo" [formGroup]="userFormGroup"
-                      formControlName="BatchNo" fxFlex="7%" TextField="batchNo"
-                       ApiUrl="GRN/GetExisitingBatchList?StoreId={{userFormGroup.get('StoreId')?.value}}&ItemId={{userFormGroup.get('ItemName')?.value?.itemId}}&BatchNo="
-                      (selectionChange)="onBatchChange($event)" 
-                      ></airmid-autocomplete> 
+
+                    <airmid-autocomplete label="BatchNo" [formGroup]="userFormGroup" formControlName="BatchNo"
+                      fxFlex="7%" TextField="batchNo"
+                      ApiUrl="GRN/GetExisitingBatchList?StoreId={{userFormGroup.get('StoreId')?.value}}&ItemId={{userFormGroup.get('ItemName')?.value?.itemId}}&BatchNo="
+                      (selectionChange)="onBatchChange($event)"></airmid-autocomplete>
 
                     <mat-form-field appearance="outline" fxFlex="8%">
                       <mat-label>ExpDate</mat-label>
                       <input matInput #inputField (keyup.enter)="calculateLastDay()" formControlName="ExpDate"
                         autocomplete="off" placeholder="mmyyyy" required (keypress)="keyPressDigitsOnly($event)">
-                    </mat-form-field> 
-<!-- type="number" -->
+                    </mat-form-field>
+                    <!-- type="number" -->
                     <!-- <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
                       placeholder="Qty" (valueChange)="calculateTotalamt()" ></airmid-textbox> -->
 
-                       <airmid-textbox  fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
+                    <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
                       placeholder="Qty" [validations]="getValidationMessages().qty" [type]="'text'"
-                        (keypress)="keyPressCharater($event)"></airmid-textbox>
+                      (keypress)="keyPressCharater($event)"></airmid-textbox>
 
 
 
                     <!-- <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
                       placeholder="FreeQty"  [min]="0"  (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
-                       <airmid-textbox  fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
+                    <airmid-textbox fxFlex="4%" label="Free Qty" formControlName="FreeQty" [formGroup]="userFormGroup"
                       placeholder="FreeQty" [validations]="getValidationMessages().qty" [type]="'text'"
-                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
                     <!-- <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
                       placeholder="MRP"  [validations]="getValidationMessages().mrp"
                       (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
-                         <airmid-textbox  fxFlex="6%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
+                    <airmid-textbox fxFlex="6%" label="MRP" formControlName="MRP" [formGroup]="userFormGroup"
                       placeholder="MRP" [validations]="getValidationMessages().qty" [type]="'text'"
-                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
                     <airmid-textbox fxFlex="7%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
-                      placeholder="Rate"  [min]="0" (valueChange)="calculateTotalamt()"
+                      placeholder="Rate" [min]="0" (valueChange)="calculateTotalamt()"
                       [validations]="getValidationMessages().rate"
-                       (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
+                      (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
 
                     <airmid-textbox fxFlex="7%" label="Total Amount" formControlName="TotalAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
@@ -190,17 +186,17 @@
                     <!-- <airmid-textbox fxFlex="5%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
                        (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
-                         <airmid-textbox  fxFlex="4%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
+                    <airmid-textbox fxFlex="4%" label="Disc1 %" formControlName="Disc" [formGroup]="userFormGroup"
                       placeholder="MRP" [validations]="getValidationMessages().Disc" [type]="'text'"
-                        (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
+                      (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
                     <div *ngIf="IsDiscPer2" fxFlex="4%">
                       <!-- <airmid-textbox label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup" type="text"
                         (keyup)="calculateDiscper2Amt()"></airmid-textbox> -->
 
-                          <airmid-textbox  fxFlex="4%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
-                      placeholder="Disc2" [validations]="getValidationMessages().Disc" [type]="'text'"
+                      <airmid-textbox fxFlex="4%" label="Disc2 %" formControlName="Disc2" [formGroup]="userFormGroup"
+                        placeholder="Disc2" [validations]="getValidationMessages().Disc" [type]="'text'"
                         (keypress)="keyPressCharater($event)" (valueChange)="calculateTotalamt()"></airmid-textbox>
 
                     </div>
@@ -209,10 +205,10 @@
                       type="text" #CGST
                       (change)="getchangegstper(userFormGroup.get('CGST')?.value, 'CGST')"></airmid-textbox>  -->
 
-                       <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="7%"
-                      [formGroup]="userFormGroup" [validations]="getValidationMessages().CGST"
-                      [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
-                       (onClearSelection)="getchangegstper($event)"> </airmid-dropdown>
+                    <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="7%" [formGroup]="userFormGroup"
+                      [validations]="getValidationMessages().CGST" [mode]="autocompleteModeGSTTypesValues"
+                      (selectionChange)="getchangegstper($event)" (onClearSelection)="getchangegstper($event)">
+                    </airmid-dropdown>
 
                     <!-- <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGST" [formGroup]="userFormGroup"
                       type="text" #SGST [readonly]="true"
@@ -222,17 +218,17 @@
                       type="text" #IGST
                       (change)="getchangegstper(userFormGroup.get('IGST')?.value, 'IGST')"></airmid-textbox> -->
 
-                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="6%"  
-                      [formGroup]="userFormGroup" [validations]="getValidationMessages().IGST"
-                      [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangeIgstper($event)"
-                     > </airmid-dropdown>
+                    <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="6%" [formGroup]="userFormGroup"
+                      [validations]="getValidationMessages().IGST" [mode]="autocompleteModeGSTTypesValues"
+                      (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown>
 
                     <!-- <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup"
                       type="text" [readonly]="true"></airmid-textbox> -->
 
-                       <airmid-textbox  fxFlex="6%" label="Hos.MRP" formControlName="HospitalMRP" [formGroup]="userFormGroup"
-                      placeholder="HospitalMRP" [validations]="getValidationMessages().HospitalMRP" [type]="'text'"
-                        (keypress)="keyPressCharater($event)" ></airmid-textbox>
+                    <airmid-textbox fxFlex="6%" label="Hos.MRP" formControlName="HospitalMRP"
+                      [formGroup]="userFormGroup" placeholder="HospitalMRP"
+                      [validations]="getValidationMessages().HospitalMRP" [type]="'text'"
+                      (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                     <airmid-textbox fxFlex="7%" label="Net Amount" formControlName="NetAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
@@ -251,8 +247,8 @@
           </mat-accordion>
           <div class="airmid-table-container py-12" fxFlex>
             <mat-table #table class="airmid-table table3 max-h-700" matSort [dataSource]="dsItemNameList"
-              [@animateStagger]="{ value: '50' }"> 
-                <ng-container matColumnDef="Status" sticky>
+              [@animateStagger]="{ value: '50' }">
+              <ng-container matColumnDef="Status" sticky>
                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white"
                   class="w-70">Verify</mat-header-cell>
                 <mat-cell *matCellDef="let contact" class="w-70">
@@ -278,27 +274,27 @@
                 </mat-cell>
               </ng-container>
 
-               <ng-container matColumnDef="UOMId">
+              <ng-container matColumnDef="UOMId">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">UOM</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                 <span>{{ contact.UOMId }}</span>
+                  <span>{{ contact.UOMId }}</span>
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="HSNCode">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">HSNCode</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                 <span>{{ contact.HSNCode }}</span>  
+                  <span>{{ contact.HSNCode }}</span>
                 </mat-cell>
               </ng-container>
 
-               <ng-container matColumnDef="BatchNo">
+              <ng-container matColumnDef="BatchNo">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">Batch No</mat-header-cell>
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-140">
                   <mat-form-field appearance="fill">
                     <input matInput #inputField [(ngModel)]="contact.BatchNo" [disabled]="contact.IsVerifiedUserId > 0"
                       [id]="'BatchNo_' + index" (keydown.arrowdown)="setFocus('BatchNo_' + (index + 1))"
-                      (keydown.arrowup)="setFocus('BatchNo_' + (index - 1))"  
+                      (keydown.arrowup)="setFocus('BatchNo_' + (index - 1))"
                       (ngModelChange)="contact.BatchNo = convertUppercase(inputField.value)" />
                   </mat-form-field>
                 </mat-cell>
@@ -320,17 +316,20 @@
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber [id]="'Qty_' + index"
-                      (ngModelChange)="getCellCalculation(contact)" [disabled]="contact.IsVerifiedUserId > 0" [min]="0" />
+                      (ngModelChange)="getCellCalculation(contact)" [disabled]="contact.IsVerifiedUserId > 0"
+                      [min]="0" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
 
-                <ng-container matColumnDef="FreeQty">
+              <ng-container matColumnDef="FreeQty">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Free Qty</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm [(ngModel)]="contact.FreeQty" class="w-100">
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm [(ngModel)]="contact.FreeQty"
+                  class="w-100">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.FreeQty" type="text" OnlyNumber [id]="'FreeQty_' + index"
-                      (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('FreeQty_' + (index + 1))"
+                      (ngModelChange)="getCellCalculation(contact)"
+                      (keydown.arrowdown)="setFocus('FreeQty_' + (index + 1))"
                       (keydown.arrowup)="setFocus('FreeQty_' + (index - 1))" [disabled]="contact.IsVerifiedUserId > 0"
                       [min]="0" />
                   </mat-form-field>
@@ -339,15 +338,16 @@
               </ng-container>
 
               <ng-container matColumnDef="TotalQty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Total Qty</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Total
+                  Qty</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                   {{ contact.TotalQty }}
                 </mat-cell>
-              </ng-container> 
+              </ng-container>
 
               <ng-container matColumnDef="ConversionFactor">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-100">Packing</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm  class="w-100"> 
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Packing</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.ConversionFactor" (ngModelChange)="getCellCalculation(contact)"
                       type="text" autocomplete="off" [min]="1" OnlyNumber [disabled]="contact.IsVerifiedUserId > 0"
@@ -355,10 +355,11 @@
                       (keydown.arrowup)="setFocus('Packing_' + (index - 1))" />
                   </mat-form-field>
                 </mat-cell>
-              </ng-container>  
+              </ng-container>
 
               <ng-container matColumnDef="MRP">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">MRP(Strip)</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                  class="w-130">MRP(Strip)</mat-header-cell>
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.MRP" (ngModelChange)="getCellCalculation(contact)" type="text"
@@ -377,22 +378,25 @@
                   <mat-form-field appearance="fill">
                     <input matInput type="text" [(ngModel)]="contact.Rate" step="0.1" [id]="'Rate_' + index"
                       autocomplete="off" OnlyNumber [disabled]="contact.IsVerifiedUserId > 0"
-                      (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('Rate_' + (index + 1))"
+                      (ngModelChange)="getCellCalculation(contact)"
+                      (keydown.arrowdown)="setFocus('Rate_' + (index + 1))"
                       (keydown.arrowup)="setFocus('Rate_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
                       [min]="0" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
 
-                <ng-container matColumnDef="HospitalMRP">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">HOS.MRP(Strip)</mat-header-cell>
+              <ng-container matColumnDef="HospitalMRP">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                  class="w-130">HOS.MRP(Strip)</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                   {{ contact.HospitalMRP | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="TotalAmount">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">Total Amt</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">Total
+                  Amt</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                   {{ contact.TotalAmount | number : '1.2-2' }}
                 </mat-cell>
@@ -402,8 +406,9 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Disc%</mat-header-cell>
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.Disc" [id]="'DiscPer_' + index" [disabled]="contact.IsVerifiedUserId > 0"
-                      (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('DiscPer_' + (index + 1))"
+                    <input matInput [(ngModel)]="contact.Disc" [id]="'DiscPer_' + index"
+                      [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)"
+                      (keydown.arrowdown)="setFocus('DiscPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('DiscPer_' + (index - 1))" step="0.1" type="text" [min]="0"
                       [max]="100" OnlyNumber autocomplete="off" (keypress)="keyPressDigitDecimalOnly($event)" />
                   </mat-form-field>
@@ -422,8 +427,8 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.Disc2" [id]="'DiscPer2_' + index"
-                   [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)" [min]="0" [max]="100"
-                      step="0.1" type="number" OnlyNumber autocomplete="off"
+                      [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)" [min]="0"
+                      [max]="100" step="0.1" type="number" OnlyNumber autocomplete="off"
                       (keydown.arrowdown)="setFocus('DiscPer2_' + (index + 1))"
                       (keydown.arrowup)="setFocus('DiscPer2_' + (index - 1))"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -465,7 +470,8 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.CGST" [id]="'CGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || contact.IGST > 0" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || contact.IGST > 0"
+                      (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('CGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('CGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -485,7 +491,8 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.SGST" [id]="'SGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || contact.IGST > 0" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || contact.IGST > 0"
+                      (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('SGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('SGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -505,8 +512,9 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.IGST" [id]="'IGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || (contact.CGST > 0 || contact.SGST > 0)" (ngModelChange)="getCellCalculation(contact)"
-                      autocomplete="off" (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || (contact.CGST > 0 || contact.SGST > 0)"
+                      (ngModelChange)="getCellCalculation(contact)" autocomplete="off"
+                      (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('IGSTPer_' + (index - 1))"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
                   </mat-form-field>
@@ -571,7 +579,8 @@
               </ng-container> -->
 
               <ng-container matColumnDef="purUnitRate">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Unit Rate</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Unit
+                  Rate</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                   <!-- {{ contact.PurUnitRate | number : '1.2-2' }} -->
                   {{ contact.Rate | number : '1.2-2' }}
@@ -598,7 +607,7 @@
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.IsVerifiedUserId }}
                 </mat-cell>
-              </ng-container> --> 
+              </ng-container> -->
 
               <!-- <ng-container matColumnDef="IsVerified">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsVerified</mat-header-cell>
@@ -627,10 +636,11 @@
                 </mat-cell>
               </ng-container> -->
 
-                <ng-container matColumnDef="buttons" stickyEnd>
+              <ng-container matColumnDef="buttons" stickyEnd>
                 <mat-header-cell *matHeaderCellDef class="w-60">Action</mat-header-cell>
-                <mat-cell *matCellDef="let row"  class="w-60">
-                  <button mat-icon-button (click)="deleteTableRow(row)" color="warn" [disabled]="row.IsVerifiedUserId > 0">
+                <mat-cell *matCellDef="let row" class="w-60">
+                  <button mat-icon-button (click)="deleteTableRow(row)" color="warn"
+                    [disabled]="row.IsVerifiedUserId > 0">
                     <mat-icon>delete_outline</mat-icon>
                   </button>
                 </mat-cell>
@@ -691,7 +701,7 @@
                 </div>
               </div>   -->
 
-           <mat-accordion>
+          <mat-accordion>
             <!-- expanded -->
             <mat-expansion-panel [expanded]="isExpanded">
               <mat-expansion-panel-header>
@@ -725,9 +735,9 @@
                     </div>
                   </div>
                 </div>
-                </mat-expansion-panel-header>
-              <form [formGroup]="_GRNList.GRNFinalForm">
-                <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12">
+              </mat-expansion-panel-header>
+              <form [formGroup]="_GRNList.GRNFinalForm" class="pt-4 input-error-hidden">
+                <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12 mt-4">
 
                   <div fxFlex fxFlex.gt-xs="100%" fxFlex.xs="100%" fxLayout="row" fxLayoutGap="10px">
                     <div fxFlex fxFlex.gt-xs="40%" fxFlex.xs="100%" class="airmid-table-container"
@@ -804,47 +814,56 @@
                     </div>
                     <div fxLayout="column" fxLayoutGap="4px">
                       <div fxLayout="row wrap" fxLayoutGap="4px grid">
-                        <airmid-textbox fxFlex="12%" label="Total Amt" formControlName="TotalAmt" [(ngModel)]="registerObj.totalAmount"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [readonly]="true"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="Disc Amt" formControlName="DiscAmount" [(ngModel)]="registerObj.totalDiscAmount"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [readonly]="true"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="DiscAmt2" formControlName="DiscAmount2" [(ngModel)]="registerObj.DiscAmt2"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [readonly]="true"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="GST Amt" formControlName="VatAmount" [(ngModel)]="registerObj.totalVatamount"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [readonly]="true"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="12%" label="Net Amt" formControlName="NetPayamt" [(ngModel)]="registerObj.netAmount"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [readonly]="true"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="Rounding Amt" formControlName="RoundingAmt" [(ngModel)]="registerObj.roundingAmt"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [readonly]="true"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="Debit Amt" formControlName="DebitAmount" [(ngModel)]="registerObj.debitNote"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"  (keyup)="getcalculateothercharges()"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="Credit Amt" formControlName="CreditAmount" [(ngModel)]="registerObj.creditNote"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0" (keyup)="getcalculateothercharges()"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="Other Charges" formControlName="OtherCharge" (keyup)="getcalculateothercharges()"
-                          [(ngModel)]="registerObj.otherCharge" [formGroup]="_GRNList.GRNFinalForm" type="number"
-                          [min]="0"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="8%" label="EwayBillNo" formControlName="EwayBillNo" [formGroup]="_GRNList.GRNFinalForm"
-                          type="number" [min]="0"></airmid-textbox>
-                    
-                        <airmid-datepicker fxFlex="12%" [formGroup]="_GRNList.GRNFinalForm" formControlName="EwalBillDate"
-                          [label]="'EwayBill date'"></airmid-datepicker>
-                    
+                        <airmid-textbox fxFlex="12%" label="Total Amt" formControlName="TotalAmt"
+                          [(ngModel)]="registerObj.totalAmount" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [readonly]="true"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="Disc Amt" formControlName="DiscAmount"
+                          [(ngModel)]="registerObj.totalDiscAmount" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [readonly]="true"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="DiscAmt2" formControlName="DiscAmount2"
+                          [(ngModel)]="registerObj.DiscAmt2" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [readonly]="true"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="GST Amt" formControlName="VatAmount"
+                          [(ngModel)]="registerObj.totalVatamount" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [readonly]="true"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="12%" label="Net Amt" formControlName="NetPayamt"
+                          [(ngModel)]="registerObj.netAmount" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [readonly]="true"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="Rounding Amt" formControlName="RoundingAmt"
+                          [(ngModel)]="registerObj.roundingAmt" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [readonly]="true"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="Debit Amt" formControlName="DebitAmount"
+                          [(ngModel)]="registerObj.debitNote" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [min]="0" (keyup)="getcalculateothercharges()"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="Credit Amt" formControlName="CreditAmount"
+                          [(ngModel)]="registerObj.creditNote" [formGroup]="_GRNList.GRNFinalForm" type="number"
+                          [min]="0" (keyup)="getcalculateothercharges()"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="Other Charges" formControlName="OtherCharge"
+                          (keyup)="getcalculateothercharges()" [(ngModel)]="registerObj.otherCharge"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="8%" label="EwayBillNo" formControlName="EwayBillNo"
+                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"></airmid-textbox>
+
+                        <airmid-datepicker fxFlex="12%" [formGroup]="_GRNList.GRNFinalForm"
+                          formControlName="EwalBillDate" [label]="'EwayBill date'"></airmid-datepicker>
+
                       </div>
                       <div fxLayout="row wrap" fxLayoutGap="5px">
                         <airmid-textbox fxFlex label="Remark" formControlName="Remark" [(ngModel)]="registerObj.remark"
                           [formGroup]="_GRNList.GRNFinalForm" type="text"></airmid-textbox>
-                    
-                        <airmid-textbox fxFlex="15%" label="Received By" formControlName="ReceivedBy" [(ngModel)]="registerObj.receivedBy"
-                          [formGroup]="_GRNList.GRNFinalForm" type="text"></airmid-textbox>
+
+                        <airmid-textbox fxFlex="15%" label="Received By" formControlName="ReceivedBy"
+                          [(ngModel)]="registerObj.receivedBy" [formGroup]="_GRNList.GRNFinalForm"
+                          type="text"></airmid-textbox>
                       </div>
                     </div>
                   </div>
@@ -863,8 +882,8 @@
           <button class="btn btn-primary-outline" (click)="OnAddSupplier()">Add Supplier</button>
           <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
           <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button> -->
-          <button class="btn btn-primary-outline"   (click)="OnAddItem()">Add Item</button>
-          <button class="btn btn-primary-outline"   (click)="OnAddSupplier()">Add Supplier</button>
+          <button class="btn btn-primary-outline" (click)="OnAddItem()">Add Item</button>
+          <button class="btn btn-primary-outline" (click)="OnAddSupplier()">Add Supplier</button>
           <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
           <button type="button" class="btn btn-primary" [disabled]="false" (click)="onSave()">Save</button>
         </div>
