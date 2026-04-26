@@ -1,18 +1,23 @@
 .summary-container {
- margin-top: 10px !important;
- display: flex;
- justify-content: center;
- flex-direction: row;
+  margin-top: 10px !important;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
 }
 
-.textBox{
- margin-top: 10px !important;
+.textBox {
+  margin-top: 10px !important;
 }
 
 .mat-expansion-panel-header {
-  min-height: 60px !important;
+  min-height: 32px !important;
+  padding: 0 16px !important;
 }
- 
+
+.mat-expansion-panel-header.mat-expanded {
+  min-height: 32px !important;
+}
+
 // Amount summary row: left-aligned, compact
 .amt-container {
   .net-amt-section .net-amt {
@@ -79,6 +84,7 @@
   padding: 4px 8px;
   border-radius: 4px;
 }
+
 .final-amt-box {
   display: inline-flex;
   flex: 0 0 auto;
@@ -110,4 +116,57 @@
   padding: 2px 6px;
   border-radius: 4px;
   border: 1px solid #ffb74d;
+}
+
+// Compact Table Styles
+.airmid-table {
+
+  mat-header-row,
+  mat-row {
+    min-height: 28px !important;
+    height: 28px !important;
+  }
+
+  mat-header-cell,
+  mat-cell {
+    padding: 0 4px !important;
+    font-size: 11px !important;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mat-form-field-appearance-fill {
+    width: 100%;
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0 !important;
+      margin: 0 !important;
+    }
+
+    .mat-form-field-flex {
+      padding: 0 4px !important;
+      background-color: #f5f5f5 !important;
+      border-radius: 3px;
+      min-height: 24px;
+      align-items: center;
+    }
+
+    .mat-form-field-infix {
+      padding: 0 !important;
+      border-top: 0 !important;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  input.mat-input-element {
+    height: 22px !important;
+    padding: 0 2px !important;
+    margin: 0 !important;
+    font-size: 11px !important;
+  }
+
+  .mat-form-field-underline,
+  .mat-form-field-subscript-wrapper {
+    display: none !important;
+  }
 }

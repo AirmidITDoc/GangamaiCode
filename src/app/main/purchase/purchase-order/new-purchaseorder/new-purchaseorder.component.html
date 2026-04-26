@@ -1,6 +1,6 @@
 <!-- NEW -->
 <div class="modal-page page-layout inner-scroll">
-    <div class="modal-wrapper grid-container">
+    <div class="modal-wrapper grid-container resize-form-fields padding-fix">
         <!-- Modal header -->
         <div class="modal-header accent">
             <div class="modal-header-content">
@@ -8,7 +8,7 @@
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Purchase Order</span>
                 </div>
                 <div class="modal-header-right">
-                    <div class="comman-date-container">  
+                    <div class="comman-date-container">
                         <app-common-date [screenFrom]="screenFromString"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                         <div class="close-icon">
@@ -32,13 +32,15 @@
                                 <mat-panel-title>
                                     <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center"
                                         *ngIf="!userFormGroup.get('SupplierId')?.value">
-                                        <span style="font-weight: bold;color: rgb(6, 64, 105);font-size: large;">Purchase Order</span>
+                                        <span
+                                            style="font-weight: bold;color: rgb(6, 64, 105);font-size: large;">Purchase
+                                            Order</span>
                                     </div>
 
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
-                                <form [formGroup]="userFormGroup" class="pt-4" style="overflow: auto">
+                                <form [formGroup]="userFormGroup" class="input-error-hidden" style="overflow: auto">
                                     <div fxLayout="row" class="gap-4">
 
                                         <airmid-dropdown label="Store Name" formControlName="StoreId" fxFlex="16%"
@@ -87,11 +89,10 @@
                                         <airmid-textbox fxFlex="6%" label="HSNcode" formControlName="HSNcode"
                                             [(ngModel)]="vHSNcode" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
-<!-- ApiUrl="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + vstoreId +  '&ItemName='" -->
+                                        <!-- ApiUrl="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + vstoreId +  '&ItemName='" -->
                                         <airmid-autocomplete label="Item Name (enter 2 char)"
                                             [formGroup]="userFormGroup" formControlName="ItemName"
-                                            placeholderText="Item Name (enter 2 char)" fxFlex="27%"
-                                            ApiUrl={{ApiUrl}}
+                                            placeholderText="Item Name (enter 2 char)" fxFlex="27%" ApiUrl={{ApiUrl}}
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="resetFormItem()"></airmid-autocomplete>
@@ -106,31 +107,32 @@
 
                                         <airmid-textbox fxFlex="5%" label="Qty" formControlName="Qty"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
-                                            [validations]="getValidationMessages().Qty" [maxLength]="10" #qtyTextboxRef  [min]="0">
+                                            [validations]="getValidationMessages().Qty" [maxLength]="10" #qtyTextboxRef
+                                            [min]="0">
                                         </airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="FreeQty" formControlName="FreeQty"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
-                                            [validations]="getValidationMessages().FreeQty" [maxLength]="10"   [min]="0">
+                                            [validations]="getValidationMessages().FreeQty" [maxLength]="10" [min]="0">
                                         </airmid-textbox>
 
 
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
                                             [formGroup]="userFormGroup" placeholder="MRP" type="number"
                                             [validations]="getValidationMessages().mrp"
-                                            (valueChange)="calculateTotalamt()"  [min]="0"></airmid-textbox>
+                                            (valueChange)="calculateTotalamt()" [min]="0"></airmid-textbox>
 
 
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
                                             [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
                                             type="number" (valueChange)="OnchekPurchaserateValidation()"
-                                            [validations]="getValidationMessages().rate"  [min]="0"
-                                             (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
+                                            [validations]="getValidationMessages().rate" [min]="0"
+                                            (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
 
-                                    
+
                                         <airmid-textbox fxFlex="5%" label="Disc %" formControlName="Disc"
                                             [formGroup]="userFormGroup" type="number"
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
@@ -164,7 +166,7 @@
                                             [(ngModel)]="vDefRate" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
 
-                                      
+
                                         <div
                                             [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
                                             <button type="button" class="btn btn-primary btn-with-icon py-8"
@@ -177,7 +179,7 @@
                             </div>
                         </mat-expansion-panel>
                     </mat-accordion>
-                    <div class="airmid-table-container py-12" fxFlex>
+                    <div class="airmid-table-container" fxFlex>
                         <mat-table #table class="airmid-table table3 max-h-600" matSort [dataSource]="dsItemNameList"
                             [@animateStagger]="{ value: '50' }">
 
@@ -219,21 +221,21 @@
                             </ng-container>
 
 
-                             <ng-container matColumnDef="FreeQty">
+                            <ng-container matColumnDef="FreeQty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-100">FreeQty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                     {{contact.FreeQty}}
+                                    {{contact.FreeQty}}
                                 </mat-cell>
                             </ng-container>
 
-                              <ng-container matColumnDef="TotalQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                    class="w-100">Total Qty</mat-header-cell>
+                            <ng-container matColumnDef="TotalQty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Total
+                                    Qty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                     {{contact.TotalQty}}
+                                    {{contact.TotalQty}}
                                 </mat-cell>
-                            </ng-container> 
+                            </ng-container>
 
                             <ng-container matColumnDef="MRP">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
@@ -456,40 +458,43 @@
                                             <span class="net-amt-mat-label">No Of Item:</span>
                                             <span class="net-amt-value">{{dsItemNameList.data.length}}</span>
                                         </div>
-                                
+
                                         <div class="net-amt-box">
                                             <span class="net-amt-mat-label">CGSTAmt:</span>
-                                            <span class="net-amt-value">{{ getCGSTAmt() | currency: currency:'symbol'}}</span>
+                                            <span class="net-amt-value">{{ getCGSTAmt() | currency:
+                                                currency:'symbol'}}</span>
                                         </div>
-                                
+
                                         <div class="net-amt-box">
                                             <span class="net-amt-mat-label">SGSTAmt:</span>
-                                            <span class="net-amt-value">{{ getSGSTAmt() | currency: currency:'symbol'}}</span>
+                                            <span class="net-amt-value">{{ getSGSTAmt() | currency:
+                                                currency:'symbol'}}</span>
                                         </div>
-                                
+
                                         <div class="net-amt-box">
                                             <span class="net-amt-mat-label">IGSTAmt</span>
-                                            <span class="net-amt-value">{{ getIGSTAmt() | currency: currency:'symbol'}}</span>
+                                            <span class="net-amt-value">{{ getIGSTAmt() | currency:
+                                                currency:'symbol'}}</span>
                                         </div>
-                                
+
                                         <div class="net-amt-box">
                                             <span class="net-amt-mat-label">Total Amt:</span>
                                             <span class="net-amt-value">{{getTotalAmt(dsItemNameList.data)
                                                 | currency: currency:'symbol'}}</span>
                                         </div>
-                                
+
                                         <div class="net-amt-box">
                                             <span class="net-amt-mat-label">Disc Amt:</span>
                                             <span class="net-amt-value">{{getTotalDisc(dsItemNameList.data)
                                                 | currency: currency:'symbol'}}</span>
                                         </div>
-                                
+
                                         <div class="net-amt-box">
                                             <span class="net-amt-mat-label">GST Amt:</span>
                                             <span class="net-amt-value">{{getTotalGST(dsItemNameList.data)
                                                 | currency: currency:'symbol'}}</span>
                                         </div>
-                                
+
                                         <div class="final-amt-box">
                                             <span class="final-amt-label">Net Amt :</span>
                                             <span class="final-amt-value">{{getTotalNet(dsItemNameList.data)
@@ -595,7 +600,7 @@
                                     </div>
                                     <div fxLayout="column" fxLayoutGap="2px" fxFlex fxFlex.gt-xs="100%"
                                         fxFlex.xs="100%">
-                                        <form [formGroup]="FinalPurchaseform">
+                                        <form [formGroup]="FinalPurchaseform" class="input-error-hidden">
                                             <div fxLayout="row wrap" fxLayoutGap="5px">
                                                 <airmid-textbox fxFlex="10%" label="HandlingCharges"
                                                     formControlName="HandlingCharges" [min]="0"
@@ -630,7 +635,7 @@
                                                     [formGroup]="FinalPurchaseform" [mode]="autocompletepaymentmode"
                                                     (selectionChange)="selPaymentmode($event)">
                                                 </airmid-dropdown>
-                                            <!-- </div>
+                                                <!-- </div>
                                             <div fxLayout="row wrap" fxLayoutGap="5px"> -->
                                                 <airmid-textbox fxFlex="48%" label="Remark"
                                                     [(ngModel)]="registerObj.remarks" formControlName="Remark"
@@ -650,7 +655,7 @@
         <div class="modal-footer">
             <div class="footer-navigation-container">
                 <div class="modal-footer-buttons">
-                      <button class="btn btn-primary-outline"   (click)="OnAddItem()">Add Item</button>
+                    <button class="btn btn-primary-outline" (click)="OnAddItem()">Add Item</button>
                     <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
                     <button type="button" class="btn btn-primary" [disabled]="false" (click)="OnSave()">Save</button>
                 </div>
