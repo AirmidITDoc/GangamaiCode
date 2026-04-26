@@ -6,12 +6,15 @@
   background-color: #ebe7e7;
   cursor: pointer;
 }
+
 .icon-alert {
   color: red;
 }
+
 .icon-normal {
   color: gray;
 }
+
 .info-badge-top {
   .dashboard-card {
     min-width: 140px;
@@ -24,16 +27,19 @@
     position: relative;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     height: 100%;
+
     .card-label {
       font-size: 15px;
       font-weight: 600;
       margin-bottom: 2px;
     }
+
     .card-value {
       font-size: 14px;
       font-weight: bold;
       margin-bottom: 2px;
     }
+
     .card-icon {
       position: absolute;
       right: 12px;
@@ -41,24 +47,30 @@
       font-size: 28px;
       opacity: 0.7;
     }
+
     // &.registrations {
     //   background: #e1f0d1;
     // }
     &.admissions {
       background: #d9edf4;
     }
+
     &.admissions-split {
       background: #f2d28a;
     }
+
     &.bills {
       background: #c9c79c;
     }
+
     &.discharge {
       background: #a5d1c7;
     }
+
     &.opipconvert {
       background: #f7f1a3;
     }
+
     // &.waiting {
     //   background: #e9b8d8;
     // }
@@ -75,7 +87,34 @@
 }
 
 .optoip-action span {
-  font-size: 14px;     /* adjust to match icon */
-  margin-left: 4px;    /* space between icon & O */
-  font-weight: bold;   /* make it visible */
+  font-size: 14px;
+  /* adjust to match icon */
+  margin-left: 4px;
+  /* space between icon & O */
+  font-weight: bold;
+  /* make it visible */
+}
+
+:host ::ng-deep {
+
+  /* Force compact heights for all form fields in the dialog */
+  .resize-form-fields {
+    .mat-form-field-wrapper {
+      padding-bottom: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .mat-form-field-infix {
+      padding: 6px 0 !important;
+      border-top: 0 !important;
+    }
+
+    .mat-form-field-label-wrapper {
+      top: -1.2em;
+    }
+
+    .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      transform: translateY(-1.1em) scale(0.75);
+    }
+  }
 }

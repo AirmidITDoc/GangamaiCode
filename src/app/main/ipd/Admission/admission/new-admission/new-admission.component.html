@@ -121,7 +121,7 @@
 
 </ng-template>
 
-<div class="modal-wrapper grid-container">
+<div class="modal-wrapper grid-container resize-form-fields padding-fix">
 
     <!-- Modal header -->
     <div class="modal-header accent">
@@ -219,7 +219,7 @@
                         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
                             <mat-tab label="Personal Detail">
                                 <div class="detail-container">
-                                    <form [formGroup]="personalFormGroup">
+                                    <form [formGroup]="personalFormGroup" class="input-error-hidden">
                                         <input type="hidden" name="RegId" formControlName="RegId"
                                             [(ngModel)]="registerObj.regId">
                                         <mat-card>
@@ -432,9 +432,9 @@
                                                     </div> -->
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox label="Email" 
-                                                        formControlName="emailId" [formGroup]="personalFormGroup" type="email"
-                                                           [value]="registerObj.emailId" 
+                                                        <airmid-textbox label="Email" formControlName="emailId"
+                                                            [formGroup]="personalFormGroup" type="email"
+                                                            [value]="registerObj.emailId"
                                                             [validations]="getValidationMessages().EmailId"></airmid-textbox>
                                                     </div>
 
@@ -451,8 +451,8 @@
                             </mat-tab>
 
                             <mat-tab label="Emergency Details">
-                                <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
-                                    <form [formGroup]="personalFormGroup" class="mat-form-field-100">
+                                <div style="padding: 4px 12px; overflow: hidden; width: 100%; box-sizing: border-box">
+                                    <form [formGroup]="personalFormGroup" class="mat-form-field-100 input-error-hidden">
                                         <div fxLayout="row wrap" fxLayoutGap="10px grid">
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Emergency Contact Person Name"
@@ -507,8 +507,8 @@
                             </mat-tab>
 
                             <mat-tab label="Medical Tourism">
-                                <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
-                                    <form [formGroup]="personalFormGroup" class="mat-form-field-100">
+                                <div style="padding: 4px 12px; overflow: hidden; width: 100%; box-sizing: border-box">
+                                    <form [formGroup]="personalFormGroup" class="mat-form-field-100 input-error-hidden">
                                         <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Passport Number"
@@ -737,7 +737,7 @@
                                     <div class="detail-header">
                                         Hospital Details
                                     </div>
-                                    <form [formGroup]="admissionFormGroup">
+                                    <form [formGroup]="admissionFormGroup" class="input-error-hidden">
 
                                         <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
@@ -835,7 +835,7 @@
 
                                             <ng-container *ngIf="isCompanySelected">
                                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                                                    <airmid-textbox label="Membership No" formControlName="policyNo" 
+                                                    <airmid-textbox label="Membership No" formControlName="policyNo"
                                                         [validations]="getValidationMessages().policyNumber"
                                                         [formGroup]="policyFormGroup">
                                                     </airmid-textbox>
@@ -1032,8 +1032,8 @@
                             IsCharity
                         </mat-checkbox>
 
-                        <mat-checkbox aria-label="isReimbursement" formControlName="isReimbursement" style="margin-left:30px;"
-                            (change)="onIsReimbursementChange($event)">
+                        <mat-checkbox aria-label="isReimbursement" formControlName="isReimbursement"
+                            style="margin-left:30px;" (change)="onIsReimbursementChange($event)">
                             IsReimbursement
                         </mat-checkbox>
 
