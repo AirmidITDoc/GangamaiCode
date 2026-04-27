@@ -1,0 +1,154 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar resize-form-fields padding-fix"
+    style="height: 100%;" dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Received Indent List
+            </span>
+        </div>
+
+        <!-- <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">New Indent
+            </button>
+        </div> -->
+    </mat-toolbar>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+            <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="Is Closed"
+                        style="color: rgb(41, 129, 12);">close</mat-icon>
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="Pending"
+                        style="color: brown;">Pending</mat-icon>
+                </div>
+            </ng-template>
+
+
+            <ng-template #actionsTemplate2 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon *ngIf="element.priority=='True'" matTooltip="Urgent" style="color: red;">report
+                    </mat-icon>
+                    <mat-icon *ngIf="element.priority=='False'" matTooltip="Normal"
+                        style="color: rgb(19, 126, 13);">report
+                    </mat-icon>
+
+                </div>
+            </ng-template>
+
+            <ng-template #isverifyTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: green;">check_circle</mat-icon>
+                    <mat-icon *ngIf="!element.isverify=='1';" matTooltip="Is Verify"
+                        style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+                </div>
+            </ng-template>
+
+
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <!-- <button mat-icon-button matTooltip="Edit Indent" (click)="OnEdit(element)"
+                        *ngIf="!element.isverify">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Can't Edit Indent" *ngIf="element.isverify">
+                        <mat-icon>signal_cellular_no_sim</mat-icon>
+                    </button> -->
+
+                    <button *ngIf="!element.isInchargeVerify && IsIndentVerify" mat-icon-button
+                        (click)="onVerify(element)">
+                        <mat-icon class="disabled-icon" matTooltip="verify Menu">verified_user</mat-icon>
+                    </button>
+
+                    <button *ngIf="element.isInchargeVerify" mat-icon-button>
+                        <mat-icon class="disabled-icon" matTooltip="verified"
+                            style="color: green;">check_circle</mat-icon>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Print Indent" (click)="viewgetIndentReportPdf(element)">
+                        <mat-icon> print</mat-icon>
+                    </button>
+
+                    <!-- <button mat-icon-button matTooltip="Delete Indent" (click)="deleteIndent(element)" *ngIf="!element.isverify" >
+                        <mat-icon style="color: brown;"> delete</mat-icon>
+                    </button> -->
+
+                </div>
+            </ng-template>
+
+            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
+
+                <ng-container filters>
+                    <form [formGroup]="IndentSearchGroup" fxLayout="column">
+
+                        <airmid-datepicker [formGroup]="IndentSearchGroup" [isRangePicker]="true"
+                            formStartControlName="startdate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[2].fieldValue"
+                            [(toValue)]="gridConfig.filters[3].fieldValue">
+                        </airmid-datepicker>
+
+                        <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
+                            (selectionChange)="ListView1($event)" [formGroup]="IndentSearchGroup"
+                            [(ngModel)]="gridConfig.filters[1].fieldValue" [mode]="autocompletestore">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="From Store Name" formControlName="FromStoreId"
+                            (selectionChange)="ListView($event)" [formGroup]="IndentSearchGroup"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue" [mode]="autocompletestore">
+                        </airmid-dropdown>
+
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <!-- <div fxFlex fxLayout="row"> -->
+                            <div fxLayout="row" class="gap-4 ">
+                                <span
+                                    style="font-weight: bold;color: rgb(4, 44, 84);padding: 5;font-size: large;">Status
+                                    :</span>
+                                <mat-slide-toggle name="Status" (change)="onChangeFirst($event)"
+                                    formControlName="Closed" [formGroup]="IndentSearchGroup">
+                                    Pending / Close
+                                </mat-slide-toggle>
+                            </div>
+                            <div fxLayout="row" class="gap-4 ">
+                                <span
+                                    style="font-weight: bold;color: rgb(4, 44, 84);padding: 5;font-size: large;">Verify
+                                    :</span>
+                                <mat-slide-toggle name="Verify" (change)="onChangeFirst($event)"
+                                    formControlName="Verify" [formGroup]="IndentSearchGroup">
+                                    Verify
+                                </mat-slide-toggle>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </form>
+
+                </ng-container>
+
+
+            </airmid-table>
+        </div>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+            <ng-template #detailactionsTemplate let-element>
+                <!-- <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isclosed=='1';" matTooltip="IsClosed" style="color: green;">done_all
+                    </mat-icon>
+                    <mat-icon *ngIf="!element.isclosed=='1';" matTooltip="IsPending" style="color: rgb(128, 0, 30);">close
+                    </mat-icon>
+                </div> -->
+            </ng-template>
+            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+            </airmid-table>
+        </div>
+    </div>
+
+</div>

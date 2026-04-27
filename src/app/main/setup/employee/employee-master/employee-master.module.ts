@@ -31,60 +31,60 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { CompanyEmployMasterComponent } from './company-employ-master.component';
-import { CompanyEmployMasterService } from './company-employ-master.service';
-import { NewcompanyEmployComponent } from './newcompany-employ/newcompany-employ.component';
+import { EmployeeMasterComponent } from './employee-master.component';
+import { EmployeeMasterService } from './employee-master.service';
+import { NewEmployeeMasterComponent } from './new-employee-master/new-employee-master.component';
 
 const routes: Routes = [
-    {
-        path: '**',
-        component: CompanyEmployMasterComponent,
-    },
+  {
+    path: '**',
+    component: EmployeeMasterComponent,
+  },
 ];
 
 @NgModule({
-    declarations: [
-        CompanyEmployMasterComponent,
-        NewcompanyEmployComponent
-    ],
-    imports: [
-        RouterModule.forChild(routes),
-        //  MatTableExporterModule,
-        MatChipsModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatRippleModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatSnackBarModule,
-        FuseSharedModule,
-        FuseConfirmDialogModule,
-        FuseSidebarModule,
-        CommonModule,
-        MatExpansionModule,
-        MatCardModule,
-        MatSlideToggleModule,
-        MatListModule,
-        MatStepperModule,
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-        SharedModule,
-        NgxMatSelectSearchModule,
-        MatButtonToggleModule,
-        MatDialogModule,
-        MatTabsModule
-    ],
-    providers: [CompanyEmployMasterService,
-        DatePipe
-    ]
+  declarations: [
+    EmployeeMasterComponent,
+    NewEmployeeMasterComponent
+  ],
+  imports: [
+    RouterModule.forChild(routes),
+    //  MatTableExporterModule,
+    MatChipsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatMenuModule,
+    MatRippleModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    FuseSharedModule,
+    FuseConfirmDialogModule,
+    FuseSidebarModule,
+    CommonModule,
+    MatExpansionModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatListModule,
+    MatStepperModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+    NgxMatSelectSearchModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatTabsModule
+  ],
+  providers: [EmployeeMasterService,
+    DatePipe
+  ]
 })
-export class CompanyEmployMasterModule { }
+export class EmployeeMasterModule { }

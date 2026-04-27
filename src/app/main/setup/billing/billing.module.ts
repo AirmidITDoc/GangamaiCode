@@ -88,13 +88,6 @@ const appRoutes: Routes = [
                 (m) => m.CreditReasonMasterModule
             ),
     },
-    {
-        path: "company-representative",
-        loadChildren: () =>
-            import("./company-employ-master/company-employ-master.module").then(
-                (m) => m.CompanyEmployMasterModule
-            ),
-    },
 ];
 
 @NgModule({

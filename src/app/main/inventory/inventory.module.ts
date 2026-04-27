@@ -57,11 +57,11 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./item-movemnent/item-movemnent.module").then((m) => m.ItemMovemnentModule),
     },
-    // {
-    //     path: "issuefromdepartment",
-    //     loadChildren: () =>
-    //         import("./issueto-department/issueto-department.module").then((m) => m.IssuetoDepartmentModule),
-    // },
+    {
+        path: "indent-verify",
+        loadChildren: () =>
+            import("./indent-verify/indent-verify.module").then((m) => m.IndentVerifyModule),
+    },
     //   {
     //       path: "gstadjustment",
     //       loadChildren: () =>
@@ -70,9 +70,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [
-
-    ],
+    declarations: [],
     imports: [
         RouterModule.forChild(appRoutes),
     ]

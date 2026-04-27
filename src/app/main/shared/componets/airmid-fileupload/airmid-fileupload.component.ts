@@ -217,5 +217,5 @@ export enum PageNames {
     NONE = "NONE", DOCTOR = "Doctor", DOCTOR_SIGNATURE = "Doctor_Signature",
     PATIENT = "Patient_Files", PATIENT_SIGNATURE = "Patient_Signature", PATIENT_PHOTO = "Patient_Photo", PATIENT_PATHFILES="Patient_PathFiles",
     HOSPITAL_LOGO="Logo", USER_SIGNATURE = "User_Signature",
-    LABPATIENT = "LabPatient_Files",NABH="NABH",Img_Upload="Img_Upload"
+    LABPATIENT = "LabPatient_Files",NABH="NABH",Img_Upload="Img_Upload",EMP_FILES="Emp_Files",EMP_PHOTO='Employee_Photo'
 }

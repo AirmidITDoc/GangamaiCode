@@ -164,4 +164,9 @@ export enum permissionCodes {
     TemplateDescription='TemplateDescription',
     ReportConfig='ReportConfig',
     BarcodeConfig='BarcodeConfig',
+
+    //    Employee master
+    EmployeeMaster = 'EmployeeMaster',
+    EmployeeDepartment = 'EmployeeDepartment',
+    EmployeeDesignation = 'EmployeeDesignation'
 }

@@ -6,17 +6,40 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Company Repersentative List
+                    Employees Master List
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onNew()">New Repersentative
+            <button mat-raised-button (click)="onNew()">New Employee
             </button>
 
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <!-- Button 1: Edit Patient Registration  -->
+                <button mat-icon-button matTooltip="Edit Employee Detail" (click)="onNew(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+
+                <!-- Button 2: Print Registration  -->
+                <button mat-icon-button matTooltip="Deactive" (click)="onCancel(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+
+                <airmid-fileupload-icon [refId]="element.executiveId" [refType]="page" [multiple]="true"
+                    [title]="'Employee Document'"></airmid-fileupload-icon>
+
+                <button mat-icon-button matTooltip="Image Upload" (click)="onFiles1(element)">
+                    <img width="25" height="25" src="assets/images/logos/imgUpload.png">
+                </button>
+
+            </div>
+        </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
