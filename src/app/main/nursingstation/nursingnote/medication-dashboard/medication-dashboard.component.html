@@ -130,9 +130,9 @@
             <!-- Calendar Toolbar -->
             <div class="cal-toolbar">
                 <div class="cal-toolbar-left">
-                    <button class="nav-btn" (click)="viewDate = viewDate ">‹ Prev</button>
-                    <button class="today-btn" (click)="viewDate = currentTime">Today</button>
-                    <button class="nav-btn" (click)="viewDate = viewDate ">Next ›</button>
+                    <button class="nav-btn" (click)="onPrevDate()">‹ Prev</button>
+                    <button class="today-btn" (click)="onTodayDate()">Today</button>
+                    <button class="nav-btn" (click)="onNextDate()">Next ›</button>
                 </div>
                 <div class="cal-toolbar-title">
                     {{ viewDate | date:'EEEE, d MMMM yyyy' }}

@@ -130,6 +130,22 @@ export class MedicationDashboardComponent implements OnInit, OnDestroy {
             this.buildCalendarEvents();
         });
     }
+    onNextDate() {
+        const next = new Date(this.viewDate);
+        next.setDate(next.getDate() + 1);
+        this.viewDate = next;
+        this.getSchedules();
+    }
+    onPrevDate() {
+        const prev = new Date(this.viewDate);
+        prev.setDate(prev.getDate() - 1);
+        this.viewDate = prev;
+        this.getSchedules();
+    }
+    onTodayDate() {
+        this.viewDate = new Date();
+        this.getSchedules();
+    }
 
     /* ── Map doses → CalendarEvents ────────────────────────────── */
     buildCalendarEvents(): void {
