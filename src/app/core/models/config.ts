@@ -117,7 +117,7 @@ export class ConfigSettingParams {
     IsMaterialAcceptAgainstIndent: any
     IsMaterialAccept: any;
     IsOPBillProceed: any;
-  
+  IsSalesDiscUpdate: any;
 
     /**
         * Constructor
@@ -243,7 +243,10 @@ export class ConfigSettingParams {
         this.IsMaterialAcceptAgainstIndent = ConfigSettingParams.IsMaterialAcceptAgainstIndent;
         this.IsMaterialAccept = ConfigSettingParams.IsMaterialAccept;
         this.IsOPBillProceed = ConfigSettingParams.IsOPBillProceed;
+        this.IsSalesDiscUpdate = ConfigSettingParams.IsSalesDiscUpdate;
 
+
+        
            }
 
 }
