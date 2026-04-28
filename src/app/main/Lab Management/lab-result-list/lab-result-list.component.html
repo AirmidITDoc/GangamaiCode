@@ -183,8 +183,11 @@
 
                                             <!-- Age | Gender -->
                                             <ng-container matColumnDef="genderName">
-                                                <th mat-header-cell *matHeaderCellDef> Age | Gender </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.genderName}} </td>
+                                                <th mat-header-cell *matHeaderCellDef> Gender | Age </th>
+                                                <!-- <td mat-cell *matCellDef="let element"> {{element.genderName}} </td> -->
+                                                <td mat-cell *matCellDef="let element"> {{ element.genderName }} • {{
+                                                    element.ageYear }}y {{ element.ageMonth }}m {{ element.ageDay }}d
+                                                </td>
                                             </ng-container>
 
                                             <!-- Unit Name -->

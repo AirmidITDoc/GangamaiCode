@@ -163,31 +163,21 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div fxLayout="row wrap" fxLayoutGap="10px">
-                                        <div fxFlex="50%" fxFlex.xs="100%" style="border: 1px solid red;">
-                                            <mat-checkbox formControlName="isDoctorType" (change)="chkdoctorApp($event)"
-                                                style="padding: 10px;">IsDoctor
+                                    <div fxLayout="row" fxLayoutGap="10px" *ngIf="!removeEmpDiv">
+
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="34%" class="gap-4">
+                                            <mat-checkbox formControlName="isEmployee" (change)="chkEmpApp($event)"
+                                                style="padding: 10px;">IsEmployee
                                             </mat-checkbox>&nbsp;
 
-                                            <airmid-dropdown label="Doctor Name" formControlName="doctorId" fxFlex="35%"
-                                                [formGroup]="myuserApprovalform"
-                                                [validations]="getValidationMessages().doctorId"
-                                                [mode]="autocompleteModedoctor" *ngIf="docflag">
-                                            </airmid-dropdown>
+                                            <airmid-dropdown label="Employee Name" formControlName="employeId" fxFlex="50%"
+                                                [formGroup]="myuserApprovalform" ApiUrl="CompanyEmployeInfo/get-employe"
+                                                ValueField="executiveId" TextField="fullName" *ngIf="empflag"
+                                                (selectionChange)="getSelectedObjEmp($event)"></airmid-dropdown>
+
                                         </div>
 
-                                        <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                            <mat-checkbox formControlName="isDiscApply" (change)="chkDiscLimitApp($event)"
-                                                style="padding: 10px;">IsDiscountLimit
-                                            </mat-checkbox>&nbsp;
-
-                                            <mat-form-field appearance="outline" fxFlex *ngIf="DisclimitFlag">
-                                                <mat-label>Discount %</mat-label>
-                                                <input matAutocompletePosition="below" type="text" matInput
-                                                    formControlName="discApplyPer">
-                                            </mat-form-field>
-                                        </div>
-                                    </div> -->
+                                    </div>
 
                                     <!-- <mat-divider [inset]="false"></mat-divider>
 
@@ -422,8 +412,8 @@
                                                     ">
                                                     <airmid-dropdown label="Executive Name" formControlName="employeId"
                                                         [formGroup]="myuserApprovalform" fxFlex="50%"
-                                                        ApiUrl="CompanyEmployeInfo/get-Representative" ValueField="executiveId"
-                                                        TextField="fullName"
+                                                        ApiUrl="CompanyEmployeInfo/get-Representative"
+                                                        ValueField="executiveId" TextField="fullName"
                                                         (selectionChange)="getSelectedObjExecutive(element, $event)">
                                                     </airmid-dropdown>
                                                 </ng-container>

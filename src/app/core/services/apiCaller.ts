@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, catchError  } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { apiResponse } from "../models/apiResponse";
 import { AppConfigService } from "./api-config.service";
@@ -39,33 +39,74 @@ export class ApiCaller {
             }));
     }
 
-    PostData(url: string, data: any) {
-        return (this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
-            if (data.statusCode == 200) {
-                if (data.message)
-                    this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
-                return data?.data || data;
-            }
-            else {
+    // PostData(url: string, data: any) {
+    //     return (this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(map((data: apiResponse) => {
+    //         if (data.statusCode == 200) {
+    //             if (data.message)
+    //                 this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
+    //             return data?.data || data;
+    //         }
+    //         else {
 
-                if (data.message == 'No data found.') {
-                    Swal.fire("Data Not Find .....")
+    //             if (data.message == 'No data found.') {
+    //                 Swal.fire("Data Not Find .....")
+    //             }
+    //             else {
+    //                 this.toastr.error(data.message, 'Error !', {
+    //                     toastClass: 'tostr-tost custom-toast-error',
+    //                 });
+    //             }
+    //             return of(null); // Avoid returning anything invalid
+    //         }
+    //         // else {
+    //         //     this.toastr.error(data.message, 'Error !', {
+    //         //         toastClass: 'tostr-tost custom-toast-error',
+    //         //     });
+    //         //     return of(null); // Avoid returning anything invalid
+    //         // }
+    //     })));
+    // }
+
+    PostData(url: string, data: any) {
+        return this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, data).pipe(
+
+            map((res: apiResponse) => {
+                if (res.statusCode === 200) {
+                    if (res.message) {
+                        this.toastr.success(res.message, 'Success!', {
+                            toastClass: 'tostr-tost custom-toast-success',
+                        });
+                    }
+                    return res?.data || res;
+                }
+                return null;
+            }),
+
+            // ✅ THIS handles 400 / 500 errors
+            catchError((error) => {
+                console.log("API ERROR:", error);
+
+                const message = error?.error?.message || '';
+
+                if (message === 'No data found.') {
+                    Swal.fire("Data Not Found.....");
+                }
+                else if (message === 'Order already present.') {
+                    this.toastr.warning(message, 'Warning!', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
                 }
                 else {
-                    this.toastr.error(data.message, 'Error !', {
+                    this.toastr.error(message || 'Something went wrong!', 'Error!', {
                         toastClass: 'tostr-tost custom-toast-error',
                     });
                 }
-                return of(null); // Avoid returning anything invalid
-            }
-            // else {
-            //     this.toastr.error(data.message, 'Error !', {
-            //         toastClass: 'tostr-tost custom-toast-error',
-            //     });
-            //     return of(null); // Avoid returning anything invalid
-            // }
-        })));
+
+                return of(null); // continue observable safely
+            })
+        );
     }
+
     PostFromData(url: string, data: any) {
         const formData = this.toFormData(data);
         return (this._httpClient.post<any>(`${this.config.apiBaseUrl}${url}`, formData).pipe(map((data: apiResponse) => {

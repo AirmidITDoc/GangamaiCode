@@ -50,6 +50,7 @@ export class NUserComponent implements OnInit {
     storename = 0;
     webrolename = 0;
     hidePassword = true;
+    removeEmpDiv:boolean=false;
 
     autocompleteModeUnitName: string = "Hospital";
     autocompleteModeRoleName: string = "Role";
@@ -98,6 +99,7 @@ export class NUserComponent implements OnInit {
     ngOnInit(): void {
 
         if ((this.data?.userId ?? 0) > 0) {
+            this.removeEmpDiv=true
             this.myuserApprovalform.patchValue(this.data);
 
             console.log("data:", this.data)
@@ -369,7 +371,8 @@ export class NUserComponent implements OnInit {
             // multipleUnitId: [[], [Validators.required]],
             // multipleStoreId: [[], [Validators.required]],
             IsPharmacyBalClearnace: false,
-            employeId: [0]
+            employeId: [0],
+            isEmployee: false
 
         });
     }
@@ -487,6 +490,27 @@ export class NUserComponent implements OnInit {
         }
     }
 
+    empflag: boolean = false;
+    chkEmpApp(event) {
+        if (this.myuserApprovalform.get('isEmployee').value == true) {
+            this.empflag = true
+        } else {
+            this.empflag = false
+            this.myuserApprovalform.get('employeId').setValue(0)
+            // this.myuserApprovalform.reset();
+        }
+    }
+
+    getSelectedObjEmp(obj) {
+        this._CreateUserService.getEmpById(obj.executiveId).subscribe((response) => {
+            console.log("Emp Detail:", response)
+            this.myuserApprovalform.patchValue({
+                ...response,
+                mailId: response.emailId
+            });
+        });
+    }
+
     onSubmitApproval() {
 
         if (this.docflag == true) {
@@ -527,7 +551,7 @@ export class NUserComponent implements OnInit {
                     this.LoginStoreDetailsArray.push(this.createLoginStoreDetails(item))
                 })
             }
-            // this.myuserApprovalform1.removeControl('multipleUnitId')
+            this.myuserApprovalform1.removeControl('isEmployee')
             this.myuserApprovalform.removeControl('employeId')
             this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
             debugger

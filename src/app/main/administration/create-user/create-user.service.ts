@@ -77,6 +77,8 @@ export class CreateUserService {
     public getpasswwordChange(data) {
         return this._httpClient.PostData("LoginManager/updatepassword", data)
     }
-
+    public getEmpById(ID) {
+        return this._httpClient.GetData("CompanyEmployeInfo/" + ID)
+    }
 
 }
