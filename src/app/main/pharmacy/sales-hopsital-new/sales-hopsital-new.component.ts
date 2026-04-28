@@ -15,7 +15,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { parseInt } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
@@ -1191,7 +1191,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     }
     onSave(event) {
-        debugger
+        
         const formValue = this.ItemSubform.value
         if (this.ItemSubform.get('opIpType').value == '2') {
             if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
@@ -1236,7 +1236,7 @@ export class SalesHospitalNewComponent implements OnInit {
         });
     }
     BillSave(event) {
-        debugger
+        
         const formattedTime = this.datePipe.transform(new Date(), 'HH:mm');
         const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
         const FormattedDateTime = formattedDate + ' ' + formattedTime
@@ -1522,7 +1522,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.calculateCellNetAmount(item);
     }
     getCellCalculation(item: IndentList) {
-        debugger
+        
         let qty = +item?.Qty;
         if (!qty) {
             qty = 0;
@@ -1711,7 +1711,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 return;
             }
         }
-        debugger
+        
         this.PharmaSalesDraftForm.get('salesDraft.date').setValue(formattedDate)
         this.PharmaSalesDraftForm.get('salesDraft.time').setValue(FormattedDateTime)
         this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue?.opIpType)
@@ -1774,11 +1774,11 @@ export class SalesHospitalNewComponent implements OnInit {
     draftpatientlist: any = [];
     draftextMobilenolist: any = [];
     onAddDraftList(contact) {
-        debugger
+        
         console.log(contact)
         this.saveflag = false;
         this.DraftID = contact.dsalesId;
-        this.saleSelectedDatasource.data = [];
+        // this.saleSelectedDatasource.data = [];
         this.Itemchargeslist = [];
         this.draftpatientlist = [];
 
@@ -1863,72 +1863,146 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         this._salesService.getDraftItemDetailsList(vdata).subscribe((response) => {
             this.tempDatasource.data = response.data as any;
-            //  if (this.tempDatasource.data.length >= 1) {
+          
+            // if (this.tempDatasource.data.length >= 1) {
+            //     
             //     this.tempDatasource.data.forEach((element) => {
-            //         this.DraftQty = element.qtyPerDay;
-            //         this.onAddDraftListTosale(element, this.DraftQty);
+            //         console.log(element)
+            //         const draftQty = element.qtyPerDay; // use local variable
+            //         this.onAddDraftListTosale(element, draftQty); // safe per call
             //     });
             // }
-            if (this.tempDatasource.data.length >= 1) {
-                this.tempDatasource.data.forEach((element) => {
-                    const draftQty = element.qtyPerDay; // use local variable
-                    this.onAddDraftListTosale(element, draftQty); // safe per call
-                });
+
+             if (this.tempDatasource.data.length >= 1) {
+                setTimeout(async () => {
+                    for (const element of this.tempDatasource.data) {
+                        ;
+                        console.log(element);
+
+                        const draftQty = element.qtyPerDay;
+                        await this.onAddDraftListTosale(element, draftQty);
+                    }
+                }, 10);
             }
         });
     }
-    onAddDraftListTosale(contact, DraftQty) {
-        console.log(contact)
+//     onAddDraftListTosale(contact, DraftQty) {
+//         console.log(contact)
+//         this.QtyBalchk = 0;
+// 
+//         const m_data = {
+//             "first": 0,
+//             "rows": 9999,
+//             "sortField": "ItemId",
+//             "sortOrder": 0,
+//             "filters": [
+//                 { "fieldName": "ItemId", "fieldValue": String(contact.itemId), "opType": "Contains" },
+//                 { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
+//             ],
+//             "exportType": "JSON",
+//             "columns": [{ "data": "string", "name": "string" }]
+//         };
+//         this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+//             console.log(" Temp Charges list" + response)
+//             const tempChargesList = response?.data || [];
+//             let qtyBalChk = 0;
+//             if (tempChargesList.length == 0) {
+//                 Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
+//             } else if (tempChargesList.length > 0) {
+//                 this.Itemchargeslist = [];
+//                 tempChargesList.forEach((element) => {
+//                     if (contact.itemId != element.itemId) {
+//                         qtyBalChk = 0;
+//                     }
+//                     if (qtyBalChk != 1) {
+//                         if (DraftQty <= element.balanceQty) {
+//                             qtyBalChk = 1;
+//                             this.getFinalCalculation(element, DraftQty);
+//                         } else {
+//                             Swal.fire('Balance Qty is :', element.balanceQty);
+//                             qtyBalChk = 0;
+//                             Swal.fire('Balance Qty is Less than Selected Item Qty for Item :' + element.itemId + 'Balance Qty:', element.balanceQty);
+//                         }
+//                     }
+//                 });
+//             }
+//             this.QtyBalchk = qtyBalChk
+//         });
+
+
+//     }
+   
+    async onAddDraftListTosale(contact, DraftQty): Promise<void> {
+        console.log(contact);
+
         this.QtyBalchk = 0;
 
         const m_data = {
-            "first": 0,
-            "rows": 9999,
-            "sortField": "ItemId",
-            "sortOrder": 0,
-            "filters": [
-                { "fieldName": "ItemId", "fieldValue": String(contact.itemId), "opType": "Contains" },
-                { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
+            first: 0,
+            rows: 999,
+            sortField: "ItemId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "ItemId", fieldValue: String(contact.itemId), opType: "Contains" },
+                { fieldName: "StoreId", fieldValue: String(this._loggedService.currentUserValue.user.storeId), opType: "Contains" },
+                
             ],
-            "exportType": "JSON",
-            "columns": [{ "data": "string", "name": "string" }]
+            exportType: "JSON",
+            columns: [{ data: "string", name: "string" }]
         };
-        this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
-            console.log(" Temp Charges list" + response)
+
+        try {
+            const response: any = await firstValueFrom(
+                this._salesService.getDraftBillItemBalQty(m_data)
+            );
+
+            console.log(response);
+
             const tempChargesList = response?.data || [];
             let qtyBalChk = 0;
-            if (tempChargesList.length == 0) {
-                Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
-            } else if (tempChargesList.length > 0) {
-                this.Itemchargeslist = [];
-                tempChargesList.forEach((element) => {
-                    if (contact.itemId != element.itemId) {
+
+            if (tempChargesList.length === 0) {
+                await Swal.fire(contact.itemId + ' : Item Stock is Not Available');
+            } else {
+                for (const element of tempChargesList) {
+
+                    if (contact.itemId !== element.itemId) {
                         qtyBalChk = 0;
                     }
-                    if (qtyBalChk != 1) {
+
+                    if (qtyBalChk !== 1) {
                         if (DraftQty <= element.balanceQty) {
                             qtyBalChk = 1;
-                            this.getFinalCalculation(element, DraftQty);
+
+                            // IMPORTANT: if this is async → await it
+                            await this.getFinalCalculation(element, DraftQty);
+
                         } else {
-                            Swal.fire('Balance Qty is :', element.balanceQty);
+                            await Swal.fire('Balance Qty is : ' + element.balanceQty);
                             qtyBalChk = 0;
-                            Swal.fire('Balance Qty is Less than Selected Item Qty for Item :' + element.itemId + 'Balance Qty:', element.balanceQty);
+
+                            await Swal.fire(
+                                'Balance Qty is Less than Selected Item Qty for Item : '
+                                + element.itemId + ' Balance Qty: ' + element.balanceQty
+                            );
                         }
                     }
-                });
+                }
             }
-            this.QtyBalchk = qtyBalChk
-        });
 
+            this.QtyBalchk = qtyBalChk;
 
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
     vExpDate: any;
     getFinalCalculation(contact, DraftQty) {
 
         if (DraftQty && contact.unitMrp) {
             this.saleSelectedDatasource.data = [];
-            let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
-                v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0', MRPRateTotal = '0';
+            let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0', CGSTAmt = '0', SGSTAmt = '0',
+                v_marginamt = '0', GSTAmount = '0', IGSTAmt = '0', NetAmt = '0', MRPRateTotal = '0';
 
             TotalMRP = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
             LandedRateandedTotal = (parseInt(DraftQty) * contact.landedRate).toFixed(2);
@@ -1946,10 +2020,13 @@ export class SalesHospitalNewComponent implements OnInit {
             // NetAmt = (tTotalMRP - this.DiscAmt).toFixed(2);
             // }  
             if (contact?.batchExpDate) {
-                const day = +contact?.batchExpDate.substring(0, 2);
-                const month = +contact?.batchExpDate.substring(3, 5);
-                const year = +contact?.batchExpDate.substring(6, 10);
-                this.vExpDate = `${year}-${this.pad(month)}-${day}`;
+
+                debugger
+                this.vExpDate=this.datePipe.transform(contact.batchExpDate,'yyyy-MM-dd')
+                // const day = +contact?.batchExpDate.substring(0, 2);
+                // const month = +contact?.batchExpDate.substring(3, 5);
+                // const year = +contact?.batchExpDate.substring(6, 10);
+                // this.vExpDate = `${year}-${this.pad(month)}-${day}`;
             }
 
             if (this.saleSelectedDatasource.data.length > 0) {
@@ -2053,7 +2130,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 this.OP_IP_Id = result[0]?.AdmissionID;
                 this.DoctorName = result[0]?.DoctorName;
                 this.ItemSubform.get('regId').setValue(result[0]?.RegId);
-                debugger
+                
                 this.saveflag = false;
                 if (result[0]?.IPMedID > 0) {
                     this.IPDNocheck = true;
@@ -2087,7 +2164,7 @@ export class SalesHospitalNewComponent implements OnInit {
                         "columns": [{ "data": "string", "name": "string" }]
                     };
                     this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
-                        debugger
+                        
                         this.Tempchargeslist = response.data as any;
                         if (this.Tempchargeslist.length == 0) {
                             Swal.fire({
@@ -2725,7 +2802,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
     UserDicPerLimit: any = 0;
     getAccessDetail() {
-        // debugger
+        // 
         const SelectQuery = {
             "first": 0,
             "rows": 999,
