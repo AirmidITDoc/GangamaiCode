@@ -344,7 +344,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             this.userFormGroup.updateValueAndValidity();
         }
         this.PatientInformRest();
-        this.getdata();
+       // this.getdata();
     }
     getSelectedObjRegIP(obj) {
         debugger
@@ -655,7 +655,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             this.MutliSettlemForm.updateValueAndValidity();
         }
         this.PatientInformRest();
-        this.getdataMultiple();
+       // this.getdataMultiple();
 
     }
     getSelectedObjIPMultiple(obj) {

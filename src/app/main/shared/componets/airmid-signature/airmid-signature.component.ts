@@ -75,7 +75,7 @@ export class AirmidSignatureComponent implements OnInit {
         if (this.data) {
             this.refId = this.data.refId;
             this.refType = this.data.refType;
-            this.docName=this.data.docName;
+            this.docName = this.data.docName;
         }
         if (this.refId > 0) {
             this._service.GetData("Files/get-signature?RefId=" + this.refId + "&RefType=" + this.refType).subscribe((data) => {
@@ -133,11 +133,59 @@ export class AirmidSignatureComponent implements OnInit {
     // };
     config: any;
 
+    isDeleted: boolean = false;
+    // removeFile() {
+    //     // Clear uploaded image
+    //     this.sanitizeImagePreview = null;
+    //     this.isDeleted = true; 
+
+    //     // Clear signature pad
+    //     if (this.signaturePad) {
+    //         this.signaturePad.clear();
+    //     }
+
+    //     // Reset toggle (optional)
+    //     this.isFileUpload = true;
+
+    //     // Optional: reset object
+    //     this.objFile = null;
+    // }
+
+    removeFile() {
+        // If already loaded from backend
+        if (this.sanitizeImagePreview) {
+            this.objFile = {
+                srNo: 1,
+                id: 0,
+                docName: this.docName + '_File',
+                docSavedName: '', // important flag
+                Document: null,
+                isDelete: true,
+                base64: this.sanitizeImagePreview,
+                refId: this.refId,
+                refType: this.refType
+            };
+        }
+
+        this.sanitizeImagePreview = null;
+
+        if (this.signaturePad) {
+            this.signaturePad.clear();
+        }
+    }
+
     onClose() {
         this.dialogRef.close();
     }
     OnSubmit() {
         debugger
+        if (this.objFile?.isDelete) {
+            this._service.PostFromData("Files/save-signature", { objSignature: this.objFile })
+                .subscribe(() => {
+                    this.dialogRef.close(null);
+                });
+            return;
+        }
         if (this.isFileUpload) {
             this.objFile = {
                 srNo: 1,
@@ -152,10 +200,10 @@ export class AirmidSignatureComponent implements OnInit {
             }
         }
         else {
-            if (this.signaturePad.isEmpty()) {
-                alert('Please provide a signature first.');
-                return;
-            }
+            // if (this.signaturePad.isEmpty()) {
+            //     alert('Please provide a signature first.');
+            //     return;
+            // }
             this.objFile = {
                 srNo: 1,
                 id: 0,
