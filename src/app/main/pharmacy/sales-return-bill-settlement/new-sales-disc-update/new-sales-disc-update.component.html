@@ -1,0 +1,136 @@
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+    <div class="modal-header">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
+                    Discount After Final Bill
+                </span>
+            </div>
+
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-body content">
+        <div fxLayout="column" class="gap-15 h-100-p">
+            <div class="modal-card-container">
+              
+
+                 <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                <div fxFlex.gt-sm="100%" fxFlex>
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                        <div class="patient-info-sales">
+                            <div class="patient-info-title border-bottom pb-1 mb-1">
+                                <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                            </div>
+                            <div class="Ipd-patient-info w-100-p">
+                                <app-patient-information [uhidNo]="PatientObj?.regNo" [patientName]="patientName" [doctorName]="" [departmentName]=""
+                                    [doa]="" [ipdNo]="PatientObj?.ipdNo"
+                                    [ageString]=""
+                                    [refDocName]=""
+                                    [wardBedName]=""
+                                    [patientType]="selectedAdvanceObj?.patientType" [tariffName]=""
+                                    [companyName]=""></app-patient-information>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+            </div>
+            <div class="modal-card-container">
+                <form [formGroup]="MyFrom">
+                    <div fxLayout="row" fxLayoutGap="10px">
+
+                        <div fxLayout="column" fxLayoutGap="4px" fxFlex>
+
+                            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Total Amount" formControlName="TotalAmount" [formGroup]="MyFrom"
+                                    [validations]="getValidationMessages().TotalAmount" [readonly]="true" required
+                                    [(ngModel)]="vTotalAmount">
+                                </airmid-textbox>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="4px" fxFlex>
+                                <div fxFlex>
+                                    <airmid-textbox label="Discount %" formControlName="DiscountPer2"
+                                        [formGroup]="MyFrom" [validations]="getValidationMessages().DiscountPer2"
+                                        required [(ngModel)]="vDiscountPer2" (keyup)="CalcDiscPer()">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex>
+                                    <airmid-textbox label="Discount Amount" formControlName="DiscAmount2"
+                                        [formGroup]="MyFrom" [validations]="getValidationMessages().DiscAmount2"
+                                        required [(ngModel)]="vDiscAmount2" (keyup)="CalcDiscAmt()">
+                                    </airmid-textbox>
+                                </div>
+
+                            </div>
+
+                            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" class="Netamount">
+                                <airmid-textbox label="Net Amount" formControlName="NetAmount" [formGroup]="MyFrom"
+                                    [validations]="getValidationMessages().NetAmount" [readonly]="true" required
+                                    [(ngModel)]="vNetamount">
+                                </airmid-textbox>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="4px" fxFlex>
+
+                            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Previous DiscAmt" formControlName="DiscAmount"
+                                    [formGroup]="MyFrom" [validations]="getValidationMessages().DiscAmount"
+                                    [readonly]="true" [(ngModel)]="vDiscAmount">
+                                </airmid-textbox>
+                            </div>
+
+
+
+                            <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Final Disc Amount" formControlName="FinalDiscAmt"
+                                    [formGroup]="MyFrom" [validations]="getValidationMessages().FinalDiscAmt"
+                                    [readonly]="true" required [(ngModel)]="vFinalDiscAmt">
+                                </airmid-textbox>
+                            </div>
+
+                            <div fxFlex="33%%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"
+                                    [formGroup]="MyFrom" [validations]="getValidationMessages().ConcessionId"
+                                    [mode]="autocompleteModeConcession">
+                                </airmid-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="vFinalDiscAmt > 0" class="due-card">
+
+        <div class="amount-row">
+            <span class="label">Previous Discount Amount:-({{prevDiscper}} % ) {{ vDiscAmount  | currency:'INR'  }}</span>
+            <span class="amount">
+                Current Discount Amount:- {{ vFinalDiscAmt | currency:'INR' }}
+            </span>
+        </div>
+
+        <div class="note-row">
+            ⚠ Pharmacy discount has been applied on the total amount...
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <div fxLayoutAlign="end">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>&nbsp;
+            <button class="btn btn-primary " (click)="OnSave()" #save>Save</button>
+        </div>
+    </div>
+</div>

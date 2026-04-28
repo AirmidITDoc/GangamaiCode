@@ -238,11 +238,11 @@ export class PrescriptionComponent implements OnInit {
             }).then((flag) => {
                 if (flag.isConfirmed) {
                     const sub = {
-                        "ippreId": element.ipPreId
+                        "ippreId": element.prescId
 
                     }
                     this._SalesService.PrescriptionClose(sub).subscribe((response: any) => {
-                        
+                    //    this.ChangeeFilter()
                         });
                 }
             });

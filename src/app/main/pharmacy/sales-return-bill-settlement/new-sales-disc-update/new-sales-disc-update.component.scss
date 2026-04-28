@@ -1,0 +1,58 @@
+.positive-balance {
+    background-color: lightcoral;
+  }
+
+  .due-card {
+    margin-top: 1px;
+    padding: 10px 10px;
+    border-radius: 8px;
+    background-color: #fdecea;
+    border: 1px solid #f5c6cb;
+    text-align: center;
+}
+
+/* Amount section */
+.amount-row {
+    margin-bottom: 8px;
+}
+
+.label {
+    font-size: 15px;
+    font-weight: bold;
+    color: #0b363a;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+}
+
+.Netamount {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(8, 63, 80);
+}
+.amount {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d32f2f;
+}
+
+/* Note section */
+.note-row {
+    font-size: 13px;
+    color: #b71c1c;
+    gap: 6px;
+}
+
+.warning-icon {
+    font-size: 18px;
+    color: #d32f2f;
+}
+
+.success-card {
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    color: #2e7d32;
+    text-align: center;
+    font-weight: 500;
+}

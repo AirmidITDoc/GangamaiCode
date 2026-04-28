@@ -22,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { DiscountAfterFinalBillComponent } from './discount-after-final-bill/discount-after-final-bill.component';
 import { SalesReturnBillSettlementService } from './sales-return-bill-settlement.service';
+import { NewSalesDiscUpdateComponent } from './new-sales-disc-update/new-sales-disc-update.component';
 
 @Component({
     selector: 'app-sales-return-bill-settlement',
@@ -970,6 +971,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this.mRegId = '';
     }
     getDiscFinalBill(contact) {
+        debugger
+          const [IsSalesDiscUpdate, IpDischargeSummaryValue1] = this._ConfigService.configParams.IsSalesDiscUpdate.split(":");
+            if (IsSalesDiscUpdate != 1) {
         const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
             {
                 maxWidth: "100%",
@@ -985,6 +989,23 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             // this.getdata();
             this.grid.bindGridData();
         });
+    }else{
+         const dialogRef = this._matDialog.open(NewSalesDiscUpdateComponent,
+            {
+                maxWidth: "100%",
+                height: '70%',
+                width: '65%',
+                data: {
+                    Obj: contact,
+                    PatientObj: this.registerObj
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            // this.getdata();
+            this.grid.bindGridData();
+        });
+    }
     }
     getValidationMessages() {
         return {
