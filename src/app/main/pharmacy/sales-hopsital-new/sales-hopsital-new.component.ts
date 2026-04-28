@@ -185,7 +185,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemAddForm = this.createItemAddTable()
 
         if (this.vPharExtOpt == true) {
-            this.paymethod = false;
+            //this.paymethod = false;
             this.vSelectedOption = '2';
         } else {
             this.vPharOPOpt = true;
@@ -521,7 +521,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.updateValueAndValidity();
             this.saleSelectedDatasource.data = [];
             this.Itemchargeslist = [];
-            this.paymethod = false;
+          //  this.paymethod = false;
             this.Draftchk = true;
             this.IPMedID = 0;
             this.DraftID = 0;
@@ -1812,7 +1812,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('externalPatientName').setValue(this.draftpatientlist[0]);
             this.ItemSubform.get('doctorName').setValue(this.draftpatientlist[0]);
             this.ItemSubform.updateValueAndValidity();
-            this.paymethod = false;
+            //this.paymethod = false;
             this.Draftchk = true;
             this.RegId = '';
             // console.log(this.ItemAddForm.value) 

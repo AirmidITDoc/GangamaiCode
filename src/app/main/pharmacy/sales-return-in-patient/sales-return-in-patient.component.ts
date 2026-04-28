@@ -174,7 +174,7 @@ export class SalesReturnInPatientComponent implements OnInit {
             totalLandedAmount: [element?.TotalLandedAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             purRate: [element?.PurRateWf || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             purTot: [element?.PurTotAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            salesId: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            salesId: [element?.SalesId || 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isCashOrCredit: [element?.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]], 
             cgstper: [element?.CGSTPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -377,6 +377,7 @@ export class SalesReturnInPatientComponent implements OnInit {
                 SGSTAmount:SGSTAmt.toFixed(2) || 0,
                 IGSTPer:IGSTPer,
                 ISGSTAmount:IGSTAmt.toFixed(2) || 0,
+                SalesId:this.selcteditemObj?.SalesId || 0
             });
         console.log(this.chargeslist)
         this.dsIpSaleItemList.data = this.chargeslist;
@@ -769,7 +770,8 @@ export class SalesReturnInPatientComponent implements OnInit {
                         SGSTAmount: SGSTAmt.toFixed(2) || 0,
                         IGSTPer: IGSTPer,
                         ISGSTAmount: IGSTAmt.toFixed(2) || 0,
-                        presDetailsId: element?.presDetailsId || 0
+                        presDetailsId: element?.presDetailsId || 0,
+                        SalesId:this.selcteditemObj?.SalesId || 0
                     });
                 console.log(this.chargeslist)
                 this.dsIpSaleItemList.data = this.chargeslist;

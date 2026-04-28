@@ -78,6 +78,7 @@ export class InterimBillComponent implements OnInit {
         public toastrService: ToastrService,
 
         @Inject(MAT_DIALOG_DATA) public data: any) { }
+            SetCashbydefault: any = 0
 
     ngOnInit(): void {
         this.dataSource.data = [];
@@ -98,6 +99,12 @@ export class InterimBillComponent implements OnInit {
         this.currency = CurrencyValue
         this.startCountdown();
         this.getAccessDetail();
+
+       const [setCashBydefaultId, setCashBydefault] = this._ConfigService.configParams.OpBillSetCash.split(":");
+        this.SetCashbydefault = setCashBydefaultId ;
+          const paymentType =  +this.SetCashbydefault === 2 ? "PayOption"  :   "cashpay";
+          this.InterimFooterForm.patchValue({paymode:paymentType})
+      
     }
     CreateFooterForm(): FormGroup {
         return this.formBuilder.group({
