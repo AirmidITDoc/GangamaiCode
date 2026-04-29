@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -14,11 +14,17 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { DoctorshareProcessService } from './doctorshare-process.service';
+import { DoctorPaymentComponent } from './doctor-payment/doctor-payment.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ChargesList } from 'app/main/opd/appointment-list/appointment-billing/appointment-billing.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-doctorshare-process',
     templateUrl: './doctorshare-process.component.html',
-    styleUrls: ['./doctorshare-process.component.scss']
+    styleUrls: ['./doctorshare-process.component.scss'],
+    animations: fuseAnimations
 })
 export class DoctorshareProcessComponent {
 
@@ -50,12 +56,14 @@ export class DoctorshareProcessComponent {
 
     constructor(
         public _DoctorShareService: DoctorshareProcessService,
-        public datePipe: DatePipe,
-        public _matDialog: MatDialog,
-        public toastr: ToastrService, private fb: FormBuilder,
+        public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
+        public _matDialog: MatDialog, private formBuilder: FormBuilder,
+        public toastr: ToastrService, private fb: FormBuilder, private accountService: AuthenticationService,
     ) { }
-
+    DrpaymentForm: FormGroup
     ngOnInit(): void {
+
+        this.DrpaymentForm = this.createPaymentForm();
 
         this.DocProcessfilterForm = this.fb.group({
             fromDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
@@ -107,6 +115,17 @@ export class DoctorshareProcessComponent {
         filters: this.allFilters
     }
 
+
+
+    createPaymentForm(): FormGroup {
+        return this.formBuilder.group({
+            doctorPayyModel: this.formBuilder.array([]),
+        })
+    }
+
+    get ModeOfPaymentsArray(): FormArray {
+        return this.DrpaymentForm.get('doctorPayyModel') as FormArray;
+    }
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.DocProcessfilterForm.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.DocProcessfilterForm.get('enddate').value, "yyyy-MM-dd")
@@ -149,19 +168,51 @@ export class DoctorshareProcessComponent {
         this.grid.bindGridData();
     }
 
+    CreateModePaymentform(item: any): FormGroup {
+        return this.formBuilder.group({
+            paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId],
+            billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            receiptNo: '',
+            opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [item?.paymentDate ?? ''],
+            paymentTime: [item?.paymentTime ?? ''],
+            payAmount: [parseFloat(item?.payAmount) ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [item?.validationDate ?? ''],
+            advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [this.accountService.currentUserValue.userId],
+            transactionLabel: ['Dr_Pay', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            isCancelled: false,
+            isCancelledBy:this.accountService.currentUserValue.user.unitId,
+            isCancelledDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            createdDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd')
+        });
+    }
+
+
     OnPaymentdetail(element) {
         console.log(element)
         const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(element.processDate, 'yyyy-MM-dd') || '01/01/1900',
-            PatientHeaderObj['PatientName'] = element.PatientName;
-        // PatientHeaderObj['RegNo'] = element.RegNo;
+        PatientHeaderObj['PatientName'] = element.PatientName;
+        PatientHeaderObj['BillNo'] = element.doctorPayoutId;
         PatientHeaderObj['DoctorName'] = element.doctorName;
-        // PatientHeaderObj['CompanyName'] = element.CompanyName;
-        // PatientHeaderObj['DepartmentName'] = element.DepartmentName;
-        // PatientHeaderObj['OPD_IPD_Id'] = element.vOPIPId;
-        // PatientHeaderObj['Age'] = element.AgeYear;
+
         PatientHeaderObj['NetPayAmount'] = element.netAmount
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
+        const dialogRef = this._matDialog.open(DoctorPaymentComponent,
             {
                 maxWidth: "80vw",
                 height: '750px',
@@ -175,19 +226,25 @@ export class DoctorshareProcessComponent {
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.IsSubmitFlag == true) {
                 console.log(result.submitDataPay.ipPaymentInsert)
-                // this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount ||0)
-                // this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-                const d = {
 
-                }
-                this._DoctorShareService.DoctorProcPayment(d).subscribe(response => {
+                this.ModeOfPaymentsArray.clear();
+                result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                    debugger
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                });
+
+
+                console.log(this.DrpaymentForm.value)
+                this._DoctorShareService.DoctorSharePayment(this.DrpaymentForm.value).subscribe(response => {
                     this._matDialog.closeAll();
 
                 });
             }
         });
     }
+
+
     onPrint(element) { }
 
     getValidationdoctorMessages() {

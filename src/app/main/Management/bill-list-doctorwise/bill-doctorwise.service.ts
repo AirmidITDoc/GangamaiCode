@@ -39,6 +39,9 @@ export class BillDoctorwiseService {
         })
     }
 
+
+    
+
     createProDocFormGroup() {
         return this._formBuilder.group({
             startdate: [(new Date()).toISOString()],
@@ -100,6 +103,11 @@ export class BillDoctorwiseService {
 
 
     public ProcessShareSave(Param) {
+        return this._httpClient.PostData("DoctorPAy/DoctorPayoutProcess", Param)
+    }
+
+
+     public DoctorPaymentSave(Param) {
         return this._httpClient.PostData("DoctorPAy/DoctorPayoutProcess", Param)
     }
 }

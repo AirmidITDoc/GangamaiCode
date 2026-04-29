@@ -20,8 +20,24 @@ export class DoctorshareProcessService {
 
         })
     }
-
+ getPaymentArr() {
+        //return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=PaymentMode");
+        return [
+            { value: 'cash', viewValue: 'Cash' },
+            { value: 'cheque', viewValue: 'Cheque' },
+            { value: 'upi', viewValue: 'UPI' },
+            { value: 'net banking', viewValue: 'Net Banking' },
+            { value: 'card', viewValue: 'Card' },
+            { value: 'tds', viewValue: 'TDS' },
+            { value: 'wf', viewValue: 'WF' }
+        ];
+    }
     public DoctorProcPayment(Param) {
         return this._httpClient.PostData("DoctorPAy/DoctorPayoutProcess", Param)
     }
+ public DoctorSharePayment(Param) {
+        return this._httpClient.PostData("DoctorPAy/TDoctorpaymentInsert", Param)
+    }
+
+    
 }

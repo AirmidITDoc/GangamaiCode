@@ -39,20 +39,18 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { SharedModule } from 'app/main/shared/shared.module';
 import { MatTimepickerModule } from 'mat-timepicker';
-import { DoctorshareProcessComponent } from './doctorshare-process.component';
-import { DoctorPaymentComponent } from './doctor-payment/doctor-payment.component';
-
+import { DrPaymentListComponent } from './dr-payment-list.component';
 
 
 const routes: Routes = [
     {
         path: "**",
-        component: DoctorshareProcessComponent,
+        component: DrPaymentListComponent,
     },
 ];
 
 @NgModule({
-    declarations: [DoctorshareProcessComponent,DoctorPaymentComponent],
+    declarations: [DrPaymentListComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -100,4 +98,4 @@ const routes: Routes = [
         DatePipe,
     ]
 })
-export class DoctorshareProcessModule { }
+export class DrpaymentlistModule { }

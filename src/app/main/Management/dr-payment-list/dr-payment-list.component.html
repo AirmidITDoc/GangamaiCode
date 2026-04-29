@@ -1,0 +1,81 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Doctor Payment List
+            </span>
+        </div>
+
+
+
+    </mat-toolbar>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+            <ng-template #actionsTemplate1 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+
+                    <mat-icon class="pill orange-600 s-16" *ngIf="element.oPDIPDType"
+                        matTooltip="INPatient">circle</mat-icon>
+
+                    <!-- <mat-icon *ngIf="element.oPDIPDType" matTooltip="IP Patient " class="s-20 mr-4">
+                    </mat-icon> <span> IP </span> -->
+
+                    <mat-icon class="pill green s-16" *ngIf="!element.oPDIPDType"
+                        matTooltip="OutPatient">circle</mat-icon>
+
+                    <!-- <mat-icon *ngIf="!element.oPDIPDType" matTooltip="OP Patient " class="s-20 mr-4"
+                        class="pill green s-16">
+                    </mat-icon> <span> OP </span> -->
+
+                </div>
+
+            </ng-template>
+
+
+            <ng-template #actionButtonTemplate2 let-element>
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <mat-icon (click)="onPrint(element)" matTooltip="Print ">print
+                    </mat-icon>
+                </div>
+
+            </ng-template>
+
+
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
+                <ng-container filters>
+                    <form [formGroup]="DocProcessfilterForm">
+
+                        <airmid-datepicker [formGroup]="DocProcessfilterForm" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
+
+                        <!-- <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                            [formGroup]="DocProcessfilterForm" [(ngModel)]="gridConfig.filters[0].fieldValue"
+                            [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedoctor"
+                            (selectionChange)="ListView($event)" (keyup)="ListView($event)">
+                        </airmid-dropdown> -->
+                    </form>
+
+                </ng-container>
+            </airmid-table>
+        </div>
+
+
+    </div>
+</div>

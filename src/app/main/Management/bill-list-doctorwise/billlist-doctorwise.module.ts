@@ -47,6 +47,7 @@ import { ProcessDoctorshareComponent } from './process-doctorshare/process-docto
 
 
 
+
 const routes: Routes = [
     {
         path: "**",
@@ -55,7 +56,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [BillListDoctorwiseComponent, DoctorAddonpayComponent, ProcessDoctorshareComponent, PatientBilldetailComponent, DoctorpaySummarydetailComponent],
+    declarations: [BillListDoctorwiseComponent, DoctorAddonpayComponent, ProcessDoctorshareComponent, PatientBilldetailComponent, DoctorpaySummarydetailComponent, ],
     imports: [
         RouterModule.forChild(routes),
         MatButtonModule,
