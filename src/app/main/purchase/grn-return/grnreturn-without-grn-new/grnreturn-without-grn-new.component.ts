@@ -218,17 +218,17 @@ debugger
             itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             batchNo: [element.batchNo || 0],
             batchExpiryDate: [ExpinputDate, [this._FormvalidationserviceService.validDateValidator()]],
-            returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             landedRate: [element.landedRate || 0],
             mrp: [element.mrp || 0],
-            unitPurchaseRate: [element.unitPurchaseRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitPurchaseRate: [element.unitPurchaseRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             cgstper: [element.cgst ?? 0],
             sgstper: [element.sgst ?? 0],
             igstper: [element.igst ?? 0],
             gstPercentage: [element.gstPercentage || 0],
             gstAmount: [element.gstAmount || 0],
-            discPercentage: [element.DiscPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            discAmount: [element.DiscAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            discPercentage: [element.DiscPercentage || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discAmount: [element.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             landedTotalAmount: [element.landedTotalAmount || 0],
             mrpTotalAmount: [mrpTotal || this.mrpTotalAmount || 0],
             purchaseTotalAmount: [PurchaseTotalAmt],
@@ -260,8 +260,8 @@ debugger
     }
 
     createGrnReturnQtyInsert(element: any = {}): FormGroup {
-        
-        const issueqty = element.balanceQty - element.returnQty
+        debugger
+        const issueqty = +element.BalQty - +element.returnQty
         return this._formbuilder.group({
             grndetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             returnQty: [issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
