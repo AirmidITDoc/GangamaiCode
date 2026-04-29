@@ -210,13 +210,13 @@ debugger
             batchNo: [element.batchNo || 0],
             batchExpiryDate: [ExpinputDate, [this._FormvalidationserviceService.validDateValidator()]],
             returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            landedRate: [element.landedRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            landedRate: [element.landedRate || 0],
             mrp: [element.mrp || 0],
             unitPurchaseRate: [element.mrp || 0],
-            cgstper: [element.cgst ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            sgstper: [element.sgst ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            igstper: [element.igst ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            gstPercentage: [element.gstPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cgstper: [element.cgst ?? 0],
+            sgstper: [element.sgst ?? 0],
+            igstper: [element.igst ?? 0],
+            gstPercentage: [element.gstPercentage || 0],
             gstAmount: [element.gstAmount || 0],
             discPercentage: [element.discPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discAmount: [element.discAmount || 0],
@@ -606,10 +606,10 @@ debugger
 
             console.log(this.GrnReturnForm.value)
              if (!this.GrnReturnForm.invalid) {
-       
+       debugger
             this._GRNReturnService.GRNReturnSave(this.GrnReturnForm.value).subscribe(response => {
                 if (response) {
-                    debugger
+                    
                     this.OnReset();
                     if(this.GrnReturnForm.get("grnReturn.grnreturnId").value==0)
                     this.viewgetGRNreturnReportPdf(response);
