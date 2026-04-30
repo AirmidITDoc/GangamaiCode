@@ -32,27 +32,29 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
 
-            <!-- <ng-template #actionsPtype let-element>
+            <ng-template #actionsIPOP let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.oPdIpdType==1" title="IP" class="pill green-600 s-16">circle</mat-icon>
-                    <mat-icon *ngIf="element.oPdIpdType==0'" title="OP" class="pill orange s-16">circle</mat-icon>
-                </div>
-            </ng-template> -->
 
-         
+                    <mat-icon *ngIf="element.oPdIpdType=='OP'" matTooltip="OutPatient"
+                        class="pill orange s-16">circle</mat-icon>
+                    <mat-icon *ngIf="element.oPdIpdType=='IP'" matTooltip="InPatient"
+                        class="pill green s-16">circle</mat-icon>
+
+                </div>
+            </ng-template>
+
             <ng-template #actionButtonTemplate2 let-element>
 
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-
-                    <mat-icon (click)="OnPaymentdetail(element)" matTooltip="Payment Detail">
+                    <mat-icon (click)="OnPaymentdetail(element)" *ngIf="element.paymentId==0"
+                        matTooltip="Payment Detail">
                         <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                     </mat-icon>
 
                     <mat-icon (click)="onPrint(element)" matTooltip="Print Bill">print
-                       </mat-icon>
+                    </mat-icon>
 
-                   
                 </div>
 
             </ng-template>
