@@ -48,6 +48,7 @@ import { NewAdmissionComponent } from './new-admission/new-admission.component';
 // import { AdmissionViewComponent } from './admission-view/admission-view.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTimepickerModule } from 'mat-timepicker';
+import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 
 const routes: Routes = [
     {
@@ -64,6 +65,7 @@ const routes: Routes = [
         MLCInformationComponent,
         SubCompanyTPAInfoComponent, IPDSearcPatienthComponent, NewAdmissionComponent,
         CompanyInformationComponent,
+        AdmissionCancelComponent,
 
         // AdmissionViewComponent
     ],

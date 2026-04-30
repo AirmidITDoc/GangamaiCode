@@ -84,7 +84,7 @@ export class DischargeComponent implements OnInit {
             this.vBedId = this.data.bedId
             this.regId = this.data.regId
             if (this.data.regId)
-                // this.getdata1()
+                this.getdata1()
             this.DischargeInsertForm.get("dischargedDocId")?.setValue(this.data.docNameId)
             this.DischargeInsertForm.get("discharge.admissionId")?.setValue(this.data.admissionId)
             this.DischargeInsertForm.get("admission.admissionId")?.setValue(this.data.admissionId)
@@ -119,14 +119,14 @@ export class DischargeComponent implements OnInit {
         //   this.ChkConfigInitiate = true
         // this.getchkConfigInitiate();
 
-        // const accessList = this.configService.userAccessParam?.filter(x => x.AccessValueName === 'IsPharmacyDue');
-        // const access = this.configService.userAccessParam.find(x => x.AccessValueName === 'IsPharmacyDue');
-        // this.PharDueData = Number(access?.AccessValue ?? 0);
+        const accessList = this.configService.userAccessParam?.filter(x => x.AccessValueName === 'IsPharmacyDue');
+        const access = this.configService.userAccessParam.find(x => x.AccessValueName === 'IsPharmacyDue');
+        this.PharDueData = Number(access?.AccessValue ?? 0);
 
-        // if (!accessList || accessList.length === 0) {
-        //     this.toastr.warning('Pharmacy Due access is not configured at the user level. Please contact the administrator.', 'Warning');
-        //     return;
-        // }
+        if (!accessList || accessList.length === 0) {
+            this.toastr.warning('Pharmacy Due access is not configured at the user level. Please contact the administrator.', 'Warning');
+            return;
+        }
     }
 
     docName(event) {
@@ -218,12 +218,12 @@ export class DischargeComponent implements OnInit {
 
 
     onDischarge() {
-        // if (this.dssalesbillListMultiple.data.length > 0 && this.PharDueData === 1) {
-        //     this.toastr.warning('Patient Pharmacy Dues are Pending..', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
+        if (this.dssalesbillListMultiple.data.length > 0 && this.PharDueData === 1) {
+            this.toastr.warning('Patient Pharmacy Dues are Pending..', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
         const formattedDate = this.datePipe.transform(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
         this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))

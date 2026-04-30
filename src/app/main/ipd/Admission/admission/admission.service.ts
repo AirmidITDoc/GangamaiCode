@@ -365,6 +365,16 @@ export class AdmissionService {
     public getCompanyById(Id) {
         return this._httpClient1.GetData("CompanyMaster/" + Id);
     }
+
+     public AdmissionCancel(data) {
+        return this._httpClient1.PostData("Admission/Cancel", data)
+    }
+
+    
+    public getAdmissionDetailList(param) {
+
+        return this._httpClient1.PostData("Common", param)
+    }
 }
 
 

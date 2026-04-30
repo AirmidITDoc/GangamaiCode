@@ -269,6 +269,8 @@ currentDate = new Date();
 
     ngOnInit(): void {
         // this.patientDetailsFormGrp = this.createForm();
+
+
     }
     dateTimeObj: Date;
     getDateTime(dateTimeObj) {
@@ -351,7 +353,7 @@ currentDate = new Date();
         //  if (this.data.FromName == "OP-Bill") {
             transactionType = 0;
             this.Paymentobj['paymentId'] = 0;
-            this.Paymentobj['billNo'] = 0;
+            this.Paymentobj['billNo'] = this.advanceData.BillNo;
             this.Paymentobj['receiptNo'] = '';
             this.Paymentobj['paymentDate'] = formattedDate
             this.Paymentobj['paymentTime'] = formattedTime
@@ -370,7 +372,7 @@ currentDate = new Date();
             this.Paymentobj['transactionType'] = 0;
             this.Paymentobj['remark'] = " ";
             this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-                this.Paymentobj['isCancelled'] = false;
+            this.Paymentobj['isCancelled'] = false;
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
             this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
@@ -390,7 +392,7 @@ currentDate = new Date();
             this.ModePaymentObj.push({
                 paymentId: 0,
                 unitId: this._loggedService.currentUserValue.user.unitId,
-                billNo: this.advanceData?.billNo || 0,
+                billNo: this.advanceData?.BillNo || 0,
                 opdipdtype: opdipdtype || 0,
                 paymentDate: formattedDate,
                 paymentTime: formattedTime,

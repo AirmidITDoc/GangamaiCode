@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DrPaymentListComponent } from './dr-payment-list/dr-payment-list.component';
 
 
 const appRoutes: Routes = [
@@ -19,14 +20,18 @@ const appRoutes: Routes = [
         path: "doctorshareprocess",
         loadChildren: () => import("./doctorshare-process/doctorshare-process.module").then((m) => m.DoctorshareProcessModule),
     }
+    ,
+    {
+        path: "demomenu",
+        loadChildren: () => import("./dr-payment-list/drpaymentlist.module").then((m) => m.DrpaymentlistModule),
+    }
 ];
 
 @NgModule({
     declarations: [
-
-
-
-    ],
+   
+    
+  ],
     imports: [
         RouterModule.forChild(appRoutes),
     ]

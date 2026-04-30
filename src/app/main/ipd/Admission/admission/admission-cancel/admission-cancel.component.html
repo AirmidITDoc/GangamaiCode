@@ -1,0 +1,127 @@
+<div class="modal-wrapper grid-container">
+  <!-- Modal header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Admission Cancel</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+         
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div class="center p-12 pb-56" style="border-radius: 4px;">
+                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 2px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                     <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
+                                        (data?.middleName ? ' ' + data.middleName : '') +
+                                        (data?.lastName ? ' ' + data.lastName : '')
+                                        || data?.patientName
+                                        " [doctorName]="data?.doctorname" [departmentName]="data?.departmentName"
+                                    [doa]="data.admissionDate" [ipdNo]="data?.ipdno || data?.ipdno"
+                                    [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
+                                    [refDocName]="data?.refDocName"
+                                    [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
+                                    [patientType]="data?.patientType" [tariffName]="data?.tariffName"
+                                    [companyName]="data?.companyName"></app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="content-card">
+                    <form [formGroup]="AdmissionCancleTaskForm">
+
+                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+
+
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+
+                                <!-- <mat-form-field appearance="outline" class="dateField">
+                                    <mat-label>{{dateLabel}}</mat-label>
+                                    <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter"
+                                        formControlName="AdmissionDate" readonly
+                                        (dateChange)="onChangeDate($event.value)">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"
+                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field> -->
+
+
+                                <!-- <mat-form-field appearance="outline" class="timeField">
+                                    <mat-label>{{timeLabel}}</mat-label>
+                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="AdmissionTime"
+                                        [readonly]="true" (timeChange)="onChangeTime($event)"
+                                        [disableDialogOpenOnClick]="isDatePckrDisabled">
+
+                                    <mat-icon matSuffix
+                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                </mat-form-field> -->
+
+                                <!-- <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
+                                    [formGroup]="AdmissionCancleTaskForm" [value]="vIPDNo">
+                                </airmid-textbox> -->
+
+
+                            </div>
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+                                <airmid-textbox label="Reason" formControlName="Reason" fxFlex="99%"
+                                    [formGroup]="AdmissionCancleTaskForm" [value]="Reason">
+                                </airmid-textbox>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="end">
+        <div class="next-div button-row-group" style="padding-right: 20px;">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" color="accent" (click)="AdmissionCancle()">
+                <span>Save</span>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="Response !==0; else clearedBlock" class="due-card">
+
+        <div class="amount-row">
+            <!-- <span class="label">TOTAL BALANCE</span> -->
+            <span class="amount">
+                {{ AdmissionMsg }}
+            </span>
+        </div>
+
+        <div class="note-row">
+            ⚠ To cancel the admission, please ensure that all bills are cleared first.
+        </div>
+
+    </div>
+
+     <ng-template #clearedBlock>
+        <div *ngIf="Response ==0" class="success-card">
+            ✅ All Bill clearance completed. Admission can be Cancelled.
+        </div>
+    </ng-template>
+</div>
