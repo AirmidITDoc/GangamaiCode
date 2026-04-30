@@ -43,9 +43,9 @@
                                         </div>
 
                                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Hospital Short Name" formControlName="hospitalShortName"
-                                                [formGroup]="HospitalForm" [maxLength]="100"
-                                                [(ngModel)]="registerObj.hospitalShortName">
+                                            <airmid-textbox label="Hospital Short Name"
+                                                formControlName="hospitalShortName" [formGroup]="HospitalForm"
+                                                [maxLength]="100" [(ngModel)]="registerObj.hospitalShortName">
                                             </airmid-textbox>
                                         </div>
 
@@ -82,9 +82,10 @@
                                         <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Pin" formControlName="pin"
                                                 (keypress)="keyPressAlphanumeric($event)" [formGroup]="HospitalForm"
-                                              [maxLength]="Is5_Digit_Pincode_Id ? 5 : 6" [validations]="getValidationMessages().Pin">
+                                                [maxLength]="Is5_Digit_Pincode_Id ? 5 : 6"
+                                                [validations]="getValidationMessages().Pin">
                                             </airmid-textbox>
-                                        </div> 
+                                        </div>
 
                                         <div fxFlex="24%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-textbox label="Phone" formControlName="phone"
@@ -255,7 +256,19 @@
                                 <div fxFlex.gt-sm="100%" fxFlex>
 
                                     <form [formGroup]="HospitalForm">
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                                        <div fxFlexFill fxLayout="column">
+
+                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-top: 5px;">
+
+                                                <mat-form-field appearance="outline" fxFlex="250px">
+                                                    <mat-label>Select Header Option</mat-label>
+                                                    <mat-select formControlName="isHeaderOption" (selectionChange)="onSelectionChange($event.value)">
+                                                        <mat-option [value]=1>Logo+Info</mat-option>
+                                                        <mat-option [value]=2>Image Header</mat-option>
+                                                        <mat-option [value]=3>Template</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
 
                                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
 

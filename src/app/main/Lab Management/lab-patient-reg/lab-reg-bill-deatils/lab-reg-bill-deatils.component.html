@@ -34,7 +34,7 @@
             </mat-card>
 
             <!-- dynamicTableHeight -->
-            <div fusePerfectScrollbar fxLayoutGap="5px" >
+            <div fusePerfectScrollbar fxLayoutGap="5px">
 
                 <div id="contacts" style="height: 260px;" fusePerfectScrollbar>
 
@@ -60,12 +60,12 @@
                             <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Test" class="s-20 mr-4"
                                 style="color: #4a6be6;">
                                 <img width="50px" height="50px" src="assets/images/logos/radiology.png">
-                            </mat-icon> 
+                            </mat-icon>
 
                             <mat-icon *ngIf="element.testType==1" matTooltip="Other Test" class="s-20 mr-4"
                                 style="color: #4a6be6;">
                                 <img width="50px" height="50px" src="/assets/images/logos/otherService.png">
-                            </mat-icon> 
+                            </mat-icon>
                         </div>
                     </ng-template>
 
@@ -120,6 +120,16 @@
                                     <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
                                 </button>
                             </span>
+
+                            <span [matTooltip]="contact.isRadiology == 0
+                                                    ? 'Not Radiology Test'
+                                                    : ''">
+                                <button mat-icon-button matTooltip="Push To RIS" (click)="getpushtoRIS(contact)"
+                                    [disabled]="contact.isRadiology==0">
+                                    <mat-icon>shutter_speed</mat-icon>
+                                </button>
+                            </span>
+
                         </div>
                     </ng-template>
 
@@ -128,10 +138,10 @@
                     </div>
 
                     <!-- <div class="table-scroll"> -->
-                        <airmid-table [gridConfig]="gridConfig" #billgrid :ShowFilter="false" :ShowButtons="false">
-                            <ng-container filters>
-                            </ng-container>
-                        </airmid-table>
+                    <airmid-table [gridConfig]="gridConfig" #billgrid :ShowFilter="false" :ShowButtons="false">
+                        <ng-container filters>
+                        </ng-container>
+                    </airmid-table>
 
                     <!-- </div> -->
                 </div>

@@ -16,6 +16,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { LabSampleReceivedService } from './lab-sample-received.service';
+import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
 
 @Component({
     selector: 'app-lab-sample-received',
@@ -569,6 +570,22 @@ export class LabSampleReceivedComponent {
         }
     }
 
+    Editoutsoucedata(row) {
+        console.log(row)
+        const dialogRef1 = this._matDialog.open(OutsourceDetailsComponent,
+            {
+                maxWidth: "80vw",
+                // height: '60vh',
+                // width: '100%',
+                width: "45%",
+                height: "60%",
+                data: row
+            });
+
+        dialogRef1.afterClosed().subscribe(result => {
+            this.GetSampleCollectiondetail();
+        });
+    }
 }
 
 export class SampleList {

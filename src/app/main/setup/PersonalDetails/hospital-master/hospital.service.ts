@@ -46,6 +46,7 @@ export class HospitalService {
             ipdRefundOfAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             ipdRefundOfAdvanceReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
             cityId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            isHeaderOption: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
         });
     }
 

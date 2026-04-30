@@ -406,7 +406,7 @@
                                                                                 </mat-cell>
                                                                             </ng-container>
 
-                                                                            <ng-container matColumnDef="tat">
+                                                                            <!-- <ng-container matColumnDef="tat">
                                                                                 <mat-header-cell *matHeaderCellDef
                                                                                     fxShow.gt-sm>TAT
                                                                                 </mat-header-cell>
@@ -421,7 +421,43 @@
                                                                                         contact.tatmin }}m
                                                                                     </span>
                                                                                 </mat-cell>
+                                                                            </ng-container> -->
+                                                                            <ng-container matColumnDef="tat">
+                                                                                <mat-header-cell *matHeaderCellDef
+                                                                                    fxShow.gt-sm>
+                                                                                    TAT
+                                                                                </mat-header-cell>
+
+                                                                                <mat-cell *matCellDef="let contact"
+                                                                                    fxShow.gt-sm>
+
+                                                                                    <!-- Progress Tube -->
+                                                                                    <div class="tat-container">
+                                                                                        <div class="tat-bar"
+                                                                                            [style.width.%]="getTatProgress(contact)">
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <!-- Optional text -->
+                                                                                    <div class="tat-text">
+                                                                                        {{ getRemainingTime(contact) }}
+                                                                                    </div>
+
+                                                                                </mat-cell>
                                                                             </ng-container>
+                                                                            <!-- <ng-container matColumnDef="tat">
+                                                                                <mat-header-cell *matHeaderCellDef
+                                                                                    fxShow.gt-sm>
+                                                                                    TAT
+                                                                                </mat-header-cell>
+
+                                                                                <mat-cell *matCellDef="let contact"
+                                                                                    fxShow.gt-sm>
+                                                                                    <span class="tat-badge">
+                                                                                        {{ getRemainingTime(contact) }}
+                                                                                    </span>
+                                                                                </mat-cell>
+                                                                            </ng-container> -->
 
                                                                             <ng-container matColumnDef="serviceName"
                                                                                 sticky>

@@ -84,6 +84,7 @@ export class NewHospitalComponent implements OnInit {
                     this.HospitalForm.get('hospitalName').setValue(this.registerObj.hospitalName)
                     this.HospitalForm.get('hospitalAddress').setValue(this.registerObj.hospitalAddress)
                     this.HospitalForm.get('phone').setValue(this.registerObj.phone)
+                    this.HospitalForm.get('isHeaderOption').setValue(this.registerObj.isHeaderOption)
                 });
             }, 500);
         }
@@ -94,6 +95,10 @@ export class NewHospitalComponent implements OnInit {
         console.log(obj)
         this.vCityName = obj.cityName
         this.vCityId = obj.cityId
+    }
+
+    onSelectionChange(value: number) {
+        console.log(value);
     }
 
     onSubmit() {

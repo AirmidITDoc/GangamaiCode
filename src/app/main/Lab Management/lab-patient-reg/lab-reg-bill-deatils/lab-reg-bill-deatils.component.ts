@@ -15,6 +15,8 @@ import { ToastrService } from 'ngx-toastr';
 import { EmailorSMSHistoryComponent } from '../../emailor-smshistory/emailor-smshistory.component';
 import { ReportDispatchComponent } from '../../report-dispatch/report-dispatch.component';
 import { LabPatientRegService } from '../lab-patient-reg.service';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-lab-reg-bill-deatils',
@@ -27,6 +29,7 @@ export class LabRegBillDeatilsComponent {
     BillNo = "0"
     doctorName = ""
     labId = "0"
+    RISSaveForm: FormGroup;
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
@@ -51,6 +54,7 @@ export class LabRegBillDeatilsComponent {
     }
 
     ngOnInit(): void {
+        this.RISSaveForm = this.CreateRISPushForm()
         if (this.data) {
             this.BillNo = this.data.billNo;
             this.doctorName = this.data.doctorName;
@@ -59,13 +63,15 @@ export class LabRegBillDeatilsComponent {
     }
 
     constructor(public _labPatientRegService: LabPatientRegService,
-        private _loggedService: AuthenticationService,
+        private accountService: AuthenticationService,
         public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
         private commonService: PrintserviceService,
         private _fuseSidebarService: FuseSidebarService,
-        public _whatsppService: WhatsAppEmailService,) { }
+        public _whatsppService: WhatsAppEmailService,
+        public formBuilder: UntypedFormBuilder,
+        public _FormvalidationserviceService: FormvalidationserviceService,) { }
 
     allcolumns = [
         {
@@ -380,6 +386,92 @@ export class LabRegBillDeatilsComponent {
         dialogRef.afterClosed().subscribe(result => {
             // this.onChangeFirst2()
         });
+    }
+
+    CreateRISPushForm() {
+        return this.formBuilder.group({
+            first_name: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            middle_name: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            last_name: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            patient_id: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            patient_dob: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            patient_age: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            patient_gender: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            patient_phone_number: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            // patient_country_code: ['+91', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            patient_email: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            modality: ['MR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            accession_number: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            scan_desc: ['Brain', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            scan_id: ['0000003', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            ref_physician: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            ref_physician_phone_number: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            // ref_country_code: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            ref_physician_email: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            external_id: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            branch_code: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            branch_name: ['Airmid', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            appointment_date_time: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            comments: []
+        })
+    }
+    CreateRISPushComment(contact: any): FormGroup {
+        return this.formBuilder.group({
+            comment: [contact?.comments || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            comments_by: [this.accountService.currentUserValue.userId || '0', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            comment_timestamp: [contact?.createdDate || '1900-01-01', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        })
+    }
+
+    get RISCommentArray(): FormArray {
+        return this.RISSaveForm.get('comments') as FormArray;
+    }
+
+    getpushtoRIS(contact: any) {
+        console.log("RIS DATA:", contact);
+
+        let modality = '';
+
+        const category = (contact?.categoryName || '').toLowerCase();
+
+        if (category.includes('mri')) {
+            modality = 'MR';
+        } else if (category.includes('xray') || category.includes('x-ray')) {
+            modality = 'XA';
+        } else if (category.includes('ct') || category.includes('3D')) {
+            modality = 'CT';
+        } else if (category.includes('us')) {
+            modality = 'US';
+        }
+
+        const Patientparts = (contact?.patientName || '').replace(/^Mr\.?\s*/i, '').trim().split(/\s+/);
+        this.RISSaveForm.patchValue({
+            first_name: contact?.firstName || '',
+            middle_name: contact?.middleName || '',
+            last_name: contact?.lastName || '',
+            patient_id: String(contact?.labRequestNo) || '', //String(contact?.opdipdid) || '',
+            patient_dob: this.datePipe.transform(contact?.dateofBirth, 'dd-MM-YYYY') || '01-01-1900',
+            patient_age: contact?.ageYear + "Y" || '',
+            patient_gender: contact?.genderName?.charAt(0)?.toUpperCase() || '',
+            patient_phone_number: String(contact?.patientNumber) || '',
+            modality: modality || 'MR',
+            accession_number: String(contact?.billNo) || '',
+            ref_physician: contact?.asas || 'Dr. X',
+            ref_physician_phone_number: contact?.mobileNo || '',
+            external_id: String(contact?.opD_IPD_ID) || '',
+            comments: [],
+            // branch_code:'',
+            // branch_name: 'Airmid',
+            // scan_desc: 'Brain',
+            // scan_id: '0000003',
+            branch_code: String(contact?.unitId),
+            branch_name: contact?.hospitalName.trim() || 'Airmid',
+            scan_desc: contact?.serviceName, //'Brain',
+            scan_id: String(contact?.radTestID) //'0000003',
+        });
+        console.log(this.RISSaveForm.value)
+        this._labPatientRegService.getPushToRIS(this.RISSaveForm.value).subscribe(res => {
+        })
     }
 
 }

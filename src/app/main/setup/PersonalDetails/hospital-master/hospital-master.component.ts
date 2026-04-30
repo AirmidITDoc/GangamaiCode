@@ -219,6 +219,7 @@ export class HospitalMaster {
     ipdAdvanceReceiptCounterId: any;
     ipdRefundOfAdvanceReceiptCounterId: any;
     hospitalShortName: any;
+    isHeaderOption:any;
     /**
      * Constructor
      *
@@ -253,6 +254,7 @@ export class HospitalMaster {
             this.ipdAdvanceReceiptCounterId = HospitalMaster.ipdAdvanceReceiptCounterId || 0;
             this.ipdRefundOfAdvanceReceiptCounterId = HospitalMaster.ipdRefundOfAdvanceReceiptCounterId || 0;
             this.hospitalShortName = HospitalMaster.hospitalShortName || ''
+            this.isHeaderOption = HospitalMaster.isHeaderOption || ''
         }
     }
 }

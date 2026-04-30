@@ -95,6 +95,9 @@ export class InvestigationListComponent {
         this.GetSampleCollectiondetail()
         this.bindSampleParentGridData();
         this.isSuperAdmin = this.accountService.currentUserValue.user.isAdminMultiview;
+        setInterval(() => {
+            this.sampleDetailDS.data = [...this.sampleDetailDS.data];
+        }, 1000);
 
         ////////// Sample Recevied    
         this.ReceviedformSearch = this._InvestListService.createReceiveSearchForm();
@@ -657,7 +660,111 @@ export class InvestigationListComponent {
         });
     }
 
+    getSampleDateTime(doa: string, dot: string): Date | null {
+        if (!doa || !dot) return null;
 
+        const [day, month, year] = doa.trim().split('/');
+
+        const time = dot.trim().toUpperCase();
+
+        const match = time.match(/(\d+):(\d+)\s*(AM|PM)/);
+
+        if (!match) {
+            console.log('Invalid time format:', dot);
+            return null;
+        }
+
+        let hours = parseInt(match[1], 10);
+        const minutes = parseInt(match[2], 10);
+        const period = match[3];
+
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0;
+
+        return new Date(+year, +month - 1, +day, hours, minutes);
+    }
+
+    // getRemainingTime(contact: any): string {
+    //     const tatDay = Number(contact.tatday || 0);
+    //     const tatHour = Number(contact.tathour || 0);
+    //     const tatMin = Number(contact.tatmin || 0);
+
+    //     const tatMinutes = (tatDay * 24 * 60) + (tatHour * 60) + tatMin;
+
+    //     const sampleDateTime = this.getSampleDateTime(contact.doa, contact.dot);
+
+    //     if (!sampleDateTime || isNaN(sampleDateTime.getTime())) {
+    //         return 'Invalid';
+    //     }
+
+    //     const endTime = new Date(sampleDateTime.getTime() + tatMinutes * 60000);
+
+    //     const diff = endTime.getTime() - new Date().getTime();
+
+    //     if (diff <= 0) return 'Expired';
+
+    //     const totalMinutes = Math.floor(diff / 60000);
+
+    //     const days = Math.floor(totalMinutes / (24 * 60));
+    //     const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+    //     const mins = totalMinutes % 60;
+
+    //     return `${days}d ${hours}h ${mins}m`;
+    // }
+    getRemainingTime(contact: any): string {
+        const tatDay = Number(contact.tatday || 0);
+        const tatHour = Number(contact.tathour || 0);
+        const tatMin = Number(contact.tatmin || 0);
+
+        const tatMinutes = (tatDay * 24 * 60) + (tatHour * 60) + tatMin;
+
+        // ✅ ADD THIS
+        if (tatMinutes === 0) {
+            return 'No TAT'; // or '' if you want empty
+        }
+
+        const sampleDateTime = this.getSampleDateTime(contact.doa, contact.dot);
+
+        if (!sampleDateTime || isNaN(sampleDateTime.getTime())) {
+            return 'Invalid';
+        }
+
+        const endTime = new Date(sampleDateTime.getTime() + tatMinutes * 60000);
+
+        const diff = endTime.getTime() - new Date().getTime();
+
+        if (diff <= 0) return 'Expired';
+
+        const totalMinutes = Math.floor(diff / 60000);
+
+        const days = Math.floor(totalMinutes / (24 * 60));
+        const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+        const mins = totalMinutes % 60;
+
+        return `${days}d ${hours}h ${mins}m`;
+    }
+
+    getTatProgress(contact: any): number {
+        const tatDay = Number(contact.tatday || 0);
+        const tatHour = Number(contact.tathour || 0);
+        const tatMin = Number(contact.tatmin || 0);
+
+        const totalMinutes = (tatDay * 24 * 60) + (tatHour * 60) + tatMin;
+
+        const sampleDateTime = this.getSampleDateTime(contact.doa, contact.dot);
+        if (!sampleDateTime) return 0;
+
+        const now = new Date();
+
+        const elapsedMinutes = Math.floor(
+            (now.getTime() - sampleDateTime.getTime()) / 60000
+        );
+
+        if (elapsedMinutes <= 0) return 0;
+        if (elapsedMinutes >= totalMinutes) return 100;
+
+        return Math.floor((elapsedMinutes / totalMinutes) * 100);
+    }
     ///////////////// Sample Recevied  //////////////////////
     ReceviedformSearch: FormGroup;
     ReceFormGroup: FormGroup;

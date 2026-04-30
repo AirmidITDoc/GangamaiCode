@@ -297,3 +297,23 @@ tr.example-element-row:not(.example-expanded-row):active {
 .patient-name {
   text-align: center;
 }
+
+//// tat designe
+.tat-container {
+  width: 120px;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.tat-bar {
+  height: 100%;
+  background: linear-gradient(to right, #4caf50, #ff9800, #f44336);
+  transition: width 1s linear;
+}
+
+.tat-text {
+  font-size: 12px;
+}
