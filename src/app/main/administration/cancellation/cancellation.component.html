@@ -136,7 +136,7 @@
                                 PaymentDate
                             </button>&nbsp;
                             <button class="btn btn-danger" *ngIf="element.isCancelled =='0'"
-                               (click)="openCancelBill(element,OP)"  matTooltip="Cancle Bill" style="color: white;"> Bill
+                               (click)="openCancelBill(element)"  matTooltip="Cancle Bill" style="color: white;"> Bill
                                 Cancel
                             </button>
                         </div>
@@ -167,7 +167,7 @@
                                 Date Update
                             </button>&nbsp;
                             <button class="btn btn-danger" *ngIf="element.isCancelled =='0'"
-                                (click)="openCancelBill(element,IP)" matTooltip="Cancle Bill" style="color: white;"> Bill
+                                (click)="openCancelBill(element)" matTooltip="Cancle Bill" style="color: white;"> Bill
                                 Cancel
                             </button>
                         </div>

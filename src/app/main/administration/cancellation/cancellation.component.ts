@@ -600,7 +600,9 @@ export class CancellationComponent implements OnInit {
             if (result.isConfirmed) {
                 const SubmitDate = {
                     "billNo": contact.billNo || 0,
-                    "discComments": this.VReason || ''
+                    "cancelReason": this.VReason || '',
+                    "isCancelledBy":this._loggedService.currentUserValue.userId,
+                    "isCancelledDatetime": this.datePipe.transform(new Date() ,'yyyy-MM-dd') || '1900-01-01'
                 }
                 console.log("Json:", SubmitDate)
                 this._CancellationService.OpCancelBill(SubmitDate).subscribe(response => {
@@ -630,8 +632,10 @@ export class CancellationComponent implements OnInit {
             if (result.isConfirmed) {
                 const SubmitDate = {
                     "billNo": contact.billNo || 0,
-                    "discComments": this.VReason || ''
-                }
+                    "cancelReason": this.VReason || '',
+                    "isCancelledBy":this._loggedService.currentUserValue.userId,
+                    "isCancelledDatetime": this.datePipe.transform(new Date() ,'yyyy-MM-dd') || '1900-01-01'
+                } 
                 console.log("Json:", SubmitDate)
                 this._CancellationService.IpCancelBill(SubmitDate).subscribe(response => {
                     this.grid.bindGridData();
@@ -659,10 +663,13 @@ export class CancellationComponent implements OnInit {
         }
     }
 
-    openCancelBill(element, Lable) {
+    openCancelBill(element) {
         debugger
-        this.lable = Lable;
+        if((element?.opdipdType || 0) === 1){
+         this.lable = 'IP'
+        } else{  this.lable = 'OP'}
         this.billcancelList = element;
+        this.VReason == '' 
         this._matDialog.open(this.CancelReasone, {
             width: '50%',
             height: '45%'
