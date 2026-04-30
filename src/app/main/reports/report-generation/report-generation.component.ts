@@ -64,6 +64,7 @@ export class ReportGenerationComponent implements OnInit {
     WardId: any;
     dischargeTypeId: any;
     CompanyId: any;
+    SecCompanyId: any;
     // StoreId= this._loggedUser.currentUserValue.storeId
     StoreId: any;
     FromStoreId: any;
@@ -132,6 +133,7 @@ export class ReportGenerationComponent implements OnInit {
     flagWardSelected: boolean = false;
     flagAdmissionSelected: boolean = false;
     flagCompanySelected: boolean = false;
+    flagSecondCompanySelected: boolean = false;
     flagDischargeTypeSelected: boolean = false;
     flagStoreSelected: boolean = false;
     flagSupplierelected: boolean = false;
@@ -238,6 +240,10 @@ export class ReportGenerationComponent implements OnInit {
             this.CompanyId = (val == 0) ? 0 : val
         });
 
+         this._ReportService.userForm.get('SecCompanyId')?.valueChanges.subscribe(val => {
+            this.SecCompanyId = (val == 0) ? 0 : val
+        });
+
         this._ReportService.userForm.get('ItemCategory')?.valueChanges.subscribe(val => {
             this.ItemCategory = (val == 0) ? 0 : val
         });
@@ -318,6 +324,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagDischargeTypeSelected = true;
         if (controllerPermission.filter(x => x == "Company")?.length > 0)
             this.flagCompanySelected = true;
+       if (controllerPermission.filter(x => x == "SecondCompany")?.length > 0)
+            this.flagSecondCompanySelected = true;
 
         if (controllerPermission.filter(x => x == "Store")?.length > 0)
             this.flagStoreSelected = true;
@@ -571,6 +579,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get("WardId").setValue('');
         this._ReportService.userForm.get("dischargeTypeId").setValue('');
         this._ReportService.userForm.get('CompanyId').setValue('');
+          this._ReportService.userForm.get('SecCompanyId').setValue('');
         this._ReportService.userForm.get('StoreId').setValue('');
         this._ReportService.userForm.get('FromStoreId').setValue('');
         this._ReportService.userForm.get('ToStoreId').setValue('');
@@ -607,6 +616,7 @@ export class ReportGenerationComponent implements OnInit {
         this.SupplierId = 0;
         this.PaymentId = 0
         this.CompanyId = 0;
+        this.SecCompanyId = 0;
         this.DrugTypeId = 0;
         this.ItemId = 0;
         this.dischargeTypeId = 0;
@@ -629,6 +639,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagWardSelected = false;
         this.flagDischargeTypeSelected = false;
         this.flagCompanySelected = false;
+          this.flagSecondCompanySelected = false;
         this.flagStoreSelected = false;
         this.flagFromStoreSelected = false;
         this.flagToStoreSelected = false;
@@ -739,6 +750,12 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "CompanyId",
                     "fieldValue": this.CompanyId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+                 if (this.flagSecondCompanySelected)
+                paramFilterList.push({
+                    "fieldName": "SecondCompanyId",
+                    "fieldValue": this.SecCompanyId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             if (this.flagStoreSelected)

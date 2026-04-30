@@ -206,6 +206,21 @@
                                         </div>
                                     </ng-container>
 
+                                      <ng-container *ngIf="flagSecondCompanySelected">
+                                        <div style="max-width: 265px;">
+                                            <!-- <airmid-autocomplete label="Company Name"
+                                                [formGroup]="_ReportService.userForm" formControlName="CompanyId"
+                                                placeholderText="Select Company Name"
+                                                ApiUrl="Report/CompanyList/auto-complete?Keyword="
+                                                (selectionChange)="SelectedCompanyObj($event)"
+                                                (onClearSelection)="clearCompany()">
+                                            </airmid-autocomplete> -->
+                                            <airmid-dropdown label="Second Company Name" formControlName="SecCompanyId"
+                                                [formGroup]="_ReportService.userForm"
+                                                ApiUrl="Report/CompanyList/auto-complete?Keyword=%"></airmid-dropdown>
+                                        </div>
+                                    </ng-container>
+
                                     <ng-container *ngIf="flagStoreSelected">
                                         <div style="max-width: 265px;">
                                             <!-- <airmid-autocomplete label="Store Name"
