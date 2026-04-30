@@ -73,18 +73,20 @@ export class DoctorshareProcessComponent {
 
     }
     @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
-    // @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionsPtype') actionsPtype!: TemplateRef<any>;
+    @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
+
 
     ngAfterViewInit() {
-        // Assign the template to the column dynamically
-        // this.gridConfig.columnsList.find(col => col.key === 'OPdIpdType')!.template = this.actionsPtype;
-        // this.gridConfig.columnsList.find(col => col.key === 'isBillShrHold')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'oPdIpdType')!.template = this.actionsIPOP;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
     }
 
     allColumns = [
-        // { heading: "PType", key: "OPdIpdType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+
+        {
+            heading: "-", key: "oPdIpdType", sort: true, align: 'left', type: gridColumnTypes.template,
+            template: this.actionsIPOP
+        },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Pro.Start Date", key: "processStartDate", sort: true, align: 'left', emptySign: 'NA', width: 110, type: 6 },
         { heading: "Pro.End Date", key: "processEndDate", sort: true, align: 'left', emptySign: 'NA', width: 110, type: 6 },
@@ -114,8 +116,6 @@ export class DoctorshareProcessComponent {
         sortOrder: 0,
         filters: this.allFilters
     }
-
-
 
     createPaymentForm(): FormGroup {
         return this.formBuilder.group({
@@ -172,9 +172,9 @@ export class DoctorshareProcessComponent {
         return this.formBuilder.group({
             paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId: [this.accountService.currentUserValue.user.unitId],
-            billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [item.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
             receiptNo: '',
-            opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [item.oPdIpdType, [this._FormvalidationserviceService.onlyNumberValidator()]],
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
             payAmount: [parseFloat(item?.payAmount) ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -196,7 +196,7 @@ export class DoctorshareProcessComponent {
             createdBy: [this.accountService.currentUserValue.userId],
             transactionLabel: ['Dr_Pay', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             isCancelled: false,
-            isCancelledBy:this.accountService.currentUserValue.user.unitId,
+            isCancelledBy: this.accountService.currentUserValue.user.unitId,
             isCancelledDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
             createdDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd')
         });
@@ -207,7 +207,7 @@ export class DoctorshareProcessComponent {
         console.log(element)
         const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(element.processDate, 'yyyy-MM-dd') || '01/01/1900',
-        PatientHeaderObj['PatientName'] = element.PatientName;
+            PatientHeaderObj['PatientName'] = element.PatientName;
         PatientHeaderObj['BillNo'] = element.doctorPayoutId;
         PatientHeaderObj['DoctorName'] = element.doctorName;
 
@@ -227,10 +227,9 @@ export class DoctorshareProcessComponent {
             if (result && result.IsSubmitFlag == true) {
                 console.log(result.submitDataPay.ipPaymentInsert)
 
-
                 this.ModeOfPaymentsArray.clear();
                 result.submitDataPay.ipModePaymentInsert.forEach(item => {
-                    debugger
+
                     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
                 });
 
