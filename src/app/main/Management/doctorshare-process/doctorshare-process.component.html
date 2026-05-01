@@ -63,17 +63,6 @@
             <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
                 <ng-container filters>
                     <form [formGroup]="DocProcessfilterForm">
-                        <!-- <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="fromDate" placeholder="Start date"
-                                    (dateChange)="onChangeFirst()">
-                                <input matEndDate formControlName="enddate" placeholder="End date"
-                                    (dateChange)="onChangeFirst()">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field> -->
                         <airmid-datepicker [formGroup]="DocProcessfilterForm" [isRangePicker]="true"
                             formStartControlName="fromDate" formEndControlName="enddate"
                             [(fromValue)]="gridConfig.filters[1].fieldValue"

@@ -9,7 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { BillListForDocShrList } from 'app/main/administration/doctor-share/doctor-share.component';
-import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -19,6 +18,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ChargesList } from 'app/main/opd/appointment-list/appointment-billing/appointment-billing.component';
 import { fuseAnimations } from '@fuse/animations';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-doctorshare-process',
@@ -29,22 +29,20 @@ import { fuseAnimations } from '@fuse/animations';
 export class DoctorshareProcessComponent {
 
     @ViewChild('drawer') public drawer: MatDrawer;
-    isRegIdSelected: boolean = false;
-    isDoctorIDSelected: boolean = false;
-    isgroupIdSelected: boolean = false;
-    DoctorListfilteredOptions: Observable<string[]>;
-    filteredOptionsGroup: Observable<string[]>;
-    doctorNameCmbList: any = [];
-    groupNameList: any = [];
-    sIsLoading: string = '';
-    PatientListfilteredOptions: any;
-    noOptionFound: any;
+    // isRegIdSelected: boolean = false;
+    // isDoctorIDSelected: boolean = false;
+    // isgroupIdSelected: boolean = false;
+    // DoctorListfilteredOptions: Observable<string[]>;
+    // filteredOptionsGroup: Observable<string[]>;
+    // doctorNameCmbList: any = [];
+    // sIsLoading: string = '';
+    // PatientListfilteredOptions: any;
+    // noOptionFound: any;
 
-    dataSource = new MatTableDataSource<BillListForDocShrList>();
+    // dataSource = new MatTableDataSource<BillListForDocShrList>();
 
-
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    // @ViewChild(MatSort) sort: MatSort;
+    // @ViewChild(MatPaginator) paginator: MatPaginator;
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -59,6 +57,7 @@ export class DoctorshareProcessComponent {
         public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
         public _matDialog: MatDialog, private formBuilder: FormBuilder,
         public toastr: ToastrService, private fb: FormBuilder, private accountService: AuthenticationService,
+        private commonService: PrintserviceService,
     ) { }
     DrpaymentForm: FormGroup
     ngOnInit(): void {
@@ -82,24 +81,20 @@ export class DoctorshareProcessComponent {
     }
 
     allColumns = [
-
         {
             heading: "-", key: "oPdIpdType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsIPOP
         },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Pro.Start Date", key: "processStartDate", sort: true, align: 'left', emptySign: 'NA', width: 110, type: 6 },
-        { heading: "Pro.End Date", key: "processEndDate", sort: true, align: 'left', emptySign: 'NA', width: 110, type: 6 },
+        { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ProcessDate", key: "processDate", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 6 },
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-        { heading: "Doctor Amount", key: "doctorAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-        { heading: "Hospital Amount", key: "hospitalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-        { heading: "TDS Amount", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
-        // { heading: "OPD_IPD_Id", key: "OPD_IPD_Id", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Charges", key: "addcharges", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "TDS Amount", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
+        { heading: "OutStandingAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
+        { heading: "PayAmount", key: "payAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 6 },
         {
-            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate2  // Assign ng-template to the column
         }
     ]
@@ -145,12 +140,10 @@ export class DoctorshareProcessComponent {
 
 
     getfilterdata() {
-        debugger
         const fromD = this.DocProcessfilterForm.get("fromDate").value || "";
         const toD = this.DocProcessfilterForm.get("enddate").value || "";
         this.fromDate = fromD ? this.datePipe.transform(this.DocProcessfilterForm.get('fromDate').value, "yyyy-MM-dd") : "";
         this.toDate = toD ? this.datePipe.transform(this.DocProcessfilterForm.get('enddate').value, "yyyy-MM-dd") : "";
-
 
         this.gridConfig = {
             apiUrl: "DoctorPAy/DoctorProcessedList",
@@ -172,9 +165,9 @@ export class DoctorshareProcessComponent {
         return this.formBuilder.group({
             paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId: [this.accountService.currentUserValue.user.unitId],
-            billNo: [item.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [item?.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
             receiptNo: '',
-            opdipdtype: [item.oPdIpdType, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
             payAmount: [parseFloat(item?.payAmount) ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -192,12 +185,12 @@ export class DoctorshareProcessComponent {
             cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            tranMode: ['DRPAY', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             createdBy: [this.accountService.currentUserValue.userId],
-            transactionLabel: ['Dr_Pay', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            transactionLabel: ['DRPAY', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             isCancelled: false,
-            isCancelledBy: this.accountService.currentUserValue.user.unitId,
-            isCancelledDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            isCancelledBy: '0',
+            isCancelledDate: new Date('1900-01-01').toISOString(),
             createdDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd')
         });
     }
@@ -207,7 +200,7 @@ export class DoctorshareProcessComponent {
         console.log(element)
         const PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(element.processDate, 'yyyy-MM-dd') || '01/01/1900',
-            PatientHeaderObj['PatientName'] = element.PatientName;
+        PatientHeaderObj['PatientName'] = element.PatientName;
         PatientHeaderObj['BillNo'] = element.doctorPayoutId;
         PatientHeaderObj['DoctorName'] = element.doctorName;
 
@@ -233,7 +226,6 @@ export class DoctorshareProcessComponent {
                     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
                 });
 
-
                 console.log(this.DrpaymentForm.value)
                 this._DoctorShareService.DoctorSharePayment(this.DrpaymentForm.value).subscribe(response => {
                     this._matDialog.closeAll();
@@ -243,9 +235,9 @@ export class DoctorshareProcessComponent {
         });
     }
 
-
-    onPrint(element) { }
-
+    onPrint(element) {
+        this.commonService.Onprint("DoctorPayoutId", element.doctorPayoutId, "rptDoctorPayoutPayServiceList");
+    }
     getValidationdoctorMessages() {
         return {
             searchDoctorId: [
