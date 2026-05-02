@@ -223,7 +223,7 @@ export class DoctorpaySummarydetailComponent {
         console.log('Selected items:', this.resultSource);
     }
 
-
+TotDocAmt1=0
     isSomeSelected() {
         console.log(this.selection.selected);
         console.log(this.resultSource);
@@ -243,8 +243,8 @@ export class DoctorpaySummarydetailComponent {
         }
         debugger
 
-        console.log(this.TotDocAmt)
-        this.TotDocAmt = 0
+        console.log(this.TotDocAmt1)
+        this.TotDocAmt1 = 0
 
         this.ProcessdetailArray.clear();
         this.interimArray.forEach(item => {
@@ -253,21 +253,25 @@ export class DoctorpaySummarydetailComponent {
                 alert("Document amount cannot be zero...!");
                 return;
             } else if (item.docAmt !== 0) {
-                this.TotDocAmt += this.TotDocAmt + item.docAmt
+                this.TotDocAmt1 = this.interimArray.reduce((sum, item) => {
+                    if (item.docAmt && item.docAmt !== 0) {
+                        return sum + item.docAmt;
+                    }
+                    return sum;
+                }, 0);
                 this.ProcessdetailArray.push(this.createdetailForm(item));
             }
         });
 
-        console.log(this.TotDocAmt)
-
+        console.log(this.TotDocAmt1)
 
         this.ProcessForm.get('doctorPayoutProcess.doctorId').setValue(this.DoctorId)
         this.ProcessForm.get('doctorPayoutProcess.netAmount').setValue(this.TotNetamt)
-        this.ProcessForm.get('doctorPayoutProcess.doctorAmount').setValue(this.TotDocAmt)
+        this.ProcessForm.get('doctorPayoutProcess.doctorAmount').setValue(this.TotDocAmt1)
         this.ProcessForm.get('doctorPayoutProcess.hospitalAmount').setValue(this.TothospitalAmt)
         this.ProcessForm.get('doctorPayoutProcess.tdsamount').setValue(this.tdsamount)
 
-
+        
         console.log(this.ProcessForm.value)
         if (!this.ProcessForm.invalid) {
 
@@ -314,35 +318,35 @@ export class DoctorpaySummarydetailComponent {
     //     }
     // }
 
-tableElementChecked(event: any, element: any) {
-    console.log(element);
+    tableElementChecked(event: any, element: any) {
+        console.log(element);
 
-    if (event.checked) {
-        if (element.docAmt === 0 || element.docAmt == null) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: 'Doctor amount cannot be zero!',
-                confirmButtonText: 'OK'
-            });
+        if (event.checked) {
+            if (element.docAmt === 0 || element.docAmt == null) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Doctor amount cannot be zero!',
+                    confirmButtonText: 'OK'
+                });
 
-            // Deselect the checkbox
-            event.source.checked = false;
+                // Deselect the checkbox
+                event.source.checked = false;
 
-            return;
+                return;
+            }
+
+            // Add to array only if amount is valid
+            this.interimArray.push(element);
         }
-
-        // Add to array only if amount is valid
-        this.interimArray.push(element);
-    } 
-    else {
-        // Remove from interimArray when unchecked
-        const index = this.interimArray.findIndex(item => item === element);
-        if (index !== -1) {
-            this.interimArray.splice(index, 1);
+        else {
+            // Remove from interimArray when unchecked
+            const index = this.interimArray.findIndex(item => item === element);
+            if (index !== -1) {
+                this.interimArray.splice(index, 1);
+            }
         }
     }
-}
 
 
     onClose() {

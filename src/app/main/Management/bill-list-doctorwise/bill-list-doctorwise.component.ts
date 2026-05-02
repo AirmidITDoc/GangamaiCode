@@ -121,7 +121,7 @@ export class BillListDoctorwiseComponent {
     }
 
     onChangeFirst1() {
-        
+        debugger
         this.fromDate = this.datePipe.transform(this.DocSummaryfilterForm.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.DocSummaryfilterForm.get('enddate').value, "yyyy-MM-dd")
 
@@ -281,8 +281,10 @@ export class BillListDoctorwiseComponent {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
+            if(result)
+                 this.onChangeFirst1()
         });
-        this.onChangeFirst1()
+       
     }
 
     DefineDoctorShare() {
@@ -353,8 +355,7 @@ export class BillListDoctorwiseComponent {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-            if(result)
-            this.onChangeFirst1()
+           this.getfilterdata1()
         });
 
     }

@@ -204,7 +204,7 @@ export class DoctorshareProcessComponent {
         PatientHeaderObj['BillNo'] = element.doctorPayoutId;
         PatientHeaderObj['DoctorName'] = element.doctorName;
 
-        PatientHeaderObj['NetPayAmount'] = element.netAmount
+        PatientHeaderObj['NetPayAmount'] = element.balanceAmt
         const dialogRef = this._matDialog.open(DoctorPaymentComponent,
             {
                 maxWidth: "80vw",
