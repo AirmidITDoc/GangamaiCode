@@ -231,7 +231,7 @@ export class DoctorshareProcessComponent {
                     // console.log(response)
                     //  this.onPrint(response)
                     this._matDialog.closeAll();
-
+                    this.onChangeFirst();
                 });
             }
         });
