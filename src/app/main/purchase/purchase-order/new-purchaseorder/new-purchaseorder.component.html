@@ -212,11 +212,9 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                     class="w-100">Qty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber
+                                    <input class="compact-cell-input" [(ngModel)]="contact.Qty" type="number" OnlyNumber
                                             [id]="'Qty_' + index" (input)="getCellCalculation(contact)"
                                             [disabled]="contact.IsVerifiedUserId > 0" [min]="0" />
-                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
@@ -241,14 +239,12 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
                                     fxShow.gt-sm>MRP</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput type="number" [(ngModel)]="contact.MRP" step="0.1"
+                                    <input class="compact-cell-input" type="number" [(ngModel)]="contact.MRP" step="0.1"
                                             [id]="'MRP' + index" autocomplete="off" OnlyNumber
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('MRP' + (index + 1))"
                                             (keydown.arrowup)="setFocus('MRP' + (index - 1))"
                                             (keypress)="keyPressCharater($event)" [min]="0" />
-                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
@@ -256,14 +252,12 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
                                     fxShow.gt-sm>Rate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1"
+                                    <input class="compact-cell-input" type="number" [(ngModel)]="contact.Rate" step="0.1"
                                             [id]="'Rate' + index" autocomplete="off" OnlyNumber
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('Rate' + (index + 1))"
                                             (keydown.arrowup)="setFocus('Rate' + (index - 1))"
                                             (keypress)="keyPressCharater($event)" [min]="0" />
-                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
@@ -287,16 +281,14 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="w-100"
                                     fxShow.gt-sm>Disc%</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.DiscPer" [id]="'DiscPer' + index"
+                                    <input class="compact-cell-input" [(ngModel)]="contact.DiscPer" [id]="'DiscPer' + index"
                                             [disabled]="contact.IsVerifiedUserId > 0"
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('DiscPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('DiscPer' + (index - 1))" step="0.1"
                                             type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
-                                    </mat-form-field>
-                                </mat-cell>Cell
+                                </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="DiscAmount">
@@ -311,15 +303,13 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">CGST
                                     (%)</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.CGSTPer" [id]="'CGSTPer' + index"
+                                    <input class="compact-cell-input" [(ngModel)]="contact.CGSTPer" [id]="'CGSTPer' + index"
                                             [disabled]="contact.IsVerifiedUserId > 0 || contact.IGSTPer > 0"
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('CGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('CGSTPer' + (index - 1))" step="0.1"
                                             type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
-                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
@@ -337,15 +327,13 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">SGST
                                     (%)</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.SGSTPer" [id]="'SGSTPer' + index"
+                                    <input class="compact-cell-input" [(ngModel)]="contact.SGSTPer" [id]="'SGSTPer' + index"
                                             [disabled]="contact.IsVerifiedUserId > 0 || contact.IGSTPer > 0"
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('SGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('SGSTPer' + (index - 1))" step="0.1"
                                             type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
-                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
@@ -362,15 +350,13 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">IGST
                                     (%)</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
-                                    <mat-form-field appearance="fill">
-                                        <input matInput [(ngModel)]="contact.IGSTPer" [id]="'IGSTPer' + index"
+                                    <input class="compact-cell-input" [(ngModel)]="contact.IGSTPer" [id]="'IGSTPer' + index"
                                             [disabled]="contact.IsVerifiedUserId > 0 || (contact.CGSTPer > 0 || contact.SGSTPer > 0)"
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('IGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('IGSTPer' + (index - 1))" step="0.1"
                                             type="number" [min]="0" [max]="100" OnlyNumber autocomplete="off"
                                             (keypress)="keyPressCharater($event)" />
-                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
