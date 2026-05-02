@@ -247,6 +247,7 @@ export class CompanyPatientSummaryDashboardComponent implements OnInit {
             exportType: gridResponseType.JSON
         }; 
         this._CashlessDashboardService.getcompanypatientbillinfo(gridDataRequest).subscribe((data: any) => {
+            debugger
             this.dataSourceParent.data = data.data as [];
             this.parentResultsLength = data["recordsFiltered"];
         });
