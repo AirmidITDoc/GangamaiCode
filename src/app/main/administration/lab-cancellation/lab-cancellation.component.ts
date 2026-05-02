@@ -30,8 +30,10 @@ export class LabCancellationComponent {
     PBillNo: any = "%"
     lable: any = '';
     CompanyId = 0
+    status: any = "0"
     UnitId: any = this._loggedService.currentUserValue.user.unitId;
     billcancelList: any
+    vStatusSearch: any = "0";
     myFilterbillform: FormGroup;
     autocompleteModecompany1: string = "Company";
     autocompleteModecompany: string = "Company";
@@ -95,7 +97,8 @@ export class LabCancellationComponent {
         { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
-        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "IsCancelled", fieldValue: String(this.status), opType: OperatorComparer.Equals },
     ]
 
     // 1st table
@@ -116,6 +119,7 @@ export class LabCancellationComponent {
         this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
         this.CompanyId = this.myFilterbillform.get('CompanyId').value || "0"
         this.UnitId = this.myFilterbillform.get('UnitId').value || "0"
+        this.status = this.myFilterbillform.get('StatusSearch').value || "0"
         this.getfilterLabCan();
     }
 
@@ -133,7 +137,8 @@ export class LabCancellationComponent {
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
             { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals },
-            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+            { fieldName: "IsCancelled", fieldValue: String(this.status), opType: OperatorComparer.Equals },
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -206,7 +211,10 @@ export class LabCancellationComponent {
             if (result.isConfirmed) {
                 const SubmitDate = {
                     "billNo": this.billcancelList.billNo || 0,
-                    "discComments": this.VReason || ''
+                    "isCancelledBy": this._loggedService.currentUserValue.userId,
+                    "isCancelledDatetime": new Date(),
+                    "cancelReason": this.VReason || ''
+                    // "discComments": this.VReason || ''
                 }
                 console.log("Json:", SubmitDate)
                 this._CancellationService.LabCancelBill(SubmitDate).subscribe(response => {

@@ -97,7 +97,8 @@ export class BrowseLabBillsComponent {
         { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
         { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
-        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+        { fieldName: "IsCancelled", fieldValue: "2", opType: OperatorComparer.Equals },
     ];
 
     allOPbillcolumns = [
@@ -619,7 +620,8 @@ export class BrowseLabBillsComponent {
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
             { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals },
-            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
+            { fieldName: "IsCancelled", fieldValue: "2", opType: OperatorComparer.Equals },
             ]
         }
         this.grid.gridConfig = this.gridConfig;

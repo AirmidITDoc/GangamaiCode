@@ -2,7 +2,7 @@
     dynamicTableHeight>
 
     <mat-tab-group mat-align-tabs="start" mat-stretch-tabs="false">
-       
+
         <mat-tab label="Lab Bill Cancellation">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -27,11 +27,17 @@
                                 (click)="OnUpdate(element)" matTooltip="Bill Date Update">
                                 BillDate
                             </button>&nbsp;
-                            <button class="btn btn-danger" *ngIf="element.isCancelled =='0'"
-                                (click)="openCancelBill(element,OP)" matTooltip="Cancle Bill" style="color: white;">
-                                Bill
-                                Cancel
-                            </button>
+                            
+                            <span [matTooltip]="(element.isSampleCollection == 1 || element.isRadiologyComplete == 1) 
+                                        ? 'Cannot cancel: Sample collected or Radiology completed' 
+                                        : ''">
+                                <button class="btn btn-danger" *ngIf="element.isCancelled == '0'"
+                                    (click)="openCancelBill(element, LAB)"
+                                    [disabled]="element.isSampleCollection == 1 || element.isRadiologyComplete == 1"
+                                    style="color: white;">
+                                    Bill Cancel
+                                </button>
+                            </span>
                         </div>
                     </ng-template>
 
@@ -97,15 +103,27 @@
                                     (selectionChange)="ListView($event)"
                                     [mode]="autocompleteModecompany"></airmid-dropdown>
 
-                                <div fxFlexFill fxLayout="column" class="gap-8">
-                                    <div fxLayout="row" class="gap-4">
-                                        <mat-icon matTooltip="NotCancelled" class="pill blue-600 s-16">circle</mat-icon>
-                                        <span class="blue-600-fg">NotCancelled</span>
-                                    </div>
-                                    <div fxLayout="row" class="gap-4">
-                                        <mat-icon matTooltip="Cancelled" class="pill red-600 s-16">circle</mat-icon>
-                                        <span class="red-600-fg">Cancelled</span>
-                                    </div>
+                                <div fxFlex="15%" fxLayout="row">
+                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                        (change)="onChangeLabCan()" fxLayout="column" value="0" class="gap-4"
+                                        [(ngModel)]="vStatusSearch">
+                                        <div fxLayout="column">
+                                            <div fxLayout="row">
+                                                <mat-icon style="margin-top: 10px;">circle</mat-icon>
+                                                <mat-radio-button value='2'>All</mat-radio-button>
+                                            </div>
+                                            <div fxLayout="row" class="gap-4">
+                                                <mat-icon style="margin-top: 7px;"
+                                                    class="pill blue-600 s-16">circle</mat-icon>
+                                                <mat-radio-button value='1'>Cancelled</mat-radio-button>
+                                            </div>
+                                            <div fxLayout="row" class="gap-4">
+                                                <mat-icon style="margin-top: 7px;"
+                                                    class="pill red-600 s-16">circle</mat-icon>
+                                                <mat-radio-button value='0'>NotCancelled</mat-radio-button>
+                                            </div>
+                                        </div>
+                                    </mat-radio-group>
                                 </div>
                             </form>
                         </ng-container>

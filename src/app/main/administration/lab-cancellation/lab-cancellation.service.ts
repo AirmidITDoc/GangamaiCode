@@ -23,8 +23,8 @@ export class LabCancellationService {
             PBillNo: '',
             RegNo: '',
             CompanyId: 0,
-            UnitId: [this.accountService.currentUserValue.user.unitId]
-            //  ReceiptNo: '',
+            UnitId: [this.accountService.currentUserValue.user.unitId],
+            StatusSearch: ['0'],
         });
     }
 
