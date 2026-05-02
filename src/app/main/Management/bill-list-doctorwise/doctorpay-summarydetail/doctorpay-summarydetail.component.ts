@@ -180,7 +180,6 @@ export class DoctorpaySummarydetailComponent {
     getsumdetail() {
         this.count = this.Billdetaildatasource.data.length
         this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-
         this.TotDocAmt = this.Billdetaildatasource.data.reduce((sum, { docAmt }) => sum += +(docAmt || 0), 0);
         this.TothospitalAmt = this.Billdetaildatasource.data.reduce((sum, { hospitalAmt }) => sum += +(hospitalAmt || 0), 0);
 
@@ -207,28 +206,30 @@ export class DoctorpaySummarydetailComponent {
     }
 
 
-    masterToggle() {
-        // Toggle selection
-        if (this.isSomeSelected()) {
-            this.selection.clear();
-        } else {
-            this.isAllSelected()
-                ? this.selection.clear()
-                : this.Billdetaildatasource.data.forEach(row => this.selection.select(row));
-        }
+    // masterToggle() {
+    //     // Toggle selection
+    //     if (this.isSomeSelected()) {
+    //         this.selection.clear();
+    //     } else {
+    //         this.isAllSelected()
+    //             ? this.selection.clear()
+    //             : this.Billdetaildatasource.data.forEach(row => this.selection.select(row));
+    //     }
 
-        console.log('Selected items count:', this.selection.selected.length);
+    //     console.log('Selected items count:', this.selection.selected.length);
 
-        this.resultSource = [...this.selection.selected];
-        console.log('Selected items:', this.resultSource);
-    }
+    //     this.resultSource = [...this.selection.selected];
+    //     console.log('Selected items:', this.resultSource);
+    // }
 
-TotDocAmt1=0
-    isSomeSelected() {
-        console.log(this.selection.selected);
-        console.log(this.resultSource);
-        return this.selection.selected.length > 0;
-    }
+    TotDocAmt1=0;
+    m_TotNetAmt=0;
+    m_TotHospAmt=0;
+    // isSomeSelected() {
+    //     console.log(this.selection.selected);
+    //     console.log(this.resultSource);
+    //     return this.selection.selected.length > 0;
+    // }
 
     selection = new SelectionModel<BillListForDocShrList>(true, []);
     Save() {
@@ -241,14 +242,11 @@ TotDocAmt1=0
             });
             return;
         }
-        debugger
-
         console.log(this.TotDocAmt1)
         this.TotDocAmt1 = 0
 
         this.ProcessdetailArray.clear();
         this.interimArray.forEach(item => {
-            debugger
             if (item.docAmt === 0) {
                 alert("Document amount cannot be zero...!");
                 return;
@@ -259,6 +257,18 @@ TotDocAmt1=0
                     }
                     return sum;
                 }, 0);
+                 this.m_TotNetAmt = this.interimArray.reduce((SumNet, item) => {
+                    if (item.netAmount && item.NetAmt !== 0) {
+                        return SumNet + item.netAmount;
+                    }
+                    return SumNet;
+                }, 0);
+                 this.m_TotHospAmt = this.interimArray.reduce((sumHosp, item) => {
+                    if (item.hospitalAmt && item.hospitalAmt !== 0) {
+                        return sumHosp + item.hospitalAmt;
+                    }
+                    return sumHosp;
+                }, 0);
                 this.ProcessdetailArray.push(this.createdetailForm(item));
             }
         });
@@ -266,9 +276,9 @@ TotDocAmt1=0
         console.log(this.TotDocAmt1)
 
         this.ProcessForm.get('doctorPayoutProcess.doctorId').setValue(this.DoctorId)
-        this.ProcessForm.get('doctorPayoutProcess.netAmount').setValue(this.TotNetamt)
+        this.ProcessForm.get('doctorPayoutProcess.netAmount').setValue(this.m_TotNetAmt)
         this.ProcessForm.get('doctorPayoutProcess.doctorAmount').setValue(this.TotDocAmt1)
-        this.ProcessForm.get('doctorPayoutProcess.hospitalAmount').setValue(this.TothospitalAmt)
+        this.ProcessForm.get('doctorPayoutProcess.hospitalAmount').setValue(this.m_TotHospAmt)
         this.ProcessForm.get('doctorPayoutProcess.tdsamount').setValue(this.tdsamount)
 
         
