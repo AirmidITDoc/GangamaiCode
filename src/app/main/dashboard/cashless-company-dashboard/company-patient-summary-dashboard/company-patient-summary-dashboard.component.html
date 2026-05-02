@@ -241,7 +241,7 @@
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 ellipsis-text"
                                                 mat-Tooltip="{{contact.secondCompanyName}}">
                                                 <span> {{contact.secondCompanyName || '-'}}</span>
-                                            </mat-cell>
+                                            </mat-cell>  
                                         </ng-container>
 
                                         <ng-container matColumnDef="CompanyApprovedAmt">
@@ -681,8 +681,8 @@
                                             Second Company Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 ellipsis-text"
-                                            mat-Tooltip="{{contact.secondCompanyName}}">
-                                            <span> {{contact.secondCompanyName || '-'}}</span>
+                                            mat-Tooltip="{{contact.secondCompnayName}}">
+                                            <span> {{contact.secondCompnayName || '-'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
