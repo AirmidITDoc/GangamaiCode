@@ -90,7 +90,7 @@ export class DoctorshareProcessComponent {
         { heading: "ProcessDate", key: "processDate", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 6 },
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
         { heading: "TDS Amount", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
-        { heading: "OutStandingAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
+        { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
         { heading: "PayAmount", key: "payAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
         { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 6 },
         {
@@ -228,6 +228,8 @@ export class DoctorshareProcessComponent {
 
                 console.log(this.DrpaymentForm.value)
                 this._DoctorShareService.DoctorSharePayment(this.DrpaymentForm.value).subscribe(response => {
+                    // console.log(response)
+                    //  this.onPrint(response)
                     this._matDialog.closeAll();
 
                 });

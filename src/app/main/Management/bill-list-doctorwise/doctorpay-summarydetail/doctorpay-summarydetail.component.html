@@ -37,7 +37,7 @@
                             <mat-table #table matSort [dataSource]="Billdetaildatasource"
                                 [@animateStagger]="{ value: '50' }" class="airmid-table table3" style="overflow: auto;">
 
-                                <ng-container matColumnDef="select">
+                                <!-- <ng-container matColumnDef="select">
                                     <th mat-header-cell *matHeaderCellDef>
                                         <mat-checkbox (change)="$event ? masterToggle() : null"
                                             [checked]="selection.hasValue()"
@@ -49,14 +49,19 @@
                                             (change)="$event ? selection.toggle(contact) : null"
                                             [checked]="selection.isSelected(contact)">
                                         </mat-checkbox>
-                                        <!-- <ng-template #noMLC>
-                                            <div
-                                                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                                <span>----</span>
-                                            </div>
-                                        </ng-template> -->
+                                      
                                     </td>
-                                </ng-container>
+                                </ng-container> -->
+
+
+                                 <ng-container matColumnDef="select" >
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">
+                            <!-- <span class="material-icons" (click)="getChargesList()">cached</span> -->
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let contact" class="w-60">
+                            <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)"></mat-checkbox>
+                          </mat-cell>
+                        </ng-container>
 
                                 <!-- <ng-container matColumnDef="addChargeDrName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>

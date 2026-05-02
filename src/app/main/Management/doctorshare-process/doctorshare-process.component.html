@@ -52,7 +52,13 @@
                         <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                     </mat-icon>
 
-                    <mat-icon (click)="onPrint(element)" matTooltip="Print Bill">print
+                     <mat-icon (click)="OnPaymentdetail(element)" *ngIf="!element.paymentId==0"
+                        matTooltip="Payment Paid ">
+                        <img width="30px" height="30px" src="assets/images/logos/pamode.png">
+                    </mat-icon>
+
+
+                    <mat-icon (click)="onPrint(element)" matTooltip="Print Receipt" *ngIf="!element.paymentId==0">print
                     </mat-icon>
 
                 </div>

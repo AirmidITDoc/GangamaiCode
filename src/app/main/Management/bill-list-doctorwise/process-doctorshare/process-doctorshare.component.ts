@@ -1,13 +1,16 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { BillDoctorwiseService } from '../bill-doctorwise.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-process-doctorshare',
     templateUrl: './process-doctorshare.component.html',
-    styleUrls: ['./process-doctorshare.component.scss']
+    styleUrls: ['./process-doctorshare.component.scss'],
+        encapsulation: ViewEncapsulation.None,
+        animations: fuseAnimations
 })
 export class ProcessDoctorshareComponent {
 

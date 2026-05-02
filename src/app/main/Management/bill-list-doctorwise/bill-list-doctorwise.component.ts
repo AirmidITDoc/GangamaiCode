@@ -121,7 +121,7 @@ export class BillListDoctorwiseComponent {
     }
 
     onChangeFirst1() {
-        debugger
+        
         this.fromDate = this.datePipe.transform(this.DocSummaryfilterForm.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.DocSummaryfilterForm.get('enddate').value, "yyyy-MM-dd")
 
@@ -132,8 +132,7 @@ export class BillListDoctorwiseComponent {
     }
 
     getfilterdata1() {
-
-        debugger
+        
         this.gridConfig1 = {
             apiUrl: "DoctorPAy/DoctorPaySummaryList",
             columnsList: this.allColumns1,
@@ -283,6 +282,7 @@ export class BillListDoctorwiseComponent {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
         });
+        this.onChangeFirst1()
     }
 
     DefineDoctorShare() {
@@ -353,7 +353,8 @@ export class BillListDoctorwiseComponent {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-            // this.onChangeFirst()
+            if(result)
+            this.onChangeFirst1()
         });
 
     }
