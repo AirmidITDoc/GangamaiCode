@@ -20,7 +20,7 @@ export class DoctorshareProcessService {
 
         })
     }
- getPaymentArr() {
+    getPaymentArr() {
         //return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=PaymentMode");
         return [
             { value: 'cash', viewValue: 'Cash' },
@@ -35,9 +35,10 @@ export class DoctorshareProcessService {
     public DoctorProcPayment(Param) {
         return this._httpClient.PostData("DoctorPAy/DoctorPayoutProcess", Param)
     }
- public DoctorSharePayment(Param) {
+    public DoctorSharePayment(Param) {
         return this._httpClient.PostData("DoctorPAy/TDoctorpaymentInsert", Param)
     }
-
-    
+    public UnProcessDoctorpayout(Param) {
+        return this._httpClient.PutData("DoctorPAy/DoctorPayoutUnprocess", Param)
+    }
 }

@@ -31,15 +31,15 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-
-            <ng-template #actionsIPOP let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <mat-icon *ngIf="element.oPdIpdType=='OP'" matTooltip="OutPatient"
-                        class="pill orange s-16">circle</mat-icon>
-                    <mat-icon *ngIf="element.oPdIpdType=='IP'" matTooltip="InPatient"
-                        class="pill green s-16">circle</mat-icon>
-
+            <ng-template #PatientTypeColorCode let-element>
+                <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+              'status-settled': element.payStatus === 'Settled',
+              'status-pending': element.payStatus === 'Pending',
+              'status-cancelled': element.payStatus === 'Cancelled'
+            }">
+                        {{ element.payStatus }}
+                    </span>
                 </div>
             </ng-template>
 
@@ -47,12 +47,15 @@
 
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon (click)="OnPaymentdetail(element)" *ngIf="element.paymentId==0"
+                    <mat-icon (click)="OnPaymentdetail(element)" *ngIf="element.paymentId == 0 && element.isCancelled==0"
                         matTooltip="Payment Detail">
                         <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                     </mat-icon>
 
-                    <mat-icon (click)="onPrint(element)" matTooltip="Print Receipt">print
+                    <mat-icon (click)="onPrint(element)" matTooltip="Print Receipt" *ngIf="element.isCancelled==0">print
+                    </mat-icon>
+
+                    <mat-icon (click)="onUnprocessPayout(element)" matTooltip="Un-process Payout" *ngIf="element.isCancelled == 0">redo
                     </mat-icon>
 
                 </div>

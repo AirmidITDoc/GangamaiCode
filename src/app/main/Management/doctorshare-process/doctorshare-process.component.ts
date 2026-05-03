@@ -72,18 +72,16 @@ export class DoctorshareProcessComponent {
 
     }
     @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
-    @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
-
-
+    @ViewChild('PatientTypeColorCode') PatientTypeColorCode!: TemplateRef<any>;
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'oPdIpdType')!.template = this.actionsIPOP;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
+        this.gridConfig.columnsList.find(col => col.key === 'payStatus')!.template = this.PatientTypeColorCode;
     }
 
     allColumns = [
         {
-            heading: "-", key: "oPdIpdType", sort: true, align: 'left', type: gridColumnTypes.template,
-            template: this.actionsIPOP
+            heading: "Status", key: "payStatus", align: 'left', type: gridColumnTypes.template, width: 120,
+            template: this.PatientTypeColorCode
         },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
@@ -93,6 +91,7 @@ export class DoctorshareProcessComponent {
         { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
         { heading: "PayAmount", key: "payAmount", sort: true, align: 'left', emptySign: 'NA', width: 100 ,type: gridColumnTypes.amount},
         { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 70, type: 6 },
+        { heading: "unProcessBy", key: "unProcessStatus", sort: true, align: 'left', emptySign: 'NA', width: 250},
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate2  // Assign ng-template to the column
@@ -237,6 +236,17 @@ export class DoctorshareProcessComponent {
         });
     }
 
+    onUnprocessPayout(element) {
+        console.log("Payout Id for Un-Process : ", element);
+        const payload = {
+            doctorPayoutId: element?.doctorPayoutId || 0,
+            isCancelledBy: this.accountService?.currentUserValue.userId || 0
+        };
+
+        this._DoctorShareService.UnProcessDoctorpayout(payload).subscribe(response => {
+            this.onChangeFirst();
+        });
+    }
     onPrint(element) {
         this.commonService.Onprint("DoctorPayoutId", element.doctorPayoutId, "rptDoctorPayoutPayServiceList");
     }
