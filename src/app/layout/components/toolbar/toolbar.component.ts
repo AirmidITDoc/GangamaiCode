@@ -190,8 +190,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             this.setDashboard()
         // upt0
 
-        debugger
-
         // search menu
         this._authService.getFavMenus().subscribe((Menu) => {
 
