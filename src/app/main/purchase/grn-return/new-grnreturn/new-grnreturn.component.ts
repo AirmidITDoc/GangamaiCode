@@ -255,8 +255,8 @@ debugger
         const issueqty = element.balanceQty - element.returnQty
         return this._formbuilder.group({
             grndetId: [element.GRNDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            // returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
-            returnQty: [issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+            returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+            //returnQty: [issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }
 

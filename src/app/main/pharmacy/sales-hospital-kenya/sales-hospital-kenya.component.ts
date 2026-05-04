@@ -91,6 +91,7 @@ export class SalesHospitalKenyaComponent {
     TotalBalanceAmt: any = 0;
     PatientHeaderObj: any;
     StockId: any;
+    NetPayBillAmt:any=0;
     paymethod: boolean = true;
     Draftchk: boolean = true;
     ConShow: boolean = false;
@@ -1087,11 +1088,12 @@ export class SalesHospitalKenyaComponent {
         const FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
         const FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
         const roundoffAmt = (Math.round(FinalNetAmt) - FinalNetAmt).toFixed(2);
+          this.NetPayBillAmt = Math.round(FinalNetAmt)
         this.ItemSubform.patchValue({
             roundoffAmt: roundoffAmt,
             totalAmount: FinalTotalAmt,
             vatAmount: FinalGSTAmt,
-            netAmount: Math.round(FinalNetAmt),
+            netAmount: FinalNetAmt,
         })
         if (Number(FinalDiscAmt > 0)) {
             this.ItemSubform.patchValue({ discAmount: FinalDiscAmt })
@@ -1159,9 +1161,10 @@ export class SalesHospitalKenyaComponent {
             this.ConShow = true;
             FinalDiscAmt = ((formValues?.totalAmount * Disc) / 100).toFixed(2);
             NetAmount = (formValues.totalAmount - parseFloat(FinalDiscAmt)).toFixed(2);
+              this.NetPayBillAmt = Math.round(NetAmount)
             this.ItemSubform.patchValue({
                 discAmount: FinalDiscAmt,
-                netAmount: Math.round(NetAmount),
+                netAmount: NetAmount,
                 roundoffAmt: (Math.round(NetAmount) - NetAmount).toFixed(2)
             })
             this.ItemSubform.get('concessionReasonId').reset();
@@ -1174,10 +1177,11 @@ export class SalesHospitalKenyaComponent {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
             }
+              this.NetPayBillAmt = Math.round(formValues?.totalAmount)
             this.ItemSubform.patchValue({
                 FinalDiscPer: 0,
                 discAmount: 0,
-                netAmount: Math.round(formValues?.totalAmount),
+                netAmount: formValues?.totalAmount,
                 roundoffAmt: (Math.round(formValues?.totalAmount) - formValues?.totalAmount).toFixed(2)
             });
             this.ConShow = false;
@@ -1214,10 +1218,11 @@ export class SalesHospitalKenyaComponent {
             this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
             //this.ConseId.nativeElement.focus();
         }
+          this.NetPayBillAmt = Math.round(NetAmount)
         this.ItemSubform.patchValue({
             FinalDiscPer: Discper,
             discAmount: totDiscAmt,
-            netAmount: Math.round(NetAmount),
+            netAmount: NetAmount,
             roundoffAmt: (Math.round(NetAmount) - NetAmount).toFixed(2)
         })
 
@@ -1750,12 +1755,12 @@ export class SalesHospitalKenyaComponent {
         this.PharmaSalesDraftForm.get('salesDraft.time').setValue(FormattedDateTime)
         this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue?.opIpType)
         this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.OP_IP_Id)
-        this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number(Math.round(formValue?.totalAmount)))
-        this.PharmaSalesDraftForm.get('salesDraft.vatAmount').setValue(Number(Math.round(formValue?.vatAmount)))
-        this.PharmaSalesDraftForm.get('salesDraft.discAmount').setValue(Number(Math.round(formValue?.discAmount)))
-        this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue?.netAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number((formValue?.totalAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.vatAmount').setValue(Number((formValue?.vatAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.discAmount').setValue(Number((formValue?.discAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number((formValue?.netAmount)))
         this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
-        this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue?.netAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number((formValue?.netAmount)))
 
         if (formValue.opIpType == 2) {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')

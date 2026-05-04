@@ -1,0 +1,57 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    New Rate Define</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="DefineForm">
+                <input type="hidden" name="unitofMeasurementId" formControlName="unitofMeasurementId">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                   <div fxFlex>   
+                    <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="DefineForm"
+                      formControlName="itemId" placeholderText="Item Name (enter 2 char)"  
+                      TextField="formattedText"
+                      [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + StoreId + '&ItemName='"
+                        ValueField="itemId" [validations]="getValidationMessages().itemId" ></airmid-autocomplete> 
+
+                    <airmid-dropdown label="Supplier Name" formControlName="supplierId"
+                      [formGroup]="DefineForm" [validations]="getValidationMessages().supplierId"
+                      [mode]="autocompleteSupplier"  ></airmid-dropdown>
+
+                       <airmid-textbox label="Supplier Rate" formControlName="supplierRate" 
+                      [formGroup]="DefineForm" [validations]="getValidationMessages().supplierRate" [min]="1">
+                     </airmid-textbox> 
+                    </div> 
+                </div>
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+ 
+                    <div>
+                        <!-- <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="DefineForm" [(ngModel)]="isActive" ></app-airmid-slider> -->
+
+                       </div>
+         
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()" >
+                            <span>Save</span>
+                        </button>
+                    </div> 
+                </div> 
+            </form>
+        </div>
+    </div>
+</div>

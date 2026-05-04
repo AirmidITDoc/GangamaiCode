@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 
-import { RouterModule, Routes } from "@angular/router";
-
+import { RouterModule, Routes } from "@angular/router"; 
 const appRoutes: Routes = [
     {
         path: "currency-master",
@@ -103,13 +102,19 @@ const appRoutes: Routes = [
         path: "item-drugtype-master",
         loadChildren: () =>
             import("./item-drug-master/item-drug-master.module").then((m) => m.ItemDrugMasterModule),
+    },
+        {
+        path: "supplierwise-rate-define",
+        loadChildren: () =>
+            import("./supplierwise-rate-define/supplierwise-rate-define.module").then((m) => m.SupplierwiseRateDefineModule),
     }
+ 
 ];
 
 @NgModule({
-    declarations: [
-
-    ],
+    declarations: [ 
+     
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class InventoryModule { }
