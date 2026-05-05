@@ -106,34 +106,31 @@
           </div>
         </mat-card-content>
       </mat-card> -->
-   <!-- Patient Info Section -->
-                <div class="modal-card-container mt-0" style="margin-top: -4px;">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
-                            <div class="patient-info-sales">
-                                <div class="patient-info-title border-bottom pb-1 mb-1">
-                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
-                                </div>
-                                <div class="Ipd-patient-info w-100-p">
-                                    <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
+      <!-- Patient Info Section -->
+      <div class="modal-card-container mt-0" style="margin-top: -4px;">
+        <div fxFlex.gt-sm="100%" fxFlex>
+          <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+            <div class="patient-info-sales">
+              <div class="patient-info-title border-bottom pb-1 mb-1">
+                <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+              </div>
+              <div class="Ipd-patient-info w-100-p">
+                <app-patient-information [uhidNo]="data?.regNo" [patientName]=" (data?.firstName || '') +
                                         (data?.middleName ? ' ' + data.middleName : '') +
                                         (data?.lastName ? ' ' + data.lastName : '')
                                         || data?.patientName
-                                        " [doctorName]="data?.doctorname"
-                                        [departmentName]="data?.departmentName"
-                                        [doa]="data.admissionTime" 
-                                        [ipdNo]="data?.ipdno || data?.ipdno"
-                                        [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
-                                        [refDocName]="data?.refDocName"
-                                        [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
-                                        [patientType]="data?.patientType"
-                                        [tariffName]="data?.tariffName"
-                                        [companyName]="data?.companyName"></app-patient-information>
-                                </div>
-                            </div>
-                        </mat-card>
-                    </div>
-                </div>
+                                        " [doctorName]="data?.doctorname" [departmentName]="data?.departmentName"
+                  [doa]="data.admissionTime" [ipdNo]="data?.ipdno || data?.ipdno"
+                  [ageString]="(data?.age !== undefined ? data?.age + 'Y|' + data?.ageMonth + 'M|' + data?.ageDay + 'D | ' + data?.genderName : '')"
+                  [refDocName]="data?.refDocName"
+                  [wardBedName]="(data?.roomName && data?.bedName) ? (data?.roomName + ' | ' + data?.bedName) : ''"
+                  [patientType]="data?.patientType" [tariffName]="data?.tariffName"
+                  [companyName]="data?.companyName"></app-patient-information>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
       <mat-tab-group class="dynamic-table-wrapper">
         <mat-tab>
           <ng-template mat-tab-label>Template Detail</ng-template>
@@ -143,7 +140,8 @@
                 <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
                   <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"
                     fxFlex="40%" [value]="TemplateId" ValueField="templateId" TextField="templateName"
-                    (selectionChange)="onChangetemp($event)" ApiUrl="TemplateDescriptionConfig/GetDischargeTemplateList?CategoryName=DischargeSummaryTemplate"></airmid-dropdown>
+                    (selectionChange)="onChangetemp($event)"
+                    ApiUrl="TemplateDescriptionConfig/GetDischargeTemplateList?CategoryName=DischargeSummaryTemplate"></airmid-dropdown>
                   <!-- [readonly]="!isItemIdSelected" -->
                   <div class="mt-2">
                     <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"
@@ -190,19 +188,44 @@
               <div fxLayout="column" fxLayoutGap="10px">
                 <div fxFlex.gt-sm="100%" fxFlex>
                   <form [formGroup]="MedicineItemForm">
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-4">
+
                       <airmid-autocomplete label="Enter Item Name" [formGroup]="MedicineItemForm"
-                        formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
+                        formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="20%"
                         [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                         (selectionChange)="getSelectedserviceObj($event)" TextField="itemName" ValueField="itemId"
                         (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
-                      <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
+                      <!-- <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
                         [validations]="getValidationMessages().DoseId" (selectionChange)="getdose($event)"
                         [mode]="autocompleteModeDose" [(ngModel)]="doseId" *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
 
                       <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [formGroup]="MedicineItemForm"
-                        [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
+                        [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox> -->
+
+
+
+                      <airmid-autocomplete label="Dose Name" [formGroup]="MedicineItemForm" formControlName="DoseId"
+                        placeholderText="Dose Name" fxFlex="10%" ApiUrl="DoseMaster/GetDoseMasterList?DoseName="
+                        (selectionChange)="getSelectedDoseObj($event)" TextField="doseName"
+                        ValueField="doseId"></airmid-autocomplete>
+
+
+                      <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [type]="'text'" fxFlex="7%"
+                        (keypress)="keyPressCharater($event)" [formGroup]="MedicineItemForm"
+                        (valueChange)="calculateQty()"></airmid-textbox>
+
+
+                      <airmid-textbox label="Total Qty" formControlName="Qty" [value]="TotQty" [type]="'text'"
+                        fxFlex="7%" (keypress)="keyPressCharater($event)"
+                        [formGroup]="MedicineItemForm"></airmid-textbox>
+
+
+                      <airmid-textbox label="Instruction" formControlName="Instruction" [value]="vInstruction"
+                        [type]="'text'" [formGroup]="MedicineItemForm" fxFlex="15%"></airmid-textbox>
+
+
+
 
                       <div class="input-add-button">
                         <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'"
@@ -222,7 +245,7 @@
                         <mat-icon>add</mat-icon>
                         Dose</button>
 
-                        <!-- <button mat-raised-button (click)="TemplateList()">
+                      <!-- <button mat-raised-button (click)="TemplateList()">
                         <mat-icon>save</mat-icon>
                         Template List</button> -->
 
@@ -271,10 +294,39 @@
                       </mat-cell>
                     </ng-container>
 
+                    <!-- <ng-container matColumnDef="day">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Day</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>{{ element.days }}</span>
+                      </mat-cell>
+                    </ng-container> -->
+
                     <ng-container matColumnDef="day">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Day</mat-header-cell>
                       <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                         <span>{{ element.days }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="qty">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Qty/Day</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>{{ element.qty }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="totalQty">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Total Qty</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>{{ element.totalQty }}</span>
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="instruction">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                        fxShow.gt-sm>Instruction</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        <span>{{ element.instruction }}</span>
                       </mat-cell>
                     </ng-container>
 

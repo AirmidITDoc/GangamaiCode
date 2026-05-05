@@ -25,7 +25,7 @@ import { AdmissionService } from '../admission.service';
 export class EditAdmissionComponent implements OnInit {
     personalFormGroup: FormGroup;
     admissionFormGroup: FormGroup;
-    patienttype: any;
+    patientytpe: any;
 
     isCompanySelected: boolean = false;
     Regflag: boolean = false;
@@ -206,7 +206,7 @@ export class EditAdmissionComponent implements OnInit {
         });
     }
 
-
+patienttype:any
     onChangePatient(value) {
 
         const mode = "Company"
@@ -274,8 +274,8 @@ export class EditAdmissionComponent implements OnInit {
         this.admissionFormGroup.get('ischarity').setValue(this.admissionFormGroup.get('ischarity').value)
         this.admissionFormGroup.get('convertId').setValue(this.registerObj1.converId || 0)
         this.admissionFormGroup.get('RefDocNameId').setValue(this.registerObj1.refDocNameId || 0)
-        this.admissionFormGroup.get('RelativeName').setValue(this.registerObj1?.relativeName || '')
-
+        this.admissionFormGroup.get('RelativeName').setValue(this.admissionFormGroup.get('RelativeName').value || 0 || '')
+debugger
         if (!this.isCompanySelected) {
             this.admissionFormGroup.get('CompanyId').setValue(0);
             this.admissionFormGroup.get('subTpaComId').setValue(0);
@@ -283,8 +283,6 @@ export class EditAdmissionComponent implements OnInit {
 
 
         delete this.registerObj.regNo
-
-
         if (!this.admissionFormGroup.invalid) {
 
             const submitData = {

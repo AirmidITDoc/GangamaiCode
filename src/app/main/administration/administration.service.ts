@@ -104,6 +104,11 @@ export class AdministrationService {
         return this._httpClient.PostData("Common", param)
     }
 
+    public getAdmissionDetailList(param) {
+
+        return this._httpClient.PostData("Common", param)
+    }
+    
     public SaveDischargeCancel(employee) {
         return this._httpClient.PostData("Administration/IP_DISCHARGE_CANCELLATION", employee)
     }

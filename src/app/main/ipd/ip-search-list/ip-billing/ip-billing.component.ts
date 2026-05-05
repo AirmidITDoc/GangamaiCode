@@ -258,7 +258,7 @@ export class IPBillingComponent implements OnInit {
         this.loadClassList(); // Load class list for inline table editing
 
         // this.getBillheaderList();
-        // this.getPharmacyAmount();
+        this.getPharmacyAmount();
         const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
         const [ids, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = ids === "1";
@@ -2210,11 +2210,28 @@ export class IPBillingComponent implements OnInit {
         }));
     }
     //Pharamcy Amount 
+    // public payList: Paymode[] = [];
     getPharmacyAmount() {
-        const Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.selectedAdvanceObj.AdmissionID
-        this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) => {
+        debugger
+        // const Query = "select isnull(Sum(BalanceAmount),0) as PhBillCredit from T_SalesHeader where OP_IP_Type=1 and OP_IP_ID=" + this.opD_IPD_Id//this.selectedAdvanceObj.AdmissionID
+        // console.log(Query)
+        //    this._IpSearchListService.getPharmacyAmt(Query).subscribe((data) => {
 
-            this.PharmacyAmont = data[0].PhBillCredit;
+
+        const SelectQuery = {
+            searchFields: [
+                {
+                    "fieldName": "AdmissionId",
+                    "fieldValue": String(this.opD_IPD_Id),
+                    "opType": "Equals"
+                }
+            ],
+            mode: 'PharmacyAmtByAdminId'
+        };
+        this._IpSearchListService.getpharmacyAmt(SelectQuery).subscribe((res: any) => {
+            //   this.payList = Array.isArray(res) ? res : [];
+            console.log(res)
+            this.PharmacyAmont = res[0].PhBillCredit;
         })
     }
     getValidationMessages() {
@@ -2654,7 +2671,7 @@ export class IPBillingComponent implements OnInit {
             }
         });
     }
-        getStatementPrint() {
+    getStatementPrint() {
         this.commonService.Onprint("AdmissionID", this.selectedAdvanceObj.admissionId, "IpAdvanceStatement");
     }
 }

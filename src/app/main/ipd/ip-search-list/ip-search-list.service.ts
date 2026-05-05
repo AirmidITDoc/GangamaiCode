@@ -714,6 +714,8 @@ export class IPSearchListService {
         return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
     }
 
+    
+
     public getchargesList(Id) {
         return this._httpClient1.PostData("IPBill/IPAddchargesList", Id);
     }
@@ -1111,6 +1113,10 @@ export class IPSearchListService {
 
       public SalesBillList(employee) {//m_Rtrv_PatientVisitedListSearch
         return this._httpClient1.PostData("Sales/PharSalesSettlemet", employee)
+    }
+
+     public getpharmacyAmt(m_data) {
+        return this._httpClient1.PostData("Common", m_data)
     }
 }
 

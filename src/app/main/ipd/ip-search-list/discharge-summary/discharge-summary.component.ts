@@ -15,6 +15,8 @@ import { AdmissionPersonlModel } from '../../Admission/admission/admission.compo
 import { IPSearchListService } from '../ip-search-list.service';
 import { PaidItemList } from 'app/main/pharmacy/sales-return-bill-settlement/sales-return-bill-settlement.component';
 import { ConfigService } from 'app/core/services/config.service';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+import { Console } from 'console';
 
 @Component({
     selector: 'app-discharge-summary',
@@ -33,17 +35,22 @@ export class DischargeSummaryComponent implements OnInit {
     screenFromString = 'discharge-summary';
     dateTimeObj: any;
     ItemId: any;
-    vDay: any;
+    vDay: any = 1;
     vInstruction: any;
     ClinicalFInding: any;
     saveflag: boolean = false
     selectedLang = 'en-US';
     languages: LanguageOption[] = [];
+    morning = 0
+    afternoon = 0
+    night = 0
 
     displayedColumns: string[] = [
         'itemName',
         'doseName',
         'day',
+        'qty',
+        'totalQty',
         'instruction',
         'Action'
     ]
@@ -71,7 +78,7 @@ export class DischargeSummaryComponent implements OnInit {
     vhistory: any;
     vClinicalFinding = "BP : \nP : \nR : \nSPO2 : \n\nRS : \nP/A :\nCVS : \nCNS :"
     doseId = 0
-    doseName1 = ""
+    doseName = ""
     DocName3 = 0
     vIsNormalDeath = "1";
     ItemName: any;
@@ -100,7 +107,7 @@ export class DischargeSummaryComponent implements OnInit {
         private commonService: PrintserviceService, private configService: ConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         public datePipe: DatePipe) { }
-regId=0
+    regId = 0
     ngOnInit(): void {
         this.DischargesumInsertForm = this.showDischargeSummaryInsertForm();
         this.DischargesumInsertForm.markAllAsTouched();
@@ -124,9 +131,9 @@ regId=0
                 this._IpSearchListService.getRegistraionById(this.data.regId).subscribe((response) => {
                     this.registerObj = response;
                     console.log(this.registerObj)
-                    this.regId=this.registerObj.regId
-                   
-                         
+                    this.regId = this.registerObj.regId
+
+
                 });
                 this._IpSearchListService.getAdmissionById(this.data.admissionId).subscribe((response) => {
                     this.registerObj1 = response;
@@ -137,8 +144,8 @@ regId=0
                 });
             }, 500);
         }
-       
-   
+
+
 
     }
 
@@ -147,7 +154,8 @@ regId=0
         return this._formBuilder.group({
             ItemId: '',
             DoseId: '',
-            Day: '',
+            Day: 1,
+            Qty: 0,
             Instruction: '',
         });
     }
@@ -200,6 +208,7 @@ regId=0
 
     // 2. FormArray Group for Refund Detail
     createprescriptionDischarge(item: any = {}): FormGroup {
+        debugger
         return this._formBuilder.group({
             opdIpdId: [this.vAdmissionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -211,8 +220,8 @@ regId=0
             doseId: [Number(item.doseId) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             days: [Number(item.days) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             instructionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            qtyPerDay: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            totalQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            qtyPerDay: [item.qty, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalQty: [item.totalQty, [this._FormvalidationserviceService.onlyNumberValidator()]],
             instruction: [item.instruction || ''],
             remark: [''],
             isEnglishOrIsMarathi: true,
@@ -225,10 +234,10 @@ regId=0
         return this.DischargesumInsertForm.get('prescriptionDischarge') as FormArray;
     }
 
-   
+
 
     OnSave() {
-       
+
 
         console.log(this.DischargesumInsertForm.value.prescriptionDischarge)
         Swal.fire({
@@ -318,14 +327,183 @@ regId=0
         })
     }
 
-    getdose(event) {
-        this.doseName1 = event.text
-        this.doseId = event.value
+   calculateQty() {
+  
+          if (this.MedicineItemForm.get('Day').value > 0) {
+  
+              if (this.DoseQtyperday == 0) {
+                  this.Perdayqty = 1
+              
+                  this.TotQty = 1
+                  console.log(this.TotQty)
+              } else {
+                  let days = parseInt(this.MedicineItemForm.get('Day').value)
+                  let qty = parseInt(this.MedicineItemForm.get('Qty').value)
+  
+                  // this.TotQty = days * parseFloat(this.morning) + days * parseFloat(this.afternoon) + days * parseFloat(this.night)
+                  this.TotQty = days * qty
+                  this.TotQty = Math.round(this.TotQty)
+                  console.log(this.TotQty)
+              }
+          } else {
+              Swal.fire("Enter Proper Days...")
+              return;
+          }
+  
+      }
+  
+
+    parseValue(val: string): number {
+        val = val.trim();
+
+        // if (val.includes('/')) {
+        //     const [num, den] = val.split('/');
+        //     return Number(num) / Number(den);
+        // }
+
+        return Number(val);
     }
+
+    DoseQtyperday = 0
+    Perdayqty = 0
+    // getSelectedDoseObj(obj) {
+    //     console.log(obj)
+    //     this.DoseQtyperday = obj.doseQtyPerDay
+
+    //     this.doseName = obj.doseName
+    //     this.doseId = obj.doseId
+
+    //     if (this.DoseQtyperday == 0) {
+    //         this.TotQty = 1
+    //         this.Perdayqty = 1
+    //         let days = this.MedicineItemForm.get('Day').value
+
+    //         this.TotQty = Math.round(days * this.TotQty)
+    //         console.log(this.TotQty)
+    //     }
+    //     else {
+    //         let days = this.MedicineItemForm.get('Day').value
+    //         let qty = this.MedicineItemForm.get('Qty').value
+
+    //         debugger
+    //         // const parts = this.doseName.split('-');
+          
+    //         const parts = this.doseName
+    //               .split('-')
+    //               .map(p => p.trim().replace(/\s+/g, ''))
+    //               .join('-');
+
+    //               console.log(parts)
+
+    //         // Fetch all values
+    //         this.morning = this.parseValue(parts[0]);
+    //         this.afternoon = this.parseValue(parts[2]);
+    //         this.night = this.parseValue(parts[4]);
+
+    //         console.log(this.morning, this.afternoon, this.night);
+    //         this.Perdayqty = Math.round(this.morning + this.afternoon + this.night)
+    //         this.TotQty = days * (this.morning) + days * (this.afternoon) + days * (this.night)
+
+    //         this.TotQty = Math.round(this.TotQty)
+
+    //         console.log(this.Perdayqty)
+    //         console.log(this.TotQty)
+    //     }
+
+
+    // }
+ getSelectedDoseObj(obj) {
+
+        console.log(obj)
+        this.TotQty = 1
+        this.DoseQtyperday = obj.doseQtyPerDay
+
+        this.doseName = obj.doseName
+        this.doseId = obj.doseId
+
+        if (this.DoseQtyperday == 0) {
+            this.TotQty = 1
+            this.Perdayqty = 1
+            let days = this.MedicineItemForm.get('Day').value
+
+            this.TotQty = Math.round(days * this.TotQty)
+            console.log(this.TotQty)
+        }
+        else {
+
+            let days = this.MedicineItemForm.get('Day').value
+            let qty = this.MedicineItemForm.get('Qty').value
+
+
+            // const parts = this.doseName.split('-');
+
+            const parts = this.doseName
+                .split('-')
+                .map(part => part.trim().replace(/\s+/g, ''));
+
+            // Fetch value with '/' sign
+            const fractionValue = parts.find(part => part.includes('/'));
+
+            console.log(fractionValue);
+
+
+            console.log(parts)
+
+           
+             const total = parts.reduce((sum, val) => {
+                if (val.includes('/')) {
+                    const [num, den] = val.split('/').map(Number);
+                    return sum + (num / den);
+                } else {
+                    return sum + Number(val);
+                }
+            }, 0);
+
+            console.log("Sum =", total);           // 1.5
+            this.Perdayqty=Math.round(total)
+debugger
+            this.TotQty = days * (this.Perdayqty)
+            this.TotQty = Math.round(this.TotQty)
+
+            console.log(this.Perdayqty)
+            console.log(this.TotQty)
+        }
+
+
+    }
+    // getdose(event) {
+
+    //     this.doseName = event.text
+    //     this.doseId = event.value
+    //     console.log(event.text)
+
+    //     let days = this.MedicineItemForm.get('Day').value
+    //     let qty = this.MedicineItemForm.get('Qty').value
+
+
+    //     const parts = event.text.split('-');
+    //     // Fetch all values
+    //     this.morning = this.parseValue(parts[0]);
+    //     this.afternoon = this.parseValue(parts[1]);
+    //     this.night = this.parseValue(parts[2]);
+
+    //     console.log(this.morning, this.afternoon, this.night);
+
+    //     this.TotQty = days * (this.morning) + days * (this.afternoon) + days * (this.night)
+
+    //     this.TotQty = Math.round(this.TotQty)
+    //     console.log(this.TotQty)
+
+    // }
+
+
     getSelectedserviceObj(obj) {
+        this.doseId = 0
         this.ItemId = obj.itemId
         this.ItemName = obj.itemName
         console.log(obj)
+         this.vDay=1
+        this.TotQty=1
     }
 
     onChangeDate(value) {
@@ -337,7 +515,7 @@ regId=0
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }
-
+    TotQty = 0
     onAdd() {
 
         if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
@@ -350,12 +528,15 @@ regId=0
         const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
         if (!iscekDuplicate) {
             this.dsItemList.data = [];
+            debugger
             this.Chargeslist.push(
                 {
                     itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
                     itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
-                    doseName: this.doseName1,
+                    doseName: this.doseName,
                     doseId: this.doseId,
+                    qty: this.Perdayqty,
+                    totalQty: this.TotQty,
                     days: this.MedicineItemForm.get('Day').value || 0,
                     instruction: this.MedicineItemForm.get('Instruction').value || this.vInstruction || ''
                 });
@@ -368,8 +549,13 @@ regId=0
         }
         this.MedicineItemForm.get('ItemId').reset('');
         this.MedicineItemForm.get('DoseId').reset('');
-        this.MedicineItemForm.get('Day').reset('');
+        this.MedicineItemForm.get('Day').reset('1');
         this.MedicineItemForm.get('Instruction').reset('');
+        this.TotQty = 0
+        this.vDay = 1
+        this.morning = 0
+        this.afternoon = 0
+        this.night = 0
         // this.itemid.nativeElement.focus();
     }
 
@@ -812,8 +998,8 @@ export class DischargeSummary {
         this.Pathology = DischargeSummary.Pathology || '';
         this.TemplateDescriptionHtml = DischargeSummary.TemplateDescriptionHtml || '';
         this.IsDischarged = DischargeSummary.IsDischarged || 0;
-         this.regId = DischargeSummary.regId || "0";
-        
+        this.regId = DischargeSummary.regId || "0";
+
     }
 }
 export class MedicineItemList {
@@ -836,6 +1022,9 @@ export class MedicineItemList {
     DaysOption3: any;
     DoseNameOption2: any;
     DoseNameOption3: any;
+    qtyPerDay: any;
+    totalQty: any;
+    qty: any
     /**
     * Constructor
     *
@@ -862,6 +1051,9 @@ export class MedicineItemList {
             this.DaysOption3 = MedicineItemList.DaysOption3 || 0;
             this.DoseNameOption2 = MedicineItemList.DoseNameOption2 || '';
             this.DoseNameOption3 = MedicineItemList.DoseNameOption3 || '';
+            this.qty = MedicineItemList.qty || 0;
+            this.qtyPerDay = MedicineItemList.qtyPerDay || 0;
+            this.totalQty = MedicineItemList.totalQty || 0;
         }
     }
 }

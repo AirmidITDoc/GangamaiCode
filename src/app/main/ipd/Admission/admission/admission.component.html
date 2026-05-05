@@ -218,7 +218,10 @@
             <button mat-icon-button matTooltip="Edit Admission" (click)="getEditAdmission(element)">
                 <mat-icon> account_circle</mat-icon>
             </button>
-
+<!-- *ngIf="!element.IsDischarged" -->
+               <button mat-icon-button matTooltip="Cancel Admission" (click)="getAdmissionCancel(element)" >
+                <mat-icon style="color: rgb(83, 15, 15);"> cancel</mat-icon>
+            </button>
 
         </div>
     </ng-template>
@@ -317,7 +320,10 @@
                                 (click)="getAdmittedPatientListview()" matTooltip="search">
                                 Dr Wise Admission List
                             </button>
-
+                             <button mat-raised-button class="btn btn-primary w-100-p"
+                                (click)="getCancelledAdmission()" matTooltip="search">
+                                Cancelled Admission List
+                            </button>
 
                         </div>
 

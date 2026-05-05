@@ -35,6 +35,7 @@ import { EditAdmissionComponent } from './edit-admission/edit-admission.componen
 import { MLCInformationComponent } from './mlcinformation/mlcinformation.component';
 import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
+import { AdmissionCancelComponent } from './admission-cancel/admission-cancel.component';
 
 @Component({
     selector: 'app-admission',
@@ -581,6 +582,62 @@ this.WardId=event.value
 
     }
 
+
+
+      getCancelledAdmission() {
+        setTimeout(() => {
+
+            const param = {
+
+    "searchFields": [
+        {
+            "fieldName": "FName",
+            "fieldValue": this.f_name,
+            "opType": "13"
+        },
+        {
+            "fieldName": "LName",
+            "fieldValue": this.l_name,
+            "opType": "13"
+        },
+        {
+            "fieldName": "FromDt",
+            "fieldValue": this.fromDate,
+            "opType": "13"
+        },
+        {
+            "fieldName": "ToDt",
+            "fieldValue": this.toDate,
+            "opType": "13"
+        }
+    ],
+       "mode":"WardWiseAdmissionList"
+}
+            
+
+            console.log(param)
+            this._AdmissionService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "IP Cancelled Admission List  Viewer"
+
+                        }
+                    });
+
+                matDialog.afterClosed().subscribe(result => {
+
+                });
+            });
+
+        }, 100);
+
+    }
+
     getAdmittedPatientCasepaperview(element) {
         this.commonService.Onprint("AdmissionId", element.admissionId, "IpCasepaperReport");
     }
@@ -787,6 +844,25 @@ this.WardId=event.value
                 maxWidth: "95vw",
                 width: '100%',
                 height: "98vh",
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+
+            this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+            this.toDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
+
+            this.onChangeFirst()
+
+        });
+
+    }
+
+    getAdmissionCancel(row) {
+        const dialogRef = this._matDialog.open(AdmissionCancelComponent,
+            {
+               maxHeight: "65vh",
+                 maxWidth: '90vh',
+                 data:row
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
