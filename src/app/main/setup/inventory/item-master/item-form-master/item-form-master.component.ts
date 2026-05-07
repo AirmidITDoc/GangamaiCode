@@ -1,3 +1,4 @@
+
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
@@ -53,6 +54,7 @@ export class ItemFormMasterComponent implements OnInit {
 
     registerObj = new ItemMaster({});
     @ViewChild('ddlStore') ddlStore: AirmidDropDownComponent;
+    @ViewChild('ddlDrug') ddlDrug: AirmidDropDownComponent;
     ItemId: any = 0;
     vchkactive: any = true;
     grid: any;
@@ -92,12 +94,17 @@ export class ItemFormMasterComponent implements OnInit {
         }
         if ((this.data?.itemID ?? 0) > 0) {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
+
                 this.registerObj = response;
-                console.log(response)
+
+                this.registerObj.mAssignItemToDrugs =
+                    response.mAssignItemToDrugs.map((x: any) => ({
+                        itemDrugTypeId: x.drugId
+                    }));
+
                 this.ddlStore.SetSelection(this.registerObj.mAssignItemToStores);
 
-            }, (error) => {
-                this.toastr.error(error.message);
+                this.ddlDrug.SetSelection(this.registerObj.mAssignItemToDrugs);
             });
         }
     }
@@ -160,6 +167,11 @@ export class ItemFormMasterComponent implements OnInit {
         this.ddlStore.SetSelection(this.itemForm.value.mAssignItemToStores.map(x => x.storeId));
     }
 
+    removeDrug(item) {
+        const removedIndex = this.itemForm.value.mAssignItemToDrugs.findIndex(x => x.itemDrugTypeId == item.itemDrugTypeId);
+        this.itemForm.value.mAssignItemToDrugs.splice(removedIndex, 1);
+        this.ddlDrug.SetSelection(this.itemForm.value.mAssignItemToDrugs.map(x => x.itemDrugTypeId));
+    }
 
     selectChangeDrugType(obj: any) {
         this.drugId = obj.value
@@ -238,6 +250,13 @@ export class ItemFormMasterComponent implements OnInit {
 
             formData.mAssignItemToStores = transformedStores;
 
+            const transformedDrugs = (formData.mAssignItemToDrugs || []).map((drug: any) => ({
+                assignId: 0,
+                drugId: drug.itemDrugTypeId,
+                itemId: this.ItemId
+            }));
+
+            formData.mAssignItemToDrugs = transformedDrugs;
 
             if (parseFloat(formData.sgst) > 0) {
                 formData.cgst = formData.sgst

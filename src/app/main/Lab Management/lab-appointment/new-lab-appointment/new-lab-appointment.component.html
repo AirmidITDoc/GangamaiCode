@@ -83,12 +83,6 @@
 
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="33%">
-                                                            <airmid-dropdown fxFlex label="Category Name"
-                                                                formControlName="categoryId" [formGroup]="myForm"
-                                                                [mode]="autocompleteRadioDD"
-                                                                (selectionChange)="selectChangeCategory($event)"></airmid-dropdown>
-                                                        </div>
-                                                        <div fxFlex="33%">
                                                             <!-- <airmid-dropdown fxFlex label="Doctor Name"
                                                                 formControlName="doctorId" [formGroup]="myForm"
                                                                 [mode]="autocompleteRefDoctorDD"
@@ -98,6 +92,12 @@
                                                                 TextField="doctorName" ValueField="doctorId"
                                                                 ApiUrl="Doctor/RefdoctorComboList?keywoard="
                                                                 (selectionChange)="onChangeRefdoc($event)"></airmid-dropdown>
+                                                        </div>
+                                                        <div fxFlex="33%">
+                                                            <airmid-dropdown fxFlex label="Category Name"
+                                                                formControlName="categoryId" [formGroup]="myForm"
+                                                                [mode]="autocompleteRadioDD"
+                                                                (selectionChange)="selectChangeCategory($event)"></airmid-dropdown>
                                                         </div>
                                                     </div>
                                                 </div>

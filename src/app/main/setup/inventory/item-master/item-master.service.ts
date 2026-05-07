@@ -1,3 +1,4 @@
+
 import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -185,6 +186,7 @@ export class ItemMasterService {
             mAssignItemToStores: [[], Validators.required], // empty array, not an object
             content: ['', [Validators.required]],
             isValidContent: [false],
+            mAssignItemToDrugs: [[]], 
         });
     }
 

@@ -1,3 +1,4 @@
+
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
@@ -299,6 +300,7 @@ export class ItemMaster {
     itemCompnayId: any;
     position: any;
     mAssignItemToStores: any[];
+    mAssignItemToDrugs: any[];
     isActive: any;
     content: any;
     stockUomid: any;
@@ -365,6 +367,7 @@ export class ItemMaster {
             this.mAssignItemToStores = ItemMaster.mAssignItemToStores || [];
             this.content = ItemMaster.content || ''
             this.stockUomid = ItemMaster.stockUomid || 0
+            this.mAssignItemToDrugs = ItemMaster.mAssignItemToDrugs || [];
         }
     }
 }
