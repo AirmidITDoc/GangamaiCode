@@ -554,15 +554,7 @@
                       [ngClass]="{ hide: !(saleSelectedDatasource != null && saleSelectedDatasource.data.length == 0) }"></mat-footer-row>
                   </mat-table>
                 </div>
-              </div>
-               <div class="modal-card-container"> 
-                      <div fxLayout="row"> 
-                        <!-- <span><b>Out of Stock Items : </b></span> -->
-                        <span style="color: red; margin-left: 5px;">
-                        {{ getItemNames() }}  </span>
-                      </div> 
-                </div>
-
+              </div> 
               <div class="modal-card-container">
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <mat-card-content class="py-4">
@@ -782,6 +774,19 @@
                     [ngClass]="{ hide: !(dsDraftList != null && dsDraftList.data.length == 0) }"
                     class="min-width-600"></mat-footer-row>
                 </mat-table>
+
+                 <div class="card">
+                <mat-card>
+                  <mat-card-content fxLayout="column" class="gap-4" style="padding: 1px;">
+                    <span><b>Out of Stock Items:</b></span>
+                    <div fxLayout="row"> 
+                        <!-- <span><b>Out of Stock Items : </b></span> -->
+                        <span style="color: red; margin-left: 5px;">
+                        {{ getItemNames() }}  </span>
+                      </div>  
+                  </mat-card-content>
+                </mat-card>
+              </div>
 
                  <mat-table class="sales-table-right airmid-table" #table matSort [dataSource]="dsBalAvaListStore"
                   [@animateStagger]="{ value: '50' }">

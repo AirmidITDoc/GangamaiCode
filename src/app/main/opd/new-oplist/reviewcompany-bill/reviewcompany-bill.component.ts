@@ -87,7 +87,7 @@ export class ReviewcompanyBillComponent {
     public subscription: Array<Subscription> = [];
 
     public displayedChargeColumns: string[] =
-        ['Status', 'ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
+        ['Status', 'ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'userName','DoctorName',
             //  'ClassName', 'ChargesAddedName',  
             'Exclucion', 'Approved',
             'buttons'

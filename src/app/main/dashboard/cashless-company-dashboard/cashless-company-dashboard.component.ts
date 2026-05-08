@@ -212,6 +212,7 @@ export class CashlessCompanyDashboardComponent implements OnInit {
         this.grid3.bindGridData();
 
     }
+    VSalesSection: CashlessPatientSummary[] = [];
     vCashlessData: any;
     vcashlessList: CashlessPatientSummary[] = [];
     getCashlessDashboardData() {
@@ -221,8 +222,11 @@ export class CashlessCompanyDashboardComponent implements OnInit {
             if (this.vCashlessData) {
                 this.vcashlessList = (data?.cashlessPatientSummary || []).map(
                     (item: any) => new CashlessPatientSummary(item)
-                );
-                console.log(this.vcashlessList)
+                ); 
+                this.VSalesSection =   this.vcashlessList 
+                console.log(this.vcashlessList) 
+                this.vcashlessList = this.vcashlessList.filter( item => item.section !== 'Sales'); 
+                this.VSalesSection = this.VSalesSection.filter( item => item.section === 'Sales'); 
             }
         });
 

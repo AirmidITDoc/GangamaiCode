@@ -2042,7 +2042,8 @@ export class IPBillingComponent implements OnInit {
 
         // Get values as strings in dd/MM/yyyy format
         const serviceDateStr = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "dd/MM/yyyy");
-        const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy");
+        const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy"); 
+        const today = new Date(); today.setHours(0, 0, 0, 0);
 
         // Check that both dates are available
         if (serviceDateStr && admissionDateStr) {
@@ -2064,6 +2065,16 @@ export class IPBillingComponent implements OnInit {
                     icon: 'warning',
                     title: 'Invalid Charge Date',
                     text: 'The charge date cannot be earlier than the admission date.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    this.Serviceform.get('chargesDate')?.setValue(new Date());
+                });
+            }
+            else if (serviceDate > today) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Future Date Not Allowed',
+                    text:  'Future date charges cannot be added.',
                     confirmButtonText: 'OK'
                 }).then(() => {
                     this.Serviceform.get('chargesDate')?.setValue(new Date());

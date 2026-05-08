@@ -749,6 +749,19 @@
                     class="min-width-600"></mat-footer-row>
                 </mat-table>
 
+                <div class="card">
+                <mat-card>
+                  <mat-card-content fxLayout="column" class="gap-4" style="padding: 1px;">
+                    <span><b>Out of Stock Items:</b></span>
+                    <div fxLayout="row"> 
+                        <!-- <span><b>Out of Stock Items : </b></span> -->
+                        <span style="color: red; margin-left: 5px;">
+                        {{ getItemNames() }}  </span>
+                      </div>  
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
                 <!-- Available Stock in Other Store -->
                 <mat-table class="sales-table-right airmid-table" #table matSort [dataSource]="dsBalAvaListStore"
                   [@animateStagger]="{ value: '50' }">

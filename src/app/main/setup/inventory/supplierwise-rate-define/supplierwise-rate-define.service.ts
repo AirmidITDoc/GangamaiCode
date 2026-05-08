@@ -41,6 +41,7 @@ export class SupplierwiseRateDefineService {
 
 
     public SupplierWsieRateDefineSave(Param: any) {
+        debugger
         if (Param.defId) {
             return this._httpClient.PutData("ItemWiseSupplierRate/" + Param.defId, Param);
         } else return this._httpClient.PostData("ItemWiseSupplierRate", Param);

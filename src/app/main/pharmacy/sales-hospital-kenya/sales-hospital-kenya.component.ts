@@ -17,7 +17,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { parseInt } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
 import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
@@ -444,12 +444,12 @@ export class SalesHospitalKenyaComponent {
                 time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 opIpId: [2, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 opIpType: [2, [this._FormvalidationserviceService.onlyNumberValidator]],
-                totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 netAmount: [0],
-                paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 concessionAuthorizationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isSellted: [true],
@@ -1069,6 +1069,8 @@ export class SalesHospitalKenyaComponent {
         this.Itemchargeslist = [];
         this.PatientTypeId = 0
         this.saveflag = true;
+        this.NoStockItemlist = [];
+        this.DraftID = 0;
     }
     deleteTableRow(event, element) {
         const index = this.Itemchargeslist.indexOf(element);
@@ -1878,23 +1880,29 @@ export class SalesHospitalKenyaComponent {
             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
             this.ItemSubform.get('externalPatientName').updateValueAndValidity();
         }
-        else if (contact.opipType == 1) {
-            this.paymethod = true;
-            this.Draftchk = true;
-            this.vSelectedOption = '1';
-            this.DoctorNamecheck = true;
-            this.OPDNoCheck = false;
-            this.IPDNocheck = true;
-            this.IPDNo = contact.oP_IP_No;
-            this.DoctorName = contact.admDoctorName;
-            this.PatientName = contact.patientName;
-            this.RegId = contact.regID;
-            this.RegNo = contact?.regNo;
-            this.OP_IP_Id = contact?.opipid
-            this.ItemSubform.get('extMobileNo').clearValidators();
-            this.ItemSubform.get('externalPatientName').clearValidators();
-            this.ItemSubform.get('extMobileNo').updateValueAndValidity();
-            this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+        // else if (contact.opipType == 1) {
+        //     this.paymethod = true;
+        //     this.Draftchk = true;
+        //     this.vSelectedOption = '1';
+        //     this.DoctorNamecheck = true;
+        //     this.OPDNoCheck = false;
+        //     this.IPDNocheck = true;
+        //     this.IPDNo = contact.oP_IP_No;
+        //     this.DoctorName = contact.admDoctorName;
+        //     this.PatientName = contact.patientName;
+        //     this.RegId = contact.regID;
+        //     this.RegNo = contact?.regNo;
+        //     this.OP_IP_Id = contact?.opipid
+        //     this.ItemSubform.get('extMobileNo').clearValidators();
+        //     this.ItemSubform.get('externalPatientName').clearValidators();
+        //     this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+        //     this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+        // }
+        else {
+            this.toastr.warning('Select Only OP Patient', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+            return
         }
         const vdata = {
             "first": 0,
@@ -1913,15 +1921,28 @@ export class SalesHospitalKenyaComponent {
             //         this.onAddDraftListTosale(element, this.DraftQty);
             //     });
             // }
-            if (this.tempDatasource.data.length >= 1) {
-                this.tempDatasource.data.forEach((element) => {
-                    const draftQty = element.qtyPerDay; // use local variable
-                    this.onAddDraftListTosale(element, draftQty); // safe per call
-                });
+            // if (this.tempDatasource.data.length >= 1) {
+            //     this.tempDatasource.data.forEach((element) => {
+            //         const draftQty = element.qtyPerDay; // use local variable
+            //         this.onAddDraftListTosale(element, draftQty); // safe per call
+            //     });
+            // }
+
+
+
+             if (this.tempDatasource.data.length >= 1) {
+                setTimeout(async () => {
+                    for (const element of this.tempDatasource.data) {
+                        ;
+                        console.log(element); 
+                        const draftQty = element.qtyPerDay;
+                        await this.onAddDraftListTosale(element, draftQty);
+                    }
+                }, 10);
             }
         });
     }
-    onAddDraftListTosale(contact, DraftQty) {
+    async onAddDraftListTosale(contact, DraftQty): Promise<void>  {
         console.log(contact)
         this.QtyBalchk = 0;
 
@@ -1938,13 +1959,29 @@ export class SalesHospitalKenyaComponent {
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
         };
-        this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
+      //  this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
+
+          try {
+            const response: any = await firstValueFrom(
+                this._salesService.getKenyaSalesBatchList(m_data)
+            );
+
             console.log(response)
             const tempChargesList = response?.data || [];
             let qtyBalChk = 0;
-            if (tempChargesList.length == 0) {
-                Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
-            } else if (tempChargesList.length > 0) {
+              if (tempChargesList.length == 0) {
+                  await Swal.fire({
+                      icon: 'warning',
+                      title: 'Stock Unavailable',
+                      html: `The item <strong>${contact.itemName}</strong> is currently out of stock.`,
+                      showConfirmButton: true,
+                      confirmButtonText: 'OK'
+                  });
+                  this.NoStockItemlist.push({
+                      ItemId: contact?.itemId || 0,
+                      ItemName: contact?.itemName || ''
+                  });
+              } else if (tempChargesList.length > 0) {
                 tempChargesList.forEach((element) => {
                     if (contact.itemId != element.itemId) {
                         qtyBalChk = 0;
@@ -1962,8 +1999,10 @@ export class SalesHospitalKenyaComponent {
                 });
             }
             this.QtyBalchk = qtyBalChk
-        });
-
+        }
+        catch (error) {
+            console.error("Error:", error);
+        }
 
     }
     vExpDate: any;
@@ -2064,12 +2103,7 @@ export class SalesHospitalKenyaComponent {
         }
 
         return true;
-    }
-// NoStockItemlist:any=[
-//     {ItemId:2,ItemName:'Dolo'},
-//       {ItemId:1,ItemName:'Doloe 25'},
-//         {ItemId:5,ItemName:'Paracetmole'}
-// ];
+    } 
 NoStockItemlist:any=[];
 getItemNames(): string {
   if (!this.NoStockItemlist || this.NoStockItemlist.length === 0) {
@@ -2078,14 +2112,14 @@ getItemNames(): string {
   const unique = [...new Set(this.NoStockItemlist.map(item => item.ItemName))];
   return unique.join(', ');
 }
-    getPRESCRIPTION() {
+  async  getPRESCRIPTION() {
         if (this.ItemSubform.get('opIpType').value != '2') {
             const dialogRef = this._matDialog.open(PrescriptionComponent, {
                 maxWidth: '100%',
                 height: '100%',
                 width: '95%',
             });
-            dialogRef.afterClosed().subscribe((result) => {
+            dialogRef.afterClosed().subscribe( async(result) => {
                 console.log('The dialog was closed - Insert Action', result);
                 if (result[0]?.IPMedID > 0) {
                     this.toastr.warning('Please check selected patient Type is IP Patient', 'Warning !', {
@@ -2129,7 +2163,8 @@ getItemNames(): string {
                 }
                 this.getBillSummary(result[0]?.AdmissionID || 0)
                 this.dsItemNameList1.data = result;
-                this.dsItemNameList1.data.forEach((contact) => {
+                 ///  this.dsItemNameList1.data.forEach((contact) => {
+                for (const contact of this.dsItemNameList1.data) {
                     const m_data = {
                         "first": 0,
                         "rows": 999,
@@ -2148,27 +2183,26 @@ getItemNames(): string {
                     //     StoreId: this._loggedService.currentUserValue.user.storeId,
                     //     PatientTypeId: this.PatientTypeId
                     // };
-                    this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
+                  //  this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
+                    try {
+                        const response: any = await firstValueFrom(
+                            this._salesService.getKenyaSalesBatchList(m_data)
+                        );
                         debugger
                         this.Tempchargeslist = response.data as any;
                         console.log(response)
                         if (this.Tempchargeslist.length == 0) {
-                            Swal.fire({
+                            await Swal.fire({
                                 icon: 'warning',
                                 title: 'Stock Unavailable',
                                 html: `The item <strong>${contact.ItemName}</strong> is currently out of stock.`,
                                 showConfirmButton: true,
                                 confirmButtonText: 'OK'
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                             this.NoStockItemlist.push({
-                                ItemId:contact?.ItemId || 0,
-                                ItemName:contact?.ItemName || ''
-                             })
-                             console.log(this.NoStockItemlist)
-                                 }
-                               })
-                           
+                            });
+                            this.NoStockItemlist.push({
+                                ItemId: contact?.ItemId || 0,
+                                ItemName: contact?.ItemName || ''
+                            })
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
                             let bal_qnt = 0;
@@ -2193,8 +2227,11 @@ getItemNames(): string {
                             });
                             //Swal.fire('Balance Qty is :', String(bal_qnt));
                         }
-                    });
-                });
+                     }
+                    catch (error) {
+                        console.error("Error:", error);
+                    }
+                };
             });
         } else {
             this.toastr.warning('Please Select opIpType IP or OP.', 'Warning !', {

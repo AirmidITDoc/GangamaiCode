@@ -150,4 +150,11 @@ mat-cell {
   overflow-y: auto;
   overflow-x: auto;
 }
-
+.ellipsis-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  vertical-align: bottom; 
+}
