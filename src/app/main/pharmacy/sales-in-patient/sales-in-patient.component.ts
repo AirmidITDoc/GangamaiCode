@@ -1417,7 +1417,7 @@ export class SalesInPatientComponent implements OnInit {
         this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
         this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number((formValue?.netAmount)))
         this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
-        this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
+        this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.doctorname || '')
 
         this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {

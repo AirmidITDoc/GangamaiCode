@@ -420,8 +420,9 @@ export class SalesReturnComponent implements OnInit {
             }
         }
 
-        const totalAmt = contact?.Qty * contact?.UnitMRP || 0
-        const NetAmount = totalAmt - contact?.DiscAmount || 0
+        const totalAmt = contact?.Qty * contact?.UnitMRP || 0 ;
+        const DiscAmt = (totalAmt * contact.DiscPer) / 100 || 0 ;
+        const NetAmount = totalAmt - DiscAmt || 0 
         const TotalLandedAmount = contact?.Qty * contact?.LandedPrice || 0
         const CGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.CGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
         const SGSTAmount = (((parseFloat(contact.UnitMRP) * (parseFloat(contact.SGSTPer))) / 100) * parseInt(contact.Qty)).toFixed(2);
@@ -435,14 +436,14 @@ export class SalesReturnComponent implements OnInit {
                 Qty: contact.Qty,
                 ReturnQty: contact.Qty,
                 UnitMRP: contact.UnitMRP,
-                TotalAmount: totalAmt,
+                TotalAmount: totalAmt.toFixed(2),
                 VatPer: contact.VatPer,
                 VatAmount: contact.VatAmount,
                 DiscPer: contact.DiscPer,
-                DiscAmount: contact.DiscAmount,
-                GrossAmount: NetAmount,
+                DiscAmount: DiscAmt.toFixed(2), //contact.DiscAmount,
+                GrossAmount: NetAmount.toFixed(2),
                 LandedPrice: (contact.LandedPrice).toFixed(2),
-                TotalLandedAmount: TotalLandedAmount,
+                TotalLandedAmount: TotalLandedAmount.toFixed(2),
                 PurRateWf: (contact.PurRateWf).toFixed(2),
                 PurTotAmt: contact.PurTotAmt,
                 CGSTPer: contact.CGSTPer,
@@ -489,8 +490,9 @@ export class SalesReturnComponent implements OnInit {
     }
     //table calculation
     getCellCalculation(contact, ReturnQty) {
-        if ((ReturnQty > 0)) {
-            if ((ReturnQty) <= (contact.Qty)) {
+        debugger
+        if ((+ReturnQty > 0)) {
+            if ((+ReturnQty) <= (contact.Qty)) {
                 contact.TotalAmount = (contact.UnitMRP * ReturnQty).toFixed(2);
                 contact.DiscAmount = ((contact.TotalAmount * contact.DiscPer) / 100).toFixed(2);
                 contact.VatAmount = ((contact.TotalAmount * contact.VatPer) / 100).toFixed(2);
@@ -500,8 +502,10 @@ export class SalesReturnComponent implements OnInit {
                 contact.GrossAmount = (contact.TotalAmount - contact.DiscAmount).toFixed(2);
                 contact.TotalLandedAmount = (contact.LandedPrice * ReturnQty).toFixed(2);
                 // this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2); 
-            } else if ((ReturnQty) > (contact.Qty)) {
-                contact.ReturnQty = '';
+            } else if ((+ReturnQty) > (contact.Qty)) { 
+                setTimeout(() => {
+    contact.ReturnQty = Number(contact.Qty) || 0;
+});
                 contact.TotalAmount = 0;
                 contact.DiscAmount = 0;
                 contact.VatAmount = 0;
@@ -510,12 +514,14 @@ export class SalesReturnComponent implements OnInit {
                 contact.IGSTAmount = 0;
                 contact.GrossAmount = 0;
                 contact.TotalLandedAmount = 0;
+               
                 Swal.fire({
                     icon: "warning",
                     title: "Enter Return qty less than BalQty and greater than 0",
                     showConfirmButton: false,
-                    timer: 2000
+                    timer: 500
                 });
+               
             }
         }
         else if (ReturnQty == '' || ReturnQty == null || ReturnQty == undefined || ReturnQty == 0) {
@@ -704,7 +710,8 @@ export class SalesReturnComponent implements OnInit {
     }
     keyPressAlphanumeric(event) {
         const inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+       // if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+       if (/^\d$/.test(inp)) {
             return true;
         } else {
             event.preventDefault();

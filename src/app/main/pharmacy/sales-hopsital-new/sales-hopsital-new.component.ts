@@ -1701,6 +1701,7 @@ export class SalesHospitalNewComponent implements OnInit {
         });
     }
     onSaveDraftBill() {
+        debugger
         const formattedTime = this.dateTimeObj.time;
         const formattedDate = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd');
         const FormattedDateTime = formattedDate + ' ' + formattedTime
@@ -1746,7 +1747,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
         } else {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
-            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
+            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.DoctorName || '')
         }
         this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {
