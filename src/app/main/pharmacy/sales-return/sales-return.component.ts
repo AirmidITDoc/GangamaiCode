@@ -504,16 +504,16 @@ export class SalesReturnComponent implements OnInit {
                 // this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2); 
             } else if ((+ReturnQty) > (contact.Qty)) { 
                 setTimeout(() => {
-    contact.ReturnQty = Number(contact.Qty) || 0;
-});
-                contact.TotalAmount = 0;
-                contact.DiscAmount = 0;
-                contact.VatAmount = 0;
-                contact.CGSTAmount = 0;
-                contact.SGSTAmount = 0;
-                contact.IGSTAmount = 0;
-                contact.GrossAmount = 0;
-                contact.TotalLandedAmount = 0;
+                contact.ReturnQty = Number(contact.Qty) || 0; 
+                });
+                contact.TotalAmount = (contact.UnitMRP * contact.Qty).toFixed(2);
+                contact.DiscAmount = ((contact.TotalAmount * contact.DiscPer) / 100).toFixed(2);
+                contact.VatAmount = ((contact.TotalAmount * contact.VatPer) / 100).toFixed(2);
+                contact.CGSTAmount = ((contact.TotalAmount * contact.CGSTPer) / 100).toFixed(2);
+                contact.SGSTAmount = ((contact.TotalAmount * contact.SGSTPer) / 100).toFixed(2);
+                contact.IGSTAmount = ((contact.TotalAmount * contact.IGSTPer) / 100).toFixed(2);
+                contact.GrossAmount = (contact.TotalAmount - contact.DiscAmount).toFixed(2);
+                contact.TotalLandedAmount = (contact.LandedPrice * contact.Qty).toFixed(2);
                
                 Swal.fire({
                     icon: "warning",

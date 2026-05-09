@@ -192,7 +192,7 @@ export class IpSalesReturnComponent implements OnInit {
             vatAmount: [element?.GSTAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discPer: [element?.Disc || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             discAmount: [element?.DiscAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            grossAmount: [Math.round(element?.NetAmount), [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            grossAmount: [element?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             landedPrice: [element?.LandedPrice || 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             totalLandedAmount: [element?.TotalLandedAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             purRate: [element?.PurRateWf || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -551,7 +551,7 @@ export class IpSalesReturnComponent implements OnInit {
         this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(this.IPSalesRetFooterform.get('FinalTotalAmt').value)
         this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(this.IPSalesRetFooterform.get('FinalGSTAmt').value)
         this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('FinalDiscAmount').value)
-        this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+        this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
         this.IpSalesReturnForm.get('salesReturn.isPurBill').setValue(this.selcteditemObj?.IsPurRate || false);
         if (this.IpSalesReturnForm.valid) {
             this.SaleRetDetailsArray.clear()
