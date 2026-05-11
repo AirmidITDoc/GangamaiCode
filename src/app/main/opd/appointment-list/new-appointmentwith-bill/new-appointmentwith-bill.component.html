@@ -610,7 +610,7 @@
                                     <div class="billing-middle-zone" [dynamicTableHeight]="120">
                                         <div class="airmid-table-container">
                                             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
-                                                style="width: 100%">
+                                                style="width: 100%" [(selectedIndex)]="selectedTabIndex" animationDuration="0ms">
                                                 <mat-tab label="Charges List">
                                                     <mat-table #table1 matSort [dataSource]="dstable1"
                                                         [@animateStagger]="{ value: '50' }" class="airmid-table table">
@@ -758,7 +758,7 @@
                                                                     <input matInput [(ngModel)]="contact.Price"
                                                                         type="text" [id]="'Price' + index" [min]="0"
                                                                         (ngModelChange)="getCellCalculation(contact)"
-                                                                        [type]="'text'"
+                                                                        [type]="'text'" [readonly]="chkIsEditable"
                                                                         (keypress)="keyPressCharater($event)" />
                                                                 </mat-form-field>
                                                             </mat-cell>

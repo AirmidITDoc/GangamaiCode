@@ -119,6 +119,8 @@ export class InvestigationListComponent {
         this.ApprovalfromDate = this.ApprovalmyformSearch.get("start").value || "";
         this.ApprovaltoDate = this.ApprovalmyformSearch.get("end").value || "";
         this.GetApprovaldetail();
+        this.GetResultdetail1();
+        this.bindParentResToAppGridData();
 
         ///////// Print
         this.PrintmyformSearch = this._InvestListService.PrintcreateSearchForm()
@@ -177,6 +179,7 @@ export class InvestigationListComponent {
 
         // Result
         this.ResultgridConfig.columnsList.find(col => col.key === 'Resultaction')!.template = this.ResultactionButtonTemplate;
+        this.ResultApprovalHeadergridConfig.columnsList.find(col => col.key === 'Resultaction')!.template = this.ResultactionButtonTemplate1;
 
         // Approval
         this.ApprovalgridConfig.columnsList.find(col => col.key === 'Approvalaction')!.template = this.ApprovalactionButtonTemplate;
@@ -1192,6 +1195,17 @@ export class InvestigationListComponent {
         'action'
     ];
 
+    displayedColumns2: string[] = [
+        'status',
+        'testdate',
+        'TestName',
+        'CategoryName',
+        'patientName',
+        'doctorName',
+        'Samplecollectiontime',
+        'action'
+    ];
+
     hasSelectedContacts: boolean;
     // UnitId: any = this._loggedService.currentUserValue.user.unitId;
     // isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
@@ -1233,6 +1247,7 @@ export class InvestigationListComponent {
             { fieldName: "From_Dt ", fieldValue: this.ResultfromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt ", fieldValue: this.ResulttoDate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
         ]
     }
@@ -1266,6 +1281,7 @@ export class InvestigationListComponent {
                 { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
                 { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
                 { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
             ]
         }
@@ -1330,7 +1346,7 @@ export class InvestigationListComponent {
     }
 
     getSampledetailList1(row) {
-        this.dataSource1.data = [];
+        this.dataSource.data = [];
         const rawDate = row.pathDate;
         const formattedDate = rawDate.split(' ')[0];
         console.log(formattedDate);
@@ -1386,9 +1402,13 @@ export class InvestigationListComponent {
         this.Resultl_name = this.ResultmyformSearch.get('LastNameSearch').value + "%"
         this.Resultstatus = this.ResultmyformSearch.get('ResultStatusSearch').value
         this.ResultregNo = this.ResultmyformSearch.get('RegNoSearch').value || "0"
+        this.Approvalstatus = this.ResultmyformSearch.get('ApprovalStatusSearch').value || 0
 
         this.GetResultdetail();
         this.Resultgetfilterdata();
+
+        this.GetResultdetail1();
+        this.Resultgetfilterdata1();
     }
 
     Resultgetfilterdata() {
@@ -1405,6 +1425,7 @@ export class InvestigationListComponent {
                 { fieldName: "From_Dt", fieldValue: this.ResultfromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.ResulttoDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: this.Resultstatus, opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
             ]
         }
@@ -2013,6 +2034,11 @@ export class InvestigationListComponent {
                     "opType": "Equals"
                 },
                 {
+                    "fieldName": "ApprovalStatus",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
                     "fieldName": "UnitId",
                     "fieldValue": String(this.UnitId),
                     "opType": "Equals"
@@ -2461,7 +2487,7 @@ export class InvestigationListComponent {
         }
     }
 
-    //////////// Approval List //////////////
+    /////////////////////////////////////////////////////////////////// Approval List /////////////////////////////////////////////////////////////////////////
 
     ApprovalVtotalcount = 0
     ApprovalVCompletedcount = 0
@@ -2742,6 +2768,289 @@ export class InvestigationListComponent {
             }, 100);
             return;
         }
+    }
+
+    @ViewChild('ResultactionButtonTemplate1') ResultactionButtonTemplate1!: TemplateRef<any>;
+    @ViewChild('ResultAppHeadgrid', { static: false }) ResultAppHeadgrid: AirmidTableComponent;
+    dataSource2 = new MatTableDataSource<SampleList>();
+
+    // IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
+
+    // fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
+    // todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
+
+    ResultAppHeaderallcolumns = [
+        { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "UHID", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        {
+            heading: "Action", key: "Resultaction", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+            template: this.ResultactionButtonTemplate1  // Assign ng-template to the column
+        }
+    ];
+
+    ResultApprovalHeadergridConfig: gridModel = {
+        // permissionCode: permissionCodes.ExternalInvestigation,
+        apiUrl: "LabPatientRegistration/LabResultList",
+        columnsList: this.ResultAppHeaderallcolumns,
+        sortField: "PresReId",
+        sortOrder: 0,
+        filters: [
+
+            { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "From_Dt ", fieldValue: this.ResultfromDate, opType: OperatorComparer.Equals },
+            { fieldName: "To_Dt ", fieldValue: this.ResulttoDate, opType: OperatorComparer.Equals },
+            { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+                { fieldName: "ApprovalStatus", fieldValue: this.Approvalstatus, opType: OperatorComparer.Equals },
+            { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+        ]
+    }
+
+    searchRecords1(data) {
+        debugger
+        this.dataSource2.data = [];
+        this.selection.clear();
+
+        const regno = this.ResultmyformSearch.get("RegNoSearch").value || "0";
+        let fromDate = this.ResultmyformSearch.get("start").value || "";
+        let toDate = this.ResultmyformSearch.get("end").value || "";
+        fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
+        toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
+
+        this.GetResultdetail1()
+        // Update the filters dynamically
+        this.ResultApprovalHeadergridConfig = {
+            apiUrl: "LabPatientRegistration/LabResultList",
+
+            columnsList: this.ResultAppHeaderallcolumns,
+            sortField: "PresReId",
+            sortOrder: 0,
+            filters: [
+
+                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
+                { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
+                { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+                { fieldName: "ApprovalStatus", fieldValue: this.Approvalstatus, opType: OperatorComparer.Equals },
+                { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+            ]
+        }
+        setTimeout(() => {
+            this.ResultAppHeadgrid.gridConfig = this.ResultApprovalHeadergridConfig;
+            this.ResultAppHeadgrid.bindGridData();
+        }, 100);
+        this.bindParentResToAppGridData();
+    }
+
+    @ViewChild('parentPaginator1') parentPaginator1: MatPaginator;
+    dataSourceParent1 = new MatTableDataSource<any>();
+    parentColumns1: string[] = ['dot', 'labRequestNo', 'patientName', 'genderName', 'hospitalName', 'pBillNo', 'doctorName', 'action'];
+    columnsToDisplayWithExpand1 = [...this.parentColumns1];
+    expandedElement1: any | null = null;
+    parentResultsLength1 = 0;
+
+    bindParentResToAppGridData() {
+        const gridDataRequest: gridRequest = {
+            sortField: this.ResultApprovalHeadergridConfig.sortField,
+            sortOrder: this.ResultApprovalHeadergridConfig.sortOrder,
+            filters: this.ResultApprovalHeadergridConfig.filters,
+            columns: this.ResultApprovalHeadergridConfig.columnsList.map(x => ({ Name: x.heading, Data: x.key })),
+            first: (this.parentPaginator1?.pageIndex ?? 0),
+            rows: (this.parentPaginator1?.pageSize ?? 25),
+            exportType: gridResponseType.JSON
+        };
+
+        this._InvestListService.getresultenterylist(gridDataRequest).subscribe((data: any) => {
+            this.dataSourceParent1.data = data.data as [];
+            this.parentResultsLength1 = data["recordsFiltered"];
+        });
+    }
+
+    toggleRow1(element: any) {
+        if (this.expandedElement1 === element) {
+            this.expandedElement1 = null;
+        } else {
+            this.expandedElement1 = element;
+            this.getSelectedRow1(element);
+        }
+    }
+
+    getSelectedRow1(row: any): void {
+        console.log("Selected row : ", row);
+
+        this.dataSource2.data = [];
+        this.selection.clear();
+
+        this.reportPrintObj = row
+        this.reportPrintObj["DOA"] = row.pathDate
+
+        this.PatientName = row.patientName;
+        this.OPD_IPD = row.oP_IP_No
+        this.Age = row.ageYear
+        this.PatientType = row.patientType
+        this.Mobileno = row.mobileNo
+        this.SBillNo = row.billNo;
+        this.SOPIPtype = row.opdipdtype;
+
+        this.getSampledetailList2(row);
+    }
+
+    getSampledetailList2(row) {
+        this.dataSource2.data = [];
+        const rawDate = row.pathDate;
+        const formattedDate = rawDate.split(' ')[0];
+        console.log(formattedDate);
+
+        const m_data = {
+            "first": 0,
+            "rows": 20,
+            "sortField": "PathDate",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "BillNo",
+                    "fieldValue": String(row.billNo),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "OP_IP_Type",
+                    "fieldValue": "4",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": formattedDate,
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
+        }
+
+        console.log(m_data);
+        this._InvestListService.PathResultentryAppDetailList(m_data).subscribe(Visit => {
+            this.dataSource2.data = Visit.data as SampleList[];
+            console.log("ResultList:", this.dataSource2.data)
+            this.dataSource2.sort = this.sort;
+            this.dataSource2.paginator = this.paginator;
+
+        });
+    }
+
+    Resultgetfilterdata1() {
+        
+        this.ResultApprovalHeadergridConfig = {
+            apiUrl: "LabPatientRegistration/LabResultList",
+            columnsList: this.ResultAppHeaderallcolumns,
+            sortField: "PresReId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name ", fieldValue: this.Resultf_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.Resultl_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "Reg_No", fieldValue: this.ResultregNo, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.ResultfromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.ResulttoDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
+                { fieldName: "ApprovalStatus", fieldValue: this.Approvalstatus, opType: OperatorComparer.Equals },
+                { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
+            ]
+        }
+        setTimeout(() => {
+            this.ResultAppHeadgrid.gridConfig = this.ResultApprovalHeadergridConfig;
+            this.ResultAppHeadgrid.bindGridData();
+        }, 100);
+        this.bindParentResToAppGridData();
+    }
+
+    GetResultdetail1() {
+        
+        this.ResultfromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
+        this.ResulttoDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+        this.ResultVtotalcount = 0;
+        this.ResultVCompletedcount = 0;
+        this.ResultVpendingcount = 0;
+
+        const data =
+        {
+            "first": 0,
+            "rows": 150,
+            "sortField": "PresReId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": String(this.Resultf_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": String(this.Resultl_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": String(this.ResultregNo),
+                    "opType": "Equals"
+                },
+
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": this.ResultfromDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": this.ResulttoDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsCompleted",
+                    "fieldValue": "1",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "ApprovalStatus",
+                    "fieldValue": this.Approvalstatus,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "UnitId",
+                    "fieldValue": String(this.UnitId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+
+
+        console.log(data)
+        this._InvestListService.getresultenterylist(data).subscribe((response) => {
+            this.ResultdataSource.data = response.data;
+            console.log(this.ResultdataSource.data)
+            if (this.ResultdataSource.data.length > 0) {
+                this.ResultVtotalcount = this.ResultdataSource.data.length
+                this.ResultdataSource.data.forEach(element => {
+                    // debugger
+                    if (element.isCompleted == true) {
+                        this.ResultVCompletedcount = this.ResultVCompletedcount + 1;
+                    } else if (element.isCompleted == false) {
+                        this.ResultVpendingcount = this.ResultVpendingcount + 1;
+                    }
+
+                });
+                console.log(this.ResultdataSource.data)
+            }
+        });
     }
 
     //////////// Print List //////////////

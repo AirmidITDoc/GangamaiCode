@@ -227,6 +227,7 @@ export class LabResultListComponent {
             { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
         ]
     }
@@ -305,6 +306,7 @@ export class LabResultListComponent {
                 { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
                 { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
                 { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
             ]
         }
@@ -414,6 +416,7 @@ export class LabResultListComponent {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+            { fieldName: "ApprovalStatus", fieldValue: "0", opType: OperatorComparer.Equals },
                 { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
             ]
         }
@@ -1079,6 +1082,11 @@ export class LabResultListComponent {
                 {
                     "fieldName": "IsCompleted",
                     "fieldValue": String(this.status),
+                    "opType": "Equals"
+                },                
+                {
+                    "fieldName": "ApprovalStatus",
+                    "fieldValue": "0",
                     "opType": "Equals"
                 },
                 {
