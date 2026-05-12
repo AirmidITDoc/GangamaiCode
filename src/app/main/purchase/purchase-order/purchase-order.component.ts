@@ -181,8 +181,8 @@ export class PurchaseOrderComponent implements OnInit {
             this.status = "0"
         }
         this.isShowDetailTable = false;
-        // this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
-        // this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
+        this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
         this.getfilterdata();
     }
     getfilterdata() {

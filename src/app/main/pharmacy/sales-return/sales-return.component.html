@@ -90,33 +90,34 @@
                             </ng-container>
     
                             <ng-container matColumnDef="SalesNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Sales No
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Sales No
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.salesNo}}
                                 </mat-cell>
                             </ng-container>
     
                             <ng-container matColumnDef="RegNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">UHID No
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">UHID No
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120"> 
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100"> 
                                     {{contact.regNo}}
                                 </mat-cell>
                             </ng-container>
     
                             <ng-container matColumnDef="PatientName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Patient Name
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200 ellipsis-text">Patient Name
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                matTooltip="{{contact.patientName}}" class="w-200 ellipsis-text">
                                     <span> {{contact.patientName}}</span>
                                 </mat-cell>
                             </ng-container>
 
                               <ng-container matColumnDef="patientType">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120"> Patient Type
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">Type
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                     {{contact.patientType}}
                                 </mat-cell>
                             </ng-container>
@@ -128,11 +129,27 @@
                                     {{contact.totalAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container> 
+
+                              <ng-container matColumnDef="discAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.discAmount | currency:"INR":"symbol"}}
+                                </mat-cell>
+                            </ng-container>  
+
+                             <ng-container matColumnDef="netAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                    {{contact.netAmount | currency:"INR":"symbol"}}
+                                </mat-cell>
+                            </ng-container> 
     
                             <ng-container matColumnDef="PaidType" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Status
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Status
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                     {{contact.paidType}}
                                 </mat-cell>
                             </ng-container>

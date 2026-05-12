@@ -123,7 +123,7 @@ export class OpPaymentComponent implements OnInit {
         return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
     }
     GetBalanceAmt() {
-        if (this.amount1 > this.netPayAmt) {
+        if (+this.amount1 > +this.netPayAmt) {
             this.toastr.warning('Entered amount is greaterthan NetAmount!, Please check..', 'warning!', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });

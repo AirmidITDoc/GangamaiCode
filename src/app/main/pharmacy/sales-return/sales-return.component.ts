@@ -32,6 +32,8 @@ export class SalesReturnComponent implements OnInit {
         'PatientName',
         'patientType',
         'TotalAmount',
+        'discAmount',
+        'netAmount',
         'PaidType',
     ];
     dspSalesDetColumns = [

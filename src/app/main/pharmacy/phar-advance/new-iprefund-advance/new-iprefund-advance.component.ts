@@ -227,7 +227,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
         this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
         this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
         this.RefundSaveForm.get('pharmacyRefund.refundAmount').setValue(formValues?.ToatalRefunfdAmt)
-        this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(this.advanceDetailId)
+        this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(this.AdvanceId)
         this.RefundSaveForm.get('phAdvanceHeader.advanceId').setValue(this.AdvanceId)
         this.RefundSaveForm.get('phAdvanceHeader.balanceAmount').setValue(formValues?.BalanceAmount)
         if (this.RefundSaveForm.valid) {

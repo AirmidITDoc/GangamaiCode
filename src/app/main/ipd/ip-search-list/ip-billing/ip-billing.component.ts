@@ -60,7 +60,7 @@ export class IPBillingComponent implements OnInit {
     NurReqColumns = [
         'ServiceName',
         'Price',
-        // 'reqDate',
+         'reqDate',
         'billingUser',
         'Action'
     ];
@@ -1938,7 +1938,7 @@ export class IPBillingComponent implements OnInit {
     openServiceTable(): void {
         debugger
         this._matDialog.open(this.serviceTable, {
-            width: '50%',
+            width: '55%',
             height: '60%',
         })
     }

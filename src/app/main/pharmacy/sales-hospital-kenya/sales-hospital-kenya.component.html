@@ -344,7 +344,7 @@
                     <form [formGroup]="_salesService.ItemSearchGroup">
                       <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fusePerfectScrollbar>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="8%">
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
@@ -365,7 +365,7 @@
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="5%">
                           <airmid-textbox label="Qty" formControlName="Qty" #qtyInputRef [type]="'number'" min="0"
                             (valueChange)="calculateTotalAmt()"
                             (keydown.enter)="checkQtyBeforeNext($event)"
@@ -383,12 +383,12 @@
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="5%">
                           <airmid-textbox label="Disc %" formControlName="DiscPer" type="number"
                             (valueChange)="discperCal()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="6%">
                           <airmid-textbox label="Disc Amt" formControlName="DiscAmt" type="number"
                             (valueChange)="CaldiscAmount()"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>

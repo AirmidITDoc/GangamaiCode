@@ -154,6 +154,15 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="PayMode">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        Pay Mode
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <span> {{contact.payMode || '-'}}</span>
+                                    </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="loading">
                                     <mat-footer-cell *matFooterCellDef colspan="6">
                                         loading data...
@@ -165,13 +174,13 @@
                                         <span>No Data Found</span>
                                     </mat-footer-cell>
                                 </ng-container>
-
-
+ 
                                 <mat-header-row class="accent"
                                     *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: displayedColumns; let i = index"
                                     tabindex="999" class="contact" [@animate]="{ value: '*', params: { y: '100%' } }"
-                                    appHighlight></mat-row>
+                                    appHighlight
+                                       [ngClass]="{'red-row': contact.payMode == 'Cash' }"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
                                     [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
                                 <mat-footer-row *matFooterRowDef="['noData']"
