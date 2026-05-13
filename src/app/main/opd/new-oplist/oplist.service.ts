@@ -71,7 +71,7 @@ export class OPListService {
     }
 
     public getBilllistReport(Param: any) {
-        return this._httpClient.PostData("Report/ViewReport", Param);
+        return this._httpClient.PostData("Report/ViewReportFromDB", Param);
     }
     public AddchargesDelete(m_data, loader = true) {
         if (loader) {

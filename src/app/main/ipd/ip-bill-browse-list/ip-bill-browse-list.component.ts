@@ -474,7 +474,29 @@ export class IPBillBrowseListComponent implements OnInit {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
     viewgetFinalBillReportGroupwisePdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+      //  this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");  
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "13" }, 
+                ],
+                "mode": "IPFinalBillGroupwise"
+            }
+            this._IPBrowseBillService.getIPFInalGroupWiseReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "IP Final Bill Groupwise" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100); 
     }
     viewgetFinalBillReportChargeDatewisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");

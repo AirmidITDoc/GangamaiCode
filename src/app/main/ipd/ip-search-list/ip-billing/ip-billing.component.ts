@@ -29,6 +29,7 @@ import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { IPUpdatesComponent } from './ipupdates/ipupdates.component';
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-ip-billing',
@@ -2016,7 +2017,29 @@ export class IPBillingComponent implements OnInit {
     }
 
     viewgetBillBillGroupWiseReportPdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+        //this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");  
+                setTimeout(() => {
+                    const param = {
+                        "searchFields": [
+                            { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "13" }, 
+                        ],
+                        "mode": "IPFinalBillGroupwise"
+                    }
+                    this._IpSearchListService.getIPFInalGroupWiseReportView(param).subscribe(res => {
+                        const matDialog = this._matDialog.open(PdfviewerComponent,
+                            {
+                                maxWidth: "85vw",
+                                height: '750px',
+                                width: '100%',
+                                data: {
+                                    base64: res["base64"] as string,
+                                    title: "IP Final Bill Groupwise" + " " + "Viewer"
+                                }
+                            });
+                        matDialog.afterClosed().subscribe(result => {
+                        });
+                    });
+                }, 100);  
     }
 
     viewgetAdvanceReceiptReportPdf(data) {

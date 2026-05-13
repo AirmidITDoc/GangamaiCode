@@ -177,7 +177,9 @@ export class IPBrowseBillService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReportFromDB", Param);
     }
-
+    public getIPFInalGroupWiseReportView(Param) {
+           return this._httpClient1.PostData("Report/ViewReport", Param);
+    }
 
     public InsertIPSettlementPayment(employee) {
 
