@@ -574,44 +574,19 @@
                       <div class="footer-container" fxLayout="column" fxLayoutAlign="start">
                         <div class="row row-container">
                           <div class="amount-section">
-                            <div fxLayout="column" class="gap-8">
-
-                              <!-- <div class="amt-container py-4">
-                                <div class="net-amt-section">
-                                  <div class="net-amt">
-                                    <div class="net-amt-box">
-                                      <span class="net-amt-label">No Of Item:</span>
-                                      <span class="net-amt-value">
-                                        {{saleSelectedDatasource.data.length}}</span>
-                                    </div>
-                                    <div class="net-amt-box">
-                                      <span class="net-amt-label">Total Amount :</span>
-                                      <span class="net-amt-value"> {{ItemSubform.get('totalAmount')?.value | currency:'INR' }}</span>
-                                    </div>
-                                    <div class="net-amt-box">
-                                      <div class="net-amt-label">Total GST Amt :</div>
-                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency : 'INR':'symbol':'1.2-2' }}</div>
-                                    </div>
-                                    <div class="final-amt-box">
-                                      <span class="final-amt-label">Net Amt :</span>
-                                      <span class="final-amt-value">{{ItemSubform.get('netAmount')?.value | currency : 'INR'
-                                        }}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div> -->
-
+                            <div fxLayout="column" class="gap-8"> 
+                             
                               <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8 input-error-hidden">
                                 <!-- <div class="draft-btn">
                                                                                           <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
                                                                                         </div> -->
-                                <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="10%" label="Total Amount" [formGroup]="ItemSubform"
                                   formControlName="totalAmount" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Discount %" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="7%" label="Discount %" [formGroup]="ItemSubform"
                                   formControlName="FinalDiscPer" (keyup)="getFinalDiscperAmt()"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="6%" label="Discount Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="8%" label="Discount Amount" [formGroup]="ItemSubform"
                                   formControlName="discAmount" (keyup)="getFinalDiscAmount()"
                                   [readonly]="isdiscAmount"></airmid-textbox>
 
@@ -630,20 +605,47 @@
                                   </airmid-dropdown>
                                 </div>
 
-                                <airmid-textbox fxFlex="8%" label="Net Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="10%" label="Net Amount" [formGroup]="ItemSubform"
                                   formControlName="netAmount" [readonly]="true" [required]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Balance Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="7%" label="Balance Amount" [formGroup]="ItemSubform"
                                   formControlName="balanceAmount"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Round off" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="7%" label="Round off" [formGroup]="ItemSubform"
                                   formControlName="roundoffAmt" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Paid By Patient" [formGroup]="ItemSubform"
+                                <!-- <airmid-textbox fxFlex="5%" label="Paid By Patient" [formGroup]="ItemSubform"
                                   formControlName="PaidbyPatient" (valueChange)="CalPaidbackAmt()"></airmid-textbox>
 
                                 <airmid-textbox fxFlex="5%" label="Paid Back To Patient" [formGroup]="ItemSubform"
-                                  formControlName="PaidbacktoPatient" [readonly]="true"></airmid-textbox>
+                                  formControlName="PaidbacktoPatient" [readonly]="true"></airmid-textbox> -->
+
+
+                                   <div class="amt-container py-4">
+                                <div class="net-amt-section">
+                                  <div class="net-amt">
+                                    <div class="net-amt-box">
+                                      <span class="net-amt-label">No Of Item:</span>
+                                      <span class="net-amt-value">
+                                        {{saleSelectedDatasource.data.length}}</span>
+                                    </div>
+                                    <!-- <div class="net-amt-box">
+                                      <span class="net-amt-label">Total Amount :</span>
+                                      <span class="net-amt-value"> {{ItemSubform.get('totalAmount')?.value | currency:'INR' }}</span>
+                                    </div>
+                                    <div class="net-amt-box">
+                                      <div class="net-amt-label">Total GST Amt :</div>
+                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency : 'INR':'symbol':'1.2-2' }}</div>
+                                    </div>
+                                    <div class="final-amt-box">
+                                      <span class="final-amt-label">Net Amt :</span>
+                                      <span class="final-amt-value">{{ItemSubform.get('netAmount')?.value | currency : 'INR'
+                                        }}</span>
+                                    </div> -->
+                                  </div>
+                                </div>
+                              </div>
+
 
 
                               </div>
