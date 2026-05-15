@@ -268,8 +268,8 @@ export class NewResultEntryComponent {
                 items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
         }
 
-        data.ParaBoldFlag = '';
-        if (data.ParaIsNumeric || data.PIsNumeric) {
+       // data.ParaBoldFlag = '';
+        if ((data?.ParaIsNumeric || 0) || (data?.PIsNumeric || 0)) {
 
             const a = parseFloat(data.ResultValue);
             const b = parseFloat(data.MinValue);
@@ -278,6 +278,8 @@ export class NewResultEntryComponent {
             if (b != null && c != null && a != null) {
                 if (a < b || a > c) {
                     data.ParaBoldFlag = 'B';
+                }else{
+                    data.ParaBoldFlag = '';
                 }
             }
         }
@@ -1020,7 +1022,7 @@ export class NewResultEntryComponent {
     printf: boolean = true;
 
     onSave() {
-        this.getValidatetabledata()
+     this.getValidatetabledata()
 
         if ((this.vPathResultDoctorId == 0 || this.vPathResultDoctorId == undefined)) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {

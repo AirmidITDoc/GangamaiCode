@@ -118,6 +118,7 @@ export class ConfigSettingParams {
     IsMaterialAccept: any;
     IsOPBillProceed: any;
   IsSalesDiscUpdate: any;
+  IsChennaiIPFinalPrint:any;
 
     /**
         * Constructor
@@ -244,7 +245,7 @@ export class ConfigSettingParams {
         this.IsMaterialAccept = ConfigSettingParams.IsMaterialAccept;
         this.IsOPBillProceed = ConfigSettingParams.IsOPBillProceed;
         this.IsSalesDiscUpdate = ConfigSettingParams.IsSalesDiscUpdate;
-
+        this.IsChennaiIPFinalPrint = ConfigSettingParams.IsChennaiIPFinalPrint;
 
         
            }
