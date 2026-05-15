@@ -247,7 +247,7 @@ export class IPBillBrowseListComponent implements OnInit {
         this.Is9_Digit_National_Id = id === "1";
 debugger
         const rawValue1 = this?._configue?.configParams?.IsChennaiIPFinalPrint || "";
-        const [id1, val1] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        const [id1, val1] = rawValue.includes(":") ? rawValue1.split(":") : [null, null];
         this.IsChennaiIPFinalPrint = id1 === "1";
 
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
