@@ -97,6 +97,7 @@ export class InvestigationListService {
             start: [new Date().toISOString()],
             end: [new Date().toISOString()],
             TestStatusSearch: ['1'],
+            ApprovalStatusSearch: ['1'],
             UnitId: [this.accountService.currentUserValue.user.unitId],
             // CategoryId:0
         });
@@ -167,6 +168,9 @@ export class InvestigationListService {
     }
     public PathResultentryDetailList(employee) {
         return this._httpClient1.PostData("LabPatientRegistration/LabResultDetailsList", employee);
+    }
+    public PathResultentryAppDetailList(employee) {
+        return this._httpClient1.PostData("LabApproval/LabResultCompletedInvestigationList", employee);
     }
 
     public PathSampleDetailList(employee) {

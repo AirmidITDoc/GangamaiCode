@@ -949,7 +949,8 @@
                                                 <airmid-textbox label="PhoneNo" formControlName="PhoneNo"
                                                     [value]="registerObj1.phoneNo ?? ''"
                                                     [formGroup]="admissionFormGroup"
-                                                    [validations]="getValidationMessages().phoneNo" [maxLength]="10">
+                                                    [validations]="getValidationMessages().phoneNo" [maxLength]="10"
+                                                     (keypress)="keyPressAlphanumeric($event)">
                                                 </airmid-textbox>
                                             </div>
 
@@ -959,8 +960,7 @@
                                                     [formGroup]="admissionFormGroup"
                                                     [validations]="getValidationMessages().RelationshipId"
                                                     [mode]="autocompleteModerelationship">
-                                                </airmid-dropdown>
-
+                                                </airmid-dropdown> 
                                             </div>
                                         </div>
                                     </mat-card-content>

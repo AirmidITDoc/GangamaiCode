@@ -23,6 +23,7 @@ import { PrescriptionComponent } from './prescription/prescription.component';
 import { SalesHospitalService } from './sales-hospital-new.service';
 import { SubstitutesComponent } from './substitutes/substitutes.component';
 import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-sales-hospital',
@@ -171,6 +172,7 @@ export class SalesHospitalNewComponent implements OnInit {
         private _loggedService: AuthenticationService,
         public _RequestforlabtestService: RequestforlabtestService,
         public toastr: ToastrService,
+        public commonService: PrintserviceService,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) { }
 
@@ -430,12 +432,12 @@ export class SalesHospitalNewComponent implements OnInit {
                 time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 opIpId: [2, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 opIpType: [2, [this._FormvalidationserviceService.onlyNumberValidator]],
-                totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 concessionAuthorizationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isSellted: [true],
@@ -1041,6 +1043,8 @@ export class SalesHospitalNewComponent implements OnInit {
         this.TotalBalanceAmt = 0;
         this.TotalCreditAmt = 0;
         this.saveflag = true;
+        this.NoStockItemlist = [];
+        this.DraftID = 0;
     }
     deleteTableRow(event, element) {
         const index = this.Itemchargeslist.indexOf(element);
@@ -1697,6 +1701,7 @@ export class SalesHospitalNewComponent implements OnInit {
         });
     }
     onSaveDraftBill() {
+        debugger
         const formattedTime = this.dateTimeObj.time;
         const formattedDate = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd');
         const FormattedDateTime = formattedDate + ' ' + formattedTime
@@ -1742,7 +1747,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
         } else {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
-            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
+            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.DoctorName || '')
         }
         this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {
@@ -1754,6 +1759,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this._salesService.InsertSalesDraftBill(this.PharmaSalesDraftForm.value).subscribe((response) => {
                 this.onClose()
                 this.getDraftorderList();
+                this.viewgetsalesDraftReportPdf(response);
             });
         }
         else {
@@ -1960,7 +1966,7 @@ export class SalesHospitalNewComponent implements OnInit {
             exportType: "JSON",
             columns: [{ data: "string", name: "string" }]
         };
-
+  debugger
         try {
             const response: any = await firstValueFrom(
                 this._salesService.getDraftBillItemBalQty(m_data)
@@ -1972,7 +1978,17 @@ export class SalesHospitalNewComponent implements OnInit {
             let qtyBalChk = 0;
 
             if (tempChargesList.length === 0) {
-                await Swal.fire(contact.itemId + ' : Item Stock is Not Available');
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'Stock Unavailable',
+                    html: `The item <strong>${contact.itemName}</strong> is currently out of stock.`,
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK'
+                });
+                this.NoStockItemlist.push({
+                    ItemId: contact?.itemId || 0,
+                    ItemName: contact?.itemName || ''
+                });
             } else {
                 for (const element of tempChargesList) {
 
@@ -2108,12 +2124,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
         return true;
     }
-
-    //     NoStockItemlist:any=[
-    //     {ItemId:2,ItemName:'Dolo'},
-    //       {ItemId:1,ItemName:'Doloe 25'},
-    //         {ItemId:5,ItemName:'Paracetmole'}
-    // ];
+ 
     NoStockItemlist: any = [];
     getItemNames(): string {
         if (!this.NoStockItemlist || this.NoStockItemlist.length === 0) {
@@ -2123,14 +2134,14 @@ export class SalesHospitalNewComponent implements OnInit {
         return unique.join(', ');
     }
 
-    getPRESCRIPTION() {
+     async getPRESCRIPTION() {
         if (this.ItemSubform.get('opIpType').value != '2') {
             const dialogRef = this._matDialog.open(PrescriptionComponent, {
                 maxWidth: '100%',
                 height: '100%',
                 width: '95%',
             });
-            dialogRef.afterClosed().subscribe((result) => {
+            dialogRef.afterClosed().subscribe(async(result) => {
                 console.log('The dialog was closed - Insert Action', result);
                 this.Itemchargeslist = [];
                 this.DoctorNamecheck = true;
@@ -2160,7 +2171,8 @@ export class SalesHospitalNewComponent implements OnInit {
                 }
                 this.getBillSummary(result[0]?.AdmissionID || 0)
                 this.dsItemNameList1.data = result;
-                this.dsItemNameList1.data.forEach((contact) => {
+                ///  this.dsItemNameList1.data.forEach((contact) => {
+                for (const contact of this.dsItemNameList1.data) {
                     const m_data = {
                         "first": 0,
                         "rows": 9999,
@@ -2173,24 +2185,23 @@ export class SalesHospitalNewComponent implements OnInit {
                         "exportType": "JSON",
                         "columns": [{ "data": "string", "name": "string" }]
                     };
-                    this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
-                        
+                    /// this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+                    try {
+                        const response: any = await firstValueFrom(
+                            this._salesService.getDraftBillItemBalQty(m_data)
+                        );
                         this.Tempchargeslist = response.data as any;
                         if (this.Tempchargeslist.length == 0) {
-                            Swal.fire({
+                            await Swal.fire({
                                 icon: 'warning',
                                 title: 'Stock Unavailable',
-                                text: `The item with ID ${contact.ItemId} is currently out of stock.`,
+                                html: `The item <strong>${contact.ItemName}</strong> is currently out of stock.`,
                                 showConfirmButton: true,
                                 confirmButtonText: 'OK'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.NoStockItemlist.push({
-                                        ItemId: contact?.ItemId || 0,
-                                        ItemName: contact?.ItemName || ''
-                                    })
-                                    console.log(this.NoStockItemlist)
-                                }
+                            });
+                            this.NoStockItemlist.push({
+                                ItemId: contact?.ItemId || 0,
+                                ItemName: contact?.ItemName || ''
                             })
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
@@ -2216,8 +2227,12 @@ export class SalesHospitalNewComponent implements OnInit {
                             });
                             //Swal.fire('Balance Qty is :', String(bal_qnt));
                         }
-                    });
-                });
+                    }
+                    catch (error) {
+                        console.error("Error:", error);
+                    }
+                }
+                //});
             });
         } else {
             this.toastr.warning('Please Select opIpType IP or OP.', 'Warning !', {
@@ -2653,6 +2668,9 @@ export class SalesHospitalNewComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);
         });
+    }
+        viewgetsalesDraftReportPdf(element) {
+        this.commonService.Onprint("DSalesId", element, "OpDraftPharmacyReceipt");
     }
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;

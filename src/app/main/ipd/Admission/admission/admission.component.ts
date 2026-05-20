@@ -181,6 +181,7 @@ export class AdmissionComponent implements OnInit {
         { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 170 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
         {
             heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,

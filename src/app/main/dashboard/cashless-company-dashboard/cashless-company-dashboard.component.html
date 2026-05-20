@@ -2,7 +2,7 @@
 
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-        dynamicTableHeight> 
+        dynamicTableHeight>
 
         <div class="top-header accent">
             <div class="top-header-info">
@@ -97,9 +97,71 @@
                     </div>
 
                 </div>
-
             </div>
-        </div> 
+
+            <div *ngFor="let item of VSalesSection" class="dashboard-card">
+
+                <!-- 👉 SALES CARD -->
+                <div class="sales-combined">
+
+                    <!-- Header -->
+                    <div class="card-header">
+                        <div class="header-left">
+                            <span class="card-icon">💰</span>
+                            <span class="card-title">{{ item.section }} Section</span>
+                        </div>
+
+                        <!-- Badge -->
+                        <span class="badge" [ngClass]="item.section === 'OP' ? 'op' : 'ip'">
+                            {{ item.section }}
+                        </span>
+
+                        <!-- Total -->
+                        <div class="header-total">
+                            {{ item.totalCount | number }}
+                            <div class="total-text">Total</div>
+                        </div>
+                    </div>
+
+                    <!-- OPD -->
+                    <div class="sales-section">
+                        <div class="section-header">
+                            <span>💊 OPD Sales</span>
+                            <span class="amount">{{ item.companyCount | number }}</span>
+                        </div>
+
+                        <div class="payment-row">
+                            <div class="pay cash">
+                                💵 Cash <span>{{ item.companyCount | number }}</span>
+                            </div>
+                            <div class="pay mpesa">
+                                📱 Mpesa <span>{{ item.approvedCount | number }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IPD -->
+                    <div class="sales-section">
+                        <div class="section-header">
+                            <span>🏥 IPD Sales</span>
+                            <span class="amount">{{ item.companyCount | number }}</span>
+                        </div>
+
+                        <div class="payment-row">
+                            <div class="pay cash">
+                                💵 Cash <span>{{ item.companyCount | number }}</span>
+                            </div>
+                            <div class="pay mpesa">
+                                📱 Mpesa <span>{{ item.approvedCount | number }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
@@ -121,18 +183,18 @@
                 </div>
             </ng-template>
 
-        <div class="table-container">
-            <div class="table-box">
-                <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" #grid1Ref>
-                </airmid-table>
-            </div>
-        
-            <div class="table-box">
-                <airmid-table [gridConfig]="gridConfig_CompanyWise" class="content" [ShowFilter]="false" #grid2Ref>
-                </airmid-table>
+            <div class="table-container">
+                <div class="table-box">
+                    <airmid-table [gridConfig]="gridConfig" class="content" [ShowFilter]="false" #grid1Ref>
+                    </airmid-table>
+                </div>
+
+                <div class="table-box">
+                    <airmid-table [gridConfig]="gridConfig_CompanyWise" class="content" [ShowFilter]="false" #grid2Ref>
+                    </airmid-table>
+                </div>
             </div>
         </div>
-        </div> 
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
             <airmid-table [gridConfig]="gridConfig_MonthlyCompanyWise" class="content" [ShowFilter]="false"

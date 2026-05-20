@@ -346,7 +346,7 @@
                     <form [formGroup]="_salesService.ItemSearchGroup" class="m-0">
                       <div fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px" fusePerfectScrollbar>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="8%">
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
@@ -367,13 +367,13 @@
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="5%">
                           <airmid-textbox label="Qty" formControlName="Qty" #qtyInputRef [type]="'number'" min="0"
                             (valueChange)="calculateTotalAmt()" (keydown.enter)="checkQtyBeforeNext($event)"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="6%">
                           <airmid-textbox label="MRP" formControlName="MRP" type="number" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
@@ -383,12 +383,12 @@
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="5%">
                           <airmid-textbox label="Disc %" formControlName="DiscPer" type="number"
                             (valueChange)="discperCal()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="6%">
                           <airmid-textbox label="Disc Amt" formControlName="DiscAmt" type="number"
                             (valueChange)="CaldiscAmount()"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
@@ -399,7 +399,7 @@
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="6%">
                           <airmid-textbox label="Markup Amt" formControlName="MarginAmt" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
@@ -566,14 +566,7 @@
                 </div>
               </div>
 
-              <div class="modal-card-container">
-                <div fxLayout="row">
-                  <!-- <span><b>Out of Stock Items : </b></span> -->
-                  <span style="color: red; margin-left: 5px;">
-                    {{ getItemNames() }} </span>
-                </div>
-              </div>
-
+              
               <div class="modal-card-container">
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <mat-card-content class="py-4">
@@ -581,44 +574,19 @@
                       <div class="footer-container" fxLayout="column" fxLayoutAlign="start">
                         <div class="row row-container">
                           <div class="amount-section">
-                            <div fxLayout="column" class="gap-8">
-
-                              <!-- <div class="amt-container py-4">
-                                <div class="net-amt-section">
-                                  <div class="net-amt">
-                                    <div class="net-amt-box">
-                                      <span class="net-amt-label">No Of Item:</span>
-                                      <span class="net-amt-value">
-                                        {{saleSelectedDatasource.data.length}}</span>
-                                    </div>
-                                    <div class="net-amt-box">
-                                      <span class="net-amt-label">Total Amount :</span>
-                                      <span class="net-amt-value"> {{ItemSubform.get('totalAmount')?.value | currency:'INR' }}</span>
-                                    </div>
-                                    <div class="net-amt-box">
-                                      <div class="net-amt-label">Total GST Amt :</div>
-                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency : 'INR':'symbol':'1.2-2' }}</div>
-                                    </div>
-                                    <div class="final-amt-box">
-                                      <span class="final-amt-label">Net Amt :</span>
-                                      <span class="final-amt-value">{{ItemSubform.get('netAmount')?.value | currency : 'INR'
-                                        }}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div> -->
-
+                            <div fxLayout="column" class="gap-8"> 
+                             
                               <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8 input-error-hidden">
                                 <!-- <div class="draft-btn">
                                                                                           <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
                                                                                         </div> -->
-                                <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="10%" label="Total Amount" [formGroup]="ItemSubform"
                                   formControlName="totalAmount" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Discount %" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="7%" label="Discount %" [formGroup]="ItemSubform"
                                   formControlName="FinalDiscPer" (keyup)="getFinalDiscperAmt()"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="6%" label="Discount Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="8%" label="Discount Amount" [formGroup]="ItemSubform"
                                   formControlName="discAmount" (keyup)="getFinalDiscAmount()"
                                   [readonly]="isdiscAmount"></airmid-textbox>
 
@@ -637,20 +605,47 @@
                                   </airmid-dropdown>
                                 </div>
 
-                                <airmid-textbox fxFlex="8%" label="Net Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="10%" label="Net Amount" [formGroup]="ItemSubform"
                                   formControlName="netAmount" [readonly]="true" [required]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Balance Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="7%" label="Balance Amount" [formGroup]="ItemSubform"
                                   formControlName="balanceAmount"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Round off" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="7%" label="Round off" [formGroup]="ItemSubform"
                                   formControlName="roundoffAmt" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="5%" label="Paid By Patient" [formGroup]="ItemSubform"
+                                <!-- <airmid-textbox fxFlex="5%" label="Paid By Patient" [formGroup]="ItemSubform"
                                   formControlName="PaidbyPatient" (valueChange)="CalPaidbackAmt()"></airmid-textbox>
 
                                 <airmid-textbox fxFlex="5%" label="Paid Back To Patient" [formGroup]="ItemSubform"
-                                  formControlName="PaidbacktoPatient" [readonly]="true"></airmid-textbox>
+                                  formControlName="PaidbacktoPatient" [readonly]="true"></airmid-textbox> -->
+
+
+                                   <div class="amt-container py-4">
+                                <div class="net-amt-section">
+                                  <div class="net-amt">
+                                    <div class="net-amt-box">
+                                      <span class="net-amt-label">No Of Item:</span>
+                                      <span class="net-amt-value">
+                                        {{saleSelectedDatasource.data.length}}</span>
+                                    </div>
+                                    <!-- <div class="net-amt-box">
+                                      <span class="net-amt-label">Total Amount :</span>
+                                      <span class="net-amt-value"> {{ItemSubform.get('totalAmount')?.value | currency:'INR' }}</span>
+                                    </div>
+                                    <div class="net-amt-box">
+                                      <div class="net-amt-label">Total GST Amt :</div>
+                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency : 'INR':'symbol':'1.2-2' }}</div>
+                                    </div>
+                                    <div class="final-amt-box">
+                                      <span class="final-amt-label">Net Amt :</span>
+                                      <span class="final-amt-value">{{ItemSubform.get('netAmount')?.value | currency : 'INR'
+                                        }}</span>
+                                    </div> -->
+                                  </div>
+                                </div>
+                              </div>
+
 
 
                               </div>
@@ -807,6 +802,19 @@
                     [ngClass]="{ hide: !(dsDraftList != null && dsDraftList.data.length == 0) }"
                     class="min-width-600"></mat-footer-row>
                 </mat-table>
+
+                 <div class="card">
+                <mat-card>
+                  <mat-card-content fxLayout="column" class="gap-4" style="padding: 1px;">
+                    <span><b>Out of Stock Items:</b></span>
+                    <div fxLayout="row"> 
+                        <!-- <span><b>Out of Stock Items : </b></span> -->
+                        <span style="color: red; margin-left: 5px;">
+                        {{ getItemNames() }}  </span>
+                      </div>  
+                  </mat-card-content>
+                </mat-card>
+              </div>
 
                 <!-- Available Stock in Other Store -->
                 <mat-table class="sales-table-right airmid-table" #table matSort [dataSource]="dsBalAvaListStore"

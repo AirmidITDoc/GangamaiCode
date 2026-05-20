@@ -29,6 +29,7 @@ import { AdvanceDetailObj, ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { IPUpdatesComponent } from './ipupdates/ipupdates.component';
 import { PrebillDetailsComponent } from './prebill-details/prebill-details.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-ip-billing',
@@ -60,7 +61,7 @@ export class IPBillingComponent implements OnInit {
     NurReqColumns = [
         'ServiceName',
         'Price',
-        // 'reqDate',
+         'reqDate',
         'billingUser',
         'Action'
     ];
@@ -1938,7 +1939,7 @@ export class IPBillingComponent implements OnInit {
     openServiceTable(): void {
         debugger
         this._matDialog.open(this.serviceTable, {
-            width: '50%',
+            width: '55%',
             height: '60%',
         })
     }
@@ -2016,7 +2017,29 @@ export class IPBillingComponent implements OnInit {
     }
 
     viewgetBillBillGroupWiseReportPdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+        //this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");  
+                setTimeout(() => {
+                    const param = {
+                        "searchFields": [
+                            { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "13" }, 
+                        ],
+                        "mode": "IPFinalBillGroupwise"
+                    }
+                    this._IpSearchListService.getIPFInalGroupWiseReportView(param).subscribe(res => {
+                        const matDialog = this._matDialog.open(PdfviewerComponent,
+                            {
+                                maxWidth: "85vw",
+                                height: '750px',
+                                width: '100%',
+                                data: {
+                                    base64: res["base64"] as string,
+                                    title: "IP Final Bill Groupwise" + " " + "Viewer"
+                                }
+                            });
+                        matDialog.afterClosed().subscribe(result => {
+                        });
+                    });
+                }, 100);  
     }
 
     viewgetAdvanceReceiptReportPdf(data) {
@@ -2042,7 +2065,8 @@ export class IPBillingComponent implements OnInit {
 
         // Get values as strings in dd/MM/yyyy format
         const serviceDateStr = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "dd/MM/yyyy");
-        const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy");
+        const admissionDateStr = this.datePipe.transform(this.selectedAdvanceObj.admissionDate, "dd/MM/yyyy"); 
+        const today = new Date(); today.setHours(0, 0, 0, 0);
 
         // Check that both dates are available
         if (serviceDateStr && admissionDateStr) {
@@ -2064,6 +2088,16 @@ export class IPBillingComponent implements OnInit {
                     icon: 'warning',
                     title: 'Invalid Charge Date',
                     text: 'The charge date cannot be earlier than the admission date.',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    this.Serviceform.get('chargesDate')?.setValue(new Date());
+                });
+            }
+            else if (serviceDate > today) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Future Date Not Allowed',
+                    text:  'Future date charges cannot be added.',
                     confirmButtonText: 'OK'
                 }).then(() => {
                     this.Serviceform.get('chargesDate')?.setValue(new Date());

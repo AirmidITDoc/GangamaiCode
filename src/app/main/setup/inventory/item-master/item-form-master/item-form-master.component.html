@@ -1,3 +1,4 @@
+
 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" fusePerfectScrollbar>
   <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 50px;">
     <div fxLayout="row" fxLayoutAlign="start center">
@@ -233,7 +234,41 @@
               </mat-card>
             </form>
 
+            <br>
+            <form [formGroup]="itemForm" noValidate fxLayout="column" style="padding: 0 10px;">
 
+              <div fxLayout="row" fxLayout.gt-xs="row" fxLayoutGap="4px"
+                class="top-header accent heading-container h-40 border-radius-4">
+                <span style="font-size:15px; font-weight: bolder; color:white;padding:7px;">
+                  Item Drug Type Details
+                </span>
+              </div>
+
+              <mat-card>
+                <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px"
+                  style="padding: 10px">
+
+                  <!-- Dropdown -->
+                  <airmid-dropdown label="Item DrugType" formControlName="mAssignItemToDrugs" [formGroup]="itemForm"
+                    [IsMultiPle]="true" [value]="registerObj.mAssignItemToDrugs"
+                     #ddlDrug ValueField="itemDrugTypeId"
+                    TextField="drugTypeName" ApiUrl="ItemDrugTypeMaster/get-ItemDrugType" [ReqFullObj]="true" fxFlex="25">
+                  </airmid-dropdown>
+
+                  <!-- Chips -->
+                  <div fxFlex="50" fxLayout="row wrap" fxLayoutAlign="start center">
+                    <mat-chip-listbox #chipList>
+                      <mat-chip *ngFor="let item of itemForm.value.mAssignItemToDrugs">
+                        {{ item.drugTypeName }}
+                        <mat-icon (click)="removeDrug(item)">close</mat-icon>
+                      </mat-chip>
+                    </mat-chip-listbox>
+                  </div>
+
+                </div>
+
+              </mat-card>
+            </form>
 
 
           </div>
@@ -262,7 +297,7 @@
     <!-- Right Side: Buttons -->
     <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="padding: 5px;">
       <button mat-raised-button (click)="AddNewManufactur()" fxLayoutAlign="center center">
-          <mat-icon color="Primary" title=" Add New Manufacture ">add</mat-icon>
+        <mat-icon color="Primary" title=" Add New Manufacture ">add</mat-icon>
         <span>Item Manufacture</span>
       </button>
 

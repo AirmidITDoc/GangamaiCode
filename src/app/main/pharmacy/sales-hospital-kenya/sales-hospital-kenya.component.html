@@ -344,7 +344,7 @@
                     <form [formGroup]="_salesService.ItemSearchGroup">
                       <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fusePerfectScrollbar>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="8%">
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
@@ -365,7 +365,7 @@
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="5%">
                           <airmid-textbox label="Qty" formControlName="Qty" #qtyInputRef [type]="'number'" min="0"
                             (valueChange)="calculateTotalAmt()"
                             (keydown.enter)="checkQtyBeforeNext($event)"
@@ -383,12 +383,12 @@
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="5%">
                           <airmid-textbox label="Disc %" formControlName="DiscPer" type="number"
                             (valueChange)="discperCal()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
-                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                        <div fxFlex="100%" fxFlex.gt-sm="6%">
                           <airmid-textbox label="Disc Amt" formControlName="DiscAmt" type="number"
                             (valueChange)="CaldiscAmount()"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
@@ -554,15 +554,7 @@
                       [ngClass]="{ hide: !(saleSelectedDatasource != null && saleSelectedDatasource.data.length == 0) }"></mat-footer-row>
                   </mat-table>
                 </div>
-              </div>
-               <div class="modal-card-container"> 
-                      <div fxLayout="row"> 
-                        <!-- <span><b>Out of Stock Items : </b></span> -->
-                        <span style="color: red; margin-left: 5px;">
-                        {{ getItemNames() }}  </span>
-                      </div> 
-                </div>
-
+              </div> 
               <div class="modal-card-container">
                 <mat-card fxFlex.gt-sm="100%" fxFlex>
                   <mat-card-content class="py-4">
@@ -782,6 +774,19 @@
                     [ngClass]="{ hide: !(dsDraftList != null && dsDraftList.data.length == 0) }"
                     class="min-width-600"></mat-footer-row>
                 </mat-table>
+
+                 <div class="card">
+                <mat-card>
+                  <mat-card-content fxLayout="column" class="gap-4" style="padding: 1px;">
+                    <span><b>Out of Stock Items:</b></span>
+                    <div fxLayout="row"> 
+                        <!-- <span><b>Out of Stock Items : </b></span> -->
+                        <span style="color: red; margin-left: 5px;">
+                        {{ getItemNames() }}  </span>
+                      </div>  
+                  </mat-card-content>
+                </mat-card>
+              </div>
 
                  <mat-table class="sales-table-right airmid-table" #table matSort [dataSource]="dsBalAvaListStore"
                   [@animateStagger]="{ value: '50' }">

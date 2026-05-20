@@ -29,12 +29,12 @@
         </mat-cell>
       </ng-container>
 
-      <!-- <ng-container matColumnDef="reqDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">ReqDateTime</mat-header-cell>
+      <ng-container matColumnDef="reqDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">ReqSent DateTime</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
-          <span>{{ contact.reqDate }}-{{ contact.reqTime }}</span>
+          <span>{{ contact.addedByDate }}</span>
         </mat-cell>
-      </ng-container> -->
+      </ng-container>
 
       <ng-container matColumnDef="billingUser">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Request Date | User Name</mat-header-cell>

@@ -1587,7 +1587,7 @@
 
 </mat-tab>
 
-<!--------------------- Approval List ------------------------>
+<!--------------------- Approval Entry ------------------------>
 <mat-tab label="Pending Approval">
 
     <div fusePerfectScrollbar
@@ -1598,7 +1598,7 @@
             <div class="top-header-info">
                 <div class="top-header-title">
                     <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                        Approval List
+                        Pending Approval List
                     </span>
                 </div>
             </div>
@@ -1606,54 +1606,73 @@
         </div>
         <div class="layout-body p-12">
             <mat-card>
+
                 <div class="layout-body-container center">
                     <div class="info-badge-top" fxLayout="row" fxLayoutAlign="space-between" flex>
 
                         <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8">
 
                             <div class="dashboard-card registrations">
-                                <div class="card-label">TotalTest Result :{{ApprovalVtotalcount}} <mat-icon
+                                <div class="card-label">TotalTest Result :{{ResultVtotalcount}} <mat-icon
                                         class="card-icon" matTooltip="Total Test Results">assignment</mat-icon>
                                 </div>
                             </div>
 
                             <div class="dashboard-card appointments">
-                                <div class="card-label">Completed :{{ApprovalVCompletedcount}} <mat-icon
-                                        class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
+                                <div class="card-label">Completed :{{ResultVCompletedcount}} <mat-icon class="card-icon"
+                                        matTooltip="Completed Tests">check_circle</mat-icon>
                                 </div>
                             </div>
 
                             <div class="dashboard-card appointments-split">
-                                <div class="card-label">Pending:{{ApprovalVpendingcount}} <mat-icon class="card-icon"
+                                <div class="card-label">Pending:{{ResultVpendingcount}} <mat-icon class="card-icon"
                                         matTooltip="Pending Tests">schedule</mat-icon></div>
                             </div>
 
                         </div>
 
                     </div>
-                    <form [formGroup]="ApprovalmyformSearch" class="mat-error-fix">
+                    <form [formGroup]="ResultmyformSearch" class="mat-error-fix">
                         <div fxLayout="column" style="padding-top:5px ;">
                             <div class="layout-card-container" style="height: 60px;">
 
                                 <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
                                     <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
 
+                                        <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                            [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
+                                            [(ngModel)]="ResultApprovalHeadergridConfig.filters[6].fieldValue"
+                                            [formGroup]="ResultmyformSearch"
+                                            [mode]="autocompleteModeunit"></airmid-dropdown>
+
                                         <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                            <airmid-datepicker [formGroup]="ApprovalmyformSearch" [isRangePicker]="true"
+                                            <airmid-datepicker [formGroup]="ResultmyformSearch" [isRangePicker]="true"
                                                 formStartControlName="start" formEndControlName="end"
-                                                [(fromValue)]="ApprovalgridConfig.filters[0].fieldValue"
-                                                [(toValue)]="ApprovalgridConfig.filters[1].fieldValue">
+                                                [(fromValue)]="ResultApprovalHeadergridConfig.filters[3].fieldValue"
+                                                [(toValue)]="ResultApprovalHeadergridConfig.filters[4].fieldValue">
                                             </airmid-datepicker>
                                         </div>
 
+                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>UHID</mat-label>
+                                                <input matInput placeholder="Search UHID" autocomplete="off"
+                                                    [formGroup]="ResultmyformSearch" formControlName="RegNoSearch"
+                                                    (input)="ResultonChangeFirst()" />
+                                                <button matSuffix mat-icon-button aria-label="Clear"
+                                                    (click)="ResultClearfilter('RegNoSearch')">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                            </mat-form-field>
+                                        </div>
                                         <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>FirstName</mat-label>
                                                 <input matInput placeholder="Search FirstName" autocomplete="off"
-                                                    [formGroup]="ApprovalmyformSearch" formControlName="FirstNameSearch"
-                                                    (input)="ApprovalonChangeFirst()" />
+                                                    [formGroup]="ResultmyformSearch" formControlName="FirstNameSearch"
+                                                    (input)="ResultonChangeFirst()" />
                                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                                    (click)="ApprovalClearfilter('FirstNameSearch')">
+                                                    (click)="ResultClearfilter('FirstNameSearch')">
                                                     <mat-icon>close</mat-icon>
                                                 </button>
                                             </mat-form-field>
@@ -1663,10 +1682,10 @@
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>LastName</mat-label>
                                                 <input matInput placeholder="Search LastName" autocomplete="off"
-                                                    [formGroup]="ApprovalmyformSearch" formControlName="LastNameSearch"
-                                                    (input)="ApprovalonChangeFirst()" />
+                                                    [formGroup]="ResultmyformSearch" formControlName="LastNameSearch"
+                                                    (input)="ResultonChangeFirst()" />
                                                 <button matSuffix mat-icon-button aria-label="Clear"
-                                                    (click)="ApprovalClearfilter('LastNameSearch')">
+                                                    (click)="ResultClearfilter('LastNameSearch')">
                                                     <mat-icon>close</mat-icon>
                                                 </button>
                                             </mat-form-field>
@@ -1674,7 +1693,7 @@
 
                                         <div fxFlex="15%" fxLayout="row">
                                             <mat-radio-group formControlName="ApprovalStatusSearch" fxLayout="column"
-                                                (change)="ApprovalonChangeFirst()" class="gap-4">
+                                                (change)="ResultonChangeFirst()" class="gap-4">
                                                 <mat-label><b>Status:</b></mat-label>
                                                 <div fxLayout="row">
                                                     <mat-radio-button value='0'>All</mat-radio-button>
@@ -1683,13 +1702,13 @@
                                                 </div>
                                             </mat-radio-group>
                                         </div>
-                                        <!-- (click)="searchRecords($event)" -->
+
                                         <div class="action-button-container">
                                             <div class="button-row-group">
-                                                <!-- <button class="btn btn-danger-outline btn-xs"
-                                                            (click)="ApprovalonClear()">clear</button> -->
+                                                <button class="btn btn-danger-outline btn-xs"
+                                                    (click)="onClear()">clear</button>
                                                 <button class="btn btn-primary btn-with-icon btn-xs"
-                                                    (click)="ApprovalonChangeFirst()">
+                                                    (click)="searchRecords1($event)">
                                                     <span>Search</span>
                                                     <span class="btn-icon">
                                                         <mat-icon>search</mat-icon>
@@ -1703,93 +1722,326 @@
 
                             </div>
 
-                            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                                dynamicTableHeight>
+                            <div
+                                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
 
                                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                                    <mat-card>
-                                        <div id="contacts"
-                                            class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                                    <mat-card style="display: flex; flex-direction: column; padding: 0;">
+                                        <div class="airmid-table-container margin-top-paginator"
+                                            style="overflow: auto; display: flex; flex-direction: column;">
 
-                                            <ng-template #isCompletedstatus let-element>
-                                                <div fxLayout="row" fxLayoutAlign="center center">
-                                                    <mat-icon *ngIf="element.isCompleted==true"
-                                                        matTooltip="Report Completed" class="s-20 mr-4"
-                                                        style="color: #4caf50;">
-                                                        check_circle
-                                                    </mat-icon>
-                                                    <mat-icon *ngIf="!element.isCompleted==true"
-                                                        matTooltip="Report Not Completed" class="s-20 mr-4"
-                                                        style="color: #f44336;">
-                                                        hourglass_empty
-                                                    </mat-icon>
-                                                </div>
+                                            <table mat-table [dataSource]="dataSourceParent1" multiTemplateDataRows
+                                                class="airmid-table patient-table accordion-parent-table"
+                                                style="width: 100%;">
+                                                <!-- Test Date Column -->
+                                                <ng-container matColumnDef="dot">
+                                                    <th mat-header-cell *matHeaderCellDef> Test Date </th>
+                                                    <td mat-cell *matCellDef="let element"> {{element.dot}}
+                                                    </td>
+                                                </ng-container>
 
-                                                <div fxLayout="row" fxLayoutAlign="center center">
-                                                    <mat-icon *ngIf="element.isVerifySign==true" matTooltip="Verified"
-                                                        style="color: green;">verified_user</mat-icon>
+                                                <!-- UHID -->
+                                                <ng-container matColumnDef="labRequestNo">
+                                                    <th mat-header-cell *matHeaderCellDef> UHID </th>
+                                                    <td mat-cell *matCellDef="let element">
+                                                        {{element.labRequestNo}} </td>
+                                                </ng-container>
 
-                                                    <mat-icon *ngIf="element.isVerifySign==false"
-                                                        matTooltip="NotVerified" color="warn">hourglass_empty</mat-icon>
-                                                </div>
-                                            </ng-template>
+                                                <!-- Patient Name -->
+                                                <ng-container matColumnDef="patientName">
+                                                    <th mat-header-cell *matHeaderCellDef> Patient Name </th>
+                                                    <td mat-cell *matCellDef="let element">
+                                                        <div class="teststatus-circle" style="margin-right: 50%;">
+                                                            <span class="teststatus total" matTooltip="Total Test">
+                                                                <!-- {{ element.testCountStatus.split('/')[0] }} -->
+                                                                {{ '-' }}
+                                                            </span>
 
-                                            <ng-template #ApprovalactionButtonTemplate let-element>
-                                                <div fxLayout="row" fxLayoutAlign="center center">
-                                                    <button mat-icon-button matTooltip="Verify"
-                                                        [style.visibility]="element.isVerifySign==false ? 'visible' : 'hidden'"
-                                                        (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
+                                                            <span class="teststatus completed" matTooltip="Completed">
+                                                                <!-- {{ element.testCountStatus.split('/')[1] }} -->
+                                                                {{ '-' }}
+                                                            </span>
+
+                                                            <span class="teststatus pending" matTooltip="Pending">
+                                                                <!-- {{ element.testCountStatus.split('/')[2] }} -->
+                                                                {{ '-' }}
+                                                            </span>
+                                                        </div>
+
+                                                        <div class="patient-name" style="margin-right: 50%;"
+                                                            matTooltip="{{ element.patientName }}">
+                                                            {{ element.patientName }}
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td mat-cell *matCellDef="let element">
+                                                                                                                        {{element.patientName}} </td> -->
+                                                </ng-container>
+
+                                                <!-- Age | Gender -->
+                                                <ng-container matColumnDef="genderName">
+                                                    <th mat-header-cell *matHeaderCellDef> Age | Gender </th>
+                                                    <td mat-cell *matCellDef="let element">
+                                                        {{element.genderName}} </td>
+                                                </ng-container>
+
+                                                <!-- Unit Name -->
+                                                <ng-container matColumnDef="hospitalName">
+                                                    <th mat-header-cell *matHeaderCellDef> Unit Name </th>
+                                                    <td mat-cell *matCellDef="let element">
+                                                        {{element.hospitalName}} </td>
+                                                </ng-container>
+
+                                                <!-- PBill No -->
+                                                <ng-container matColumnDef="pBillNo">
+                                                    <th mat-header-cell *matHeaderCellDef> PBill No </th>
+                                                    <td mat-cell *matCellDef="let element"> {{element.pBillNo}}
+                                                    </td>
+                                                </ng-container>
+
+                                                <!-- Doctor Name -->
+                                                <ng-container matColumnDef="doctorName">
+                                                    <th mat-header-cell *matHeaderCellDef> Doctor Name </th>
+                                                    <td mat-cell *matCellDef="let element">
+                                                        {{element.doctorName}} </td>
+                                                </ng-container>
+
+                                                <!-- Action -->
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                                                    <td mat-cell *matCellDef="let element">
+                                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                                            <!-- Expansion Toggle -->
+                                                            <button mat-icon-button aria-label="expand row"
+                                                                (click)="toggleRow1(element); $event.stopPropagation()">
+                                                                <mat-icon
+                                                                    *ngIf="expandedElement1 !== element">keyboard_arrow_down</mat-icon>
+                                                                <mat-icon
+                                                                    *ngIf="expandedElement1 === element">keyboard_arrow_up</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+
+                                                <!-- Expanded Content Column -->
+                                                <ng-container matColumnDef="expandedDetail">
+                                                    <td mat-cell *matCellDef="let element"
+                                                        [attr.colspan]="parentColumns1.length" style="padding: 0;">
+                                                        <div class="example-element-detail"
+                                                            [@detailExpand]="element == expandedElement1 ? 'expanded' : 'collapsed'"
+                                                            style="overflow: hidden; display: flex; flex-direction: column; width: 100%;">
+                                                            <div *ngIf="element == expandedElement1"
+                                                                style="padding: 2px 8px 0; background: #f9f9f9;">
+
+                                                                <mat-table class="child-accordion-table" matSort
+                                                                    [dataSource]="dataSource2"
+                                                                    [@animateStagger]="{ value: '50' }">
+
+                                                                    <ng-container matColumnDef="status">
+                                                    <th mat-header-cell *matHeaderCellDef class="w-100">
+                                                        Status
+                                                    </th>
+
+                                                    <td mat-cell *matCellDef="let element" class="w-100">
+                                                        <div fxLayout="row" fxLayoutAlign="center center"
+                                                            fxLayoutGap="8px">
+
+                                                            <!-- Completed Status -->
+                                                            <mat-icon *ngIf="element.isCompleted"
+                                                                matTooltip="Report Completed" class="s-20"
+                                                                style="color: #4caf50;">
+                                                                check_circle
+                                                            </mat-icon>
+
+                                                            <mat-icon *ngIf="!element.isCompleted"
+                                                                matTooltip="Report Not Completed" class="s-20"
+                                                                style="color: #f44336;">
+                                                                hourglass_empty
+                                                            </mat-icon>
+
+                                                            <!-- Verify Status -->
+                                                            <mat-icon *ngIf="element.isVerifySign" matTooltip="Verified"
+                                                                style="color: green;">
+                                                                verified_user
+                                                            </mat-icon>
+
+                                                            <mat-icon *ngIf="!element.isVerifySign"
+                                                                matTooltip="Not Verified" color="warn">
+                                                                hourglass_empty
+                                                            </mat-icon>
+
+                                                        </div>
+                                                    </td>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="testdate" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Test
+                                                        Date
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <span matTooltip="{{contact.doa}}">
+                                                            {{contact.doa}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="TestName" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Test
+                                                        Name
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <span matTooltip="{{contact.serviceName}}">
+                                                            {{contact.serviceName}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="CategoryName">
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                        fxShow.gt-md>
+                                                        Category
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                        <span matTooltip="{{contact.categoryName}}">
+                                                            {{contact.categoryName}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="patientName" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                        fxShow.gt-sm>Patient Name
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <span matTooltip="{{contact.patientName}}">
+                                                            {{contact.patientName}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="doctorName" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                        fxShow.gt-sm>Doctor
+                                                        Name
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <span matTooltip="{{contact.doctorName}}">
+                                                            {{contact.doctorName}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="Samplecollectiontime" sticky>
+                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                        fxShow.gt-sm>SampleCollectionTime
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                        <span matTooltip="{{contact.sampleCollectionTime}}">
+                                                            {{contact.sampleCollectionTime}}</span>
+                                                    </mat-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="action" stickyEnd>
+                                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                        class="w-250">Actions
+                                                    </mat-header-cell>
+                                                    <mat-cell *matCellDef="let element" class="w-250">
+                                                        <button mat-icon-button matTooltip="Verify"
+                                                            [style.visibility]="element.isVerifySign==false ? 'visible' : 'hidden'"
+                                                            (click)=" element.isCompleted && !element.isVerifyid ? (element.isTemplateTest == 1
                                                                                                 ? chkTemplateVerify(element, true) : chkresultentryVerify(element, true)) : null ">
-                                                        <mat-icon>verified_user</mat-icon>
-                                                    </button>
+                                                            <mat-icon>verified_user</mat-icon>
+                                                        </button>
 
-                                                    <span
-                                                        [matTooltip]="element.isVerifySign === false
+                                                        <span
+                                                            [matTooltip]="element.isVerifySign === false
                                                                                         ? 'Verification is Pending' : ''">
-                                                        <button mat-icon-button
-                                                            [disabled]="element.isVerifySign === false"
-                                                            [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
-                                                            matTooltipPosition="right" (click)="Onemail(element)"
-                                                            (mouseenter)="openEmailDetailsPopover($event, element)"
-                                                            (mouseleave)="closeEmailDetailsPopover()"
-                                                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                                                            <mat-icon>email</mat-icon>
-                                                        </button>
-                                                    </span>
+                                                            <button mat-icon-button
+                                                                [disabled]="element.isVerifySign === false"
+                                                                [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                                                matTooltipPosition="right" (click)="Onemail(element)"
+                                                                (mouseenter)="openEmailDetailsPopover($event, element)"
+                                                                (mouseleave)="closeEmailDetailsPopover()"
+                                                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                                <mat-icon>email</mat-icon>
+                                                            </button>
+                                                        </span>
 
-                                                    <span [matTooltip]="element.isVerifySign === false
+                                                        <span [matTooltip]="element.isVerifySign === false
                                                                                     ? 'Verification is Pending' : ''">
-                                                        <button mat-icon-button
-                                                            [disabled]="element.isVerifySign === false"
-                                                            [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
-                                                            matTooltipPosition="right"
-                                                            (click)="getWhatsappshareReport(element)"
-                                                            (mouseenter)="openWhatsappDetailsPopover($event, element)"
-                                                            (mouseleave)="closeWhatsappDetailsPopover()"
-                                                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
-                                                            <img width="20" height="20"
-                                                                src="assets/images/logos/WhatsApp.png">
-                                                        </button>
-                                                    </span>
+                                                            <button mat-icon-button
+                                                                [disabled]="element.isVerifySign === false"
+                                                                [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                                                matTooltipPosition="right"
+                                                                (click)="getWhatsappshareReport(element)"
+                                                                (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                                                (mouseleave)="closeWhatsappDetailsPopover()"
+                                                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                                <img width="20" height="20"
+                                                                    src="assets/images/logos/WhatsApp.png">
+                                                            </button>
+                                                        </span>
+                                                    </mat-cell>
+                                                </ng-container>
 
+                                                <ng-container matColumnDef="loading">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                                        loading data...
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <ng-container matColumnDef="noData">
+                                                    <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                        <div class="spinner-border text-danger"
+                                                            *ngIf="isLoading == 'list-loading'" class="backgroundBlur">
+                                                        </div>
+                                                        <span *ngIf="isLoading == 'list-loaded'">No Data
+                                                            Found</span>
+                                                    </mat-footer-cell>
+                                                </ng-container>
+
+                                                <mat-header-row class="accent min-width-1500"
+                                                    *matHeaderRowDef="displayedColumns2; sticky: true">
+                                                </mat-header-row>
+
+                                                <mat-row class="table1-row" #table1Row
+                                                    *matRowDef="let contact; columns: displayedColumns2;"
+                                                    [ngClass]="contact.isCompleted == '1' ? 'Pathtest-Completed-Status' : ''"
+                                                    [@animate]="{value:'*',params:{y:'100%'}}">
+                                                </mat-row>
+                                                <div *ngIf="dataSource2?.data?.length === 0"
+                                                    style="padding: 16px; text-align: center; color: #666;">
+                                                    No tests found for this lab request.
                                                 </div>
-                                            </ng-template>
-
-                                            <airmid-table [gridConfig]="ApprovalgridConfig" #Approvalgrid
-                                                :ShowFilter="false" :ShowButtons="false">
-                                            </airmid-table>
-
+                                                </mat-table>
+                                                <mat-paginator *ngIf="dataSource2?.data?.length > 10"
+                                                    [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                                    showFirstLastButtons></mat-paginator>
                                         </div>
-                                    </mat-card>
-
                                 </div>
+                                </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="parentColumns1; sticky: true"></tr>
+                                <tr mat-row *matRowDef="let element; columns: parentColumns1;"
+                                    class="example-element-row element"
+                                    [class.example-expanded-row]="expandedElement1 === element"
+                                    (click)="toggleRow1(element)" style="cursor: pointer;">
+                                </tr>
+                                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"
+                                    style="height: 0;">
+                                </tr>
+                                </table>
+
+                                <mat-paginator #parentPaginator1 [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                    [length]="parentResultsLength1" (page)="bindParentResToAppGridData()"
+                                    showFirstLastButtons style="margin-top: auto;"></mat-paginator>
                             </div>
-                        </div>
-                    </form>
-                </div>
             </mat-card>
         </div>
+    </div>
+
+    </div>
+    </form>
+    </div>
+    </mat-card>
+    </div>
     </div>
 
 </mat-tab>
@@ -1853,7 +2105,6 @@
                                             </airmid-datepicker>
                                         </div>
 
-                                        <!-- (click)="searchRecords($event)" -->
                                         <div class="action-button-container">
                                             <div class="button-row-group">
                                                 <!-- <button class="btn btn-danger-outline btn-xs"

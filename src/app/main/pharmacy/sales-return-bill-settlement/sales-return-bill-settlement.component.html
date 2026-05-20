@@ -216,7 +216,8 @@
                 </ng-template>
                 <ng-template #actionButtonTemplatePay let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <button mat-icon-button (click)="getDiscFinalBill(element)" matTooltip="Final Discount"
+                        <button mat-icon-button (click)="getDiscFinalBill(element)"
+                            matTooltip="Pharmacy Discount: Set SystemConfig = 1 to consider only the current discount. Set SystemConfig = 0 to consider previous + current discounts."
                             *ngIf="element.balanceAmount!='0' && element.refundAmt==0">
                             <mat-icon title="Settlement">gradient</mat-icon>
                         </button>

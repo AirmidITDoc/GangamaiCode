@@ -43,8 +43,8 @@ export class DoctorpaySummarydetailComponent {
         'docAmt',
         'hospitalAmt',
         'refundAmount',
-        'lbl'
-
+        'lbl',
+        'PayMode'
     ]
 
     Billdetaildatasource = new MatTableDataSource<BillListForDocShrList>();

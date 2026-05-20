@@ -1818,7 +1818,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                         BatchNo: '',
                         ExpDate: '', // Set default if needed e.g., '1999-01-01'
                         Qty: Number(element.Qty) || 1,
-                        FreeQty: 0,
+                        FreeQty: element.FreeQty || 0,
                         TotalQty: Number(FinalTotalQty) || 0,
                         MRP: Number(element.MRP) || 0,
                         Rate: Number(element.Rate) || 0,

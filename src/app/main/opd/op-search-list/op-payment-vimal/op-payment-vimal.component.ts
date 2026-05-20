@@ -654,7 +654,8 @@ export class OpPaymentVimalComponent implements OnInit {
             if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
                 this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
                     this.dataSource.data = response.data;
-                    this.IsAdv = true
+                   // this.IsAdv = true
+                    this.IsAdv = this.dataSource.data && this.dataSource.data.length > 0;
                     this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0;
                     this.calculateBalance();
                     this.SetAdvanceRow();
@@ -664,7 +665,8 @@ export class OpPaymentVimalComponent implements OnInit {
             } else {
                 this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
                     this.dataSource.data = response.data;
-                    this.IsAdv = true
+                    //this.IsAdv = true
+                    this.IsAdv = this.dataSource.data && this.dataSource.data.length > 0;
                     this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
                     this.calculateBalance();
                     this.SetAdvanceRow();

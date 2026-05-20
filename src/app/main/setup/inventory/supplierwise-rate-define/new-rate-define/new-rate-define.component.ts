@@ -28,12 +28,26 @@ export class NewRateDefineComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { 
+        debugger
       this.StoreId = this._loggedAccountService.currentUserValue.user.storeId
         this.DefineForm = this._SupplierwiseRateDefineService.CreateRateDefineForm();
         this.DefineForm.markAllAsTouched();
-        if ((this.data?.DefId ?? 0) > 0) {
+        if ((this.data?.defId ?? 0) > 0) {
+         const itemlist = [];
+            itemlist.push(
+                {
+                    "itemId": this.data?.itemId || 0,
+                    "itemName": this.data?.itemName || '',
+                    "formattedText": this.data?.itemName || '' + " | " + this.data?.itemId || 0,
+                }
+            )
             this.isActive = this.data.isActive
-            this.DefineForm.patchValue(this.data);
+            this.DefineForm.patchValue({
+                defId: this.data?.defId || 0,
+                itemId:itemlist[0] || 0,
+                supplierId: this.data?.supplierId || 0,
+                supplierRate: this.data?.supplierRate || 0,
+            }); 
         }
     }
  
@@ -45,7 +59,8 @@ export class NewRateDefineComponent implements OnInit {
     onSubmit() {
       const fromValues = this.DefineForm.value
       this.DefineForm.get('itemId').setValue(fromValues.itemId?.itemId)  
-        if (!this.DefineForm.invalid) { 
+        if (!this.DefineForm.invalid) {
+            console.log('Payload :',this.DefineForm.value) 
             this._SupplierwiseRateDefineService.SupplierWsieRateDefineSave(this.DefineForm.value).subscribe((response) => {
                 this.onClear(true);
             });

@@ -16,7 +16,8 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig"  class="content">
+        <airmid-table [gridConfig]="gridConfig"  class="content" #grid>
+            
               
              <ng-container filters> 
                 <form [formGroup]="_SupplierwiseRateDefineService.myformSearch" fxLayout="column"> 
@@ -24,12 +25,16 @@
                       formControlName="itemId" placeholderText="Item Name (enter 2 char)"  
                       TextField="formattedText"
                       [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + StoreId + '&ItemName='"
-                        ValueField="itemId" >
+                        ValueField="itemId"  (selectionChange)="getSelectedObjextitem($event)"
+                        (keyup)="getSelectedObjextitem($event)">
                 </airmid-autocomplete> 
 
-               <airmid-dropdown label="Supplier Name" formControlName="supplierId"
+                   <airmid-dropdown label="Supplier Name" formControlName="supplierId"
                       [formGroup]="_SupplierwiseRateDefineService.myformSearch" 
-                      [mode]="autocompleteSupplier"  ></airmid-dropdown>
+                      [mode]="autocompleteSupplier" 
+                       (selectionChange)="getSelectedObjextSupplier($event)"
+                        (keyup)="getSelectedObjextSupplier($event)"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue"></airmid-dropdown>
 
 
                 <mat-radio-group value="" [(ngModel)]="gridConfig.filters[2].fieldValue" fxLayoutAlign="center center">

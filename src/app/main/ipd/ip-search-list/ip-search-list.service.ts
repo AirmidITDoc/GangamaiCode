@@ -1118,6 +1118,9 @@ export class IPSearchListService {
      public getpharmacyAmt(m_data) {
         return this._httpClient1.PostData("Common", m_data)
     }
+        public getIPFInalGroupWiseReportView(Param) {
+           return this._httpClient1.PostData("Report/ViewReport", Param);
+    }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

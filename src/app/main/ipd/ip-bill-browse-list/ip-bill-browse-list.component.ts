@@ -225,6 +225,7 @@ export class IPBillBrowseListComponent implements OnInit {
         filters: this.allIpRefundFilters
     }
     Is9_Digit_National_Id: boolean = false;
+    IsChennaiIPFinalPrint: boolean = false;
     constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
@@ -244,6 +245,10 @@ export class IPBillBrowseListComponent implements OnInit {
         const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
+debugger
+        const rawValue1 = this?._configue?.configParams?.IsChennaiIPFinalPrint || "";
+        const [id1, val1] = rawValue.includes(":") ? rawValue1.split(":") : [null, null];
+        this.IsChennaiIPFinalPrint = id1 === "1";
 
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
             if (!this.Is9_Digit_National_Id) {
@@ -474,7 +479,29 @@ export class IPBillBrowseListComponent implements OnInit {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
     viewgetFinalBillReportGroupwisePdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+      //  this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");  
+        setTimeout(() => {
+            const param = {
+                "searchFields": [
+                    { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "13" }, 
+                ],
+                "mode": "IPFinalBillGroupwise"
+            }
+            this._IPBrowseBillService.getIPFInalGroupWiseReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "IP Final Bill Groupwise" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100); 
     }
     viewgetFinalBillReportChargeDatewisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");
@@ -719,10 +746,19 @@ export class IPBillBrowseListComponent implements OnInit {
     getFinalBillview(data) {
         console.log(data);
         console.log("BillNo Click : ", data.billNo);
-        if (!data.interimOrFinal)
-            this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
-        else
-            this.viewgetInterimBillReportPdf(data.billNo)
+        // if (!data.interimOrFinal)
+        //     this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
+        // else
+        //     this.viewgetInterimBillReportPdf(data.billNo)  
+ debugger
+        if(this.IsChennaiIPFinalPrint){
+             this.viewgetFinalBillReportGroupwisePdf(data.billNo)
+        }else{
+             if (!data.interimOrFinal)
+                this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
+            else
+                this.viewgetInterimBillReportPdf(data.billNo)
+        }
     }
 
     OnViewReportPdf(element) {

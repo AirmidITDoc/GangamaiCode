@@ -27,6 +27,7 @@ import { ChargesList } from '../appointment-billing/appointment-billing.componen
 import { PackageDetailsComponent } from '../appointment-billing/package-details/package-details.component';
 import { AppointmentlistService } from '../appointmentlist.service';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-new-appointmentwith-bill',
@@ -715,7 +716,10 @@ export class NewAppointmentwithBillComponent {
         }
     }
 
-
+    selectedTabIndex = 0;
+    onTabChange(event: MatTabChangeEvent) {
+        this.selectedTabIndex = event.index;
+    }
 
     getSelectedserviceObj(obj) {
         debugger
@@ -727,6 +731,11 @@ export class NewAppointmentwithBillComponent {
         this.IsRadiology = obj.isRadiology;
         this.vIsPackage = obj.isPackage;
         this.serviceSelct = true
+        if (obj?.isEditable == true) {
+            this.chkIsEditable = false; //price should not get edit
+        } else {
+            this.chkIsEditable = true; //price should get edit
+        }
         this.onSaveEntry(obj);
 
         // ✅ Clear Service Name
@@ -1003,6 +1012,13 @@ export class NewAppointmentwithBillComponent {
         this.chargeList.push(newCharge);
         this.dstable1.data = this.chargeList;
 
+        // 🔁 Auto-switch tab based on package
+        if ((row.isPackage ?? row.IsPackage) == 1) {
+            this.selectedTabIndex = 1; // Package List tab
+        } else {
+            this.selectedTabIndex = 0; // Charges List tab
+        }
+
         this.updateCalculation(row);
 
 
@@ -1085,6 +1101,13 @@ export class NewAppointmentwithBillComponent {
         this.chargeslist = this.dstable1.data;
         const index = this.chargeslist.indexOf(element);
         if (index >= 0) {
+
+            // Package remove logic
+            if (element.IsPackage == '1' && element.ServiceId) {
+                this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId != element.ServiceId);
+                this.dsPackageList.data = this.PacakgeList;
+            }
+
             this.chargeslist.splice(index, 1);
             this.dstable1.data = [];
             this.dstable1.data = this.chargeslist;
@@ -1239,6 +1262,13 @@ export class NewAppointmentwithBillComponent {
         }).then((result) => {
             if (result.isConfirmed) {
                 console.log(this.myForm.value)
+
+                if (!this.dstable1.data || this.dstable1.data.length === 0) {
+                    this.toastr.warning('Please Add Service', 'Warning !', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
 
                 const priceflag = this.dstable1.data.filter(row => row.Price == 0 || row.Price == '');
 
@@ -1500,7 +1530,7 @@ export class NewAppointmentwithBillComponent {
                     });
                 } else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
 
-                debugger
+                    debugger
                     if (this.OPFooterForm.get('UPINO').value == 0) {
                         this.toastr.warning('Please select UPINO ', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
@@ -1661,14 +1691,14 @@ export class NewAppointmentwithBillComponent {
                     });
                 } else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
 
-                     debugger
+                    debugger
                     if (this.OPFooterForm.get('UPINO').value == 0) {
                         this.toastr.warning('Please select UPINO ', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
                         });
                         return;
                     }
-                    
+
                     const ModePaymentObj = [];
                     ModePaymentObj.push({
                         paymentDate: formattedDate,
@@ -2366,6 +2396,8 @@ export class NewAppointmentwithBillComponent {
             this.myForm.reset();
             this.myForm.get('RegId').reset();
             this.searchFormGroup.get('RegId').disable();
+            this.VisitFormGroup.get('DepartmentId')?.reset();
+            this.VisitFormGroup.get('ConsultantDocId')?.reset();
             this.isRegSearchDisabled = false;
             this.Patientnewold = 1;
 
