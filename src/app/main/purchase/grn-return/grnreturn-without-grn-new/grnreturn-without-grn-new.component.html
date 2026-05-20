@@ -46,6 +46,10 @@
                                 <mat-radio-button value="Without GST">Without GST</mat-radio-button>
                             </mat-radio-group>
 
+                              <airmid-dropdown label="Return Type" formControlName="ReturnType" fxFlex="15%" [formGroup]="_GRNReturnService.NewGRNReturnFrom"
+                               [mode]="autocompleteModeGRNReturnTypes"   (selectionChange)="selectChangetype($event)">
+                              </airmid-dropdown>
+
                         </div>
                         <div fxLayout="row wrap" fxLayoutGap="4px">
 

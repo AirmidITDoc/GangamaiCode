@@ -99,31 +99,33 @@
                 </div>
             </div>
 
-            <div *ngFor="let item of VSalesSection" class="dashboard-card">
 
-                <!-- 👉 SALES CARD -->
+             <!-- 👉 SALES CARD -->
+            <!-- <div *ngFor="let item of VSalesSection" class="dashboard-card">
+
+               
                 <div class="sales-combined">
 
-                    <!-- Header -->
+                    
                     <div class="card-header">
                         <div class="header-left">
                             <span class="card-icon">💰</span>
                             <span class="card-title">{{ item.section }} Section</span>
                         </div>
 
-                        <!-- Badge -->
+                        
                         <span class="badge" [ngClass]="item.section === 'OP' ? 'op' : 'ip'">
                             {{ item.section }}
                         </span>
 
-                        <!-- Total -->
+                        
                         <div class="header-total">
                             {{ item.totalCount | number }}
                             <div class="total-text">Total</div>
                         </div>
                     </div>
 
-                    <!-- OPD -->
+                  
                     <div class="sales-section">
                         <div class="section-header">
                             <span>💊 OPD Sales</span>
@@ -140,7 +142,7 @@
                         </div>
                     </div>
 
-                    <!-- IPD -->
+                   
                     <div class="sales-section">
                         <div class="section-header">
                             <span>🏥 IPD Sales</span>
@@ -158,7 +160,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div> -->
         </div>
 
 

@@ -1,0 +1,101 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                   Approval List
+                </span>
+            </div>
+        </div> 
+    </div>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+            <ng-template #ColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isVerified === true" matTooltip="Verified"
+                        style="color: green;">check_circle</mat-icon>
+
+                    <mat-icon *ngIf="element.isVerified === false" matTooltip="Pending"
+                        color="warn">hourglass_empty</mat-icon>
+                </div>
+            </ng-template>  
+
+            <!-- <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button matTooltip="Edit GRNReturn Without GRN" (click)="newGRNRetunr(element)"
+                        *ngIf="!element.isVerified  && element.grnid <= 0">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Edit GRNReturn" (click)="getNewGRNRet(element)"
+                        *ngIf="!element.isVerified && element.grnid > 0">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)"
+                        *ngIf="!element.isVerified && IsGRNverify">
+                        <mat-icon>verified_user</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Print" (click)="onPrint(element)">
+                        <mat-icon>print</mat-icon>
+                    </button>
+                       <button mat-icon-button *ngIf="element.isVerified"
+                            [matTooltip]="'We send the mail on your registered MailID : ' + element?.email"
+                            matTooltipPosition="right" (click)="Onemail(element)"
+                            (mouseenter)="openEmailDetailsPopover($event, element)"
+                            (mouseleave)="closeEmailDetailsPopover()"
+                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                            <mat-icon>email</mat-icon>
+                        </button> 
+                        <button mat-icon-button *ngIf="element.isVerified"
+                            [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                            matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                            (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                            (mouseleave)="closeWhatsappDetailsPopover()"
+                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                            <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                        </button>
+                </div>
+            </ng-template> -->
+
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false" #grid
+               >
+                <ng-container filters>
+                    <form [formGroup]="_ApprovalListService.ApprovalForm" fxLayout="column">
+                        <airmid-datepicker [formGroup]="_ApprovalListService.ApprovalForm" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end" >
+                        </airmid-datepicker>
+
+                        <!-- <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                            [formGroup]="_ApprovalListService.ApprovalForm"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue" [readonly]="true" [mode]="autocompletestore"
+                            (selectionChange)="ListView($event)">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                            [formGroup]="_ApprovalListService.ApprovalForm"
+                            [(ngModel)]="gridConfig.filters[3].fieldValue" [mode]="autocompleteSupplier"
+                            (selectionChange)="ListView1($event)">
+                        </airmid-dropdown>
+
+                        <div fxFlex fxLayout="row">
+                            <span style="font-weight: bold;">Status :</span>
+                            <mat-slide-toggle name="Status" (change)="onChangeFirst()" formControlName="Status">
+                                Verify / Pending
+                            </mat-slide-toggle>
+                        </div> -->
+                    </form>
+
+                </ng-container>
+            </airmid-table>
+        </div> 
+    </div>
+
+</div> 
+ 

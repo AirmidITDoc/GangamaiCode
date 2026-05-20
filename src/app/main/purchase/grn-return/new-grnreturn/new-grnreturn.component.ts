@@ -79,6 +79,7 @@ export class NewGRNReturnComponent implements OnInit {
     vRoundingAmt: any;
     autocompletestore: string = "Store";
     autocompleteSupplier: string = "SupplierMaster"
+    autocompleteModeGRNReturnTypes: string = "GRN_RETURN_TYPE";
     vGSTTpe = "GST Return";
     registerObj = new ItemNameList({});
     dsGrnItemList = new MatTableDataSource<ItemNameList>();
@@ -118,6 +119,7 @@ export class NewGRNReturnComponent implements OnInit {
             } else {
                 this.vGSTTpe = 'Without GST';
             }
+            this._GRNReturnService.NewGRNReturnFrom.patchValue({ReturnType:this.data?.returnTypeId || 0})
         }
         this.getGRNreturnlist();
         // this.getStoreList();    
@@ -159,6 +161,7 @@ export class NewGRNReturnComponent implements OnInit {
                 "isGrnTypeFlag": [true],
                 "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 "unitId": this._loggedService.currentUserValue.user.unitId,
+                "returnTypeId":0
             }),
             tGrnreturnDetails: this._formbuilder.array([]),
             grnReturnCurrentStock: this._formbuilder.array([]),
@@ -271,7 +274,10 @@ debugger
     selectChangeSupplier(obj: any) {
         this.VsupplierId = obj.value
     }
-
+    selectChangetype(obj: any) {
+        debugger
+        console.log("Type:", obj); 
+    }
     getGrnItemDetailList(Params) {
         // ;
         this.chargeslist = [];
@@ -513,6 +519,9 @@ debugger
             ],
             SupplierId: [
                 { name: "required", Message: "Supplier Name is required" }
+            ],
+            ReturnType: [
+                { name: "required", Message: "Return Type Name is required" }
             ]
         };
     }
@@ -541,6 +550,7 @@ debugger
         this.GrnReturnForm.get('grnReturn.netAmount').setValue(this.vFinalNetAmount)
         this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.NewGRNRetFinalFrom.get('Remark').value)
         this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
+        this.GrnReturnForm.get('grnReturn.returnTypeId').setValue(this._GRNReturnService.NewGRNReturnFrom.get('ReturnType')?.value || 0)
     
     
          

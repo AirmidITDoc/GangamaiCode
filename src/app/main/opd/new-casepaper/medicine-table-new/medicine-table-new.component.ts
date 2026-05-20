@@ -183,7 +183,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         if ((this.doseId ?? 0) > 0) {
             setTimeout(() => {
                 this._casepaperService.getDoseMasterById(this.doseId).subscribe((response: any) => {
-                    this.doseQtyPerDay = response.doseQtyPerDay;
+                    this.doseQtyPerDay = response?.doseQtyPerDay || 1;
                     this.doseName = response.doseName;
                 });
             }, 300);
@@ -236,7 +236,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             return false;
         }
 
-        const qty = this.doseQtyPerDay || 0;
+        const qty = this.doseQtyPerDay || 1;
         const days = this.medicineForm.get('Day').value || this.vDay;
         const Instruction = this.instruction || this.medicineForm.get('Instruction')?.value || ''
 
@@ -247,8 +247,8 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         row.GenericId = this.vItemGenericNameId || 0;
         row.DoseName = this.doseName || '';
         row.Days = days;
-        row.QtyPerDay = this.doseQtyPerDay || 0;
-        row.totalQty = qty * days;
+        row.QtyPerDay = this.doseQtyPerDay;
+        row.totalQty = Math.round(qty * days) || 0;
         row.instruction = Instruction;
         row.instructionId = this.instructionId || '';
         // row.instruction = this.medicineForm.get('Instruction').value || '';
