@@ -327,31 +327,31 @@ export class DischargeSummaryComponent implements OnInit {
         })
     }
 
-   calculateQty() {
-  
-          if (this.MedicineItemForm.get('Day').value > 0) {
-  
-              if (this.DoseQtyperday == 0) {
-                  this.Perdayqty = 1
-              
-                  this.TotQty = 1
-                  console.log(this.TotQty)
-              } else {
-                  let days = parseInt(this.MedicineItemForm.get('Day').value)
-                  let qty = parseInt(this.MedicineItemForm.get('Qty').value)
-  
-                  // this.TotQty = days * parseFloat(this.morning) + days * parseFloat(this.afternoon) + days * parseFloat(this.night)
-                  this.TotQty = days * qty
-                  this.TotQty = Math.round(this.TotQty)
-                  console.log(this.TotQty)
-              }
-          } else {
-              Swal.fire("Enter Proper Days...")
-              return;
-          }
-  
-      }
-  
+    calculateQty() {
+
+        if (this.MedicineItemForm.get('Day').value > 0) {
+
+            if (this.DoseQtyperday == 0) {
+                this.Perdayqty = 1
+
+                this.TotQty = 1
+                console.log(this.TotQty)
+            } else {
+                let days = parseInt(this.MedicineItemForm.get('Day').value)
+                let qty = parseInt(this.MedicineItemForm.get('Qty').value)
+
+                // this.TotQty = days * parseFloat(this.morning) + days * parseFloat(this.afternoon) + days * parseFloat(this.night)
+                this.TotQty = days * qty
+                this.TotQty = Math.round(this.TotQty)
+                console.log(this.TotQty)
+            }
+        } else {
+            Swal.fire("Enter Proper Days...")
+            return;
+        }
+
+    }
+
 
     parseValue(val: string): number {
         val = val.trim();
@@ -387,7 +387,7 @@ export class DischargeSummaryComponent implements OnInit {
 
     //         debugger
     //         // const parts = this.doseName.split('-');
-          
+
     //         const parts = this.doseName
     //               .split('-')
     //               .map(p => p.trim().replace(/\s+/g, ''))
@@ -412,7 +412,7 @@ export class DischargeSummaryComponent implements OnInit {
 
 
     // }
- getSelectedDoseObj(obj) {
+    getSelectedDoseObj(obj) {
 
         console.log(obj)
         this.TotQty = 1
@@ -449,8 +449,8 @@ export class DischargeSummaryComponent implements OnInit {
 
             console.log(parts)
 
-           
-             const total = parts.reduce((sum, val) => {
+
+            const total = parts.reduce((sum, val) => {
                 if (val.includes('/')) {
                     const [num, den] = val.split('/').map(Number);
                     return sum + (num / den);
@@ -460,8 +460,8 @@ export class DischargeSummaryComponent implements OnInit {
             }, 0);
 
             console.log("Sum =", total);           // 1.5
-            this.Perdayqty=Math.round(total)
-debugger
+            this.Perdayqty = Math.round(total)
+            debugger
             this.TotQty = days * (this.Perdayqty)
             this.TotQty = Math.round(this.TotQty)
 
@@ -502,8 +502,8 @@ debugger
         this.ItemId = obj.itemId
         this.ItemName = obj.itemName
         console.log(obj)
-         this.vDay=1
-        this.TotQty=1
+        this.vDay = 1
+        this.TotQty = 1
     }
 
     onChangeDate(value) {
@@ -556,7 +556,11 @@ debugger
         this.morning = 0
         this.afternoon = 0
         this.night = 0
-        // this.itemid.nativeElement.focus();
+
+       const serviceIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+        if (serviceIdElement) {
+            serviceIdElement.focus();
+        }
     }
 
     deleteTableRow(event, element) {
@@ -596,8 +600,28 @@ debugger
         console.log(m_data2)
         this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
             this.dsItemList.data = data?.data as MedicineItemList[];
+            console.log(data?.data)
             if (this.dsItemList.data)
-                this.Chargeslist = data.data as MedicineItemList[];
+                // this.Chargeslist = data.data as MedicineItemList[];
+                debugger
+            this.dsItemList.data.forEach(element => {
+                console.log(element)
+
+                this.Chargeslist.push(
+                    {
+                        itemID: element.itemID || 0,
+                        itemName: element.itemName || '',
+                        doseName: element.doseName,
+                        doseId: element.doseId,
+                        qty: element.qtyPerDay,
+                        totalQty: element.totalQty,
+                        days: element.days || 0,
+                        instruction: element.instruction || ''
+                    })
+            })
+            this.dsItemList.data = this.Chargeslist
+
+
             console.log(this.dsItemList.data);
         });
     }
@@ -1025,6 +1049,7 @@ export class MedicineItemList {
     qtyPerDay: any;
     totalQty: any;
     qty: any
+    instruction: any
     /**
     * Constructor
     *
@@ -1054,6 +1079,8 @@ export class MedicineItemList {
             this.qty = MedicineItemList.qty || 0;
             this.qtyPerDay = MedicineItemList.qtyPerDay || 0;
             this.totalQty = MedicineItemList.totalQty || 0;
+            this.instruction = MedicineItemList.instruction || '';
+
         }
     }
 }

@@ -713,6 +713,11 @@ debugger
         this.MedicineItemForm.get('Qty').reset('1');
         this.MedicineItemForm.get('Instruction').reset('');
         // this.itemid.nativeElement.focus();
+
+         const serviceIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+        if (serviceIdElement) {
+            serviceIdElement.focus();
+        }
     }
 
     deleteTableRow(event, element) {
@@ -752,11 +757,31 @@ debugger
         }
         console.log(m_data2)
         this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
-            // this.dsItemList.data = data?.data as MedicineItemList[];
-            // if (this.dsItemList.data)
-            this.Chargelist = data.data as MedicineItemList[];
-            this.dsItemList.data = [...this.Chargelist];
-            // console.log(this.dsItemList.data);
+            // this.Chargelist = data.data as MedicineItemList[];
+            // this.dsItemList.data = [...this.Chargelist];
+                    // console.log(this.dsItemList.data);
+                     this.dsItemList.data = data?.data as MedicineItemList[];
+                                console.log(data?.data)
+                                if (this.dsItemList.data)
+                                    // this.Chargeslist = data.data as MedicineItemList[];
+                                    debugger
+                                this.dsItemList.data.forEach(element => {
+                                    console.log(element)
+                    
+                                    this.Chargelist.push(
+                                        {
+                                            itemID: element.itemID || 0,
+                                            itemName: element.itemName || '',
+                                            doseName: element.doseName,
+                                            doseId: element.doseId,
+                                            qty: element.qtyPerDay,
+                                            totalQty: element.totalQty,
+                                            days: element.days || 0,
+                                            instruction: element.instruction || ''
+                                        })
+                                })
+                                this.dsItemList.data = this.Chargelist
+                    
         });
     }
 
@@ -1123,6 +1148,11 @@ export class MedicineItemList {
     DaysOption3: any;
     DoseNameOption2: any;
     DoseNameOption3: any;
+
+      qtyPerDay: any;
+    totalQty: any;
+    qty: any
+    instruction: any
     /**
     * Constructor
     *
@@ -1149,6 +1179,11 @@ export class MedicineItemList {
             this.DaysOption3 = MedicineItemList.DaysOption3 || 0;
             this.DoseNameOption2 = MedicineItemList.DoseNameOption2 || '';
             this.DoseNameOption3 = MedicineItemList.DoseNameOption3 || '';
+
+            this.qtyPerDay = MedicineItemList.qtyPerDay || 0;
+                        this.totalQty = MedicineItemList.totalQty || 0;
+                        this.instruction = MedicineItemList.instruction || '';
+            
         }
     }
 }
