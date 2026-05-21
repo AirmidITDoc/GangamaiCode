@@ -1,0 +1,58 @@
+<div class="page">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Verify existing ABHA</mat-card-title>
+      <mat-card-subtitle>Login with Mobile / Aadhaar / ABHA</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-stepper #stepper linear>
+        <!-- Step 1: identifier + send OTP -->
+        <mat-step [stepControl]="identifierForm" label="Identifier">
+          <form [formGroup]="identifierForm" (ngSubmit)="sendOtp()">
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Login method</mat-label>
+              <mat-select formControlName="method">
+                <mat-option *ngFor="let m of methods" [value]="m.v">{{ m.l }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>{{ currentMethod.l }}</mat-label>
+              <input
+                matInput
+                formControlName="value"
+                [placeholder]="currentMethod.placeholder"
+                [maxlength]="currentMethod.maxLen"
+              />
+            </mat-form-field>
+
+            <div class="actions">
+              <button mat-flat-button color="primary" type="submit" [disabled]="loading || identifierForm.invalid">
+                <mat-spinner *ngIf="loading" diameter="18"></mat-spinner>
+                <span *ngIf="!loading">Send OTP</span>
+              </button>
+              <button mat-button matStepperNext type="button" [disabled]="!txnId">Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 2: OTP -->
+        <mat-step [stepControl]="otpForm" label="Verify">
+          <form [formGroup]="otpForm" (ngSubmit)="verify()">
+            <p class="hint">Enter the 6-digit OTP we just sent.</p>
+            <app-otp-input [formControl]="$any(otpForm.get('otp'))"></app-otp-input>
+
+            <div class="actions">
+              <button mat-button matStepperPrevious type="button">Back</button>
+              <button mat-flat-button color="primary" type="submit" [disabled]="loading || otpForm.invalid">
+                <mat-spinner *ngIf="loading" diameter="18"></mat-spinner>
+                <span *ngIf="!loading">Verify</span>
+              </button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-stepper>
+    </mat-card-content>
+  </mat-card>
+</div>

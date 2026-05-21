@@ -151,20 +151,24 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/ambulancemanagement/ambulancemanagement.module").then((m) => m.AmbulancemanagementModule),
     },
-     {
+    {
         path: "managment",
         loadChildren: () =>
             import("./main/Management/managment.module").then((m) => m.ManagmentModule),
     },
-     {
+    {
         path: "AssetsManagement",
         loadChildren: () =>
             import("./main/assetsmanagement/assetsmanagement.module").then((m) => m.AssetsmanagementModule),
     },
-     {
+    {
         path: "helpdesk",
         loadChildren: () =>
             import("./main/HelpDesk/complaint-list/route-helpdesk.module").then((m) => m.RouteHelpdeskModule),
+    }, {
+        path: "abha",
+        loadChildren: () =>
+            import("./main/abha/abha.module").then((m) => m.AbhaModule),
     },
     // {
     //     path: "import-excel",

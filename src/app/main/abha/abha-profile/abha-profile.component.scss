@@ -1,0 +1,124 @@
+@import '../create-aadhaar/create-aadhaar.component.scss';
+
+.profile-card {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+
+  .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #e3e7ee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .title {
+    flex: 1;
+    min-width: 0;
+
+    h2 {
+      margin: 0 0 4px;
+      font-size: 20px;
+    }
+    .abha-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      .abha-num {
+        font-family: 'Roboto Mono', monospace;
+        letter-spacing: 0.5px;
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+    mat-chip-listbox {
+      margin-top: 8px;
+    }
+  }
+}
+
+.details {
+  padding: 16px 0;
+  display: grid;
+  gap: 10px;
+
+  .row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    font-size: 14px;
+    span {
+      color: rgba(0, 0, 0, 0.55);
+    }
+    strong {
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+    }
+  }
+}
+
+.qr-section {
+  padding: 16px 0;
+
+  h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .qr-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    min-height: 200px;
+
+    img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+    }
+  }
+}
+
+.actions-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 20px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    button {
+      width: 100%;
+    }
+  }
+
+  button mat-icon {
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+}
