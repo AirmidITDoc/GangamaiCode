@@ -44,7 +44,8 @@ export class DosemasterService {
             doseQtyPerDay: ["",
                 [
                     Validators.required,
-                    Validators.pattern('^[0-9]*$')
+                    Validators.pattern('^[0-9]+(\\.[0-9]+)?$')
+                   // Validators.pattern('^[0-9]*$')
                 ]
             ],
             isActive: [true, [Validators.required]]

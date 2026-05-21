@@ -62,6 +62,7 @@ export class GrnReturnService {
             CashType: ['true'],
             Qty: [''],
             GSTType: ['GST Return'],
+            ReturnType:['']
         });
     }
     createGRNList() {

@@ -63,9 +63,9 @@ export class SupplierwiseRateDefineComponent {
         sortField: "DefId",
         sortOrder: 0,
         filters:  [
-        { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "IsActive", fieldValue: "0", opType: OperatorComparer.Equals }
+        { fieldName: "SupplierId", fieldValue: "0", opType: OperatorComparer.StartsWith },
+        { fieldName: "ItemId", fieldValue: "0", opType: OperatorComparer.StartsWith },
+        { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
     ]
     } 
     constructor(
@@ -97,14 +97,16 @@ export class SupplierwiseRateDefineComponent {
             }
         });
     }
-    itemId:any=''
-    SupplierId:any=''
+    itemId:any=0;
+    SupplierId:any=0;
 getSelectedObjextitem(obj){
+     debugger
     console.log(obj) 
         if (obj.value !== 0)
         this.itemId = obj.itemId || 0; 
         else
         this.itemId = 0;  
+     this.getbindData();  
 
 }
 getSelectedObjextSupplier(obj){
@@ -118,6 +120,12 @@ getSelectedObjextSupplier(obj){
    this.getbindData();   
 }
 getbindData(){
+    if((this._SupplierwiseRateDefineService.myformSearch.get('supplierId')?.value ?? 0) == 0){
+        this.SupplierId = 0;
+    }
+    if((this._SupplierwiseRateDefineService.myformSearch.get('itemId')?.value ?? 0) == 0){
+        this.itemId = 0;
+    }
    // this.Status =this.
       this.gridConfig = { 
         apiUrl: "ItemWiseSupplierRate/ItemWiseSupplierRateList",
@@ -127,7 +135,7 @@ getbindData(){
         filters:  [
         { fieldName: "SupplierId", fieldValue: String(this.SupplierId), opType: OperatorComparer.StartsWith },
         { fieldName: "ItemId", fieldValue: String(this.itemId), opType: OperatorComparer.StartsWith },
-        { fieldName: "IsActive", fieldValue: "0", opType: OperatorComparer.Equals }
+        { fieldName: "IsActive", fieldValue:String(this._SupplierwiseRateDefineService.myformSearch.get('IsDeletedSearch').value || 0), opType: OperatorComparer.Equals }
     ]
     } 
      setTimeout(() => {

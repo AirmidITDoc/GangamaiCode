@@ -87,6 +87,7 @@ export class GrnreturnWithoutGrnNewComponent {
     autocompletestore: string = "Store";
     autocompleteSupplier: string = "SupplierMaster"
     autocompleteModeGSTTypesValues: string = "GSTTypes";
+    autocompleteModeGRNReturnTypes: string = "GRN_RETURN_TYPE";
     VsupplierId: any = 0
     vstoreId: any = this._loggedService.currentUserValue.user.storeId
     itemName: any;
@@ -123,7 +124,7 @@ export class GrnreturnWithoutGrnNewComponent {
             this.VGrnReturnID = this.data?.grnReturnId
                this.vGRNID = this.data?.grnid
             // this._GRNReturnService.ReturnFinalForm.get("Remark").setValue(this.registerObj?.remark)
-
+           this._GRNReturnService.NewGRNReturnFrom.patchValue({ReturnType:this.data?.returnTypeId || 0})
             if (this.registerObj.isGrnTypeFlag == true) {
                 this.vGSTTpe = 'GST Return';
             } else {
@@ -168,6 +169,7 @@ export class GrnreturnWithoutGrnNewComponent {
                 "isGrnTypeFlag": true,
                 "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 "unitId": this._loggedService.currentUserValue.user.unitId,
+                "returnTypeId":0
 
             }),
             tGrnreturnDetails: this._formbuilder.array([]),
@@ -541,7 +543,10 @@ debugger
         this.lastsupplierflag = true
         this.getItemListBySupplier();
     }
-
+    selectChangetype(obj: any) {
+        debugger
+        console.log("Type:", obj); 
+    }
     getGRNreturnlist() {
         const vdata = {
             "first": 0,
@@ -783,6 +788,7 @@ debugger
         this.GrnReturnForm.get('grnReturn.netAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value)
         this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.ReturnFinalForm.get('Remark').value)
         this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
+        this.GrnReturnForm.get('grnReturn.returnTypeId').setValue(this._GRNReturnService.NewGRNReturnFrom.get('ReturnType')?.value || 0)
 
 
         if ((!this.dsItemList.data.length)) {

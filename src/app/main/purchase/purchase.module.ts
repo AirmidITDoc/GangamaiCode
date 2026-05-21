@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
-
+import { RouterModule, Routes } from '@angular/router'; 
 const appRoutes: Routes = [
 
     {
@@ -53,11 +52,16 @@ const appRoutes: Routes = [
         path: "purchaserequisitionverification",
         loadChildren: () => import("./purchase-requisition-verification/purchase-requisition-verification.module").then((m) => m.PurchaseRequisitionVerificationModule)
     },
+        {
+        path: "approvallist",
+        loadChildren: () => import("./approval-list/approval-list.module").then((m) => m.ApprovalListModule)
+    },
 ];
 
 
 @NgModule({
-    declarations: [],
+    declarations: [  
+  ],
     imports: [
         RouterModule.forChild(appRoutes),
         FormsModule
