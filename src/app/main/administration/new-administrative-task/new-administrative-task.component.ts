@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 import { AdministrationService } from '../administration.service';
 import { BillDateUpdateComponent } from '../cancellation/bill-date-update/bill-date-update.component';
 import { EditPaymentComponent } from '../paymentmodechanges/edit-payment/edit-payment.component';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 
 @Component({
     selector: 'app-new-administrative-task',
@@ -31,9 +32,9 @@ export class NewAdministrativeTaskComponent {
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('Billdate') Billdate!: TemplateRef<any>;
     @ViewChild('visitTable') visitTable!: TemplateRef<any>;
- @ViewChild('admissionCancle') admissionCancle!: TemplateRef<any>;
+    @ViewChild('admissionCancle') admissionCancle!: TemplateRef<any>;
 
-    
+
 
 
     myForm: FormGroup;
@@ -66,6 +67,7 @@ export class NewAdministrativeTaskComponent {
     OPIPType = 1
     //
     AdmissionTaskForm: FormGroup
+    AdmissionCancleTaskForm: FormGroup
     date: any;
     dateTimeString: any;
     isTimeChanged: boolean = false;
@@ -75,8 +77,6 @@ export class NewAdministrativeTaskComponent {
     timeLabel1: string = 'Visit Time';
     VistId = 0
     isDatePckrDisabled: boolean = false;
-
-
 
     displayedColumns: string[] = [
         // 'action1',
@@ -150,6 +150,7 @@ export class NewAdministrativeTaskComponent {
     dataSourcepayment = new MatTableDataSource<Payment>();
     dataSourceAdvance = new MatTableDataSource<AdvanceDetail>();
     dataSourceRefund = new MatTableDataSource<RefundBillMaster>();
+    dataSourceAdmission = new MatTableDataSource<Bill>();
 
 
     @ViewChild(MatSort) sort: MatSort;
@@ -198,6 +199,7 @@ export class NewAdministrativeTaskComponent {
         this.VisitForm.markAllAsTouched();
 
         this.AdmissionTaskForm = this.CreateAdmissionForm()
+        this.AdmissionCancleTaskForm = this.CreateAdmissionCancleeForm()
         this.AdmissionTaskForm.get('RegID').setValue('');
         const now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -217,7 +219,15 @@ export class NewAdministrativeTaskComponent {
             start: [(new Date()).toISOString()],
             end: [(new Date()).toISOString()],
             NewIpdNo: ['', Validators.required],
-            Reason:['']
+            Reason: ['']
+        });
+    }
+
+    CreateAdmissionCancleeForm() {
+        return this.formBuilder.group({
+            AdmissionDate: [(new Date()).toISOString(), Validators.required],
+            AdmissionTime: [''],
+            Reason: ['', Validators.required]
         });
     }
 
@@ -449,33 +459,83 @@ export class NewAdministrativeTaskComponent {
         })
     }
 
-    AdmissionCancle() {
 
-        Swal.fire({
-            title: 'Do you want to cancel the Admission ',
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, Cancel it!"
-        }).then((result) => {
-            if (result.isConfirmed) {
+    GetAdmissionCancleStausData() {
 
-                const SubmitDate = {
-                    "admissionId": this.AdmissionId,
-                    "isCancelledBy":this._loggedService.currentUserValue.userId,
-                    "isCancelledDateTime":this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd"),
-                    "isCancelled": 1,
-                    "isCancelComment":this.AdmissionTaskForm.get('Reason').value || ''
-
+        const SelectQuery =
+        {
+            "searchFields": [
+                {
+                    "fieldName": "AdmissionId",
+                    "fieldValue": String(this.AdmissionId),
+                    "opType": "Equals"
                 }
-                console.log(SubmitDate)
-                this._AdministrativetaskService.AdmissionCancel(SubmitDate).subscribe(response => {
-                    this._matDialog.closeAll()
-                });
+            ],
+            "mode": "AdmissionCancleStaus"
+        }
+
+        console.log(SelectQuery);
+        this._AdministrativetaskService.getAdmissionDetailList(SelectQuery).subscribe(data => {
+            this.dataSourceAdmission.data = data as Bill[];
+            console.log(this.dataSourceAdmission.data)
+
+        });
+    }
+
+    AdmissionCancle() {
+debugger
+        if (this.dataSourceAdmission.data.length >0) {
+            if (!this.AdmissionCancleTaskForm.invalid) {
+                Swal.fire({
+                    title: 'Do you want to cancel the Admission ',
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, Cancel it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        const SubmitDate = {
+                            "admissionId": this.AdmissionId,
+                            "isCancelledBy": this._loggedService.currentUserValue.userId,
+                            "isCancelledDateTime": this.datePipe.transform(this.AdmissionCancleTaskForm.get('AdmissionDate').value, "yyyy-MM-dd"),
+                            "isCancelled": 1,
+                            "isCancelComment": this.AdmissionCancleTaskForm.get('Reason').value || ''
+
+                        }
+                        console.log(SubmitDate)
+                        // this._AdministrativetaskService.AdmissionCancel(SubmitDate).subscribe(response => {
+                        //     this._matDialog.closeAll()
+                        // });
+                    }
+                })
             }
-        })
+            else {
+                const invalidFields = [];
+
+                if (this.AdmissionCancleTaskForm.invalid) {
+                    for (const controlName in this.AdmissionCancleTaskForm.controls) {
+                        if (this.AdmissionCancleTaskForm.controls[controlName].invalid) {
+                            invalidFields.push(`Admission Cancel Form: ${controlName}`);
+                        }
+                    }
+                }
+                if (invalidFields.length > 0) {
+                    invalidFields.forEach(field => {
+                        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                        );
+                    });
+                }
+            }
+
+        } else {
+            this.toastr.warning('Admission Cant Cancle...', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-success',
+            });
+            return;
+        }
     }
 
     OnopenVisitDateUpdate(contact) {
@@ -736,7 +796,7 @@ export class NewAdministrativeTaskComponent {
         return this.isDisableFuture ? d <= new Date() : true;
     };
 
-    
+
     openAdmissiontask(contact): void {
 
         this.vIPDNo = contact.IPDNo
@@ -753,12 +813,20 @@ export class NewAdministrativeTaskComponent {
         })
         this.getOpPatientdata()
     }
-
-
-       openAdmissioncancletask(contact): void {
-
+    PatientName: any;
+    DoctorName: any;
+    RegID: any;
+    VisAdmDate: any;
+    openAdmissioncancletask(contact): void {
+        console.log(contact)
         this.vIPDNo = contact.IPDNo
+        this.RegID = contact.RegID
+
         this.AdmissionId = contact.VisAdmId
+        this.PatientName = contact.VisAdmId
+        this.DoctorName = contact.DoctorName
+        this.VisAdmDate = contact.VisAdmDate
+
 
         this.AdmissionTaskForm.get('NewIpdNo').setValue(contact.IPDNo);
         this.AdmissionTaskForm.get('AdmissionDate').setValue(contact.VisAdmTime);

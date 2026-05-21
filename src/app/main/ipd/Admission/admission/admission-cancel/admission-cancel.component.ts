@@ -84,7 +84,7 @@ export class AdmissionCancelComponent {
     AdmissionMsg = ''
     AdmissionCancle() {
         debugger
-        if (this.Response == 'AllCharges Clear') {
+        if (this.Response == 'All Charges Clear') {
             if (!this.AdmissionCancleTaskForm.invalid) {
                 Swal.fire({
                     title: 'Do you want to cancel the Admission ',
@@ -130,37 +130,21 @@ export class AdmissionCancelComponent {
                 }
             }
 
-        } else if (this.Response == 1) {
-            this.toastr.warning('Sorry, this admission cannot be cancelled...', 'warning !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.AdmissionMsg = 'Any advance amount paid by the patient will be adjusted or refunded first..'
-            return;
-        } else if (this.Response !== 'AllCharges Clear') {
+        }
+        //  else if (this.Response == 1) {
+        //     this.toastr.warning('Sorry, this admission cannot be cancelled...', 'warning !', {
+        //         toastClass: 'tostr-tost custom-toast-success',
+        //     });
+        //     this.AdmissionMsg = 'Any advance amount paid by the patient will be adjusted or refunded first..'
+        //     return;
+        // } 
+        else if (this.Response !== 'All Charges Clear') {
             this.toastr.warning('Sorry, this admission cannot be cancelled...', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',
             });
 
             this.AdmissionMsg = this.Response
-            // if (this.Response == 'LabPending')
-            //     this.AdmissionMsg = 'Lab amount pending by the patient will be adjusted first..'
-            // else if (this.Response == 'IsPathologyPending')
-            //     this.AdmissionMsg = 'Pathology painding by the patient will be adjusted first..'
-            // else if (this.Response == 'IsRadiologyPending')
-            //     this.AdmissionMsg = 'Radiology pending by the patient will be adjusted first..'
-            // else if (this.Response == 'OtherCharges Pending')
-            //     this.AdmissionMsg = 'Othere Chanrges Amount pending by the patient will be adjusted first..'
-            // else if (this.Response == 'AdvanceLabPending')
-            //     this.AdmissionMsg = 'Advance Amount and Lab Amount pending by the patient will be adjusted or Refund first..'
-            // else if (this.Response == 'AdvancePathologyPending')
-            //     this.AdmissionMsg = 'Advance Amount and Pathology  Amount pending by the patient will be adjusted or Refund first..'
-            // else if (this.Response == 'AdvanceRadiologyPending')
-            //     this.AdmissionMsg = 'Advance Amount and Radiology  Amount pending by the patient will be adjusted or Refund first..'
-            // else if (this.Response == 'AdvanceOnly')
-            //     this.AdmissionMsg = 'Advance Amount  pending by the patient will be  Refund first..'
-
-
-
+          
             return;
         }
     }

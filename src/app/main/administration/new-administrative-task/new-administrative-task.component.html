@@ -76,7 +76,7 @@
             <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
                 style="color: white;">account_box
             </mat-icon>
-            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Admission Cancel</span>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Admission Cancel -IpdNo {{vIPDNo}}</span>
         </div>
         <div class="close-icon">
             <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
@@ -89,16 +89,37 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <div class="center p-12 pb-56" style="border-radius: 4px;">
+                <div class="modal-card-container mt-0" style="margin-top: -4px;">
+                    <div fxFlex.gt-sm="100%" fxFlex>
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 2px 10px;">
+                            <div class="patient-info-sales">
+                                <div class="patient-info-title border-bottom pb-1 mb-1">
+                                    <span class="h1 m-0" style="line-height: normal;">Patient Information</span>
+                                </div>
+                                <div class="Ipd-patient-info w-100-p">
+                                    <app-patient-information [uhidNo]="vRegNo" [patientName]="vPatientName"
+                                        [doctorName]="DoctorName" [departmentName]="" [doa]="VisAdmDate"
+                                        [ipdNo]="vIPDNo"
+                                           [ageString]="(vAge + 'Y|' + vAgeMonth + 'M|' + vAgeDay + 'D | ')"
+                                  
+                                         [refDocName]="" [wardBedName]=""
+                                        [patientType]="" [companyName]=""></app-patient-information>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+
                 <!-- CONTENT -->
                 <div class="content-card">
-                    <form [formGroup]="AdmissionTaskForm">
+                    <form [formGroup]="AdmissionCancleTaskForm">
 
                         <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
 
 
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
 
-                                <mat-form-field appearance="outline" class="dateField">
+                                <!-- <mat-form-field appearance="outline" class="dateField">
                                     <mat-label>{{dateLabel}}</mat-label>
                                     <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter"
                                         formControlName="AdmissionDate" readonly
@@ -106,10 +127,10 @@
                                     <mat-datepicker-toggle matSuffix [for]="picker1"
                                         [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
 
-                                <mat-form-field appearance="outline" class="timeField">
+                                <!-- <mat-form-field appearance="outline" class="timeField">
                                     <mat-label>{{timeLabel}}</mat-label>
                                     <input matTimepicker #t="matTimepicker" mode="12h" formControlName="AdmissionTime"
                                         [readonly]="true" (timeChange)="onChangeTime($event)"
@@ -117,17 +138,17 @@
 
                                     <mat-icon matSuffix
                                         (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
-                                </mat-form-field>
+                                </mat-form-field> -->
 
-                                <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
-                                    [formGroup]="AdmissionTaskForm" [value]="vIPDNo">
-                                </airmid-textbox>
+                                <!-- <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
+                                    [formGroup]="AdmissionCancleTaskForm" [value]="vIPDNo">
+                                </airmid-textbox> -->
 
 
                             </div>
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
-                                <airmid-textbox label="Reason" formControlName="Reason" fxFlex="95%"
-                                    [formGroup]="AdmissionTaskForm" [value]="Reason">
+                                <airmid-textbox label="Reason" formControlName="Reason" fxFlex="99%"
+                                    [formGroup]="AdmissionCancleTaskForm" [value]="Reason">
                                 </airmid-textbox>
                             </div>
                         </div>
@@ -568,8 +589,8 @@
                                         </button>
 
                                         <!-- *ngIf="IsChargesAmount==0 && IsBillGenerated==0" -->
-                                        <button mat-icon-button color="warn" 
-                                            (click)="openAdmissioncancletask(contact)" matTooltip="Admission Cancel">
+                                        <button mat-icon-button color="warn" (click)="openAdmissioncancletask(contact)"
+                                            matTooltip="Admission Cancel" *ngIf="!contact.IsDischarged">
                                             <mat-icon>cancel</mat-icon>
                                         </button>
 
