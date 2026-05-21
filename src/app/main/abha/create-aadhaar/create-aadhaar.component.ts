@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AbhaService } from '../abha.service';
 import { CreateAbhaResult } from '../abha-model';
+import { MatStepper } from '@angular/material/stepper';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class CreateAadhaarComponent {
             otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
         });
     }
-
+    @ViewChild('stepper') stepper: MatStepper;
     // ---- step 1 ----
     sendAadhaarOtp() {
         if (this.aadhaarForm.invalid || !this.consent) {
@@ -55,6 +56,7 @@ export class CreateAadhaarComponent {
                     this.txnId = r.txnId;
                     this.maskedAadhaarMobile = r.message || '';
                     this.snack.open('OTP sent to Aadhaar-linked mobile', 'OK', { duration: 2500 });
+                    this.stepper.next();
                 }
                 else {
                     this.snack.open(r.message, 'OK', { duration: 2500 });
@@ -75,6 +77,7 @@ export class CreateAadhaarComponent {
                     if (r.newMobileOtpRequired) {
                         this.mobileNeedsOtp = true;
                         this.snack.open('OTP sent to new mobile number', 'OK', { duration: 2500 });
+                      //  this.stepper.next();
                     } else {
                         this.enrol();
                     }
