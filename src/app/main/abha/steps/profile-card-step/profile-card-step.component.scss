@@ -1,0 +1,245 @@
+.profile-step {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.success-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #166534;
+  line-height: 1.5;
+
+  .check-icon {
+    color: #16a34a;
+    flex-shrink: 0;
+  }
+
+  strong {
+    color: #052e16;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 16px;
+}
+
+/* LEFT: ABHA Profile */
+.profile-card {
+  border: 1px solid #e5e7eb;
+}
+
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      color: #6b7280;
+    }
+  }
+
+  .profile-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .profile-handle {
+    font-size: 13px;
+    color: #6b7280;
+  }
+}
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .info-label {
+    color: #6b7280;
+  }
+
+  .info-value {
+    color: #111827;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lock-tag {
+    background: #eef2ff;
+    color: #4338ca;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* RIGHT: ABHA card */
+.abha-card-wrap {
+  border: 1px solid #e5e7eb;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  .card-title {
+    margin: 0;
+  }
+}
+
+.download-btn {
+  height: 36px;
+}
+
+.abha-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px;
+  position: relative;
+  min-height: 240px;
+}
+
+.abha-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+
+  .abha-card-brand {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #6b7280;
+    text-transform: uppercase;
+  }
+
+  .abha-card-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+      color: #6b7280;
+    }
+  }
+}
+
+.abha-card-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.abha-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+
+  .full-row {
+    grid-column: 1 / -1;
+  }
+
+  .abha-card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .abha-card-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+  }
+}
+
+.qr-placeholder {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 60px;
+  height: 60px;
+  background: #f9fafb;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #374151;
+  }
+}
+
+.reset-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

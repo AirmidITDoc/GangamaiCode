@@ -127,3 +127,35 @@ export interface CreateAbhaResult {
   tokens: AbhaTokens;
   ABHAProfile: AbhaProfile;
 }
+export interface AbhaData {
+  // Step 1: Aadhaar
+  aadhaarNumber: string;
+  beneficiaryName: string;
+  consents: boolean[];
+
+  // Step 2: OTP
+  aadhaarOtp: string;
+
+  // Step 3: Mobile
+  mobileNumber: string;
+  isAadhaarLinkedMobile: boolean;
+  mobileOtp?: string;
+
+  // Step 4: ABHA Address
+  addressOption: 'existing' | 'default' | 'custom' | 'suggestion' | null;
+  customAbhaAddress: string;
+  selectedSuggestion: string;
+
+  // Step 5: Profile (read-only after creation)
+  profile?: AbhaProfile;
+}
+
+export const CONSENT_ITEMS: string[] = [
+//   'I am voluntarily sharing my Aadhaar number and demographic information for the sole purpose of creating an ABHA.',
+//   'I authorize NHA to use my Aadhaar number for issuing an ABHA, and authenticate my identity through Aadhaar Authentication system.',
+//   'I authorize the sharing of my demographic information with the Health Information Exchange Consent Manager.',
+//   'I want my ABHA to be linked with the Consent Manager.',
+//   'I understand that my ABHA can be used and shared for purposes as may be notified by ABDM from time to time.',
+//   'I consent to the collection, storage and use of my personal data by Dr. Anita Sharma.',
+  'I, (beneficiary name), have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.'
+];

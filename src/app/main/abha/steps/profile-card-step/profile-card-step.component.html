@@ -1,0 +1,138 @@
+<div class="profile-step" *ngIf="profile">
+    <!-- Success banner -->
+    <div class="success-banner">
+        <mat-icon class="check-icon">check_circle</mat-icon>
+        <span>
+            ABHA created successfully and tagged with HIMS ID
+            <strong>{{ profile.himsId }}</strong>. Name, DOB, Gender, ABHA Number and
+            ABHA Address are non-editable in HIMS.
+        </span>
+    </div>
+
+    <div class="grid">
+        <!-- LEFT: ABHA Profile -->
+        <mat-card class="profile-card">
+            <mat-card-content>
+                <h3 class="card-title">ABHA Profile</h3>
+
+                <div class="avatar-row">
+                    <div class="avatar">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                    <div>
+                        <div class="profile-name">{{ profile.name }}</div>
+                        <div class="profile-handle">{{ profile.abhaAddress }}</div>
+                    </div>
+                </div>
+
+                <div class="info-list">
+                    <div class="info-row">
+                        <span class="info-label">ABHA Number</span>
+                        <span class="info-value">
+                            {{ profile.abhaNumber }}
+                            <span class="lock-tag" *ngIf="isLocked('abhaNumber')">LOCKED</span>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">ABHA Address</span>
+                        <span class="info-value">
+                            {{ profile.abhaAddress }}
+                            <span class="lock-tag" *ngIf="isLocked('abhaAddress')">LOCKED</span>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Date of Birth</span>
+                        <span class="info-value">
+                            {{ profile.dob }}
+                            <span class="lock-tag" *ngIf="isLocked('dob')">LOCKED</span>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Gender</span>
+                        <span class="info-value">
+                            {{ profile.gender }}
+                            <span class="lock-tag" *ngIf="isLocked('gender')">LOCKED</span>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Mobile Number</span>
+                        <span class="info-value">{{ profile.mobileNumber }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Address</span>
+                        <span class="info-value">{{ profile.address }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">State</span>
+                        <span class="info-value">{{ profile.state }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">District</span>
+                        <span class="info-value">{{ profile.district }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Pincode</span>
+                        <span class="info-value">{{ profile.pincode }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <!-- RIGHT: ABHA Card -->
+        <mat-card class="abha-card-wrap">
+            <mat-card-content>
+                <div class="card-header">
+                    <h3 class="card-title">ABHA Card</h3>
+                    <button mat-stroked-button (click)="onDownload()" class="download-btn">
+                        <mat-icon>download</mat-icon>
+                        Download
+                    </button>
+                </div>
+
+                <div class="abha-card">
+                    <div class="abha-card-header">
+                        <div class="abha-card-brand">AYUSHMAN BHARAT HEALTH ACCOUNT</div>
+                        <div class="abha-card-avatar">
+                            <mat-icon>person</mat-icon>
+                        </div>
+                    </div>
+                    <div class="abha-card-name">{{ profile.name }}</div>
+
+                    <div class="abha-card-grid">
+                        <div>
+                            <div class="abha-card-label">GENDER</div>
+                            <div class="abha-card-val">{{ profile.gender }}</div>
+                        </div>
+                        <div>
+                            <div class="abha-card-label">DOB</div>
+                            <div class="abha-card-val">{{ profile.dob }}</div>
+                        </div>
+                        <div>
+                            <div class="abha-card-label">ABHA NO.</div>
+                            <div class="abha-card-val">{{ profile.abhaNumber }}</div>
+                        </div>
+                        <div>
+                            <div class="abha-card-label">MOBILE</div>
+                            <div class="abha-card-val">{{ profile.mobileNumber }}</div>
+                        </div>
+                        <div class="full-row">
+                            <div class="abha-card-label">ABHA ADDRESS</div>
+                            <div class="abha-card-val">{{ profile.abhaAddress }}</div>
+                        </div>
+                    </div>
+
+                    <div class="qr-placeholder">
+                        <mat-icon>qr_code_2</mat-icon>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="reset-row">
+        <button mat-stroked-button (click)="onReset()">
+            <mat-icon>refresh</mat-icon>
+            Create another ABHA
+        </button>
+    </div>
+</div>
