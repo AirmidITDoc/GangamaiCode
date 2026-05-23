@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="onVerify()" class="otp-form">
+    <mat-card class="otp-card">
+        <mat-card-content>
+            <h2 class="step-title">Enter OTP</h2>
+
+            <div class="info-box">
+                {{maskedAadhaarMobile}}
+            </div>
+
+            <div class="field-block">
+                <label class="field-label">6-digit OTP</label>
+                <mat-form-field appearance="outline" class="full-width">
+                    <input matInput type="password" formControlName="aadhaarOtp" placeholder="••••••"
+                        inputmode="numeric" maxlength="6" (input)="onOtpInput($event)" autocomplete="one-time-code" />
+                    <mat-error *ngIf="form.get('aadhaarOtp')?.errors as e">
+                        <span *ngIf="e['required']">OTP is required</span>
+                        <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+                        <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+                    </mat-error>
+                </mat-form-field>
+                <p class="helper-text">
+                    Demo OTP: <span class="mono">{{ demoOtp }}</span>
+                </p>
+            </div>
+
+            <div class="row-between">
+                <span class="resend-info">
+                    Resend attempts remaining: <strong>{{ resendAttemptsRemaining }}/2</strong>
+                </span>
+                <button type="button" mat-button color="primary" (click)="onResend()"
+                    [disabled]="resendAttemptsRemaining === 0">
+                    <mat-icon>refresh</mat-icon>
+                    Resend OTP
+                </button>
+            </div>
+
+            <div class="actions">
+                <button type="button" mat-stroked-button (click)="onBack()" class="back-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                    Back
+                </button>
+                <button type="submit" mat-raised-button color="primary" [disabled]="loading || form.invalid"
+                    class="action-btn">
+                    <ng-container *ngIf="!loading">
+                        Verify
+                        <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                    </ng-container>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

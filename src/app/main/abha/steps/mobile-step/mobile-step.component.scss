@@ -1,0 +1,52 @@
+.mobile-form {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.mobile-card {
+  padding: 8px;
+}
+
+.step-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 24px;
+}
+
+.field-block {
+  margin-bottom: 24px;
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.helper-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 4px 0 0;
+
+  strong {
+    color: #111827;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.action-btn,
+.back-btn {
+  min-width: 120px;
+  height: 42px;
+  font-weight: 600;
+}

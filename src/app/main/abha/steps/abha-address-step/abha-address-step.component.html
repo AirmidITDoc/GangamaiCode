@@ -1,0 +1,120 @@
+<form [formGroup]="form" (ngSubmit)="onCreate()" class="addr-form">
+    <mat-card class="addr-card">
+        <mat-card-content>
+            <h2 class="step-title">Choose your ABHA Address</h2>
+
+            <mat-radio-group formControlName="addressOption" class="radio-list">
+                <!-- Existing -->
+                <label class="radio-card" [class.selected]="form.value.addressOption === 'existing'">
+                    <mat-radio-button value="existing" color="primary"></mat-radio-button>
+                    <div class="radio-content">
+                        <div class="radio-title">Continue with Existing ABHA Address</div>
+                        <div class="radio-subtitle">{{ existingAddress }}</div>
+                    </div>
+                </label>
+
+                <!-- Default -->
+                <label class="radio-card" [class.selected]="form.value.addressOption === 'default'">
+                    <mat-radio-button value="default" color="primary"></mat-radio-button>
+                    <div class="radio-content">
+                        <div class="radio-title">Use Default ABHA Address</div>
+                        <div class="radio-subtitle">{{ defaultAddress }}</div>
+                    </div>
+                </label>
+
+                <!-- Custom -->
+                <label class="radio-card" [class.selected]="form.value.addressOption === 'custom'">
+                    <mat-radio-button value="custom" color="primary"></mat-radio-button>
+                    <div class="radio-content">
+                        <div class="radio-title">Create Custom ABHA Address</div>
+                        <div class="radio-subtitle">Choose a unique address you'll remember</div>
+                    </div>
+                </label>
+
+                <!-- Suggestion -->
+                <label class="radio-card" [class.selected]="form.value.addressOption === 'suggestion'">
+                    <mat-radio-button value="suggestion" color="primary"></mat-radio-button>
+                    <div class="radio-content">
+                        <div class="radio-title">Pick from Suggestions</div>
+                        <div class="radio-subtitle">System-suggested addresses based on your name</div>
+                    </div>
+                </label>
+            </mat-radio-group>
+
+            <!-- Custom ABHA Address Input -->
+            <div *ngIf="form.value.addressOption === 'custom'" class="custom-block">
+                <label class="field-label">Custom ABHA Address</label>
+                <div class="input-with-suffix">
+                    <mat-form-field appearance="outline" class="full-width custom-input">
+                        <input matInput formControlName="customAbhaAddress" placeholder="e.g. rahul.kumar92"
+                            maxlength="18" autocomplete="off" (input)="onCustomInput($event)" />
+                        <mat-spinner matSuffix
+                            *ngIf="form.get('customAbhaAddress')?.valid && availability.available === null && form.value.customAbhaAddress"
+                            diameter="18"></mat-spinner>
+                        <mat-icon matSuffix *ngIf="availability.available === true"
+                            class="success-icon">check_circle</mat-icon>
+                        <mat-icon matSuffix *ngIf="availability.available === false" class="error-icon">error</mat-icon>
+                    </mat-form-field>
+                    <div class="suffix-label">&#64;sbx</div>
+                </div>
+
+                <!-- Validation rule pills -->
+                <div class="rules-grid">
+                    <div class="rule" [class.met]="ruleMet('length')">
+                        <mat-icon>{{ ruleMet('length') ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                        8–18 characters
+                    </div>
+                    <div class="rule" [class.met]="ruleMet('alphanumeric')">
+                        <mat-icon>{{ ruleMet('alphanumeric') ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                        Letters + numbers (alphanumeric)
+                    </div>
+                    <div class="rule" [class.met]="ruleMet('symbols')">
+                        <mat-icon>{{ ruleMet('symbols') ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                        At most 1 dot (.) and 1 underscore (_)
+                    </div>
+                    <div class="rule" [class.met]="ruleMet('edges')">
+                        <mat-icon>{{ ruleMet('edges') ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                        Dot/underscore in between (not at start/end)
+                    </div>
+                </div>
+
+                <p class="error-text" *ngIf="availability.available === false">
+                    {{ availability.message }}
+                </p>
+                <p class="helper-text">
+                    Try <span class="mono">{{ takenAbhaAddress }}</span> to see the "already exists" message.
+                </p>
+            </div>
+
+            <!-- Suggestion picker -->
+            <div *ngIf="form.value.addressOption === 'suggestion'" class="suggestion-block">
+                <label class="field-label">Pick a suggestion</label>
+                <div class="suggestions-list" *ngIf="!suggestionsLoading">
+                    <button *ngFor="let s of suggestions" type="button" mat-stroked-button class="suggestion-chip"
+                        [class.active]="form.value.selectedSuggestion === s" (click)="selectSuggestion(s)">
+                        {{ s }}<span class="muted">&#64;sbx</span>
+                    </button>
+                </div>
+                <div *ngIf="suggestionsLoading" class="loading-row">
+                    <mat-spinner diameter="20"></mat-spinner>
+                    <span>Loading suggestions...</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="button" mat-stroked-button (click)="onBack()" class="back-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                    Back
+                </button>
+                <button type="submit" mat-raised-button color="primary" [disabled]="!canCreate || loading"
+                    class="action-btn">
+                    <ng-container *ngIf="!loading">
+                        Create ABHA
+                        <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                    </ng-container>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

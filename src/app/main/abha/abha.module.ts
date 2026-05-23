@@ -1,13 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateAadhaarComponent } from './create-aadhaar/create-aadhaar.component';
-import { CreateMobileComponent } from './create-mobile/create-mobile.component';
-import { VerifyAbhaComponent } from './verify-abha/verify-abha.component';
-import { AbhaProfileComponent } from './abha-profile/abha-profile.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,19 +16,30 @@ import { SharedModule } from '../shared/shared.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatStepperModule } from '@angular/material/stepper';
 import { OtpInputComponent } from './otp-input.component';
+import { AbhaStepperComponent } from './abha-stepper/abha-stepper.component';
+import { AadhaarStepComponent } from './steps/aadhaar-step/aadhaar-step.component';
+import { AbhaAddressStepComponent } from './steps/abha-address-step/abha-address-step.component';
+import { MobileStepComponent } from './steps/mobile-step/mobile-step.component';
+import { OtpStepComponent } from './steps/otp-step/otp-step.component';
+import { ProfileCardStepComponent } from './steps/profile-card-step/profile-card-step.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 const appRoutes: Routes = [
-    { path: 'create-aadhaar', component: CreateAadhaarComponent, title: 'Create ABHA via Aadhaar' },
-    { path: 'create-mobile', component: CreateMobileComponent, title: 'Create ABHA via Mobile' },
-    { path: 'verify', component: VerifyAbhaComponent, title: 'Verify ABHA' },
-    { path: 'profile', component: AbhaProfileComponent, title: 'ABHA Profile' },
-    { path: '**', redirectTo: 'verify', pathMatch: 'full' },
+    // { path: 'create-aadhaar', component: CreateAadhaarComponent, title: 'Create ABHA via Aadhaar' },
+    // { path: 'create-mobile', component: CreateMobileComponent, title: 'Create ABHA via Mobile' },
+    // { path: 'verify', component: VerifyAbhaComponent, title: 'Verify ABHA' },
+    // { path: 'profile', component: AbhaProfileComponent, title: 'ABHA Profile' },
+    {
+        path: "**",
+        component: AbhaStepperComponent
+    }
 ];
 
 @NgModule({
     declarations: [
-        CreateAadhaarComponent,CreateMobileComponent,VerifyAbhaComponent,AbhaProfileComponent,OtpInputComponent
+        AbhaStepperComponent, OtpInputComponent, AadhaarStepComponent, AbhaAddressStepComponent, MobileStepComponent, OtpStepComponent,
+        ProfileCardStepComponent
     ],
     imports: [
         RouterModule.forChild(appRoutes),
@@ -53,7 +58,8 @@ const appRoutes: Routes = [
         ReactiveFormsModule,
         SharedModule,
         MatTooltipModule,
-        MatStepperModule
+        MatStepperModule,
+        MatRadioModule
     ]
 })
 

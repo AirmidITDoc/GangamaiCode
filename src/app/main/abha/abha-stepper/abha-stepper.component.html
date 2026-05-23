@@ -1,0 +1,44 @@
+<div class="stepper-wrapper">
+    <!-- Header -->
+    <div class="page-header">
+        <div class="header-left">
+            <mat-icon class="shield-icon">verified_user</mat-icon>
+            <div>
+                <h1 class="page-title">ABHA Creation</h1>
+                <p class="page-subtitle">via Aadhaar OTP · HIMS</p>
+            </div>
+        </div>
+        <div class="header-right">
+            Logged in as <strong>{{ doctorName }}</strong>
+        </div>
+    </div>
+
+    <!-- Stepper -->
+    <mat-stepper #stepper [linear]="true" labelPosition="end" class="abha-stepper">
+        <!-- Step 1: Aadhaar -->
+        <mat-step [stepControl]="aadhaarForm" label="Aadhaar">
+            <app-aadhaar-step [form]="aadhaarForm" (otpSent)="onAadhaarOtpSent($event)"></app-aadhaar-step>
+        </mat-step>
+
+        <!-- Step 2: OTP -->
+        <mat-step [stepControl]="otpForm" label="OTP">
+            <app-otp-step [form]="otpForm" [maskedAadhaarMobile]="maskedAadhaarMobile" (verified)="onOtpVerified()" (back)="stepper.previous()"></app-otp-step>
+        </mat-step>
+
+        <!-- Step 3: Mobile -->
+        <mat-step [stepControl]="mobileForm" label="Mobile">
+            <app-mobile-step [form]="mobileForm" (next)="onMobileNext()" (back)="stepper.previous()"></app-mobile-step>
+        </mat-step>
+
+        <!-- Step 4: ABHA Address -->
+        <mat-step [stepControl]="addressForm" label="ABHA Address">
+            <app-abha-address-step [form]="addressForm" [beneficiaryName]="aadhaarForm.value.beneficiaryName"
+                (create)="onAbhaCreate()" (back)="stepper.previous()"></app-abha-address-step>
+        </mat-step>
+
+        <!-- Step 5: Profile & Card -->
+        <mat-step label="Profile & Card" [editable]="false">
+            <app-profile-card-step *ngIf="isAbhaCreated" (reset)="resetFlow()"></app-profile-card-step>
+        </mat-step>
+    </mat-stepper>
+</div>

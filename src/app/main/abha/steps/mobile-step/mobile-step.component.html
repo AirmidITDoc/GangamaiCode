@@ -1,0 +1,37 @@
+<form [formGroup]="form" (ngSubmit)="onNext()" class="mobile-form">
+    <mat-card class="mobile-card">
+        <mat-card-content>
+            <h2 class="step-title">Mobile Number</h2>
+
+            <div class="field-block">
+                <label class="field-label">Mobile Number (mandatory)</label>
+                <mat-form-field appearance="outline" class="full-width">
+                    <input matInput formControlName="mobileNumber" placeholder="10-digit mobile number"
+                        inputmode="numeric" maxlength="10" (input)="onMobileInput($event)" autocomplete="tel" />
+                    <mat-error *ngIf="form.get('mobileNumber')?.errors as e">
+                        <span *ngIf="e['required']">Mobile number is required</span>
+                        <span *ngIf="e['mobile']">{{ e['mobile'] }}</span>
+                    </mat-error>
+                </mat-form-field>
+                <p class="helper-text" *ngIf="isAadhaarLinked">
+                    Aadhaar-linked: <strong>{{ aadhaarLinkedMobile }}</strong>. Same as Aadhaar — no OTP needed.
+                </p>
+                <p class="helper-text" *ngIf="!isAadhaarLinked && form.get('mobileNumber')?.valid">
+                    This number is different from your Aadhaar-linked mobile. An OTP will be sent to verify it during
+                    ABHA login.
+                </p>
+            </div>
+
+            <div class="actions">
+                <button type="button" mat-stroked-button (click)="onBack()" class="back-btn">
+                    <mat-icon>arrow_back</mat-icon>
+                    Back
+                </button>
+                <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid" class="action-btn">
+                    Next
+                    <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

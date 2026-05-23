@@ -1,0 +1,81 @@
+.stepper-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid #e5e7eb;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .shield-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: #111827;
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .page-subtitle {
+      margin: 0;
+      font-size: 13px;
+      color: #6b7280;
+    }
+  }
+
+  .header-right {
+    font-size: 14px;
+    color: #4b5563;
+
+    strong {
+      color: #111827;
+    }
+  }
+}
+
+.abha-stepper {
+  background: transparent;
+}
+
+::ng-deep .abha-stepper .mat-horizontal-stepper-header-container {
+  padding: 16px 32px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+::ng-deep .abha-stepper .mat-horizontal-content-container {
+  padding: 24px 32px 32px;
+}
+
+@media (max-width: 640px) {
+  .page-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  ::ng-deep .abha-stepper .mat-horizontal-stepper-header-container {
+    padding: 8px;
+  }
+
+  ::ng-deep .abha-stepper .mat-horizontal-content-container {
+    padding: 16px;
+  }
+}
