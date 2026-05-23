@@ -485,7 +485,7 @@ export class NewCasepaperComponent implements OnInit {
             daysOption3: [0],
             instructionId: [element.instructionId || 0],
             qtyPerDay: [Math.round(element.QtyPerDay ?? element.qtyPerDay ?? 0)],
-            totalQty: [Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
+            totalQty: [ element?.totalQty || 0 //Math.round(element.QtyPerDay * element.Days) || Math.round(element.qtyPerDay * element.days) || 0,
             [this._FormvalidationserviceService.onlyNumberValidator()]],
             isClosed: false,
             isEnglishOrIsMarathi: [true],

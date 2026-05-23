@@ -120,8 +120,9 @@ export class NewGRNReturnComponent implements OnInit {
                 this.vGSTTpe = 'Without GST';
             }
             this._GRNReturnService.NewGRNReturnFrom.patchValue({ReturnType:this.data?.returnTypeId || 0})
+             this.getGRNreturnlist();
         }
-        this.getGRNreturnlist();
+       
         // this.getStoreList();    
         this.GrnReturnForm = this.CreateGrnReturnInsertForm();
         this.grnReturnDetArray.push(this.createGrnReturnDetInsert());

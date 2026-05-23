@@ -131,13 +131,10 @@ export class GrnreturnWithoutGrnNewComponent {
             } else {
                 this.vGSTTpe = 'Without GST';
             }
-        }
-        this.getGRNreturnlist();
-
-        this._GRNReturnService.NewGRNReturnFrom.markAllAsTouched();
-
-        this.GrnReturnForm = this.CreateGrnReturnInsertForm();
-
+             this.getGRNreturnlist();
+        } 
+        this._GRNReturnService.NewGRNReturnFrom.markAllAsTouched(); 
+        this.GrnReturnForm = this.CreateGrnReturnInsertForm(); 
         this.grnReturnDetArray.push(this.createGrnReturnDetInsert());
         this.grnReturnCurrentStockArray.push(this.createGrnReturnCurrentStockInsert());
         this.grnReturnQtyArray.push(this.createGrnReturnQtyInsert());
@@ -697,7 +694,7 @@ debugger
             //         balanceQty: element.balanceQty,
             //         returnQty: 0,
                     mrp: rowData.mrp || 0,
-            //         receivedQty: element.receiveQty || 0,
+            //         receiveQty: element.receiveQty || 0,
             //         landedTotalAmount: 0,
             //         cgst: (element.vatPer || 0) / 2,
             //         sgst: (element.vatPer || 0) / 2,

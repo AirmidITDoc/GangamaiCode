@@ -175,7 +175,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         this.vItemGenericNameId = row.value;
         this.vItemGenericName = row.text;
     }
-
+Syrup:boolean = false;
     // Handle dose selection
     onDoseSelected(row: any): void {
         this.doseId = row.value;
@@ -183,8 +183,11 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         if ((this.doseId ?? 0) > 0) {
             setTimeout(() => {
                 this._casepaperService.getDoseMasterById(this.doseId).subscribe((response: any) => {
-                    this.doseQtyPerDay = response?.doseQtyPerDay || 1;
+                    this.doseQtyPerDay = response?.doseQtyPerDay || 0;
                     this.doseName = response.doseName;
+                    if((response?.doseQtyPerDay || 0) == 0){
+                        this.Syrup =  true;
+                    }
                 });
             }, 300);
         }
@@ -223,6 +226,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
     // Confirm row
 
     confirmRow(row: MedicineItem): boolean {
+        debugger
         if (!this.medicineForm.get('ItemId')?.value) {
             this.toastr.warning('Please select a Drug Name', 'Warning!');
             return false;
@@ -236,9 +240,15 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
             return false;
         }
 
-        const qty = this.doseQtyPerDay || 1;
+        const qty = this.doseQtyPerDay || 0;
         const days = this.medicineForm.get('Day').value || this.vDay;
         const Instruction = this.instruction || this.medicineForm.get('Instruction')?.value || ''
+        let totalqty= 0;
+        if(this.Syrup){
+            totalqty = 1;
+        }else{
+            totalqty = Math.round(qty * days) || 0;
+        }
 
         row.DrugId = this.drugId || 0;
         row.DrugName = this.drugName || '';
@@ -248,7 +258,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         row.DoseName = this.doseName || '';
         row.Days = days;
         row.QtyPerDay = this.doseQtyPerDay;
-        row.totalQty = Math.round(qty * days) || 0;
+        row.totalQty = totalqty
         row.instruction = Instruction;
         row.instructionId = this.instructionId || '';
         // row.instruction = this.medicineForm.get('Instruction').value || '';
@@ -256,6 +266,7 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
 
         this.dsItemList.data = [...this.dsItemList.data];
         this.emitDataChange();
+        this.Syrup = false;
         return true;
     }
 
@@ -284,11 +295,17 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         }, { emitEvent: false });
 
         // Set local values for editing 
-        this.doseQtyPerDay = row?.qtyPerDay || 0 ;
-        this.drugId = row?.drugId || 0;
+        if((row?.QtyPerDay || 0) == 0){
+            this.Syrup =  true; 
+        }else{
+            this.Syrup =  false;
+        }
+        this.doseQtyPerDay = row?.QtyPerDay || row?.qtyPerDay || 0 ;
+        this.drugId = row?.DrugId || row?.drugId || 0;
         this.drugName = row.DrugName || row.drugName || ''; 
         this.instructionId = row.instructionId || 0
         this.doseName = row.DoseName || row.doseName || '';
+        this.doseId = row.DoseId || row?.doseId || 0;
         this.vItemGenericNameId = row.GenericId || row.genericId || row.genericid || 0;
         this.vItemGenericName = row.GenericName || row.genericName || ''; 
         this.focusFirstEditableField();

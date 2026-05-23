@@ -152,6 +152,10 @@ export class IPRefundofBillComponent implements OnInit {
                 refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 unitId: [this.accountService.currentUserValue.user.unitId],
                 cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+                isApproval: false,
+                approvedBy: 0,
+                approvalDatetime: "1900-01-01",
+                comment: ""
             }),
 
             tRefundDetails: this.formBuilder.array([]), // FormArray for details
@@ -322,6 +326,7 @@ export class IPRefundofBillComponent implements OnInit {
         this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
         this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
         this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.BillNo || 0)
+        this.vRefundOfBillFormGroup.get("refund.comment")?.setValue(this.RefundOfBillFormFooter.get('Remark')?.value || '')
         this.vRefundOfBillFormGroup.get("refund.cashCounterId")?.setValue(this.RefundOfBillFormFooter.get('CashCounterID')?.value || 0)
 
         if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) {
