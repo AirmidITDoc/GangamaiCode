@@ -97,11 +97,13 @@ export class PharAdvanceService {
         return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
     }
     public InsertIpPharmaAdvance(Param: any) {
-        return this._httpClient1.PostData("Sales/PharmacyAdvanceInsert", Param)
+         //return this._httpClient1.PostData("Sales/PharmacyAdvanceInsert", Param)
+        return this._httpClient1.PostData("PharmacyAdvance/PharmacyAdvanceInsert", Param)
     }
     public UpdateIpPharmaAdvance(Param: any) {
         if (Param.pharmacyHeader.advanceId) {
-            return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate", Param);
+          //  return this._httpClient1.PutData("Sales/PharmacyAdvanceUpdate", Param);
+              return this._httpClient1.PutData("PharmacyAdvance/PharmacyAdvanceUpdate", Param);
         }
     }
 
@@ -109,7 +111,8 @@ export class PharAdvanceService {
         if (loader) {
             this._loaderService.show();
         }
-        return this._httpClient1.PostData("Sales/PharmacyRefundInsert", data)
+       // return this._httpClient1.PostData("Sales/PharmacyRefundInsert", data)
+          return this._httpClient1.PostData("PharmacyRefund/PharmacyRefundInsert", data)
     }
     public getPreRefundofAdvance(data) {
         return this._httpClient1.PostData("Sales/GetRefundByAdvanceList", data)

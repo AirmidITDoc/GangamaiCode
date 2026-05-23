@@ -133,7 +133,7 @@
                         <div style="width: 30%;" class="airmid-table-container" *ngIf="lastsupplierflag">
 
                             <mat-table #table matSort [dataSource]="dsSupplierItemList" [@animateStagger]="{value:'50'}"
-                                style="overflow: auto; height: 300px;" class="airmid-table">
+                                style="overflow: auto; height: 400px;" class="airmid-table">
 
                                 <ng-container matColumnDef="ItemName">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">
@@ -220,12 +220,12 @@
                         <div [style.width]="lastsupplierflag ? '70%' : '100%'" class="airmid-table-container">
 
                             <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
-                                style="overflow: auto; height: 300px;" class="airmid-table">
+                                style="overflow: auto; height: 400px;" class="airmid-table">
 
                                 <ng-container matColumnDef="buttons" stickyEnd>
-                                    <mat-header-cell *matHeaderCellDef style="color: white;"> Action
+                                    <mat-header-cell *matHeaderCellDef style="color: white;"  class="w-80"> Action
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
+                                    <mat-cell *matCellDef="let row"  class="w-80">
                                         <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                             <mat-icon>delete_outline</mat-icon>
                                         </button>
@@ -270,10 +270,18 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="BalQty">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalQty
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Bal Qty
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                         {{contact.BalQty}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                 <ng-container matColumnDef="receiveQty">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Receive Qty
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        {{contact.receivedQty}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -380,11 +388,11 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="BalanceQty">
+                                <ng-container matColumnDef="BalanceQty" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                        BalanceQty</mat-header-cell>
+                                    Total Qty</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                        {{contact.balanceQty}}
+                                        {{contact.totalQty}}
                                     </mat-cell>
                                 </ng-container>
 

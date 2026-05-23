@@ -64,12 +64,12 @@
                                     style="overflow:auto;">
 
                                     <ng-container matColumnDef="Action" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-80">
                                             <span class="material-icons">
                                                 cached
                                             </span>
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" required>
+                                        <mat-cell *matCellDef="let contact" required class="w-80">
                                             <mat-checkbox aria-label="Checked"
                                             [checked]="selection.isSelected(contact)"
                                                 (change)="tableElementChecked($event, contact)">
@@ -78,43 +78,44 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="GRNNO">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                             GRN No</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                             {{contact.grnNumber}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="GRNDate">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-230">
                                             GRNDate
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                            <!-- {{contact.grnDate | date:'dd/MM/YYYY'}} -->
-                                            {{ parseDate(contact.grnDate) | date: 'dd/MM/yyyy' }}
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-230">
+                                            {{contact.grnDate  | date: 'dd/MM/yyyy' }}-
+                                            {{contact.grnDate  | date: 'hh:mm:a' }}
+                                            <!-- {{ parseDate(contact.grnDate) | date: 'dd/MM/yyyy' }} -->
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="SupplierName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-350">
                                             Supplier Name</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-350">
                                             {{contact.supplierName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="TotalAmount">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                             TotalAmount</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                                             {{contact.totalAmount}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="GrandTotal">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  >
                                             NetAmount</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm  >
                                             {{contact.netAmount}}
                                         </mat-cell>
                                     </ng-container>

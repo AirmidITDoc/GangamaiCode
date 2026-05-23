@@ -38,6 +38,7 @@ export class GrnreturnWithoutGrnNewComponent {
         'ConversionFactor',
         'ExpDate',
         'BalQty',
+        'receiveQty',
         'Qty',
         'LandedRate',
         'TotalAmount',
@@ -122,7 +123,7 @@ export class GrnreturnWithoutGrnNewComponent {
             this.registerObj = this.data
             this.VsupplierId = this.data.supplierId
             this.VGrnReturnID = this.data?.grnReturnId
-               this.vGRNID = this.data?.grnid
+             //  this.vGRNID =  this.data?.grnid
             // this._GRNReturnService.ReturnFinalForm.get("Remark").setValue(this.registerObj?.remark)
            this._GRNReturnService.NewGRNReturnFrom.patchValue({ReturnType:this.data?.returnTypeId || 0})
             if (this.registerObj.isGrnTypeFlag == true) {
@@ -166,10 +167,10 @@ export class GrnreturnWithoutGrnNewComponent {
                 "isCancelled": false,
                 "isClosed": false,
                 "grnType": this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value,
-                "isGrnTypeFlag": true,
+                "isGrnTypeFlag": false,
                 "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 "unitId": this._loggedService.currentUserValue.user.unitId,
-                "returnTypeId":0
+                "returnTypeId": [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
             }),
             tGrnreturnDetails: this._formbuilder.array([]),
@@ -238,7 +239,7 @@ debugger
             remarks: '',
             stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cf: [element.conversion || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            totalQty: [totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             grnid: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
         });
@@ -251,7 +252,7 @@ debugger
     createGrnReturnCurrentStockInsert(element: any = {}): FormGroup {
         return this._formbuilder.group({
             itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            issueQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            issueQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             iStkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             storeID: [this.vstoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
@@ -263,10 +264,10 @@ debugger
 
     createGrnReturnQtyInsert(element: any = {}): FormGroup {
         debugger
-        const issueqty = +element.BalQty - +element.returnQty
+      //  const issueqty = +element.BalQty - +element.returnQty
         return this._formbuilder.group({
             grndetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            returnQty: [issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+            returnQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }
 
@@ -671,13 +672,13 @@ debugger
     selectedRowIndex: number = -1;
     onRowClick(rowData: any) {
         console.log("Selected Row Data:", rowData);
-         this.vGRNID = rowData.grnid || 0
+         this.vGRNID = 0 //rowData.grnid || 0
             
         const converted = {
             ...rowData,
             conversion: rowData.conversionFactor,
             BalQty: rowData.balanceQty,
-            batchExpiryDate: rowData.batchExpDate,
+            batchExpiryDate: this.datePipe.transform(rowData.batchExpDate,'yyyy-MM-dd') || '1900-01-01',
             landedTotalAmount: rowData.totalAmount,
             unitPurchaseRate: rowData.rate,
             cgst: rowData.cgstper,
@@ -685,7 +686,8 @@ debugger
             igst: rowData.igstper,
             gstPercentage: rowData.vatPercentage,
             gstAmount: rowData.vatAmount,
-            grnId: rowData.grnid || 0,
+            returnQty:0,
+            grnId: 0,  //rowData.grnid || 0,
 
             //  itemId: element.itemId || 0,
             //         itemName: element.itemName || '',
@@ -695,7 +697,7 @@ debugger
             //         balanceQty: element.balanceQty,
             //         returnQty: 0,
                     mrp: rowData.mrp || 0,
-            //         receiveQty: element.receiveQty || 0,
+            //         receivedQty: element.receiveQty || 0,
             //         landedTotalAmount: 0,
             //         cgst: (element.vatPer || 0) / 2,
             //         sgst: (element.vatPer || 0) / 2,
@@ -731,9 +733,9 @@ debugger
     }
 
     getCellCalculation(contact, returnQty) {
-        
-        if (parseInt(contact.returnQty) > parseInt(contact.BalQty)) {
-            this.toastr.warning('Return Qty cannot be greater than Bal Qty', 'Warning !', {
+          contact.totalQty = (parseInt(contact?.returnQty || 0) * parseInt(contact?.conversion || 0));
+        if (parseInt(contact?.totalQty || 0) > parseInt(contact?.BalQty || 0)) { 
+            this.toastr.warning('Total Qty cannot be greater than Bal Qty', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             contact.returnQty = 0;
@@ -742,11 +744,11 @@ debugger
             contact.landedTotalAmount = 0;
             contact.gstAmount = 0;
             contact.discAmount = 0;
-            contact.netAmount = 0;
+            contact.netAmount = 0; 
         }
         else {
-            contact.totalQty = (parseInt(contact.returnQty) * parseInt(contact.conversion));
-            contact.landedTotalAmount = (parseFloat(contact.returnQty) * parseFloat(contact.landedRate)).toFixed(2);
+            contact.totalQty = (parseInt(contact?.returnQty || 0) * parseInt(contact?.conversion || 0));
+            contact.landedTotalAmount = (parseFloat(contact?.returnQty || 0) * parseFloat(contact.landedRate)).toFixed(2);
             contact.gstAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.gstPercentage)) / 100).toFixed(2);
             contact.discAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.discPercentage)) / 100).toFixed(2);
             const GrossAmt = (parseFloat(contact.landedTotalAmount) - parseFloat(contact.discAmount)).toFixed(2);
@@ -773,6 +775,9 @@ debugger
         this.GrnReturnForm.get('grnReturn.grnreturnDate').setValue(formattedDate);
         this.GrnReturnForm.get('grnReturn.grnreturnTime').setValue(formattedDate + ' ' + formattedTime);
 
+          if (!this.isValidForm()) { 
+            return;
+        }
         if (this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return') {
             this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(true)
         } else
@@ -917,6 +922,32 @@ debugger
             event.preventDefault();
             return false;
         }
+    }
+      isValidForm(): boolean {
+        const invalidItem = this.dsItemList.data.find((item, index) => {
+            debugger
+            if (item.returnQty <= 0) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Return Quantity must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
+
+            if (item.totalQty <= 0) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Total Quantity must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
+ 
+            return false;
+        });
+
+        return !invalidItem; // valid only if no invalid row
     }
 }
 

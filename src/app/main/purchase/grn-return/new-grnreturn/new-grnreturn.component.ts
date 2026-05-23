@@ -161,7 +161,7 @@ export class NewGRNReturnComponent implements OnInit {
                 "isGrnTypeFlag": [true],
                 "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 "unitId": this._loggedService.currentUserValue.user.unitId,
-                "returnTypeId":0
+                "returnTypeId":[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             }),
             tGrnreturnDetails: this._formbuilder.array([]),
             grnReturnCurrentStock: this._formbuilder.array([]),
@@ -243,7 +243,7 @@ debugger
     createGrnReturnCurrentStockInsert(element: any = {}): FormGroup {
         return this._formbuilder.group({
             itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            issueQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            issueQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             iStkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             storeId: [this.vStoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
@@ -253,12 +253,11 @@ debugger
         return this.GrnReturnForm.get('grnReturnReturnQt') as FormArray;
     }
 
-    createGrnReturnQtyInsert(element: any = {}): FormGroup {
-        // element.returnQty
-        const issueqty = element.balanceQty - element.returnQty
+    createGrnReturnQtyInsert(element: any = {}): FormGroup { 
+      //  const issueqty = element.balanceQty - element.returnQty
         return this._formbuilder.group({
             grndetId: [element.GRNDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+            returnQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
             //returnQty: [issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }
@@ -305,7 +304,7 @@ debugger
         this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
             console.log(data.data)
 
-
+debugger
             const itemList = data.data as ItemNameList[];
             if (!itemList || itemList.length === 0) {
                 this.toastr.warning(
@@ -331,7 +330,7 @@ debugger
                     itemId: element.itemId || 0,
                     itemName: element.itemName || '',
                     batchNo: element.batchNo || 0,
-                    batchExpDate: element.batchExpDate,
+                    batchExpDate: this.datePipe.transform(element.batchExpDate,'yyyy-MM-dd') || '1900-01-01',
                     conversion: element.conversionFactor || 1,
                     balanceQty: element.balanceQty,
                     returnQty: 0,
@@ -478,9 +477,9 @@ debugger
     RQty: any;
 
     getCellCalculation(contact, returnQty) {
-        
-        if (parseInt(contact.returnQty) > parseInt(contact.receiveQty)) {
-            this.toastr.warning('Return Qty cannot be greater than Received Qty', 'Warning !', {
+        contact.totalQty = (parseInt(contact?.returnQty || 0) * parseInt(contact?.conversion || 0));
+        if (parseInt(contact?.totalQty || 0) > parseInt(contact?.balanceQty || 0)) {
+            this.toastr.warning('Total Qty cannot be greater than Bal Qty', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             contact.returnQty = 0;
@@ -492,8 +491,8 @@ debugger
             contact.netAmount = 0;
         }
         else {
-            contact.totalQty = (parseInt(contact.returnQty) * parseInt(contact.conversion));
-            contact.landedTotalAmount = (parseFloat(contact.returnQty) * parseFloat(contact.landedRate)).toFixed(2);
+            contact.totalQty = (parseInt(contact?.returnQty || 0) * parseInt(contact?.conversion || 0));
+            contact.landedTotalAmount = (parseFloat(contact?.returnQty || 0) * parseFloat(contact.landedRate)).toFixed(2);
             contact.gstAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.gstPercentage)) / 100).toFixed(2);
             contact.discAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.discPercentage)) / 100).toFixed(2);
             const GrossAmt = (parseFloat(contact.landedTotalAmount) - parseFloat(contact.discAmount)).toFixed(2);
@@ -534,7 +533,9 @@ debugger
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.GrnReturnForm.get('grnReturn.grnreturnDate').setValue(formattedDate);
         this.GrnReturnForm.get('grnReturn.grnreturnTime').setValue(formattedDate + ' ' + formattedTime);
-
+         if (!this.isValidForm()) { 
+            return;
+        }
         if (this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return') {
             this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(true)
         } else
@@ -716,5 +717,31 @@ debugger
     }
     onClose() {
         this._matDialog.closeAll();
+    }
+          isValidForm(): boolean {
+        const invalidItem = this.dsGrnItemList.data.find((item, index) => {
+            debugger
+            if (item.returnQty <= 0) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Return Quantity must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
+
+            if (item.totalQty <= 0) {
+                this.toastr.warning(
+                    `Row ${index + 1}: Total Quantity must be greater than 0`,
+                    'Warning !',
+                    { toastClass: 'tostr-tost custom-toast-warning' }
+                );
+                return true;
+            }
+ 
+            return false;
+        });
+
+        return !invalidItem; // valid only if no invalid row
     }
 }

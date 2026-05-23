@@ -128,10 +128,11 @@ export class GRNReturnComponent implements OnInit {
         { heading: "Total Amount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         // { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+        { heading: "Return Type", key: "grnReturnTypeName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 160, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ]
@@ -286,9 +287,10 @@ export class GRNReturnComponent implements OnInit {
     getNewGRNRet(row?: any) {
         const dialogRef = this._matDialog.open(NewGRNReturnComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "96vw",
                 maxHeight: '100vh',
-                width: '90%',
+                width: '96%',
+                height:'94%',
                 data: row ?? ''
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -300,10 +302,10 @@ export class GRNReturnComponent implements OnInit {
     newGRNRetunr(row?: any) {
         const dialogRef = this._matDialog.open(NewGRNReturnWithoutGRNComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "96vw",
                 maxHeight: '100vh',
-                width: '90%',
-                // height:'90%',
+                width: '96%',
+               height:'94%',
                 data: row ?? ''
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -316,10 +318,10 @@ export class GRNReturnComponent implements OnInit {
     getNew(row?: any) {
         const dialogRef = this._matDialog.open(GrnreturnWithoutGrnNewComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "96vw",
                 maxHeight: '100vh',
-                width: '90%',
-                // height:'90%',
+                width: '96%',
+                height:'94%',
                 data: row ?? ''
             });
         dialogRef.afterClosed().subscribe(result => {

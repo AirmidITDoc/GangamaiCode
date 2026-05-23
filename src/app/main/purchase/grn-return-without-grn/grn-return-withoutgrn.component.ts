@@ -455,6 +455,7 @@ export class ItemNameList {
     cgst: any;
     sgst: any;
     igst: any;
+    totalQty:any;
 
     constructor(ItemNameList) {
         {
@@ -472,6 +473,7 @@ export class ItemNameList {
             this.StkId = ItemNameList.StkId || 0;
             this.Conversion = ItemNameList.Conversion || 0;
             this.TotalQty = ItemNameList.totalQty || 0;
+             this.totalQty = ItemNameList.totalQty || 0;
             this.MRP = ItemNameList.MRP || 0;
             this.LandedRate = ItemNameList.LandedRate || 0;
             this.Totalamt = ItemNameList.Totalamt || 0;

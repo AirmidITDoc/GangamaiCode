@@ -87,9 +87,9 @@
                             <div style="width: 100%;" class="airmid-table-container">
 
                                 <mat-table #table matSort [dataSource]="dsGrnItemList" class="airmid-table"
-                                    [@animateStagger]="{value:'50'}" style="overflow: auto; height: 400px;">
+                                    [@animateStagger]="{value:'50'}" style="overflow: auto; height: 500px;">
 
-                                    <ng-container matColumnDef="Action">
+                                    <ng-container matColumnDef="Action" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef style="color: white;" class="w-80">
                                             Action
                                         </mat-header-cell>
@@ -124,9 +124,9 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             ExpDate</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                            <!-- {{ parseDate(contact.batchExpiryDate) | date: 'dd/MM/yyyy' }} -->
-                                             {{ contact.BatchExpDate ? (parseDate(contact.BatchExpDate) |
-                                            date:'dd/MM/yyyy') : contact.batchExpiryDate }}
+                                            {{contact.batchExpDate}}
+                                             <!-- {{ contact.BatchExpDate ? (parseDate(contact.BatchExpDate) |
+                                            date:'yyyy/MM/dd') : contact.batchExpiryDate }} -->
                                         </mat-cell>
                                     </ng-container>
 
@@ -239,7 +239,7 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="TotalQty">
+                                    <ng-container matColumnDef="TotalQty" stickyEnd>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             TotalQty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
