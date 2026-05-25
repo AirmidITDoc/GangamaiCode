@@ -328,7 +328,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
 
     calculateQty() {
-
+        debugger
         if (this.MedicineItemForm.get('Day').value > 0) {
 
             if (this.DoseQtyperday == 0) {
@@ -525,6 +525,30 @@ export class DischargeSummaryComponent implements OnInit {
             return;
         }
 
+
+        if ((this.vDay == "" || this.vDay == "NAN")) {
+            this.toastr.warning('Please select Days..', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        debugger
+       
+
+        const qty = this.MedicineItemForm.get("Qty").value;
+         console.log(qty)
+
+        if (!qty ||
+            qty.toString().trim() === '' ||
+            qty.toString().toLowerCase() === 'nan' ||
+            isNaN(Number(qty))) {
+
+            this.toastr.warning('Please select Dose and Qty..', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
         const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
         if (!iscekDuplicate) {
             this.dsItemList.data = [];
@@ -557,7 +581,7 @@ export class DischargeSummaryComponent implements OnInit {
         this.afternoon = 0
         this.night = 0
 
-       const serviceIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+        const serviceIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
         if (serviceIdElement) {
             serviceIdElement.focus();
         }

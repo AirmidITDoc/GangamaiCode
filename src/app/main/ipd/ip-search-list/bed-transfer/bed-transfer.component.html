@@ -1,20 +1,28 @@
 <div class="modal-wrapper grid-container resize-form-fields padding-fix">
-    <!-- Modal Header -->
+
+    <!-- Modal header -->
     <div class="modal-header accent">
-        <div class="modal-header-content" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Bed Transfer</span>
             </div>
-            <div class="comman-date-container" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                </app-common-date>
-                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                    matTooltip="Close">
-                    <mat-icon>close</mat-icon>
-                </button>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 
     <!-- / HEADER -->
     <div class="modal-body content">
@@ -43,30 +51,25 @@
                             </div>
                         </div>
                     </mat-card>
+                    <div class="section-container">
+                        <div style="font-size: medium;font-weight: bold;color: rgb(3, 70, 99);">
+                            Current Bed Details
+                            <p class="highlight">
+                                {{ data.roomName }} | {{ data.className }}
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="section-container">
-        <div class="section-title">
-            Current Bed Information:
-            <span class="highlight">
-                {{ data.roomName }} | {{ data.className }}
-            </span>
-        </div>
-    </div>
-
     <!-- Modal body -->
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
                     <mat-card fxFlex.gt-sm="100%" fxFlex>
-                        <div class="sales-patient-info-title">
-                            <span style="font-weight: 700;">Bed Transfer</span>
-                        </div>
-                        <hr>
                         <form [formGroup]="Bedtransfer">
                             <div fxlayout="row" fxFlex>
                                 <div fxLayoutGap="4px">
@@ -98,6 +101,7 @@
             </div>
         </div>
     </div>
+
     <!-- FOOTER -->
     <div class="modal-footer" fxLayout="column">
         <div class="modal-card-container">

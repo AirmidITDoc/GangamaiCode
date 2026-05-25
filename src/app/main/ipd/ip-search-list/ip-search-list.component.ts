@@ -383,8 +383,8 @@ export class IPSearchListComponent implements OnInit {
             const that = this;
             const dialogRef = this._matDialog.open(BedTransferComponent,
                 {
-                    maxHeight: '95vh',
-                    width: '95%',
+                    maxHeight: '99vh',
+                    width: '99%',
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {

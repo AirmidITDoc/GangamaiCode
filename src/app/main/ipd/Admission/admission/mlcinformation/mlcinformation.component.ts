@@ -65,6 +65,7 @@ export class MLCInformationComponent implements OnInit {
         this.MlcInfoFormGroup.markAllAsTouched();
 
         if (this.data) {
+            console.log(this.data)
             this.Personaldata = this.data;
             this.AdmissionId = this.Personaldata.admissionId;
             this.EmgId = this.Personaldata.emgId;

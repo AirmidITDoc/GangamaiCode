@@ -15,6 +15,7 @@ import { IPSearchListService } from '../ip-search-list.service';
 import { InitiateDischargeComponent } from './initiate-discharge/initiate-discharge.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaidItemList } from 'app/main/pharmacy/sales-return-bill-settlement/sales-return-bill-settlement.component';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-discharge',
@@ -226,67 +227,90 @@ export class DischargeComponent implements OnInit {
         }
 
         const formattedDate = this.datePipe.transform(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-        this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))
-        this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
-        this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
-        this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-            this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
-        this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-            this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+        // console.log(this.data)
 
-        if (!this.DischargeInsertForm.invalid) {
-            if (this.DischargeInsertForm.get("admission.isDischarged")?.value == 0) {
-                this.DischargeInsertForm.get('discharge.addedBy')?.setValue(this.accountService.currentUserValue.userId);
-                this.DischargeInsertForm.get("admission.isDischarged")?.setValue(1)
-                const insertData = {
-                    "discharge": this.DischargeInsertForm.value.discharge,
-                    "admission": this.DischargeInsertForm.value.admission,
-                    "bed": this.DischargeInsertForm.value.bed
-                };
-                this._IpSearchListService.DichargeInsert(insertData).subscribe((response) => {
-                    this.viewgetDischargeSlipPdf(response)
-                    this._matDialog.closeAll();
-                });
-            }
-            else {
-                this.DischargeInsertForm.get('discharge.modifiedBy')?.setValue(this.accountService.currentUserValue.userId);
-                this.DischargeInsertForm.get('discharge.dischargeId')?.setValue(this.DischargeId);
-                const updateData = {
-                    "discharge": this.DischargeInsertForm.value.discharge,
-                    "admission": this.DischargeInsertForm.value.admission
-                };
-                this._IpSearchListService.DichargeUpdate(updateData).subscribe((response) => {
-                    this.viewgetDischargeSlipPdf(response)
-                    this._matDialog.closeAll();
-                });
-            }
-            this.DischargeInsertForm.reset();
+
+        console.log(this.data.admissionDate)
+
+        console.log(this.dateTimeObj.date)
+
+        debugger
+        if (!this.data.admissionDate || !this.dateTimeObj.date) return null;
+
+        const admissionDt = new Date(this.data.admissionDate);
+        const dischargeDt = new Date(this.dateTimeObj.date);
+
+        console.log(admissionDt, dischargeDt)
+        if (dischargeDt < admissionDt) {
+
+            this.toastr.warning('Please select a Discharge Date after the Admission Date. !', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         } else {
-            const invalidFields = [];
-            if (this.DischargeInsertForm.invalid) {
-                for (const controlName in this.DischargeInsertForm.controls) {
-                    const control = this.DischargeInsertForm.get(controlName);
 
-                    if (control instanceof FormGroup || control instanceof FormArray) {
-                        for (const nestedKey in control.controls) {
-                            if (control.get(nestedKey)?.invalid) {
-                                invalidFields.push(`Nested Data : ${controlName}.${nestedKey}`);
+
+            this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))
+            this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
+            this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
+            this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+                this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+            this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+                this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+
+            if (!this.DischargeInsertForm.invalid) {
+                if (this.DischargeInsertForm.get("admission.isDischarged")?.value == 0) {
+                    this.DischargeInsertForm.get('discharge.addedBy')?.setValue(this.accountService.currentUserValue.userId);
+                    this.DischargeInsertForm.get("admission.isDischarged")?.setValue(1)
+                    const insertData = {
+                        "discharge": this.DischargeInsertForm.value.discharge,
+                        "admission": this.DischargeInsertForm.value.admission,
+                        "bed": this.DischargeInsertForm.value.bed
+                    };
+                    // this._IpSearchListService.DichargeInsert(insertData).subscribe((response) => {
+                    //     this.viewgetDischargeSlipPdf(response)
+                    //     this._matDialog.closeAll();
+                    // });
+                }
+                else {
+                    this.DischargeInsertForm.get('discharge.modifiedBy')?.setValue(this.accountService.currentUserValue.userId);
+                    this.DischargeInsertForm.get('discharge.dischargeId')?.setValue(this.DischargeId);
+                    const updateData = {
+                        "discharge": this.DischargeInsertForm.value.discharge,
+                        "admission": this.DischargeInsertForm.value.admission
+                    };
+                    this._IpSearchListService.DichargeUpdate(updateData).subscribe((response) => {
+                        this.viewgetDischargeSlipPdf(response)
+                        this._matDialog.closeAll();
+                    });
+                }
+                this.DischargeInsertForm.reset();
+            } else {
+                const invalidFields = [];
+                if (this.DischargeInsertForm.invalid) {
+                    for (const controlName in this.DischargeInsertForm.controls) {
+                        const control = this.DischargeInsertForm.get(controlName);
+
+                        if (control instanceof FormGroup || control instanceof FormArray) {
+                            for (const nestedKey in control.controls) {
+                                if (control.get(nestedKey)?.invalid) {
+                                    invalidFields.push(`Nested Data : ${controlName}.${nestedKey}`);
+                                }
                             }
+                        } else if (control?.invalid) {
+                            invalidFields.push(`DischargeInsert Fomr: ${controlName}`);
                         }
-                    } else if (control?.invalid) {
-                        invalidFields.push(`DischargeInsert Fomr: ${controlName}`);
                     }
                 }
-            }
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
-                });
+                if (invalidFields.length > 0) {
+                    invalidFields.forEach(field => {
+                        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                        );
+                    });
+                }
             }
         }
     }
-
     viewgetDischargeSlipPdf(data) {
         this.commonService.Onprint("AdmId", data, "IpDischargeReceipt");
     }
