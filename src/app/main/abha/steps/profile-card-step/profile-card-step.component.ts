@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbhaProfile } from '../../abha-model';
+import { AbhaProfile, AUTH_METHOD_LABELS, GENDER_LABELS } from '../../abha-model';
 import { AbhaService } from '../../abha.service';
 
 
@@ -14,7 +14,12 @@ export class ProfileCardStepComponent implements OnInit {
     profile?: AbhaProfile;
 
     // Fields that are locked (non-editable in HIMS)
-    lockedFields = new Set(['name', 'abhaNumber', 'abhaAddress', 'dob', 'gender']);
+    lockedFields = new Set(['name', 'ABHANumber', 'preferredAbhaAddress', 'dob', 'gender']);
+    // Card-side toggle (front/back)
+    cardSide: 'front' | 'back' = 'front';
+
+    authMethodMeta = AUTH_METHOD_LABELS;
+    genderLabels = GENDER_LABELS;
 
     constructor(private abhaService: AbhaService) { }
 
@@ -23,10 +28,59 @@ export class ProfileCardStepComponent implements OnInit {
             this.profile = r;
         });
     }
-
     isLocked(key: string): boolean {
         return this.lockedFields.has(key);
     }
+    /** DOB in dd-MM-yyyy format (as shown on the official ABHA card). */
+    get formattedDob(): string {
+        if (!this.profile) return '';
+        return `${this.profile.dayOfBirth}-${this.profile.monthOfBirth}-${this.profile.yearOfBirth}`;
+    }
+
+    get genderLabel(): string {
+        if (!this.profile) return '';
+        return this.genderLabels[this.profile.gender] || this.profile.gender;
+    }
+
+    /** Localized gender (e.g. पुरुष / स्त्री) — falls back to "" if not provided */
+    get localizedGender(): string {
+        return this.profile?.localizedDetails?.gender || '';
+    }
+
+    /** Profile photo data URL */
+    get profilePhotoSrc(): string | null {
+        if (!this.profile || !this.profile.profilePhoto) return null;
+        return `data:image/jpeg;base64,${this.profile.profilePhoto}`;
+    }
+
+    get kycPhotoSrc(): string | null {
+        if (!this.profile || !this.profile.kycPhoto) return null;
+        return `data:image/jpeg;base64,${this.profile.kycPhoto}`;
+    }
+
+    /** Status badge color */
+    statusColor(status: string): string {
+        switch (status) {
+            case 'ACTIVE':
+                return 'green';
+            case 'INACTIVE':
+            case 'DEACTIVATED':
+                return 'red';
+            case 'SUSPENDED':
+                return 'orange';
+            default:
+                return 'gray';
+        }
+    }
+
+    setCardSide(side: 'front' | 'back'): void {
+        this.cardSide = side;
+    }
+
+    flipCard(): void {
+        this.cardSide = this.cardSide === 'front' ? 'back' : 'front';
+    }
+
 
     onDownload(): void {
         if (!this.profile) return;
@@ -59,4 +113,10 @@ Pincode:      ${this.profile.pincode}
     onReset(): void {
         this.reset.emit();
     }
+    copyToClipboard(text: string): void {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text);
+        }
+    }
+
 }

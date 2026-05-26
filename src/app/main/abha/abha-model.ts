@@ -186,3 +186,16 @@ export interface LocalizedLabels {
     dob: string;
     mobile: string;
 }
+export const AUTH_METHOD_LABELS: Record<string, { label: string; icon: string }> = {
+  MOBILE_OTP:   { label: 'Mobile OTP',     icon: 'sms' },
+  AADHAAR_OTP:  { label: 'Aadhaar OTP',    icon: 'badge' },
+  AADHAAR_BIO:  { label: 'Aadhaar Bio',    icon: 'fingerprint' },
+  DEMOGRAPHICS: { label: 'Demographics',   icon: 'description' },
+  PASSWORD:     { label: 'Password',       icon: 'lock' }
+};
+
+export const GENDER_LABELS: Record<string, string> = {
+  M: 'Male',
+  F: 'Female',
+  O: 'Other'
+};

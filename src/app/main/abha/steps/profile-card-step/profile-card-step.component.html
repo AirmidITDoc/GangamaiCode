@@ -1,139 +1,503 @@
 <div class="profile-step" *ngIf="profile">
+
     <!-- Success banner -->
     <div class="success-banner">
         <mat-icon class="check-icon">check_circle</mat-icon>
-        <span>
-            ABHA created successfully and tagged with HIMS ID
-            <strong>{{ profile.himsId }}</strong>. Name, DOB, Gender, ABHA Number and
-            ABHA Address are non-editable in HIMS.
-        </span>
+        <div class="banner-text">
+            <strong>ABHA created successfully</strong>
+            <span>
+                Tagged with HIMS ID <span class="mono">{{ profile.himsId }}</span>.
+                Name, DOB, Gender, ABHA Number and ABHA Address are non-editable in HIMS.
+            </span>
+        </div>
+        <div class="banner-actions">
+            <button mat-stroked-button (click)="onPrint()">
+                <mat-icon>print</mat-icon> Print
+            </button>
+            <button mat-raised-button color="primary" (click)="onDownload()">
+                <mat-icon>download</mat-icon> Download
+            </button>
+        </div>
     </div>
 
-    <div class="grid">
-        <!-- LEFT: ABHA Profile -->
-        <mat-card class="profile-card">
-            <mat-card-content>
-                <h3 class="card-title">ABHA Profile</h3>
+    <!-- TWO-PANE LAYOUT -->
+    <div class="two-pane">
 
-                <div class="avatar-row">
-                    <div class="avatar">
-                        <mat-icon>person</mat-icon>
+        <!-- ============== LEFT: FULL API RESPONSE ============== -->
+        <div class="left-pane">
+
+            <!-- Identity summary -->
+            <mat-card class="identity-card">
+                <mat-card-content>
+                    <div class="identity-row">
+                        <div class="avatar-wrap">
+                            <img *ngIf="profilePhotoSrc" [src]="profilePhotoSrc" alt="Profile photo" />
+                            <div *ngIf="!profilePhotoSrc" class="avatar-fallback">
+                                <mat-icon>person</mat-icon>
+                            </div>
+                            <span class="status-dot" [attr.data-color]="statusColor(profile.status)"
+                                [matTooltip]="'Status: ' + profile.status"></span>
+                        </div>
+
+                        <div class="identity-info">
+                            <div class="name-row">
+                                <h2 class="full-name">{{ profile.name }}</h2>
+                                <span class="lock-tag" *ngIf="isLocked('name')">LOCKED</span>
+                            </div>
+                            <p *ngIf="profile.localizedDetails" class="localized-name">
+                                {{ profile.localizedDetails.name }}
+                            </p>
+
+                            <div class="badge-row">
+                                <span class="badge badge-success" *ngIf="profile.kycVerified">
+                                    <mat-icon>verified</mat-icon> KYC Verified
+                                </span>
+                                <span class="badge badge-info">
+                                    <mat-icon>shield</mat-icon> {{ profile.verificationStatus }}
+                                </span>
+                                <span class="badge badge-neutral">
+                                    via {{ profile.verificationType }}
+                                </span>
+                                <span class="badge badge-status" [attr.data-status]="profile.status">
+                                    <span class="dot"></span> {{ profile.status }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="profile-name">{{ profile.name }}</div>
-                        <div class="profile-handle">{{ profile.address }}</div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Section: Identifiers -->
+            <mat-card class="detail-card">
+                <mat-card-content>
+                    <h3 class="section-title">
+                        <mat-icon>fingerprint</mat-icon> Identifiers
+                    </h3>
+                    <div class="kv-list">
+                        <div class="kv-row">
+                            <span class="k">ABHA Number</span>
+                            <span class="v mono">
+                                {{ profile.abhaNumber }}
+                                <button mat-icon-button class="icon-btn" matTooltip="Copy"
+                                    (click)="copyToClipboard(profile.abhaNumber)">
+                                    <mat-icon>content_copy</mat-icon>
+                                </button>
+                                <span class="lock-tag" *ngIf="isLocked('ABHANumber')">LOCKED</span>
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">ABHA Address</span>
+                            <span class="v mono">
+                                {{ profile.preferredAbhaAddress }}
+                                <button mat-icon-button class="icon-btn" matTooltip="Copy"
+                                    (click)="copyToClipboard(profile.preferredAbhaAddress)">
+                                    <mat-icon>content_copy</mat-icon>
+                                </button>
+                                <span class="lock-tag" *ngIf="isLocked('preferredAbhaAddress')">LOCKED</span>
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">HIMS ID</span>
+                            <span class="v mono">{{ profile.himsId }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Created Date</span>
+                            <span class="v mono">{{ profile.createdDate }}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Section: Personal -->
+            <mat-card class="detail-card">
+                <mat-card-content>
+                    <h3 class="section-title">
+                        <mat-icon>person_outline</mat-icon> Personal Information
+                    </h3>
+                    <div class="kv-list">
+                        <div class="kv-row">
+                            <span class="k">First Name</span>
+                            <span class="v">{{ profile.firstName || '—' }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Middle Name</span>
+                            <span class="v">{{ profile.middleName || '—' }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Last Name</span>
+                            <span class="v">{{ profile.lastName || '—' }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Full Name</span>
+                            <span class="v">{{ profile.name }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Date of Birth</span>
+                            <span class="v">
+                                {{ formattedDob }}
+                                <span class="lock-tag" *ngIf="isLocked('dob')">LOCKED</span>
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Day / Month / Year</span>
+                            <span class="v mono">
+                                {{ profile.dayOfBirth }} / {{ profile.monthOfBirth }} / {{ profile.yearOfBirth }}
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Gender</span>
+                            <span class="v">
+                                {{ genderLabel }}
+                                <span class="muted-local" *ngIf="localizedGender">
+                                    ({{ localizedGender }})
+                                </span>
+                                <span class="lock-tag" *ngIf="isLocked('gender')">LOCKED</span>
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Mobile</span>
+                            <span class="v mono">{{ profile.mobile }}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Section: Address -->
+            <mat-card class="detail-card">
+                <mat-card-content>
+                    <h3 class="section-title">
+                        <mat-icon>location_on</mat-icon> Address
+                    </h3>
+                    <div class="kv-list">
+                        <div class="kv-row full">
+                            <span class="k">Full Address</span>
+                            <span class="v">{{ profile.address || '—' }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">State</span>
+                            <span class="v">
+                                {{ profile.stateName }}
+                                <span class="code-chip">{{ profile.stateCode }}</span>
+                                <span class="muted-local" *ngIf="profile.localizedDetails?.stateName">
+                                    ({{ profile.localizedDetails?.stateName }})
+                                </span>
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">District</span>
+                            <span class="v">
+                                {{ profile.districtName }}
+                                <span class="code-chip">{{ profile.districtCode }}</span>
+                                <span class="muted-local" *ngIf="profile.localizedDetails?.districtName">
+                                    ({{ profile.localizedDetails?.districtName }})
+                                </span>
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Subdistrict</span>
+                            <span class="v">{{ profile.subdistrictName || '—' }}</span>
+                        </div>
+                        <div class="kv-row" *ngIf="profile.localizedDetails?.villageName">
+                            <span class="k">Village</span>
+                            <span class="v">{{ profile.localizedDetails?.villageName }}</span>
+                        </div>
+                        <div class="kv-row" *ngIf="profile.localizedDetails?.townName">
+                            <span class="k">Town</span>
+                            <span class="v">{{ profile.localizedDetails?.townName }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Pincode</span>
+                            <span class="v mono">{{ profile.pincode }}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Section: Verification & Status -->
+            <mat-card class="detail-card">
+                <mat-card-content>
+                    <h3 class="section-title">
+                        <mat-icon>verified_user</mat-icon> Verification & Status
+                    </h3>
+                    <div class="kv-list">
+                        <div class="kv-row">
+                            <span class="k">Account Status</span>
+                            <span class="v">
+                                <span class="badge badge-status" [attr.data-status]="profile.status">
+                                    <span class="dot"></span>{{ profile.status }}
+                                </span>
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">KYC Verified</span>
+                            <span class="v">
+                                <mat-icon class="inline-icon ok" *ngIf="profile.kycVerified">check_circle</mat-icon>
+                                <mat-icon class="inline-icon bad" *ngIf="!profile.kycVerified">cancel</mat-icon>
+                                {{ profile.kycVerified ? 'Yes' : 'No' }}
+                            </span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Verification Status</span>
+                            <span class="v">{{ profile.verificationStatus }}</span>
+                        </div>
+                        <div class="kv-row">
+                            <span class="k">Verification Type</span>
+                            <span class="v">{{ profile.verificationType }}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Section: Auth Methods -->
+            <mat-card class="detail-card">
+                <mat-card-content>
+                    <h3 class="section-title">
+                        <mat-icon>key</mat-icon> Available Login Methods
+                    </h3>
+                    <p class="section-helper">
+                        Methods the patient can use to authenticate on the ABDM ecosystem.
+                    </p>
+                    <div class="auth-methods">
+                        <div *ngFor="let m of profile.authMethods" class="auth-chip">
+                            <mat-icon>{{ authMethodMeta[m].icon || 'lock' }}</mat-icon>
+                            <span>{{ authMethodMeta[m].label || m }}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Section: Tags (if any) -->
+            <mat-card class="detail-card" *ngIf="profile.tags && (profile.tags | keyvalue).length > 0">
+                <mat-card-content>
+                    <h3 class="section-title">
+                        <mat-icon>sell</mat-icon> Tags
+                    </h3>
+                    <div class="kv-list">
+                        <div class="kv-row" *ngFor="let entry of profile.tags | keyvalue">
+                            <span class="k">{{ entry.key }}</span>
+                            <span class="v">{{ entry.value }}</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- ============== RIGHT: OFFICIAL ABHA CARD ============== -->
+        <div class="right-pane">
+            <div class="card-controls">
+                <div class="side-switch">
+                    <button type="button" class="side-btn" [class.active]="cardSide === 'front'"
+                        (click)="setCardSide('front')">Front</button>
+                    <button type="button" class="side-btn" [class.active]="cardSide === 'back'"
+                        (click)="setCardSide('back')">Back</button>
+                </div>
+                <button mat-icon-button matTooltip="Flip card" (click)="flipCard()">
+                    <mat-icon>flip</mat-icon>
+                </button>
+            </div>
+
+            <div class="card-stage">
+                <div class="card-flip" [class.show-back]="cardSide === 'back'">
+
+                    <!-- ============ FRONT FACE ============ -->
+                    <div class="abha-card front" id="abha-card-front">
+                        <!-- Blue header bar -->
+                        <div class="card-header">
+                            <div class="emblem-block">
+                                <div class="emblem-mark">
+                                    <div class="emblem-circle"></div>
+                                    <div class="emblem-motto">सत्यमेव जयते</div>
+                                </div>
+                                <div class="nha-text">
+                                    <div class="nha-line-1">national</div>
+                                    <div class="nha-line-2">health</div>
+                                    <div class="nha-line-3">authority</div>
+                                </div>
+                            </div>
+                            <div class="header-title">
+                                <div class="title-en">Ayushman Bharat Health Account (ABHA)</div>
+                                <div class="title-hi">आयुष्मान भारत स्वास्थ्य खाता (आभा)</div>
+                            </div>
+                            <div class="abdm-logo">
+                                <div class="abdm-circle">
+                                    <mat-icon>local_florist</mat-icon>
+                                </div>
+                                <div class="abdm-text">Ayushman Bharat<br />Digital Mission</div>
+                            </div>
+                        </div>
+
+                        <!-- White body -->
+                        <div class="card-body">
+                            <div class="body-left">
+                                <div class="photo-frame">
+                                    <img *ngIf="profilePhotoSrc" [src]="profilePhotoSrc" alt="Photo" />
+                                    <div *ngIf="!profilePhotoSrc" class="photo-fallback">
+                                        <mat-icon>person</mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="body-middle">
+                                <div class="field-group">
+                                    <div class="field-label-row">
+                                        <span class="field-label-en">Name/</span>
+                                        <span class="field-label-local">{{profile.localizedDetails.localizedLabels.name}}</span>
+                                    </div>
+                                    <div class="field-value-en">{{ profile.name }}</div>
+                                    <div class="field-value-local" *ngIf="profile.localizedDetails">
+                                        {{ profile.localizedDetails.name }}
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <div class="field-label-row">
+                                        <span class="field-label-en">Abha Number/</span>
+                                        <span class="field-label-local">{{profile.localizedDetails.localizedLabels.abhaNumber}}</span>
+                                    </div>
+                                    <div class="field-value-en mono large">{{ profile.abhaNumber }}</div>
+                                </div>
+
+                                <div class="field-group">
+                                    <div class="field-label-row">
+                                        <span class="field-label-en">Abha Address/</span>
+                                        <span class="field-label-local">{{profile.localizedDetails.localizedLabels.abhaAddress}}</span>
+                                    </div>
+                                    <div class="field-value-en mono large">{{ profile.preferredAbhaAddress }}</div>
+                                </div>
+                            </div>
+
+                            <div class="body-right">
+                                <div class="qr-frame">
+                                    <div class="qr-pattern">
+                                        <mat-icon>qr_code_2</mat-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom strip -->
+                        <div class="card-bottom">
+                            <div class="bottom-field">
+                                <div class="field-label-row">
+                                    <span class="field-label-en">Gender/</span>
+                                    <span class="field-label-local">{{profile.localizedDetails.localizedLabels.gender}}</span>
+                                </div>
+                                <div class="bottom-value">
+                                    {{ genderLabel }}
+                                    <span *ngIf="localizedGender">/ {{ localizedGender }}</span>
+                                </div>
+                            </div>
+                            <div class="bottom-field">
+                                <div class="field-label-row">
+                                    <span class="field-label-en">Date Of Birth/</span>
+                                    <span class="field-label-local">{{profile.localizedDetails.localizedLabels.dob}}</span>
+                                </div>
+                                <div class="bottom-value mono">{{ formattedDob }}</div>
+                            </div>
+                            <div class="bottom-field">
+                                <div class="field-label-row">
+                                    <span class="field-label-en">Mobile/</span>
+                                    <span class="field-label-local">{{profile.localizedDetails.localizedLabels.mobile}}</span>
+                                </div>
+                                <div class="bottom-value mono">{{ profile.mobile }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============ BACK FACE ============ -->
+                    <div class="abha-card back" id="abha-card-back">
+                        <!-- Blue header bar -->
+                        <div class="card-header">
+                            <div class="emblem-block">
+                                <div class="emblem-mark">
+                                    <div class="emblem-circle"></div>
+                                    <div class="emblem-motto">सत्यमेव जयते</div>
+                                </div>
+                                <div class="nha-text">
+                                    <div class="nha-line-1">national</div>
+                                    <div class="nha-line-2">health</div>
+                                    <div class="nha-line-3">authority</div>
+                                </div>
+                            </div>
+                            <div class="header-title">
+                                <div class="title-en">Ayushman Bharat Health Account (ABHA)</div>
+                                <div class="title-hi">आयुष्मान भारत स्वास्थ्य खाता (आभा)</div>
+                            </div>
+                            <div class="abdm-logo">
+                                <div class="abdm-circle">
+                                    <mat-icon>local_florist</mat-icon>
+                                </div>
+                                <div class="abdm-text">Ayushman Bharat<br />Digital Mission</div>
+                            </div>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="card-back-body">
+                            <div class="back-top-row">
+                                <div class="instr-heading">Instructions</div>
+                                <div class="toll-free">
+                                    Toll-Free Number: <strong>1800 114 477</strong>
+                                </div>
+                            </div>
+
+                            <ul class="instr-list">
+                                <li>
+                                    <span class="instr-en">
+                                        With this ABHA you have become a part of India's digital health ecosystem.
+                                    </span>
+                                    <span class="instr-hi">
+                                        इस आभा के साथ आप भारत के डिजिटल हेल्थ इकोसिस्टम का हिस्सा बन गए हैं।
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="instr-en">
+                                        ABHA provides you a unique identification and helps in storing — safekeeping all
+                                        your digital health
+                                        records at one place.
+                                    </span>
+                                    <span class="instr-hi">
+                                        आभा आपको एक विशिष्ट पहचान प्रदान करता है और आपके सभी डिजिटल स्वास्थ्य रिकॉर्ड को
+                                        सुरक्षित एक ही
+                                        स्थान पर संग्रहीत रखने में मदद करता है।
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="instr-en">
+                                        You can download the ABHA mobile app, Aarogya Setu or other ABDM enabled app to
+                                        view and share your
+                                        digital health records with ABDM registered healthcare service providers.
+                                    </span>
+                                    <span class="instr-hi">
+                                        आप एबीडीएम पंजीकृत स्वास्थ्य सेवा प्रदाताओं के साथ अपने डिजिटल स्वास्थ्य रिकॉर्ड
+                                        देखने और साझा करने
+                                        के लिए आभा मोबाइल ऐप, आरोग्य सेतु या अन्य एबीडीएम सक्षम ऐप डाउनलोड कर सकते हैं।
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="instr-en">
+                                        If this card is lost kindly download it from
+                                        <a href="https://www.abha.abdm.gov.in" target="_blank"
+                                            rel="noopener">www.abha.abdm.gov.in</a>,
+                                        it is digitally acceptable.
+                                    </span>
+                                    <span class="instr-hi">
+                                        यदि यह कार्ड खो जाता है तो कृपया इसे
+                                        <a href="https://www.abha.abdm.gov.in" target="_blank"
+                                            rel="noopener">www.abha.abdm.gov.in</a>
+                                        से डाउनलोड करें, यह डिजिटल रूप से स्वीकार्य है।
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-
-                <div class="info-list">
-                    <div class="info-row">
-                        <span class="info-label">ABHA Number</span>
-                        <span class="info-value">
-                            {{ profile.abhaNumber }}
-                            <span class="lock-tag" *ngIf="isLocked('abhaNumber')">LOCKED</span>
-                        </span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">ABHA Address</span>
-                        <span class="info-value">
-                            {{ profile.address }}
-                            <span class="lock-tag" *ngIf="isLocked('abhaAddress')">LOCKED</span>
-                        </span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Date of Birth</span>
-                        <span class="info-value">
-                            {{ profile.dayOfBirth }}/{{ profile.monthOfBirth }}/{{ profile.yearOfBirth }}
-                            <span class="lock-tag" *ngIf="isLocked('dob')">LOCKED</span>
-                        </span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Gender</span>
-                        <span class="info-value">
-                            {{ profile.gender }}
-                            <span class="lock-tag" *ngIf="isLocked('gender')">LOCKED</span>
-                        </span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Mobile Number</span>
-                        <span class="info-value">{{ profile.mobile }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Address</span>
-                        <span class="info-value">{{ profile.address }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">State</span>
-                        <span class="info-value">{{ profile.stateName }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">District</span>
-                        <span class="info-value">{{ profile.districtName }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Pincode</span>
-                        <span class="info-value">{{ profile.pincode }}</span>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-
-        <!-- RIGHT: ABHA Card -->
-        <mat-card class="abha-card-wrap">
-            <mat-card-content>
-                <div class="card-header">
-                    <h3 class="card-title">ABHA Card</h3>
-                    <button mat-stroked-button (click)="onDownload()" class="download-btn">
-                        <mat-icon>download</mat-icon>
-                        Download
-                    </button>
-                </div>
-
-                <div class="abha-card">
-                    <div class="abha-card-header">
-                        <div class="abha-card-brand">AYUSHMAN BHARAT HEALTH ACCOUNT</div>
-                        <div class="abha-card-avatar">
-                            <mat-icon>person</mat-icon>
-                        </div>
-                    </div>
-                    <div class="abha-card-name"> {{this.profile.name}}</div>
-
-                    <div class="abha-card-grid">
-                        <div>
-                            <div class="abha-card-label">GENDER</div>
-                            <div class="abha-card-val">{{ profile.gender }}</div>
-                        </div>
-                        <div>
-                            <div class="abha-card-label">DOB</div>
-                            <div class="abha-card-val">{{ profile.dayOfBirth }}/{{ profile.monthOfBirth }}/{{
-                                profile.yearOfBirth }}</div>
-                        </div>
-                        <div>
-                            <div class="abha-card-label">ABHA NO.</div>
-                            <div class="abha-card-val">{{ profile.abhaNumber }}</div>
-                        </div>
-                        <div>
-                            <div class="abha-card-label">MOBILE</div>
-                            <div class="abha-card-val">{{ profile.mobile }}</div>
-                        </div>
-                        <div class="full-row">
-                            <div class="abha-card-label">ABHA ADDRESS</div>
-                            <div class="abha-card-val">{{ profile.address }}</div>
-                        </div>
-                    </div>
-
-                    <div class="qr-placeholder">
-                        <mat-icon>qr_code_2</mat-icon>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
+            </div>
+        </div>
     </div>
 
     <div class="reset-row">
         <button mat-stroked-button (click)="onReset()">
-            <mat-icon>refresh</mat-icon>
-            Create another ABHA
+            <mat-icon>refresh</mat-icon> Create another ABHA
         </button>
     </div>
 </div>
