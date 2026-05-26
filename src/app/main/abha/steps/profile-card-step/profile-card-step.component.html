@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <div class="profile-name">{{ profile.name }}</div>
-                        <div class="profile-handle">{{ profile.abhaAddress }}</div>
+                        <div class="profile-handle">{{ profile.address }}</div>
                     </div>
                 </div>
 
@@ -36,14 +36,14 @@
                     <div class="info-row">
                         <span class="info-label">ABHA Address</span>
                         <span class="info-value">
-                            {{ profile.abhaAddress }}
+                            {{ profile.address }}
                             <span class="lock-tag" *ngIf="isLocked('abhaAddress')">LOCKED</span>
                         </span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Date of Birth</span>
                         <span class="info-value">
-                            {{ profile.dob }}
+                            {{ profile.dayOfBirth }}/{{ profile.monthOfBirth }}/{{ profile.yearOfBirth }}
                             <span class="lock-tag" *ngIf="isLocked('dob')">LOCKED</span>
                         </span>
                     </div>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="info-row">
                         <span class="info-label">Mobile Number</span>
-                        <span class="info-value">{{ profile.mobileNumber }}</span>
+                        <span class="info-value">{{ profile.mobile }}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Address</span>
@@ -64,11 +64,11 @@
                     </div>
                     <div class="info-row">
                         <span class="info-label">State</span>
-                        <span class="info-value">{{ profile.state }}</span>
+                        <span class="info-value">{{ profile.stateName }}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">District</span>
-                        <span class="info-value">{{ profile.district }}</span>
+                        <span class="info-value">{{ profile.districtName }}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Pincode</span>
@@ -96,7 +96,7 @@
                             <mat-icon>person</mat-icon>
                         </div>
                     </div>
-                    <div class="abha-card-name">{{ profile.name }}</div>
+                    <div class="abha-card-name"> {{this.profile.name}}</div>
 
                     <div class="abha-card-grid">
                         <div>
@@ -105,7 +105,8 @@
                         </div>
                         <div>
                             <div class="abha-card-label">DOB</div>
-                            <div class="abha-card-val">{{ profile.dob }}</div>
+                            <div class="abha-card-val">{{ profile.dayOfBirth }}/{{ profile.monthOfBirth }}/{{
+                                profile.yearOfBirth }}</div>
                         </div>
                         <div>
                             <div class="abha-card-label">ABHA NO.</div>
@@ -113,11 +114,11 @@
                         </div>
                         <div>
                             <div class="abha-card-label">MOBILE</div>
-                            <div class="abha-card-val">{{ profile.mobileNumber }}</div>
+                            <div class="abha-card-val">{{ profile.mobile }}</div>
                         </div>
                         <div class="full-row">
                             <div class="abha-card-label">ABHA ADDRESS</div>
-                            <div class="abha-card-val">{{ profile.abhaAddress }}</div>
+                            <div class="abha-card-val">{{ profile.address }}</div>
                         </div>
                     </div>
 

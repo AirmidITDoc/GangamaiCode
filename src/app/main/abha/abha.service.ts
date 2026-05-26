@@ -77,7 +77,7 @@ export class AbhaService {
     // ---------------- Profile, QR, Card ----------------
 
     getProfile(token: string): Observable<AbhaProfile> {
-        return this.http.GetData('profile');
+        return this.http.PostData('Abha/aadhaar/profile', { token: token });
     }
 
     /** Returns base64 PNG of the QR code */

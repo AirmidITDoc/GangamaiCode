@@ -4,7 +4,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AbhaService } from '../abha.service';
 import { AbhaValidators } from '../abha.validators';
-import { AadhaarGenerateOtpResponse, CONSENT_ITEMS } from '../abha-model';
+import { AadhaarGenerateOtpResponse, AadhaarVerifyOtpResponse, AbhaProfile, CONSENT_ITEMS } from '../abha-model';
 
 @Component({
     selector: 'app-abha-stepper',
@@ -24,8 +24,11 @@ export class AbhaStepperComponent implements OnInit {
     isAbhaCreated = false;
 
     // Doctor name (logged-in)
-    doctorName = 'Dr. Anita Sharma';
+    // doctorName = 'Dr. Anita Sharma';
     maskedAadhaarMobile = "";
+    isNewAddressDisabled = false;
+    token="";
+
     txnId = '';
     constructor(
         private fb: FormBuilder,
@@ -50,7 +53,8 @@ export class AbhaStepperComponent implements OnInit {
 
         // Step 2
         this.otpForm = this.fb.group({
-            aadhaarOtp: ['', [Validators.required, AbhaValidators.otp]]
+            aadhaarOtp: ['', [Validators.required, AbhaValidators.otp]],
+            mobile: ['', [Validators.required, AbhaValidators.mobile]]
         });
 
         // Step 3
@@ -67,8 +71,7 @@ export class AbhaStepperComponent implements OnInit {
     }
 
     /** Called by Aadhaar step when OTP sent — advance stepper. */
-    onAadhaarOtpSent(r:AadhaarGenerateOtpResponse): void {
-        debugger
+    onAadhaarOtpSent(r: AadhaarGenerateOtpResponse): void {
         this.txnId = r.txnId;
         this.maskedAadhaarMobile = r.message || '';
         this.snack.open('OTP sent to Aadhaar-linked mobile', 'OK', { duration: 2500 });
@@ -78,14 +81,24 @@ export class AbhaStepperComponent implements OnInit {
         //   beneficiaryName: this.aadhaarForm.value.beneficiaryName,
         //   consents: this.aadhaarForm.value.consents
         // });
-       // this.stepper.next();
+        // this.stepper.next();
     }
 
     /** Called by OTP step on verify success. */
-    onOtpVerified(): void {
-
+    onOtpVerified(r: AadhaarVerifyOtpResponse): void {
+        debugger
+        this.txnId = r.txnId;
         //this.abhaService.updateData({ aadhaarOtp: this.otpForm.value.aadhaarOtp });
-        // this.stepper.next();
+        if (r.isNew) {
+            this.isNewAddressDisabled = false;
+            this.stepper.next();
+        }
+        else {
+            this.isAbhaCreated=true;
+            this.isNewAddressDisabled = true;
+            this.token=r.tokens.token;
+            this.stepper.selectedIndex = 2;
+        }
     }
 
     /** Called by Mobile step on next. */

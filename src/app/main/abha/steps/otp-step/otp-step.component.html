@@ -6,7 +6,17 @@
             <div class="info-box">
                 {{maskedAadhaarMobile}}
             </div>
-
+            <!-- Mobile -->
+            <div class="field-block">
+                <label class="field-label">Mobile No:</label>
+                <mat-form-field appearance="outline" class="full-width">
+                    <input matInput formControlName="mobile" placeholder="Mobile No" autocomplete="off" />
+                    <mat-error *ngIf="form.get('mobile')?.errors as e">
+                        <span *ngIf="e['required']">Mobile no is required</span>
+                        <span *ngIf="e['name']">{{ e['name'] }}</span>
+                    </mat-error>
+                </mat-form-field>
+            </div>
             <div class="field-block">
                 <label class="field-label">6-digit OTP</label>
                 <mat-form-field appearance="outline" class="full-width">
@@ -23,7 +33,7 @@
                 </p>
             </div>
 
-            <div class="row-between">
+            <!-- <div class="row-between">
                 <span class="resend-info">
                     Resend attempts remaining: <strong>{{ resendAttemptsRemaining }}/2</strong>
                 </span>
@@ -32,7 +42,7 @@
                     <mat-icon>refresh</mat-icon>
                     Resend OTP
                 </button>
-            </div>
+            </div> -->
 
             <div class="actions">
                 <button type="button" mat-stroked-button (click)="onBack()" class="back-btn">
