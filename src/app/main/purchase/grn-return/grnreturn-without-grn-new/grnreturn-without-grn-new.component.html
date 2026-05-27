@@ -61,7 +61,7 @@
                                 ValueField="ItemId" (onClearSelection)="ItemFromReset()">
                             </airmid-autocomplete>
 
-                            <mat-form-field appearance="outline" fxFlex="8%">
+                            <mat-form-field appearance="outline" fxFlex="7%">
                                 <mat-label>Batch No</mat-label>
                                 <input matInput [(ngModel)]="vBatchNo" name="BatchNo" formControlName="BatchNo"
                                     id="BatchNo" #batchno required readonly>
@@ -79,11 +79,17 @@
                                     type="text" OnlyNumber id="vBalQty" readonly>
                             </mat-form-field>
 
-                            <mat-form-field appearance="outline" fxFlex="5%">
+                            <mat-form-field appearance="outline" fxFlex="4%">
                                 <mat-label>Qty </mat-label>
                                 <input matInput [(ngModel)]="vQty" name="Qty" type="text" OnlyNumber autocomplete="off"
                                     formControlName="Qty" id="Qty" (keyup.enter)="setFocus('addbtn')"
                                     (keyup)="CalculateTotalAmt()">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="5%">
+                                <mat-label>Total Qty </mat-label>
+                                <input matInput [(ngModel)]="vtotalQty" name="totalQty" type="text" OnlyNumber autocomplete="off"
+                                    formControlName="totalQty" id="totalQty"  >
                             </mat-form-field>
 
                             <mat-form-field appearance="outline" fxFlex="6%">
@@ -98,17 +104,17 @@
                                     formControlName="TotalAmount" id="TotalAmount" #PurTotal required readonly>
                             </mat-form-field>
 
-                            <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="8%"
+                            <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="7%"
                                 [formGroup]="_GRNReturnService.NewGRNReturnFrom" [mode]="autocompleteModeGSTTypesValues"
                                 (selectionChange)="getchangegstper($event)"
                                 (onClearSelection)="getchangegstper($event)">
                             </airmid-dropdown>
 
-                            <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="7%"
+                            <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="6%"
                                 [formGroup]="_GRNReturnService.NewGRNReturnFrom" [mode]="autocompleteModeGSTTypesValues"
                                 (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown>
 
-                            <mat-form-field appearance="outline" fxFlex="8%">
+                            <mat-form-field appearance="outline" fxFlex="7%">
                                 <mat-label>GST Amount</mat-label>
                                 <input matInput [(ngModel)]="vGSTAmount" name="GSTAmount" type="text" OnlyNumber
                                     formControlName="GSTAmount" id="GSTAmount" readonly>
