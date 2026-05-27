@@ -89,4 +89,10 @@ export class AbhaService {
     downloadCard(token: string): Observable<Blob> {
         return this.http.GetData('profile/card');
     }
+    addressSuggesions(txnid: string) {
+        return this.http.GetData('Abha/address/suggestions/' + txnid);
+    }
+    createAbha(data) {
+        return this.http.PostData('Abha/address/create', data);
+    }
 }

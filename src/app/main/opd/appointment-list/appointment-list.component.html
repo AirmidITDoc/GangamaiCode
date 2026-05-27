@@ -14,9 +14,11 @@
             </button>
             <button mat-raised-button (click)="onAppointmentwithBill($event)" *ngIf="IsAdd">+ Add Bill
             </button>
-  <!-- <button mat-raised-button (click)="onAppointmentwithbill()" *ngIf="IsAdd">+ Add AppointmentBill
+            <!-- <button mat-raised-button (click)="onAppointmentwithbill()" *ngIf="IsAdd">+ Add AppointmentBill
             </button>-->
-        </div> 
+            <button mat-raised-button routerLink="/abha">Create ABHA
+            </button>
+        </div>
 
 
     </div>
@@ -116,7 +118,7 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
                 <!-- style=" border: black 1px solid;" -->
-                 <!-- *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " -->
+                <!-- *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " -->
                 <mat-icon *ngIf="element.mPbillNo!='0'" matTooltip="Bill Generated"
                     class="pill red-600 s-16">circle</mat-icon>
                 <mat-icon *ngIf="element.mPbillNo=='0' " matTooltip="Did not Generated Bill"
@@ -344,9 +346,10 @@
             (mouseleave)="clearSelection()">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
-                    
+
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" (dateChange)="GetAppointdetail()"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        (dateChange)="GetAppointdetail()"
                         [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
                     <!-- (dateChange)="onChangeFirst1($event)" -->
 

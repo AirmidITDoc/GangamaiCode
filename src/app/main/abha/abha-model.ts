@@ -106,7 +106,8 @@ export interface AbhaProfile {
     firstName: string;
     middleName: string;
     lastName: string;
-    name:string;
+    name: string;
+    phrAddress: string[];
     yearOfBirth: string;
     dayOfBirth: string;
     monthOfBirth: string;
@@ -187,15 +188,15 @@ export interface LocalizedLabels {
     mobile: string;
 }
 export const AUTH_METHOD_LABELS: Record<string, { label: string; icon: string }> = {
-  MOBILE_OTP:   { label: 'Mobile OTP',     icon: 'sms' },
-  AADHAAR_OTP:  { label: 'Aadhaar OTP',    icon: 'badge' },
-  AADHAAR_BIO:  { label: 'Aadhaar Bio',    icon: 'fingerprint' },
-  DEMOGRAPHICS: { label: 'Demographics',   icon: 'description' },
-  PASSWORD:     { label: 'Password',       icon: 'lock' }
+    MOBILE_OTP: { label: 'Mobile OTP', icon: 'sms' },
+    AADHAAR_OTP: { label: 'Aadhaar OTP', icon: 'badge' },
+    AADHAAR_BIO: { label: 'Aadhaar Bio', icon: 'fingerprint' },
+    DEMOGRAPHICS: { label: 'Demographics', icon: 'description' },
+    PASSWORD: { label: 'Password', icon: 'lock' }
 };
 
 export const GENDER_LABELS: Record<string, string> = {
-  M: 'Male',
-  F: 'Female',
-  O: 'Other'
+    M: 'Male',
+    F: 'Female',
+    O: 'Other'
 };
