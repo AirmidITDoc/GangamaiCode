@@ -59,7 +59,8 @@ export class GRNReturnWithoutGRNService {
             IGST: [''],
             GSTAmount: [''],
             NetAmount: [''],
-            ReturnType:['']
+            ReturnType:[''],
+            totalQty:[0]
         });
     }
     CreateFinalForm() {

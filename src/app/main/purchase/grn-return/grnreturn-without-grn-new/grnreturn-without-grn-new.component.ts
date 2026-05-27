@@ -303,6 +303,7 @@ debugger
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log(result);
+            debugger
             result = result.selectedData
             this.vBatchNo = result.batchNo;
             this.vExpDates = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
@@ -319,7 +320,7 @@ debugger
             this.vNetAmount = 0;
             this.vUnitMRP = result.unitMRP;
             this.vStockId = result.stockId;
-            this.vConversionFactor = (result.converFactor === '%') ? 1 : result.converFactor; //becasue i am getting % from list but during insert it ask number
+            this.vConversionFactor = result.conversionFactor ||  result.converFactor || 1 // (result.conversionFactor === '%') ? 1 : result.converFactor; //becasue i am getting % from list but during insert it ask number
             this.vPurchaseRate = result.purchaseRate;
 
             if ((result?.cgstPer ?? 0) > 0) {
@@ -445,7 +446,7 @@ debugger
                 netAmount: this.vNetAmount || 0,
                 balanceQty: (parseFloat(this.vBalQty) - parseFloat(this.vQty)),
                 stkId: this.vStockId || 0,
-                totalQty: (this.vQty || 0)*(this.vConversionFactor || 1)
+                totalQty:  this.vtotalQty
             };
 
             //  Append to MatTableDataSource safely
@@ -482,6 +483,7 @@ debugger
         this.vSGST = 0;
         this.vIGST = 0;
         this.vGST = 0;
+        this.vtotalQty =0;
         this.vGSTAmount = 0;
         this.vNetAmount = 0;
         this._GRNReturnService.NewGRNReturnFrom.get('CGST').reset();
@@ -579,23 +581,26 @@ debugger
             this.getGSTTotalAmt(this.dsItemList.data)
         });
     }
-
+vtotalQty:any=0;
     CalculateTotalAmt() {
-        
+        debugger
         const qty = Number(this.vQty) || 0;
         const balQty = Number(this.vBalQty) || 0;
         const landedRate = Number(this.vLandedRate) || 0;
         const gstPercent = Number(this.vGST) || 0;
-
-        if (qty > 0 && balQty >= qty) {
+        const conversionFactor = Number(this.vConversionFactor) || 1;
+        const totalqty =  qty * conversionFactor  || 0
+        this.vtotalQty = totalqty;
+        if (qty > 0 && balQty >= totalqty) { 
             this.vTotalAmount = Number((qty * landedRate).toFixed(2));
             this.vNetAmount = this.vTotalAmount;
         } else {
             this.vQty = '';
+            this.vtotalQty = '';
             this.vTotalAmount = 0;
             this.vGSTAmount = 0;
             this.vNetAmount = 0;
-            this.toastr.warning('Please enter Qty less than BalQty', 'Warning !', {
+            this.toastr.warning('Please check Total qty cannot be greater than BalQty', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return; // stop here if invalid
@@ -897,7 +902,7 @@ debugger
         this.dsTempItemNameList.data = [];
         this._GRNReturnService.NewGRNReturnFrom.reset();
         this._GRNReturnService.ReturnFinalForm.reset();
-        this._matDialog.closeAll();
+        this._matDialog.closeAll(); 
     }
 
     onClose() {
