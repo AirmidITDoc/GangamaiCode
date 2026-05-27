@@ -111,7 +111,7 @@
                                             [min]="0">
                                         </airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="FreeQty" formControlName="FreeQty"
+                                        <airmid-textbox fxFlex="4%" label="FreeQty" formControlName="FreeQty"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
                                             [validations]="getValidationMessages().FreeQty" [maxLength]="10" [min]="0">
                                         </airmid-textbox>
@@ -125,9 +125,10 @@
 
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
                                             [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
-                                            type="number" (valueChange)="OnchekPurchaserateValidation()"
+                                            type="number" (change)="OnchekPurchaserateValidation(userFormGroup.get('Rate')?.value)"
                                             [validations]="getValidationMessages().rate" [min]="0"
-                                            (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
+                                           ></airmid-textbox>
+                                           <!--  (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)" -->
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
@@ -159,10 +160,9 @@
 
                                         <airmid-textbox fxFlex="5%" label="Specification"
                                             formControlName="Specification" [formGroup]="userFormGroup"
-                                            [readonly]="true"></airmid-textbox>
+                                            [readonly]="true"></airmid-textbox> 
 
-
-                                        <airmid-textbox fxFlex="4%" label="Def Rate" formControlName="DefRate"
+                                             <airmid-textbox fxFlex="4%" label="Def Rate" formControlName="DefRate"
                                             [(ngModel)]="vDefRate" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
 
@@ -170,7 +170,7 @@
                                         <div
                                             [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
                                             <button type="button" class="btn btn-primary btn-with-icon py-8"
-                                                (click)="onAdd()" #addbutton id="btnAdd">
+                                                (click)="onAdd()" #addbutton id="addButton">
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </div>
@@ -435,7 +435,7 @@
 
                     <mat-accordion>
                         <!-- expanded -->
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="isExpanded">
                             <mat-expansion-panel-header>
                                 <mat-panel-title style="font-size: 15px;">Total Amount Summary </mat-panel-title>
                                 <div class="net-amt-section">

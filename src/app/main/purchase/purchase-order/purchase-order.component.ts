@@ -117,6 +117,7 @@ export class PurchaseOrderComponent implements OnInit {
                 { heading: "Free Qty", key: "freeQty", sort: true, sticky: true, align: 'left', emptySign: 'NA' },
                 { heading: "Total Qty", key: "totalQty", sort: true, sticky: true, align: 'left', emptySign: 'NA' },
                 { heading: "MRP", key: "mrp", sort: true, sticky: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+                { heading: "Define Rate", key: "defRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
                 { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
                 { heading: "DiscPer", key: "discPer", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "DiscAmount", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

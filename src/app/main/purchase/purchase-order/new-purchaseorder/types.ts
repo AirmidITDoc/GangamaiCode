@@ -12,6 +12,7 @@ export interface GRNItemResponseType {
     itemCompanyName: string;
     formattedText: string;
     umoName: string;
+    taxPer: number;
 }
 
 export interface PurchaseFormModel {

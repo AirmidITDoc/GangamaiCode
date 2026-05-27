@@ -324,6 +324,18 @@ export class OpPaymentVimalComponent implements OnInit {
             this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
             this.DepartmentName = this.advanceData.DepartmentName;
         }
+         if (this.data.FromName == "IP-IntrimBIll") {
+            this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+            this.amount1 = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
+            this.PatientName = this.advanceData.PatientName;
+            this.RegNo = this.advanceData.RegNo;
+            this.DoctorName = this.advanceData.DoctorName;
+            this.CompanyName = this.advanceData.CompanyName;
+            this.Date = this.advanceData.Date;
+            this.Age = this.advanceData.Age;
+            this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
+            this.DepartmentName = this.advanceData.DepartmentName;
+        }
         this.getAdvcanceDetails(false);
     }
 
@@ -537,6 +549,41 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
             this.Paymentobj['wfAmount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
         }
+        else if (this.data.FromName == "IP-IntrimBIll") {
+            transactionType = 0
+            this.Paymentobj['billNo'] = 0;
+            this.Paymentobj['receiptNo'] = '0';
+            this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
+            this.Paymentobj['paymentTime'] = this.dateTimeObj.time; // this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+            this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
+            this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
+            this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.RefNo ?? "0";
+            this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.BankName ?? "";
+            this.Paymentobj['chequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
+            this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
+            this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.RefNo ?? "0";
+            this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.BankName ?? "";
+            this.Paymentobj['cardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
+            this.Paymentobj['advanceUsedAmount'] = this.advanceUsedAmt || 0;
+            this.Paymentobj['advanceId'] = this.AdvanceId || 0;
+            this.Paymentobj['refundId'] = 0;
+            this.Paymentobj['transactionType'] = 0;   
+            this.Paymentobj['remark'] = '';
+            this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
+            this.Paymentobj['isCancelled'] = false;
+            this.Paymentobj['isCancelledBy'] = 0;
+            this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
+            this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
+            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.RefNo ?? "0";
+            this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.BankName ?? "";
+            this.Paymentobj['neftdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
+            this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
+            this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
+            this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
+            this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0;
+            this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0;
+        }
         this.Payments.data.forEach(element => {
             this.ModePaymentObj.push({
                 paymentId: 0,
@@ -572,7 +619,7 @@ export class OpPaymentVimalComponent implements OnInit {
             ipModePaymentInsert: this.ModePaymentObj
         };
         let IsSubmit
-        if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill") {
+        if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill" || this.data.FromName == "IP-IntrimBIll") {
             const Advancesarr = [];
             this.dataSource.data.forEach((element) => {
                 const Advanceobj = {};
@@ -662,17 +709,19 @@ export class OpPaymentVimalComponent implements OnInit {
                     this.setPaidAmount();
                     this.GetBalanceAmt();
                 });
+            } else if(this.data.FromName == "IP-IntrimBIll"){
+                 this.IsAdv = false;
             } else {
                 this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
                     this.dataSource.data = response.data;
-                    //this.IsAdv = true
+                    //this.IsAdv = true 
                     this.IsAdv = this.dataSource.data && this.dataSource.data.length > 0;
                     this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
                     this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
-                    this.GetBalanceAmt();
-                });
+                    this.GetBalanceAmt(); 
+                }); 
             }
         }, 500);
     }

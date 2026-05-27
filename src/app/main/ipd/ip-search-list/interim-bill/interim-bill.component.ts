@@ -17,6 +17,7 @@ import { interval, Subscription, switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 
 @Component({
     selector: 'app-interim-bill',
@@ -155,7 +156,7 @@ export class InterimBillComponent implements OnInit {
                 totalAdvanceAmount: [this.selectedAdvanceObj?.AdvTotalAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 concessionReasonId: [this.concessionId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                isSettled: false,
+                isSettled: true,
                 isPrinted: true,
                 isFree: true,
                 companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -208,10 +209,25 @@ export class InterimBillComponent implements OnInit {
                 unitId: [this.accountService.currentUserValue.user.unitId],
                 wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             }),
+            advancesHeaderupdate: this.formBuilder.group({
+                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            }),
+              // Advance details update in array
+            advancesupdate: this.formBuilder.array([]),
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([])
         });
-    }
+    } 
+        // IP Adv UP
+        createAdvanceUpdate(item: any): FormGroup {
+            return this.formBuilder.group({
+                advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            });
+        }
     createBillDetails(item: any): FormGroup {
         return this.formBuilder.group({
             billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -252,6 +268,9 @@ export class InterimBillComponent implements OnInit {
     }
     get ModeOfPaymentsArray(): FormArray {
         return this.IPInterimBillForm.get('tPayments') as FormArray;
+    }
+    get AdvacnedetUpdateArray(): FormArray {
+        return this.IPInterimBillForm.get('advancesupdate') as FormArray;
     }
     getNetAmtSum() {
         this.FinalNetAmt = this.interimArray.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
@@ -499,35 +518,71 @@ export class InterimBillComponent implements OnInit {
                 PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj?.companyName || '';
                 PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName || '';
                 PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId || '';
+                PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj?.ipdno || '';
+                PatientHeaderObj['BillNo'] = 0;
                 PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear || '';
                 PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value) || 0,
                     PatientHeaderObj['TransactionLabel'] = 'IP_INTERIM_BILL',
                     PatientHeaderObj['CashCounterId'] = this.InterimFooterForm.get('CashCounterID').value || 0
-                const dialogRef = this._matDialog.open(OpPaymentComponent,
-                    {
-                        maxWidth: "80vw",
-                        height: '750px',
-                        width: '80%',
-                        data: {
-                            vPatientHeaderObj: PatientHeaderObj,
-                            FromName: "IP-IntrimBIll",
-                            advanceObj: PatientHeaderObj,
-                        }
-                    });
+ 
+                //   const dialogRef = this._matDialog.open(OpPaymentComponent,
+                //     {
+                //         maxWidth: "80vw",
+                //         height: '750px',
+                //         width: '80%',
+                //         data: {
+                //             vPatientHeaderObj: PatientHeaderObj,
+                //             FromName: "IP-IntrimBIll",
+                //             advanceObj: PatientHeaderObj,
+                //         }
+                //     });  
+                                    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
+                                        {
+                                            maxWidth: "80vw",
+                                            height: '750px',
+                                            width: '80%',
+                                            data: {
+                                                vPatientHeaderObj: PatientHeaderObj,
+                                                FromName: "IP-IntrimBIll",
+                                                advanceObj: PatientHeaderObj
+                                            }
+                                        });
                 dialogRef.afterClosed().subscribe(result => {
                     console.log(result.submitDataPay.ipPaymentInsert)
-                    this.IPInterimBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
-                    this.ModeOfPaymentsArray.clear();
-                    result.submitDataPay.ipModePaymentInsert.forEach(item => {
-                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-                    });
+                    debugger
+                    if (result && result.IsSubmitFlag) {
+                        let UpdateAdvanceDetailarr1 = [];
+                        UpdateAdvanceDetailarr1 = result?.submitDataAdvancePay || [];
+                        this.IPInterimBillForm.get('ipBillling.paidAmt')?.setValue(result?.PaidAmt ?? 0) 
+                        if (UpdateAdvanceDetailarr1.length > 0) {
+                            let AdvanceBalAmt = 0;
+                            let AdvanceUsedAmt = 0;
+                            UpdateAdvanceDetailarr1.forEach(element => {
+                                this.IPInterimBillForm.get('advancesHeaderupdate.advanceId')?.setValue(element.AdvanceId)
+                                debugger
+                                AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+                                AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+                                this.IPInterimBillForm.get('advancesHeaderupdate.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+                                this.IPInterimBillForm.get('advancesHeaderupdate.balanceAmount')?.setValue(AdvanceBalAmt)
 
-                    console.log("form values", this.IPInterimBillForm.value)
-                    this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
-                        this.viewgetInterimBillReportPdf(response);
-                        this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
-                        this.onClose()
-                    });
+                            }) 
+                            this.AdvacnedetUpdateArray.clear();
+                            UpdateAdvanceDetailarr1.forEach(item => {
+                                this.AdvacnedetUpdateArray.push(this.createAdvanceUpdate(item));
+                            });
+                        } 
+                        this.IPInterimBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
+                        this.ModeOfPaymentsArray.clear();
+                        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                        }); 
+                        console.log("form values", this.IPInterimBillForm.value)
+                        this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
+                            this.viewgetInterimBillReportPdf(response);
+                            this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
+                            this.onClose()
+                        });
+                    }
                 });
             }
             else if (this.InterimFooterForm.get('paymode')?.value === 'Mpesa') {

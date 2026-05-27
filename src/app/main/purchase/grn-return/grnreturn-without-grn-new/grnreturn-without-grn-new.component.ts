@@ -38,7 +38,7 @@ export class GrnreturnWithoutGrnNewComponent {
         'ConversionFactor',
         'ExpDate',
         'BalQty',
-        'receiveQty',
+        //'receiveQty',
         'Qty',
         'LandedRate',
         'TotalAmount',
@@ -237,7 +237,7 @@ debugger
             stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cf: [element.conversion || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             totalQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            grnid: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            grnid: [element?.grnId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
         });
     }
@@ -444,7 +444,8 @@ debugger
                 gstAmount: this.vGSTAmount || 0,
                 netAmount: this.vNetAmount || 0,
                 balanceQty: (parseFloat(this.vBalQty) - parseFloat(this.vQty)),
-                stkId: this.vStockId || 0
+                stkId: this.vStockId || 0,
+                totalQty: (this.vQty || 0)*(this.vConversionFactor || 1)
             };
 
             //  Append to MatTableDataSource safely
@@ -684,6 +685,7 @@ debugger
             gstPercentage: rowData.vatPercentage,
             gstAmount: rowData.vatAmount,
             returnQty:0,
+            totalQty:0,
             grnId: 0,  //rowData.grnid || 0,
 
             //  itemId: element.itemId || 0,

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -47,6 +47,7 @@ export class NewPurchaseorderComponent {
     sIsLoading: string = '';
     screenFromString = 'Common-form';
     UmoId = 0
+    isExpanded = false;
     Umoname: any;
     ItemID: any = "0";
     vDefRate: any = 0;
@@ -522,6 +523,7 @@ export class NewPurchaseorderComponent {
                 });
                 console.log(newItem)
                 this.lastsupplierflag = false;
+                 this.isExpanded = false;
                 this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
                 this.updatePurchaseFinalForm();
             }
@@ -536,10 +538,10 @@ export class NewPurchaseorderComponent {
             itemNameElement.focus();
         }
         this.resetFormItem();
-        this.userFormGroup.get('CGST').reset();
-        this.userFormGroup.get('CGST').enable();
-        this.userFormGroup.get('IGST').reset();
-        this.userFormGroup.get('IGST').enable();
+        this.userFormGroup.get('CGSTPer').reset();
+        this.userFormGroup.get('CGSTPer').enable();
+        this.userFormGroup.get('IGSTPer').reset();
+        this.userFormGroup.get('IGSTPer').enable();
     }
 
     deleteTableRow(row: ItemNameList) {
@@ -793,30 +795,53 @@ debugger
     }
 
     getSelectedItem(item: GRNItemResponseType): void {
+        debugger
         console.log(item)
         this.lastsupplierflag = true
+         this.isExpanded = true;
         this.ItemID = item.itemId
         this.UmoId = item.umoId
         this.Umoname = item.umoName
 
         this.userFormGroup.patchValue({
-            // UOMId: item.umoId,
+            // UOMId: item.umoId, 
             UOMId: item.umoName,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             Qty: '',// item.balanceQty,
-            CGSTPer: item.cgstPer,
-            SGSTPer: item.sgstPer,
-            IGSTPer: item.igstPer,
-            GST: item.cgstPer + item.sgstPer + item.igstPer,
             HSNcode: item.hsNcode || '0'
-        });
+        }); 
+
+        if (((item?.cgstPer ?? 0) || 0) > 0) {
+            this.userFormGroup.patchValue({
+                CGSTPer: item?.taxPer,
+                SGSTPer: item?.sgstPer,
+                IGSTPer: 0,
+                GST: item?.taxPer
+            })
+            this.userFormGroup.get('CGSTPer').enable();
+            this.userFormGroup.get('IGSTPer').reset();
+            this.userFormGroup.get('IGSTPer').clearValidators();
+            this.userFormGroup.get('IGSTPer').updateValueAndValidity();
+            this.userFormGroup.get('IGSTPer').disable(); 
+        } else {
+            this.userFormGroup.patchValue({
+                CGSTPer: 0,
+                SGSTPer: 0,
+                IGSTPer: item?.taxPer,
+                GST: item?.taxPer
+            })
+            this.userFormGroup.get('IGSTPer').enable();
+            this.userFormGroup.get('CGSTPer').reset();
+            this.userFormGroup.get('CGSTPer').clearValidators();
+            this.userFormGroup.get('CGSTPer').updateValueAndValidity();
+            this.userFormGroup.get('CGSTPer').disable(); 
+        }  
         this.getLastThreeItemInfo();
+        this.getSupplierRate();
         const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
         if (QtyElement) {
             QtyElement.focus();
-        }
-        this.getSupplierRate();
-
+        } 
         setTimeout(() => {
             const nativeElement = this.qtyTextboxRef?.nativeElement;
             if (nativeElement) {
@@ -982,8 +1007,7 @@ debugger
 
     //new 
 
-    selectChangeStore(obj: any) {
-        debugger
+    selectChangeStore(obj: any) { 
         console.log("Store:", obj);
         this.vstoreId = obj.value || 0
         this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
@@ -1024,7 +1048,25 @@ debugger
         }
 
     }
+    @ViewChild('addbutton') addbutton!: ElementRef<HTMLButtonElement>;
+    @HostListener('document:keydown.enter', ['$event'])
+    handleEnterKey(event: KeyboardEvent) {
+        const activeElement = document.activeElement as HTMLElement; 
+ debugger
+        // Only act if focus is inside the CGST dropdown
+      if (activeElement && activeElement.closest('airmid-dropdown')) {
+            const cgstValue = this.userFormGroup.get('CGSTPer')?.value;
+            const igstValue = this.userFormGroup.get('IGSTPer')?.value;
 
+            // If CGST already has a value, trigger the add button
+            if (cgstValue || igstValue) {
+                event.preventDefault(); // prevent default behavior if needed
+                this.addbutton?.nativeElement.focus();
+                // this.addButton?.nativeElement.click();
+            }
+            // Otherwise let selectionChange happen and set the value normally
+        }
+    }
 
     getchangegstper(rate: any): void {
 
@@ -1037,17 +1079,16 @@ debugger
             this.userFormGroup.get('IGSTPer').reset();
             this.userFormGroup.get('IGSTPer').clearValidators();
             this.userFormGroup.get('IGSTPer').updateValueAndValidity();
-            this.userFormGroup.get('IGSTPer').disable();
-            const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
-            if (addbuttonElement) {
-                addbuttonElement.focus();
-            }
+            this.userFormGroup.get('IGSTPer').disable(); 
         } else {
-            this.userFormGroup.get('IGSTPer').reset();
+            this.userFormGroup.get('CGSTPer').reset(0);
+            this.userFormGroup.get('SGSTPer').reset(0);
             this.userFormGroup.get('IGSTPer').enable();
+            this.userFormGroup.get('IGSTPer').reset();
         }
         this.calculateTotalamt();
-    }
+    } 
+
     getchangeIgstper(rate: any): void {
 
         if (Number(rate?.text) > 0) {
@@ -1062,14 +1103,12 @@ debugger
             this.userFormGroup.get('CGSTPer').updateValueAndValidity();
             this.userFormGroup.get('CGSTPer').disable();
         } else {
+            this.userFormGroup.get('IGSTPer').reset(0);
             this.userFormGroup.get('CGSTPer').reset();
             this.userFormGroup.get('CGSTPer').enable();
         }
         this.calculateTotalamt();
-    }
-
-
-
+    } 
     resetForm() {
         this.userFormGroup.reset();
         this.dsItemNameList.data = [];
@@ -1118,6 +1157,7 @@ debugger
             DefRate: 0
         });
         this.lastsupplierflag = false;
+         this.isExpanded = false;
         this.userFormGroup.markAsUntouched();
     }
     selectChangeSupplier(supplier: any): void {
@@ -1174,7 +1214,8 @@ debugger
         });
     }
     // Check Invice is already exist or not 
-    chkpreviouserates(rate) {
+   chkpreviouserates(rate) {
+    debugger
         const enteredRate = rate;
         const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
 
@@ -1194,8 +1235,7 @@ debugger
                 timer: 4000,
                 timerProgressBar: true
             });
-        }
-
+        } 
     }
     // Retreving Item Details Edit Time
     getOldPurchaseOrder(Id) {
@@ -1246,17 +1286,58 @@ debugger
         console.log(this.dsItemNameList)
     }
     // Defined Rate Validation
-    OnchekPurchaserateValidation() {
+   OnchekPurchaserateValidation(rate) {
+        debugger
+        const enteredRate = rate;
         if (this.vDefRate > 0) {
             if (parseFloat(this.userFormGroup.get("Rate").value) > parseFloat(this.vDefRate)) {
-                Swal.fire("Please Check defined Supplier Rate for product ...!!!");
-                this.vRate = 0
-            } else { this.calculateTotalamt(); }
+                //Swal.fire("Please Check defined Supplier Rate for product ...!!!"); 
+              this.vRate = 0 
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Defined Rate Warning',
+                    html: ` <p>  ⚠️ The entered rate
+                <strong>(${this.userFormGroup.get("Rate").value})</strong>
+                is greater than your defined rate <strong>(${this.vDefRate})</strong>. </p>
+                <p>Please verify before saving.</p><hr> `,
+                    iconColor: '#ff5722',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#ff5722',
+                    background: '#fff3e0',
+                    color: '#bf360c',
+                    timer: 4000,
+                    timerProgressBar: true
+                });   
+        setTimeout(() => {
+        const RateElement = document.querySelector(`[name='Rate']`) as HTMLElement;
+        if (RateElement) {
+            RateElement.focus();
+        } 
+        }, 1000);
+        }else { this.calculateTotalamt(); }
         } else if (this.vDefRate == 0) {
             if (this.userFormGroup.get("Rate").value) {
                 this.calculateTotalamt();
             }
-        }
+        } 
+
+        // Check if rate matches any of last three
+        // const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
+        // const isRateSame = lastRates.includes(enteredRate); 
+        // if (!isRateSame && (Number(enteredRate) > 0)) {
+        //   await  Swal.fire({
+        //         icon: 'warning',
+        //         title: 'Price Verification Required',
+        //         html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
+        //           <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
+        //           <hr>  `,
+        //         confirmButtonText: 'OK',
+        //         confirmButtonColor: '#f39c12',
+        //         background: '#fff',
+        //         timer: 4000,
+        //         timerProgressBar: true
+        //     });
+        // }  
     }
     supplierRateList: any = [];
     getSupplierRate() {
