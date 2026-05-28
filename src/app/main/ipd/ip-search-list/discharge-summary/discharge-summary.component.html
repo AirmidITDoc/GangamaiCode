@@ -515,7 +515,7 @@
                             (selectionChange)="getSelectedDoseObj($event)" TextField="doseName"
                             ValueField="doseId"></airmid-autocomplete>
 
-
+<!-- (valueChange)="calculateQty()" -->
                           <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [type]="'text'" fxFlex="15%"
                             (keypress)="keyPressCharater($event)" [formGroup]="MedicineItemForm" (valueChange)="calculateQty()"></airmid-textbox>
 

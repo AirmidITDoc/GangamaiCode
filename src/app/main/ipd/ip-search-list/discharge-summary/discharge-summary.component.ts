@@ -338,7 +338,7 @@ export class DischargeSummaryComponent implements OnInit {
                 console.log(this.TotQty)
             } else {
                 let days = parseInt(this.MedicineItemForm.get('Day').value)
-                let qty = parseInt(this.MedicineItemForm.get('Qty').value)
+                let qty = this.Finalqty// parseInt(this.MedicineItemForm.get('Qty').value)
 
                 // this.TotQty = days * parseFloat(this.morning) + days * parseFloat(this.afternoon) + days * parseFloat(this.night)
                 this.TotQty = days * qty
@@ -366,6 +366,7 @@ export class DischargeSummaryComponent implements OnInit {
 
     DoseQtyperday = 0
     Perdayqty = 0
+    Finalqty = 1
     // getSelectedDoseObj(obj) {
     //     console.log(obj)
     //     this.DoseQtyperday = obj.doseQtyPerDay
@@ -424,6 +425,7 @@ export class DischargeSummaryComponent implements OnInit {
         if (this.DoseQtyperday == 0) {
             this.TotQty = 1
             this.Perdayqty = 1
+
             let days = this.MedicineItemForm.get('Day').value
 
             this.TotQty = Math.round(days * this.TotQty)
@@ -434,21 +436,14 @@ export class DischargeSummaryComponent implements OnInit {
             let days = this.MedicineItemForm.get('Day').value
             let qty = this.MedicineItemForm.get('Qty').value
 
-
-            // const parts = this.doseName.split('-');
-
             const parts = this.doseName
                 .split('-')
                 .map(part => part.trim().replace(/\s+/g, ''));
 
             // Fetch value with '/' sign
             const fractionValue = parts.find(part => part.includes('/'));
-
             console.log(fractionValue);
-
-
             console.log(parts)
-
 
             const total = parts.reduce((sum, val) => {
                 if (val.includes('/')) {
@@ -464,7 +459,7 @@ export class DischargeSummaryComponent implements OnInit {
             debugger
             this.TotQty = days * (this.Perdayqty)
             this.TotQty = Math.round(this.TotQty)
-
+            this.Finalqty = this.Perdayqty
             console.log(this.Perdayqty)
             console.log(this.TotQty)
         }
@@ -533,10 +528,10 @@ export class DischargeSummaryComponent implements OnInit {
             return;
         }
         debugger
-       
+
 
         const qty = this.MedicineItemForm.get("Qty").value;
-         console.log(qty)
+        console.log(qty)
 
         if (!qty ||
             qty.toString().trim() === '' ||
