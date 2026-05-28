@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from "rxjs";
-import { map, catchError  } from "rxjs/operators";
+import { map, catchError } from "rxjs/operators";
 import Swal from "sweetalert2";
 import { apiResponse } from "../models/apiResponse";
 import { AppConfigService } from "./api-config.service";
@@ -242,5 +242,7 @@ export class ApiCaller {
             link.remove();
         }, 100);
     }
-
+    GetImage(url: String, data: any): Observable<ArrayBuffer> {
+        return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, data, { responseType: 'arraybuffer' });
+    }
 }

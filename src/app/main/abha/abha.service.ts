@@ -81,13 +81,13 @@ export class AbhaService {
     }
 
     /** Returns base64 PNG of the QR code */
-    getQr(token: string): Observable<{ qr: string }> {
-        return this.http.GetData('profile/qr');
+    getQr(token: string): Observable<string> {
+        return this.http.PostData('Abha/aadhaar/qr', { token: token });
     }
 
     /** Returns a PDF blob of the ABHA card */
     downloadCard(token: string): Observable<Blob> {
-        return this.http.GetData('profile/card');
+        return this.http.downloadFile('Abha/aadhaar/card', { token: token }, 1, "abha.pdf", true);
     }
     addressSuggesions(txnid: string) {
         return this.http.GetData('Abha/address/suggestions/' + txnid);
