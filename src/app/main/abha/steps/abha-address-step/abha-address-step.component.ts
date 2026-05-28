@@ -13,11 +13,10 @@ import { AbhaValidators } from '../../abha.validators';
 export class AbhaAddressStepComponent implements OnInit {
     @Input() form!: FormGroup;
     @Input() beneficiaryName: string = '';
-    @Output() create = new EventEmitter<void>();
+    @Output() create = new EventEmitter<string>();
     @Output() back = new EventEmitter<void>();
-
-    defaultAddress = '91822696409055@sbx';
-    existingAddress = 'rahul.k1992';
+    @Input() txnId = "";
+    @Input() existingAddress = '';
     takenAbhaAddress: string;
 
     loading = false;
@@ -45,31 +44,27 @@ export class AbhaAddressStepComponent implements OnInit {
             }
         });
 
-        // Live availability check for custom address
-        // this.form
-        //     .get('customAbhaAddress')
-        //     ?.valueChanges.pipe(
-        //         debounceTime(350),
-        //         distinctUntilChanged(),
-        //         switchMap((val: string) => {
-        //             this.availability = { available: null, message: '' };
-        //             if (!val || this.form.get('customAbhaAddress')?.invalid) {
-        //                 return of(null);
-        //             }
-        //             //return this.abhaService.checkAbhaAddressAvailability(val);
-        //         })
-        //     )
-        //     .subscribe((res) => {
-        //         if (res) {
-        //             this.availability = { available: res.available, message: res.message };
-        //             if (!res.available) {
-        //                 this.form.get('customAbhaAddress')?.setErrors({
-        //                     ...this.form.get('customAbhaAddress')?.errors,
-        //                     taken: true
-        //                 });
-        //             }
+        // //Live availability check for custom address
+        // this.form.get('customAbhaAddress')?.valueChanges.pipe(debounceTime(350), distinctUntilChanged(),
+        //     switchMap((val: string) => {
+        //         this.availability = { available: null, message: '' };
+        //         if (!val || this.form.get('customAbhaAddress')?.invalid) {
+        //             return of(null);
         //         }
-        //     });
+        //         return this.abhaService.addressSuggesions(this.txnId, val+'@sbx');
+        //     })
+        // ).subscribe((res) => {
+        //     debugger
+        //     if (res) {
+        //         this.availability = { available: res.available, message: res.message };
+        //         if (!res.available) {
+        //             this.form.get('customAbhaAddress')?.setErrors({
+        //                 ...this.form.get('customAbhaAddress')?.errors,
+        //                 taken: true
+        //             });
+        //         }
+        //     }
+        // });
     }
 
     private applyOptionValidators(option: string): void {
@@ -90,10 +85,10 @@ export class AbhaAddressStepComponent implements OnInit {
 
     loadSuggestions(): void {
         this.suggestionsLoading = true;
-        // this.abhaService.getAddressSuggestions(this.beneficiaryName).subscribe((res) => {
-        //     this.suggestions = res;
-        //     this.suggestionsLoading = false;
-        // });
+        this.abhaService.addressSuggesions(this.txnId).subscribe((res) => {
+            this.suggestions = res.abhaAddressList;
+            this.suggestionsLoading = false;
+        });
     }
 
     selectSuggestion(s: string): void {
@@ -136,10 +131,7 @@ export class AbhaAddressStepComponent implements OnInit {
         if (!opt) return false;
         if (opt === 'existing' || opt === 'default') return true;
         if (opt === 'custom') {
-            return (
-                this.form.get('customAbhaAddress')?.valid === true &&
-                this.availability.available === true
-            );
+            return (this.form.get('customAbhaAddress')?.valid === true);
         }
         if (opt === 'suggestion') {
             return !!this.form.value.selectedSuggestion;
@@ -153,10 +145,15 @@ export class AbhaAddressStepComponent implements OnInit {
             return;
         }
         this.loading = true;
+        let address = '';
+        const opt = this.form.value.addressOption;
+        if (opt === 'existing') address = this.existingAddress;
+        if (opt === 'custom') address = this.form.get('customAbhaAddress').value;
+        if (opt === 'suggestion') address = this.form.value.selectedSuggestion;
         // The service-level createAbha is invoked from parent; just emit
         setTimeout(() => {
             this.loading = false;
-            this.create.emit();
+            this.create.emit(address);
         }, 200);
     }
 

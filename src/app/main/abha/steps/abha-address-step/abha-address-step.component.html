@@ -5,20 +5,12 @@
 
             <mat-radio-group formControlName="addressOption" class="radio-list">
                 <!-- Existing -->
-                <label class="radio-card" [class.selected]="form.value.addressOption === 'existing'">
+                <label class="radio-card" [class.selected]="form.value.addressOption === 'existing'"
+                    *ngIf="existingAddress">
                     <mat-radio-button value="existing" color="primary"></mat-radio-button>
                     <div class="radio-content">
                         <div class="radio-title">Continue with Existing ABHA Address</div>
                         <div class="radio-subtitle">{{ existingAddress }}</div>
-                    </div>
-                </label>
-
-                <!-- Default -->
-                <label class="radio-card" [class.selected]="form.value.addressOption === 'default'">
-                    <mat-radio-button value="default" color="primary"></mat-radio-button>
-                    <div class="radio-content">
-                        <div class="radio-title">Use Default ABHA Address</div>
-                        <div class="radio-subtitle">{{ defaultAddress }}</div>
                     </div>
                 </label>
 

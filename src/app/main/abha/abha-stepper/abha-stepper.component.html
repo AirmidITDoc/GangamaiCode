@@ -22,7 +22,8 @@
 
         <!-- Step 2: OTP -->
         <mat-step [stepControl]="otpForm" label="OTP">
-            <app-otp-step [form]="otpForm" [maskedAadhaarMobile]="maskedAadhaarMobile" [txnId]="txnId" (verified)="onOtpVerified($event)" (back)="stepper.previous()"></app-otp-step>
+            <app-otp-step [form]="otpForm" [maskedAadhaarMobile]="maskedAadhaarMobile" [txnId]="txnId"
+                (verified)="onOtpVerified($event)" (back)="stepper.previous()"></app-otp-step>
         </mat-step>
 
         <!-- Step 3: Mobile -->
@@ -31,9 +32,10 @@
         </mat-step> -->
 
         <!-- Step 4: ABHA Address -->
-        <mat-step [stepControl]="addressForm" label="ABHA Address" *ngIf="!isNewAddressDisabled">
-            <app-abha-address-step [form]="addressForm" [beneficiaryName]="aadhaarForm.value.beneficiaryName"
-                (create)="onAbhaCreate()" (back)="stepper.previous()"></app-abha-address-step>
+        <mat-step [stepControl]="addressForm" label="ABHA Address">
+            <app-abha-address-step [form]="addressForm" [txnId]="txnId" [existingAddress]="existingAddress"
+                [beneficiaryName]="aadhaarForm.value.beneficiaryName" (create)="onAbhaCreate($event)"
+                (back)="stepper.previous()"></app-abha-address-step>
         </mat-step>
 
         <!-- Step 5: Profile & Card -->

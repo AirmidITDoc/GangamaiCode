@@ -26,9 +26,8 @@ export class AbhaStepperComponent implements OnInit {
     // Doctor name (logged-in)
     // doctorName = 'Dr. Anita Sharma';
     maskedAadhaarMobile = "";
-    isNewAddressDisabled = false;
-    token="";
-
+    token = "";
+    existingAddress = "";
     txnId = '';
     constructor(
         private fb: FormBuilder,
@@ -86,19 +85,20 @@ export class AbhaStepperComponent implements OnInit {
 
     /** Called by OTP step on verify success. */
     onOtpVerified(r: AadhaarVerifyOtpResponse): void {
-        debugger
         this.txnId = r.txnId;
         //this.abhaService.updateData({ aadhaarOtp: this.otpForm.value.aadhaarOtp });
-        if (r.isNew) {
-            this.isNewAddressDisabled = false;
-            this.stepper.next();
-        }
-        else {
-            this.isAbhaCreated=true;
-            this.isNewAddressDisabled = true;
-            this.token=r.tokens.token;
-            this.stepper.selectedIndex = 2;
-        }
+        // if (r.isNew) {
+        //   this.isNewAddressDisabled = false;
+        this.existingAddress = r.abhaProfile.phrAddress[0] ?? "";
+        this.token=r.tokens.token;
+        this.stepper.next();
+        // }
+        // else {
+        //     this.isAbhaCreated=true;
+        //     this.isNewAddressDisabled = true;
+        //     this.token=r.tokens.token;
+        //     this.stepper.selectedIndex = 2;
+        // }
     }
 
     /** Called by Mobile step on next. */
@@ -113,20 +113,21 @@ export class AbhaStepperComponent implements OnInit {
     }
 
     /** Called by Address step on create. */
-    onAbhaCreate(): void {
+    onAbhaCreate(abhaAddress: string): void {
         // this.abhaService.updateData({
         //   addressOption: this.addressForm.value.addressOption,
         //   customAbhaAddress: this.addressForm.value.customAbhaAddress,
         //   selectedSuggestion: this.addressForm.value.selectedSuggestion
         // });
-        // this.abhaService.createAbha().subscribe(() => {
-        //   this.isAbhaCreated = true;
-        //   this.stepper.next();
-        //   this.snack.open('ABHA created successfully!', 'OK', {
-        //     duration: 3000,
-        //     panelClass: ['success-snack']
-        //   });
-        // });
+        debugger
+        this.abhaService.createAbha({ TxnId: this.txnId, AbhaAddress: abhaAddress }).subscribe(() => {
+            this.isAbhaCreated = true;
+            this.stepper.next();
+            this.snack.open('ABHA created successfully!', 'OK', {
+                duration: 3000,
+                panelClass: ['success-snack']
+            });
+        });
     }
 
     /** Restart whole flow. */

@@ -59,6 +59,7 @@ export class OtpStepComponent implements OnInit {
             else {
                 this.snack.open(r.message, 'Error', { duration: 2000 });
             }
+            this.loading = false;
         });
         // this.abhaService.verifyOtp(otp).subscribe((res) => {
         //   this.loading = false;
