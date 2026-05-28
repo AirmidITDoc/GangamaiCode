@@ -493,12 +493,12 @@ export class DischargeSummaryComponent implements OnInit {
 
 
     getSelectedserviceObj(obj) {
-        this.doseId = 0
+       // this.doseId = 0
         this.ItemId = obj.itemId
         this.ItemName = obj.itemName
         console.log(obj)
-        this.vDay = 1
-        this.TotQty = 1
+        // this.vDay = 1
+        // this.TotQty = 1
     }
 
     onChangeDate(value) {
@@ -513,7 +513,7 @@ export class DischargeSummaryComponent implements OnInit {
     TotQty = 0
     onAdd() {
 
-        if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
+        if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "" || this.doseId == 0)) {
             this.toastr.warning('Please select Item Details..', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -521,7 +521,7 @@ export class DischargeSummaryComponent implements OnInit {
         }
 
 
-        if ((this.vDay == "" || this.vDay == "NAN")) {
+        if ((this.MedicineItemForm.get('Day')?.value == "" ||  this.MedicineItemForm.get('Day')?.value == 0 || this.vDay == "NAN")) {
             this.toastr.warning('Please select Days..', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -556,7 +556,7 @@ export class DischargeSummaryComponent implements OnInit {
                     doseId: this.doseId,
                     qty: this.Perdayqty,
                     totalQty: this.TotQty,
-                    days: this.MedicineItemForm.get('Day').value || 0,
+                    days: this.MedicineItemForm.get('Day').value || 1,
                     instruction: this.MedicineItemForm.get('Instruction').value || this.vInstruction || ''
                 });
             this.dsItemList.data = this.Chargeslist

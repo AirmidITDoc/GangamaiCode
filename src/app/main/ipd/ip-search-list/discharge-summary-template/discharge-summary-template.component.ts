@@ -200,44 +200,38 @@ export class DischargeSummaryTemplateComponent {
     afternoon = "0"
     night = "0"
     getSelectedDoseObj(obj) {
-
+ 
         console.log(obj)
         this.TotQty = 1
         this.DoseQtyperday = obj.doseQtyPerDay
-
+ 
         this.doseName = obj.doseName
         this.doseId = obj.doseId
-
+ 
         if (this.DoseQtyperday == 0) {
             this.TotQty = 1
             this.Perdayqty = 1
             let days = this.MedicineItemForm.get('Day').value
-
+ 
             this.TotQty = Math.round(days * this.TotQty)
             console.log(this.TotQty)
         }
         else {
-
+ 
             let days = this.MedicineItemForm.get('Day').value
             let qty = this.MedicineItemForm.get('Qty').value
-
-
-            // const parts = this.doseName.split('-');
-
+ 
             const parts = this.doseName
                 .split('-')
                 .map(part => part.trim().replace(/\s+/g, ''));
-
+ 
             // Fetch value with '/' sign
             const fractionValue = parts.find(part => part.includes('/'));
-
+ 
             console.log(fractionValue);
-
-
             console.log(parts)
-
-           
-             const total = parts.reduce((sum, val) => {
+ 
+        const total = parts.reduce((sum, val) => {
                 if (val.includes('/')) {
                     const [num, den] = val.split('/').map(Number);
                     return sum + (num / den);
@@ -245,18 +239,18 @@ export class DischargeSummaryTemplateComponent {
                     return sum + Number(val);
                 }
             }, 0);
-
+ 
             console.log("Sum =", total);           // 1.5
-            this.Perdayqty=Math.round(total)
-debugger
+            this.Perdayqty = Math.round(total)
+            debugger
             this.TotQty = days * (this.Perdayqty)
             this.TotQty = Math.round(this.TotQty)
-
+             this.Finalqty = this.Perdayqty
             console.log(this.Perdayqty)
             console.log(this.TotQty)
         }
-
-
+ 
+ 
     }
     // OnSave() {
 
@@ -528,13 +522,13 @@ debugger
     //     }
     // }
     getSelectedserviceObj(obj) {
-        this.doseId = 0
+       // this.doseId = 0
         this.ItemId = obj.itemId
         this.ItemName = obj.itemName
         // this.vDay = obj.doseDay
         console.log(obj)
-        this.vDay=1
-        this.TotQty=1
+        // this.vDay=1
+        // this.TotQty=1
     }
     ItemFromReset() {
         const form = this.MedicineItemForm;
@@ -662,7 +656,7 @@ debugger
     Perdayqty = 0
     doseName = ""
     onAdd() {
-        if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
+        if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "" || this.doseId == 0)) {
             this.toastr.warning('Please select Item', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -674,12 +668,12 @@ debugger
             });
             return;
         }
-        //  if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
-        //   this.toastr.warning('Please enter a Day', 'Warning !', {
-        //     toastClass: 'tostr-tost custom-toast-warning',
-        //   });
-        //   return;
-        // }
+         if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+          this.toastr.warning('Please enter a Day', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
 
         if (!Array.isArray(this.Chargelist)) {
             console.warn("Chargelist was not an array. Resetting...");
@@ -696,7 +690,7 @@ debugger
                 doseId: this.doseId,
                 qty: this.Perdayqty,
                 totalQty: this.TotQty,
-                days: this.MedicineItemForm.get('Day').value || 0,
+                days: this.MedicineItemForm.get('Day').value || 1,
                 instruction: this.MedicineItemForm.get('Instruction').value || this.vInstruction || ''
             }
             this.Chargelist.push(newEntry);
@@ -854,21 +848,19 @@ debugger
             }, 100);
         });
     }
-
-    calculateQty() {
-
+Finalqty= 1
+  calculateQty() {
+ 
         if (this.MedicineItemForm.get('Day').value > 0) {
-
+ 
             if (this.DoseQtyperday == 0) {
                 this.Perdayqty = 1
-            
+ 
                 this.TotQty = 1
                 console.log(this.TotQty)
             } else {
                 let days = parseInt(this.MedicineItemForm.get('Day').value)
-                let qty = parseInt(this.MedicineItemForm.get('Qty').value)
-
-                // this.TotQty = days * parseFloat(this.morning) + days * parseFloat(this.afternoon) + days * parseFloat(this.night)
+                let qty = this.Finalqty// parseInt(this.MedicineItemForm.get('Qty').value)
                 this.TotQty = days * qty
                 this.TotQty = Math.round(this.TotQty)
                 console.log(this.TotQty)
@@ -877,7 +869,7 @@ debugger
             Swal.fire("Enter Proper Days...")
             return;
         }
-
+ 
     }
 
 
