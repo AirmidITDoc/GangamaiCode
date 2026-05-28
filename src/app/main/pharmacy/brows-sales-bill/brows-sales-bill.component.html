@@ -384,30 +384,15 @@
                         </div>
                     </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig2" class="content"
+                    <airmid-table [gridConfig]="gridConfig2" class="content" #grid2
                         (onSelectRow)="getsalesReturndetaillist($event)">
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.formReturn" fxLayout="column">
 
-                                <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn"
-                                    [isRangePicker]="true" formStartControlName="startdate1"
-                                    formEndControlName="enddate1" [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue"
-                                    (dateChange)="onChangeFirst_Retrun()"></airmid-datepicker> -->
-
-
-                                <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn"
-                                    [isRangePicker]="true" formStartControlName="startdate1"
-                                    formEndControlName="enddate1" [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue"
-                                    (dateChange)="onChangeFirst_Retrun()">
-                                </airmid-datepicker> -->
-
                                 <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker1">
-                                        <input matStartDate formControlName="startdate1" placeholder="Start date"
-                                            (dateChange)="onChangeFirst()">
+                                        <input matStartDate formControlName="startdate1" placeholder="Start date">
                                         <input matEndDate formControlName="enddate1" placeholder="End date"
                                             (dateChange)="onChangeFirst_Retrun()">
                                     </mat-date-range-input>
@@ -415,6 +400,18 @@
                                     <mat-date-range-picker #picker1></mat-date-range-picker>
                                 </mat-form-field>
 
+                                <!-- <mat-form-field appearance="outline">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker1">
+                                        <input matStartDate formControlName="c" placeholder="Start date"
+                                            (dateChange)="onChangeFirst()">
+                                        <input matEndDate formControlName="enddate1" placeholder="End date"
+                                            (dateChange)="onChangeFirst_Retrun()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker1></mat-date-range-picker>
+                                </mat-form-field>
+ -->
 
 
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
@@ -506,7 +503,7 @@
                         </div>
                     </ng-template>
 
-                    <airmid-table [gridConfig]="gridConfig4" class="content">
+                    <airmid-table [gridConfig]="gridConfig4" class="content" #grid4>
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.SalesPatientForm" fxLayout="column">
 

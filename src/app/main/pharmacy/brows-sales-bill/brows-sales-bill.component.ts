@@ -282,6 +282,7 @@ export class BrowsSalesBillComponent implements OnInit {
         this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
         if (this.FromDate && this.ToDate) {
             this.getSaleslistdata();
+            this.getsaleslist();
         }
     }
     getSaleslistdata() {
@@ -302,17 +303,17 @@ export class BrowsSalesBillComponent implements OnInit {
                 { fieldName: "OPIPType", fieldValue: this.OpIpType, opType: OperatorComparer.Equals }
             ],
         }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
 
-        this.getsaleslist();
+        // this.getsaleslist();
     }
     chargelist: any = [];
     getsaleslist() {
         debugger
         const vdata = {
             "first": 0,
-            "rows": 10000,
+            "rows": 500,
             "sortField": "SalesId",
             "sortOrder": 0,
             "filters": [
@@ -496,7 +497,7 @@ export class BrowsSalesBillComponent implements OnInit {
             { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
         ],
-        row: 150
+        row: 500
     }
     isChecked: boolean = false;
     @ViewChild(MatSort) sort: MatSort;
@@ -515,6 +516,7 @@ export class BrowsSalesBillComponent implements OnInit {
         this.sales_No = this._BrowsSalesBillService.formReturn.get('SalesNo').value || "0"
         this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type_Return').value || "0"
         this.getSalesRetrunlistdata();
+        this.getsalesreturnlist()
     }
     getSalesRetrunlistdata() {
         debugger
@@ -534,8 +536,9 @@ export class BrowsSalesBillComponent implements OnInit {
                 { fieldName: "OP_IP_Type", fieldValue: this.OpIp_Type, opType: OperatorComparer.Equals }
             ],
         }
+        this.grid2.gridConfig = this.gridConfig2;
+        this.grid2.bindGridData();
 
-        this.getsalesreturnlist()
     }
 
 
@@ -545,7 +548,7 @@ export class BrowsSalesBillComponent implements OnInit {
         debugger
         const vdata = {
             "first": 0,
-            "rows": 10000,
+            "rows": 500,
             "sortField": "SalesReturnId",
             "sortOrder": 0,
             "filters": [
@@ -653,8 +656,8 @@ export class BrowsSalesBillComponent implements OnInit {
                 { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }
             ],
         }
-        // this.grid4.gridConfig = this.gridConfig4;
-        // this.grid4.bindGridData();
+        this.grid4.gridConfig = this.gridConfig4;
+        this.grid4.bindGridData();
     }
     getchangeDate() {
         debugger
@@ -740,79 +743,7 @@ export class BrowsSalesBillComponent implements OnInit {
         // console.log('dateTimeObj==', dateTimeObj);
         this.dateTimeObj = dateTimeObj;
     }
-    // OnPayment(contact) {
-    //   const currentDate = new Date();
-    //   const datePipe = new DatePipe('en-US');
-    //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    //   console.log(contact)
-    //   let PatientHeaderObj = {};
 
-    //   PatientHeaderObj['Date'] = formattedDate,
-    //     PatientHeaderObj['PatientName'] = contact.PatientName;
-    //   PatientHeaderObj['RegNo'] = contact.RegNo;
-    //   PatientHeaderObj['OPD_IPD_Id'] = contact.IPNO;
-    //   PatientHeaderObj['billNo'] = contact.SalesId;
-    //   PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);
-
-    //   const dialogRef = this._matDialog.open(OpPaymentComponent,
-    //     {
-    //       maxWidth: "80vw",
-    //       height: '650px',
-    //       width: '80%',
-    //       data: {
-    //         vPatientHeaderObj: PatientHeaderObj,
-    //         FromName: "OP-Pharma-SETTLEMENT",
-    //         advanceObj: PatientHeaderObj,
-    //       }
-    //     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log(result)
-
-    //     if (result.IsSubmitFlag == true) {
-    //       let updateBillobj = {};
-    //       updateBillobj['salesID'] = contact.SalesId;
-    //       updateBillobj['salRefundAmt'] = 0;
-    //       updateBillobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;
-
-    //       let UpdateAdvanceDetailarr = [];
-    //       if (UpdateAdvanceDetailarr.length == 0) {
-    //         let update_T_PHAdvanceDetailObj = {};
-    //         update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
-    //           update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
-    //           update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
-    //           UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
-    //       }
-
-    //       let update_T_PHAdvanceHeaderObj = {};
-    //       update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
-    //         update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-    //         update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
-
-    //       let Data = {
-    //         "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert,
-    //         "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
-    //         "update_T_PHAdvanceDetailSettlement": UpdateAdvanceDetailarr,
-    //         "update_T_PHAdvanceHeaderSettlement": update_T_PHAdvanceHeaderObj
-    //       };
-    //       console.log(Data);
-
-    //       this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
-    //         if (response) {
-    //           this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
-    //             toastClass: 'tostr-tost custom-toast-error',
-    //           });
-    //           //this.getSalesList();  
-    //         }
-    //         else {
-    //           this.toastr.error('Sales Credit Payment  not saved !', 'error', {
-    //             toastClass: 'tostr-tost custom-toast-error',
-    //           });
-    //         }
-    //       });
-    //     }
-    //   });
-    // }
     PharmaSettlementfrom: FormGroup;
     createSettlementform() {
         return this._formBuilder.group({
