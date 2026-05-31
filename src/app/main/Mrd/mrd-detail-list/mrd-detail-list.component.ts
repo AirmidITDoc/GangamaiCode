@@ -153,7 +153,9 @@ export class MrdDetailListComponent {
         });
     }
 
-    OnPrint(element) { }
+    OnPrint(data) {
+        this.commonService.Onprint("OpIpId", data.opipid, "MrdPatinetFileView");
+    }
     onChangeFirst() {
         this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")

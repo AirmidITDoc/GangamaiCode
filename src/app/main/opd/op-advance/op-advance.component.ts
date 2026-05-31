@@ -69,15 +69,15 @@ export class OpAdvanceComponent {
     ]
 
     allAdvanceColumns = [
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-        { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 6 , width: 150 },
+        { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' , width: 100},
         { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -86,7 +86,7 @@ export class OpAdvanceComponent {
         { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' , width: 150},
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplateone  // Assign ng-template to the column

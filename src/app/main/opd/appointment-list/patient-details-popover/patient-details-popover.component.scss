@@ -73,7 +73,8 @@
 
     .details-content {
       .detail-section {
-        margin-bottom: 24px;
+        margin-bottom: 12px;
+        
 
         &:last-child {
           margin-bottom: 0;
@@ -91,7 +92,7 @@
         .detail-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 12px;
+          gap: 8px;
 
           .detail-item {
             display: flex;
@@ -103,9 +104,9 @@
             }
 
             .detail-label {
-              font-size: 12px;
+              font-size: 16px;
               font-weight: 600;
-              color: #666;
+              color: #041d2b;
               text-transform: uppercase;
               letter-spacing: 0.5px;
             }

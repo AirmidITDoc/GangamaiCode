@@ -24,8 +24,9 @@
 
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <mat-tab label="Personal Detail">
-            <div class="modal-body" fusePerfectScrollbar>
-                <div class="modal-body-container">
+            <!-- <div class="modal-body" fusePerfectScrollbar> -->
+                <div style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box;height: 350px;">
+
 
                     <form [formGroup]="personalFormGroup">
                         <input type="hidden" formControlName="RegId" [(ngModel)]="registerObj.regId">
@@ -94,9 +95,11 @@
                                                     formControlName="DateOfBirth"
                                                     [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
                                           -->
-                                         
-                                            <app-airmid-dateofbirth [formGroup]="personalFormGroup" dateStyle="Year" formControlName="DateOfBirth" [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
-                                                </div>
+
+                                                <app-airmid-dateofbirth [formGroup]="personalFormGroup" dateStyle="Year"
+                                                    formControlName="DateOfBirth"
+                                                    [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                            </div>
                                             <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <mat-form-field appearance="outline" fxFlex="100%">
                                                     <input matInput [matDatepicker]="validFromPicker"
@@ -213,31 +216,34 @@
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <div fxLayout="row" class="gap-4">
 
-                                                    <airmid-textbox label="MobileNo" formControlName="MobileNo"  fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                    <airmid-textbox label="MobileNo" formControlName="MobileNo"
+                                                        fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                                         [value]="registerObj.mobileNo" [formGroup]="personalFormGroup"
                                                         [validations]="getValidationMessages().mobileNo"
                                                         (keypress)="keyPressAlphanumeric($event)" [maxLength]="10">
                                                     </airmid-textbox>
-                                                 <airmid-textbox label="PhoneNo" formControlName="PhoneNo"  fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                    <airmid-textbox label="PhoneNo" formControlName="PhoneNo"
+                                                        fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
                                                         [validations]="getValidationMessages().phoneNo"
                                                         [value]="registerObj.phoneNo" [formGroup]="personalFormGroup"
                                                         [maxLength]="10" (keypress)="keyPressAlphanumeric($event)">
                                                     </airmid-textbox>
                                                 </div>
                                             </div>
-                                           
-                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" >
-                                                <airmid-textbox label="Aadhaar No. / National ID" formControlName="aadharCardNo"
-                                                    [value]="registerObj.aadharCardNo" [formGroup]="personalFormGroup"  
-                                                    [validations]="getValidationMessages().aadharCardNo" >
-                                                </airmid-textbox>
-                                            </div> 
 
-                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox label="Email" 
-                                                        formControlName="emailId" [formGroup]="personalFormGroup" type="email"
-                                                           [value]="registerObj.emailId" 
-                                                            [validations]="getValidationMessages().EmailId"></airmid-textbox>
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Aadhaar No. / National ID"
+                                                    formControlName="aadharCardNo" [value]="registerObj.aadharCardNo"
+                                                    [formGroup]="personalFormGroup"
+                                                    [validations]="getValidationMessages().aadharCardNo">
+                                                </airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Email" formControlName="emailId"
+                                                    [formGroup]="personalFormGroup" type="email"
+                                                    [value]="registerObj.emailId"
+                                                    [validations]="getValidationMessages().EmailId"></airmid-textbox>
                                             </div>
 
                                         </div>
@@ -267,7 +273,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            <!-- </div> -->
         </mat-tab>
 
         <mat-tab label="Emergency Details">

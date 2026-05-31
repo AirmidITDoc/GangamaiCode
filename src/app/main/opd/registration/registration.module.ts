@@ -34,6 +34,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewRegistrationComponent } from './new-registration/new-registration.component';
 import { RegistrationComponent } from './registration.component';
 import { RegistrationService } from './registration.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
     {
@@ -80,7 +81,8 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatButtonToggleModule,
         MatDialogModule,
-        MatTabsModule
+        MatTabsModule,
+        MatTooltipModule
     ],
     providers: [RegistrationService,
         DatePipe

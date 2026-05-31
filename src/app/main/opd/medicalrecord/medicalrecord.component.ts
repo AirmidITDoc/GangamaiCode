@@ -69,6 +69,7 @@ export class MedicalrecordComponent implements OnInit {
     f_name: any = "%"
     regNo: any = "0"
     l_name: any = "%"
+    CompanyId = "0"
     page: PageNames = PageNames.PATIENT;
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
@@ -115,7 +116,9 @@ export class MedicalrecordComponent implements OnInit {
         { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+        { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals }
+
 
     ];
 
@@ -161,16 +164,20 @@ export class MedicalrecordComponent implements OnInit {
     }
 
     onChangeFirst() {
+        debugger
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
-        this.regNo = this.myformSearch.get('RegNo').value
+        this.regNo = this.myformSearch.get('RegNo').value || "0"
+        this.DoctorId = this.myformSearch.get('DoctorId').value || "0"
+        this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
+
         this.getfilterdata();
     }
 
     getfilterdata() {
-
+debugger
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -183,7 +190,9 @@ export class MedicalrecordComponent implements OnInit {
                 { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+                { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+                { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals }
+
 
             ]
         }
@@ -534,6 +543,11 @@ export class MedicalrecordComponent implements OnInit {
                 {
                     "fieldName": "IsMark",
                     "fieldValue": "2",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "CompanyId",
+                    "fieldValue": String(this.CompanyId),
                     "opType": "Equals"
                 }
             ],

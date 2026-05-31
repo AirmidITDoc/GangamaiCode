@@ -833,7 +833,7 @@ export class NewAppointmentwithBillComponent {
         console.log(contact);
     }
     onDiscountPerChange(row: ChargesList): void {
-        // debugger
+        debugger
         if (!row) return;
 
         if (row.DiscPer == null) {
@@ -1279,7 +1279,7 @@ export class NewAppointmentwithBillComponent {
                     return;
                 }
 
-                debugger
+
                 const docflag = this.dstable1.data.filter(row => row.Doctorflag == true && row.DoctorId == 0);
 
                 if (docflag.length) {
@@ -1288,8 +1288,9 @@ export class NewAppointmentwithBillComponent {
                     });
                     return;
                 }
-
-                if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
+                // this.OPFooterForm.get('concessionAmt').value > 0 &&
+                debugger
+                if (this.Consessionres) {
                     if (!this.OPFooterForm.get('concessionReasonId').value) {
                         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
@@ -1415,9 +1416,6 @@ export class NewAppointmentwithBillComponent {
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
         this.OpBillForm.get('patientName')?.setValue(this.PatientName)
 
-
-
-
         const formValue = { ...this.myForm.value };
         const controlsToRemove = ['patientName', 'IsPathRad', 'IsNRI', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt', 'paymentType'];
         controlsToRemove.forEach(key => delete formValue[key]);
@@ -1489,6 +1487,7 @@ export class NewAppointmentwithBillComponent {
                             console.log(this.AppointmentBillfinalform.value)
 
                             this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
+                                console.log(response)
                                 this.viewgetOPBillReportPdf(response.billNo)
                                 this.closeAllOrNavigateBack();
                                 this.savebtn = true
@@ -1889,13 +1888,13 @@ export class NewAppointmentwithBillComponent {
     }
 
     calculateTotalAmount(): void {
-        // 
+        debugger
         const totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
         const totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
         const totalDiscountPer = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscPer), 0);
         const totalNet = totalSum - totalDiscount;
 
-        this.myForm.patchValue({
+        this.OPFooterForm.patchValue({
             totalAmt: totalSum,
             totalDiscountPer: Math.round(totalDiscountPer),
             discountAmt: Math.round(totalDiscount),

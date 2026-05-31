@@ -60,23 +60,23 @@ export class RegistrationComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allcolumns = [
-        { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
-        { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        { heading: "Date", key: "regDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 100 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Age(Year)", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "EmgContactPerson Name", key: "emgContactPersonName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Emg MobileNo", key: "emgMobileNo", sort: true, align: 'left', emptySign: 'NA', },
-        { heading: "Emg LandlineNo", key: "emgLandlineNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Emg MobileNo", key: "emgMobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Emg LandlineNo", key: "emgLandlineNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Emg Address", key: "engAddress", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
-        { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Modify Date", key: "modifiedDate", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 170 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -201,7 +201,8 @@ export class RegistrationComponent implements OnInit {
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "MobileNo", fieldValue: this.mobileno, opType: OperatorComparer.Contains }
             ],
-            row: 25
+            row: 300
+
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();

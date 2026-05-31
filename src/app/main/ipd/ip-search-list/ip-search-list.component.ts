@@ -391,8 +391,8 @@ export class IPSearchListComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
                 debugger
                 // if (result) {
-                    
-                    that.grid.bindGridData();
+
+                that.grid.bindGridData();
                 // this.getfilterdata()
                 // }
             });
@@ -542,10 +542,13 @@ export class IPSearchListComponent implements OnInit {
     getchangeDate() {
         if (this.myFilterform.get('IsDischarge').value != false) {
             this.apiUrl = "Admission/AdmissionDischargeList"
-            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
             this.status = '1'
         }
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+
         this.f_name = this.myFilterform.get('FirstName').value + "%"
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
@@ -553,25 +556,62 @@ export class IPSearchListComponent implements OnInit {
         this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
         this.getfilterdata();
     }
+
+
     getfilterdata() {
         debugger
-        this.grid.gridConfig.filters = [
-            { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-            { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-            { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            //  { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
-               
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
-            { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
-            { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+        this.gridConfig = {
+            apiUrl: "Admission/AdmissionList",
+            columnsList: this.allcolumns,
+            sortField: "AdmissionId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+                 { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
 
-        ];
-        this.grid.gridConfig.apiUrl = this.apiUrl;
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
+                { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
+
+    // getfilterdata() {
+    //     this.gridConfig = {
+    //         apiUrl: "Admission/AdmissionList",
+    //         columnsList: this.allcolumns,
+    //         sortField: "AdmissionId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+    //             { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+    //             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+    //             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
+    //             // { fieldName: "WardId", fieldValue: this.WardId, opType: OperatorComparer.Equals },
+    //             { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.Equals },
+    //             { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.Equals },
+    //             { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
+    //             { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
+    //             { fieldName: "IPNo", fieldValue: this.IPDNo, opType: OperatorComparer.Equals }
+
+    //         ],
+    //         row: 25
+    //     }
+    //     console.log(this.gridConfig)
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    //     // this.GetAdmissiondetail()
+    // }
+
     Clearfilter(event) {
         console.log(event)
         if (event == 'FirstName')

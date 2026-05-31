@@ -572,6 +572,7 @@ export class NewOPListComponent implements OnInit {
 
 
     onChangeOPPayment() {
+        debugger
         this.pfromDate = this.datePipe.transform(this.myFilterpayform.get('fromDate').value, "yyyy-MM-dd")
         this.ptoDate = this.datePipe.transform(this.myFilterpayform.get('enddate').value, "yyyy-MM-dd")
         this.pf_name = this.myFilterpayform.get('FirstName').value + "%"
@@ -584,6 +585,7 @@ export class NewOPListComponent implements OnInit {
     }
 
     getfilterdataOpPayment() {
+        debugger
         this.gridConfig1 = {
             apiUrl: "OPBill/BrowseOPPaymentList",
             columnsList: this.allOPpaymentcolumns,

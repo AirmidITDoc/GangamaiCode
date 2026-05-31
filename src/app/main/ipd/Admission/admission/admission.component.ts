@@ -122,7 +122,7 @@ export class AdmissionComponent implements OnInit {
     DoctorId = "0";
     private overlayRef: OverlayRef | null = null;
 
-     autocompleteModeWard: string = "Room";
+    autocompleteModeWard: string = "Room";
 
     ngOnInit(): void {
 
@@ -193,7 +193,7 @@ export class AdmissionComponent implements OnInit {
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
     // { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
-    
+
     { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
     { fieldName: "Admtd_Dschrgd_All", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -298,7 +298,7 @@ export class AdmissionComponent implements OnInit {
             searchDoctorId: [
                 { name: "required", Message: "Doctor Name is required" }
             ],
-            wardId:['']
+            wardId: ['']
         };
     }
 
@@ -472,7 +472,7 @@ export class AdmissionComponent implements OnInit {
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
         this.WardId = this.myFilterform.get('WardId').value || "0"
-        
+
         this.DoctorId = this.myFilterform.get('searchDoctorId').value || "0"
 
 
@@ -533,10 +533,10 @@ export class AdmissionComponent implements OnInit {
 
         this.onChangeFirst();
     }
-WardId="0"
-    wardselect(event){
+    WardId = "0"
+    wardselect(event) {
         console.log(event)
-this.WardId=event.value
+        this.WardId = event.value
     }
 
     getAdmittedPatientListview() {
@@ -544,27 +544,27 @@ this.WardId=event.value
 
             const param = {
 
-    "searchFields": [
-        {
-            "fieldName": "DoctorId",
-            "fieldValue": this.DoctorId,
-            "opType": "13"
-        },
-        {
-            "fieldName": "WardId",
-            "fieldValue": this.WardId,
-            "opType": "13"
-        },
-        {
-            "fieldName": "CompanyId",
-            "fieldValue": "0",
-            "opType": "13"
-        }
-    ],
-    // "mode": "AdmissionList"
-        "mode":"WardWiseAdmissionList"
-}
-            
+                "searchFields": [
+                    {
+                        "fieldName": "DoctorId",
+                        "fieldValue": this.DoctorId,
+                        "opType": "13"
+                    },
+                    {
+                        "fieldName": "WardId",
+                        "fieldValue": this.WardId,
+                        "opType": "13"
+                    },
+                    {
+                        "fieldName": "CompanyId",
+                        "fieldValue": "0",
+                        "opType": "13"
+                    }
+                ],
+                // "mode": "AdmissionList"
+                "mode": "WardWiseAdmissionList"
+            }
+
 
             console.log(param)
             this._AdmissionService.getReportView(param).subscribe(res => {
@@ -591,36 +591,36 @@ this.WardId=event.value
 
 
 
-      getCancelledAdmission() {
+    getCancelledAdmission() {
         setTimeout(() => {
 
             const param = {
 
-    "searchFields": [
-        {
-            "fieldName": "FName",
-            "fieldValue": this.f_name,
-            "opType": "13"
-        },
-        {
-            "fieldName": "LName",
-            "fieldValue": this.l_name,
-            "opType": "13"
-        },
-        {
-            "fieldName": "FromDt",
-            "fieldValue": this.fromDate,
-            "opType": "13"
-        },
-        {
-            "fieldName": "ToDt",
-            "fieldValue": this.toDate,
-            "opType": "13"
-        }
-    ],
-       "mode":"AdmissionCancelReport"
-}
-            
+                "searchFields": [
+                    {
+                        "fieldName": "FName",
+                        "fieldValue": this.f_name,
+                        "opType": "13"
+                    },
+                    {
+                        "fieldName": "LName",
+                        "fieldValue": this.l_name,
+                        "opType": "13"
+                    },
+                    {
+                        "fieldName": "FromDt",
+                        "fieldValue": this.fromDate,
+                        "opType": "13"
+                    },
+                    {
+                        "fieldName": "ToDt",
+                        "fieldValue": this.toDate,
+                        "opType": "13"
+                    }
+                ],
+                "mode": "AdmissionCancelReport"
+            }
+
 
             console.log(param)
             this._AdmissionService.getReportView(param).subscribe(res => {
@@ -867,9 +867,9 @@ this.WardId=event.value
     getAdmissionCancel(row) {
         const dialogRef = this._matDialog.open(AdmissionCancelComponent,
             {
-               maxHeight: "65vh",
-                 maxWidth: '90vh',
-                 data:row
+                maxHeight: "65vh",
+                maxWidth: '90vh',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);

@@ -624,10 +624,11 @@ export class NewAppointmentComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
             this.PrevregisterObj = result
-            this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
-            this.selectChangedepartment(this.PrevregisterObj)
-            console.log(this.PrevregisterObj)
-
+            if (this.PrevregisterObj) {
+                this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
+                this.selectChangedepartment(this.PrevregisterObj)
+                console.log(this.PrevregisterObj)
+            }
 
 
         });
