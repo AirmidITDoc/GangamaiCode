@@ -1,16 +1,16 @@
 <div class="modal-page page-layout inner-scroll">
     <div class="modal-wrapper grid-container">
-                <div class="modal-header accent">
+        <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
                     <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Verified Indent
                         List</span>
                 </div>
-              
+
             </div>
         </div>
 
-        
+
         <div class="modal-body modal-body-light" fusePerfectScrollbar>
             <div class="modal-body-container">
                 <div fxLayout="column" class="gap-8 h-100-p">
@@ -22,7 +22,7 @@
                                         <mat-label>Enter a date range</mat-label>
                                         <mat-date-range-input [rangePicker]="picker">
                                             <input matStartDate formControlName="start" placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date" >
+                                            <input matEndDate formControlName="end" placeholder="End date">
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -53,6 +53,11 @@
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
 
+
+                                    <button mat-raised-button class="accent" routerLink="/inventory/issuetodepartment"
+                                        routerLinkActive="active">
+                                        Print
+                                    </button>
                                 </div>
                             </form>
                         </mat-card>
@@ -68,7 +73,7 @@
                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-90">Is
                                     Urgent</mat-header-cell>
                                 <mat-cell *matCellDef="let element" class="w-90">
-                                   
+
                                     <mat-icon *ngIf="element.priority=='1'" matTooltip="Urgent"
                                         style="color: red;">report
                                     </mat-icon>
@@ -130,6 +135,14 @@
                                         <mat-icon title="Edit Menu">edit</mat-icon>
 
                                     </button>
+
+                                    <!-- <button mat-icon-button (click)="viewgetIssuetodeptReportPdf(contact)"
+                                        matTooltip="Edit">
+                                        <mat-icon title="Edit Menu">print</mat-icon>
+
+                                    </button> -->
+
+
                                 </mat-cell>
                             </ng-container>
 

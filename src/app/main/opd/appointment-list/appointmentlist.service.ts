@@ -41,7 +41,8 @@ export class AppointmentlistService {
             departmentId: [0],
             fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-            IsMark: ['2']
+            IsMark: ['2'],
+            CompanyId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     createSearchForm(): FormGroup {

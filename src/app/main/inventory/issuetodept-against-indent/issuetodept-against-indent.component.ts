@@ -12,6 +12,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { IssueToDepartmentService } from '../issue-to-department/issue-to-department.service';
 import { NewIssueTodeptComponent } from '../issue-to-department/new-issue-todept/new-issue-todept.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-issuetodept-against-indent',
@@ -62,8 +64,8 @@ export class IssuetodeptAgainstIndentComponent {
     constructor(
         public _IssueToDep: IssueToDepartmentService,
         public _matDialog: MatDialog,
-        private _fuseSidebarService: FuseSidebarService,
-        public datePipe: DatePipe,
+        private _fuseSidebarService: FuseSidebarService,private router: Router,
+        public datePipe: DatePipe, private commonService: PrintserviceService,
         public toastr: ToastrService,
         // public _dialogRef: MatDialogRef<IssueToDeparmentAgainstIndentComponent>,
         private accountService: AuthenticationService,
@@ -228,6 +230,12 @@ export class IssuetodeptAgainstIndentComponent {
             // this.getIndentList()
         });
 
+    }
+
+    viewgetIssuetodeptReportPdf(element) {
+        console.log(element)
+       this.router.navigate(['/inventory/issuetodepartment']);
+        // this.commonService.Onprint("IssueId", element.issueId, "Issutodeptissuewise");
     }
 
     getDateTime(dateTimeObj) {

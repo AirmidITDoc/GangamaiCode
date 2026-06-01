@@ -281,18 +281,19 @@
                 <div class="content-card">
                   <mat-table class="airmid-table" matSort [dataSource]="dsItemList" [@animateStagger]="{ value: '50' }">
                     <ng-container matColumnDef="itemName">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>ItemName</mat-header-cell>
-                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-450">ItemName</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-450">
                         <span>{{ element.itemName }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="doseName">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Dose Name</mat-header-cell>
-                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">Dose Name</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                         <span>{{ element.doseName }}</span>
                       </mat-cell>
                     </ng-container>
+
 
                     <!-- <ng-container matColumnDef="day">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Day</mat-header-cell>
@@ -302,30 +303,35 @@
                     </ng-container> -->
 
                     <ng-container matColumnDef="day">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Day</mat-header-cell>
-                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                        <span>{{ element.days }}</span>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                        class="w-150">Days</mat-header-cell>
+                      <mat-cell class="w-150" *matCellDef="let contact" fxShow.gt-sm>
+                        <input class="compact-cell-input" [(ngModel)]="contact.days" type="text"
+                          (keyup)="getCellCalculation(contact)" min="0" max="1000" OnlyNumber
+                          (keypress)="keyPressDigitsOnly($event)" />
                       </mat-cell>
                     </ng-container>
 
+
                     <ng-container matColumnDef="qty">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Qty/Day</mat-header-cell>
-                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">Qty/Day</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                         <span>{{ element.qty }}</span>
                       </mat-cell>
                     </ng-container>
 
 
                     <ng-container matColumnDef="totalQty">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Total Qty</mat-header-cell>
-                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm  class="w-150">Total Qty</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                         <span>{{ element.totalQty }}</span>
                       </mat-cell>
                     </ng-container>
+
                     <ng-container matColumnDef="instruction">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                        fxShow.gt-sm>Instruction</mat-header-cell>
-                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                        fxShow.gt-sm class="w-200">Instruction</mat-header-cell>
+                      <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-200">
                         <span>{{ element.instruction }}</span>
                       </mat-cell>
                     </ng-container>

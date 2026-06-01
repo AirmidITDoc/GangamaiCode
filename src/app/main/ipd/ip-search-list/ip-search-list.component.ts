@@ -117,7 +117,7 @@ export class IPSearchListComponent implements OnInit {
             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-            //  { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
+             { fieldName: "WardId", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
             { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },

@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
 import { IPSearchListService } from '../ip-search-list.service';
+import { Console } from 'console';
 
 @Component({
     selector: 'app-discharge-summary-template',
@@ -35,6 +36,15 @@ export class DischargeSummaryTemplateComponent {
     doseName1 = "";
     vIsNormalDeath = '1';
     TemplateId = 0;
+
+
+    TotQty = 1
+    TotQty1 = 1
+    DoseQtyperday = 0
+    Perdayqty = 0
+    doseName = ""
+    days = 1
+
     autocompleteModetemplate: string = "DischargeTemplate";
     DischargeSummaryId: any = 0;
     // Chargeslist: any = [];
@@ -200,38 +210,38 @@ export class DischargeSummaryTemplateComponent {
     afternoon = "0"
     night = "0"
     getSelectedDoseObj(obj) {
- 
+
         console.log(obj)
         this.TotQty = 1
         this.DoseQtyperday = obj.doseQtyPerDay
- 
+
         this.doseName = obj.doseName
         this.doseId = obj.doseId
- 
+
         if (this.DoseQtyperday == 0) {
             this.TotQty = 1
             this.Perdayqty = 1
             let days = this.MedicineItemForm.get('Day').value
- 
+
             this.TotQty = Math.round(days * this.TotQty)
             console.log(this.TotQty)
         }
         else {
- 
+
             let days = this.MedicineItemForm.get('Day').value
             let qty = this.MedicineItemForm.get('Qty').value
- 
+
             const parts = this.doseName
                 .split('-')
                 .map(part => part.trim().replace(/\s+/g, ''));
- 
+
             // Fetch value with '/' sign
             const fractionValue = parts.find(part => part.includes('/'));
- 
+
             console.log(fractionValue);
             console.log(parts)
- 
-        const total = parts.reduce((sum, val) => {
+
+            const total = parts.reduce((sum, val) => {
                 if (val.includes('/')) {
                     const [num, den] = val.split('/').map(Number);
                     return sum + (num / den);
@@ -239,18 +249,18 @@ export class DischargeSummaryTemplateComponent {
                     return sum + Number(val);
                 }
             }, 0);
- 
+
             console.log("Sum =", total);           // 1.5
             this.Perdayqty = Math.round(total)
             debugger
             this.TotQty = days * (this.Perdayqty)
             this.TotQty = Math.round(this.TotQty)
-             this.Finalqty = this.Perdayqty
+            this.Finalqty = this.Perdayqty
             console.log(this.Perdayqty)
             console.log(this.TotQty)
         }
- 
- 
+
+
     }
     // OnSave() {
 
@@ -522,7 +532,7 @@ export class DischargeSummaryTemplateComponent {
     //     }
     // }
     getSelectedserviceObj(obj) {
-       // this.doseId = 0
+        // this.doseId = 0
         this.ItemId = obj.itemId
         this.ItemName = obj.itemName
         // this.vDay = obj.doseDay
@@ -546,7 +556,7 @@ export class DischargeSummaryTemplateComponent {
     templateId: any;
     templateName: any;
     Chargelist: any[] = [];
-
+    Chargelist1: any[];
     SaveTemplate() {
         if (this.dsItemList.data.length == 0) {
             Swal.fire('Error !', 'Please add prescription in table', 'error');
@@ -595,7 +605,12 @@ export class DischargeSummaryTemplateComponent {
     }
 
     FetchList: any = [];
+    Syrup = 0
     onTemplDetAdd() {
+        this.Chargelist = [];
+        this.Chargelist1 = [];
+        this.dsItemList.data = [];
+
         if (!this.MedicineItemForm.get("TemplateId")?.value) {
             this.toastr.warning('Please select a Template Name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -623,23 +638,77 @@ export class DischargeSummaryTemplateComponent {
 
             this._IpSearchListService.getTempPrescriptionList(vdata).subscribe(data => {
                 // this.dsItemList.data = data.data as MedicineItemList[];
-                this.Chargelist = data.data as MedicineItemList[];
+                this.Chargelist1 = data.data as MedicineItemList[];
 
-                this.Chargelist = data.data.map(x => ({
-                    itemID: x.itemID ?? x.drugId,
-                    itemName: x.itemName ?? x.drugName,
-                    ...x
-                }));
+                this.Chargelist1 = data.data.map((x: any) => {
+                    console.log(x)
+                    debugger
+
+                    if (x.qtyPerDay == 0) {
+                        this.Perdayqty = 1
+                        this.TotQty1 = 1
+                        this.Syrup = 1
+                    } else {
+
+                        const parts = x.doseName
+                            .split('-')
+                            .map(part => part.trim().replace(/\s+/g, ''));
+
+                        // Fetch value with '/' sign
+                        const fractionValue = parts.find(part => part.includes('/'));
+                        console.log(fractionValue);
+                        console.log(parts)
+
+                        const total = parts.reduce((sum, val) => {
+                            if (val.includes('/')) {
+                                const [num, den] = val.split('/').map(Number);
+                                return sum + (num / den);
+                            } else {
+                                return sum + Number(val);
+                            }
+                        }, 0);
+
+                        console.log("Sum =", total);           // 1.5
+                        this.Perdayqty = Math.round(total)
+                        debugger
+
+                        this.Perdayqty = this.Perdayqty ?? 1;
+                        this.days = x.days ?? 1;
+                        this.TotQty1 = (this.Perdayqty * this.days);
+                        this.Syrup = 0
+                    }
+
+                    debugger
+                    const newEntry = {
+
+                        itemID: x.itemID ?? x.drugId,
+                        itemName: x.itemName ?? x.drugName,
+                        doseName: x.doseName,
+                        doseId: x.doseId,
+                        qty: this.Perdayqty,
+                        totalQty: this.TotQty1,
+                        days: x.days || 1,
+                        instruction: x.Instruction || '',
+                        Syrup: this.Syrup
+                    };
+                    this.Chargelist.push(newEntry);
+                    console.log(this.Chargelist)
+                });
 
                 // add FetchList items
-                this.FetchList.forEach(element => {
-                    this.Chargelist.push({
-                        itemID: element.drugId,
-                        itemName: element.drugName
-                    });
-                });
+                // this.FetchList.forEach(element => {
+                //     this.Chargelist.push({
+                //         itemID: element.drugId,
+                //         itemName: element.drugName
+                //     });
+                // });
+
+
                 this.dsItemList.data = this.Chargelist;
                 console.log('Template data:', this.dsItemList.data)
+                this.TotQty = 0
+                this.TotQty1 = 0
+                this.vDay = 1
             });
         }
         else {
@@ -649,12 +718,9 @@ export class DischargeSummaryTemplateComponent {
             return;
         }
         this.MedicineItemForm.get('TemplateId').reset('');
+
     }
 
-    TotQty = 1
-    DoseQtyperday = 0
-    Perdayqty = 0
-    doseName = ""
     onAdd() {
         if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "" || this.doseId == 0)) {
             this.toastr.warning('Please select Item', 'Warning !', {
@@ -668,11 +734,11 @@ export class DischargeSummaryTemplateComponent {
             });
             return;
         }
-         if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
-          this.toastr.warning('Please enter a Day', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
-          });
-          return;
+        if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+            this.toastr.warning('Please enter a Day', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
         }
 
         if (!Array.isArray(this.Chargelist)) {
@@ -684,7 +750,7 @@ export class DischargeSummaryTemplateComponent {
         if (!iscekDuplicate) {
             // this.dsItemList.data = [];
             const newEntry = {
-                   itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
+                itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
                 itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
                 doseName: this.doseName,
                 doseId: this.doseId,
@@ -706,13 +772,91 @@ export class DischargeSummaryTemplateComponent {
         this.MedicineItemForm.get('Day').reset('1');
         this.MedicineItemForm.get('Qty').reset('1');
         this.MedicineItemForm.get('Instruction').reset('');
+        this.TotQty = 0
+        this.vDay = 1
         // this.itemid.nativeElement.focus();
 
-         const serviceIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
+        const serviceIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
         if (serviceIdElement) {
             serviceIdElement.focus();
         }
     }
+    getCellCalculation(item) {
+
+        // if (!item.days) {
+        //     item.days = 1;
+        // } else
+        if (item.days == 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Invalid Days',
+                text: 'Please enter a Days  = ' + item.days,
+                confirmButtonText: 'OK',
+            });
+            return;
+        }
+
+        debugger
+
+        if (item.Syrup == 1) {
+            this.Perdayqty = 1
+            this.TotQty1 = 1
+        } else {
+
+            const parts = item.doseName
+                .split('-')
+                .map(part => part.trim().replace(/\s+/g, ''));
+
+            // Fetch value with '/' sign
+            const fractionValue = parts.find(part => part.includes('/'));
+            console.log(fractionValue);
+            console.log(parts)
+
+            const total = parts.reduce((sum, val) => {
+                if (val.includes('/')) {
+                    const [num, den] = val.split('/').map(Number);
+                    return sum + (num / den);
+                } else {
+                    return sum + Number(val);
+                }
+            }, 0);
+
+            console.log("Sum =", total);           // 1.5
+            this.Perdayqty = Math.round(total)
+            debugger
+
+            this.Perdayqty = this.Perdayqty ?? 1;
+            this.days = item.days ?? 1;
+            this.TotQty1 = (this.Perdayqty * this.days);
+        }
+
+        debugger
+        const newEntry = {
+
+            itemID: item.itemID ?? item.drugId,
+            itemName: item.itemName ?? item.drugName,
+            doseName: item.doseName,
+            doseId: item.doseId,
+            qty: this.Perdayqty,
+            totalQty: this.TotQty1,
+            days: item.days || 1,
+            instruction: item.Instruction || ''
+        };
+        console.log(newEntry)
+        Object.assign(item, newEntry);
+
+    }
+    // it allowed only Digit 
+    keyPressDigitsOnly(event) {
+        const inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
 
     deleteTableRow(event, element) {
 
@@ -753,29 +897,34 @@ export class DischargeSummaryTemplateComponent {
         this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
             // this.Chargelist = data.data as MedicineItemList[];
             // this.dsItemList.data = [...this.Chargelist];
-                    // console.log(this.dsItemList.data);
-                     this.dsItemList.data = data?.data as MedicineItemList[];
-                                console.log(data?.data)
-                                if (this.dsItemList.data)
-                                    // this.Chargeslist = data.data as MedicineItemList[];
-                                    debugger
-                                this.dsItemList.data.forEach(element => {
-                                    console.log(element)
-                    
-                                    this.Chargelist.push(
-                                        {
-                                            itemID: element.itemID || 0,
-                                            itemName: element.itemName || '',
-                                            doseName: element.doseName,
-                                            doseId: element.doseId,
-                                            qty: element.qtyPerDay,
-                                            totalQty: element.totalQty,
-                                            days: element.days || 0,
-                                            instruction: element.instruction || ''
-                                        })
-                                })
-                                this.dsItemList.data = this.Chargelist
-                    
+            // console.log(this.dsItemList.data);
+            this.dsItemList.data = data?.data as MedicineItemList[];
+            console.log(data?.data)
+            if (this.dsItemList.data)
+                // this.Chargeslist = data.data as MedicineItemList[];
+
+                this.dsItemList.data.forEach(element => {
+                    console.log(element)
+                    debugger
+                    if (element.days > 1 && element.totalQty == 1)
+                        this.Syrup = 1
+                    else
+                        this.Syrup = 0
+                    this.Chargelist.push(
+                        {
+                            itemID: element.itemID || 0,
+                            itemName: element.itemName || '',
+                            doseName: element.doseName,
+                            doseId: element.doseId,
+                            qty: element.qtyPerDay,
+                            totalQty: element.totalQty,
+                            days: element.days || 0,
+                            instruction: element.instruction || '',
+                            Syrup: this.Syrup
+                        })
+                })
+            this.dsItemList.data = this.Chargelist
+
         });
     }
 
@@ -848,14 +997,14 @@ export class DischargeSummaryTemplateComponent {
             }, 100);
         });
     }
-Finalqty= 1
-  calculateQty() {
- 
+    Finalqty = 1
+    calculateQty() {
+
         if (this.MedicineItemForm.get('Day').value > 0) {
- 
+
             if (this.DoseQtyperday == 0) {
                 this.Perdayqty = 1
- 
+
                 this.TotQty = 1
                 console.log(this.TotQty)
             } else {
@@ -869,7 +1018,7 @@ Finalqty= 1
             Swal.fire("Enter Proper Days...")
             return;
         }
- 
+
     }
 
 
@@ -1141,10 +1290,11 @@ export class MedicineItemList {
     DoseNameOption2: any;
     DoseNameOption3: any;
 
-      qtyPerDay: any;
+    qtyPerDay: any;
     totalQty: any;
     qty: any
     instruction: any
+    Syrup: any
     /**
     * Constructor
     *
@@ -1173,9 +1323,10 @@ export class MedicineItemList {
             this.DoseNameOption3 = MedicineItemList.DoseNameOption3 || '';
 
             this.qtyPerDay = MedicineItemList.qtyPerDay || 0;
-                        this.totalQty = MedicineItemList.totalQty || 0;
-                        this.instruction = MedicineItemList.instruction || '';
-            
+            this.totalQty = MedicineItemList.totalQty || 0;
+            this.instruction = MedicineItemList.instruction || '';
+            this.Syrup = MedicineItemList.Syrup || 0;
+
         }
     }
 }

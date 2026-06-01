@@ -54,7 +54,7 @@
                     <mat-icon class="card-icon">assignment_turned_in</mat-icon>
                 </div> -->
 
-                 <div class="dashboard-card admissions-split">
+                <div class="dashboard-card admissions-split">
                     <div class="card-label">Admissions</div>
                     <div class="card-value">
                         <div>OP/IPConvert {{VOPtoIPcount}}</div>
@@ -110,9 +110,9 @@
         </div>
     </ng-template>
 
-      <ng-template #actionisReimbursement let-element>
+    <ng-template #actionisReimbursement let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-           <mat-icon matTooltip="IsReimbursement Patient" *ngIf="element.isReimbursement==1" >
+            <mat-icon matTooltip="IsReimbursement Patient" *ngIf="element.isReimbursement==1">
                 transfer_within_a_station
             </mat-icon>
         </div>
@@ -131,7 +131,8 @@
                 redo
             </mat-icon>
 
-            <span *ngIf="element.admissionType==2" class="ml-1 font-bold" matTooltip="Emergency To IP Converted">E</span>
+            <span *ngIf="element.admissionType==2" class="ml-1 font-bold"
+                matTooltip="Emergency To IP Converted">E</span>
             <mat-icon matTooltip="EmgToIPConvert" *ngIf="element.admissionType==2" [disabled]="element.disabled"
                 class="disabled-icon">
                 redo
@@ -139,35 +140,27 @@
         </div>
     </ng-template>
 
-     <ng-template #patientNameWithBadgeTemplate let-element>
-            <!-- Patient Name with Token Badge -->
-            <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
-                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
-                matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}" matTooltipPosition="above"
-                style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
-                {{ element.patientName }}
-            </span>
-        </ng-template>
+    <ng-template #patientNameWithBadgeTemplate let-element>
+        <!-- Patient Name with Token Badge -->
+        <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+            matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+            matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}" matTooltipPosition="above"
+            style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
+            {{ element.patientName }}
+        </span>
+    </ng-template>
 
     <ng-template #patientNameWithPopoverTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
             <!-- Policy Info Icon - Only show if company exists -->
-            <button mat-icon-button 
-                    *ngIf="element.companyId > 0"
-                    (click)="openPolicyInfoPopover($event, element)"
-                    matTooltip="Policy Information"
-                    matTooltipPosition="above"
-                    class="popover-icon-btn">
+            <button mat-icon-button *ngIf="element.companyId > 0" (click)="openPolicyInfoPopover($event, element)"
+                matTooltip="Policy Information" matTooltipPosition="above" class="popover-icon-btn">
                 <mat-icon class="s-18" style="color: #2196F3;">description</mat-icon>
             </button>
 
             <!-- Company Approval Icon - Only show if company exists -->
-            <button mat-icon-button 
-                    *ngIf="element.companyId > 0"
-                    (click)="openCompanyApprovalPopover($event, element)"
-                    matTooltip="Company Approval Information"
-                    matTooltipPosition="above"
-                    class="popover-icon-btn">
+            <button mat-icon-button *ngIf="element.companyId > 0" (click)="openCompanyApprovalPopover($event, element)"
+                matTooltip="Company Approval Information" matTooltipPosition="above" class="popover-icon-btn">
                 <mat-icon class="s-18" style="color: #4CAF50;">check_circle</mat-icon>
             </button>
 
@@ -218,8 +211,8 @@
             <button mat-icon-button matTooltip="Edit Admission" (click)="getEditAdmission(element)">
                 <mat-icon> account_circle</mat-icon>
             </button>
-<!-- *ngIf="!element.IsDischarged" -->
-               <button mat-icon-button matTooltip="Cancel Admission" (click)="getAdmissionCancel(element)" >
+            <!-- *ngIf="!element.IsDischarged" -->
+            <button mat-icon-button matTooltip="Cancel Admission" (click)="getAdmissionCancel(element)">
                 <mat-icon style="color: rgb(83, 15, 15);"> cancel</mat-icon>
             </button>
 
@@ -309,10 +302,12 @@
                             (keyup)="ListView($event)">
                         </airmid-dropdown>
 
-                        
+
                         <airmid-dropdown label="Ward Name" formControlName="WardId" [formGroup]="myFilterform"
-                           [validations]="getValidationdoctorMessages().wardId" (selectionChange)="wardselect($event)"
-                            [mode]="autocompleteModeWard">
+                            [(ngModel)]="gridConfig.filters[4].fieldValue"
+                            [validations]="getValidationdoctorMessages().wardId" (selectionChange)="wardselect($event)"
+                            [mode]="autocompleteModeWard" (selectionChange)="ListView($event)"
+                            (keyup)="ListView($event)">
                         </airmid-dropdown>
 
                         <div class="addmision-list">
@@ -320,8 +315,8 @@
                                 (click)="getAdmittedPatientListview()" matTooltip="search">
                                 Dr Wise Admission List
                             </button>
-                             <button mat-raised-button class="btn btn-primary w-100-p"
-                                (click)="getCancelledAdmission()" matTooltip="search">
+                            <button mat-raised-button class="btn btn-primary w-100-p" (click)="getCancelledAdmission()"
+                                matTooltip="search">
                                 Cancelled Admission List
                             </button>
 

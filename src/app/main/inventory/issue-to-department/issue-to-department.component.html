@@ -28,7 +28,7 @@
                         (click)="viewgetIssuetodeptReportPdf(element)">
                         <mat-icon> print</mat-icon>
                     </button>
-                       <button *ngIf="!element.isVerified" mat-icon-button (click)="onVerify(element)">
+                    <button *ngIf="!element.isVerified" mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" matTooltip="verify Menu">verified_user</mat-icon>
                     </button>
                 </div>
@@ -64,6 +64,15 @@
                 </div>
             </ng-template>
 
+            <ng-template #actionsTemplate2 let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <!-- <mat-icon *ngIf="element.indentId=='0';" matTooltip="Direct Issue"
+                        style="color: rgb(123, 91, 216);">receipt_long</mat-icon> -->
+                    <mat-icon *ngIf="!element.indentId=='0';" matTooltip="Against Indent"
+                        style="color: rgb(232, 103, 103);">receipt_long</mat-icon>
+                </div>
+            </ng-template>
+
             <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
 
                 <ng-container filters>
@@ -96,7 +105,7 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
             <ng-template #detailstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                 
+
 
                     <div matTooltip="Accepted" class="pill1 green-600 s-18">
                         {{element.status}}

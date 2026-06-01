@@ -1,6 +1,6 @@
 import { OverlayModule } from "@angular/cdk/overlay";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { DatePipe } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -140,7 +140,8 @@ const routes: Routes = [
         MatButtonToggleModule,
         WebcamModule,
         MatChipsModule,
-        OverlayModule
+        OverlayModule,
+        CommonModule
     ],
     providers: [AppointmentlistService, DatePipe]
 })

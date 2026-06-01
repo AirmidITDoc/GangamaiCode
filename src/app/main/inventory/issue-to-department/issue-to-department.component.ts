@@ -55,7 +55,7 @@ export class IssueToDepartmentComponent implements OnInit {
         }
     }
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    // @ViewChild('isVerifiedstatus') isVerifiedstatus!: TemplateRef<any>;
+    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('isacceptedstatus') isacceptedstatus!: TemplateRef<any>;
     @ViewChild('statusTable2') statusTable2!: TemplateRef<any>;
     @ViewChild('detailstatus') detailstatus!: TemplateRef<any>;
@@ -67,6 +67,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'isAccepted')!.template = this.isacceptedstatus;
         // this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.detailstatus;
         this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'indentId')!.template = this.actionsTemplate2;
     }
 
 
@@ -78,6 +79,8 @@ export class IssueToDepartmentComponent implements OnInit {
 
         // { heading: "", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "indentId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
         { heading: "IssueNo", key: "issueNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Issue Date", key: "issueDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "From StoreName", key: "fromStoreName", sort: true, align: 'left', emptySign: 'NA', width: 200 },

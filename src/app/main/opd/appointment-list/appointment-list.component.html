@@ -210,8 +210,8 @@
                     (click)="OnViewReportPdf(element,true)">
                     <mat-icon> print</mat-icon>
                 </button>
-
-                <button *ngIf="IsOpdEmr" mat-icon-button
+                <!-- *ngIf="IsOpdEmr" -->
+                <button *ngIf="element.departmentId!==6" mat-icon-button
                     [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady > 0  ? 'circle-icon' : ''">
@@ -219,9 +219,9 @@
                     </mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="IsGastrology"
+                <button mat-icon-button matTooltip="Gastrology EMR" *ngIf="element.departmentId==6"
                     (click)="getgastrologyCasePaper(element)">
-                    <mat-icon>
+                    <mat-icon style="color: brown;">
                         list_alt
                     </mat-icon>
                 </button>
@@ -353,11 +353,17 @@
                         [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
                     <!-- (dateChange)="onChangeFirst1($event)" -->
 
-                    <!-- <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
-                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
-                        [(toValue)]="gridConfig.filters[5].fieldValue">
-                    </airmid-datepicker> -->
 
+                    <!-- <mat-form-field appearance="outline">
+                        <mat-label>Enter a date range</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate formControlName="fromDate" placeholder="Start date">
+                            <input matEndDate formControlName="enddate" placeholder="End date"
+                                (dateChange)="onChangeFirst1($event)">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field> -->
 
                     <mat-form-field appearance="outline">
                         <mat-label>UHID NO</mat-label>
@@ -397,10 +403,17 @@
                         (keyup)="ListView($event)">
                     </airmid-dropdown>
 
+
+                      <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="myformSearch"
+                        [mode]="autocompleteCompany" (selectionChange)="selectChangedepartment($event)"
+                        [(ngModel)]="gridConfig.filters[7].fieldValue">
+                    </airmid-dropdown>
+
+
                     <mat-radio-group name="IsMark" formControlName="IsMark" (change)="onChangeFirst1($event)">
                         <mat-radio-button value="2">All</mat-radio-button>
-                        <mat-radio-button value="1">Marked</mat-radio-button>
-                        <mat-radio-button value="0">NotMarked</mat-radio-button>
+                        <mat-radio-button value="1">Check out</mat-radio-button>
+                        <mat-radio-button value="0">Check out Pending</mat-radio-button>
                     </mat-radio-group>
 
                 </form>

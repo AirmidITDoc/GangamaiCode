@@ -20,28 +20,46 @@
         <h4 class="section-title">Basic Information</h4>
         <div class="detail-grid">
           <div class="detail-item full-width">
-            <span class="detail-label">Name:</span>
-            <span class="detail-value">{{ getDoctorName() }}</span>
+            <span class="detail-label">Name:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ getDoctorName() }}</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">Doctor ID:</span>
-            <span class="detail-value">{{ doctorDetails.doctorId || doctorData?.doctorId || doctorData?.consultantDocId || 'N/A' }}</span>
+            <span class="detail-label">Doctor ID:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.doctorId || doctorData?.doctorId || doctorData?.consultantDocId || 'N/A' }}</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">Department:</span>
-            <span class="detail-value">{{ doctorData?.departmentName || doctorDetails?.departmentName || 'N/A' }}</span>
+            <span class="detail-label">Department:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorData?.departmentName || doctorDetails?.departmentName || 'N/A' }}</span>
           </div>
           <div class="detail-item" *ngIf="doctorDetails.specialization || doctorDetails.Specialization">
-            <span class="detail-label">Specialization:</span>
-            <span class="detail-value">{{ doctorDetails.specialization || doctorDetails.Specialization || 'N/A' }}</span>
+            <span class="detail-label">Specialization:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.specialization || doctorDetails.Specialization || 'N/A' }}</span>
           </div>
           <div class="detail-item" *ngIf="doctorDetails.qualification || doctorDetails.Qualification">
-            <span class="detail-label">Qualification:</span>
-            <span class="detail-value">{{ doctorDetails.qualification || doctorDetails.Qualification || 'N/A' }}</span>
+            <span class="detail-label">Qualification:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.qualification || doctorDetails.Qualification || 'N/A' }}</span>
           </div>
           <div class="detail-item" *ngIf="doctorDetails.registrationNo || doctorDetails.RegistrationNo">
-            <span class="detail-label">Registration No:</span>
-            <span class="detail-value">{{ doctorDetails.registrationNo || doctorDetails.RegistrationNo || 'N/A' }}</span>
+            <span class="detail-label">Registration No:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.registrationNo || doctorDetails.RegistrationNo || 'N/A' }}</span>
           </div>
         </div>
       </div>
@@ -51,39 +69,60 @@
         <h4 class="section-title">Contact Information</h4>
         <div class="detail-grid">
           <div class="detail-item" *ngIf="doctorDetails.mobileNo || doctorDetails.MobileNo">
-            <span class="detail-label">Mobile No:</span>
-            <span class="detail-value">{{ doctorDetails.mobileNo || doctorDetails.MobileNo || 'N/A' }}</span>
+            <span class="detail-label">Mobile No:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.mobileNo || doctorDetails.MobileNo || 'N/A' }}</span>
           </div>
           <div class="detail-item" *ngIf="doctorDetails.phoneNo || doctorDetails.PhoneNo">
-            <span class="detail-label">Phone No:</span>
-            <span class="detail-value">{{ doctorDetails.phoneNo || doctorDetails.PhoneNo || 'N/A' }}</span>
+            <span class="detail-label">Phone No:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.phoneNo || doctorDetails.PhoneNo || 'N/A' }}</span>
           </div>
           <div class="detail-item full-width" *ngIf="doctorDetails.email || doctorDetails.Email">
-            <span class="detail-label">Email:</span>
-            <span class="detail-value">{{ doctorDetails.email || doctorDetails.Email || 'N/A' }}</span>
+            <span class="detail-label">Email:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.email || doctorDetails.Email || 'N/A' }}</span>
           </div>
           <div class="detail-item full-width" *ngIf="doctorDetails.address || doctorDetails.Address">
-            <span class="detail-label">Address:</span>
-            <span class="detail-value">{{ doctorDetails.address || doctorDetails.Address || 'N/A' }}</span>
+            <span class="detail-label">Address:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.address || doctorDetails.Address || 'N/A' }}</span>
           </div>
         </div>
       </div>
-
+<hr>
       <!-- Additional Information -->
       <div class="detail-section">
         <h4 class="section-title">Additional Information</h4>
         <div class="detail-grid">
           <div class="detail-item" *ngIf="doctorDetails.experience || doctorDetails.Experience">
-            <span class="detail-label">Experience:</span>
-            <span class="detail-value">{{ doctorDetails.experience || doctorDetails.Experience || 'N/A' }}</span>
+            <span class="detail-label">Experience:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.experience || doctorDetails.Experience || 'N/A' }}</span>
           </div>
           <div class="detail-item" *ngIf="doctorDetails.dateOfBirth || doctorDetails.DateOfBirth">
-            <span class="detail-label">Date of Birth:</span>
-            <span class="detail-value">{{ formatDate(doctorDetails.dateOfBirth || doctorDetails.DateOfBirth) }}</span>
+            <span class="detail-label">Date of Birth:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ formatDate(doctorDetails.dateOfBirth || doctorDetails.DateOfBirth) }}</span>
           </div>
           <div class="detail-item" *ngIf="doctorDetails.genderName || doctorDetails.GenderName">
-            <span class="detail-label">Gender:</span>
-            <span class="detail-value">{{ doctorDetails.genderName || doctorDetails.GenderName || 'N/A' }}</span>
+            <span class="detail-label">Gender:
+
+            <!-- </span>
+            <span class="detail-value"> -->
+              {{ doctorDetails.genderName || doctorDetails.GenderName || 'N/A' }}</span>
           </div>
         </div>
       </div>

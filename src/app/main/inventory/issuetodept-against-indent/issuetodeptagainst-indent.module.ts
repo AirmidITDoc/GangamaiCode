@@ -38,6 +38,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { IssueToDepartmentService } from '../issue-to-department/issue-to-department.service';
 import { IssuetodeptAgainstIndentComponent } from './issuetodept-against-indent.component';
 
+
 const routes: Routes = [
     {
         path: '**',
@@ -47,7 +48,8 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        IssuetodeptAgainstIndentComponent
+        IssuetodeptAgainstIndentComponent,
+        
     ],
     imports: [
         CommonModule,

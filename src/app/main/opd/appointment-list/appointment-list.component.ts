@@ -93,12 +93,14 @@ export class AppointmentListComponent implements OnInit {
     patientDetail1 = new VisitMaster1({});
     RegId = 0
     autocompletedepartment: string = "Department";
+     autocompleteCompany: string = "Company";
     dataSource = new MatTableDataSource<VisitMaster1>();
     vOPIPId = 0;
     f_name: any = "%"
     regNo = 0;
     l_name: any = "%"
     IsMark = "2"
+    CompanyId="0"
 
     // Notitifcation Veriable
     IsShowGrid: boolean = false;
@@ -183,7 +185,9 @@ export class AppointmentListComponent implements OnInit {
         { fieldName: "Doctor_Id", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals }
+        { fieldName: "IsMark", fieldValue: "2", opType: OperatorComparer.Equals },
+        { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals },
+
 
     ];
 
@@ -218,24 +222,24 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "phoneAppId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "crossConsulFlag", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-        { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DOA", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350, type: gridColumnTypes.template },
-        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
+        { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "DOA", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Age", key:"ageYear" , sort: true, align: 'left', emptySign: 'NA', width:100 },
-        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
         { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 100  },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
-        { heading: "Token No", key: "tokenNo", sort: true, align: 'left', emptySign: 'NA', width: 100, },
+        { heading: "Token No", key: "tokenNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
             heading: "Action", key: "action", align: "center", width: 230, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -257,26 +261,30 @@ export class AppointmentListComponent implements OnInit {
         this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
-        this.regNo = this.myformSearch.get('RegNo').value
+        this.regNo = this.myformSearch.get('RegNo').value || "0"
+          this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
+        
         this.getfilterdata();
 
     }
     onChangeFirst1(event) {
-
+debugger
         console.log(event)
         // if (event.key == 13) {
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
-        this.regNo = this.myformSearch.get('RegNo').value
+        this.regNo = this.myformSearch.get('RegNo').value || "0"
         this.IsMark = this.myformSearch.get('IsMark').value
+        this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
+         
         this.getfilterdata();
         // }
     }
 
     getfilterdata() {
-        // debugger
+        debugger
         this.gridConfig = {
             apiUrl: "VisitDetail/AppVisitList",
             columnsList: this.allcolumns,
@@ -289,7 +297,8 @@ export class AppointmentListComponent implements OnInit {
                 { fieldName: "Doctor_Id", fieldValue: String(this.DoctorId), opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "IsMark", fieldValue: this.IsMark, opType: OperatorComparer.Equals }
+                { fieldName: "IsMark", fieldValue: this.IsMark, opType: OperatorComparer.Equals },
+                { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals }
 
             ]
         }
@@ -1198,6 +1207,11 @@ export class AppointmentListComponent implements OnInit {
             {
                 "fieldName": "IsMark",
                 "fieldValue": "2",
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "CompanyId",
+                "fieldValue": String(this.CompanyId),
                 "opType": "Equals"
             }
         );
