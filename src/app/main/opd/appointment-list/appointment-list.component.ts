@@ -93,14 +93,14 @@ export class AppointmentListComponent implements OnInit {
     patientDetail1 = new VisitMaster1({});
     RegId = 0
     autocompletedepartment: string = "Department";
-     autocompleteCompany: string = "Company";
+    autocompleteCompany: string = "Company";
     dataSource = new MatTableDataSource<VisitMaster1>();
     vOPIPId = 0;
     f_name: any = "%"
     regNo = 0;
     l_name: any = "%"
     IsMark = "2"
-    CompanyId="0"
+    CompanyId = "0"
 
     // Notitifcation Veriable
     IsShowGrid: boolean = false;
@@ -228,20 +228,20 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
         { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-        { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "FollowUp Date", key: "followupDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Token No", key: "tokenNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         {
-            heading: "Action", key: "action", align: "center", width: 230, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "center", width: 280, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
@@ -262,13 +262,13 @@ export class AppointmentListComponent implements OnInit {
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
         this.regNo = this.myformSearch.get('RegNo').value || "0"
-          this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
-        
+        this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
+
         this.getfilterdata();
 
     }
     onChangeFirst1(event) {
-debugger
+        debugger
         console.log(event)
         // if (event.key == 13) {
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
@@ -278,7 +278,7 @@ debugger
         this.regNo = this.myformSearch.get('RegNo').value || "0"
         this.IsMark = this.myformSearch.get('IsMark').value
         this.CompanyId = this.myformSearch.get('CompanyId').value || "0"
-         
+
         this.getfilterdata();
         // }
     }
@@ -465,40 +465,53 @@ debugger
     OngetRecord(element, m) {
         console.log('Third action clicked for:', element);
         if (m == "Update Consultant Doctor") {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
+            if (element.mPbillNo == 0) {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
 
-            const that = this;
-            const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
-                {
-                    maxWidth: "90vw",
-                    height: "430px",
-                    width: "80%",
-                    data: element
+                const that = this;
+                const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
+                    {
+                        maxWidth: "90vw",
+                        height: "430px",
+                        width: "80%",
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
                 });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
+            }
+            else {
+                this.toastr.warning("Consultation bill is generated, take a new appointment.", "warning");
+                return;
+            }
+
         }
         else if (m == "Update Referred Doctor") {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
+            if (element.mPbillNo == 0) {
+                const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+                buttonElement.blur(); // Remove focus from the button
 
-            const that = this;
-            const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
-                {
-                    maxWidth: "70vw",
-                    height: "430px",
-                    width: "80%",
-                    data: element
+                const that = this;
+                const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
+                    {
+                        maxWidth: "70vw",
+                        height: "430px",
+                        width: "80%",
+                        data: element
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        that.grid.bindGridData();
+                    }
                 });
-            dialogRef.afterClosed().subscribe(result => {
-                if (result) {
-                    that.grid.bindGridData();
-                }
-            });
+            }
+            else {
+                this.toastr.warning("Doctor Payout calculated...", "warning");
+                return;
+            }
         }
         else if (m == "Report Record") {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -1112,7 +1125,7 @@ debugger
         patientTimer.checkOut = new Date(); //Capture the check-out time
 
         const totalTime = patientTimer.elapsedTime; //it tells total time taken by patient
-
+debugger
         //Save updated timer state to localStorage
         this.saveTimersToLocalStorage();
         const data = {
@@ -1140,8 +1153,9 @@ debugger
             return false;
         }
     }
-
+// Vregtotalcount=0
     GetAppointdetail() {
+        //   this.Vregtotalcount = 0;
         this.Vtotalcount = 0;
         this.VNewcount = 0;
         this.VFollowupcount = 0;

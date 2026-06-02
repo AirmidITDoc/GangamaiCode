@@ -1,13 +1,15 @@
-$sidebar-gap: 12px;
+$sidebar-gap: 5px;
 
 fuse-sidebar {
     .search-title {
         @include font-size(16px);
     }
+
     .clearbutton {
         // margin-right: 10px;
     }
 }
+
 .fuse-search-sidebar,
 .fuse-search-sidebar.mat-drawer {
     margin: $sidebar-gap 0 0 $sidebar-gap;
@@ -15,37 +17,45 @@ fuse-sidebar {
     font-family: inherit;
     height: 100%;
     @include box-shadow-small();
+
     .sidebar-content {
         .sidebar-header {
             padding: 12px;
+
             .search-title {
                 font-size: 1.1rem;
             }
         }
+
         .sidebar-body {
             .sidebar-form {
-                > form {
+                >form {
                     padding: $sidebar-gap;
                 }
             }
         }
+
         mat-form-field {
             width: 100%;
+
             .mat-form-field-wrapper {
-                padding-bottom: 10px;
+                padding-bottom: 7px;
             }
         }
+
         .action-buttons {
             display: flex;
             justify-content: flex-start;
             gap: 12px;
             margin-top: 10px;
+
             .mat-icon {
                 margin: 0;
                 color: $primary-600;
             }
         }
     }
+
     .nav {
         // &.material2 {
         //     form {
@@ -53,11 +63,13 @@ fuse-sidebar {
         //     }
         // }
     }
+
     .mat-mdc-radio-group {
         display: flex !important;
         flex-flow: column !important;
         align-items: flex-start !important;
     }
+
     .mat-mdc-raised-button {
         .mat-icon {
             display: inline-flex;
@@ -66,27 +78,30 @@ fuse-sidebar {
             margin: 0;
         }
     }
-    &.sidebar-hidden{
+
+    &.sidebar-hidden {
         margin-top: 0px;
         border-radius: 0px 0px 4px 4px;
     }
+
     @include themed() {
         background-color: t($bg-color);
+
         .sidebar-content {
             .sidebar-header {
-                .search-title {
-                }
+                .search-title {}
             }
+
             .sidebar-body {
                 .sidebar-form {
-                    form {
-                    }
+                    form {}
                 }
             }
+
             .mat-form-field {
-                .mat-form-field-wrapper {
-                }
+                .mat-form-field-wrapper {}
             }
+
             .action-buttons {
                 .mat-icon {
                     color: t($text-color);

@@ -30,14 +30,23 @@ export class DoctorDetailsPopoverComponent implements OnInit {
             this.doctorDetails = this.doctorData;
         }
     }
-
+    Prefix = ''
+    Type = ''
     loadDoctorDetails() {
         this.isLoading = true;
         const doctorId = this.doctorData.doctorId || this.doctorData.consultantDocId;
         this._DoctorMasterService.getDoctorById(doctorId).subscribe(
             (response: any) => {
+                console.log(response)
                 this.doctorDetails = response;
-                this.isLoading = false;
+                if (response.isConsultant)
+                    this.Type = 'Consultant'
+                else if (response.isRefDoc)
+                    this.Type = 'Referring'
+                else if(response.isConsultant && response.isRefDoc)
+                    this.Type = 'Consultant/Referring'
+              
+                    this.isLoading = false;
             },
             (error) => {
                 console.error('Error loading doctor details:', error);
@@ -75,8 +84,9 @@ export class DoctorDetailsPopoverComponent implements OnInit {
 
     getDoctorName(): string {
         if (this.doctorDetails) {
+
             return this.doctorData?.doctorName ||
-                (this.doctorDetails.firstName || '') + ' ' +
+                'Dr. ' + (this.doctorDetails.firstName || '') + ' ' +
                 (this.doctorDetails.middleName || '') + ' ' +
                 (this.doctorDetails.lastName || '') ||
                 this.doctorData?.doctorname || 'N/A';

@@ -30,7 +30,7 @@
                 <!-- Registrations -->
                 <div class="dashboard-card registrations">
                     <div class="card-label">Registrations</div>
-                    <div class="card-value">{{Vtotalcount}}</div>
+                    <div class="card-value">{{VNewcount}}</div>
                     <mat-icon class="card-icon">person_add</mat-icon>
                 </div>
                 <!-- Appointments -->
@@ -102,7 +102,6 @@
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
         <ng-template #actionsTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -404,7 +403,7 @@
                     </airmid-dropdown>
 
 
-                      <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="myformSearch"
+                    <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="myformSearch"
                         [mode]="autocompleteCompany" (selectionChange)="selectChangedepartment($event)"
                         [(ngModel)]="gridConfig.filters[7].fieldValue">
                     </airmid-dropdown>
