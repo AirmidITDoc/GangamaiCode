@@ -1,0 +1,48 @@
+<div class="verify-wrapper">
+
+    <!-- ============== METHOD PICKER ============== -->
+    <div *ngIf="activeMethod === null && !verifiedProfile" class="picker">
+        <div class="picker-header">
+            <h2>Verify ABHA</h2>
+            <p>Choose how you'd like to verify the patient's existing ABHA account.</p>
+        </div>
+
+        <div class="method-grid">
+            <button *ngFor="let m of methods" type="button" class="method-card" (click)="pickMethod(m.id)">
+                <div class="method-icon">
+                    <mat-icon>{{ m.icon }}</mat-icon>
+                </div>
+                <div class="method-text">
+                    <div class="method-title">{{ m.title }}</div>
+                    <div class="method-subtitle">{{ m.subtitle }}</div>
+                </div>
+                <mat-icon class="chev">chevron_right</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============== ACTIVE METHOD FLOW ============== -->
+    <div *ngIf="activeMethod && !verifiedProfile" class="method-flow">
+        <button mat-button class="back-link" (click)="backToPicker()">
+            <mat-icon>arrow_back</mat-icon> Choose a different method
+        </button>
+
+        <app-verify-by-abha-otp *ngIf="activeMethod === 'abha-number-abha-otp'" [otpSystem]="'abdm'"
+            (verified)="onVerified($event)"></app-verify-by-abha-otp>
+
+        <app-verify-by-abha-otp *ngIf="activeMethod === 'abha-number-aadhaar-otp'" [otpSystem]="'aadhaar'"
+            (verified)="onVerified($event)"></app-verify-by-abha-otp>
+
+        <app-verify-by-mobile *ngIf="activeMethod === 'mobile-otp'"
+            (verified)="onVerified($event)"></app-verify-by-mobile>
+
+        <app-verify-by-aadhaar *ngIf="activeMethod === 'aadhaar-otp'"
+            (verified)="onVerified($event)"></app-verify-by-aadhaar>
+    </div>
+
+    <!-- ============== VERIFIED PROFILE ============== -->
+    <app-verified-profile-card *ngIf="verifiedProfile" [profile]="verifiedProfile"
+        bannerTitle="ABHA verified successfully" [bannerSubtitle]="bannerSubtitle" [showLockedTags]="false"
+        [bannerColor]="'blue'" resetButtonLabel="Verify another ABHA"
+        (reset)="onResetFromProfile()"></app-verified-profile-card>
+</div>
