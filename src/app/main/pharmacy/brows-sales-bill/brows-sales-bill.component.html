@@ -147,7 +147,7 @@
                                 <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
                             </button>
 
-                              <button mat-icon-button
+                            <button mat-icon-button
                                 [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
                                 matTooltipPosition="right" (click)="OnemailSales(element)"
                                 (mouseenter)="openEmailDetailsPopover($event, element)"
@@ -160,9 +160,10 @@
                     </ng-template>
 
                     <ng-template #editablePatientName let-row>
-                        <div *ngIf="!row.isEditing" >
+                        <div *ngIf="!row.isEditing">
                             {{ row.patientName || 'NA' }}
-                            <mat-icon *ngIf="row.oP_IP_Type ==2" (click)="editPatientName(row)" matTooltip="Edit" >edit</mat-icon> 
+                            <mat-icon *ngIf="row.oP_IP_Type ==2" (click)="editPatientName(row)"
+                                matTooltip="Edit">edit</mat-icon>
                         </div>
                         <div *ngIf="row.isEditing">
                             <mat-form-field floatLabel="never">
@@ -361,7 +362,7 @@
                             <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(element)">
                                 <mat-icon>visibility</mat-icon>
                             </button>
-                           
+
 
                             <button mat-icon-button
                                 [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
@@ -372,7 +373,7 @@
                                 <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
                             </button>
 
-                             <button mat-icon-button
+                            <button mat-icon-button
                                 [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
                                 matTooltipPosition="right" (click)="Onemasalesrefund(element)"
                                 (mouseenter)="openEmailDetailsPopover1($event, element)"
