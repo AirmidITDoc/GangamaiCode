@@ -27,22 +27,23 @@
             <mat-icon>arrow_back</mat-icon> Choose a different method
         </button>
 
-        <app-verify-by-abha-otp *ngIf="activeMethod === 'abha-number-abha-otp'" [otpSystem]="'abdm'"
+        <app-verify-by-abha-otp *ngIf="!isAbhaCreated&&activeMethod === 'abha-number-abha-otp'" [otpSystem]="'abdm'"
             (verified)="onVerified($event)"></app-verify-by-abha-otp>
 
-        <app-verify-by-abha-otp *ngIf="activeMethod === 'abha-number-aadhaar-otp'" [otpSystem]="'aadhaar'"
-            (verified)="onVerified($event)"></app-verify-by-abha-otp>
+        <app-verify-by-abha-otp *ngIf="!isAbhaCreated&&activeMethod === 'abha-number-aadhaar-otp'"
+            [otpSystem]="'aadhaar'" (verified)="onVerified($event)"></app-verify-by-abha-otp>
 
-        <app-verify-by-mobile *ngIf="activeMethod === 'mobile-otp'"
+        <app-verify-by-mobile *ngIf="!isAbhaCreated&&activeMethod === 'mobile-otp'"
             (verified)="onVerified($event)"></app-verify-by-mobile>
 
-        <app-verify-by-aadhaar *ngIf="activeMethod === 'aadhaar-otp'"
+        <app-verify-by-aadhaar *ngIf="!isAbhaCreated&&activeMethod === 'aadhaar-otp'"
             (verified)="onVerified($event)"></app-verify-by-aadhaar>
     </div>
 
     <!-- ============== VERIFIED PROFILE ============== -->
-    <app-verified-profile-card *ngIf="verifiedProfile" [profile]="verifiedProfile"
+    <app-profile-card-step *ngIf="isAbhaCreated" [token]="token" (reset)="resetFlow()"></app-profile-card-step>
+    <!-- <app-verified-profile-card *ngIf="verifiedProfile" [profile]="verifiedProfile"
         bannerTitle="ABHA verified successfully" [bannerSubtitle]="bannerSubtitle" [showLockedTags]="false"
         [bannerColor]="'blue'" resetButtonLabel="Verify another ABHA"
-        (reset)="onResetFromProfile()"></app-verified-profile-card>
+        (reset)="onResetFromProfile()"></app-verified-profile-card> -->
 </div>

@@ -85,7 +85,7 @@ export class VerifyByMobileComponent implements OnInit {
             return;
         }
         this.loading = true;
-        this.abhaService.requestMobileOtp({ AadhaarNumber: this.pickForm.value.ABHANumber })
+        this.abhaService.requestMobileOtp({ AadhaarNumber: this.mobileForm.value.mobile })
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.txnId = r.txnId;

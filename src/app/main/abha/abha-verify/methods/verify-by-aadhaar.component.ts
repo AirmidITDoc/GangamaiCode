@@ -16,7 +16,7 @@ import { AbhaValidators } from '../../abha.validators';
     styleUrls: ['./method-shared.scss']
 })
 export class VerifyByAadhaarComponent implements OnInit {
-    @Output() verified = new EventEmitter<AbhaProfile>();
+    @Output() verified = new EventEmitter<string>();
 
     step: 1 | 2 = 1;
     aadhaarForm!: FormGroup;
@@ -25,17 +25,13 @@ export class VerifyByAadhaarComponent implements OnInit {
     loading = false;
     resendRemaining = 2;
     txnId = '';
-
-    demoAadhaar: string;
-    demoOtp: string;
+    msg="";
 
     constructor(
         private fb: FormBuilder,
         private abhaService: AbhaService,
         private snack: MatSnackBar
     ) {
-        // this.demoAadhaar = svc.DEMO_AADHAAR;
-        // this.demoOtp = svc.DEMO_OTP;
     }
 
     ngOnInit(): void {
@@ -75,6 +71,7 @@ export class VerifyByAadhaarComponent implements OnInit {
             .subscribe((r: AadhaarGenerateOtpResponse) => {
                 if (r.txnId) {
                     this.txnId = r.txnId;
+                    this.msg=r.message;
                     this.step = 2;
                     this.snack.open(r.message, 'OK', { duration: 2500 });
                 }
@@ -96,7 +93,7 @@ export class VerifyByAadhaarComponent implements OnInit {
                 if (r.txnId) {
                     if (r.authResult === 'success' && r.accounts) {
                         this.snack.open(r.message, 'OK', { duration: 1800 });
-                        // this.verified.emit(r.accounts);
+                        this.verified.emit(r.token);
                     } else {
                         this.otpForm.get('otp')?.setErrors({ invalid: r.message });
                         this.snack.open(r.message, 'OK', { duration: 3000 });
