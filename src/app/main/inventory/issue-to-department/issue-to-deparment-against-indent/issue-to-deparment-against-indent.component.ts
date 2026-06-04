@@ -33,7 +33,8 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
     Charglist1: any = [];
     FromStoreList: any = [];
     filteredOptionsStore: Observable<string[]>;
-
+  IsMaterialAccept: boolean = false;
+    IsIndentAgainstMaterialAccept: boolean = false;
     displayedColumns: string[] = [
         // 'CheckBox',
         'Priority',
@@ -67,10 +68,21 @@ export class IssueToDeparmentAgainstIndentComponent implements OnInit {
         private accountService: AuthenticationService,
         private _loggedService: AuthenticationService
     ) { }
-
+  Status = ''
     ngOnInit(): void {
         this.IndentFrom = this._IssueToDep.createIndentFrom()
         this.getIndentList()
+
+          if (this.IsMaterialAccept)
+            this.Status = 'Material Direct issued with Acceptance'
+        else
+            this.Status = 'Material Issued without Acceptance'
+
+        if (this.IsIndentAgainstMaterialAccept)
+            this.Status = 'Indent Against Material issued with Acceptance'
+        else
+            this.Status = 'Indent Against  Material  issued without Acceptance'
+
     }
 
 

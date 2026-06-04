@@ -23,6 +23,11 @@ import { MobileStepComponent } from './steps/mobile-step/mobile-step.component';
 import { OtpStepComponent } from './steps/otp-step/otp-step.component';
 import { ProfileCardStepComponent } from './steps/profile-card-step/profile-card-step.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { AbhaComponent } from './abha.component';
+import { AbhaVerifyComponent } from './abha-verify/abha-verify.component';
+import { VerifyByAbhaOtpComponent } from './abha-verify/methods/verify-by-abha-otp.component';
+import { VerifyByMobileComponent } from './abha-verify/methods/verify-by-mobile.component';
+import { VerifyByAadhaarComponent } from './abha-verify/methods/verify-by-aadhaar.component';
 
 
 const appRoutes: Routes = [
@@ -32,14 +37,14 @@ const appRoutes: Routes = [
     // { path: 'profile', component: AbhaProfileComponent, title: 'ABHA Profile' },
     {
         path: "**",
-        component: AbhaStepperComponent
+        component: AbhaComponent
     }
 ];
 
 @NgModule({
     declarations: [
         AbhaStepperComponent, OtpInputComponent, AadhaarStepComponent, AbhaAddressStepComponent, MobileStepComponent, OtpStepComponent,
-        ProfileCardStepComponent
+        ProfileCardStepComponent, AbhaComponent,AbhaVerifyComponent,VerifyByAbhaOtpComponent,VerifyByMobileComponent,VerifyByAadhaarComponent
     ],
     imports: [
         RouterModule.forChild(appRoutes),

@@ -1,0 +1,147 @@
+/* Shared styles for all "verify by …" method components */
+
+.method-card-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.method-steps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.m-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #6b7280;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+
+  .step-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  &.active .step-num {
+    background: #111827;
+    color: white;
+  }
+  &.active .step-label { color: #111827; }
+
+  &.done .step-num {
+    background: #16a34a;
+    color: white;
+  }
+  &.done .step-label { color: #111827; }
+}
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: #e5e7eb;
+  border-radius: 1px;
+}
+
+.method-h3 {
+  margin: 0 0 22px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.info-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.5;
+  margin-bottom: 20px;
+
+  strong { color: #111827; }
+}
+
+.field-block { margin-bottom: 20px; }
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.helper-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 4px 0 0;
+
+  strong { color: #111827; font-weight: 600; }
+}
+
+.mono {
+  font-family: 'Courier New', monospace;
+  background: #eef2ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #4338ca;
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+
+  .resend-info {
+    font-size: 13px;
+    color: #6b7280;
+
+    strong { color: #111827; }
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  &.end { justify-content: flex-end; }
+}
+
+.action-btn,
+.back-btn {
+  min-width: 130px;
+  height: 42px;
+  font-weight: 600;
+}
+
+.full-width {
+  width: 100%;
+}
+
+::ng-deep .method-card-wrap .mat-mdc-form-field { width: 100%; }

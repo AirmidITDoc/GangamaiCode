@@ -90,4 +90,36 @@ export class AbhaValidators {
     }
     return null;
   }
+
+  /**
+   * ABHA Number — 14 digits.
+   * Accepts:
+   *  - "91XXXXXXXXXXXX" (raw 14 digits)
+   *  - "91-XXXX-XXXX-XXXX" (hyphenated)
+   * Validates: exactly 14 digits after hyphens stripped, starts with "91".
+   */
+  static abhaNumber(control: AbstractControl): ValidationErrors | null {
+    const value: string = control.value;
+    if (!value) return null;
+    const digits = value.replace(/[-\s]/g, '');
+    if (!/^\d{14}$/.test(digits)) {
+      return { abhaNumber: 'ABHA number must be 14 digits' };
+    }
+    if (!digits.startsWith('91')) {
+      return { abhaNumber: 'ABHA number must start with 91' };
+    }
+    return null;
+  }
+
+  /** Strip ABHA number to raw 14 digits */
+  static normalizeAbhaNumber(value: string): string {
+    return (value || '').replace(/[-\s]/g, '');
+  }
+
+  /** Format raw 14-digit ABHA number as 91-XXXX-XXXX-XXXX */
+  static formatAbhaNumber(raw: string): string {
+    const d = AbhaValidators.normalizeAbhaNumber(raw);
+    if (d.length !== 14) return raw;
+    return `${d.slice(0, 2)}-${d.slice(2, 6)}-${d.slice(6, 10)}-${d.slice(10, 14)}`;
+  }
 }

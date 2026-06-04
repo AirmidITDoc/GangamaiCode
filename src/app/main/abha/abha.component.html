@@ -1,0 +1,21 @@
+<div class="app-container">
+
+    <!-- Top mode switcher -->
+    <div class="mode-bar">
+        <div class="mode-tabs">
+            <button class="mode-tab" [class.active]="mode === 'create'" (click)="setMode('create')">
+                <mat-icon>person_add</mat-icon>
+                Create ABHA
+            </button>
+            <button class="mode-tab" [class.active]="mode === 'verify'" (click)="setMode('verify')">
+                <mat-icon>verified_user</mat-icon>
+                Verify Existing ABHA
+            </button>
+        </div>
+    </div>
+
+    <ng-container [ngSwitch]="mode">
+        <app-abha-stepper *ngSwitchCase="'create'"></app-abha-stepper>
+        <app-abha-verify *ngSwitchCase="'verify'"></app-abha-verify>
+    </ng-container>
+</div>

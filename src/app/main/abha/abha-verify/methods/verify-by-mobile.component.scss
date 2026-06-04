@@ -1,0 +1,128 @@
+/* Account picker (step 3 of mobile flow) */
+
+.account-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.account-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: white;
+  padding: 14px 16px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  transition: all 0.15s ease;
+
+  &:not(:disabled):hover {
+    border-color: #cbd5e1;
+    background: #f9fafb;
+  }
+
+  &.selected {
+    border-color: #111827;
+    background: #f3f4f6;
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .acc-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon { color: #6b7280; }
+  }
+
+  .acc-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .acc-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+  }
+
+  .acc-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  .acc-meta {
+    font-size: 12px;
+    color: #4b5563;
+    margin-bottom: 2px;
+
+    .mono {
+      font-family: 'Courier New', monospace;
+      background: transparent;
+      padding: 0;
+      color: #4b5563;
+    }
+  }
+
+  .acc-sub {
+    font-size: 11px;
+    color: #6b7280;
+  }
+
+  .acc-check {
+    color: #16a34a;
+    flex-shrink: 0;
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+
+  mat-icon {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  &.badge-success {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  &.badge-status {
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    &[data-status="ACTIVE"]      { background: #dcfce7; color: #166534; .dot { background: #16a34a; } }
+    &[data-status="INACTIVE"],
+    &[data-status="DEACTIVATED"] { background: #fee2e2; color: #991b1b; .dot { background: #dc2626; } }
+    &[data-status="SUSPENDED"]   { background: #fef3c7; color: #92400e; .dot { background: #f59e0b; } }
+  }
+}

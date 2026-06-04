@@ -168,14 +168,14 @@ export class NewIssueTodeptComponent {
 
 
         if (this.IsMaterialAccept)
-            this.Status = 'Issed Material Directly Accepted By Department'
+            this.Status = 'Material Direct issued with Acceptance'
         else
-            this.Status = 'Material Issued Only To Department'
+            this.Status = 'Material Issued without Acceptance'
 
         if (this.IsIndentAgainstMaterialAccept)
-            this.Status = 'Indent Against Issed Material Directly Accepted By Department'
+            this.Status = ' Indent Against Material issued with Acceptance'
         else
-            this.Status = 'Indent Against  Material Issued Only To Department'
+            this.Status = 'Indent Against  Material  issued without Acceptance'
 
 
         // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
@@ -975,7 +975,7 @@ export class NewIssueTodeptComponent {
             });
             return;
         }
-
+debugger
         if (!this.IssueFinalForm.invalid) {
             if (this.vIndentId > 0) {
                 if (this.IsIndentAgainstMaterialAccept)

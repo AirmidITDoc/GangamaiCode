@@ -19,6 +19,18 @@ export interface AadhaarGenerateOtpRequest {
     AadhaarNumber: string; // 12 digits — your backend should encrypt before sending to ABDM
 }
 
+export interface VerifyUser {
+    ABHANumber: string;
+    txnId: string;
+}
+
+export interface VerifyUserResponse {
+    refreshExpiresIn: number,
+    refreshToken: string,
+    expiresIn: number,
+    token: string
+}
+
 export interface AadhaarGenerateOtpResponse {
     txnId: string;
     message?: string; // masked last 4
@@ -42,6 +54,25 @@ export interface MobileOtpVerifyRequest {
     txnId: string;
     otp: string;
 }
+
+export interface AbhaOtpVerify {
+    txnId: string
+    authResult: string
+    message: string
+    token: string
+    expiresIn: number
+    refreshToken: string
+    refreshExpiresIn: number
+    accounts: Account[]
+}
+
+export interface Account {
+    ABHANumber: string
+    preferredAbhaAddress: string
+    name: string
+    status: string
+}
+
 
 // ---------- Create ABHA via Mobile ----------
 
@@ -160,12 +191,12 @@ export interface AbhaData {
 }
 
 export const CONSENT_ITEMS: string[] = [
-    //   'I am voluntarily sharing my Aadhaar number and demographic information for the sole purpose of creating an ABHA.',
-    //   'I authorize NHA to use my Aadhaar number for issuing an ABHA, and authenticate my identity through Aadhaar Authentication system.',
-    //   'I authorize the sharing of my demographic information with the Health Information Exchange Consent Manager.',
-    //   'I want my ABHA to be linked with the Consent Manager.',
-    //   'I understand that my ABHA can be used and shared for purposes as may be notified by ABDM from time to time.',
-    //   'I consent to the collection, storage and use of my personal data by Dr. Anita Sharma.',
+    'I am voluntarily sharing my Aadhaar number and demographic information for the sole purpose of creating an ABHA.',
+    'I authorize NHA to use my Aadhaar number for issuing an ABHA, and authenticate my identity through Aadhaar Authentication system.',
+    'I authorize the sharing of my demographic information with the Health Information Exchange Consent Manager.',
+    'I want my ABHA to be linked with the Consent Manager.',
+    'I understand that my ABHA can be used and shared for purposes as may be notified by ABDM from time to time.',
+    'I consent to the collection, storage and use of my personal data by Dr. Anita Sharma.',
     'I, (beneficiary name), have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.'
 ];
 
