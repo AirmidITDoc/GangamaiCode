@@ -1,23 +1,19 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { ApiCaller } from 'app/core/services/apiCaller';
 import {
     AadhaarGenerateOtpRequest,
     AadhaarGenerateOtpResponse,
     AadhaarVerifyOtpRequest,
     AadhaarVerifyOtpResponse,
-    AbhaLoginOtpRequest,
-    AbhaLoginOtpResponse,
-    AbhaLoginVerifyRequest,
+    AbhaOtpVerify,
     AbhaProfile,
     CreateAbhaResult,
-    MobileEnrolRequest,
-    MobileGenerateOtpRequest,
-    MobileGenerateOtpResponse,
     MobileOtpVerifyRequest,
+    VerifyUser,
+    VerifyUserResponse
 } from './abha-model';
-import { ApiCaller } from 'app/core/services/apiCaller';
 
 /**
  * AbhaService
@@ -54,24 +50,35 @@ export class AbhaService {
         return this.http.PostData('aadhaar/enrol', { txnId });
     }
 
-    // ---------------- Create ABHA via Mobile ----------------
-
-    mobileGenerateOtp(body: MobileGenerateOtpRequest): Observable<MobileGenerateOtpResponse> {
-        return this.http.PostData('mobile/generate-otp', body);
-    }
-
-    mobileEnrol(body: MobileEnrolRequest): Observable<CreateAbhaResult> {
-        return this.http.PostData('mobile/enrol', body);
-    }
-
     // ---------------- Verify / Login existing ABHA ----------------
 
-    loginGenerateOtp(body: AbhaLoginOtpRequest): Observable<AbhaLoginOtpResponse> {
-        return this.http.PostData('login/generate-otp', body);
+    requestAbhaAadharOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('Abha/existing/request-abha-aadhar-otp', body);
+    }
+    requestAbhaOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('Abha/existing/request-abha-otp', body);
+    }
+    requestAadharOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('Abha/existing/request-aadhar-otp', body);
+    }
+    requestMobileOtp(body: AadhaarGenerateOtpRequest): Observable<AadhaarGenerateOtpResponse> {
+        return this.http.PostData('Abha/existing/mobile-otp', body);
     }
 
-    loginVerifyOtp(body: AbhaLoginVerifyRequest): Observable<CreateAbhaResult> {
-        return this.http.PostData('login/verify-otp', body);
+    verifyAbhaAadharOtp(body: MobileOtpVerifyRequest): Observable<AbhaOtpVerify> {
+        return this.http.PostData('Abha/existing/verify-abha-aadhar-otp', body);
+    }
+    verifyAbhaOtp(body: MobileOtpVerifyRequest): Observable<AbhaOtpVerify> {
+        return this.http.PostData('Abha/existing/verify-abha-otp', body);
+    }
+    verifyAadharOtp(body: MobileOtpVerifyRequest): Observable<AbhaOtpVerify> {
+        return this.http.PostData('Abha/existing/verify-aadhar-otp', body);
+    }
+    verifyMobileOtp(body: MobileOtpVerifyRequest): Observable<AbhaOtpVerify> {
+        return this.http.PostData('Abha/existing/verify-mobile-otp', body);
+    }
+    verifyUser(body: VerifyUser): Observable<VerifyUserResponse> {
+        return this.http.PostData('Abha/existing/verify-mobile-otp', body);
     }
 
     // ---------------- Profile, QR, Card ----------------

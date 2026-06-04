@@ -35,17 +35,17 @@ app-sale-popup{
     text-align: left;
   }
 
-  .mat-column-BatchExpDate {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+  .mat-column-batchExpDate {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     text-align: left;
   }
   
-  .mat-column-BalanceQty {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+  .mat-column-balanceQty {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
     text-align: left;
   }
  
@@ -70,20 +70,13 @@ app-sale-popup{
     text-align: left;
   }
 
-  .mat-column-ConversionFactor {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
+  .mat-column-converFacto {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
     text-align: left;
   }
-
-// .ellipsis{
-//     white-space: nowrap; 
-//     overflow: hidden;    
-//     text-overflow: ellipsis; 
-//     display: block;    
-//     max-width: 150px; 
-//   }
+ 
 .ellipsis-text {
   display: inline-block;
   white-space: nowrap;
@@ -106,5 +99,30 @@ app-sale-popup{
 ::ng-deep .sale-table .mat-mdc-row:hover {
   background-color: rgb(171, 171, 171);
 }
+mat-cell {
+  .compact-field {
+    margin: -8px 0;
+    
+    ::ng-deep .mat-form-field-appearance-outline {
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+      
+      .mat-form-field-flex {
+        padding: 0 8px;
+        margin-top: 0;
+      }
+      
+      .mat-form-field-outline {
+        top: 0;
+      }
+      
+      .mat-form-field-infix {
+        padding: 8px 0;
+      }
+    }
+  }
+}
+
 
 

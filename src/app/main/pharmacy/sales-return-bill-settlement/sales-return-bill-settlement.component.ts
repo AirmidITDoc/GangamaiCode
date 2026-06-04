@@ -1116,6 +1116,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
             discAmount: [item?.discAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             balanceAmount: [item?.balanceAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionReasonId: [item?.concessionReasonId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            createdBy: this._loggedService.currentUserValue.userId 
         })
     }
     get applydiscgloblearray(): FormArray {
@@ -1170,6 +1171,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     }
 
     OnSaveGlobelDisc() {
+        debugger
         const formvalue = this.MutliSettlemForm.value
         if (!this.dssalesbillListMultiple.data.length) {
             this.toastr.warning('Please check table is blank', 'Warning')

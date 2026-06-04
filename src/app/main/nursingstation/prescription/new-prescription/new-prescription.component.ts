@@ -74,6 +74,7 @@ export class NewPrescriptionComponent implements OnInit {
     SaveFlag: boolean = true
     dsPresList = new MatTableDataSource<MedicineItemList>();
     dsItemList = new MatTableDataSource<PrecriptionItemList>();
+    dsTemplateItemList = new MatTableDataSource<PrecriptionItemList>();
     vMediId: any = 0
 
     autocompletestore: string = "PharmacyStore";
@@ -96,6 +97,12 @@ export class NewPrescriptionComponent implements OnInit {
         'Remark',
         'Action'
     ]
+
+      TempdisplayedColumns: string[] = [ 
+        'Action',
+        'ItemName' 
+    ]
+
 
     @ViewChild('qtyTextboxRef', { read: ElementRef }) qtyTextboxRef: ElementRef;
     @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
@@ -130,6 +137,7 @@ export class NewPrescriptionComponent implements OnInit {
         console.log("data:", this.data)
 
         if (this.data.medicalRecoredId > 0)
+            debugger
             this.registerObj = this.data
         this.vMediId = this.data.medicalRecoredId
         this.vPatientName = this.registerObj.patientName
@@ -297,10 +305,30 @@ export class NewPrescriptionComponent implements OnInit {
     selectChangeTemplateName(row) {
         this.templateId = row.presId
         this.templateName = row.presTemplateName
+        this.onTemplDetAdd(false);
     }
-
+    AddList(contact) {
+        debugger
+         const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == (contact.itemID ?? contact.drugId))
+        if (!iscekDuplicate) { 
+            this.Chargelist.push({
+                ItemID: contact.drugId,
+                ItemName: contact.drugName,
+                Qty: contact.totalQty,
+                Remark: contact.instruction,
+                    ...contact
+            }); 
+        this.dsItemList.data = this.Chargelist;
+        console.log('Template data:', this.dsItemList.data)
+    }else{
+         this.toastr.warning('Selected Template Details already added in the list ', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return; 
+    }
+    }
     FetchList: any = [];
-    onTemplDetAdd() {
+    onTemplDetAdd(Obj) {
         if (!this.ItemForm.get("TemplateId")?.value) {
             this.toastr.warning('Please select a Template Name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -315,29 +343,23 @@ export class NewPrescriptionComponent implements OnInit {
                 "rows": 999,
                 "sortField": "Presid",
                 "sortOrder": 0,
-                "filters": [
-                    {
-                        "fieldName": "Presid",
-                        "fieldValue": String(this.templateId),//"40773",	
-                        "opType": "Equals"
-                    }
-                ],
+                "filters": [{"fieldName": "Presid", "fieldValue": String(this.templateId),//"40773",	
+                        "opType": "Equals"}],
                 "Columns": [],
                 "exportType": "JSON"
-            }
-
+            } 
             this._PrescriptionService.getTempPrescriptionList(vdata).subscribe(data => {
                 // this.dsItemList.data = data.data as MedicineItemList[];
-                this.Chargelist = data.data as MedicineItemList[];
-
+                console.log(data.data)
+                if(Obj == true){
+                this.Chargelist = data.data as MedicineItemList[]; 
                 this.Chargelist = data.data.map(x => ({
                     ItemID: x.itemID ?? x.drugId,
                     ItemName: x.itemName ?? x.drugName,
                     Qty: x.totalQty,
                     Remark: x.instruction,
                     ...x
-                }));
-
+                })); 
                 // add FetchList items
                 this.FetchList.forEach(element => {
                     this.Chargelist.push({
@@ -346,9 +368,21 @@ export class NewPrescriptionComponent implements OnInit {
                         Qty: element.totalQty,
                         Remark: element.instruction,
                     });
-                });
+                }); 
                 this.dsItemList.data = this.Chargelist;
                 console.log('Template data:', this.dsItemList.data)
+                this.ItemForm.get('TemplateId').reset('');
+                this.SaveFlag = false;
+            }
+            else{
+                   this.dsTemplateItemList.data = data.data.map(x => ({
+                    ItemID: x.itemID ?? x.drugId,
+                    ItemName: x.itemName ?? x.drugName,
+                    Qty: x.totalQty,
+                    Remark: x.instruction,
+                    ...x
+                })); 
+            }
             });
         }
         else {
@@ -357,12 +391,11 @@ export class NewPrescriptionComponent implements OnInit {
             });
             return;
         }
-        this.ItemForm.get('TemplateId').reset('');
-        this.SaveFlag = false;
+     
     }
 
     onAdd() {
-
+debugger
         if (!this.ItemForm.invalid) {
             const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.vitemId)
             if (!iscekDuplicate) {

@@ -355,7 +355,7 @@
                           <airmid-autocomplete label="Item Name (enter 2 char)"
                             [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
                             placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
-                            [ApiUrl]="'ItemMaster/GetItemListforSalesPage?StoreId=' + StoreId + '&ItemName='"
+                            [ApiUrl]="'ItemMaster/NewGetItemListforSalesPage?StoreId=' + StoreId + '&ItemName='"
                             TextField="itemName" ValueField="itemId" (selectionChange)="onItemChange($event)"
                             (keydown.enter)="handleEnterKey($event)" #ItemId></airmid-autocomplete>
                           <!-- (selectionChange)="getSelectedObj($event)"

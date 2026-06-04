@@ -1,0 +1,92 @@
+<mat-card class="method-card-wrap">
+    <mat-card-content>
+        <!-- Step indicator -->
+        <div class="method-steps">
+            <div class="m-step" [class.active]="step === 1" [class.done]="step > 1">
+                <span class="step-num">{{ step > 1 ? '✓' : '1' }}</span>
+                <span class="step-label">ABHA Number</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="m-step" [class.active]="step === 2">
+                <span class="step-num">2</span>
+                <span class="step-label">Verify OTP</span>
+            </div>
+        </div>
+
+        <h3 class="method-h3">{{ title }}</h3>
+
+        <!-- ====== STEP 1 ====== -->
+        <form *ngIf="step === 1" [formGroup]="abhaForm" (ngSubmit)="sendOtp()">
+            <div class="field-block">
+                <label class="field-label">ABHA Number</label>
+                <mat-form-field appearance="outline" class="full-width">
+                    <input matInput formControlName="abhaNumber" placeholder="91-XXXX-XXXX-XXXX" inputmode="numeric"
+                        maxlength="17" autocomplete="off" (input)="onAbhaInput($event)" />
+                    <mat-error *ngIf="abhaForm.get('abhaNumber')?.errors as e">
+                        <span *ngIf="e['required']">ABHA number is required</span>
+                        <span *ngIf="e['abhaNumber']">{{ e['abhaNumber'] }}</span>
+                    </mat-error>
+                </mat-form-field>
+                <p class="helper-text">
+                    OTP will be sent to <strong>{{ channelLabel }}</strong>.
+                    Try <span class="mono">{{ demoAbha }}</span> for demo.
+                </p>
+            </div>
+
+            <div class="actions end">
+                <button mat-raised-button color="primary" type="submit" [disabled]="loading" class="action-btn">
+                    <ng-container *ngIf="!loading">
+                        Send OTP <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                    </ng-container>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+            </div>
+        </form>
+
+        <!-- ====== STEP 2 ====== -->
+        <form *ngIf="step === 2" [formGroup]="otpForm" (ngSubmit)="verifyOtp()">
+            <div class="info-box">
+                We've sent a 6-digit OTP on the <strong>{{ channelLabel }}</strong>. Enter it below to verify your ABHA.
+            </div>
+
+            <div class="field-block">
+                <label class="field-label">6-digit OTP</label>
+                <mat-form-field appearance="outline" class="full-width">
+                    <input matInput type="password" formControlName="otp" placeholder="••••••" inputmode="numeric"
+                        maxlength="6" autocomplete="one-time-code" (input)="onOtpInput($event)" />
+                    <mat-error *ngIf="otpForm.get('otp')?.errors as e">
+                        <span *ngIf="e['required']">OTP is required</span>
+                        <span *ngIf="e['otp']">{{ e['otp'] }}</span>
+                        <span *ngIf="e['invalid']">{{ e['invalid'] }}</span>
+                    </mat-error>
+                </mat-form-field>
+                <p class="helper-text">
+                    Demo OTP: <span class="mono">{{ demoOtp }}</span>
+                </p>
+            </div>
+
+            <div class="row-between">
+                <span class="resend-info">
+                    Resend attempts remaining: <strong>{{ resendRemaining }}/2</strong>
+                </span>
+                <button type="button" mat-button color="primary" (click)="resendOtp()"
+                    [disabled]="resendRemaining === 0 || loading">
+                    <mat-icon>refresh</mat-icon> Resend OTP
+                </button>
+            </div>
+
+            <div class="actions">
+                <button type="button" mat-stroked-button (click)="goBackToStep1()" class="back-btn">
+                    <mat-icon>arrow_back</mat-icon> Back
+                </button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="loading || otpForm.invalid"
+                    class="action-btn">
+                    <ng-container *ngIf="!loading">
+                        Verify <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+                    </ng-container>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                </button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

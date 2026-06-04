@@ -1,21 +1,14 @@
-<div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+<!-- <div class="header accent p-10 p-sm-20" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
     fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
-    <!-- APP TITLE -->
+   
     <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;">
 
         <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
             style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
-            Batch Details :
-            <!-- <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
-            No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
-            Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span> -->
+            Batch Details : 
         </span>
-        <!-- <span style="float: right;background: white;color: black;">
-        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">ri
-        </app-common-date>
-    </span> -->
-
+       
         <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
             <mat-icon>close</mat-icon>
         </button>
@@ -23,8 +16,7 @@
 
 </div>
 
-<div fxlayout="column" style="width: 100%;">
-
+<div fxlayout="column" style="width: 100%;"> 
 
     <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8 sale-table" matSort
         [@animateStagger]="{value:'50'}" style="overflow:auto;margin-top: 10px;">
@@ -32,12 +24,8 @@
             <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.batchNo}} </mat-cell>
         </ng-container>
-
-        <!-- <ng-container matColumnDef="BatchExpDate">
-        <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'MM/yyyy'}} </mat-cell>
-    </ng-container> -->
-        <!-- A TO Z NS DROP 15ML -->
+ 
+         
         <ng-container matColumnDef="batchExpDate" sticky>
             <mat-header-cell *matHeaderCellDef>Exp Date
             </mat-header-cell>
@@ -85,36 +73,18 @@
             <mat-header-cell *matHeaderCellDef class="w-150">
                 itemGenericName</mat-header-cell>
             <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
-                <!-- {{contact.ReportHeader || '-'}} -->
+                
                 <span class="ellipsis-text" [matTooltip]="element.itemGenericName">
                     {{ element.itemGenericName || '-' }}
                 </span>
             </mat-cell>
-        </ng-container>
-
-        <!-- "minQty": 0,      "maxQty": 0,      "itemGenericNameId": 1318,      "itemGenericName": "NA", -->
-
-        <!--<ng-container matColumnDef="loading">
-        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-            <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
-        </mat-header-cell>
-    </ng-container> -->
-
-        <!-- <ng-container matColumnDef="noData">
-        <mat-footer-cell *matFooterCellDef colspan="6">
-            <mat-spinner style="float:left;" [diameter]='30' *ngIf="isLoadingStr=='loading'"></mat-spinner>
-            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
-        </mat-footer-cell>
-    </ng-container> -->
-
+        </ng-container> 
         <mat-header-row class="accent" *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row;let i=index columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"
             [ngStyle]="{
     'background-color': row === selectedRow ? 'rgb(171, 171, 171);' : ''
   }" tabindex="999" [id]="'row' + i" (click)="selectNewRow(row,i)"></mat-row>
-        <!-- <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
-    <mat-footer-row *matFooterRowDef="['noData']"
-        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}"></mat-footer-row> -->
+       
     </mat-table>
 
     <div class="info-badge-top pb-2 border-bottom" style="padding-left: 5px;">
@@ -133,4 +103,206 @@
             </div>
         </div>
     </div>
+</div> -->
+
+
+<div class="modal-page page-layout inner-scroll"   >
+    <div class="modal-wrapper grid-container">
+    <!-- <div class="modal-header accent " style="height: 40px;">
+        <div class="modal-header-content" fxLayoutAlign="space-between center">
+            <div class="modal-header-title">
+                  <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+            style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
+            Batch Details : 
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">  
+                    <div class="close-icon" style="padding: 10px;">
+                        <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog">
+                         <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div> -->
+
+    <div class="modal-header accent">
+        <div class="modal-header-content p-8">
+            <div class="top-header-title" fxLayoutAlign="space-between center">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                    Batch Details :
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog"
+                        style="padding:0;height: 25px;">
+                        <mat-icon style="font-size:18px;">close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p"> 
+                    <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                        <div class="airmid-table-container"> 
+                                <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" class="airmid-table table3"
+                                    style="overflow: auto;">
+
+                                <ng-container matColumnDef="drugTypeName">
+                                    <mat-header-cell *matHeaderCellDef class="w-150">
+                                        Drug Type Name
+                                    </mat-header-cell> 
+                                    <mat-cell *matCellDef="let element" class="w-150" 
+                                      [style.background-color]="
+                                        element.drugTypeName == 'IsNarcotic' ? '#F44336' :
+                                        element.drugTypeName == 'IsHighRisk' ? '#FF9800' :
+                                        element.drugTypeName == 'IsScheduleX' ? '#673AB7' :
+                                        element.drugTypeName == 'IsH1Drug' ? '#2196F3' :
+                                        element.drugTypeName == 'IsLASA' ? '#FFC107' :
+                                        element.drugTypeName == 'IsScheduleH' ? '#4CAF50' : 'inherit'  "
+                                        [matTooltip]="element.drugTypeName ? 'Drug Type: ' + element.drugTypeName : 'N/A'">
+                                        {{element.drugTypeName ||  'N/A' }}
+                                    </mat-cell>
+                                </ng-container>
+                                    
+                                    <ng-container matColumnDef="batchNo">
+                                        <mat-header-cell *matHeaderCellDef> Batch No </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.batchNo}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <!-- <ng-container matColumnDef="BatchExpDate">
+                                        <mat-header-cell *matHeaderCellDef> Exp Date </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.BatchExpDate | date: 'MM/yyyy'}} </mat-cell>
+                                    </ng-container> -->
+                                    <!-- A TO Z NS DROP 15ML -->
+                                    <ng-container matColumnDef="batchExpDate" sticky>
+                                        <mat-header-cell *matHeaderCellDef>Exp Date
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" [ngClass]="{' red-600 s-16': element.daysFlag ==1}">
+                                            {{element.batchExpDate | date: 'MM/yyyy'}}
+                                        </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="balanceQty">
+                                        <mat-header-cell *matHeaderCellDef> Bal Qty </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.balanceQty}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="unitMRP">
+                                        <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.unitMRP | currency:'INR' }} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="purchaseRate">
+                                        <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.purchaseRate | currency:'INR' }} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="converFacto">
+                                        <mat-header-cell *matHeaderCellDef> Packing </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.conversionFactor}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="landedRate">
+                                        <mat-header-cell *matHeaderCellDef> Landed Rate </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.landedRate | currency:'INR' }} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="ExpDays">
+                                        <mat-header-cell *matHeaderCellDef> Exp Days </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.expDays}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="prodLocation">
+                                        <mat-header-cell *matHeaderCellDef>Location </mat-header-cell>
+                                        <mat-cell *matCellDef="let element"> {{element.prodLocation || '-'}} </mat-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="itemGenericName">
+                                        <mat-header-cell *matHeaderCellDef class="w-150">
+                                            itemGenericName</mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
+                                            <!-- {{contact.ReportHeader || '-'}} -->
+                                            <span class="ellipsis-text" [matTooltip]="element.itemGenericName">
+                                                {{ element.itemGenericName || '-' }}
+                                            </span>
+                                        </mat-cell>
+                                    </ng-container>
+                                
+                                    <!-- "minQty": 0,      "maxQty": 0,      "itemGenericNameId": 1318,      "itemGenericName": "NA", -->
+                                
+                                    <!--<ng-container matColumnDef="loading">
+                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                            <mat-spinner style="float:left;" [diameter]='30'></mat-spinner>
+                                        </mat-header-cell>
+                                    </ng-container> -->
+                                
+                                    <!-- <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <mat-spinner style="float:left;" [diameter]='30' *ngIf="isLoadingStr=='loading'"></mat-spinner>
+                                            <span *ngIf="isLoadingStr=='no-data'">No data found...</span>
+                                        </mat-footer-cell>
+                                    </ng-container> -->
+                                    <ng-container matColumnDef="loading">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            loading data...
+                                        </mat-footer-cell>
+                                    </ng-container>
+                                
+                                    <ng-container matColumnDef="noData">
+                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                            <span>No Data Found</span>
+                                        </mat-footer-cell>
+                                    </ng-container>
+                                
+                                
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                    <mat-row *matRowDef="let contact; columns: displayedColumns; let i = index" tabindex="999" class="contact"
+                                        [@animate]="{ value: '*', params: { y: '100%' } }"
+                                        [ngStyle]="{'background-color': row === selectedRow ? 'rgb(171, 171, 171);' : '' }"
+                                        (click)="selectNewRow(row,i)" appHighlight></mat-row>
+                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                        [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
+                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                        [ngClass]="{ hide: !(dataSource != null && dataSource.data.length == 0) }"></mat-footer-row>
+                                </mat-table>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+            <!-- Footer -->
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+
+            <div class="modal-footer-buttons">
+                   <div class="info-badge-top pb-2 border-bottom" style="padding-left: 5px;">
+        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span>: High Risk</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                <span>: Expired </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                <span>: Near To Expiry</span>
+            </div>
+        </div>
+    </div>
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
+
+ 
