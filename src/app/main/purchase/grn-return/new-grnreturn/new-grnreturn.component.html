@@ -131,26 +131,50 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="ConversionFactor" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                             Packing</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                             {{contact.conversion}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="BalanceQty" sticky>
+                                      <ng-container matColumnDef="receiveQty">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                            Bal_Qty</mat-header-cell>
+                                            Received Qty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.receiveQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="BalanceQty" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
+                                            Bal_Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                             {{contact.balanceQty}}
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="receiveQty" sticky>
+                                       <ng-container matColumnDef="freeQty"  >
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                            Recevied Qty</mat-header-cell>
+                                            Receive FreeQty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                            {{contact.receiveQty}}
+                                            {{contact.freeQty}}
+                                        </mat-cell>
+                                    </ng-container>  
+
+                                     <ng-container matColumnDef="AvilreceiveQty"  >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            Avail.FreeQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.AvailReceiveFreeQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                     <ng-container matColumnDef="AvilFreeQty"  >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                          Avail.ReceiveQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.AvailReceiveQty}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -166,6 +190,20 @@
                                             </mat-form-field>
                                         </mat-cell>
                                     </ng-container>
+
+                                     <ng-container matColumnDef="returnFreeQty" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                            class="w-100">Return FreeQty
+                                        </mat-header-cell>
+                                        <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
+                                            <mat-form-field appearance="fill">
+                                                <input matInput [(ngModel)]="contact.returnFreeQty" type="text" OnlyNumber 
+                                                    (keypress)="keyPressAlphanumeric($event)"
+                                                      (ngModelChange)="getCellCalculation(contact,contact.returnQty)">
+                                            </mat-form-field>
+                                        </mat-cell>
+                                    </ng-container>
+
 
                                     <ng-container matColumnDef="MRP">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
@@ -247,6 +285,22 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                     <ng-container matColumnDef="totalreturnfreeqty" >
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                          TotalRetFreeQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            {{contact.totalreturnfreeqty}}
+                                        </mat-cell>
+                                    </ng-container> 
+
+                                      <ng-container matColumnDef="totalreturnqty">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
+                                             TotalReturnQty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                            {{contact.totalreturnqty}}
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="GRNID">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                             GRNID</mat-header-cell>
@@ -266,11 +320,11 @@
                                         </mat-footer-cell>
                                     </ng-container>
 
-                                    <mat-header-row class="accent min-width-1800"
+                                    <mat-header-row class="accent min-width-1950"
                                         *matHeaderRowDef="displayedColumns3; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let contact; columns: displayedColumns3;"
-                                        class="contact min-width-1800" [@animate]="{value:'*',params:{y:'100%'}}">
+                                        class="contact min-width-1950" [@animate]="{value:'*',params:{y:'100%'}}">
                                     </mat-row>
                                     <mat-footer-row *matFooterRowDef="['loading']"
                                         [ngClass]="{'hide':dsGrnItemList!=null}"></mat-footer-row>

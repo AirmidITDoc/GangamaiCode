@@ -32,8 +32,12 @@ export class NewGRNReturnComponent implements OnInit {
         "BatchExpDate",
         "ConversionFactor",
         "BalanceQty",
+        "freeQty",
         'receiveQty',
+        "AvilFreeQty",
+        "AvilreceiveQty", 
         "ReturnQty",
+        "returnFreeQty",
         "MRP",
         //"Rate",
         "LandedRate",
@@ -44,6 +48,8 @@ export class NewGRNReturnComponent implements OnInit {
         'DiscAmount',
         "NetAmount",
         "TotalQty",
+        "totalreturnqty",
+        "totalreturnfreeqty",
         "stockid",
         "GRNID",
         'Action'
@@ -214,6 +220,7 @@ debugger
             batchNo: [element.batchNo || 0],
             batchExpiryDate: [ExpinputDate, [this._FormvalidationserviceService.validDateValidator()]],
             returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            returnFreeQty: [element.returnFreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             landedRate: [element.landedRate || 0],
             mrp: [element.mrp || 0],
             unitPurchaseRate: [element.mrp || 0],
@@ -232,8 +239,7 @@ debugger
             stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cf: [element.conversion || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             totalQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            grnid: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
+            grnid: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]], 
         });
     }
 
@@ -242,6 +248,7 @@ debugger
     }
 
     createGrnReturnCurrentStockInsert(element: any = {}): FormGroup {
+      //  const issueQty = ((element?.totalQty || 0) + (element?.returnFreeQty || 0) * element?.conversion || 1) || 0
         return this._formbuilder.group({
             itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             issueQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -350,7 +357,12 @@ debugger
                     stkId: element.stkId || 0,
                     grnId: element.grnid || 0,
                     GRNDetID: element.grnDetID || 0,
-                    totalQty: 0
+                    totalQty: 0,
+                    freeQty:element.freeQty || 0,
+                    totalreturnfreeqty:element.totalreturnfreeqty || 0,
+                    totalreturnqty:element.totalreturnqty || 0,
+                    AvailReceiveQty :(element?.receiveQty || 0) - (element?.totalreturnqty || 0) || 0 ,
+                    AvailReceiveFreeQty:(element?.freeQty || 0) - (element?.totalreturnfreeqty || 0) || 0 
                 });
             });
 
@@ -475,14 +487,24 @@ debugger
         }
     }
 
-    RQty: any;
-
-    getCellCalculation(contact, returnQty) {
-        contact.totalQty = (parseInt(contact?.returnQty || 0) * parseInt(contact?.conversion || 0));
-        if (parseInt(contact?.totalQty || 0) > parseInt(contact?.balanceQty || 0)) {
-            this.toastr.warning('Total Qty cannot be greater than Bal Qty', 'Warning !', {
+    RQty: any; 
+    getCellCalculation(contact, returnQty) { 
+        if (parseInt(contact?.returnFreeQty || 0) > (contact?.AvailReceiveFreeQty || 0)) {
+            this.toastr.warning('Return Free Qty cannot be greater than Free Qty', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
-            });
+            }); 
+            contact.returnFreeQty  = 0;
+            return
+        }
+
+         if (parseInt(contact?.returnQty || 0) > (contact?.AvailReceiveQty || 0)) {
+            this.toastr.warning('Return Qty cannot be greater than Receive Qty', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            }); 
+        // if (parseInt(contact?.totalQty || 0) > parseInt(contact?.balanceQty || 0)) {
+        //     this.toastr.warning('Total Qty cannot be greater than Bal Qty', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
             contact.returnQty = 0;
             contact.returnQty = '';
             contact.totalQty = 0;
@@ -490,9 +512,10 @@ debugger
             contact.gstAmount = 0;
             contact.discAmount = 0;
             contact.netAmount = 0;
-        }
+       // }
+    }
         else {
-            contact.totalQty = (parseInt(contact?.returnQty || 0) * parseInt(contact?.conversion || 0));
+            contact.totalQty = (Number(contact?.returnQty || 0) + Number(contact?.returnFreeQty || 0)) *  Number(contact?.conversion || 0);          
             contact.landedTotalAmount = (parseFloat(contact?.returnQty || 0) * parseFloat(contact.landedRate)).toFixed(2);
             contact.gstAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.gstPercentage)) / 100).toFixed(2);
             contact.discAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.discPercentage)) / 100).toFixed(2);
@@ -689,10 +712,11 @@ debugger
         this.dsGrnItemList.data = [];
         this.chargeslist.data = [];
         const dialogRef = this._matDialog.open(GrnListComponent,
-            {
-                // maxWidth: "100%",
-                maxHeight: '95vh',
-                width: '85%',
+            { 
+                maxWidth: "90vw",
+                maxHeight: '100vh',
+                width: '90%',
+                height:'90%',
             });
         dialogRef.afterClosed().subscribe(result => {
             this.isGSTVisible = true;

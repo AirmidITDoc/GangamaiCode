@@ -225,6 +225,7 @@ export class GRNReturnComponent implements OnInit {
                 { heading: "Exp Date", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Packing", key: "conversion", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "RQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "RFreeQty", key: "returnFreeQty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
                 { heading: "Land Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -698,6 +699,7 @@ export class ItemNameList {
     ExpDate: any;
     Qty: number;
     FreeQty: number;
+    freeQty:any;
     MRP: number;
     Rate: number;
     TotalAmount: number;
@@ -820,6 +822,8 @@ export class ItemNameList {
     landedRate: any;
     returnQty: any;
     landedTotalAmount: any;
+    totalreturnfreeqty:any;
+   totalreturnqty:any;
     /**
      * Constructor
      *
@@ -843,6 +847,7 @@ export class ItemNameList {
             this.DiscPer2 = ItemNameList.DiscPer2 || 0;
             this.DiscAmt2 = ItemNameList.DiscAmt2 || 0;
             this.GSTNo = ItemNameList.GSTNo || 0;
+             this.freeQty = ItemNameList.freeQty || 0;
             this.GSTAmount = ItemNameList.GSTAmount || 0;
             this.CGST = ItemNameList.CGST || 0;
             this.CGSTAmount = ItemNameList.CGSTAmount || 0;
@@ -930,6 +935,8 @@ export class ItemNameList {
             this.landedRate = ItemNameList.landedRate || ''
             this.returnQty = ItemNameList.returnQty || ''
             this.landedTotalAmount = ItemNameList.landedTotalAmount || ''
+            this.totalreturnfreeqty = ItemNameList.totalreturnfreeqty || 0;
+               this.totalreturnqty = ItemNameList.totalreturnqty || 0;
         }
     }
 }

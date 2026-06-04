@@ -103,7 +103,10 @@ export class SalesService {
     }
     // ItemMaster/GetItemListForSalesBatchPop?StoreId=2&ItemId=0
     public getBatchList(Param) {
-        return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId=" + Param.StoreId + "&ItemId=" + Param.ItemId);
+    // new with proceduer
+    return this._httpClient1.GetData("ItemMaster/GetProsearch-GetItemListForSalesBatchPop?StoreId=" + Param.StoreId + "&ItemId=" + Param.ItemId);
+    // old link with linq 
+    //return this._httpClient1.GetData("ItemMaster/GetItemListForSalesBatchPop?StoreId=" + Param.StoreId + "&ItemId=" + Param.ItemId);
     }
     public getConcessionCombo() {
         return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
