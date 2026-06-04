@@ -20,114 +20,119 @@
             patientDetails.labRequestNo ||
             patientData?.regNoWithPrefix || 'N/A' }}</span></h4>
         <div>
-          <span class="detail-label">Name:
-            {{ patientData?.patientName ||
-            (patientDetails.firstName || patientDetails.FirstName || '') + ' ' +
-            (patientDetails.middleName || patientDetails.MiddleName || '') + ' ' +
-            (patientDetails.lastName || patientDetails.LastName || '') ||
-            'N/A' }}
-          </span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Gender:{{ patientDetails.genderName || patientDetails.GenderName ||
-            patientData?.genderName || 'N/A' }} | Age:{{ formatAge() }}</span>
-          <!-- <span class="detail-value">{{ patientDetails.genderName || patientDetails.GenderName ||
-              patientData?.genderName || 'N/A' }}</span> -->
-        </div>
+          <div class="detail-grid">
+            <div class="detail-item full-width">
 
-        <!-- <div class="detail-grid"> -->
-        <!-- <div class="detail-item">
+              <span class="detail-label">Name:
+                {{ patientData?.patientName ||
+                (patientDetails.firstName || patientDetails.FirstName || '') + ' ' +
+                (patientDetails.middleName || patientDetails.MiddleName || '') + ' ' +
+                (patientDetails.lastName || patientDetails.LastName || '') ||
+                'N/A' }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Gender:{{ patientDetails.genderName || patientDetails.GenderName ||
+                patientData?.genderName || 'N/A' }} | Age:{{ formatAge() }}</span>
+              <!-- <span class="detail-value">{{ patientDetails.genderName || patientDetails.GenderName ||
+              patientData?.genderName || 'N/A' }}</span> -->
+            </div>
+
+            <!-- <div class="detail-grid"> -->
+            <!-- <div class="detail-item">
             <span class="detail-label">UHID:</span>
             <span>{{ patientDetails.regNoWithPrefix || patientDetails.regNo ||
               patientDetails.labRequestNo ||
               patientData?.regNoWithPrefix || 'N/A' }}</span>
           </div> -->
-        <!-- <div class="detail-item"></div> -->
+            <!-- <div class="detail-item"></div> -->
 
 
-        <!-- <div class="detail-item">
+            <!-- <div class="detail-item">
             <span class="detail-label">Gender:{{ patientDetails.genderName || patientDetails.GenderName ||
               patientData?.genderName || 'N/A' }}</span> -->
-        <!-- <span class="detail-value">{{ patientDetails.genderName || patientDetails.GenderName ||
+            <!-- <span class="detail-value">{{ patientDetails.genderName || patientDetails.GenderName ||
               patientData?.genderName || 'N/A' }}</span> -->
-      <!-- </div> -->
-      <!-- <div class="detail-item">
+            <!-- </div> -->
+            <!-- <div class="detail-item">
             <span class="detail-label">Age:{{ formatAge() }}</span> -->
-      <!-- <span class="detail-value">{{ formatAge() }}</span> -->
-      <!-- </div> -->
-      <div class="detail-item">
-        <span class="detail-label">Date of Birth:>{{ formatDate(patientDetails.dateOfBirth ||
-          patientDetails.DateofBirth ||
-          patientDetails.dateofBirth) }}</span>
-        <!-- <span class="detail-value">{{ formatDate(patientDetails.dateOfBirth || patientDetails.DateofBirth ||
+            <!-- <span class="detail-value">{{ formatAge() }}</span> -->
+            <!-- </div> -->
+            <div class="detail-item">
+              <span class="detail-label">Date of Birth:>{{ formatDate(patientDetails.dateOfBirth ||
+                patientDetails.DateofBirth ||
+                patientDetails.dateofBirth) }}</span>
+              <!-- <span class="detail-value">{{ formatDate(patientDetails.dateOfBirth || patientDetails.DateofBirth ||
               patientDetails.dateofBirth) }}</span> -->
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Mobile No:{{ patientDetails.mobileNo || patientDetails.MobileNo ||
-          patientData?.mobileNo ||
-          'N/A' }}</span>
-        <!-- <span class="detail-value">{{ patientDetails.mobileNo || patientDetails.MobileNo || patientData?.mobileNo ||
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Mobile No:{{ patientDetails.mobileNo || patientDetails.MobileNo ||
+                patientData?.mobileNo ||
+                'N/A' }}</span>
+              <!-- <span class="detail-value">{{ patientDetails.mobileNo || patientDetails.MobileNo || patientData?.mobileNo ||
               'N/A' }}</span> -->
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Phone No:{{ patientDetails.phoneNo || patientDetails.PhoneNo || 'N/A' }}</span>
-        <!-- <span class="detail-value">{{ patientDetails.phoneNo || patientDetails.PhoneNo || 'N/A' }}</span> -->
-      </div>
-    </div>
-    <!-- </div> -->
-    <hr>
-    <!-- Address Information -->
-    <div class="detail-section"
-      *ngIf="patientDetails.address || patientDetails.Address || patientDetails.city || patientDetails.City">
-      <!-- <h4 class="section-title">Address</h4> -->
-      <div class="detail-grid">
-        <div class="detail-item full-width">
-          <span class="detail-label">Address:{{ patientDetails.address || patientDetails.Address || 'N/A' }}</span>
-          <!-- <span class="detail-value">{{ patientDetails.address || patientDetails.Address || 'N/A' }}</span> -->
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">City:{{ patientDetails.city || patientDetails.City || 'N/A' }}</span>
-          <!-- <span class="detail-value">{{ patientDetails.city || patientDetails.City || 'N/A' }}</span> -->
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Pin Code:{{ patientDetails.pinNo || patientDetails.PinNo || 'N/A' }}</span>
-          <!-- <span class="detail-value">{{ patientDetails.pinNo || patientDetails.PinNo || 'N/A' }}</span> -->
-        </div>
-      </div>
-    </div>
-    <hr>
-    <!-- Additional Information -->
-    <div class="detail-section">
-      <h4 class="section-title">Additional Information</h4>
-      <div class="detail-grid">
-        <div class="detail-item" *ngIf="patientDetails.aadharCardNo || patientDetails.AadharCardNo">
-          <span class="detail-label">National Card:
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Phone No:{{ patientDetails.phoneNo || patientDetails.PhoneNo || 'N/A' }}</span>
+              <!-- <span class="detail-value">{{ patientDetails.phoneNo || patientDetails.PhoneNo || 'N/A' }}</span> -->
+            </div>
+          </div>
+          <!-- </div> -->
+          <hr>
+          <!-- Address Information -->
+          <div class="detail-section"
+            *ngIf="patientDetails.address || patientDetails.Address || patientDetails.city || patientDetails.City">
+            <!-- <h4 class="section-title">Address</h4> -->
+            <div class="detail-grid">
+              <div class="detail-item full-width">
+                <span class="detail-label">Address:{{ patientDetails.address || patientDetails.Address || 'N/A'
+                  }}</span>
+                <!-- <span class="detail-value">{{ patientDetails.address || patientDetails.Address || 'N/A' }}</span> -->
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">City:{{ patientDetails.city || patientDetails.City || 'N/A' }}</span>
+                <!-- <span class="detail-value">{{ patientDetails.city || patientDetails.City || 'N/A' }}</span> -->
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Pin Code:{{ patientDetails.pinNo || patientDetails.PinNo || 'N/A' }}</span>
+                <!-- <span class="detail-value">{{ patientDetails.pinNo || patientDetails.PinNo || 'N/A' }}</span> -->
+              </div>
+            </div>
+          </div>
+          <hr>
+          <!-- Additional Information -->
+          <div class="detail-section">
+            <h4 class="section-title">Additional Information</h4>
+            <div class="detail-grid">
+              <div class="detail-item" *ngIf="patientDetails.aadharCardNo || patientDetails.AadharCardNo">
+                <span class="detail-label">National Card:
 
-            <!-- </span>
+                  <!-- </span>
             <span class="detail-value"> -->
-            {{ patientDetails.aadharCardNo || patientDetails.AadharCardNo || 'N/A' }}</span>
-        </div>
-        <div class="detail-item" *ngIf="patientDetails.panCardNo || patientDetails.PanCardNo">
-          <span class="detail-label">PAN Card:
+                  {{ patientDetails.aadharCardNo || patientDetails.AadharCardNo || 'N/A' }}</span>
+              </div>
+              <div class="detail-item" *ngIf="patientDetails.panCardNo || patientDetails.PanCardNo">
+                <span class="detail-label">PAN Card:
 
-            <!-- </span>
+                  <!-- </span>
             <span class="detail-value"> -->
-            {{ patientDetails.panCardNo || patientDetails.PanCardNo || 'N/A' }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-label">Registration Date:
+                  {{ patientDetails.panCardNo || patientDetails.PanCardNo || 'N/A' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Registration Date:
 
-            <!-- </span>
+                  <!-- </span>
             <span class="detail-value"> -->
-            {{ formatDate(patientDetails.regDate || patientDetails.RegDate) }}</span>
+                  {{ formatDate(patientDetails.regDate || patientDetails.RegDate) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoading && !patientDetails" class="no-data">
+          <mat-icon>info</mat-icon>
+          <p>Patient details not available</p>
         </div>
       </div>
     </div>
   </div>
-
-  <div *ngIf="!isLoading && !patientDetails" class="no-data">
-    <mat-icon>info</mat-icon>
-    <p>Patient details not available</p>
-  </div>
-</div>
-</div>
