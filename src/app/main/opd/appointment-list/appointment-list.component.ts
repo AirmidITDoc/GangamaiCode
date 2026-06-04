@@ -421,7 +421,7 @@ export class AppointmentListComponent implements OnInit {
         const dialogRef = this._matDialog.open(NewRegistrationComponent,
             {
                 maxWidth: "95vw",
-                maxHeight: '90%',
+                maxHeight: '95%',
                 width: '90%',
                 data: row
 
